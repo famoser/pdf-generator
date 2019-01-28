@@ -35,13 +35,18 @@ before_install:
 install:
   # copy config files
   - cp phpunit.xml.dist phpunit.xml
+  - cp .php_cs.dist .php_cs
 
   # install dependencies
-  - composer install
+  - composer install --no-scripts
   - chmod +x ./bin/console
 
 # execute tests
 script:
+  # check code style
+  - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/php-cs-fixer fix --diff --dry-run -v'
+
+  # check composer 
   - composer validate --strict
 
   # backend tests
