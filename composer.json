@@ -9,6 +9,9 @@
             "email": "products@famoser.ch"
         }
     ],
+    "require": {
+        "php": "^7.1"
+    },
     "require-dev": {
         "codacy/coverage": "^1.4",
         "friendsofphp/php-cs-fixer": "^2.14",

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the mangel.io project.
+ * This file is part of the famoser/pdf-generator project.
  *
  * (c) Florian Moser <git@famoser.ch>
  *
@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Tests\Pdf\Mock;
 
-use PdfGenerator\Pdf\Cursor;
 use PdfGenerator\Pdf\Configuration\PrintConfiguration;
+use PdfGenerator\Pdf\Cursor;
 use PdfGenerator\Pdf\PdfDocumentInterface;
 
 class PdfDocumentMock implements PdfDocumentInterface
