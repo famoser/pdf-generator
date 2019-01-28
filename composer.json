@@ -1,6 +1,6 @@
 {
     "name": "famoser/pdf-generator",
-    "description": "aa clean pdf generator without dependencies",
+    "description": "a clean pdf generator without dependencies",
     "type": "library",
     "license": "MIT",
     "authors": [

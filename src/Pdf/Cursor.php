@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Document\Pdf;
+namespace PdfGenerator\Pdf;
 
 class Cursor
 {

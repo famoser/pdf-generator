@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Pdf\Layout\Base;
 
-use PdfGenerator\Document\Pdf\Cursor;
+use PdfGenerator\Pdf\Cursor;
 use PdfGenerator\Pdf\Layout\Supporting\PrintBuffer;
 use PdfGenerator\Pdf\PdfDocumentInterface;
 use PdfGenerator\Pdf\Transaction\PrintTransaction;

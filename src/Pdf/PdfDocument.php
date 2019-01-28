@@ -9,18 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Pdf\Tcpdf;
+namespace PdfGenerator\Pdf;
 
 use PdfGenerator\Pdf\Configuration\PrintConfiguration;
-use PdfGenerator\Pdf\Cursor;
-use PdfGenerator\Pdf\PdfDocumentInterface;
-use PdfGenerator\Pdf\PdfPageLayoutInterface;
 
-/**
- * implements the predictable publish PdfDocumentInterface with the TCPDF library.
- *
- * Class PdfDocument
- */
 class PdfDocument implements PdfDocumentInterface
 {
     /**

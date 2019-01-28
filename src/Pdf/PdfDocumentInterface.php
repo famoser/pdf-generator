@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Pdf;
 
-use PdfGenerator\Document\Pdf\Cursor;
 use PdfGenerator\Pdf\Configuration\PrintConfiguration;
 
 interface PdfDocumentInterface
