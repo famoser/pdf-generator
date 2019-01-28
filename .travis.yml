@@ -1,0 +1,56 @@
+language: php
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+env:
+  global:
+    - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.2
+      env:
+        - COVERAGE=true
+    - php: nightly
+  allow_failures:
+    - php: nightly
+
+# prepare virtual environment
+before_install:
+  - if [[ $COVERAGE == false ]]; then phpenv config-rm xdebug.ini; fi
+
+  # install phpunit
+  - sudo curl --location --output /usr/local/bin/phpunit https://phar.phpunit.de/phpunit.phar
+  - sudo chmod +x /usr/local/bin/phpunit
+
+  # print versions just in case
+  - php --version
+  - phpunit --version
+
+# prepare programming environment
+install:
+  # copy config files
+  - cp phpunit.xml.dist phpunit.xml
+
+  # install dependencies
+  - composer install
+  - chmod +x ./bin/console
+
+# execute tests
+script:
+  - composer validate --strict
+
+  # backend tests
+  - phpunit
+
+# report code coverage
+after_script:
+  # scrutinizer reporting
+  - if [[ $COVERAGE == true ]]; then wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover ./build/logs/clover.xml; fi
+  -
+  # codacy reporting
+  - if [[ $COVERAGE == true ]]; then bash <(curl -s https://codecov.io/bash); fi
