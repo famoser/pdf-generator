@@ -58,14 +58,28 @@ class PrintConfiguration extends DrawConfiguration
 
     /**
      * PrintConfiguration constructor.
-     *
-     * @param ConfigurationValidator $configurationValidator
      */
-    public function __construct(ConfigurationValidator $configurationValidator)
+    public function __construct()
     {
-        parent::__construct($configurationValidator);
+        $validator = new ConfigurationValidator();
+        parent::__construct($validator);
 
-        $this->configurationValidator = $configurationValidator;
+        $this->configurationValidator = $validator;
+    }
+
+    /**
+     * @param PrintConfiguration $existing
+     *
+     * @throws \Exception
+     *
+     * @return PrintConfiguration
+     */
+    public static function createFromExisting(self $existing)
+    {
+        $new = new self();
+        $new->setConfiguration($existing->getConfiguration());
+
+        return $new;
     }
 
     /**

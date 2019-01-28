@@ -15,13 +15,6 @@ use PdfGenerator\Document\Pdf\Configuration\PrintConfiguration;
 
 interface PdfDocumentInterface
 {
-    const PDF_IMPLEMENTATION_TCPDF = 'tcpdf';
-
-    /**
-     * @return string
-     */
-    public function getPdfImplementation();
-
     /**
      * returns the active cursor position as an array of [$xCoordinate, $yCoordinate, $page].
      *

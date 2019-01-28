@@ -71,6 +71,6 @@ class PdfFactory implements PdfFactoryInterface
     {
         $this->applyConfiguration();
 
-        return new PdfDocument(new Pdf(), $pageLayout);
+        return new PdfDocument($pageLayout);
     }
 }

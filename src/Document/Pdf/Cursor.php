@@ -24,7 +24,7 @@ class Cursor
     private $yCoordinate;
 
     /**
-     * @var int|null
+     * @var int
      */
     private $page;
 
@@ -35,7 +35,7 @@ class Cursor
      * @param float $yCoordinate
      * @param int $page
      */
-    public function __construct(float $xCoordinate, float $yCoordinate, ?int $page = null)
+    public function __construct(float $xCoordinate, float $yCoordinate, int $page)
     {
         $this->xCoordinate = $xCoordinate;
         $this->yCoordinate = $yCoordinate;
@@ -59,9 +59,9 @@ class Cursor
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getPage(): ?int
+    public function getPage(): int
     {
         return $this->page;
     }
