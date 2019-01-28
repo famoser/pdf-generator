@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\Document\Pdf;
 
+use App\Service\Report\Document\Layout\GroupLayoutInterface;
 use PdfGenerator\Document\Layout\AutoColumnLayoutInterface;
 use PdfGenerator\Document\Layout\ColumnLayoutInterface;
 use PdfGenerator\Document\Layout\Configuration\ColumnConfiguration;
 use PdfGenerator\Document\Layout\FullWidthLayoutInterface;
-use App\Service\Report\Document\Layout\GroupLayoutInterface;
 use PdfGenerator\Document\Layout\TableLayoutInterface;
 use PdfGenerator\Document\LayoutFactoryInterface;
 use PdfGenerator\Document\Pdf\Layout\AutoColumnLayout;
