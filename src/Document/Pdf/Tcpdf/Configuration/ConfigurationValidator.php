@@ -26,8 +26,8 @@ class ConfigurationValidator extends \PdfGenerator\Document\Pdf\Configuration\Co
         $fontFamily = parent::fontFamily($config, $key);
 
         $fontFamilyValues = [TcpdfConfiguration::FONT_FAMILY_OPEN_SANS];
-        if (!\in_array($fontFamily, $fontFamilyValues, true)) {
-            throw new \Exception($key . ' config must be a valid font family (one of ' . implode(',', $fontFamilyValues) . ')');
+        if (!\in_array($fontFamily,   $fontFamilyValues, true)) {
+            throw new \Exception($key . ' must be a valid font family (one of ' . implode(',', $fontFamilyValues) . ')');
         }
 
         return $fontFamily;

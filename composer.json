@@ -30,7 +30,8 @@
         "hooks": {
             "pre-commit": [
                 "echo committing as $(git config user.name)",
-                "./vendor/bin/php-cs-fixer fix  --config=.php_cs ."
+                "./vendor/bin/php-cs-fixer fix  --config=.php_cs",
+                "git add"
             ],
             "post-merge": "composer install"
         }

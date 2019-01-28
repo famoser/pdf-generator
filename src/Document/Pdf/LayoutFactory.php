@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\Document\Pdf;
 
-use PdfGenerator\Document\Layout\GroupLayoutInterface;
 use PdfGenerator\Document\Layout\AutoColumnLayoutInterface;
 use PdfGenerator\Document\Layout\ColumnLayoutInterface;
 use PdfGenerator\Document\Layout\Configuration\ColumnConfiguration;
 use PdfGenerator\Document\Layout\FullWidthLayoutInterface;
+use PdfGenerator\Document\Layout\GroupLayoutInterface;
 use PdfGenerator\Document\Layout\TableLayoutInterface;
 use PdfGenerator\Document\LayoutFactoryInterface;
 use PdfGenerator\Document\Pdf\Layout\AutoColumnLayout;
@@ -57,7 +57,7 @@ class LayoutFactory implements LayoutFactoryInterface
      */
     public function createGroupLayout()
     {
-        return new GroupLayout($this->document, $this-> layoutService->getContentXSize());
+        return new GroupLayout($this->document, $this->layoutService->getContentXSize());
     }
 
     /**
