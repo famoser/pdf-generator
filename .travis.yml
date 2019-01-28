@@ -39,14 +39,13 @@ install:
 
   # install dependencies
   - composer install --no-scripts
-  - chmod +x ./bin/console
 
 # execute tests
 script:
   # check code style
   - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/php-cs-fixer fix --diff --dry-run -v'
 
-  # check composer 
+  # check composer
   - composer validate --strict
 
   # backend tests
