@@ -1,0 +1,28 @@
+{
+    "name": "famoser/pdf-generator",
+    "description": "aa clean pdf generator without dependencies",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Florian Moser",
+            "email": "products@famoser.ch"
+        }
+    ],
+    "require-dev": {
+        "codacy/coverage": "^1.4",
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "mockery/mockery": "^1.2",
+        "phpunit/phpunit": "^7.5",
+        "brainmaestro/composer-git-hooks": "^2.6"
+    },
+    "extra": {
+        "hooks": {
+            "pre-commit": [
+                "echo committing as $(git config user.name)",
+                "php-cs-fixer fix ."
+            ],
+            "post-merge": "composer update"
+        }
+    }
+}
