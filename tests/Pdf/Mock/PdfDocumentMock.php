@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Tests\Pdf\Mock;
 
-use PdfGenerator\Document\Pdf\Cursor;
+use PdfGenerator\Pdf\Cursor;
 use PdfGenerator\Pdf\Configuration\PrintConfiguration;
 use PdfGenerator\Pdf\PdfDocumentInterface;
 

@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Tests\Pdf;
 
-use PdfGenerator\Document\Pdf\Cursor;
+use PdfGenerator\Pdf\Cursor;
 use PHPUnit\Framework\TestCase;
 
 class CursorTest extends TestCase

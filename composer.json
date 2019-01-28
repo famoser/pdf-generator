@@ -16,6 +16,16 @@
         "phpunit/phpunit": "^7.5",
         "brainmaestro/composer-git-hooks": "^2.6"
     },
+    "autoload": {
+        "psr-4": {
+            "PdfGenerator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PdfGenerator\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
         "prepare-environment": [
             "cp -n .php_cs.dist .php_cs",
