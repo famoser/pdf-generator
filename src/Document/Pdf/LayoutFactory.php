@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Document\Pdf;
 
-use App\Service\Report\Document\Layout\GroupLayoutInterface;
+use PdfGenerator\Document\Layout\GroupLayoutInterface;
 use PdfGenerator\Document\Layout\AutoColumnLayoutInterface;
 use PdfGenerator\Document\Layout\ColumnLayoutInterface;
 use PdfGenerator\Document\Layout\Configuration\ColumnConfiguration;
@@ -57,7 +57,7 @@ class LayoutFactory implements LayoutFactoryInterface
      */
     public function createGroupLayout()
     {
-        return new GroupLayout($this->document, $this->layoutService->getContentXSize());
+        return new GroupLayout($this->document, $this-> layoutService->getContentXSize());
     }
 
     /**

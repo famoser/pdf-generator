@@ -20,16 +20,11 @@
         "prepare-environment": [
             "cp -n .php_cs.dist .php_cs",
             "cp -n phpunit.xml.dist phpunit.xml",
-            "mkdir -p var"
-        ],
-        "pre-install-cmd": [
-            "@prepare-environment",
-            "vendor/bin/cghooks add --ignore-lock"
-        ],
-        "post-update-cmd": [
-            "@prepare-environment",
+            "mkdir -p var",
             "vendor/bin/cghooks update"
-        ]
+        ],
+        "pre-install-cmd": "@prepare-environment",
+        "post-update-cmd": "@prepare-environment"
     },
     "extra": {
         "hooks": {
