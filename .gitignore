@@ -1,5 +1,5 @@
-/vendor/
 .idea
+/vendor/
 .php_cs
+.php_cs.cache
 phpunit.xml
-var

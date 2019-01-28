@@ -30,7 +30,6 @@
         "prepare-environment": [
             "cp -n .php_cs.dist .php_cs",
             "cp -n phpunit.xml.dist phpunit.xml",
-            "mkdir -p var",
             "vendor/bin/cghooks update"
         ],
         "pre-install-cmd": "@prepare-environment",
