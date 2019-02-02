@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\Backend\Object\Token;
+namespace Pdf\Backend\Token;
 
-use Pdf\Backend\Object\Token\Base\BaseToken;
+use Pdf\Backend\Token\Base\BaseToken;
 use Pdf\Backend\TokenVisitor;
 
 class TextToken extends BaseToken

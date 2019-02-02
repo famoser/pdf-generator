@@ -9,25 +9,26 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\Backend\Object\Token;
+namespace Pdf\Backend\Token;
 
-use Pdf\Backend\Object\Token\Base\BaseToken;
+use Pdf\Backend\Token\Base\BaseToken;
 use Pdf\Backend\TokenVisitor;
 
-class DictionaryToken extends BaseToken
+class NumberToken extends BaseToken
 {
     /**
-     * @var BaseToken[]
+     * @var float|int
      */
-    private $keyValue;
+    private $number;
 
     /**
-     * @param string $key
-     * @param BaseToken $token
+     * TextToken constructor.
+     *
+     * @param float|int $number
      */
-    public function setEntry(string $key, BaseToken $token)
+    public function __construct($number)
     {
-        $this->keyValue[$key] = $token;
+        $this->number = $number;
     }
 
     /**
@@ -37,14 +38,14 @@ class DictionaryToken extends BaseToken
      */
     public function accept(TokenVisitor $visitor): string
     {
-        return $visitor->visitDictionaryToken($this);
+        return $visitor->visitNumberToken($this);
     }
 
     /**
-     * @return BaseToken[]
+     * @return float|int
      */
-    public function getKeyValue(): array
+    public function getNumber()
     {
-        return $this->keyValue;
+        return $this->number;
     }
 }

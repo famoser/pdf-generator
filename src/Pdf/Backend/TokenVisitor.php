@@ -11,12 +11,12 @@
 
 namespace Pdf\Backend;
 
-use Pdf\Backend\Object\Token\ArrayToken;
-use Pdf\Backend\Object\Token\Base\BaseToken;
-use Pdf\Backend\Object\Token\DictionaryToken;
-use Pdf\Backend\Object\Token\NumberToken;
-use Pdf\Backend\Object\Token\ReferenceToken;
-use Pdf\Backend\Object\Token\TextToken;
+use Pdf\Backend\Token\ArrayToken;
+use Pdf\Backend\Token\Base\BaseToken;
+use Pdf\Backend\Token\DictionaryToken;
+use Pdf\Backend\Token\NumberToken;
+use Pdf\Backend\Token\ReferenceToken;
+use Pdf\Backend\Token\TextToken;
 
 class TokenVisitor
 {

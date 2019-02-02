@@ -12,12 +12,12 @@
 namespace Pdf\Backend\Object;
 
 use Pdf\Backend\Object\Base\BaseObject;
-use Pdf\Backend\Object\Token\ArrayToken;
-use Pdf\Backend\Object\Token\DictionaryToken;
-use Pdf\Backend\Object\Token\NumberToken;
-use Pdf\Backend\Object\Token\ReferenceToken;
-use Pdf\Backend\Object\Token\TextToken;
 use Pdf\Backend\ObjectVisitor;
+use Pdf\Backend\Token\ArrayToken;
+use Pdf\Backend\Token\DictionaryToken;
+use Pdf\Backend\Token\NumberToken;
+use Pdf\Backend\Token\ReferenceToken;
+use Pdf\Backend\Token\TextToken;
 
 class DictionaryObject extends BaseObject
 {

@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\Backend\Object\Token\Base;
+namespace Pdf\Backend\Structure\Base;
 
-use Pdf\Backend\TokenVisitor;
+use Pdf\Backend\StructureVisitor;
 
-abstract class BaseToken
+abstract class BaseStructure
 {
     /**
-     * @param TokenVisitor $visitor
+     * @param StructureVisitor $visitor
      *
      * @return string
      */
-    abstract public function accept(TokenVisitor $visitor): string;
+    abstract public function accept(StructureVisitor $visitor): string;
 }

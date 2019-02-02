@@ -9,27 +9,26 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\Backend\Object\Token;
+namespace Pdf\Backend\Token;
 
-use Pdf\Backend\Object\Base\BaseObject;
-use Pdf\Backend\Object\Token\Base\BaseToken;
+use Pdf\Backend\Token\Base\BaseToken;
 use Pdf\Backend\TokenVisitor;
 
-class ReferenceToken extends BaseToken
+class ArrayToken extends BaseToken
 {
     /**
-     * @var BaseObject
+     * @var BaseToken[]
      */
-    private $target;
+    private $values;
 
     /**
-     * ReferenceEntry constructor.
+     * ArrayToken constructor.
      *
-     * @param BaseObject $target
+     * @param BaseToken[] $values
      */
-    public function __construct(BaseObject $target)
+    public function __construct(array $values)
     {
-        $this->target = $target;
+        $this->values = $values;
     }
 
     /**
@@ -39,14 +38,14 @@ class ReferenceToken extends BaseToken
      */
     public function accept(TokenVisitor $visitor): string
     {
-        return $visitor->visitReferenceToken($this);
+        return $visitor->visitArrayToken($this);
     }
 
     /**
-     * @return BaseObject
+     * @return BaseToken[]
      */
-    public function getTarget(): BaseObject
+    public function getValues(): array
     {
-        return $this->target;
+        return $this->values;
     }
 }

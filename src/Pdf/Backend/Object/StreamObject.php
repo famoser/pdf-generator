@@ -12,9 +12,9 @@
 namespace Pdf\Backend\Object;
 
 use Pdf\Backend\Object\Base\BaseObject;
-use Pdf\Backend\Object\Token\DictionaryToken;
-use Pdf\Backend\Object\Token\NumberToken;
 use Pdf\Backend\ObjectVisitor;
+use Pdf\Backend\Token\DictionaryToken;
+use Pdf\Backend\Token\NumberToken;
 
 class StreamObject extends BaseObject
 {
@@ -59,7 +59,7 @@ class StreamObject extends BaseObject
     public function getMetaData(): DictionaryToken
     {
         $dictionary = new DictionaryToken();
-        $dictionary->setEntry('Length', new NumberToken(\mb_strlen($this->content)));
+        $dictionary->setEntry('Length', new NumberToken(mb_strlen($this->content)));
 
         return $dictionary;
     }

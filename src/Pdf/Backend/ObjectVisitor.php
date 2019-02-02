@@ -53,7 +53,7 @@ class ObjectVisitor
         $lines[] = $param->getContent();
         $lines[] = 'endstream';
 
-        return $this->visitObject($param, "\n" . implode('', $lines));
+        return $this->visitObject($param, "\n" . implode("\n", $lines));
     }
 
     /**
