@@ -35,8 +35,6 @@ class PdfDocument implements PdfDocumentInterface
      */
     private $pageLayout;
 
-    private
-
     /**
      * PdfDocument constructor.
      *
