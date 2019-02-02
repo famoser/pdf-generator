@@ -11,6 +11,7 @@
 
 namespace Pdf\IR;
 
+use Pdf\Backend\File;
 use Pdf\Backend\Object\Base\BaseObject;
 use Pdf\Backend\Token\DictionaryToken;
 use Pdf\Backend\Token\ReferenceToken;
@@ -30,21 +31,19 @@ class StructureVisitor
 
     /**
      * StructureVisitor constructor.
-     *
-     * @param ContentVisitor $contentVisitor
      */
-    public function __construct(ContentVisitor $contentVisitor)
+    public function __construct()
     {
-        $this->contentVisitor = $contentVisitor;
+        $this->contentVisitor = new ContentVisitor();
     }
 
     /**
      * @param Structure\Catalog $param
-     * @param \Pdf\Backend\Structure\File $file
+     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitCatalog(Structure\Catalog $param, \Pdf\Backend\Structure\File $file): BaseObject
+    public function visitCatalog(Structure\Catalog $param, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Catalog');
@@ -58,11 +57,11 @@ class StructureVisitor
 
     /**
      * @param Structure\Pages $param
-     * @param \Pdf\Backend\Structure\File $file
+     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitPages(Structure\Pages $param, \Pdf\Backend\Structure\File $file): BaseObject
+    public function visitPages(Structure\Pages $param, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Pages');
@@ -82,11 +81,11 @@ class StructureVisitor
 
     /**
      * @param Page $param
-     * @param \Pdf\Backend\Structure\File $file
+     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitPage(Page $param, \Pdf\Backend\Structure\File $file): BaseObject
+    public function visitPage(Page $param, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Page');
@@ -107,11 +106,11 @@ class StructureVisitor
 
     /**
      * @param Structure\Resources $param
-     * @param \Pdf\Backend\Structure\File $file
+     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitResources(Structure\Resources $param, \Pdf\Backend\Structure\File $file): BaseObject
+    public function visitResources(Structure\Resources $param, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
 
@@ -128,23 +127,12 @@ class StructureVisitor
 
     /**
      * @param Structure\Contents $param
-     * @param \Pdf\Backend\Structure\File $file
+     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitContents(Structure\Contents $param, \Pdf\Backend\Structure\File $file): BaseObject
+    public function visitContents(Structure\Contents $param, File $file): BaseObject
     {
         return $param->getContent()->accept($this->contentVisitor, $file);
-    }
-
-    /**
-     * @param Structure\Document $param
-     * @param \Pdf\Backend\Structure\File $file
-     *
-     * @return BaseObject
-     */
-    public function visitDocument(Structure\Document $param, \Pdf\Backend\Structure\File $file)
-    {
-        return $param->getCatalog()->accept($this, $file);
     }
 }

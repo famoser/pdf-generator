@@ -11,7 +11,9 @@
 
 namespace Pdf\Backend;
 
+use Pdf\Backend\Object\Base\BaseObject;
 use Pdf\Backend\Structure\CrossReferenceTable;
+use Pdf\Backend\Structure\FileHeader;
 use Pdf\Backend\Structure\FileTrailer;
 use Pdf\Backend\Token\DictionaryToken;
 use Pdf\Backend\Token\NumberToken;
@@ -39,6 +41,34 @@ class StructureVisitor
     }
 
     /**
+     * @param FileHeader $header
+     * @param BaseObject[] $content
+     * @param BaseObject $root
+     *
+     * @return string
+     */
+    public function render(FileHeader $header, array $content, BaseObject $root)
+    {
+        $output = $header->accept($this) . "\n";
+
+        $crossReferenceTable = new CrossReferenceTable();
+        $crossReferenceTable->registerEntrySize(mb_strlen($output));
+
+        foreach ($content as $baseObject) {
+            $objectContent = $baseObject->accept($this->objectVisitor) . "\n";
+            $crossReferenceTable->registerEntrySize(mb_strlen($objectContent));
+            $output .= $objectContent;
+        }
+
+        $output .= $crossReferenceTable->accept($this) . "\n";
+
+        $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $root);
+        $output .= $trailer->accept($this);
+
+        return $output;
+    }
+
+    /**
      * @param Structure\FileHeader $param
      *
      * @return string
@@ -46,32 +76,6 @@ class StructureVisitor
     public function visitFileHeader(Structure\FileHeader $param)
     {
         return '%PDF-' . $param->getVersion();
-    }
-
-    /**
-     * @param Structure\File $param
-     *
-     * @return string
-     */
-    public function visitFile(Structure\File $param)
-    {
-        $content = $param->getHeader()->accept($this) . "\n";
-
-        $crossReferenceTable = new CrossReferenceTable();
-        $crossReferenceTable->registerEntrySize(\mb_strlen($content));
-
-        foreach ($param->getBody() as $baseObject) {
-            $objectContent = $baseObject->accept($this->objectVisitor) . "\n";
-            $crossReferenceTable->registerEntrySize(\mb_strlen($objectContent));
-            $content .= $objectContent;
-        }
-
-        $content .= $crossReferenceTable->accept($this) . "\n";
-
-        $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $param->getRoot());
-        $content .= $trailer->accept($this);
-
-        return $content;
     }
 
     /**

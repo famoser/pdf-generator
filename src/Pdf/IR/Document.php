@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR\Structure;
+namespace Pdf\IR;
 
+use Pdf\Backend\File;
 use Pdf\Backend\Object\Base\BaseObject;
-use Pdf\Backend\Structure\File;
-use Pdf\IR\Structure\Base\BaseStructure;
-use Pdf\IR\StructureVisitor;
+use Pdf\IR\Structure\Catalog;
 
-class Document extends BaseStructure
+class Document
 {
     /**
      * @var Catalog
@@ -25,23 +24,23 @@ class Document extends BaseStructure
 
     /**
      * Document constructor.
-     *
-     * @param Catalog $catalog
      */
-    public function __construct(Catalog $catalog)
+    public function __construct()
     {
-        $this->catalog = $catalog;
+        $this->catalog = new Catalog();
     }
 
     /**
-     * @param StructureVisitor $visitor
-     * @param File $file
-     *
      * @return BaseObject
      */
-    public function accept(StructureVisitor $visitor, File $file): BaseObject
+    public function render(): string
     {
-        return $visitor->visitDocument($this, $file);
+        $structureVisitor = new StructureVisitor();
+        $file = new File();
+
+        $catalog = $structureVisitor->visitCatalog($this->catalog, $file);
+
+        return $file->render($catalog);
     }
 
     /**

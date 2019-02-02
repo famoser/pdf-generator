@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Pdf;
 
+use Pdf\IR\Document;
+use Pdf\IR\Structure\Page;
 use PdfGenerator\Pdf\Configuration\PrintConfiguration;
 
 class PdfDocument implements PdfDocumentInterface
@@ -36,6 +38,11 @@ class PdfDocument implements PdfDocumentInterface
     private $pageLayout;
 
     /**
+     * @var Document
+     */
+    private $document;
+
+    /**
      * PdfDocument constructor.
      *
      * @param PdfPageLayoutInterface $pageLayout
@@ -45,6 +52,7 @@ class PdfDocument implements PdfDocumentInterface
     public function __construct(PdfPageLayoutInterface $pageLayout)
     {
         $this->pageLayout = $pageLayout;
+        $this->document = new Document();
 
         $this->configure();
         $this->startNewPage();
@@ -143,6 +151,8 @@ class PdfDocument implements PdfDocumentInterface
      */
     public function startNewPage()
     {
+        // TODO: continue!
+        $this->document->getCatalog()->getPages()->addPage(null);
     }
 
     /**

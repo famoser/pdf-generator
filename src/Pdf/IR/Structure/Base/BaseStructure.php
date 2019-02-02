@@ -11,8 +11,8 @@
 
 namespace Pdf\IR\Structure\Base;
 
+use Pdf\Backend\File;
 use Pdf\Backend\Object\Base\BaseObject;
-use Pdf\Backend\Structure\File;
 use Pdf\IR\StructureVisitor;
 
 abstract class BaseStructure
