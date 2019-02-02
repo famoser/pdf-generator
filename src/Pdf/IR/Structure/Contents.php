@@ -11,6 +11,45 @@
 
 namespace Pdf\IR\Structure;
 
-class Contents
+use Pdf\Backend\Object\Base\BaseObject;
+use Pdf\Backend\Structure\File;
+use Pdf\IR\Content\Base\BaseContent;
+use Pdf\IR\Structure\Base\BaseStructure;
+use Pdf\IR\StructureVisitor;
+
+class Contents extends BaseStructure
 {
+    /**
+     * @var BaseContent
+     */
+    private $content;
+
+    /**
+     * Contents constructor.
+     *
+     * @param BaseContent $content
+     */
+    public function __construct(BaseContent $content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @param StructureVisitor $visitor
+     * @param File $file
+     *
+     * @return BaseObject
+     */
+    public function accept(StructureVisitor $visitor, File $file): BaseObject
+    {
+        return $visitor->visitContents($this, $file);
+    }
+
+    /**
+     * @return BaseContent
+     */
+    public function getContent(): BaseContent
+    {
+        return $this->content;
+    }
 }

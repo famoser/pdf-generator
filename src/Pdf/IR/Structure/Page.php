@@ -11,7 +11,12 @@
 
 namespace Pdf\IR\Structure;
 
-class Page
+use Pdf\Backend\Object\Base\BaseObject;
+use Pdf\Backend\Structure\File;
+use Pdf\IR\Structure\Base\BaseStructure;
+use Pdf\IR\StructureVisitor;
+
+class Page extends BaseStructure
 {
     /**
      * @var Pages
@@ -47,5 +52,48 @@ class Page
         $this->mediaBox = $mediaBox;
         $this->contents = $contents;
         $this->resources = $resources;
+    }
+
+    /**
+     * @param StructureVisitor $visitor
+     * @param File $file
+     *
+     * @return BaseObject
+     */
+    public function accept(StructureVisitor $visitor, File $file): BaseObject
+    {
+        return $visitor->visitPage($this, $file);
+    }
+
+    /**
+     * @return Pages
+     */
+    public function getParent(): Pages
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getMediaBox(): array
+    {
+        return $this->mediaBox;
+    }
+
+    /**
+     * @return Contents
+     */
+    public function getContents(): Contents
+    {
+        return $this->contents;
+    }
+
+    /**
+     * @return Resources
+     */
+    public function getResources(): Resources
+    {
+        return $this->resources;
     }
 }

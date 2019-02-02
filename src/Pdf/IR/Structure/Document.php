@@ -11,7 +11,12 @@
 
 namespace Pdf\IR\Structure;
 
-class Document
+use Pdf\Backend\Object\Base\BaseObject;
+use Pdf\Backend\Structure\File;
+use Pdf\IR\Structure\Base\BaseStructure;
+use Pdf\IR\StructureVisitor;
+
+class Document extends BaseStructure
 {
     /**
      * @var Catalog
@@ -26,5 +31,24 @@ class Document
     public function __construct(Catalog $catalog)
     {
         $this->catalog = $catalog;
+    }
+
+    /**
+     * @param StructureVisitor $visitor
+     * @param File $file
+     *
+     * @return BaseObject
+     */
+    public function accept(StructureVisitor $visitor, File $file): BaseObject
+    {
+        return $visitor->visitDocument($this, $file);
+    }
+
+    /**
+     * @return Catalog
+     */
+    public function getCatalog(): Catalog
+    {
+        return $this->catalog;
     }
 }

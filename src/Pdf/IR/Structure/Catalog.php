@@ -11,6 +11,7 @@
 
 namespace Pdf\IR\Structure;
 
+use Pdf\Backend\Object\Base\BaseObject;
 use Pdf\Backend\Structure\File;
 use Pdf\IR\Structure\Base\BaseStructure;
 use Pdf\IR\StructureVisitor;
@@ -41,9 +42,11 @@ class Catalog extends BaseStructure
     /**
      * @param StructureVisitor $visitor
      * @param File $file
+     *
+     * @return \Pdf\Backend\Object\Base\BaseObject
      */
-    public function accept(StructureVisitor $visitor, File $file)
+    public function accept(StructureVisitor $visitor, File $file): BaseObject
     {
-        $visitor->visitCatalog($this, $file);
+        return $visitor->visitCatalog($this, $file);
     }
 }

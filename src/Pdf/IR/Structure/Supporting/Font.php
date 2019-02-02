@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR\Structure;
+namespace Pdf\IR\Structure\Supporting;
 
 class Font
 {

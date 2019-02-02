@@ -11,6 +11,7 @@
 
 namespace Pdf\IR\Content\Base;
 
+use Pdf\Backend\Object\Base\BaseObject;
 use Pdf\Backend\Structure\File;
 use Pdf\IR\ContentVisitor;
 
@@ -19,6 +20,8 @@ abstract class BaseContent
     /**
      * @param ContentVisitor $visitor
      * @param File $file
+     *
+     * @return BaseObject
      */
-    abstract public function accept(ContentVisitor $visitor, File $file);
+    abstract public function accept(ContentVisitor $visitor, File $file): BaseObject;
 }

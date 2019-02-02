@@ -55,6 +55,15 @@ class DictionaryObject extends BaseObject
 
     /**
      * @param string $key
+     * @param DictionaryToken $dictionaryToken
+     */
+    public function addDictionaryEntry(string $key, DictionaryToken $dictionaryToken)
+    {
+        $this->dictionaryToken->setEntry($key, $dictionaryToken);
+    }
+
+    /**
+     * @param string $key
      * @param int[] $numbers
      */
     public function addNumberArrayEntry(string $key, array $numbers)

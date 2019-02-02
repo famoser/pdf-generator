@@ -11,7 +11,13 @@
 
 namespace Pdf\IR\Structure;
 
-class Resources
+use Pdf\Backend\Object\Base\BaseObject;
+use Pdf\Backend\Structure\File;
+use Pdf\IR\Structure\Base\BaseStructure;
+use Pdf\IR\Structure\Supporting\Font;
+use Pdf\IR\StructureVisitor;
+
+class Resources extends BaseStructure
 {
     /**
      * @var int
@@ -41,5 +47,24 @@ class Resources
     private function generateIdentifier(string $prefix)
     {
         return $prefix . $this->resourceCounter++;
+    }
+
+    /**
+     * @param StructureVisitor $visitor
+     * @param File $file
+     *
+     * @return BaseObject
+     */
+    public function accept(StructureVisitor $visitor, File $file): BaseObject
+    {
+        return $visitor->visitResources($this, $file);
+    }
+
+    /**
+     * @return Font[]
+     */
+    public function getFonts(): array
+    {
+        return $this->fonts;
     }
 }

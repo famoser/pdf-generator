@@ -15,7 +15,7 @@ use Pdf\Backend\Object\Base\BaseObject;
 use Pdf\Backend\Structure\File;
 use Pdf\IR\Content\Base\BaseContent;
 use Pdf\IR\ContentVisitor;
-use Pdf\IR\Structure\Font;
+use Pdf\IR\Structure\Supporting\Font;
 
 class TextContent extends BaseContent
 {
