@@ -84,16 +84,6 @@ class PdfDocumentMock implements PdfDocumentInterface
     /**
      * @param \Closure $printClosure
      *
-     * @return bool
-     */
-    public function causesPageBreak(\Closure $printClosure)
-    {
-        return false;
-    }
-
-    /**
-     * @param \Closure $printClosure
-     *
      * @return Cursor
      */
     public function cursorAfterwardsIfPrinted(\Closure $printClosure)
