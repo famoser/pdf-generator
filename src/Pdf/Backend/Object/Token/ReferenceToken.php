@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR\Object\Token;
+namespace Pdf\Backend\Object\Token;
 
-use Pdf\Backend\Object\TokenVisitor;
-use Pdf\IR\Object\BaseObject;
+use Pdf\Backend\Object\Base\BaseObject;
+use Pdf\Backend\Object\Token\Base\BaseToken;
+use Pdf\Backend\TokenVisitor;
 
 class ReferenceToken extends BaseToken
 {
@@ -33,10 +34,12 @@ class ReferenceToken extends BaseToken
 
     /**
      * @param TokenVisitor $visitor
+     *
+     * @return string
      */
-    public function accept(TokenVisitor $visitor)
+    public function accept(TokenVisitor $visitor): string
     {
-        $visitor->visitReferenceEntry($this);
+        return $visitor->visitReferenceToken($this);
     }
 
     /**

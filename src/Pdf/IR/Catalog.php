@@ -17,4 +17,20 @@ class Catalog
      * @var Pages
      */
     private $pages;
+
+    /**
+     * Catalog constructor.
+     */
+    public function __construct()
+    {
+        $this->pages = new Pages();
+    }
+
+    /**
+     * @return Pages
+     */
+    public function getPages(): Pages
+    {
+        return $this->pages;
+    }
 }

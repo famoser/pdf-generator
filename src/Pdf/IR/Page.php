@@ -18,5 +18,34 @@ class Page
      */
     private $parent;
 
+    /**
+     * @var int[]
+     */
+    private $mediaBox;
+
+    /**
+     * @var Contents
+     */
+    private $contents;
+
+    /**
+     * @var Resources
+     */
     private $resources;
+
+    /**
+     * Page constructor.
+     *
+     * @param Pages $parent
+     * @param array $mediaBox
+     * @param Resources $resources
+     * @param Contents $contents
+     */
+    public function __construct(Pages $parent, array $mediaBox, Resources $resources, Contents $contents)
+    {
+        $this->parent = $parent;
+        $this->mediaBox = $mediaBox;
+        $this->contents = $contents;
+        $this->resources = $resources;
+    }
 }

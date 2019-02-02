@@ -9,14 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\Backend\Object;
+namespace Pdf\IR;
 
-class TokenVisitor
+class Contents
 {
-    /**
-     * @param \Pdf\IR\Object\Token\ReferenceToken $referenceEntry
-     */
-    public function visitReferenceEntry(\Pdf\IR\Object\Token\ReferenceToken $referenceEntry)
-    {
-    }
 }

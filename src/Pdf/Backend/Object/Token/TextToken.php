@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR\Object\Token;
+namespace Pdf\Backend\Object\Token;
 
-use Pdf\Backend\Object\TokenVisitor;
+use Pdf\Backend\Object\Token\Base\BaseToken;
+use Pdf\Backend\TokenVisitor;
 
 class TextToken extends BaseToken
 {
@@ -25,7 +26,7 @@ class TextToken extends BaseToken
      *
      * @param string $text
      */
-    public function __construct(string  $text)
+    public function __construct(string $text)
     {
         $this->text = $text;
     }
@@ -40,9 +41,11 @@ class TextToken extends BaseToken
 
     /**
      * @param TokenVisitor $visitor
+     *
+     * @return string
      */
-    public function accept(TokenVisitor $visitor)
+    public function accept(TokenVisitor $visitor): string
     {
-        $visitor->visitTextToken($this);
+        return $visitor->visitTextToken($this);
     }
 }

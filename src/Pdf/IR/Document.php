@@ -11,20 +11,20 @@
 
 namespace Pdf\IR;
 
-use Pdf\IR\Object\BaseObject;
-
 class Document
 {
     /**
-     * @var BaseObject[]
+     * @var Catalog
      */
-    private $entries = [];
+    private $catalog;
 
     /**
-     * @param BaseObject $baseObject
+     * Document constructor.
+     *
+     * @param Catalog $catalog
      */
-    public function addEntry(BaseObject $baseObject)
+    public function __construct(Catalog $catalog)
     {
-        $this->entries[] = $baseObject;
+        $this->catalog = $catalog;
     }
 }

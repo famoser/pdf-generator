@@ -11,15 +11,58 @@
 
 namespace Pdf\Backend;
 
+use Pdf\Backend\Object\Base\BaseObject;
+use Pdf\Backend\Object\DictionaryObject;
+use Pdf\Backend\Object\StreamObject;
+
 class ObjectVisitor
 {
     /**
-     * @param \Pdf\IR\Object\DictionaryObject $dictionary
+     * @var TokenVisitor
      */
-    public function visitDictionary(\Pdf\IR\Object\DictionaryObject $dictionary)
+    private $tokenVisitor;
+
+    /**
+     * ObjectVisitor constructor.
+     */
+    public function __construct()
     {
-        $start = $dictionary->getNumber() . ' 0 obj <<';
-        foreach ($dictionary->getEntries() as $entry) {
-        }
+        $this->tokenVisitor = new TokenVisitor();
+    }
+
+    /**
+     * @param DictionaryObject $dictionary
+     *
+     * @return string
+     */
+    public function visitDictionary(DictionaryObject $dictionary): string
+    {
+        return $this->visitObject($dictionary, $dictionary->getDictionaryToken()->accept($this->tokenVisitor));
+    }
+
+    /**
+     * @param StreamObject $param
+     *
+     * @return string
+     */
+    public function visitStream(StreamObject $param): string
+    {
+        $lines = [];
+        $lines[] = $param->getMetaData()->accept($this->tokenVisitor);
+        $lines[] = 'stream';
+        $lines[] = $param->getContent();
+        $lines[] = 'endstream';
+
+        return $this->visitObject($param, "\n" . implode('', $lines));
+    }
+
+    /**
+     * @param BaseObject $object
+     *
+     * @return string
+     */
+    private function visitObject(BaseObject $object, string $content)
+    {
+        return $object->getNumber() . ' 0 obj' . $content . "\nendobj";
     }
 }

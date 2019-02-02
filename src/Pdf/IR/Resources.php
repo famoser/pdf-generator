@@ -13,4 +13,16 @@ namespace Pdf\IR;
 
 class Resources
 {
+    /**
+     * @var Font[]
+     */
+    private $fonts = [];
+
+    /**
+     * @param Font $font
+     */
+    public function addFont(Font $font)
+    {
+        $this->fonts[] = $font;
+    }
 }

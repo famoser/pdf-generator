@@ -13,4 +13,13 @@ namespace Pdf\IR;
 
 class Pages
 {
+    /**
+     * @var Page[]
+     */
+    private $kids = [];
+
+    public function addPage(Page $page)
+    {
+        $this->kids[] = $page;
+    }
 }

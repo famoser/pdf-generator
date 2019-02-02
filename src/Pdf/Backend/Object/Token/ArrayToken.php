@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR\Object\Token;
+namespace Pdf\Backend\Object\Token;
 
-use Pdf\Backend\Object\TokenVisitor;
+use Pdf\Backend\Object\Token\Base\BaseToken;
+use Pdf\Backend\TokenVisitor;
 
 class ArrayToken extends BaseToken
 {
@@ -23,7 +24,7 @@ class ArrayToken extends BaseToken
     /**
      * ArrayToken constructor.
      *
-     * @param array $values
+     * @param BaseToken[] $values
      */
     public function __construct(array $values)
     {
@@ -32,9 +33,19 @@ class ArrayToken extends BaseToken
 
     /**
      * @param TokenVisitor $visitor
+     *
+     * @return string
      */
-    public function accept(TokenVisitor $visitor)
+    public function accept(TokenVisitor $visitor): string
     {
-        // TODO: Implement accept() method.
+        return $visitor->visitArrayToken($this);
+    }
+
+    /**
+     * @return BaseToken[]
+     */
+    public function getValues(): array
+    {
+        return $this->values;
     }
 }

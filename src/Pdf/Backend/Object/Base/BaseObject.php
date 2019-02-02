@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR\Object;
+namespace Pdf\Backend\Object\Base;
 
 use Pdf\Backend\ObjectVisitor;
 
@@ -32,8 +32,10 @@ abstract class BaseObject
 
     /**
      * @param ObjectVisitor $visitor
+     *
+     * @return string
      */
-    abstract public function accept(ObjectVisitor $visitor);
+    abstract public function accept(ObjectVisitor $visitor): string;
 
     /**
      * @return int
