@@ -14,8 +14,13 @@ matrix:
   include:
     - php: 7.2
       env:
+        - SKIP_CODE_STYLE=true
+    - php: 7.3
+      env:
         - COVERAGE=true
     - php: nightly
+      env:
+        - SKIP_CODE_STYLE=true
   allow_failures:
     - php: nightly
 
@@ -43,7 +48,7 @@ install:
 # execute tests
 script:
   # check code style
-  - '[[ "$TRAVIS_PHP_VERSION" == "nightly" ]] || ./vendor/bin/php-cs-fixer fix --diff --dry-run -v'
+  - '[[ "SKIP_CODE_STYLE" == "true" ]] || ./vendor/bin/php-cs-fixer fix --diff --dry-run -v'
 
   # check composer
   - composer validate --strict
