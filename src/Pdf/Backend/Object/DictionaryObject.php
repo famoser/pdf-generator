@@ -46,6 +46,15 @@ class DictionaryObject extends BaseObject
 
     /**
      * @param string $key
+     * @param float|int $number
+     */
+    public function addNumberEntry(string $key, $number)
+    {
+        $this->dictionaryToken->setEntry($key, new NumberToken($number));
+    }
+
+    /**
+     * @param string $key
      * @param int[] $numbers
      */
     public function addNumberArrayEntry(string $key, array $numbers)
@@ -54,6 +63,21 @@ class DictionaryObject extends BaseObject
 
         foreach ($numbers as $number) {
             $tokens[] = new NumberToken($number);
+        }
+
+        $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));
+    }
+
+    /**
+     * @param string $key
+     * @param BaseObject[] $references
+     */
+    public function addReferenceArrayEntry(string $key, array $references)
+    {
+        $tokens = [];
+
+        foreach ($references as $reference) {
+            $tokens[] = new ReferenceToken($reference);
         }
 
         $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));

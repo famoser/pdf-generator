@@ -12,6 +12,8 @@
 namespace Pdf\Backend\Structure;
 
 use Pdf\Backend\Object\Base\BaseObject;
+use Pdf\Backend\Object\DictionaryObject;
+use Pdf\Backend\Object\StreamObject;
 use Pdf\Backend\Structure\Base\BaseStructure;
 use Pdf\Backend\StructureVisitor;
 
@@ -28,6 +30,11 @@ class File extends BaseStructure
     private $body = [];
 
     /**
+     * @var int
+     */
+    private $bodyCounter = 1;
+
+    /**
      * File constructor.
      *
      * @param BaseObject $root
@@ -40,11 +47,27 @@ class File extends BaseStructure
     }
 
     /**
-     * @param BaseObject $baseObject
+     * @param string $content
+     *
+     * @return StreamObject
      */
-    public function addObject(BaseObject $baseObject)
+    public function addStreamObject(string $content)
     {
-        $this->body[] = $baseObject;
+        $streamObject = new StreamObject($this->bodyCounter++, $content);
+        $this->addObject($streamObject);
+
+        return $streamObject;
+    }
+
+    /**
+     * @return DictionaryObject
+     */
+    public function addDictionaryObject()
+    {
+        $dictionaryObject = new DictionaryObject($this->bodyCounter++);
+        $this->addObject($dictionaryObject);
+
+        return $dictionaryObject;
     }
 
     /**
@@ -79,5 +102,13 @@ class File extends BaseStructure
     public function getRoot(): BaseObject
     {
         return $this->body[0];
+    }
+
+    /**
+     * @param BaseObject $baseObject
+     */
+    private function addObject(BaseObject $baseObject)
+    {
+        $this->body[] = $baseObject;
     }
 }

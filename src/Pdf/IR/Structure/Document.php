@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR;
+namespace Pdf\IR\Structure;
 
 class Document
 {

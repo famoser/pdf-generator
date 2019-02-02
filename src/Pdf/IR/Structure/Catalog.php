@@ -9,9 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR;
+namespace Pdf\IR\Structure;
 
-class Catalog
+use Pdf\Backend\Structure\File;
+use Pdf\IR\Structure\Base\BaseStructure;
+use Pdf\IR\StructureVisitor;
+
+class Catalog extends BaseStructure
 {
     /**
      * @var Pages
@@ -32,5 +36,14 @@ class Catalog
     public function getPages(): Pages
     {
         return $this->pages;
+    }
+
+    /**
+     * @param StructureVisitor $visitor
+     * @param File $file
+     */
+    public function accept(StructureVisitor $visitor, File $file)
+    {
+        $visitor->visitCatalog($this, $file);
     }
 }

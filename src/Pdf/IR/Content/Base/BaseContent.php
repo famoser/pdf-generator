@@ -9,17 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR;
+namespace Pdf\IR\Content\Base;
 
-class Pages
+use Pdf\Backend\Structure\File;
+use Pdf\IR\ContentVisitor;
+
+abstract class BaseContent
 {
     /**
-     * @var Page[]
+     * @param ContentVisitor $visitor
+     * @param File $file
      */
-    private $kids = [];
-
-    public function addPage(Page $page)
-    {
-        $this->kids[] = $page;
-    }
+    abstract public function accept(ContentVisitor $visitor, File $file);
 }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR;
+namespace Pdf\IR\Structure;
 
 class Font
 {
@@ -27,14 +27,29 @@ class Font
     private $baseFont;
 
     /**
+     * @var string
+     */
+    private $identifier;
+
+    /**
      * Font constructor.
      *
      * @param string $subtype
      * @param string $baseFont
+     * @param string $identifier
      */
-    public function __construct(string $subtype, string $baseFont)
+    public function __construct(string $subtype, string $baseFont, string $identifier)
     {
         $this->subtype = $subtype;
         $this->baseFont = $baseFont;
+        $this->identifier = $identifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
     }
 }
