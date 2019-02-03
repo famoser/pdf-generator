@@ -14,20 +14,10 @@ namespace DocumentGenerator;
 use DocumentGenerator\Layout\AutoColumnLayoutInterface;
 use DocumentGenerator\Layout\ColumnLayoutInterface;
 use DocumentGenerator\Layout\Configuration\ColumnConfiguration;
-use DocumentGenerator\Layout\FullWidthLayoutInterface;
-use DocumentGenerator\Layout\GroupLayoutInterface;
 use DocumentGenerator\Layout\TableLayoutInterface;
 
 interface LayoutFactoryInterface
 {
-    /**
-     * starts a region with columns.
-     *
-     * @param int $columnCount
-     *
-     * @return ColumnLayoutInterface
-     */
-    public function createColumnLayout(int $columnCount);
 
     /**
      * starts a region with columns and the column is chosen automatically.

@@ -99,7 +99,7 @@ class StructureVisitor
         $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
 
         $contents = $structure->getContents()->accept($this, $file);
-        $dictionary->addReferenceEntry('Contents', $contents);
+        $dictionary->addReferenceArrayEntry('Contents', $contents);
 
         return $dictionary;
     }
@@ -129,11 +129,18 @@ class StructureVisitor
      * @param Structure\Contents $structure
      * @param File $file
      *
-     * @return BaseObject
+     * @return BaseObject[]
      */
-    public function visitContents(Structure\Contents $structure, File $file): BaseObject
+    public function visitContents(Structure\Contents $structure, File $file): array
     {
-        return $structure->getContent()->accept($this->contentVisitor, $file);
+        /** @var BaseObject[] $baseObjects */
+        $baseObjects = [];
+
+        foreach ($structure->getContent() as $baseContent) {
+            $baseObjects[] = $baseContent->accept($this->contentVisitor, $file);
+        }
+
+        return $baseObjects;
     }
 
     /**

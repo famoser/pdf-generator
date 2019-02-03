@@ -40,9 +40,10 @@ class Printer extends StatefulPrinter
 
     /**
      * @param string $text
-     * @param float $width
+     * @param float $xPosition
+     * @param float $yPosition
      */
-    public function printText(string $text, float $width)
+    public function printText(string $text, float $xPosition, float $yPosition)
     {
         $this->ensureConfigurationApplied();
 
@@ -50,7 +51,7 @@ class Printer extends StatefulPrinter
         $font = $this->getActiveFont();
 
         $contentBuilder = $page->getContentsBuilder();
-        $contentBuilder->setContent(new TextContent($font, $this->configuration->getFontSize(), $this->cursor->getXCoordinate(), $this->cursor->getYCoordinate(), $text));
+        $contentBuilder->addContent(new TextContent($font, $this->configuration->getFontSize(), $xPosition, $yPosition, $text));
     }
 
     /**
@@ -78,7 +79,7 @@ class Printer extends StatefulPrinter
     protected function getActivePageBuilder()
     {
         $pageBuildersCount = \count($this->pageBuilders);
-        $targetPageBuilderIndex = $this->cursor->getPage() - 1;
+        $targetPageBuilderIndex = $this->page - 1;
 
         while ($targetPageBuilderIndex >= $pageBuildersCount) {
             $pageBuilder = $this->document->addPage();
@@ -92,7 +93,7 @@ class Printer extends StatefulPrinter
     }
 
     /**
-     * @return \PdfGenerator\Backend\Structure\Supporting\Font
+     * @return \PdfGenerator\Backend\Structure\Font
      */
     protected function getActiveFont()
     {
@@ -107,13 +108,11 @@ class Printer extends StatefulPrinter
     {
     }
 
-    /**
-     * @param string $filePath
-     *
+    /**     *
      * @throws \Exception
      */
-    public function save(string $filePath)
+    public function save()
     {
-        file_put_contents($filePath, $this->document->render());
+        return $this->document->render();
     }
 }

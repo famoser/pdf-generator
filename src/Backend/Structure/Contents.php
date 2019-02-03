@@ -20,16 +20,16 @@ use PdfGenerator\Backend\StructureVisitor;
 class Contents extends BaseStructure
 {
     /**
-     * @var BaseContent
+     * @var BaseContent[]
      */
     private $content;
 
     /**
      * Contents constructor.
      *
-     * @param BaseContent $content
+     * @param BaseContent[] $content
      */
-    public function __construct(BaseContent $content)
+    public function __construct(array $content)
     {
         $this->content = $content;
     }
@@ -38,17 +38,17 @@ class Contents extends BaseStructure
      * @param StructureVisitor $visitor
      * @param File $file
      *
-     * @return BaseObject
+     * @return BaseObject[]
      */
-    public function accept(StructureVisitor $visitor, File $file): BaseObject
+    public function accept(StructureVisitor $visitor, File $file): array
     {
         return $visitor->visitContents($this, $file);
     }
 
     /**
-     * @return BaseContent
+     * @return BaseContent[]
      */
-    public function getContent(): BaseContent
+    public function getContent(): array
     {
         return $this->content;
     }

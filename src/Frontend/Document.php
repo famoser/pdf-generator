@@ -13,7 +13,7 @@ namespace PdfGenerator\Frontend;
 
 use DocumentGenerator\DocumentInterface;
 
-class PdfDocument implements DocumentInterface
+class Document implements DocumentInterface
 {
     /**
      * @param array $config
@@ -67,5 +67,15 @@ class PdfDocument implements DocumentInterface
     public function save(string $filePath)
     {
         // TODO: Implement save() method.
+    }
+
+    /**
+     * starts a region with columns.
+     *
+     * @param int $columnCount
+     */
+    public function createColumnLayout(int $columnCount)
+    {
+        // TODO: Implement createColumnLayout() method.
     }
 }

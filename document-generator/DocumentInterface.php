@@ -14,35 +14,17 @@ namespace DocumentGenerator;
 interface DocumentInterface
 {
     /**
-     * @param array $config
-     * @param bool $restoreDefaults
+     * starts a region with columns.
+     *
+     * @param int $columnCount
      */
-    public function configure(array $config = [], bool $restoreDefaults = true);
+    public function createColumnLayout(int $columnCount);
 
     /**
      * @param string $title
      * @param string $author
      */
     public function setMeta(string $title, string $author);
-
-    /**
-     * @param string $text
-     * @param float $width
-     */
-    public function printText(string $text, float $width);
-
-    /**
-     * @param string $imagePath
-     * @param float $width
-     * @param float $height
-     */
-    public function printImage(string $imagePath, float $width, float $height);
-
-    /**
-     * @param float $width
-     * @param float $height
-     */
-    public function printRectangle(float $width, float $height);
 
     /**
      * @param string $filePath

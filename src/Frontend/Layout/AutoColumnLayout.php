@@ -12,8 +12,8 @@
 namespace PdfGenerator\Frontend\Layout;
 
 use DocumentGenerator\Layout\AutoColumnLayoutInterface;
+use PdfGenerator\Frontend\Document;
 use PdfGenerator\Frontend\Layout\Base\BaseColumnedLayout;
-use PdfGenerator\Frontend\PdfDocument;
 
 class AutoColumnLayout extends BaseColumnedLayout implements AutoColumnLayoutInterface
 {
@@ -25,12 +25,12 @@ class AutoColumnLayout extends BaseColumnedLayout implements AutoColumnLayoutInt
     /**
      * ColumnLayout constructor.
      *
-     * @param PdfDocument $pdfDocument
+     * @param Document $pdfDocument
      * @param int $columnCount
      * @param float $columnGutter
      * @param float $totalWidth
      */
-    public function __construct(PdfDocument $pdfDocument, int $columnCount, float $columnGutter, float $totalWidth)
+    public function __construct(Document $pdfDocument, int $columnCount, float $columnGutter, float $totalWidth)
     {
         $gutterSpace = ($columnCount - 1) * $columnGutter;
         $columnWidth = (float)($totalWidth - $gutterSpace) / $columnCount;

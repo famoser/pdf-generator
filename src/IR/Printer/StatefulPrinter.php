@@ -12,14 +12,13 @@
 namespace PdfGenerator\IR\Printer;
 
 use PdfGenerator\IR\Configuration\PrintConfiguration;
-use PdfGenerator\IR\Cursor;
 
 class StatefulPrinter
 {
     /**
-     * @var Cursor
+     * @var int
      */
-    protected $cursor;
+    protected $page = 1;
 
     /**
      * @var PrintConfiguration
@@ -40,21 +39,11 @@ class StatefulPrinter
     }
 
     /**
-     * returns the active cursor position.
-     *
-     * @return Cursor
+     * @param int $page
      */
-    public function getCursor()
+    public function setPage(int $page)
     {
-        return $this->cursor;
-    }
-
-    /**x
-     * @param Cursor $cursor
-     */
-    public function setCursor(Cursor $cursor)
-    {
-        $this->cursor = $cursor;
+        $this->page = $page;
     }
 
     /**
@@ -63,7 +52,7 @@ class StatefulPrinter
      *
      * @throws \Exception
      */
-    public function configure(array $config = [], bool $restoreDefaults = true)
+    public function configure(array $config, bool $restoreDefaults = true)
     {
         $this->configurationChanged = true;
 
@@ -72,17 +61,6 @@ class StatefulPrinter
         }
 
         $this->configuration->setConfiguration($config);
-    }
-
-    /**
-     * @param PrintConfiguration $printConfiguration
-     *
-     * @throws \Exception
-     */
-    public function setConfiguration(PrintConfiguration $printConfiguration)
-    {
-        $this->configuration = PrintConfiguration::createFromExisting($printConfiguration);
-        $this->configurationChanged = true;
     }
 
     /**

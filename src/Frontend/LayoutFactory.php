@@ -23,7 +23,7 @@ use PdfGenerator\Frontend\Layout\TableLayout;
 class LayoutFactory implements LayoutFactoryInterface
 {
     /**
-     * @var PdfDocument
+     * @var Document
      */
     private $document;
 
@@ -35,10 +35,10 @@ class LayoutFactory implements LayoutFactoryInterface
     /**
      * Document constructor.
      *
-     * @param PdfDocument $pdfDocument
+     * @param Document $pdfDocument
      * @param LayoutFactoryConfigurationInterface $layoutService
      */
-    public function __construct(PdfDocument $pdfDocument, LayoutFactoryConfigurationInterface $layoutService)
+    public function __construct(Document $pdfDocument, LayoutFactoryConfigurationInterface $layoutService)
     {
         $this->document = $pdfDocument;
         $this->layoutService = $layoutService;

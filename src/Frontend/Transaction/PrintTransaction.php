@@ -12,8 +12,8 @@
 namespace PdfGenerator\Frontend\Transaction;
 
 use DocumentGenerator\Transaction\TransactionInterface;
+use PdfGenerator\Frontend\Document;
 use PdfGenerator\Frontend\Layout\Supporting\PrintBuffer;
-use PdfGenerator\Frontend\PdfDocument;
 
 class PrintTransaction implements TransactionInterface
 {
@@ -23,7 +23,7 @@ class PrintTransaction implements TransactionInterface
     private $printBuffer;
 
     /**
-     * @var PdfDocument
+     * @var Document
      */
     private $pdfDocument;
 
@@ -35,11 +35,11 @@ class PrintTransaction implements TransactionInterface
     /**
      * PrintBuffer constructor.
      *
-     * @param PdfDocument $pdfDocument
+     * @param Document $pdfDocument
      * @param float $width
      * @param PrintBuffer $printBuffer
      */
-    public function __construct(PdfDocument $pdfDocument, float $width, PrintBuffer $printBuffer)
+    public function __construct(Document $pdfDocument, float $width, PrintBuffer $printBuffer)
     {
         $this->pdfDocument = $pdfDocument;
         $this->width = $width;

@@ -21,7 +21,7 @@ abstract class BaseStructure
      * @param StructureVisitor $visitor
      * @param File $file
      *
-     * @return BaseObject
+     * @return BaseObject|BaseObject[]
      */
-    abstract public function accept(StructureVisitor $visitor, File $file): BaseObject;
+    abstract public function accept(StructureVisitor $visitor, File $file);
 }

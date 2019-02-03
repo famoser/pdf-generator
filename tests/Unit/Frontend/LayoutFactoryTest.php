@@ -14,18 +14,16 @@ namespace PdfGenerator\Tests\Unit\Frontend;
 use DocumentGenerator\Layout\AutoColumnLayoutInterface;
 use DocumentGenerator\Layout\ColumnLayoutInterface;
 use DocumentGenerator\Layout\Configuration\ColumnConfiguration;
-use DocumentGenerator\Layout\FullWidthLayoutInterface;
-use DocumentGenerator\Layout\GroupLayoutInterface;
 use DocumentGenerator\Layout\TableLayoutInterface;
+use PdfGenerator\Frontend\Document;
 use PdfGenerator\Frontend\LayoutFactory;
 use PdfGenerator\Frontend\LayoutFactoryConfigurationInterface;
-use PdfGenerator\Frontend\PdfDocument;
 use PHPUnit\Framework\TestCase;
 
 class LayoutFactoryTest extends TestCase
 {
     /**
-     * @var PdfDocument
+     * @var Document
      */
     private $pdfDocument;
 
@@ -45,7 +43,7 @@ class LayoutFactoryTest extends TestCase
     {
         parent::__construct($name, $data, $dataName);
 
-        $this->pdfDocument = \Mockery::mock(PdfDocument::class);
+        $this->pdfDocument = \Mockery::mock(Document::class);
         $this->layoutFactoryConfiguration = \Mockery::mock(LayoutFactoryConfigurationInterface::class, [
             'getContentXSize' => 20,
             'getColumnGutter' => 20,
@@ -70,8 +68,6 @@ class LayoutFactoryTest extends TestCase
 
         $this->assertInstanceOf(AutoColumnLayoutInterface::class, $layoutFactory->createAutoColumnLayout(2));
         $this->assertInstanceOf(ColumnLayoutInterface::class, $layoutFactory->createColumnLayout(2));
-        $this->assertInstanceOf(FullWidthLayoutInterface::class, $layoutFactory->createFullWidthLayout());
-        $this->assertInstanceOf(GroupLayoutInterface::class, $layoutFactory->createGroupLayout());
         $this->assertInstanceOf(TableLayoutInterface::class, $layoutFactory->createTableLayout([new ColumnConfiguration()]));
     }
 }

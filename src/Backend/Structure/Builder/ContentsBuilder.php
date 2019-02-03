@@ -18,16 +18,16 @@ use PdfGenerator\Backend\Structure\Contents;
 class ContentsBuilder extends BaseBuilder
 {
     /**
-     * @var BaseContent
+     * @var BaseContent[]
      */
-    private $content;
+    private $content = [];
 
     /**
      * @param BaseContent $content
      */
-    public function setContent(BaseContent $content)
+    public function addContent(BaseContent $content)
     {
-        $this->content = $content;
+        $this->content[] = $content;
     }
 
     /**

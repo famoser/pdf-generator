@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
-use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\Printer;
 use PHPUnit\Framework\TestCase;
 
@@ -22,32 +21,53 @@ class PrinterTest extends TestCase
      */
     public function testPrintText_textInResultFile()
     {
-        $text = 'Hi mom';
-        $result = $this->getResultOf(function (Printer $printer) use ($text) {
-            $printer->printText($text, 200);
-        });
+        // arrange
+        $text = 'hi mom';
+        $printer = new Printer();
 
+        // act
+        $printer->printText($text, 20, 20);
+        $result = $printer->save();
+
+        // assert
         $this->assertContains($text, $result);
     }
 
     /**
-     * @param callable $callable
-     *
      * @throws \Exception
-     *
-     * @return false|string
      */
-    private function getResultOf(callable $callable)
+    public function testPrintText_multipleTexts_inResultFile()
     {
+        // arrange
+        $text = 'hi mom';
         $printer = new Printer();
-        $printer->setCursor(new Cursor(1, 1, 1));
 
-        $callable($printer);
+        // act
+        $printer->printText($text . '1', 20, 20);
+        $printer->printText($text . '2', 20, 20);
+        $result = $printer->save();
 
-        $tempFilePath = __DIR__ . \DIRECTORY_SEPARATOR . 'PrinterTest_' . uniqid() . '.pdf';
-        $printer->save($tempFilePath);
-        $result = file_get_contents($tempFilePath);
+        // assert
+        $this->assertContains($text . '1', $result);
+        $this->assertContains($text . '2', $result);
+    }
 
-        return $result;
+    /**
+     * @throws \Exception
+     */
+    public function testPrintText_cursorInResultFile()
+    {
+        // arrange
+        $xPosition = 11;
+        $yPosition = 22;
+        $printer = new Printer();
+
+        // act
+        $printer->printText('text', $xPosition, $yPosition);
+        $result = $printer->save();
+
+        // assert
+        $this->assertContains((string)$xPosition, $result);
+        $this->assertContains((string)$yPosition, $result);
     }
 }

@@ -15,13 +15,13 @@ use DocumentGenerator\Layout\Configuration\ColumnConfiguration;
 use DocumentGenerator\Layout\TableLayoutInterface;
 use DocumentGenerator\Layout\TableRowLayoutInterface;
 use DocumentGenerator\Transaction\TransactionInterface;
-use PdfGenerator\Frontend\PdfDocument;
+use PdfGenerator\Frontend\Document;
 use PdfGenerator\Frontend\Transaction\ComposedTransaction;
 
 class TableLayout implements TableLayoutInterface
 {
     /**
-     * @var PdfDocument
+     * @var Document
      */
     private $pdfDocument;
 
@@ -51,14 +51,14 @@ class TableLayout implements TableLayoutInterface
     private $rows;
 
     /**
-     * @param PdfDocument $pdfDocument
+     * @param Document $pdfDocument
      * @param float $width
      * @param float $columnGutter
      * @param ColumnConfiguration[] $columnConfiguration
      *
      * @throws \Exception
      */
-    public function __construct(PdfDocument $pdfDocument, float $width, float $columnGutter, array $columnConfiguration)
+    public function __construct(Document $pdfDocument, float $width, float $columnGutter, array $columnConfiguration)
     {
         $this->pdfDocument = $pdfDocument;
         $this->width = $width;
@@ -96,7 +96,7 @@ class TableLayout implements TableLayoutInterface
     }
 
     /**
-     * @param PdfDocument $pdfDocument
+     * @param Document $pdfDocument
      * @param ColumnConfiguration[] $columnConfiguration
      * @param float $width
      * @param float $columnGutter
@@ -106,7 +106,7 @@ class TableLayout implements TableLayoutInterface
      *
      * @return float[]
      */
-    private static function calculateColumnWidths(PdfDocument $pdfDocument, array $columnConfiguration, float $width, float $columnGutter, int $columnCount)
+    private static function calculateColumnWidths(Document $pdfDocument, array $columnConfiguration, float $width, float $columnGutter, int $columnCount)
     {
         $gutterSpace = (\count($columnConfiguration) - 1) * $columnGutter;
         $availableWidth = $width - $gutterSpace;

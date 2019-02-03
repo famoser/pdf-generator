@@ -12,12 +12,12 @@
 namespace PdfGenerator\Frontend\Transaction;
 
 use DocumentGenerator\Transaction\TransactionInterface;
-use PdfGenerator\Frontend\PdfDocument;
+use PdfGenerator\Frontend\Document;
 
 class ComposedTransaction implements TransactionInterface
 {
     /**
-     * @var PdfDocument
+     * @var Document
      */
     private $pdfDocument;
 
@@ -29,10 +29,10 @@ class ComposedTransaction implements TransactionInterface
     /**
      * PrintBuffer constructor.
      *
-     * @param PdfDocument $pdfDocument
+     * @param Document $pdfDocument
      * @param array $transactions
      */
-    public function __construct(PdfDocument $pdfDocument, array $transactions)
+    public function __construct(Document $pdfDocument, array $transactions)
     {
         $this->pdfDocument = $pdfDocument;
         $this->transactions = $transactions;

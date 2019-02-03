@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Frontend\Layout\Base;
 
-use PdfGenerator\Frontend\PdfDocument;
+use PdfGenerator\Frontend\Document;
 
 abstract class StatefulColumnedLayout extends BaseColumnedLayout
 {
@@ -28,12 +28,12 @@ abstract class StatefulColumnedLayout extends BaseColumnedLayout
     /**
      * ColumnLayout constructor.
      *
-     * @param PdfDocument $pdfDocument
+     * @param Document $pdfDocument
      * @param float $columnGutter
      * @param float $totalWidth
      * @param float[] $widths
      */
-    protected function __construct(PdfDocument $pdfDocument, float $columnGutter, float $totalWidth, array $widths)
+    protected function __construct(Document $pdfDocument, float $columnGutter, float $totalWidth, array $widths)
     {
         parent::__construct($pdfDocument, $columnGutter, $totalWidth, $widths);
     }
