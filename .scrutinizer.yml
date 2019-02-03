@@ -8,6 +8,9 @@ build:
             tests:
                 override:
                     - php-scrutinizer-run --enable-security-analysis
+    dependencies:
+        override:
+            - composer install --no-scripts
 
 checks:
     php:
@@ -15,4 +18,4 @@ checks:
         duplication: true
 
 filter:
-    paths: ["src/*"]
+    paths: ["src/*", "tests/*"]

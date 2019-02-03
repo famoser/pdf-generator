@@ -7,4 +7,41 @@
 
 
 ## About
-generates pdf files without any external dependencies.
+Generates pdf files without any dependencies. An MIT licensed alternative to https://github.com/tecnickcom/TCPDF.
+
+Targets of the compiler:
+1. Correctness
+    - high unit test coverage (`codecov`)
+    - develop by following adobe standard (PDF 1.7)
+    - tests with multiple viewers (Adobe Acrobat, Firefox, Edge, Evince)
+    - tests on muliple OS (Linux, Windows)
+    - cross-reference output with other generators (ITextSharp, TCPDF)
+2. Maintainability
+    - low cyclomatic complexity (`scrutinizer`)
+    - no code smells (`scrutinizer`)
+    - classic compiler patterns (frontend, intermediate representation (IR) & backend)
+    - clearly defined purpose per namespace (see below for an overview)
+3. Small resulting file size
+    - elements only included in file if referenced somewhere (ensured by Backend)
+    - only new element created if not possible to append to another one (ensured by IR)
+4. Speed of compilation
+    - only provide single way to accoplish something 
+    - no html/css parsing
+
+Overview of the project by namespace:
+- `PdfGenerator\Backend\File` contains a direct representation of the file.
+- `PdfGenerator\Backend` ensures a valid file is constructed.
+- `PdfGenerator\IR` accepts and allows configuration of print commands.
+- `PdfGenerator\Frontend` controls where text/images are printed.
+- `DocumentGenerator` defines interfaces which are suited for an enduser (not constrained to the PDF format).
+
+Features:
+- [x] print text
+- [ ] print images
+- [ ] use TTF fonts
+- [ ] print UTF-8 text
+- [ ] draw lines
+- [ ] draw rectangles
+- [ ] public api definition
+- [ ] layouts
+- [ ] public api implementation
