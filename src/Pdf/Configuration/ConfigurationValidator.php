@@ -73,6 +73,24 @@ class ConfigurationValidator
      *
      * @throws \Exception
      *
+     * @return float|int
+     */
+    protected static function readNumber(array $config, string $key)
+    {
+        $value = $config[$key];
+        if (!\is_float($value) && !\is_int($value)) {
+            throw new \Exception($key . ' config must be a number (either floats or integers)');
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param array $config
+     * @param string $key
+     *
+     * @throws \Exception
+     *
      * @return string
      */
     protected static function readText(array $config, string $key)
@@ -168,5 +186,18 @@ class ConfigurationValidator
     public function fontWeight(array $config, string $key)
     {
         return self::readConstValue($config, $key, [PrintConfiguration::FONT_WEIGHT_NORMAL, PrintConfiguration::FONT_WEIGHT_BOLD]);
+    }
+
+    /**
+     * @param array $config
+     * @param string $key
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    public function size(array $config, string $key)
+    {
+        return self::readNumber($config, $key);
     }
 }

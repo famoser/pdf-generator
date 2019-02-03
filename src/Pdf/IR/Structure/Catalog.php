@@ -32,14 +32,6 @@ class Catalog extends BaseStructure
     }
 
     /**
-     * @return Pages
-     */
-    public function getPages(): Pages
-    {
-        return $this->pages;
-    }
-
-    /**
      * @param StructureVisitor $visitor
      * @param File $file
      *
@@ -48,5 +40,13 @@ class Catalog extends BaseStructure
     public function accept(StructureVisitor $visitor, File $file): BaseObject
     {
         return $visitor->visitCatalog($this, $file);
+    }
+
+    /**
+     * @return Pages
+     */
+    public function getPages(): Pages
+    {
+        return $this->pages;
     }
 }

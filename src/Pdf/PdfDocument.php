@@ -11,8 +11,9 @@
 
 namespace PdfGenerator\Pdf;
 
+use Pdf\IR\Content\TextContent;
 use Pdf\IR\Document;
-use Pdf\IR\Structure\Page;
+use Pdf\IR\Structure\Builder\PageBuilder;
 use PdfGenerator\Pdf\Configuration\PrintConfiguration;
 
 class PdfDocument implements PdfDocumentInterface
@@ -41,6 +42,11 @@ class PdfDocument implements PdfDocumentInterface
      * @var Document
      */
     private $document;
+
+    /**
+     * @var PageBuilder[]
+     */
+    private $pageBuilders = [];
 
     /**
      * PdfDocument constructor.
@@ -75,6 +81,39 @@ class PdfDocument implements PdfDocumentInterface
     public function printText(string $text, float $width)
     {
         $this->ensureConfigurationApplied();
+
+        $page = $this->getActivePageBuilder();
+        $font = $this->getActiveFont();
+
+        $contentBuilder = $page->getContentsBuilder();
+        $contentBuilder->setContent(new TextContent($font, $this->configuration->getFontSize(), $this->cursor->getXCoordinate(), $this->cursor->getYCoordinate(), $text));
+    }
+
+    /**
+     * @return PageBuilder
+     */
+    private function getActivePageBuilder()
+    {
+        $pageBuildersCount = \count($this->pageBuilders);
+        $targetPageBuilderIndex = $this->cursor->getPage() - 1;
+
+        while ($targetPageBuilderIndex >= $pageBuildersCount) {
+            $pageBuilder = $this->document->addPage();
+            $pageBuilder->setMediaBox($this->configuration->getPageWidth(), $this->configuration->getPageHeight());
+
+            $this->pageBuilders[] = $pageBuilder;
+            ++$pageBuildersCount;
+        }
+
+        return $this->pageBuilders[$targetPageBuilderIndex];
+    }
+
+    /**
+     * @return \Pdf\IR\Structure\Supporting\Font
+     */
+    private function getActiveFont()
+    {
+        return $this->document->getResourcesBuilder()->getFontCollection()->getHelvetica();
     }
 
     /**
@@ -99,19 +138,12 @@ class PdfDocument implements PdfDocumentInterface
 
     /**
      * @param string $filePath
+     *
+     * @throws \Exception
      */
     public function save(string $filePath)
     {
-    }
-
-    /**
-     * @param float $marginLeft
-     * @param float $marginTop
-     * @param float $marginRight
-     * @param float $marginBottom
-     */
-    public function setPageMargins(float $marginLeft, float $marginTop, float $marginRight, float $marginBottom)
-    {
+        file_put_contents($filePath, $this->document->render());
     }
 
     /**
@@ -144,15 +176,6 @@ class PdfDocument implements PdfDocumentInterface
     public function getCursor()
     {
         return $this->cursor;
-    }
-
-    /**
-     * starts a new page and puts cursor on it.
-     */
-    public function startNewPage()
-    {
-        // TODO: continue!
-        $this->document->getCatalog()->getPages()->addPage(null);
     }
 
     /**

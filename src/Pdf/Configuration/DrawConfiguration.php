@@ -11,7 +11,9 @@
 
 namespace PdfGenerator\Pdf\Configuration;
 
-class DrawConfiguration
+use Pdf\Configuration\PageConfiguration;
+
+class DrawConfiguration extends PageConfiguration
 {
     const FILL_COLOR = 'FILL_COLOR';
     const BORDER_COLOR = 'BORDER_COLOR';
@@ -38,6 +40,8 @@ class DrawConfiguration
      */
     public function __construct(ConfigurationValidator $configurationValidator)
     {
+        parent::__construct($configurationValidator);
+
         $this->configurationValidator = $configurationValidator;
     }
 
@@ -48,6 +52,8 @@ class DrawConfiguration
      */
     public function setConfiguration(array $config)
     {
+        parent::setConfiguration($config);
+
         if (isset($config[self::FILL_COLOR])) {
             $this->fillColor = $this->configurationValidator->color($config, self::FILL_COLOR);
         }
@@ -78,7 +84,7 @@ class DrawConfiguration
      */
     public function getConfiguration()
     {
-        return [
+        return parent::getConfiguration() + [
             self::FILL_COLOR => $this->getFillColor(),
             self::BORDER_COLOR => $this->getBorderColor(),
         ];

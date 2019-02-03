@@ -32,11 +32,16 @@ class Resources extends BaseStructure
     /**
      * @param string $subtype
      * @param string $baseFont
+     *
+     * @return Font
      */
     public function addFont(string $subtype, string $baseFont)
     {
         $identifier = $this->generateIdentifier('F');
-        $this->fonts[$identifier] = new Font($subtype, $baseFont, $identifier);
+        $font = new Font($subtype, $baseFont, $identifier);
+        $this->fonts[$identifier] = $font;
+
+        return $font;
     }
 
     /**

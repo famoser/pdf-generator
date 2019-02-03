@@ -11,8 +11,8 @@
 
 namespace Pdf\IR;
 
+use Pdf\Backend\File;
 use Pdf\Backend\Object\Base\BaseObject;
-use Pdf\Backend\Structure\File;
 
 class ContentVisitor
 {

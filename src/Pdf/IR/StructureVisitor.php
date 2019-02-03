@@ -38,17 +38,17 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Catalog $param
+     * @param Structure\Catalog $structure
      * @param File $file
      *
      * @return BaseObject
      */
-    public function visitCatalog(Structure\Catalog $param, File $file): BaseObject
+    public function visitCatalog(Structure\Catalog $structure, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Catalog');
 
-        $pagesElement = $param->getPages()->accept($this, $file);
+        $pagesElement = $structure->getPages()->accept($this, $file);
 
         $dictionary->addReferenceEntry('Pages', $pagesElement);
 
@@ -56,20 +56,20 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Pages $param
+     * @param Structure\Pages $structure
      * @param File $file
      *
      * @return BaseObject
      */
-    public function visitPages(Structure\Pages $param, File $file): BaseObject
+    public function visitPages(Structure\Pages $structure, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Pages');
-        $this->objectNodeLookup[spl_object_id($param)] = $dictionary;
+        $this->objectNodeLookup[spl_object_id($structure)] = $dictionary;
 
         /** @var Page[] $kids */
         $kids = [];
-        foreach ($param->getKids() as $kid) {
+        foreach ($structure->getKids() as $kid) {
             $kids[] = $kid->accept($this, $file);
         }
 
@@ -80,42 +80,42 @@ class StructureVisitor
     }
 
     /**
-     * @param Page $param
+     * @param Page $structure
      * @param File $file
      *
      * @return BaseObject
      */
-    public function visitPage(Page $param, File $file): BaseObject
+    public function visitPage(Page $structure, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Page');
 
-        $parentReference = $this->objectNodeLookup[spl_object_id($param->getParent())];
+        $parentReference = $this->objectNodeLookup[spl_object_id($structure->getParent())];
         $dictionary->addReferenceEntry('Parent', $parentReference);
 
-        $resources = $param->getResources()->accept($this, $file);
+        $resources = $structure->getResources()->accept($this, $file);
         $dictionary->addReferenceEntry('Resources', $resources);
 
-        $dictionary->addNumberArrayEntry('MediaBox', $param->getMediaBox());
+        $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
 
-        $contents = $param->getContents()->accept($this, $file);
+        $contents = $structure->getContents()->accept($this, $file);
         $dictionary->addReferenceEntry('Contents', $contents);
 
         return $dictionary;
     }
 
     /**
-     * @param Structure\Resources $param
+     * @param Structure\Resources $structure
      * @param File $file
      *
      * @return BaseObject
      */
-    public function visitResources(Structure\Resources $param, File $file): BaseObject
+    public function visitResources(Structure\Resources $structure, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
 
         $fontDictionary = new DictionaryToken();
-        foreach ($param->getFonts() as $font) {
+        foreach ($structure->getFonts() as $font) {
             $fontReference = $this->objectNodeLookup[spl_object_id($font)];
             $fontDictionary->setEntry($font->getIdentifier(), new ReferenceToken($fontReference));
         }
@@ -126,13 +126,13 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Contents $param
+     * @param Structure\Contents $structure
      * @param File $file
      *
      * @return BaseObject
      */
-    public function visitContents(Structure\Contents $param, File $file): BaseObject
+    public function visitContents(Structure\Contents $structure, File $file): BaseObject
     {
-        return $param->getContent()->accept($this->contentVisitor, $file);
+        return $structure->getContent()->accept($this->contentVisitor, $file);
     }
 }

@@ -64,14 +64,6 @@ interface PdfDocumentInterface
     public function setMeta(string $title, string $author);
 
     /**
-     * @param float $marginLeft
-     * @param float $marginTop
-     * @param float $marginRight
-     * @param float $marginBottom
-     */
-    public function setPageMargins(float $marginLeft, float $marginTop, float $marginRight, float $marginBottom);
-
-    /**
      * starts a new page & sets the cursor to the next page.
      */
     public function startNewPage();

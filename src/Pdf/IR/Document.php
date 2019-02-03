@@ -12,7 +12,9 @@
 namespace Pdf\IR;
 
 use Pdf\Backend\File;
-use Pdf\Backend\Object\Base\BaseObject;
+use Pdf\IR\Structure\Builder\ContentsBuilder;
+use Pdf\IR\Structure\Builder\PageBuilder;
+use Pdf\IR\Structure\Builder\ResourcesBuilder;
 use Pdf\IR\Structure\Catalog;
 
 class Document
@@ -23,31 +25,67 @@ class Document
     private $catalog;
 
     /**
+     * @var ResourcesBuilder
+     */
+    private $resourcesBuilder;
+
+    /**
+     * @var PageBuilder[]
+     */
+    private $pageBuilders = [];
+
+    /**
      * Document constructor.
      */
     public function __construct()
     {
         $this->catalog = new Catalog();
+        $this->resourcesBuilder = new ResourcesBuilder();
     }
 
     /**
-     * @return BaseObject
+     * @return PageBuilder
+     */
+    public function addPage()
+    {
+        $pageBuilder = new PageBuilder($this->catalog->getPages(), $this->resourcesBuilder, new ContentsBuilder());
+        $this->pageBuilders[] = $pageBuilder;
+
+        return $pageBuilder;
+    }
+
+    /**
+     * @return ResourcesBuilder
+     */
+    public function getResourcesBuilder(): ResourcesBuilder
+    {
+        return $this->resourcesBuilder;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function buildPages()
+    {
+        foreach ($this->pageBuilders as $pageBuilder) {
+            $this->catalog->getPages()->addPage($pageBuilder->build());
+        }
+    }
+
+    /**
+     * @throws \Exception
+     *
+     * @return string
      */
     public function render(): string
     {
+        $this->buildPages();
+
         $structureVisitor = new StructureVisitor();
         $file = new File();
 
         $catalog = $structureVisitor->visitCatalog($this->catalog, $file);
 
         return $file->render($catalog);
-    }
-
-    /**
-     * @return Catalog
-     */
-    public function getCatalog(): Catalog
-    {
-        return $this->catalog;
     }
 }
