@@ -14,7 +14,6 @@ namespace PdfGenerator\Backend\Structure;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Base\BaseStructure;
-use PdfGenerator\Backend\Structure\Supporting\Font;
 use PdfGenerator\Backend\StructureVisitor;
 
 class Resources extends BaseStructure

@@ -26,6 +26,13 @@ class DictionaryObject extends BaseObject
      */
     private $dictionaryToken;
 
+    public function __construct(int $number)
+    {
+        parent::__construct($number);
+
+        $this->dictionaryToken = new DictionaryToken();
+    }
+
     /**
      * @param string $key
      * @param BaseObject $object

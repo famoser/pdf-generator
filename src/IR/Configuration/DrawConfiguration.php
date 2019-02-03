@@ -11,8 +11,6 @@
 
 namespace PdfGenerator\IR\Configuration;
 
-use Pdf\IR\Configuration\PageConfiguration;
-
 class DrawConfiguration extends PageConfiguration
 {
     const FILL_COLOR = 'FILL_COLOR';

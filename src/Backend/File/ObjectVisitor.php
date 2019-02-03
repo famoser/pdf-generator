@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\File;
 
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
-use PdfGenerator\Backend\Object\StreamObject;
+use PdfGenerator\Backend\File\Object\StreamObject;
 
 class ObjectVisitor
 {
@@ -58,6 +58,7 @@ class ObjectVisitor
 
     /**
      * @param BaseObject $object
+     * @param string $content
      *
      * @return string
      */

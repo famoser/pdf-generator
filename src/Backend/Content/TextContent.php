@@ -15,7 +15,7 @@ use PdfGenerator\Backend\Content\Base\BaseContent;
 use PdfGenerator\Backend\ContentVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\Structure\Supporting\Font;
+use PdfGenerator\Backend\Structure\Font;
 
 class TextContent extends BaseContent
 {

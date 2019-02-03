@@ -11,10 +11,10 @@
 
 namespace PdfGenerator\IR;
 
-use IR\Printer\StatefulPrinter;
 use PdfGenerator\Backend\Content\TextContent;
 use PdfGenerator\Backend\Document;
 use PdfGenerator\Backend\Structure\Builder\PageBuilder;
+use PdfGenerator\IR\Printer\StatefulPrinter;
 
 class Printer extends StatefulPrinter
 {
@@ -30,11 +30,11 @@ class Printer extends StatefulPrinter
 
     /**
      * PdfDocument constructor.
-     *
-     * @throws \Exception
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->document = new Document();
     }
 

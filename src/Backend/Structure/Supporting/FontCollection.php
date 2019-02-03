@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Backend\Structure\Supporting;
 
+use PdfGenerator\Backend\Structure\Font;
 use PdfGenerator\Backend\Structure\Resources;
 
 class FontCollection

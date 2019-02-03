@@ -27,13 +27,13 @@ class TokenVisitor
      */
     public function visitArrayToken(ArrayToken $token): string
     {
-        return implode(' ', $this->evaluateTokenArray($token->getValues()));
+        return '[' . implode(' ', $this->evaluateTokenArray($token->getValues())) . ']';
     }
 
     /**
      * @param NumberToken $token
      *
-     * @return float
+     * @return string
      */
     public function visitNumberToken(NumberToken $token): string
     {
@@ -47,13 +47,13 @@ class TokenVisitor
      */
     public function visitDictionaryToken(DictionaryToken $token): string
     {
-        $entries = '';
+        $entries = [];
         $evaluatedTokens = $this->evaluateTokenArray($token->getKeyValue());
         foreach ($evaluatedTokens as $key => $value) {
-            $entries .= '/' . $key . ' ' . $value;
+            $entries[] = '/' . $key . ' ' . $value;
         }
 
-        return '<<' . $entries . '>>';
+        return '<<' . implode(' ', $entries) . '>>';
     }
 
     /**

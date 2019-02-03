@@ -11,9 +11,17 @@
 
 namespace DocumentGenerator\Transaction;
 
-use DocumentGenerator\Transaction\Base\DrawableTransactionInterface;
 use DocumentGenerator\Transaction\Base\RootTransactionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-interface TransactionInterface extends DrawableTransactionInterface, RootTransactionInterface
+interface TransactionInterface extends RootTransactionInterface
 {
+    /**
+     * will group the transaction content together
+     *
+     * if used in conjunction with a document with pages:, the returned transaction will add a page break before all elements if they do not fit on the same page
+     *
+     * @return TransactionInterface
+     */
+    public function asGroupedTransaction();
 }

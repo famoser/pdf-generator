@@ -116,7 +116,7 @@ class StructureVisitor
 
         $fontDictionary = new DictionaryToken();
         foreach ($structure->getFonts() as $font) {
-            $fontReference = $this->objectNodeLookup[spl_object_id($font)];
+            $fontReference = $font->accept($this, $file);
             $fontDictionary->setEntry($font->getIdentifier(), new ReferenceToken($fontReference));
         }
 
@@ -134,5 +134,21 @@ class StructureVisitor
     public function visitContents(Structure\Contents $structure, File $file): BaseObject
     {
         return $structure->getContent()->accept($this->contentVisitor, $file);
+    }
+
+    /**
+     * @param Structure\Font $structure
+     * @param File $file
+     *
+     * @return BaseObject
+     */
+    public function visitFont(Structure\Font $structure, File $file): BaseObject
+    {
+        $dictionary = $file->addDictionaryObject();
+        $dictionary->addTextEntry('Type', 'Font');
+        $dictionary->addTextEntry('Subtype', $structure->getSubtype());
+        $dictionary->addTextEntry('BaseFont', $structure->getBaseFont());
+
+        return $dictionary;
     }
 }

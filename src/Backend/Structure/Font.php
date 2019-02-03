@@ -9,9 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Supporting;
+namespace PdfGenerator\Backend\Structure;
 
-class Font
+use PdfGenerator\Backend\File\File;
+use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\Structure\Base\BaseStructure;
+use PdfGenerator\Backend\StructureVisitor;
+
+class Font extends BaseStructure
 {
     const SUBTYPE_TYPE1 = 'Type1';
     const BASE_FONT_HELVETICA = 'Helvetica';
@@ -51,5 +56,32 @@ class Font
     public function getIdentifier(): string
     {
         return $this->identifier;
+    }
+
+    /**
+     * @param StructureVisitor $visitor
+     * @param File $file
+     *
+     * @return BaseObject
+     */
+    public function accept(StructureVisitor $visitor, File $file): BaseObject
+    {
+        return $visitor->visitFont($this, $file);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubtype(): string
+    {
+        return $this->subtype;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseFont(): string
+    {
+        return $this->baseFont;
     }
 }

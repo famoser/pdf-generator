@@ -16,7 +16,7 @@ use DocumentGenerator\Layout\TableLayoutInterface;
 use DocumentGenerator\Layout\TableRowLayoutInterface;
 use DocumentGenerator\Transaction\TransactionInterface;
 use PdfGenerator\Frontend\PdfDocument;
-use PdfGenerator\Frontend\Transaction\PrintTransaction;
+use PdfGenerator\Frontend\Transaction\ComposedTransaction;
 
 class TableLayout implements TableLayoutInterface
 {
@@ -51,11 +51,6 @@ class TableLayout implements TableLayoutInterface
     private $rows;
 
     /**
-     * @var callable
-     */
-    private $onRowCommit;
-
-    /**
      * @param PdfDocument $pdfDocument
      * @param float $width
      * @param float $columnGutter
@@ -71,14 +66,6 @@ class TableLayout implements TableLayoutInterface
 
         $this->columnCount = \count($columnConfiguration);
         $this->columnWidths = $this->calculateColumnWidths($pdfDocument, $columnConfiguration, $this->width, $this->columnGutter, $this->columnCount);
-    }
-
-    /**
-     * @param callable $callable
-     */
-    public function setOnRowCommit(callable $callable): void
-    {
-        $this->onRowCommit = $callable;
     }
 
     /**
@@ -99,19 +86,13 @@ class TableLayout implements TableLayoutInterface
      */
     public function getTransaction()
     {
-        $onRowCommit = $this->onRowCommit;
+        /** @var TransactionInterface[] $transactions */
+        $transactions = [];
+        foreach ($this->rows as $row) {
+            $transactions[] = $row->getTransaction();
+        }
 
-        $flushRows = function () use ($onRowCommit) {
-            foreach ($this->rows as $row) {
-                $transaction = $row->getTransaction();
-                if ($onRowCommit !== null) {
-                    $onRowCommit($transaction);
-                }
-                $transaction->commit();
-            }
-        };
-
-        return new PrintTransaction($this->pdfDocument, $this->width, $flushRows);
+        return new ComposedTransaction($this->pdfDocument, $transactions);
     }
 
     /**

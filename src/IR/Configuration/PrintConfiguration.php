@@ -32,9 +32,9 @@ class PrintConfiguration extends DrawConfiguration
     private $fontFamily = null;
 
     /**
-     * @var float|null
+     * @var float
      */
-    private $fontSize = null;
+    private $fontSize = 8;
 
     /**
      * @var string
@@ -42,9 +42,9 @@ class PrintConfiguration extends DrawConfiguration
     private $fontWeight = self::FONT_WEIGHT_NORMAL;
 
     /**
-     * @var string|null
+     * @var string
      */
-    private $textColor = null;
+    private $textColor = '#000000';
 
     /**
      * @var string
@@ -68,7 +68,7 @@ class PrintConfiguration extends DrawConfiguration
     }
 
     /**
-     * @param PrintConfiguration $existing
+     * @param self $existing
      *
      * @throws \Exception
      *
@@ -121,9 +121,9 @@ class PrintConfiguration extends DrawConfiguration
     }
 
     /**
-     * @return float|null
+     * @return float
      */
-    public function getFontSize(): ?float
+    public function getFontSize(): float
     {
         return $this->fontSize;
     }
@@ -137,9 +137,9 @@ class PrintConfiguration extends DrawConfiguration
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getTextColor(): ?string
+    public function getTextColor(): string
     {
         return $this->textColor;
     }

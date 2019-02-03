@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace IR\Printer;
+namespace PdfGenerator\IR\Printer;
 
 use PdfGenerator\IR\Configuration\PrintConfiguration;
 use PdfGenerator\IR\Cursor;
@@ -30,6 +30,14 @@ class StatefulPrinter
      * @var bool
      */
     private $configurationChanged = true;
+
+    /**
+     * StatefulPrinter constructor.
+     */
+    public function __construct()
+    {
+        $this->configuration = new PrintConfiguration();
+    }
 
     /**
      * returns the active cursor position.
@@ -61,10 +69,6 @@ class StatefulPrinter
 
         if ($restoreDefaults) {
             $this->configuration = new PrintConfiguration();
-            $this->configuration->setConfiguration([
-                PrintConfiguration::FONT_SIZE => 8,
-                PrintConfiguration::TEXT_COLOR => '#000000',
-            ]);
         }
 
         $this->configuration->setConfiguration($config);

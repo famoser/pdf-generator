@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Frontend;
+namespace PdfGenerator\Tests\Unit\Frontend;
 
 use DocumentGenerator\Layout\AutoColumnLayoutInterface;
 use DocumentGenerator\Layout\ColumnLayoutInterface;

@@ -14,14 +14,10 @@ namespace PdfGenerator\Frontend;
 use DocumentGenerator\Layout\AutoColumnLayoutInterface;
 use DocumentGenerator\Layout\ColumnLayoutInterface;
 use DocumentGenerator\Layout\Configuration\ColumnConfiguration;
-use DocumentGenerator\Layout\FullWidthLayoutInterface;
-use DocumentGenerator\Layout\GroupLayoutInterface;
 use DocumentGenerator\Layout\TableLayoutInterface;
 use DocumentGenerator\LayoutFactoryInterface;
 use PdfGenerator\Frontend\Layout\AutoColumnLayout;
 use PdfGenerator\Frontend\Layout\ColumnLayout;
-use PdfGenerator\Frontend\Layout\FullWidthLayout;
-use PdfGenerator\Frontend\Layout\GroupLayout;
 use PdfGenerator\Frontend\Layout\TableLayout;
 
 class LayoutFactory implements LayoutFactoryInterface
@@ -49,18 +45,6 @@ class LayoutFactory implements LayoutFactoryInterface
     }
 
     /**
-     * will avoid a page break between the next printed elements
-     * will add a page break before all elements if they do not fit on the same page
-     * active until end region is called.
-     *
-     * @return GroupLayoutInterface
-     */
-    public function createGroupLayout()
-    {
-        return new GroupLayout($this->document, $this->layoutService->getContentXSize());
-    }
-
-    /**
      * starts a region with columns.
      *
      * @param int $columnCount
@@ -84,16 +68,6 @@ class LayoutFactory implements LayoutFactoryInterface
     public function createTableLayout(array $tableColumns)
     {
         return new TableLayout($this->document, $this->layoutService->getContentXSize(), $this->layoutService->getTableColumnGutter(), $tableColumns);
-    }
-
-    /**
-     * starts a region with 100% width.
-     *
-     * @return FullWidthLayoutInterface
-     */
-    public function createFullWidthLayout()
-    {
-        return new FullWidthLayout($this->document, $this->layoutService->getContentXSize());
     }
 
     /**

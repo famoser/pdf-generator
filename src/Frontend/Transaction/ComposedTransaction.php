@@ -12,39 +12,30 @@
 namespace PdfGenerator\Frontend\Transaction;
 
 use DocumentGenerator\Transaction\TransactionInterface;
-use PdfGenerator\Frontend\Layout\Supporting\PrintBuffer;
 use PdfGenerator\Frontend\PdfDocument;
 
-class PrintTransaction implements TransactionInterface
+class ComposedTransaction implements TransactionInterface
 {
-    /**
-     * @var PrintBuffer
-     */
-    private $printBuffer;
-
     /**
      * @var PdfDocument
      */
     private $pdfDocument;
 
     /**
-     * @var float
+     * @var TransactionInterface[]
      */
-    private $width;
+    private $transactions;
 
     /**
      * PrintBuffer constructor.
      *
      * @param PdfDocument $pdfDocument
-     * @param float $width
-     * @param PrintBuffer $printBuffer
+     * @param array $transactions
      */
-    public function __construct(PdfDocument $pdfDocument, float $width, PrintBuffer $printBuffer)
+    public function __construct(PdfDocument $pdfDocument, array $transactions)
     {
         $this->pdfDocument = $pdfDocument;
-        $this->width = $width;
-
-        $this->printBuffer = $printBuffer;
+        $this->transactions = $transactions;
     }
 
     /**
@@ -52,7 +43,9 @@ class PrintTransaction implements TransactionInterface
      */
     public function commit()
     {
-        $this->printBuffer->flushBufferClosure()();
+        foreach ($this->transactions as $transaction) {
+            $transaction->commit();
+        }
     }
 
     /**

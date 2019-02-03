@@ -65,7 +65,7 @@ class AutoColumnLayout extends BaseColumnedLayout implements AutoColumnLayoutInt
             for ($i = 1; $i < $columnCount; ++$i) {
                 $currentCursor = $columnCursors[$i];
 
-                if ($highestCursor->isLowerOnPageThan($currentCursor)) {
+                if ($highestCursor->isBiggerThan($currentCursor)) {
                     $highestColumn = $i;
                     $highestCursor = $currentCursor;
                 }

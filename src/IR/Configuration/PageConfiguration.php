@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Pdf\IR\Configuration;
-
-use PdfGenerator\IR\Configuration\ConfigurationValidator;
+namespace PdfGenerator\IR\Configuration;
 
 class PageConfiguration
 {

@@ -162,7 +162,7 @@ abstract class BaseColumnedLayout
             $lowestCursor = $columnedLayout->columnCursors[0];
             for ($i = 1; $i < $columnedLayout->columnCount; ++$i) {
                 $other = $columnedLayout->columnCursors[$i];
-                if ($other->isLowerOnPageThan($lowestCursor)) {
+                if ($other->isBiggerThan($lowestCursor)) {
                     $lowestCursor = $other;
                 }
             }
