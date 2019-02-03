@@ -13,7 +13,7 @@ namespace PdfGenerator\Frontend\Layout;
 
 use DocumentGenerator\Layout\AutoColumnLayoutInterface;
 use PdfGenerator\Frontend\Layout\Base\BaseColumnedLayout;
-use PdfGenerator\Pdf\PdfDocumentInterface;
+use PdfGenerator\Frontend\PdfDocument;
 
 class AutoColumnLayout extends BaseColumnedLayout implements AutoColumnLayoutInterface
 {
@@ -25,12 +25,12 @@ class AutoColumnLayout extends BaseColumnedLayout implements AutoColumnLayoutInt
     /**
      * ColumnLayout constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param int $columnCount
      * @param float $columnGutter
      * @param float $totalWidth
      */
-    public function __construct(PdfDocumentInterface $pdfDocument, int $columnCount, float $columnGutter, float $totalWidth)
+    public function __construct(PdfDocument $pdfDocument, int $columnCount, float $columnGutter, float $totalWidth)
     {
         $gutterSpace = ($columnCount - 1) * $columnGutter;
         $columnWidth = (float)($totalWidth - $gutterSpace) / $columnCount;
@@ -47,7 +47,7 @@ class AutoColumnLayout extends BaseColumnedLayout implements AutoColumnLayoutInt
      * The position of the cursor at the time the callable is invoked is decided by the layout
      * ensure the cursor is below the printed content after the callable is finished to not mess up the layout.
      *
-     * @param callable $callable takes a PdfDocumentInterface as first argument and the width as second
+     * @param callable $callable takes a PdfDocument as first argument and the width as second
      *
      * @throws \Exception
      */

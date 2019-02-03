@@ -11,8 +11,8 @@
 
 namespace DocumentGenerator\Transaction;
 
-use PdfGenerator\Transaction\Base\DrawableTransactionInterface;
-use PdfGenerator\Transaction\Base\RootTransactionInterface;
+use DocumentGenerator\Transaction\Base\DrawableTransactionInterface;
+use DocumentGenerator\Transaction\Base\RootTransactionInterface;
 
 interface TransactionInterface extends DrawableTransactionInterface, RootTransactionInterface
 {

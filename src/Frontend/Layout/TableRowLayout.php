@@ -12,20 +12,20 @@
 namespace PdfGenerator\Frontend\Layout;
 
 use DocumentGenerator\Layout\TableRowLayoutInterface;
-use PdfGenerator\Pdf\Layout\Base\StatefulColumnedLayout;
-use PdfGenerator\Pdf\PdfDocumentInterface;
+use PdfGenerator\Frontend\Layout\Base\StatefulColumnedLayout;
+use PdfGenerator\Frontend\PdfDocument;
 
 class TableRowLayout extends StatefulColumnedLayout implements TableRowLayoutInterface
 {
     /**
      * ColumnLayout constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param float $columnGutter
      * @param float $totalWidth
      * @param array $columnWidths
      */
-    public function __construct(PdfDocumentInterface $pdfDocument, float $columnGutter, float $totalWidth, array $columnWidths)
+    public function __construct(PdfDocument $pdfDocument, float $columnGutter, float $totalWidth, array $columnWidths)
     {
         parent::__construct($pdfDocument, $columnGutter, $totalWidth, $columnWidths);
     }

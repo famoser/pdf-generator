@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Frontend\Layout\Supporting;
 
-use PdfGenerator\Pdf\PdfDocumentInterface;
+use PdfGenerator\Frontend\PdfDocument;
 
 class PrintBuffer
 {
@@ -21,7 +21,7 @@ class PrintBuffer
     private $printBuffer = [];
 
     /**
-     * @var PdfDocumentInterface
+     * @var PdfDocument
      */
     private $pdfDocument;
 
@@ -33,10 +33,10 @@ class PrintBuffer
     /**
      * PrintBuffer constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param float $width
      */
-    public function __construct(PdfDocumentInterface $pdfDocument, float $width)
+    public function __construct(PdfDocument $pdfDocument, float $width)
     {
         $this->pdfDocument = $pdfDocument;
         $this->width = $width;

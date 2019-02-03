@@ -11,109 +11,128 @@
 
 namespace PdfGenerator\Backend;
 
-use PdfGenerator\Backend\Object\Base\BaseObject;
-use PdfGenerator\Backend\Structure\CrossReferenceTable;
-use PdfGenerator\Backend\Structure\FileHeader;
-use PdfGenerator\Backend\Structure\FileTrailer;
-use PdfGenerator\Backend\Token\DictionaryToken;
-use PdfGenerator\Backend\Token\NumberToken;
-use PdfGenerator\Backend\Token\ReferenceToken;
+use PdfGenerator\Backend\File\File;
+use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\File\Token\DictionaryToken;
+use PdfGenerator\Backend\File\Token\ReferenceToken;
+use PdfGenerator\Backend\Structure\Page;
 
 class StructureVisitor
 {
     /**
-     * @var ObjectVisitor
+     * @var ContentVisitor
      */
-    private $objectVisitor;
+    private $contentVisitor;
 
     /**
-     * @var TokenVisitor
+     * @var BaseObject[]
      */
-    private $tokenVisitor;
+    private $objectNodeLookup;
 
     /**
      * StructureVisitor constructor.
      */
     public function __construct()
     {
-        $this->objectVisitor = new ObjectVisitor();
-        $this->tokenVisitor = new TokenVisitor();
+        $this->contentVisitor = new ContentVisitor();
     }
 
     /**
-     * @param FileHeader $header
-     * @param BaseObject[] $content
-     * @param BaseObject $root
+     * @param Structure\Catalog $structure
+     * @param File $file
      *
-     * @return string
+     * @return BaseObject
      */
-    public function render(FileHeader $header, array $content, BaseObject $root)
+    public function visitCatalog(Structure\Catalog $structure, File $file): BaseObject
     {
-        $output = $header->accept($this) . "\n";
+        $dictionary = $file->addDictionaryObject();
+        $dictionary->addTextEntry('Type', 'Catalog');
 
-        $crossReferenceTable = new CrossReferenceTable();
-        $crossReferenceTable->registerEntrySize(mb_strlen($output));
+        $pagesElement = $structure->getPages()->accept($this, $file);
 
-        foreach ($content as $baseObject) {
-            $objectContent = $baseObject->accept($this->objectVisitor) . "\n";
-            $crossReferenceTable->registerEntrySize(mb_strlen($objectContent));
-            $output .= $objectContent;
+        $dictionary->addReferenceEntry('Pages', $pagesElement);
+
+        return $dictionary;
+    }
+
+    /**
+     * @param Structure\Pages $structure
+     * @param File $file
+     *
+     * @return BaseObject
+     */
+    public function visitPages(Structure\Pages $structure, File $file): BaseObject
+    {
+        $dictionary = $file->addDictionaryObject();
+        $dictionary->addTextEntry('Type', 'Pages');
+        $this->objectNodeLookup[spl_object_id($structure)] = $dictionary;
+
+        /** @var Page[] $kids */
+        $kids = [];
+        foreach ($structure->getKids() as $kid) {
+            $kids[] = $kid->accept($this, $file);
         }
 
-        $output .= $crossReferenceTable->accept($this) . "\n";
+        $dictionary->addReferenceArrayEntry('Kids', $kids);
+        $dictionary->addNumberEntry('Count', \count($kids));
 
-        $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $root);
-        $output .= $trailer->accept($this);
-
-        return $output;
+        return $dictionary;
     }
 
     /**
-     * @param Structure\FileHeader $param
+     * @param Page $structure
+     * @param File $file
      *
-     * @return string
+     * @return BaseObject
      */
-    public function visitFileHeader(Structure\FileHeader $param)
+    public function visitPage(Page $structure, File $file): BaseObject
     {
-        return '%PDF-' . $param->getVersion();
+        $dictionary = $file->addDictionaryObject();
+        $dictionary->addTextEntry('Type', 'Page');
+
+        $parentReference = $this->objectNodeLookup[spl_object_id($structure->getParent())];
+        $dictionary->addReferenceEntry('Parent', $parentReference);
+
+        $resources = $structure->getResources()->accept($this, $file);
+        $dictionary->addReferenceEntry('Resources', $resources);
+
+        $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
+
+        $contents = $structure->getContents()->accept($this, $file);
+        $dictionary->addReferenceEntry('Contents', $contents);
+
+        return $dictionary;
     }
 
     /**
-     * @param FileTrailer $param
+     * @param Structure\Resources $structure
+     * @param File $file
      *
-     * @return string
+     * @return BaseObject
      */
-    public function visitFileTrailer(Structure\FileTrailer $param)
+    public function visitResources(Structure\Resources $structure, File $file): BaseObject
     {
-        $trailerDictionary = new DictionaryToken();
-        $trailerDictionary->setEntry('Size', new NumberToken($param->getSize() + 1));
-        $trailerDictionary->setEntry('Root', new ReferenceToken($param->getRoot()));
+        $dictionary = $file->addDictionaryObject();
 
-        $lines = [];
-        $lines[] = 'trailer ' . $trailerDictionary->accept($this->tokenVisitor);
-        $lines[] = 'startxref';
-        $lines[] = $param->getStartOfCrossReferenceTable();
-        $lines[] = '%%EOF';
-
-        return implode("\n", $lines);
-    }
-
-    /**
-     * @param CrossReferenceTable $param
-     *
-     * @return string
-     */
-    public function visitCrossReferenceTable(CrossReferenceTable $param)
-    {
-        $lines = [];
-        $lines[] = 'xref';
-        $lines[] = '0 ' . (\count($param->getEntries()) + 1);
-        $lines[] = '0000000000 65535 f';
-
-        foreach ($param->getEntries() as $entry) {
-            $lines[] = str_pad($entry, 10, '' . STR_PAD_LEFT);
+        $fontDictionary = new DictionaryToken();
+        foreach ($structure->getFonts() as $font) {
+            $fontReference = $this->objectNodeLookup[spl_object_id($font)];
+            $fontDictionary->setEntry($font->getIdentifier(), new ReferenceToken($fontReference));
         }
 
-        return implode("\n", $lines);
+        $dictionary->addDictionaryEntry('Font', $fontDictionary);
+
+        return $dictionary;
+    }
+
+    /**
+     * @param Structure\Contents $structure
+     * @param File $file
+     *
+     * @return BaseObject
+     */
+    public function visitContents(Structure\Contents $structure, File $file): BaseObject
+    {
+        return $structure->getContent()->accept($this->contentVisitor, $file);
     }
 }

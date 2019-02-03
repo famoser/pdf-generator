@@ -12,15 +12,15 @@
 namespace PdfGenerator\Frontend\Layout;
 
 use DocumentGenerator\Layout\FullWidthLayoutInterface;
+use DocumentGenerator\Transaction\TransactionInterface;
 use PdfGenerator\Frontend\Layout\Supporting\PrintBuffer;
+use PdfGenerator\Frontend\PdfDocument;
 use PdfGenerator\Frontend\Transaction\PrintTransaction;
-use PdfGenerator\Pdf\PdfDocumentInterface;
-use PdfGenerator\Transaction\TransactionInterface;
 
 class FullWidthLayout implements FullWidthLayoutInterface
 {
     /**
-     * @var PdfDocumentInterface
+     * @var PdfDocument
      */
     private $pdfDocument;
 
@@ -37,10 +37,10 @@ class FullWidthLayout implements FullWidthLayoutInterface
     /**
      * ColumnLayout constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param float $width
      */
-    public function __construct(PdfDocumentInterface $pdfDocument, float $width)
+    public function __construct(PdfDocument $pdfDocument, float $width)
     {
         $this->pdfDocument = $pdfDocument;
         $this->width = $width;
@@ -53,7 +53,7 @@ class FullWidthLayout implements FullWidthLayoutInterface
      * The position of the cursor at the time the callable is invoked is decided by the layout
      * ensure the cursor is below the printed content after the callable is finished to not mess up the layout.
      *
-     * @param callable $callable takes a PdfDocumentInterface as an argument
+     * @param callable $callable takes a PdfDocument as an argument
      */
     public function registerPrintable(callable $callable)
     {

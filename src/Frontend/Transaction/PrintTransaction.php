@@ -13,8 +13,7 @@ namespace PdfGenerator\Frontend\Transaction;
 
 use DocumentGenerator\Transaction\TransactionInterface;
 use PdfGenerator\Frontend\Layout\Supporting\PrintBuffer;
-use PdfGenerator\Pdf\Cursor;
-use PdfGenerator\Pdf\PdfDocumentInterface;
+use PdfGenerator\Frontend\PdfDocument;
 
 class PrintTransaction implements TransactionInterface
 {
@@ -24,7 +23,7 @@ class PrintTransaction implements TransactionInterface
     private $content;
 
     /**
-     * @var PdfDocumentInterface
+     * @var PdfDocument
      */
     private $pdfDocument;
 
@@ -32,11 +31,6 @@ class PrintTransaction implements TransactionInterface
      * @var float
      */
     private $width;
-
-    /**
-     * @var Cursor[]
-     */
-    private $printAreaCache;
 
     /**
      * @var PrintBuffer
@@ -51,11 +45,11 @@ class PrintTransaction implements TransactionInterface
     /**
      * PrintBuffer constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param float $width
      * @param \Closure $content
      */
-    public function __construct(PdfDocumentInterface $pdfDocument, float $width, \Closure $content)
+    public function __construct(PdfDocument $pdfDocument, float $width, \Closure $content)
     {
         $this->pdfDocument = $pdfDocument;
         $this->width = $width;
@@ -64,26 +58,6 @@ class PrintTransaction implements TransactionInterface
 
         $this->prePrintBuffer = new PrintBuffer($this->pdfDocument, $this->width);
         $this->postPrintBuffer = new PrintBuffer($this->pdfDocument, $this->width);
-    }
-
-    /**
-     * get the area of the to-be printed area by this transaction
-     * returns an array where the first entry is the start cursor; the second the end cursor.
-     *
-     * @return Cursor[]
-     */
-    public function calculatePrintArea()
-    {
-        if (!$this->printAreaCache) {
-            $before = $this->pdfDocument->getCursor();
-            $after = $this->pdfDocument->cursorAfterwardsIfPrinted($this->content);
-
-            $after = $after->setX($before->getXCoordinate() + $this->width);
-
-            $this->printAreaCache = [$before, $after];
-        }
-
-        return $this->printAreaCache;
     }
 
     /**
@@ -109,8 +83,9 @@ class PrintTransaction implements TransactionInterface
      */
     public function registerDrawablePrePrint(callable $callable)
     {
+        // TODO: call multiple times for each rectangle the transaction occupies
         $this->prePrintBuffer->addPrintable($callable, function () {
-            return [$this->calculatePrintArea()[1]];
+            return [];
         });
     }
 
@@ -123,7 +98,7 @@ class PrintTransaction implements TransactionInterface
     public function registerDrawablePostPrint(callable $callable)
     {
         $this->postPrintBuffer->addPrintable($callable, function () {
-            return [$this->calculatePrintArea()[1]];
+            return [];
         });
     }
 }

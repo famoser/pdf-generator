@@ -11,31 +11,15 @@
 
 namespace DocumentGenerator;
 
-use PdfGenerator\Layout\AutoColumnLayoutInterface;
-use PdfGenerator\Layout\ColumnLayoutInterface;
-use PdfGenerator\Layout\Configuration\ColumnConfiguration;
-use PdfGenerator\Layout\FullWidthLayoutInterface;
-use PdfGenerator\Layout\GroupLayoutInterface;
-use PdfGenerator\Layout\TableLayoutInterface;
+use DocumentGenerator\Layout\AutoColumnLayoutInterface;
+use DocumentGenerator\Layout\ColumnLayoutInterface;
+use DocumentGenerator\Layout\Configuration\ColumnConfiguration;
+use DocumentGenerator\Layout\FullWidthLayoutInterface;
+use DocumentGenerator\Layout\GroupLayoutInterface;
+use DocumentGenerator\Layout\TableLayoutInterface;
 
 interface LayoutFactoryInterface
 {
-    /**
-     * starts a region with 100% width.
-     *
-     * @return FullWidthLayoutInterface
-     */
-    public function createFullWidthLayout();
-
-    /**
-     * will avoid a page break between the next printed elements
-     * will add a page break before all elements if they do not fit on the same page
-     * active until end region is called.
-     *
-     * @return GroupLayoutInterface
-     */
-    public function createGroupLayout();
-
     /**
      * starts a region with columns.
      *

@@ -12,14 +12,14 @@
 namespace PdfGenerator\Frontend\Layout\Base;
 
 use PdfGenerator\Frontend\Layout\Supporting\PrintBuffer;
+use PdfGenerator\Frontend\PdfDocument;
 use PdfGenerator\Frontend\Transaction\PrintTransaction;
-use PdfGenerator\Pdf\Cursor;
-use PdfGenerator\Pdf\PdfDocumentInterface;
+use PdfGenerator\IR\Cursor;
 
 abstract class BaseColumnedLayout
 {
     /**
-     * @var PdfDocumentInterface
+     * @var PdfDocument
      */
     private $pdfDocument;
 
@@ -56,12 +56,12 @@ abstract class BaseColumnedLayout
     /**
      * ColumnLayout constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param float $columnGutter
      * @param float $totalWidth
      * @param float[] $widths
      */
-    protected function __construct(PdfDocumentInterface $pdfDocument, float $columnGutter, float $totalWidth, array $widths)
+    protected function __construct(PdfDocument $pdfDocument, float $columnGutter, float $totalWidth, array $widths)
     {
         $this->pdfDocument = $pdfDocument;
         $this->columnCount = \count($widths);
@@ -148,16 +148,16 @@ abstract class BaseColumnedLayout
     /**
      * @param BaseColumnedLayout $columnedLayout
      * @param PrintBuffer $printBuffer
-     * @param PdfDocumentInterface $pdfDocumentTransaction
+     * @param PdfDocument $pdfDocumentTransaction
      * @param float $width
      *
      * @return PrintTransaction
      */
-    private static function createTransaction(self $columnedLayout, PrintBuffer $printBuffer, PdfDocumentInterface $pdfDocumentTransaction, float $width)
+    private static function createTransaction(self $columnedLayout, PrintBuffer $printBuffer, PdfDocument $pdfDocumentTransaction, float $width)
     {
         $printBuffer = PrintBuffer::createFromExisting($printBuffer);
 
-        $printBuffer->addPrintable(function (PdfDocumentInterface $pdfDocument) use ($columnedLayout) {
+        $printBuffer->addPrintable(function (PdfDocument $pdfDocument) use ($columnedLayout) {
             // go to lowest column after printing stopped
             $lowestCursor = $columnedLayout->columnCursors[0];
             for ($i = 1; $i < $columnedLayout->columnCount; ++$i) {

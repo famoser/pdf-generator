@@ -12,15 +12,15 @@
 namespace PdfGenerator\Frontend\Layout;
 
 use DocumentGenerator\Layout\GroupLayoutInterface;
+use DocumentGenerator\Transaction\TransactionInterface;
 use PdfGenerator\Frontend\Layout\Supporting\PrintBuffer;
+use PdfGenerator\Frontend\PdfDocument;
 use PdfGenerator\Frontend\Transaction\PrintTransaction;
-use PdfGenerator\Pdf\PdfDocumentInterface;
-use PdfGenerator\Transaction\TransactionInterface;
 
 class GroupLayout implements GroupLayoutInterface
 {
     /**
-     * @var PdfDocumentInterface
+     * @var PdfDocument
      */
     private $pdfDocument;
 
@@ -37,10 +37,10 @@ class GroupLayout implements GroupLayoutInterface
     /**
      * ColumnLayout constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param float $width
      */
-    public function __construct(PdfDocumentInterface $pdfDocument, float $width)
+    public function __construct(PdfDocument $pdfDocument, float $width)
     {
         $this->pdfDocument = $pdfDocument;
         $this->width = $width;
@@ -63,7 +63,7 @@ class GroupLayout implements GroupLayoutInterface
      * The position of the cursor at the time the callable is invoked is decided by the layout
      * ensure the cursor is below the printed content after the callable is finished to not mess up the layout.
      *
-     * @param callable $callable takes a PdfDocumentInterface as an argument
+     * @param callable $callable takes a PdfDocument as an argument
      */
     public function registerPrintable(callable $callable)
     {
@@ -74,12 +74,12 @@ class GroupLayout implements GroupLayoutInterface
      * creates the transaction and implements the grouping functionality.
      *
      * @param PrintBuffer $printBuffer
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param float $width
      *
      * @return PrintTransaction
      */
-    private static function createTransaction(PrintBuffer $printBuffer, PdfDocumentInterface $pdfDocument, float $width)
+    private static function createTransaction(PrintBuffer $printBuffer, PdfDocument $pdfDocument, float $width)
     {
         $printContent = $printBuffer->flushBufferClosure();
         $transaction = new PrintTransaction($pdfDocument, $width, $printContent);
@@ -93,7 +93,7 @@ class GroupLayout implements GroupLayoutInterface
         // start new page to fulfill grouping requirement
         // clone the print buffer else unexpected behaviour if reusing the layout
         $printBuffer = PrintBuffer::createFromExisting($printBuffer);
-        $printBuffer->prependPrintable(function (PdfDocumentInterface $pdfDocument) {
+        $printBuffer->prependPrintable(function (PdfDocument $pdfDocument) {
             $pdfDocument->startNewPage();
         });
 

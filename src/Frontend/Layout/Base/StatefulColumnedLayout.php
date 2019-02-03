@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Frontend\Layout\Base;
 
-use PdfGenerator\Pdf\PdfDocumentInterface;
+use PdfGenerator\Frontend\PdfDocument;
 
 abstract class StatefulColumnedLayout extends BaseColumnedLayout
 {
@@ -28,12 +28,12 @@ abstract class StatefulColumnedLayout extends BaseColumnedLayout
     /**
      * ColumnLayout constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param float $columnGutter
      * @param float $totalWidth
      * @param float[] $widths
      */
-    protected function __construct(PdfDocumentInterface $pdfDocument, float $columnGutter, float $totalWidth, array $widths)
+    protected function __construct(PdfDocument $pdfDocument, float $columnGutter, float $totalWidth, array $widths)
     {
         parent::__construct($pdfDocument, $columnGutter, $totalWidth, $widths);
     }
@@ -60,7 +60,7 @@ abstract class StatefulColumnedLayout extends BaseColumnedLayout
      * The position of the cursor at the time the callable is invoked is decided by the layout
      * ensure the cursor is below the printed content after the callable is finished to not mess up the layout.
      *
-     * @param callable $callable takes a PdfDocumentInterface as first argument and the width as second
+     * @param callable $callable takes a PdfDocument as first argument and the width as second
      *
      * @throws \Exception
      */

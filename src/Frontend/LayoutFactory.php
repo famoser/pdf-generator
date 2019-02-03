@@ -9,9 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Pdf;
+namespace PdfGenerator\Frontend;
 
+use DocumentGenerator\Layout\AutoColumnLayoutInterface;
+use DocumentGenerator\Layout\ColumnLayoutInterface;
+use DocumentGenerator\Layout\Configuration\ColumnConfiguration;
+use DocumentGenerator\Layout\FullWidthLayoutInterface;
 use DocumentGenerator\Layout\GroupLayoutInterface;
+use DocumentGenerator\Layout\TableLayoutInterface;
 use DocumentGenerator\LayoutFactoryInterface;
 use PdfGenerator\Frontend\Layout\AutoColumnLayout;
 use PdfGenerator\Frontend\Layout\ColumnLayout;
@@ -22,7 +27,7 @@ use PdfGenerator\Frontend\Layout\TableLayout;
 class LayoutFactory implements LayoutFactoryInterface
 {
     /**
-     * @var PdfDocumentInterface
+     * @var PdfDocument
      */
     private $document;
 
@@ -34,10 +39,10 @@ class LayoutFactory implements LayoutFactoryInterface
     /**
      * Document constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param LayoutFactoryConfigurationInterface $layoutService
      */
-    public function __construct(PdfDocumentInterface $pdfDocument, LayoutFactoryConfigurationInterface $layoutService)
+    public function __construct(PdfDocument $pdfDocument, LayoutFactoryConfigurationInterface $layoutService)
     {
         $this->document = $pdfDocument;
         $this->layoutService = $layoutService;

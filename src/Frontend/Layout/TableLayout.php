@@ -14,14 +14,14 @@ namespace PdfGenerator\Frontend\Layout;
 use DocumentGenerator\Layout\Configuration\ColumnConfiguration;
 use DocumentGenerator\Layout\TableLayoutInterface;
 use DocumentGenerator\Layout\TableRowLayoutInterface;
+use DocumentGenerator\Transaction\TransactionInterface;
+use PdfGenerator\Frontend\PdfDocument;
 use PdfGenerator\Frontend\Transaction\PrintTransaction;
-use PdfGenerator\Pdf\PdfDocumentInterface;
-use PdfGenerator\Transaction\TransactionInterface;
 
 class TableLayout implements TableLayoutInterface
 {
     /**
-     * @var PdfDocumentInterface
+     * @var PdfDocument
      */
     private $pdfDocument;
 
@@ -56,14 +56,14 @@ class TableLayout implements TableLayoutInterface
     private $onRowCommit;
 
     /**
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param float $width
      * @param float $columnGutter
      * @param ColumnConfiguration[] $columnConfiguration
      *
      * @throws \Exception
      */
-    public function __construct(PdfDocumentInterface $pdfDocument, float $width, float $columnGutter, array $columnConfiguration)
+    public function __construct(PdfDocument $pdfDocument, float $width, float $columnGutter, array $columnConfiguration)
     {
         $this->pdfDocument = $pdfDocument;
         $this->width = $width;
@@ -115,7 +115,7 @@ class TableLayout implements TableLayoutInterface
     }
 
     /**
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param ColumnConfiguration[] $columnConfiguration
      * @param float $width
      * @param float $columnGutter
@@ -125,7 +125,7 @@ class TableLayout implements TableLayoutInterface
      *
      * @return float[]
      */
-    private static function calculateColumnWidths(PdfDocumentInterface $pdfDocument, array $columnConfiguration, float $width, float $columnGutter, int $columnCount)
+    private static function calculateColumnWidths(PdfDocument $pdfDocument, array $columnConfiguration, float $width, float $columnGutter, int $columnCount)
     {
         $gutterSpace = (\count($columnConfiguration) - 1) * $columnGutter;
         $availableWidth = $width - $gutterSpace;

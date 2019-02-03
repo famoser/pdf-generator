@@ -13,19 +13,19 @@ namespace PdfGenerator\Frontend\Layout;
 
 use DocumentGenerator\Layout\ColumnLayoutInterface;
 use PdfGenerator\Frontend\Layout\Base\StatefulColumnedLayout;
-use PdfGenerator\Pdf\PdfDocumentInterface;
+use PdfGenerator\Frontend\PdfDocument;
 
 class ColumnLayout extends StatefulColumnedLayout implements ColumnLayoutInterface
 {
     /**
      * ColumnLayout constructor.
      *
-     * @param PdfDocumentInterface $pdfDocument
+     * @param PdfDocument $pdfDocument
      * @param int $columnCount
      * @param float $columnGutter
      * @param float $totalWidth
      */
-    public function __construct(PdfDocumentInterface $pdfDocument, int $columnCount, float $columnGutter, float $totalWidth)
+    public function __construct(PdfDocument $pdfDocument, int $columnCount, float $columnGutter, float $totalWidth)
     {
         $gutterSpace = ($columnCount - 1) * $columnGutter;
         $columnWidth = (float)($totalWidth - $gutterSpace) / $columnCount;

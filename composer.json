@@ -21,7 +21,8 @@
     },
     "autoload": {
         "psr-4": {
-            "PdfGenerator\\": "src/"
+            "PdfGenerator\\": "src/",
+            "DocumentGenerator\\": "document-generator/"
         }
     },
     "autoload-dev": {

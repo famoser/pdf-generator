@@ -11,14 +11,17 @@
 
 namespace PdfGenerator\Backend\Structure\Base;
 
+use PdfGenerator\Backend\File\File;
+use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\StructureVisitor;
 
 abstract class BaseStructure
 {
     /**
      * @param StructureVisitor $visitor
+     * @param File $file
      *
-     * @return string
+     * @return BaseObject
      */
-    abstract public function accept(StructureVisitor $visitor): string;
+    abstract public function accept(StructureVisitor $visitor, File $file): BaseObject;
 }
