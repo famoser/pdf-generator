@@ -31,12 +31,16 @@
         }
     },
     "scripts": {
-        "prepare-environment": [
+        "configure-environment": [
             "cp -n .php_cs.dist .php_cs",
-            "cp -n phpunit.xml.dist phpunit.xml",
+            "cp -n phpunit.xml.dist phpunit.xml"
+        ],
+        "prepare-environment": [
             "vendor/bin/cghooks update"
         ],
-        "pre-install-cmd": "@prepare-environment",
+        "pre-install-cmd": "@configure-environment",
+        "post-install-cmd": "@prepare-environment",
+        "pre-update-cmd": "@configure-environment",
         "post-update-cmd": "@prepare-environment"
     },
     "extra": {

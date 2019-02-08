@@ -30,7 +30,7 @@ class PrinterTest extends TestCase
         $result = $printer->save();
 
         // assert
-        $this->assertContains($text, $result);
+        $this->assertStringContainsString($text, $result);
     }
 
     /**
@@ -48,8 +48,8 @@ class PrinterTest extends TestCase
         $result = $printer->save();
 
         // assert
-        $this->assertContains($text . '1', $result);
-        $this->assertContains($text . '2', $result);
+        $this->assertStringContainsString($text . '1', $result);
+        $this->assertStringContainsString($text . '2', $result);
     }
 
     /**
@@ -67,7 +67,7 @@ class PrinterTest extends TestCase
         $result = $printer->save();
 
         // assert
-        $this->assertContains((string)$xPosition, $result);
-        $this->assertContains((string)$yPosition, $result);
+        $this->assertStringContainsString((string)$xPosition, $result);
+        $this->assertStringContainsString((string)$yPosition, $result);
     }
 }
