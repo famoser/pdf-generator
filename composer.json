@@ -16,7 +16,7 @@
         "codacy/coverage": "^1.4",
         "friendsofphp/php-cs-fixer": "^2.14",
         "mockery/mockery": "^1.2",
-        "phpunit/phpunit": "^7.5",
+        "phpunit/phpunit": "^7.5 || ^8.0",
         "brainmaestro/composer-git-hooks": "^2.6"
     },
     "autoload": {
