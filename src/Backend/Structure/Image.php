@@ -16,34 +16,39 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Base\IdentifiableStructure;
 use PdfGenerator\Backend\StructureVisitor;
 
-class Font extends IdentifiableStructure
+class Image extends IdentifiableStructure
 {
-    const SUBTYPE_TYPE1 = 'Type1';
-    const BASE_FONT_HELVETICA = 'Helvetica';
+    /**
+     * @var float
+     */
+    private $width;
+
+    /**
+     * @var float
+     */
+    private $height;
 
     /**
      * @var string
      */
-    private $subtype;
+    private $imageData;
 
     /**
-     * @var string
-     */
-    private $baseFont;
-
-    /**
-     * Font constructor.
+     * Image constructor.
      *
      * @param string $identifier
-     * @param string $subtype
-     * @param string $baseFont
+     * @param float $width
+     * @param float $height
+     * @param string $imagePath
      */
-    public function __construct(string $identifier, string $subtype, string $baseFont)
+    public function __construct(string $identifier, string $imagePath)
     {
         parent::__construct($identifier);
 
-        $this->subtype = $subtype;
-        $this->baseFont = $baseFont;
+        list($width, $height) = getimagesize($imagePath);
+        $this->width = $width;
+        $this->height = $height;
+        $this->imageData = file_get_contents($imagePath);
     }
 
     /**
@@ -54,22 +59,38 @@ class Font extends IdentifiableStructure
      */
     public function accept(StructureVisitor $visitor, File $file): BaseObject
     {
-        return $visitor->visitFont($this, $file);
+        return $visitor->visitImage($this, $file);
+    }
+
+    /**
+     * @return float
+     */
+    public function getWidth(): float
+    {
+        return $this->width;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHeight(): float
+    {
+        return $this->height;
     }
 
     /**
      * @return string
      */
-    public function getSubtype(): string
+    public function getImageData(): string
     {
-        return $this->subtype;
+        return $this->imageData;
     }
 
     /**
      * @return string
      */
-    public function getBaseFont(): string
+    public function getFilter(): string
     {
-        return $this->baseFont;
+        return 'JPXDecode';
     }
 }

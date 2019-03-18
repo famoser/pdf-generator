@@ -11,9 +11,12 @@
 
 namespace PdfGenerator\IR;
 
+use PdfGenerator\Backend\Content\ImageContent;
 use PdfGenerator\Backend\Content\TextContent;
 use PdfGenerator\Backend\Document;
 use PdfGenerator\Backend\Structure\Builder\PageBuilder;
+use PdfGenerator\Backend\Structure\Supporting\FontCollection;
+use PdfGenerator\Backend\Structure\Supporting\ImageCollection;
 use PdfGenerator\IR\Printer\StatefulPrinter;
 
 class Printer extends StatefulPrinter
@@ -39,29 +42,37 @@ class Printer extends StatefulPrinter
     }
 
     /**
-     * @param string $text
      * @param float $xPosition
      * @param float $yPosition
+     * @param string $text
      */
-    public function printText(string $text, float $xPosition, float $yPosition)
+    public function printText(float $xPosition, float $yPosition, string $text)
     {
         $this->ensureConfigurationApplied();
 
         $page = $this->getActivePageBuilder();
-        $font = $this->getActiveFont();
+        $font = $this->getFontCollection()->getHelvetica();
 
         $contentBuilder = $page->getContentsBuilder();
-        $contentBuilder->addContent(new TextContent($font, $this->configuration->getFontSize(), $xPosition, $yPosition, $text));
+        $contentBuilder->addContent(new TextContent($xPosition, $yPosition, $text, $font, $this->configuration->getFontSize()));
     }
 
     /**
-     * @param string $imagePath
+     * @param float $xPosition
+     * @param float $yPosition
      * @param float $width
      * @param float $height
+     * @param string $imagePath
      */
-    public function printImage(string $imagePath, float $width, float $height)
+    public function printImage(float $xPosition, float $yPosition, float $width, float $height, string $imagePath)
     {
         $this->ensureConfigurationApplied();
+
+        $page = $this->getActivePageBuilder();
+        $image = $this->getImageCollection()->getOrCreateImage($imagePath);
+
+        $contentBuilder = $page->getContentsBuilder();
+        $contentBuilder->addContent(new ImageContent($xPosition, $yPosition, $image, $width, $height));
     }
 
     /**
@@ -93,11 +104,19 @@ class Printer extends StatefulPrinter
     }
 
     /**
-     * @return \PdfGenerator\Backend\Structure\Font
+     * @return FontCollection
      */
-    protected function getActiveFont()
+    protected function getFontCollection()
     {
-        return $this->document->getResourcesBuilder()->getFontCollection()->getHelvetica();
+        return $this->document->getResourcesBuilder()->getFontCollection();
+    }
+
+    /**
+     * @return ImageCollection
+     */
+    protected function getImageCollection()
+    {
+        return $this->document->getResourcesBuilder()->getImageCollection();
     }
 
     /**
@@ -106,6 +125,7 @@ class Printer extends StatefulPrinter
      */
     public function setMeta(string $title, string $author)
     {
+        // todo: use 14.3 for this
     }
 
     /**     *

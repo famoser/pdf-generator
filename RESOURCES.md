@@ -4,6 +4,7 @@ material to work through
 ## pdf generation
 - [Adobe standard](https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf) for the full spec
     - read chapter 8 to resolve coloring issues
+    - implement 14.3 for nice metadata
     - see page 570 for a longer example
 - [Guided Hello world](https://blog.idrsolutions.com/2013/01/understanding-the-pdf-file-format-overview/#helloworld) for small examples
 

@@ -48,7 +48,7 @@ class DictionaryObject extends BaseObject
      */
     public function addTextEntry(string $key, string $text)
     {
-        $this->dictionaryToken->setEntry($key, new TextToken($text));
+        $this->dictionaryToken->setTextEntry($key, $text);
     }
 
     /**
@@ -79,6 +79,22 @@ class DictionaryObject extends BaseObject
 
         foreach ($numbers as $number) {
             $tokens[] = new NumberToken($number);
+        }
+
+        $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));
+    }
+
+    /**
+     * @param string $key
+     * @param int[] $numbers
+     * @param string $prefix
+     */
+    public function addTextArrayEntry(string $key, array $numbers, string $prefix = '')
+    {
+        $tokens = [];
+
+        foreach ($numbers as $number) {
+            $tokens[] = new TextToken($prefix . $number);
         }
 
         $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));

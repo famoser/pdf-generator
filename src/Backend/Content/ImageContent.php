@@ -15,41 +15,39 @@ use PdfGenerator\Backend\Content\Base\PlacedContent;
 use PdfGenerator\Backend\ContentVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\Structure\Font;
+use PdfGenerator\Backend\Structure\Image;
 
-class TextContent extends PlacedContent
+class ImageContent extends PlacedContent
 {
     /**
-     * @var Font
+     * @var Image
      */
-    private $font;
+    private $image;
 
     /**
      * @var float
      */
-    private $fontSize;
+    private $width;
 
     /**
-     * @var string
+     * @var float
      */
-    private $text;
+    private $height;
 
     /**
-     * TextContent constructor.
-     *
      * @param float $xCoordinate
      * @param float $yCoordinate
-     * @param string $text
-     * @param Font $font
-     * @param float $fontSize
+     * @param Image $image
+     * @param float $width
+     * @param float $height
      */
-    public function __construct(float $xCoordinate, float $yCoordinate, string $text, Font $font, float $fontSize)
+    public function __construct(float $xCoordinate, float $yCoordinate, Image $image, float $width, float $height)
     {
         parent::__construct($xCoordinate, $yCoordinate);
 
-        $this->font = $font;
-        $this->fontSize = $fontSize;
-        $this->text = $text;
+        $this->image = $image;
+        $this->width = $width;
+        $this->height = $height;
     }
 
     /**
@@ -60,30 +58,30 @@ class TextContent extends PlacedContent
      */
     public function accept(ContentVisitor $visitor, File $file): BaseObject
     {
-        return $visitor->visitTextContent($this, $file);
+        return $visitor->visitImageContent($this, $file);
     }
 
     /**
-     * @return Font
+     * @return Image
      */
-    public function getFont(): Font
+    public function getImage(): Image
     {
-        return $this->font;
+        return $this->image;
     }
 
     /**
      * @return float
      */
-    public function getFontSize(): float
+    public function getWidth(): float
     {
-        return $this->fontSize;
+        return $this->width;
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function getText(): string
+    public function getHeight(): float
     {
-        return $this->text;
+        return $this->height;
     }
 }

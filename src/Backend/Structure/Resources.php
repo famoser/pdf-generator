@@ -29,6 +29,11 @@ class Resources extends BaseStructure
     private $fonts = [];
 
     /**
+     * @var Image[]
+     */
+    private $images = [];
+
+    /**
      * @param string $subtype
      * @param string $baseFont
      *
@@ -37,10 +42,24 @@ class Resources extends BaseStructure
     public function addFont(string $subtype, string $baseFont)
     {
         $identifier = $this->generateIdentifier('F');
-        $font = new Font($subtype, $baseFont, $identifier);
+        $font = new Font($identifier, $subtype, $baseFont);
         $this->fonts[$identifier] = $font;
 
         return $font;
+    }
+
+    /**
+     * @param string $imagePath
+     *
+     * @return Image
+     */
+    public function addImage(string $imagePath)
+    {
+        $identifier = $this->generateIdentifier('I');
+        $image = new Image($identifier, $imagePath);
+        $this->images[$identifier] = $image;
+
+        return $image;
     }
 
     /**
@@ -70,5 +89,13 @@ class Resources extends BaseStructure
     public function getFonts(): array
     {
         return $this->fonts;
+    }
+
+    /**
+     * @return Image[]
+     */
+    public function getImages(): array
+    {
+        return $this->images;
     }
 }

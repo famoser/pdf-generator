@@ -24,6 +24,11 @@ class StreamObject extends BaseObject
     private $content;
 
     /**
+     * @var DictionaryToken
+     */
+    private $dictionary;
+
+    /**
      * StreamObject constructor.
      *
      * @param int $number
@@ -32,7 +37,11 @@ class StreamObject extends BaseObject
     public function __construct(int $number, string $content)
     {
         parent::__construct($number);
+
         $this->content = $content;
+
+        $this->dictionary = new DictionaryToken();
+        $this->dictionary->setEntry('Length', new NumberToken(\strlen($this->content)));
     }
 
     /**
@@ -58,9 +67,6 @@ class StreamObject extends BaseObject
      */
     public function getMetaData(): DictionaryToken
     {
-        $dictionary = new DictionaryToken();
-        $dictionary->setEntry('Length', new NumberToken(mb_strlen($this->content)));
-
-        return $dictionary;
+        return $this->dictionary;
     }
 }

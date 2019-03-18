@@ -12,6 +12,7 @@
 namespace PdfGenerator\Tests\Integration\Frontend;
 
 use PdfGenerator\IR\Printer;
+use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
 class PrinterTest extends TestCase
@@ -26,7 +27,7 @@ class PrinterTest extends TestCase
         $printer = new Printer();
 
         // act
-        $printer->printText($text, 20, 20);
+        $printer->printText(20, 20, $text);
         $result = $printer->save();
 
         // assert
@@ -43,8 +44,8 @@ class PrinterTest extends TestCase
         $printer = new Printer();
 
         // act
-        $printer->printText($text . '1', 20, 20);
-        $printer->printText($text . '2', 20, 20);
+        $printer->printText(20, 20, $text . '1');
+        $printer->printText(20, 20, $text . '2');
         $result = $printer->save();
 
         // assert
@@ -63,11 +64,49 @@ class PrinterTest extends TestCase
         $printer = new Printer();
 
         // act
-        $printer->printText('text', $xPosition, $yPosition);
+        $printer->printText($xPosition, $yPosition, 'text');
         $result = $printer->save();
 
         // assert
         $this->assertStringContainsString((string)$xPosition, $result);
         $this->assertStringContainsString((string)$yPosition, $result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintTest_withUtf8Text_inResultFile()
+    {
+        // arrange
+        $xPosition = 11;
+        $yPosition = 22;
+        $printer = new Printer();
+
+        // act
+        $printer->printText($xPosition, $yPosition, 'äöü');
+        $result = $printer->save();
+
+        // assert
+        $this->assertStringContainsString('äöü', $result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintImage_cursorInResultFile()
+    {
+        // arrange
+        $xPosition = 11;
+        $yPosition = 22;
+        $printer = new Printer();
+
+        // act
+        $printer->printImage($xPosition, $yPosition, 200, 200, ResourcesProvider::getImage1Path());
+        $result = $printer->save();
+
+        // assert
+        $this->assertStringContainsString((string)$xPosition, $result);
+        $this->assertStringContainsString((string)$yPosition, $result);
+        file_put_contents('pdf.pdf', $result);
     }
 }

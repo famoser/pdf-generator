@@ -14,6 +14,7 @@ namespace PdfGenerator\Backend\Structure\Builder;
 use PdfGenerator\Backend\Structure\Builder\Base\BaseBuilder;
 use PdfGenerator\Backend\Structure\Resources;
 use PdfGenerator\Backend\Structure\Supporting\FontCollection;
+use PdfGenerator\Backend\Structure\Supporting\ImageCollection;
 
 class ResourcesBuilder extends BaseBuilder
 {
@@ -28,12 +29,18 @@ class ResourcesBuilder extends BaseBuilder
     private $fontCollection;
 
     /**
+     * @var ImageCollection
+     */
+    private $imageCollection;
+
+    /**
      * ResourcesBuilder constructor.
      */
     public function __construct()
     {
         $this->resources = new Resources();
         $this->fontCollection = new FontCollection($this->resources);
+        $this->imageCollection = new ImageCollection($this->resources);
     }
 
     /**
@@ -42,6 +49,14 @@ class ResourcesBuilder extends BaseBuilder
     public function getFontCollection(): FontCollection
     {
         return $this->fontCollection;
+    }
+
+    /**
+     * @return ImageCollection
+     */
+    public function getImageCollection(): ImageCollection
+    {
+        return $this->imageCollection;
     }
 
     /**

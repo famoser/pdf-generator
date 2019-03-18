@@ -41,4 +41,27 @@ class ContentVisitor
 
         return $file->addStreamObject($content);
     }
+
+    /**
+     * @param Content\ImageContent $param
+     * @param File $file
+     *
+     * @return \PdfGenerator\Backend\File\Object\StreamObject
+     */
+    public function visitImageContent(Content\ImageContent $param, File $file): BaseObject
+    {
+        // BT: begin text
+        $content = 'q ';
+
+        // scale by 132 and translate to x/y
+        $content .= '132  0  0  132  ' . $param->getXCoordinate() . '  ' . $param->getYCoordinate() . ' ';
+
+        // set font & font size with Tf function
+        $content .= '/' . $param->getImage()->getIdentifier() . ' Do ';
+
+        // ET: end text
+        $content .= 'Q';
+
+        return $file->addStreamObject($content);
+    }
 }

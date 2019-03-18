@@ -15,6 +15,7 @@ use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
+use PdfGenerator\Backend\Structure\Base\IdentifiableStructure;
 use PdfGenerator\Backend\Structure\Page;
 
 class StructureVisitor
@@ -114,13 +115,39 @@ class StructureVisitor
     {
         $dictionary = $file->addDictionaryObject();
 
-        $fontDictionary = new DictionaryToken();
-        foreach ($structure->getFonts() as $font) {
-            $fontReference = $font->accept($this, $file);
-            $fontDictionary->setEntry($font->getIdentifier(), new ReferenceToken($fontReference));
+        // see PDF320000_2008 14.2
+        $procSet = ['PDF'];
+
+        if (\count($structure->getFonts()) > 0) {
+            $fontDictionary = $this->createReferenceDictionary($structure->getFonts(), $file);
+            $dictionary->addDictionaryEntry('Font', $fontDictionary);
+            $procSet[] = 'Text';
         }
 
-        $dictionary->addDictionaryEntry('Font', $fontDictionary);
+        if (\count($structure->getImages()) > 0) {
+            $fontDictionary = $this->createReferenceDictionary($structure->getImages(), $file);
+            $dictionary->addDictionaryEntry('XObject', $fontDictionary);
+            $procSet[] = 'ImageC';
+        }
+
+        $dictionary->addTextArrayEntry('ProcSet', $procSet, '/');
+
+        return $dictionary;
+    }
+
+    /**
+     * @param IdentifiableStructure[] $structures
+     * @param File $file
+     *
+     * @return DictionaryToken
+     */
+    private function createReferenceDictionary(array $structures, File $file)
+    {
+        $dictionary = new DictionaryToken();
+        foreach ($structures as $structure) {
+            $reference = $structure->accept($this, $file);
+            $dictionary->setEntry($structure->getIdentifier(), new ReferenceToken($reference));
+        }
 
         return $dictionary;
     }
@@ -157,5 +184,25 @@ class StructureVisitor
         $dictionary->addTextEntry('BaseFont', $structure->getBaseFont());
 
         return $dictionary;
+    }
+
+    /**
+     * @param Structure\Image $structure
+     * @param File $file
+     *
+     * @return BaseObject
+     */
+    public function visitImage(Structure\Image $structure, File $file): BaseObject
+    {
+        $stream = $file->addStreamObject($structure->getImageData());
+
+        $dictionary = $stream->getMetaData();
+        $dictionary->setTextEntry('Type', 'XObject');
+        $dictionary->setTextEntry('Subtype', 'Image');
+        $dictionary->setTextEntry('Width', $structure->getWidth());
+        $dictionary->setTextEntry('Height', $structure->getHeight());
+        $dictionary->setTextEntry('Filter', $structure->getFilter());
+
+        return $stream;
     }
 }

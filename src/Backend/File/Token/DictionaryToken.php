@@ -31,6 +31,15 @@ class DictionaryToken extends BaseToken
     }
 
     /**
+     * @param string $key
+     * @param string $value
+     */
+    public function setTextEntry(string $key, string $value)
+    {
+        $this->keyValue[$key] = new TextToken($value);
+    }
+
+    /**
      * @param TokenVisitor $visitor
      *
      * @return string
