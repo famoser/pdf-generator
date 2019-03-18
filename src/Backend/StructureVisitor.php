@@ -203,6 +203,16 @@ class StructureVisitor
         $dictionary->setTextEntry('Height', $structure->getHeight());
         $dictionary->setTextEntry('Filter', $structure->getFilter());
 
+        /*
+         *
+        /BitsPerComponent 8
+        /ColorSpace /DeviceRGB
+        /Filter /DCTDecode
+         */
+        $dictionary->setTextEntry('BitsPerComponent', 8);
+        $dictionary->setTextEntry('ColorSpace', '/DeviceRGB');
+        $dictionary->setTextEntry('Filter', '/DCTDecode');
+
         return $stream;
     }
 }

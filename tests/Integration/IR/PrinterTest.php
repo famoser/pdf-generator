@@ -93,7 +93,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintImage_cursorInResultFile()
+    public function testPrintImage_imageInResultFile()
     {
         // arrange
         $xPosition = 11;
