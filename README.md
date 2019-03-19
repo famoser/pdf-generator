@@ -37,7 +37,7 @@ Overview of the project by namespace:
 
 Features:
 - [x] print text
-- [ ] print images
+- [x] print images
 - [ ] use TTF fonts
 - [ ] print UTF-8 text
 - [ ] draw lines

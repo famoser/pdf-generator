@@ -24,22 +24,24 @@ class ContentVisitor
      */
     public function visitTextContent(Content\TextContent $param, File $file): BaseObject
     {
+        $content = [];
+
         // BT: begin text
-        $content = 'BT ';
+        $content[] = 'BT';
 
         // set font & font size with Tf function
-        $content .= '/' . $param->getFont()->getIdentifier() . ' ' . $param->getFontSize() . ' Tf ';
+        $content[] = '/' . $param->getFont()->getIdentifier() . ' ' . $param->getFontSize() . ' Tf';
 
         // set x/y coordinate with Td function
-        $content .= $param->getXCoordinate() . ' ' . $param->getYCoordinate() . ' Td';
+        $content[] = $param->getXCoordinate() . ' ' . $param->getYCoordinate() . ' Td';
 
         // print text with Tj
-        $content .= '(' . $param->getText() . ')Tj ';
+        $content[] = '(' . $param->getText() . ')Tj';
 
         // ET: end text
-        $content .= 'ET';
+        $content[] = 'ET';
 
-        return $file->addStreamObject($content);
+        return $file->addStreamObject(implode(' ', $content));
     }
 
     /**
@@ -50,18 +52,20 @@ class ContentVisitor
      */
     public function visitImageContent(Content\ImageContent $param, File $file): BaseObject
     {
+        $content = [];
+
         // BT: begin text
-        $content = 'q ';
+        $content[] = 'q';
 
         // scale by 132 and translate to x/y
-        $content .= '132  0  0  132  ' . $param->getXCoordinate() . '  ' . $param->getYCoordinate() . ' ';
+        $content[] = $param->getWidth() . ' 0 0 ' . $param->getHeight() . ' ' . $param->getXCoordinate() . ' ' . $param->getYCoordinate() . ' cm';
 
         // set font & font size with Tf function
-        $content .= '/' . $param->getImage()->getIdentifier() . ' Do ';
+        $content[] = '/' . $param->getImage()->getIdentifier() . ' Do';
 
         // ET: end text
-        $content .= 'Q';
+        $content[] = 'Q';
 
-        return $file->addStreamObject($content);
+        return $file->addStreamObject(implode(' ', $content));
     }
 }

@@ -179,7 +179,7 @@ class StructureVisitor
     public function visitFont(Structure\Font $structure, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
-        $dictionary->addTextEntry('Type', 'Font');
+        $dictionary->addTextEntry('Type', '/Font');
         $dictionary->addTextEntry('Subtype', $structure->getSubtype());
         $dictionary->addTextEntry('BaseFont', $structure->getBaseFont());
 
@@ -197,18 +197,11 @@ class StructureVisitor
         $stream = $file->addStreamObject($structure->getImageData());
 
         $dictionary = $stream->getMetaData();
-        $dictionary->setTextEntry('Type', 'XObject');
-        $dictionary->setTextEntry('Subtype', 'Image');
+        $dictionary->setTextEntry('Type', '/XObject');
+        $dictionary->setTextEntry('Subtype', '/Image');
         $dictionary->setTextEntry('Width', $structure->getWidth());
         $dictionary->setTextEntry('Height', $structure->getHeight());
         $dictionary->setTextEntry('Filter', $structure->getFilter());
-
-        /*
-         *
-        /BitsPerComponent 8
-        /ColorSpace /DeviceRGB
-        /Filter /DCTDecode
-         */
         $dictionary->setTextEntry('BitsPerComponent', 8);
         $dictionary->setTextEntry('ColorSpace', '/DeviceRGB');
         $dictionary->setTextEntry('Filter', '/DCTDecode');

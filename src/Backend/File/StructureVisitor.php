@@ -90,7 +90,8 @@ class StructureVisitor
         $trailerDictionary->setEntry('Root', new ReferenceToken($param->getRoot()));
 
         $lines = [];
-        $lines[] = 'trailer ' . $trailerDictionary->accept($this->tokenVisitor);
+        $lines[] = 'trailer';
+        $lines[] = $trailerDictionary->accept($this->tokenVisitor);
         $lines[] = 'startxref';
         $lines[] = $param->getStartOfCrossReferenceTable();
         $lines[] = '%%EOF';
@@ -111,7 +112,7 @@ class StructureVisitor
         $lines[] = '0000000000 65535 f';
 
         foreach ($param->getEntries() as $entry) {
-            $lines[] = str_pad($entry, 10, '' . STR_PAD_LEFT);
+            $lines[] = str_pad($entry, 10, '' . STR_PAD_LEFT) . '  00000 n';
         }
 
         return implode("\n", $lines);

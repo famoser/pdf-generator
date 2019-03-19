@@ -93,20 +93,26 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintImage_imageInResultFile()
+    public function testPrintImage_imagePositionInResultSize()
     {
         // arrange
         $xPosition = 11;
         $yPosition = 22;
+        $width = 100;
+        $height = 100;
         $printer = new Printer();
 
         // act
-        $printer->printImage($xPosition, $yPosition, 200, 200, ResourcesProvider::getImage1Path());
+        $printer->printImage($xPosition, $yPosition, $width, $height, ResourcesProvider::getImage1Path());
         $result = $printer->save();
 
         // assert
+        $this->assertTrue(true);
+
         $this->assertStringContainsString((string)$xPosition, $result);
         $this->assertStringContainsString((string)$yPosition, $result);
+        $this->assertStringContainsString((string)$width, $result);
+        $this->assertStringContainsString((string)$height, $result);
         file_put_contents('pdf.pdf', $result);
     }
 }
