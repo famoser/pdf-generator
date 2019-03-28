@@ -40,6 +40,15 @@ class DictionaryToken extends BaseToken
     }
 
     /**
+     * @param string $key
+     * @param float|int $value
+     */
+    public function setNumberEntry(string $key, $value)
+    {
+        $this->keyValue[$key] = new NumberToken($value);
+    }
+
+    /**
      * @param TokenVisitor $visitor
      *
      * @return string

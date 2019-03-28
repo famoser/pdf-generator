@@ -66,6 +66,7 @@ class PrinterTest extends TestCase
         // act
         $printer->printText($xPosition, $yPosition, 'text');
         $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertStringContainsString((string)$xPosition, $result);

@@ -25,7 +25,7 @@ Targets of the compiler:
     - elements only included in file if referenced somewhere (ensured by Backend)
     - only new element created if not possible to append to another one (ensured by IR)
 4. Speed of compilation
-    - only provide single way to accoplish something 
+    - only provide single way to accomplish something 
     - no html/css parsing
 
 Overview of the project by namespace:

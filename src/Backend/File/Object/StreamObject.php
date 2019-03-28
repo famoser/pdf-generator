@@ -14,7 +14,6 @@ namespace PdfGenerator\Backend\File\Object;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\ObjectVisitor;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
-use PdfGenerator\Backend\File\Token\NumberToken;
 
 class StreamObject extends BaseObject
 {
@@ -29,19 +28,33 @@ class StreamObject extends BaseObject
     private $dictionary;
 
     /**
+     * @var int
+     */
+    private $contentType;
+
+    public const CONTENT_TYPE_TEXT = 1;
+    public const CONTENT_TYPE_IMAGE = 2;
+
+    /**
      * StreamObject constructor.
      *
      * @param int $number
      * @param string $content
+     * @param int $contentType
      */
-    public function __construct(int $number, string $content)
+    public function __construct(int $number, string $content, int $contentType)
     {
         parent::__construct($number);
 
+        $this->dictionary = new DictionaryToken();
         $this->content = $content;
 
-        $this->dictionary = new DictionaryToken();
-        $this->dictionary->setEntry('Length', new NumberToken(\strlen($this->content)));
+        if ($contentType === self::CONTENT_TYPE_TEXT && \extension_loaded('zlib')) {
+            $this->dictionary->setTextEntry('Filter', '/FlatDecode');
+            $this->content = gzcompress($this->content);
+        }
+
+        $this->dictionary->setNumberEntry('Length', \strlen($this->content));
     }
 
     /**

@@ -30,12 +30,13 @@ class File
 
     /**
      * @param string $content
+     * @param int $contentType
      *
      * @return StreamObject
      */
-    public function addStreamObject(string $content)
+    public function addStreamObject(string $content, int $contentType)
     {
-        $streamObject = new StreamObject($this->bodyCounter++, $content);
+        $streamObject = new StreamObject($this->bodyCounter++, $content, $contentType);
         $this->addObject($streamObject);
 
         return $streamObject;

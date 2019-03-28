@@ -13,6 +13,7 @@ namespace PdfGenerator\Backend;
 
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\File\Object\StreamObject;
 
 class ContentVisitor
 {
@@ -41,7 +42,7 @@ class ContentVisitor
         // ET: end text
         $content[] = 'ET';
 
-        return $file->addStreamObject(implode(' ', $content));
+        return $file->addStreamObject(implode(' ', $content), StreamObject::CONTENT_TYPE_TEXT);
     }
 
     /**
@@ -66,6 +67,6 @@ class ContentVisitor
         // ET: end text
         $content[] = 'Q';
 
-        return $file->addStreamObject(implode(' ', $content));
+        return $file->addStreamObject(implode(' ', $content), StreamObject::CONTENT_TYPE_TEXT);
     }
 }

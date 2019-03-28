@@ -13,6 +13,7 @@ namespace PdfGenerator\Backend;
 
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\File\Object\StreamObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
 use PdfGenerator\Backend\Structure\Base\IdentifiableStructure;
@@ -194,7 +195,7 @@ class StructureVisitor
      */
     public function visitImage(Structure\Image $structure, File $file): BaseObject
     {
-        $stream = $file->addStreamObject($structure->getImageData());
+        $stream = $file->addStreamObject($structure->getImageData(), StreamObject::CONTENT_TYPE_IMAGE);
 
         $dictionary = $stream->getMetaData();
         $dictionary->setTextEntry('Type', '/XObject');
