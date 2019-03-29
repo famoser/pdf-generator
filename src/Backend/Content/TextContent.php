@@ -12,44 +12,30 @@
 namespace PdfGenerator\Backend\Content;
 
 use PdfGenerator\Backend\Content\Base\PlacedContent;
+use PdfGenerator\Backend\Content\Text\TextSymbol;
 use PdfGenerator\Backend\ContentVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\Structure\Font;
 
 class TextContent extends PlacedContent
 {
     /**
-     * @var Font
+     * @var TextSymbol[]
      */
-    private $font;
-
-    /**
-     * @var float
-     */
-    private $fontSize;
-
-    /**
-     * @var string
-     */
-    private $text;
+    private $textSymbols;
 
     /**
      * TextContent constructor.
      *
      * @param float $xCoordinate
      * @param float $yCoordinate
-     * @param string $text
-     * @param Font $font
-     * @param float $fontSize
+     * @param TextSymbol[] $textSymbols
      */
-    public function __construct(float $xCoordinate, float $yCoordinate, string $text, Font $font, float $fontSize)
+    public function __construct(float $xCoordinate, float $yCoordinate, array $textSymbols)
     {
         parent::__construct($xCoordinate, $yCoordinate);
 
-        $this->font = $font;
-        $this->fontSize = $fontSize;
-        $this->text = $text;
+        $this->textSymbols = $textSymbols;
     }
 
     /**
@@ -64,26 +50,10 @@ class TextContent extends PlacedContent
     }
 
     /**
-     * @return Font
+     * @return TextSymbol[]
      */
-    public function getFont(): Font
+    public function getTextSymbols(): array
     {
-        return $this->font;
-    }
-
-    /**
-     * @return float
-     */
-    public function getFontSize(): float
-    {
-        return $this->fontSize;
-    }
-
-    /**
-     * @return string
-     */
-    public function getText(): string
-    {
-        return $this->text;
+        return $this->textSymbols;
     }
 }

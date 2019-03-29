@@ -49,12 +49,14 @@ class StreamObject extends BaseObject
         $this->dictionary = new DictionaryToken();
         $this->content = $content;
 
+        /* should allow to compress, currently does not work and not the target of the project
         if ($contentType === self::CONTENT_TYPE_TEXT && \extension_loaded('zlib')) {
             $this->dictionary->setTextEntry('Filter', '/FlatDecode');
             $this->content = gzcompress($this->content);
         }
+        */
 
-        $this->dictionary->setNumberEntry('Length', \strlen($this->content));
+        $this->dictionary->setNumberEntry('Length', \mb_strlen($this->content));
     }
 
     /**

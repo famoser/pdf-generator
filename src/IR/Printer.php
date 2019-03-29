@@ -17,6 +17,8 @@ use PdfGenerator\Backend\Document;
 use PdfGenerator\Backend\Structure\Builder\PageBuilder;
 use PdfGenerator\Backend\Structure\Supporting\FontCollection;
 use PdfGenerator\Backend\Structure\Supporting\ImageCollection;
+use PdfGenerator\IR\Content\TextFactory;
+use PdfGenerator\IR\Font\FontRepository;
 use PdfGenerator\IR\Printer\StatefulPrinter;
 
 class Printer extends StatefulPrinter
@@ -25,6 +27,16 @@ class Printer extends StatefulPrinter
      * @var Document
      */
     private $document;
+
+    /**
+     * @var FontRepository
+     */
+    private $fontRepository;
+
+    /**
+     * @var TextFactory
+     */
+    private $textFactory;
 
     /**
      * @var PageBuilder[]
@@ -39,6 +51,8 @@ class Printer extends StatefulPrinter
         parent::__construct();
 
         $this->document = new Document();
+        $this->fontRepository = new FontRepository($this->document);
+        $this->textFactory = new TextFactory($this->fontRepository);
     }
 
     /**
@@ -50,11 +64,11 @@ class Printer extends StatefulPrinter
     {
         $this->ensureConfigurationApplied();
 
-        $page = $this->getActivePageBuilder();
-        $font = $this->getFontCollection()->getHelvetica();
+        $textSymbols = $this->textFactory->create($text, $this->configuration);
+        $textContent = new TextContent($xPosition, $yPosition, $textSymbols);
 
-        $contentBuilder = $page->getContentsBuilder();
-        $contentBuilder->addContent(new TextContent($xPosition, $yPosition, $text, $font, $this->configuration->getFontSize()));
+        $contentBuilder = $this->getActiveContentBuilder();
+        $contentBuilder->addContent($textContent);
     }
 
     /**
@@ -68,10 +82,9 @@ class Printer extends StatefulPrinter
     {
         $this->ensureConfigurationApplied();
 
-        $page = $this->getActivePageBuilder();
         $image = $this->getImageCollection()->getOrCreateImage($imagePath);
 
-        $contentBuilder = $page->getContentsBuilder();
+        $contentBuilder = $this->getActiveContentBuilder();
         $contentBuilder->addContent(new ImageContent($xPosition, $yPosition, $image, $width, $height));
     }
 
@@ -101,6 +114,14 @@ class Printer extends StatefulPrinter
         }
 
         return $this->pageBuilders[$targetPageBuilderIndex];
+    }
+
+    /**
+     * @return \PdfGenerator\Backend\Structure\Builder\ContentsBuilder
+     */
+    protected function getActiveContentBuilder()
+    {
+        return $this->getActivePageBuilder()->getContentsBuilder();
     }
 
     /**

@@ -27,9 +27,9 @@ class PrintConfiguration extends DrawConfiguration
     const TEXT_ALIGN_RIGHT = 'TEXT_ALIGN_RIGHT';
 
     /**
-     * @var string|null
+     * @var string
      */
-    private $fontFamily = null;
+    private $fontFamily = 'Helvetica';
 
     /**
      * @var float
@@ -115,7 +115,7 @@ class PrintConfiguration extends DrawConfiguration
     /**
      * @return string|null
      */
-    public function getFontFamily(): ?string
+    public function getFontFamily(): string
     {
         return $this->fontFamily;
     }

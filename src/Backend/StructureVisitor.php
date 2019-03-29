@@ -89,6 +89,9 @@ class StructureVisitor
      */
     public function visitPage(Page $structure, File $file): BaseObject
     {
+        // reset state of the content visitor at the beginning of each page
+        $this->contentVisitor = new ContentVisitor();
+
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Page');
 
