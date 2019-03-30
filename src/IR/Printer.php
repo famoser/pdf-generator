@@ -34,11 +34,6 @@ class Printer extends StatefulPrinter
     private $fontRepository;
 
     /**
-     * @var TextFactory
-     */
-    private $textFactory;
-
-    /**
      * @var PageBuilder[]
      */
     private $pageBuilders = [];
@@ -56,11 +51,9 @@ class Printer extends StatefulPrinter
     }
 
     /**
-     * @param float $xPosition
-     * @param float $yPosition
      * @param string $text
      */
-    public function printText(float $xPosition, float $yPosition, string $text)
+    public function printText(string $text)
     {
         $this->ensureConfigurationApplied();
 
@@ -72,13 +65,11 @@ class Printer extends StatefulPrinter
     }
 
     /**
-     * @param float $xPosition
-     * @param float $yPosition
      * @param float $width
      * @param float $height
      * @param string $imagePath
      */
-    public function printImage(float $xPosition, float $yPosition, float $width, float $height, string $imagePath)
+    public function printImage(string $imagePath, float $width, float $height)
     {
         $this->ensureConfigurationApplied();
 

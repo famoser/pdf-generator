@@ -41,53 +41,48 @@ class ContentVisitor
      */
     public function visitTextContent(Content\TextContent $textContent, File $file, Page $page): BaseObject
     {
-        $content = [];
+        // gather operators to change to desired state
+        $stateTransitionOperators = $this->graphicStateRepository->applyTextLevelState($page, $textContent->getTextLevel());
 
-        // BT: begin text
-        $content[] = 'BT';
+        // gather operators to print the content
+        $textOperators = $this->getTextOperators($textContent->getText());
 
-        foreach ($textContent->getTextSymbols() as $textSymbol) {
-            // gather operators to change to desired state
-            $stateTransitionOperators = $this->graphicStateRepository->applyTextLevelState($page, $textSymbol->getTextLevel());
+        // create stream object; BT before text and ET after all text
+        $operators = array_merge(['BT'], $stateTransitionOperators, $textOperators, ['ET']);
 
-            // gather operators to print the content
-            $textOperators = $this->getTextOperators($textSymbol->getContent());
-
-            // print operators to single line
-            $operators = array_merge($stateTransitionOperators, $textOperators);
-            $content[] = implode(' ', $operators);
-        }
-
-        // ET: end text
-        $content[] = 'ET';
-
-        return $file->addStreamObject(implode(' ', $content), StreamObject::CONTENT_TYPE_TEXT);
+        return $this->createStreamObject($file, $operators);
     }
 
     /**
-     * @param Content\ImageContent $param
+     * @param Content\ImageContent $imageContent
      * @param File $file
      * @param Page $page
      *
      * @return StreamObject
      */
-    public function visitImageContent(Content\ImageContent $param, File $file, Page $page): BaseObject
+    public function visitImageContent(Content\ImageContent $imageContent, File $file, Page $page): BaseObject
     {
-        $content = [];
+        // gather operators to change to desired state
+        $stateTransitionOperators = $this->graphicStateRepository->applyPageLevelState($page, $imageContent->getPageLevel());
 
-        // BT: begin text
-        $content[] = 'q';
+        // gather operators to print the content
+        $imageOperator = '/' . $imageContent->getImage()->getIdentifier() . ' Do';
 
-        // scale by height and translate to x/y
-        $content[] = $param->getWidth() . ' 0 0 ' . $param->getHeight() . ' ' . $param->getXCoordinate() . ' ' . $param->getYCoordinate() . ' cm';
+        // create stream object
+        $operators = array_merge($stateTransitionOperators, [$imageOperator]);
 
-        // set font & font size with Tf function
-        $content[] = '/' . $param->getImage()->getIdentifier() . ' Do';
+        return $this->createStreamObject($file, $operators);
+    }
 
-        // ET: end text
-        $content[] = 'Q';
-
-        return $file->addStreamObject(implode(' ', $content), StreamObject::CONTENT_TYPE_IMAGE);
+    /**
+     * @param File $file
+     * @param array $operators
+     *
+     * @return StreamObject
+     */
+    private function createStreamObject(File $file, array $operators)
+    {
+        return $file->addStreamObject(implode(' ', $operators), StreamObject::CONTENT_TYPE_TEXT);
     }
 
     /**

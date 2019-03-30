@@ -11,14 +11,15 @@
 
 namespace PdfGenerator\Backend\Content;
 
-use PdfGenerator\Backend\Content\Base\PlacedContent;
+use PdfGenerator\Backend\Content\Base\BaseContent;
+use PdfGenerator\Backend\Content\Operators\Level\PageLevel;
 use PdfGenerator\Backend\ContentVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Image;
 use PdfGenerator\Backend\Structure\Page;
 
-class ImageContent extends PlacedContent
+class ImageContent extends BaseContent
 {
     /**
      * @var Image
@@ -26,29 +27,34 @@ class ImageContent extends PlacedContent
     private $image;
 
     /**
-     * @var float
+     * @var PageLevel
      */
-    private $width;
+    private $pageLevel;
 
     /**
-     * @var float
-     */
-    private $height;
-
-    /**
-     * @param float $xCoordinate
-     * @param float $yCoordinate
      * @param Image $image
-     * @param float $width
-     * @param float $height
+     * @param PageLevel $pageLevel
      */
-    public function __construct(float $xCoordinate, float $yCoordinate, Image $image, float $width, float $height)
+    public function __construct(Image $image, PageLevel $pageLevel)
     {
-        parent::__construct($xCoordinate, $yCoordinate);
-
         $this->image = $image;
-        $this->width = $width;
-        $this->height = $height;
+        $this->pageLevel = $pageLevel;
+    }
+
+    /**
+     * @return Image
+     */
+    public function getImage(): Image
+    {
+        return $this->image;
+    }
+
+    /**
+     * @return PageLevel
+     */
+    public function getPageLevel(): PageLevel
+    {
+        return $this->pageLevel;
     }
 
     /**
@@ -61,29 +67,5 @@ class ImageContent extends PlacedContent
     public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject
     {
         return $visitor->visitImageContent($this, $file, $page);
-    }
-
-    /**
-     * @return Image
-     */
-    public function getImage(): Image
-    {
-        return $this->image;
-    }
-
-    /**
-     * @return float
-     */
-    public function getWidth(): float
-    {
-        return $this->width;
-    }
-
-    /**
-     * @return float
-     */
-    public function getHeight(): float
-    {
-        return $this->height;
     }
 }

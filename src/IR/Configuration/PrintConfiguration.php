@@ -11,20 +11,13 @@
 
 namespace PdfGenerator\IR\Configuration;
 
+use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
+use PdfGenerator\Backend\Content\Operators\State\GeneralGraphicState;
+
 class PrintConfiguration extends DrawConfiguration
 {
     const FONT_FAMILY = 'FONT_FAMILY';
     const FONT_SIZE = 'FONT_SIZE';
-
-    const FONT_WEIGHT = 'FONT_WEIGHT';
-    const FONT_WEIGHT_NORMAL = 'FONT_WEIGHT_NORMAL';
-    const FONT_WEIGHT_BOLD = 'FONT_WEIGHT_BOLD';
-
-    const TEXT_COLOR = 'TEXT_COLOR';
-
-    const TEXT_ALIGN = 'TEXT_ALIGN';
-    const TEXT_ALIGN_LEFT = 'TEXT_ALIGN_LEFT';
-    const TEXT_ALIGN_RIGHT = 'TEXT_ALIGN_RIGHT';
 
     /**
      * @var string
@@ -35,21 +28,6 @@ class PrintConfiguration extends DrawConfiguration
      * @var float
      */
     private $fontSize = 8;
-
-    /**
-     * @var string
-     */
-    private $fontWeight = self::FONT_WEIGHT_NORMAL;
-
-    /**
-     * @var string
-     */
-    private $textColor = '#000000';
-
-    /**
-     * @var string
-     */
-    private $textAlign = self::TEXT_ALIGN_LEFT;
 
     /**
      * @var ConfigurationValidator
@@ -98,18 +76,6 @@ class PrintConfiguration extends DrawConfiguration
         if (isset($config[self::FONT_SIZE])) {
             $this->fontSize = $this->configurationValidator->fontSize($config, self::FONT_SIZE);
         }
-
-        if (isset($config[self::FONT_WEIGHT])) {
-            $this->fontWeight = $this->configurationValidator->fontWeight($config, self::FONT_WEIGHT);
-        }
-
-        if (isset($config[self::TEXT_COLOR])) {
-            $this->textColor = $this->configurationValidator->color($config, self::TEXT_COLOR);
-        }
-
-        if (isset($config[self::TEXT_ALIGN])) {
-            $this->textAlign = $this->configurationValidator->textAlign($config, self::TEXT_ALIGN);
-        }
     }
 
     /**
@@ -129,40 +95,27 @@ class PrintConfiguration extends DrawConfiguration
     }
 
     /**
-     * @return string
-     */
-    public function getFontWeight(): string
-    {
-        return $this->fontWeight;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTextColor(): string
-    {
-        return $this->textColor;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTextAlign(): string
-    {
-        return $this->textAlign;
-    }
-
-    /**
      * @return array
      */
     public function getConfiguration()
     {
         return parent::getConfiguration() + [
                 self::FONT_FAMILY => $this->getFontFamily(),
-                self::FONT_SIZE => $this->getFontSize(),
-                self::FONT_WEIGHT => $this->getFontWeight(),
-                self::TEXT_COLOR => $this->getTextColor(),
-                self::TEXT_ALIGN => $this->getTextAlign(),
+                self::FONT_SIZE => $this->getFontSize()
             ];
+    }
+
+    private function getGeneralGraphicState()
+    {
+        $graphicsState = new GeneralGraphicState();
+        $graphicsState->setCurrentTransformationMatrix()
+    }
+
+    /**
+     * @return TextLevel
+     */
+    public function createTextLevel()
+    {
+        $textLevel = new TextLevel()
     }
 }
