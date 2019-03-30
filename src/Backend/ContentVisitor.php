@@ -27,7 +27,7 @@ class ContentVisitor
      * @param Content\TextContent $param
      * @param File $file
      *
-     * @return \PdfGenerator\Backend\File\Object\StreamObject
+     * @return StreamObject
      */
     public function visitTextContent(Content\TextContent $param, File $file): BaseObject
     {
@@ -55,6 +55,11 @@ class ContentVisitor
         return $file->addStreamObject(implode(' ', $content), StreamObject::CONTENT_TYPE_TEXT);
     }
 
+    /**
+     * @param TextState $targetState
+     *
+     * @return string[]
+     */
     public function transitionToState(TextState $targetState)
     {
         // if reference matches, we do not need to do anything
@@ -109,7 +114,7 @@ class ContentVisitor
      * @param Content\ImageContent $param
      * @param File $file
      *
-     * @return \PdfGenerator\Backend\File\Object\StreamObject
+     * @return StreamObject
      */
     public function visitImageContent(Content\ImageContent $param, File $file): BaseObject
     {

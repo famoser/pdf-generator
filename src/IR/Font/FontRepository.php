@@ -12,6 +12,7 @@
 namespace PdfGenerator\IR\Font;
 
 use PdfGenerator\Backend\Document;
+use PdfGenerator\Backend\Structure\Font;
 
 class FontRepository
 {
@@ -33,7 +34,7 @@ class FontRepository
     /**
      * @param string $familyName
      *
-     * @return \PdfGenerator\Backend\Structure\Font
+     * @return Font
      */
     public function get(string $familyName)
     {

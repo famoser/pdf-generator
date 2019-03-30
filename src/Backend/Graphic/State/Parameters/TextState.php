@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Content\Text;
+namespace Backend\Graphic\State\Parameters;
 
 use PdfGenerator\Backend\Structure\Font;
 

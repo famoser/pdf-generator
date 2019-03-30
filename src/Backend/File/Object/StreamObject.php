@@ -56,7 +56,7 @@ class StreamObject extends BaseObject
         }
         */
 
-        $this->dictionary->setNumberEntry('Length', \mb_strlen($this->content));
+        $this->dictionary->setNumberEntry('Length', \strlen($this->content));
     }
 
     /**
