@@ -9,12 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Backend\Graphic\State;
+namespace PdfGenerator\Backend\Content\Operators;
 
-use Backend\Graphic\State\Parameters\ColorState;
-use Backend\Graphic\State\Parameters\GeneralGraphicState;
-
-class PageLevel
+class TextLevel
 {
     /**
      * @var GeneralGraphicState
@@ -27,15 +24,22 @@ class PageLevel
     private $colorState;
 
     /**
+     * @var TextState
+     */
+    private $textState;
+
+    /**
      * TextLevel constructor.
      *
      * @param GeneralGraphicState $generalGraphicsState
      * @param ColorState $colorState
+     * @param TextState $textState
      */
-    public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState)
+    public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState, TextState $textState)
     {
         $this->generalGraphicsState = $generalGraphicsState;
         $this->colorState = $colorState;
+        $this->textState = $textState;
     }
 
     /**
@@ -52,5 +56,13 @@ class PageLevel
     public function getColorState(): ColorState
     {
         return $this->colorState;
+    }
+
+    /**
+     * @return TextState
+     */
+    public function getTextState(): TextState
+    {
+        return $this->textState;
     }
 }

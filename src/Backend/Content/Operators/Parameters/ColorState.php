@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Backend\Graphic\State\Parameters;
+namespace PdfGenerator\Backend\Content\Operators\Parameters;
 
-class GeneralGraphicState
+class ColorState
 {
 }

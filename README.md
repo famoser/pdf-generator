@@ -76,7 +76,7 @@ Its main task is to translate the API calls into a high-level PDF structure of t
 The Backend itself is divided into multiple parts.
 
 #### Content
-The Content folder helps to render complex contents like text and images.
+The Content folder helps to render complex content streams like text and images.
 
 It knows how to convert itself into streams which can then be inserted into the pdf.
 

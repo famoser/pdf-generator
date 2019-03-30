@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Backend\Graphic\State\Parameters;
+namespace PdfGenerator\Backend\Content\State\Parameters;
 
 use PdfGenerator\Backend\Structure\Font;
 
@@ -28,50 +28,66 @@ class TextState
     const RENDER_MODE_PATH_INVISIBLE = 7;
 
     /**
-     * @var Font Tt
-     *           the font which has been added to the document
+     * the font
+     * pdf-parameter: Tt.
+     *
+     * @var Font
      */
     private $font;
 
     /**
-     * @var int|float Tts
-     *                the font size to be used
+     * the font size to be used
+     * pdf-parameter: Tts.
+     *
+     * @var int|float
      */
     private $fontSize;
 
     /**
-     * @var int|float Tc
-     *                space between chars
+     * space between chars
+     * pdf-parameter: Tc.
+     *
+     * @var int|float
      */
     private $charSpace = 0;
 
     /**
-     * @var int|float Tw
-     *                space between words (like @see $charSpace, but only applies to SPACE)
+     * space between words (like @see $charSpace, but only applies to SPACE)
+     * pdf-parameter: Tw.
+     *
+     * @var int|float
      */
     private $wordSpace = 0;
 
     /**
-     * @var int|float Th
-     *                percentage of normal width
+     * percentage of normal width
+     * pdf-parameter: Th.
+     *
+     * @var int|float
      */
     private $scale = 100;
 
     /**
-     * @var float|int Tl
-     *                vertical distance between baselines (the line height)
+     * vertical distance between baselines (the line height)
+     * pdf-parameter: Tl.
+     *
+     * @var float|int
      */
     private $leading = 0;
 
     /**
-     * @var float|int Tr
-     *                fill/stroke render combinations
+     * fill/stroke render combinations
+     * pdf-parameter: Tr.
+     *
+     * @var float|int
      */
     private $renderMode = self::RENDER_MODE_FILL;
 
     /**
-     * @var float|int Tr
-     *                upwards shift from the baseline
+     * upwards shift from the baseline
+     * pdf-parameter: Tr.
+     *
+     * @var float|int
      */
     private $rise = 0;
 

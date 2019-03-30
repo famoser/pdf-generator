@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Content\Text;
+namespace PdfGenerator\Backend\Content\Symbols;
 
 class TextSymbol
 {
