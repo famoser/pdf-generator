@@ -12,10 +12,11 @@
 namespace PdfGenerator\Backend\Content;
 
 use PdfGenerator\Backend\Content\Base\PlacedContent;
-use PdfGenerator\Backend\Content\Text\TextSymbol;
+use PdfGenerator\Backend\Content\Symbols\TextSymbol;
 use PdfGenerator\Backend\ContentVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\Structure\Page;
 
 class TextContent extends PlacedContent
 {
@@ -41,12 +42,13 @@ class TextContent extends PlacedContent
     /**
      * @param ContentVisitor $visitor
      * @param File $file
+     * @param Page $page
      *
      * @return BaseObject
      */
-    public function accept(ContentVisitor $visitor, File $file): BaseObject
+    public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject
     {
-        return $visitor->visitTextContent($this, $file);
+        return $visitor->visitTextContent($this, $file, $page);
     }
 
     /**

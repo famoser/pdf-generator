@@ -11,36 +11,50 @@
 
 namespace PdfGenerator\Backend;
 
+use PdfGenerator\Backend\Content\GraphicStateRepository;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
+use PdfGenerator\Backend\Structure\Page;
 
 class ContentVisitor
 {
     /**
-     * @param Content\TextContent $param
+     * @var GraphicStateRepository
+     */
+    private $graphicStateRepository;
+
+    /**
+     * ContentVisitor constructor.
+     */
+    public function __construct()
+    {
+        $this->graphicStateRepository = new GraphicStateRepository();
+    }
+
+    /**
+     * @param Content\TextContent $textContent
      * @param File $file
-     *
+     * @param Page $page
      * @return StreamObject
      */
-    public function visitTextContent(Content\TextContent $param, File $file): BaseObject
+    public function visitTextContent(Content\TextContent $textContent, File $file, Page $page): BaseObject
     {
         $content = [];
 
         // BT: begin text
         $content[] = 'BT';
 
-        foreach ($param->getTextSymbols() as $textSymbol) {
-            // gather required operators to print text as expected
-            $stateTransitionOperators = $this->transitionToState($textSymbol->getTextState());
-            $positionOperator = $param->getXCoordinate() . ' ' . $param->getYCoordinate() . ' Td';
-            $printOperator = '(' . $textSymbol->getContent() . ')Tj';
+        foreach ($textContent->getTextSymbols() as $textSymbol) {
+            // gather operators to change to desired state
+            $stateTransitionOperators = $this->graphicStateRepository->applyTextLevelState($page, $textSymbol->getTextLevel());
 
-            // merge operators to single line
-            $operators = array_merge($stateTransitionOperators, [$positionOperator, $printOperator]);
-            $stateOperators = implode(' ', $operators);
+            // gather operators to print the content
+            $textOperators = $this->getTextOperators($textSymbol->getContent());
 
-            $content[] = $stateOperators . ' ' . $printOperator;
+            // print operators to single line
+            $operators = array_merge($stateTransitionOperators, $textOperators);
+            $content[] = implode(' ', $operators);
         }
 
         // ET: end text
@@ -52,10 +66,10 @@ class ContentVisitor
     /**
      * @param Content\ImageContent $param
      * @param File $file
-     *
+     * @param Page $page
      * @return StreamObject
      */
-    public function visitImageContent(Content\ImageContent $param, File $file): BaseObject
+    public function visitImageContent(Content\ImageContent $param, File $file, Page $page): BaseObject
     {
         $content = [];
 
@@ -71,6 +85,30 @@ class ContentVisitor
         // ET: end text
         $content[] = 'Q';
 
-        return $file->addStreamObject(implode(' ', $content), StreamObject::CONTENT_TYPE_TEXT);
+        return $file->addStreamObject(implode(' ', $content), StreamObject::CONTENT_TYPE_IMAGE);
+    }
+
+    /**
+     * @param string $text
+     * @return string[]
+     */
+    private function getTextOperators(string $text): string
+    {
+        // split by newlines
+        $cleanedText = str_replace("\n\r", "\n", $text);
+        $lines = explode("\n", $cleanedText);
+
+        $printOperators = [];
+
+        // print first line
+        $printOperators[] = '(' . $lines[0] . ')Tj';
+
+        // use the ' operator to start a new line before printing
+        $lineCount = count($lines);
+        for ($i = 1; $i < $lineCount; $i++) {
+            $printOperators[] = '(' . $lines[$i] . ')\'';
+        }
+
+        return $printOperators;
     }
 }

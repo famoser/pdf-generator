@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Content\Base;
+namespace PdfGenerator\Backend\Structure\Base;
 
-use PdfGenerator\Backend\ContentVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Page;
+use PdfGenerator\Backend\StructureVisitor;
 
-abstract class BaseContent
+abstract class PageAwareStructure
 {
     /**
-     * @param ContentVisitor $visitor
+     * @param StructureVisitor $visitor
      * @param File $file
      * @param Page $page
-     * @return BaseObject
+     * @return BaseObject|BaseObject[]
      */
-    abstract public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject;
+    abstract public function accept(StructureVisitor $visitor, File $file, Page $page);
 }

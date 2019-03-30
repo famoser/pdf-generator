@@ -14,10 +14,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in('tests');
 
 return PhpCsFixer\Config::create()
-    ->setRiskyAllowed(true)
     ->setRules([
-        '@Symfony' => true,
-        '@Symfony:risky' => true,
         'array_syntax' => ['syntax' => 'short'],
         'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
         'linebreak_after_opening_tag' => true,

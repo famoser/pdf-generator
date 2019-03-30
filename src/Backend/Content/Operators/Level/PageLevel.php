@@ -66,4 +66,13 @@ class PageLevel extends BaseLevel
     {
         return $visitor->visitPage($this, $previousState);
     }
+
+    /**
+     * @param TextLevel $textLevel
+     */
+    public function applyStateFromText(TextLevel $textLevel)
+    {
+        $this->colorState = $textLevel->getColorState();
+        $this->generalGraphicsState = $textLevel->getGeneralGraphicsState();
+    }
 }

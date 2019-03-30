@@ -30,7 +30,7 @@ class TextState extends BaseState
      * the font
      * pdf-operator: Tt.
      *
-     * @var Font
+     * @var Font?
      */
     private $font;
 
@@ -38,15 +38,15 @@ class TextState extends BaseState
      * the font size to be used
      * pdf-operator: Tts.
      *
-     * @var int|float
+     * @var float
      */
-    private $fontSize;
+    private $fontSize = 0;
 
     /**
      * space between chars
      * pdf-operator: Tc.
      *
-     * @var int|float
+     * @var float
      */
     private $charSpace = 0;
 
@@ -54,7 +54,7 @@ class TextState extends BaseState
      * space between words (like @see $charSpace, but only applies to SPACE)
      * pdf-operator: Tw.
      *
-     * @var int|float
+     * @var float
      */
     private $wordSpace = 0;
 
@@ -62,7 +62,7 @@ class TextState extends BaseState
      * percentage of normal width
      * pdf-operator: Th.
      *
-     * @var int|float
+     * @var float
      */
     private $scale = 100;
 
@@ -91,21 +91,9 @@ class TextState extends BaseState
     private $rise = 0;
 
     /**
-     * TextState constructor.
-     *
-     * @param Font $font
-     * @param int|float $fontSize
+     * @return null|Font
      */
-    public function __construct(Font $font, $fontSize)
-    {
-        $this->font = $font;
-        $this->fontSize = $fontSize;
-    }
-
-    /**
-     * @return Font
-     */
-    public function getFont(): Font
+    public function getFont(): ?Font
     {
         return $this->font;
     }

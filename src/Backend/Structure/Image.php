@@ -13,11 +13,14 @@ namespace PdfGenerator\Backend\Structure;
 
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\Structure\Base\IdentifiableStructure;
+use PdfGenerator\Backend\Structure\Base\BaseStructure;
+use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
 use PdfGenerator\Backend\StructureVisitor;
 
-class Image extends IdentifiableStructure
+class Image extends BaseStructure
 {
+    use IdentifiableStructureTrait;
+
     /**
      * @var float
      */
@@ -37,13 +40,11 @@ class Image extends IdentifiableStructure
      * Image constructor.
      *
      * @param string $identifier
-     * @param float $width
-     * @param float $height
      * @param string $imagePath
      */
     public function __construct(string $identifier, string $imagePath)
     {
-        parent::__construct($identifier);
+        $this->setIdentifier($identifier);
 
         list($width, $height) = getimagesize($imagePath);
         $this->width = $width;

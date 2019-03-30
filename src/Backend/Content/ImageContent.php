@@ -16,6 +16,7 @@ use PdfGenerator\Backend\ContentVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Image;
+use PdfGenerator\Backend\Structure\Page;
 
 class ImageContent extends PlacedContent
 {
@@ -53,12 +54,12 @@ class ImageContent extends PlacedContent
     /**
      * @param ContentVisitor $visitor
      * @param File $file
-     *
+     * @param Page $page
      * @return BaseObject
      */
-    public function accept(ContentVisitor $visitor, File $file): BaseObject
+    public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject
     {
-        return $visitor->visitImageContent($this, $file);
+        return $visitor->visitImageContent($this, $file, $page);
     }
 
     /**

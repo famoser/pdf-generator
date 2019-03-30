@@ -15,9 +15,10 @@ use PdfGenerator\Backend\Content\Base\BaseContent;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Base\BaseStructure;
+use PdfGenerator\Backend\Structure\Base\PageAwareStructure;
 use PdfGenerator\Backend\StructureVisitor;
 
-class Contents extends BaseStructure
+class Contents extends PageAwareStructure
 {
     /**
      * @var BaseContent[]
@@ -38,11 +39,12 @@ class Contents extends BaseStructure
      * @param StructureVisitor $visitor
      * @param File $file
      *
+     * @param Page $page
      * @return BaseObject[]
      */
-    public function accept(StructureVisitor $visitor, File $file): array
+    public function accept(StructureVisitor $visitor, File $file, Page $page): array
     {
-        return $visitor->visitContents($this, $file);
+        return $visitor->visitContents($this, $file, $page);
     }
 
     /**

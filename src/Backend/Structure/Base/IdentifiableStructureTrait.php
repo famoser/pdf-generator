@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Backend\Structure\Base;
 
-abstract class IdentifiableStructure extends BaseStructure
+trait IdentifiableStructureTrait
 {
     /**
      * @var string
@@ -23,7 +23,7 @@ abstract class IdentifiableStructure extends BaseStructure
      *
      * @param string $identifier
      */
-    public function __construct(string $identifier)
+    protected function setIdentifier(string $identifier)
     {
         $this->identifier = $identifier;
     }

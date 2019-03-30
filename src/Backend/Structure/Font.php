@@ -13,11 +13,14 @@ namespace PdfGenerator\Backend\Structure;
 
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\Structure\Base\IdentifiableStructure;
+use PdfGenerator\Backend\Structure\Base\BaseStructure;
+use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
 use PdfGenerator\Backend\StructureVisitor;
 
-class Font extends IdentifiableStructure
+class Font extends BaseStructure
 {
+    use IdentifiableStructureTrait;
+
     const SUBTYPE_TYPE1 = 'Type1';
     const BASE_FONT_HELVETICA = 'Helvetica';
 
@@ -40,7 +43,7 @@ class Font extends IdentifiableStructure
      */
     public function __construct(string $identifier, string $subtype, string $baseFont)
     {
-        parent::__construct($identifier);
+        $this->setIdentifier($identifier);
 
         $this->subtype = $subtype;
         $this->baseFont = $baseFont;

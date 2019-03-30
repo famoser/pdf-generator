@@ -16,7 +16,7 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
-use PdfGenerator\Backend\Structure\Base\IdentifiableStructure;
+use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
 use PdfGenerator\Backend\Structure\Page;
 
 class StructureVisitor
@@ -76,7 +76,7 @@ class StructureVisitor
         }
 
         $dictionary->addReferenceArrayEntry('Kids', $kids);
-        $dictionary->addNumberEntry('Count', \count($kids));
+        $dictionary->addNumberEntry('Count', count($kids));
 
         return $dictionary;
     }
@@ -89,9 +89,6 @@ class StructureVisitor
      */
     public function visitPage(Page $structure, File $file): BaseObject
     {
-        // reset state of the content visitor at the beginning of each page
-        $this->contentVisitor = new ContentVisitor();
-
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Page');
 
@@ -103,7 +100,7 @@ class StructureVisitor
 
         $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
 
-        $contents = $structure->getContents()->accept($this, $file);
+        $contents = $structure->getContents()->accept($this, $file, $structure);
         $dictionary->addReferenceArrayEntry('Contents', $contents);
 
         return $dictionary;
@@ -140,7 +137,7 @@ class StructureVisitor
     }
 
     /**
-     * @param IdentifiableStructure[] $structures
+     * @param IdentifiableStructureTrait[] $structures
      * @param File $file
      *
      * @return DictionaryToken
@@ -160,15 +157,16 @@ class StructureVisitor
      * @param Structure\Contents $structure
      * @param File $file
      *
+     * @param Page $page
      * @return BaseObject[]
      */
-    public function visitContents(Structure\Contents $structure, File $file): array
+    public function visitContents(Structure\Contents $structure, File $file, Page $page): array
     {
         /** @var BaseObject[] $baseObjects */
         $baseObjects = [];
 
         foreach ($structure->getContent() as $baseContent) {
-            $baseObjects[] = $baseContent->accept($this->contentVisitor, $file);
+            $baseObjects[] = $baseContent->accept($this->contentVisitor, $file, $page);
         }
 
         return $baseObjects;

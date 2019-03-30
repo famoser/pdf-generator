@@ -11,8 +11,10 @@
 
 namespace PdfGenerator\IR\Content;
 
-use PdfGenerator\Backend\Content\Text\TextState;
-use PdfGenerator\Backend\Content\Text\TextSymbol;
+use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
+use PdfGenerator\Backend\Content\Operators\State\GeneralGraphicState;
+use PdfGenerator\Backend\Content\Operators\State\TextState;
+use PdfGenerator\Backend\Content\Symbols\TextSymbol;
 use PdfGenerator\IR\Configuration\PrintConfiguration;
 use PdfGenerator\IR\Font\FontRepository;
 
@@ -49,11 +51,14 @@ class TextFactory
     /**
      * @param PrintConfiguration $printConfiguration
      *
-     * @return TextState
+     * @return TextLevel
      */
     private function convertToTextState(PrintConfiguration $printConfiguration)
     {
-        $textState = new TextState($this->fontRepository->get($printConfiguration->getFontFamily()), $printConfiguration->getFontSize());
+        $generalGraphicState = new GeneralGraphicState();
+        $generalGraphicState->setCurrentTransformationMatrix()
+
+        $textState = new TextLevel();
 
         return $textState;
     }

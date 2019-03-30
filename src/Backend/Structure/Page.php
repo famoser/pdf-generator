@@ -15,9 +15,12 @@ use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Base\BaseStructure;
 use PdfGenerator\Backend\StructureVisitor;
+use PdfGenerator\Utils\IdentifiableTrait;
 
 class Page extends BaseStructure
 {
+    use IdentifiableTrait;
+
     /**
      * @var Pages
      */

@@ -23,12 +23,10 @@ class LevelTransitionVisitor
 
     /**
      * LevelTransitionVisitor constructor.
-     *
-     * @param StateTransitionVisitor $stateTransitionVisitor
      */
-    public function __construct(StateTransitionVisitor $stateTransitionVisitor)
+    public function __construct()
     {
-        $this->stateTransitionVisitor = $stateTransitionVisitor;
+        $this->stateTransitionVisitor = new StateTransitionVisitor();
     }
 
     /**
