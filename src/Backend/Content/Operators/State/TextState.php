@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Content\State\Parameters;
+namespace PdfGenerator\Backend\Content\Operators\State;
 
+use PdfGenerator\Backend\Content\Operators\StateTransitionVisitor;
+use PdfGenerator\Backend\File\Structure\Base\BaseState;
 use PdfGenerator\Backend\Structure\Font;
 
-/**
- * Class TextState.
- */
-class TextState
+class TextState extends BaseState
 {
     const RENDER_MODE_FILL = 0;
     const RENDER_MODE_STROKE = 1;
@@ -165,5 +164,16 @@ class TextState
     public function getRise()
     {
         return $this->rise;
+    }
+
+    /**
+     * @param StateTransitionVisitor $visitor
+     * @param self $previousState
+     *
+     * @return string[]
+     */
+    public function accept(StateTransitionVisitor $visitor, self $previousState): array
+    {
+        return $visitor->visitText($this, $previousState);
     }
 }

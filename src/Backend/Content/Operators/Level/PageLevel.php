@@ -9,9 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Content\Operators;
+namespace PdfGenerator\Backend\Content\Operators\Level;
 
-class PageLevel
+use PdfGenerator\Backend\Content\Operators\Level\Base\BaseLevel;
+use PdfGenerator\Backend\Content\Operators\LevelTransitionVisitor;
+use PdfGenerator\Backend\Content\Operators\State\ColorState;
+use PdfGenerator\Backend\Content\Operators\State\GeneralGraphicState;
+
+class PageLevel extends BaseLevel
 {
     /**
      * @var GeneralGraphicState
@@ -49,5 +54,16 @@ class PageLevel
     public function getColorState(): ColorState
     {
         return $this->colorState;
+    }
+
+    /**
+     * @param LevelTransitionVisitor $visitor
+     * @param self $previousState
+     *
+     * @return string[]
+     */
+    public function accept(LevelTransitionVisitor $visitor, self $previousState): array
+    {
+        return $visitor->visitPage($this, $previousState);
     }
 }

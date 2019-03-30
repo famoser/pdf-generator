@@ -62,52 +62,6 @@ class ContentVisitor
      */
     public function transitionToState(TextState $targetState)
     {
-        // if reference matches, we do not need to do anything
-        if ($this->activeTextState === $targetState) {
-            return [];
-        }
-
-        //if active state is null, we set the active state to the default values.
-        $forceApplyFont = false;
-        if ($this->activeTextState === null) {
-            // font has no default, hence we take the font from the target state...
-            $this->activeTextState = new TextState($targetState->getFont(), $targetState->getFontSize());
-            // ... but force it to render as an operator later
-            $forceApplyFont = true;
-        }
-
-        $operators = [];
-        if ($forceApplyFont || $this->activeTextState->getFont() !== $targetState->getFont() || $this->activeTextState->getFontSize() !== $targetState->getFontSize()) {
-            $operators[] = '/' . $targetState->getFont()->getIdentifier() . ' ' . $targetState->getFontSize() . ' Tf';
-        }
-
-        if ($this->activeTextState->getCharSpace() !== $targetState->getCharSpace()) {
-            $operators[] = $targetState->getCharSpace() . ' Tc';
-        }
-
-        if ($this->activeTextState->getWordSpace() !== $targetState->getWordSpace()) {
-            $operators[] = $targetState->getWordSpace() . ' Tw';
-        }
-
-        if ($this->activeTextState->getScale() !== $targetState->getScale()) {
-            $operators[] = $targetState->getScale() . ' Tz';
-        }
-
-        if ($this->activeTextState->getLeading() !== $targetState->getLeading()) {
-            $operators[] = $targetState->getLeading() . ' TL';
-        }
-
-        if ($this->activeTextState->getRenderMode() !== $targetState->getRenderMode()) {
-            $operators[] = $targetState->getRenderMode() . ' Tr';
-        }
-
-        if ($this->activeTextState->getRise() !== $targetState->getRise()) {
-            $operators[] = $targetState->getRise() . ' Ts';
-        }
-
-        $this->activeTextState = $targetState;
-
-        return $operators;
     }
 
     /**

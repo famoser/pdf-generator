@@ -9,9 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Content\Operators;
+namespace PdfGenerator\Backend\Content\Operators\Level;
 
-class TextLevel
+use PdfGenerator\Backend\Content\Operators\Level\Base\BaseLevel;
+use PdfGenerator\Backend\Content\Operators\LevelTransitionVisitor;
+use PdfGenerator\Backend\Content\Operators\State\ColorState;
+use PdfGenerator\Backend\Content\Operators\State\GeneralGraphicState;
+use PdfGenerator\Backend\Content\Operators\State\TextState;
+
+class TextLevel extends BaseLevel
 {
     /**
      * @var GeneralGraphicState
@@ -26,20 +32,20 @@ class TextLevel
     /**
      * @var TextState
      */
-    private $textState;
+    private $text;
 
     /**
      * TextLevel constructor.
      *
      * @param GeneralGraphicState $generalGraphicsState
      * @param ColorState $colorState
-     * @param TextState $textState
+     * @param TextState $text
      */
-    public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState, TextState $textState)
+    public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState, TextState $text)
     {
         $this->generalGraphicsState = $generalGraphicsState;
         $this->colorState = $colorState;
-        $this->textState = $textState;
+        $this->text = $text;
     }
 
     /**
@@ -61,8 +67,19 @@ class TextLevel
     /**
      * @return TextState
      */
-    public function getTextState(): TextState
+    public function getText(): TextState
     {
-        return $this->textState;
+        return $this->text;
+    }
+
+    /**
+     * @param LevelTransitionVisitor $visitor
+     * @param self $previousState
+     *
+     * @return string[]
+     */
+    public function accept(LevelTransitionVisitor $visitor, self $previousState): array
+    {
+        return $visitor->visitText($this, $previousState);
     }
 }
