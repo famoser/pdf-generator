@@ -91,7 +91,7 @@ class TextState extends BaseState
     private $rise = 0;
 
     /**
-     * @return null|Font
+     * @return Font|null
      */
     public function getFont(): ?Font
     {

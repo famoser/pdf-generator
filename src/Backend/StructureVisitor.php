@@ -76,7 +76,7 @@ class StructureVisitor
         }
 
         $dictionary->addReferenceArrayEntry('Kids', $kids);
-        $dictionary->addNumberEntry('Count', count($kids));
+        $dictionary->addNumberEntry('Count', \count($kids));
 
         return $dictionary;
     }
@@ -156,8 +156,8 @@ class StructureVisitor
     /**
      * @param Structure\Contents $structure
      * @param File $file
-     *
      * @param Page $page
+     *
      * @return BaseObject[]
      */
     public function visitContents(Structure\Contents $structure, File $file, Page $page): array

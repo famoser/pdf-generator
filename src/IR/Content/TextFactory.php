@@ -12,6 +12,7 @@
 namespace PdfGenerator\IR\Content;
 
 use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
+use PdfGenerator\Backend\Content\Operators\State\ColorState;
 use PdfGenerator\Backend\Content\Operators\State\GeneralGraphicState;
 use PdfGenerator\Backend\Content\Operators\State\TextState;
 use PdfGenerator\Backend\Content\Symbols\TextSymbol;
@@ -55,10 +56,7 @@ class TextFactory
      */
     private function convertToTextState(PrintConfiguration $printConfiguration)
     {
-        $generalGraphicState = new GeneralGraphicState();
-        $generalGraphicState->setCurrentTransformationMatrix()
-
-        $textState = new TextLevel();
+        $textState = new TextLevel(new GeneralGraphicState(), new ColorState(), new TextState());
 
         return $textState;
     }

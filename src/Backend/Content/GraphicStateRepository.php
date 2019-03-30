@@ -1,8 +1,15 @@
 <?php
 
+/*
+ * This file is part of the famoser/pdf-generator project.
+ *
+ * (c) Florian Moser <git@famoser.ch>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace PdfGenerator\Backend\Content;
-
 
 use PdfGenerator\Backend\Content\Operators\Level\PageLevel;
 use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
@@ -40,6 +47,7 @@ class GraphicStateRepository
     /**
      * @param Page $page
      * @param TextLevel $newTextLevel
+     *
      * @return string[]
      */
     public function applyTextLevelState(Page $page, TextLevel $newTextLevel)
@@ -57,6 +65,7 @@ class GraphicStateRepository
     /**
      * @param Page $page
      * @param PageLevel $newPageLevel
+     *
      * @return string[]
      */
     public function applyPageLevelState(Page $page, PageLevel $newPageLevel)
@@ -80,11 +89,11 @@ class GraphicStateRepository
     {
         $identifier = $page->getIdentifier();
 
-        if (key_exists($identifier, $this->pageLevelByPage)) {
+        if (\array_key_exists($identifier, $this->pageLevelByPage)) {
             return $this->pageLevelByPage[$identifier];
         }
 
-        $newPageLevel = new PageLevel(new GeneralGraphicState(), new ColorState());;
+        $newPageLevel = new PageLevel(new GeneralGraphicState(), new ColorState());
         $this->pageLevelByPage[$identifier] = $newPageLevel;
 
         return $newPageLevel;
@@ -99,7 +108,7 @@ class GraphicStateRepository
     {
         $identifier = $page->getIdentifier();
 
-        if (key_exists($identifier, $this->textLevelByPage)) {
+        if (\array_key_exists($identifier, $this->textLevelByPage)) {
             return $this->textLevelByPage[$identifier];
         }
 

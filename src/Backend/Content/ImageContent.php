@@ -55,6 +55,7 @@ class ImageContent extends PlacedContent
      * @param ContentVisitor $visitor
      * @param File $file
      * @param Page $page
+     *
      * @return BaseObject
      */
     public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject

@@ -22,6 +22,7 @@ abstract class PageAwareStructure
      * @param StructureVisitor $visitor
      * @param File $file
      * @param Page $page
+     *
      * @return BaseObject|BaseObject[]
      */
     abstract public function accept(StructureVisitor $visitor, File $file, Page $page);

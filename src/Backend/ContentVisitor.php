@@ -36,6 +36,7 @@ class ContentVisitor
      * @param Content\TextContent $textContent
      * @param File $file
      * @param Page $page
+     *
      * @return StreamObject
      */
     public function visitTextContent(Content\TextContent $textContent, File $file, Page $page): BaseObject
@@ -67,6 +68,7 @@ class ContentVisitor
      * @param Content\ImageContent $param
      * @param File $file
      * @param Page $page
+     *
      * @return StreamObject
      */
     public function visitImageContent(Content\ImageContent $param, File $file, Page $page): BaseObject
@@ -90,6 +92,7 @@ class ContentVisitor
 
     /**
      * @param string $text
+     *
      * @return string[]
      */
     private function getTextOperators(string $text): string
@@ -104,8 +107,8 @@ class ContentVisitor
         $printOperators[] = '(' . $lines[0] . ')Tj';
 
         // use the ' operator to start a new line before printing
-        $lineCount = count($lines);
-        for ($i = 1; $i < $lineCount; $i++) {
+        $lineCount = \count($lines);
+        for ($i = 1; $i < $lineCount; ++$i) {
             $printOperators[] = '(' . $lines[$i] . ')\'';
         }
 
