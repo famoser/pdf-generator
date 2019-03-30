@@ -72,22 +72,68 @@ class StateTransitionVisitor
     }
 
     /**
-     * @param GeneralGraphicState $param
+     * @param GeneralGraphicState $targetState
      * @param GeneralGraphicState $previousState
      *
      * @return string[]
      */
-    public function visitGeneralGraphics(GeneralGraphicState $param, GeneralGraphicState $previousState): array
+    public function visitGeneralGraphics(GeneralGraphicState $targetState, GeneralGraphicState $previousState): array
     {
+        // if reference matches, we do not need to do anything
+        if ($previousState === $targetState) {
+            return [];
+        }
+
+        $operators = [];
+        if ($previousState->getCurrentTransformationMatrix() !== $targetState->getCurrentTransformationMatrix()) {
+            $operators[] = implode(' ', $targetState->getCurrentTransformationMatrix()) . ' cm';
+        }
+
+        if ($previousState->getLineWidth() !== $targetState->getLineWidth()) {
+            $operators[] = $targetState->getLineWidth() . ' w';
+        }
+
+        if ($previousState->getLineCap() !== $targetState->getLineCap()) {
+            $operators[] = $targetState->getLineCap() . ' J';
+        }
+
+        if ($previousState->getLineJoin() !== $targetState->getLineJoin()) {
+            $operators[] = $targetState->getLineJoin() . ' j';
+        }
+
+        if ($previousState->getMiterLimit() !== $targetState->getMiterLimit()) {
+            $operators[] = $targetState->getMiterLimit() . ' M';
+        }
+
+        if ($previousState->getDashArray() !== $targetState->getDashArray() || $previousState->getDashPhase() !== $targetState->getDashPhase()) {
+            $operators[] = '[' . implode(',', $targetState->getDashArray()) . '] ' . $targetState->getDashPhase() . ' d';
+        }
+
+        return $operators;
     }
 
     /**
-     * @param ColorState $param
+     * @param ColorState $targetState
      * @param ColorState $previousState
      *
      * @return string[]
      */
-    public function visitColor(ColorState $param, ColorState $previousState): array
+    public function visitColor(ColorState $targetState, ColorState $previousState): array
     {
+        // if reference matches, we do not need to do anything
+        if ($previousState === $targetState) {
+            return [];
+        }
+
+        $operators = [];
+        if ($previousState->getRgbStrokingColour() !== $targetState->getRgbStrokingColour()) {
+            $operators[] = implode(' ', $targetState->getRgbStrokingColour()) . ' RG';
+        }
+
+        if ($previousState->getRgbNonStrokingColour() !== $targetState->getRgbNonStrokingColour()) {
+            $operators[] = implode(' ', $targetState->getRgbNonStrokingColour()) . ' rg';
+        }
+
+        return $operators;
     }
 }

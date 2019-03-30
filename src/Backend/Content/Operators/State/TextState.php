@@ -28,7 +28,7 @@ class TextState extends BaseState
 
     /**
      * the font
-     * pdf-parameter: Tt.
+     * pdf-operator: Tt.
      *
      * @var Font
      */
@@ -36,7 +36,7 @@ class TextState extends BaseState
 
     /**
      * the font size to be used
-     * pdf-parameter: Tts.
+     * pdf-operator: Tts.
      *
      * @var int|float
      */
@@ -44,7 +44,7 @@ class TextState extends BaseState
 
     /**
      * space between chars
-     * pdf-parameter: Tc.
+     * pdf-operator: Tc.
      *
      * @var int|float
      */
@@ -52,7 +52,7 @@ class TextState extends BaseState
 
     /**
      * space between words (like @see $charSpace, but only applies to SPACE)
-     * pdf-parameter: Tw.
+     * pdf-operator: Tw.
      *
      * @var int|float
      */
@@ -60,7 +60,7 @@ class TextState extends BaseState
 
     /**
      * percentage of normal width
-     * pdf-parameter: Th.
+     * pdf-operator: Th.
      *
      * @var int|float
      */
@@ -68,25 +68,25 @@ class TextState extends BaseState
 
     /**
      * vertical distance between baselines (the line height)
-     * pdf-parameter: Tl.
+     * pdf-operator: Tl.
      *
-     * @var float|int
+     * @var float
      */
     private $leading = 0;
 
     /**
      * fill/stroke render combinations
-     * pdf-parameter: Tr.
+     * pdf-operator: Tr.
      *
-     * @var float|int
+     * @var float
      */
     private $renderMode = self::RENDER_MODE_FILL;
 
     /**
      * upwards shift from the baseline
-     * pdf-parameter: Tr.
+     * pdf-operator: Tr.
      *
-     * @var float|int
+     * @var float
      */
     private $rise = 0;
 
@@ -111,57 +111,107 @@ class TextState extends BaseState
     }
 
     /**
-     * @return float|int
+     * @return float
      */
-    public function getFontSize()
+    public function getFontSize(): float
     {
         return $this->fontSize;
     }
 
     /**
-     * @return float|int
+     * @param float $charSpace
      */
-    public function getCharSpace()
+    public function setCharSpace(float $charSpace): void
+    {
+        $this->charSpace = $charSpace;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCharSpace(): float
     {
         return $this->charSpace;
     }
 
     /**
-     * @return float|int
+     * @param float $wordSpace
      */
-    public function getWordSpace()
+    public function setWordSpace(float $wordSpace): void
+    {
+        $this->wordSpace = $wordSpace;
+    }
+
+    /**
+     * @return float
+     */
+    public function getWordSpace(): float
     {
         return $this->wordSpace;
     }
 
     /**
-     * @return float|int
+     * @param float $scale
      */
-    public function getScale()
+    public function setScale(float $scale): void
+    {
+        $this->scale = $scale;
+    }
+
+    /**
+     * @return float
+     */
+    public function getScale(): float
     {
         return $this->scale;
     }
 
     /**
-     * @return float|int
+     * @param float $leading
      */
-    public function getLeading()
+    public function setLeading(float $leading): void
+    {
+        $this->leading = $leading;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLeading(): float
     {
         return $this->leading;
     }
 
     /**
-     * @return float|int
+     * @param int $renderMode
      */
-    public function getRenderMode()
+    public function setRenderMode(int $renderMode): void
+    {
+        \assert($renderMode >= self::RENDER_MODE_FILL && $renderMode <= self::RENDER_MODE_PATH_INVISIBLE);
+
+        $this->renderMode = $renderMode;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRenderMode(): float
     {
         return $this->renderMode;
     }
 
     /**
-     * @return float|int
+     * @param float $rise
      */
-    public function getRise()
+    public function setRise(float $rise): void
+    {
+        $this->rise = $rise;
+    }
+
+    /**
+     * @return float
+     */
+    public function getRise(): float
     {
         return $this->rise;
     }

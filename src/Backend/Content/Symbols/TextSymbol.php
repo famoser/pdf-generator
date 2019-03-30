@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Backend\Content\Symbols;
 
+use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
+
 class TextSymbol
 {
     /**
@@ -19,20 +21,20 @@ class TextSymbol
     private $content;
 
     /**
-     * @var TextState
+     * @var TextLevel
      */
-    private $textState;
+    private $textLevel;
 
     /**
      * TextSymbol constructor.
      *
      * @param string $content
-     * @param TextState $textState
+     * @param TextLevel $textLevel
      */
-    public function __construct(string $content, TextState $textState)
+    public function __construct(string $content, TextLevel $textLevel)
     {
         $this->content = $content;
-        $this->textState = $textState;
+        $this->textLevel = $textLevel;
     }
 
     /**
@@ -44,10 +46,10 @@ class TextSymbol
     }
 
     /**
-     * @return TextState
+     * @return TextLevel
      */
-    public function getTextState(): TextState
+    public function getTextLevel(): TextLevel
     {
-        return $this->textState;
+        return $this->textLevel;
     }
 }

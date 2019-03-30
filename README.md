@@ -77,6 +77,7 @@ The Backend itself is divided into multiple parts.
 
 #### Content
 The Content folder helps to render complex content streams like text and images.
+It represents the streams as symbols with a content and an attached state the pdf has to be in when the content is printed.
 
 It knows how to convert itself into streams which can then be inserted into the pdf.
 

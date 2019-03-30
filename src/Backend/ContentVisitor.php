@@ -11,18 +11,12 @@
 
 namespace PdfGenerator\Backend;
 
-use PdfGenerator\Backend\Content\Text\TextState;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
 
 class ContentVisitor
 {
-    /**
-     * @var TextState|null
-     */
-    private $activeTextState;
-
     /**
      * @param Content\TextContent $param
      * @param File $file
@@ -56,15 +50,6 @@ class ContentVisitor
     }
 
     /**
-     * @param TextState $targetState
-     *
-     * @return string[]
-     */
-    public function transitionToState(TextState $targetState)
-    {
-    }
-
-    /**
      * @param Content\ImageContent $param
      * @param File $file
      *
@@ -77,7 +62,7 @@ class ContentVisitor
         // BT: begin text
         $content[] = 'q';
 
-        // scale by 132 and translate to x/y
+        // scale by height and translate to x/y
         $content[] = $param->getWidth() . ' 0 0 ' . $param->getHeight() . ' ' . $param->getXCoordinate() . ' ' . $param->getYCoordinate() . ' cm';
 
         // set font & font size with Tf function

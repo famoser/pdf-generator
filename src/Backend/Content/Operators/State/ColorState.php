@@ -17,6 +17,56 @@ use PdfGenerator\Backend\File\Structure\Base\BaseState;
 class ColorState extends BaseState
 {
     /**
+     * the line/border color.
+     *
+     * @var float[]
+     */
+    private $rgbStrokingColour = [0, 0, 0];
+
+    /**
+     * the fill color.
+     *
+     * @var float[]
+     */
+    private $rgbNonStrokingColour = [0, 0, 0];
+
+    /**
+     * @return float[]
+     */
+    public function getRgbStrokingColour(): array
+    {
+        return $this->rgbStrokingColour;
+    }
+
+    /**
+     * @param float[] $rgbStrokingColour
+     */
+    public function setRgbStrokingColour(array $rgbStrokingColour): void
+    {
+        \assert(\count($rgbStrokingColour) === 3);
+
+        $this->rgbStrokingColour = $rgbStrokingColour;
+    }
+
+    /**
+     * @return float[]
+     */
+    public function getRgbNonStrokingColour(): array
+    {
+        return $this->rgbNonStrokingColour;
+    }
+
+    /**
+     * @param float[] $rgbNonStrokingColour
+     */
+    public function setRgbNonStrokingColour(array $rgbNonStrokingColour): void
+    {
+        \assert(\count($rgbNonStrokingColour) === 3);
+
+        $this->rgbNonStrokingColour = $rgbNonStrokingColour;
+    }
+
+    /**
      * @param StateTransitionVisitor $visitor
      * @param self $previousState
      *

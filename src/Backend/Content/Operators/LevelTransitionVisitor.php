@@ -17,22 +17,44 @@ use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
 class LevelTransitionVisitor
 {
     /**
-     * @param PageLevel $param
+     * @var StateTransitionVisitor
+     */
+    private $stateTransitionVisitor;
+
+    /**
+     * LevelTransitionVisitor constructor.
+     *
+     * @param StateTransitionVisitor $stateTransitionVisitor
+     */
+    public function __construct(StateTransitionVisitor $stateTransitionVisitor)
+    {
+        $this->stateTransitionVisitor = $stateTransitionVisitor;
+    }
+
+    /**
+     * @param PageLevel $targetState
      * @param PageLevel $previousState
      *
      * @return string[]
      */
-    public function visitPage(PageLevel $param, PageLevel $previousState): array
+    public function visitPage(PageLevel $targetState, PageLevel $previousState): array
     {
+        return array_merge(
+            $this->stateTransitionVisitor->visitColor($targetState->getColorState(), $previousState->getColorState()),
+            $this->stateTransitionVisitor->visitGeneralGraphics($targetState->getGeneralGraphicsState(), $previousState->getGeneralGraphicsState()));
     }
 
     /**
-     * @param TextLevel $param
+     * @param TextLevel $targetState
      * @param TextLevel $previousState
      *
      * @return string[]
      */
-    public function visitText(TextLevel $param, TextLevel $previousState): array
+    public function visitText(TextLevel $targetState, TextLevel $previousState): array
     {
+        return array_merge(
+            $this->stateTransitionVisitor->visitColor($targetState->getColorState(), $previousState->getColorState()),
+            $this->stateTransitionVisitor->visitText($targetState->getText(), $previousState->getText()),
+            $this->stateTransitionVisitor->visitGeneralGraphics($targetState->getGeneralGraphicsState(), $previousState->getGeneralGraphicsState()));
     }
 }
