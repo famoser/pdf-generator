@@ -72,6 +72,12 @@ and hence does not expose PDF-specific details.
 
 Its main task is to translate the API calls into a high-level PDF structure of the backend.
 
+### Configuration
+Takes care of converting the configuration into a PDF-specific structure.
+
+### Structure
+Contains the various parts of the PDFs and allows to insert new ones easily. 
+
 ### Backend
 The Backend itself is divided into multiple parts.
 
@@ -105,7 +111,7 @@ First, the backend will be created following closely the standard of adobe.
 
 - [x] print text
 - [x] print images
-- [ ] style text
+- [x] style text
 - [ ] draw lines
 - [ ] draw rectangles
 - [ ] style lines 
