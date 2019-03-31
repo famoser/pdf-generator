@@ -25,9 +25,10 @@ class PrinterTest extends TestCase
         // arrange
         $text = 'hi mom';
         $printer = new Printer();
+        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
 
         // act
-        $printer->printText(20, 20, $text);
+        $printer->printText($text);
         $result = $printer->save();
 
         // assert
@@ -42,10 +43,11 @@ class PrinterTest extends TestCase
         // arrange
         $text = 'hi mom';
         $printer = new Printer();
+        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
 
         // act
-        $printer->printText(20, 20, $text . '1');
-        $printer->printText(20, 20, $text . '2');
+        $printer->printText($text . '1');
+        $printer->printText($text . '2');
         $result = $printer->save();
 
         // assert
@@ -59,12 +61,13 @@ class PrinterTest extends TestCase
     public function testPrintText_cursorInResultFile()
     {
         // arrange
-        $xPosition = 11;
-        $yPosition = 22;
+        $xPosition = 22;
+        $yPosition = 20;
         $printer = new Printer();
+        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition($xPosition, $yPosition);
 
         // act
-        $printer->printText($xPosition, $yPosition, 'text');
+        $printer->printText('text');
         $result = $printer->save();
 
         // assert
@@ -78,41 +81,33 @@ class PrinterTest extends TestCase
     public function testPrintTest_withUtf8Text_inResultFile()
     {
         // arrange
-        $xPosition = 11;
-        $yPosition = 22;
+        $text = 'äüö';
         $printer = new Printer();
+        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
 
         // act
-        $printer->printText($xPosition, $yPosition, 'äöü');
+        $printer->printText($text);
         $result = $printer->save();
 
         // assert
-        $this->assertStringContainsString('äöü', $result);
-        file_put_contents('pdf.pdf', $result);
+        $this->assertStringContainsString($text, $result);
     }
 
     /**
      * @throws \Exception
      */
-    public function testPrintImage_imagePositionInResultSize()
+    public function testPrintImage_inResultFile()
     {
         // arrange
-        $xPosition = 11;
-        $yPosition = 22;
-        $width = 100;
-        $height = 100;
         $printer = new Printer();
+        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20, 100, 100);
 
         // act
-        $printer->printImage($xPosition, $yPosition, $width, $height, ResourcesProvider::getImage1Path());
+        $printer->printImage(ResourcesProvider::getImage1Path());
         $result = $printer->save();
 
         // assert
         $this->assertTrue(true);
-
-        $this->assertStringContainsString((string)$xPosition, $result);
-        $this->assertStringContainsString((string)$yPosition, $result);
-        $this->assertStringContainsString((string)$width, $result);
-        $this->assertStringContainsString((string)$height, $result);
+        file_put_contents('pdf.pdf', $result);
     }
 }

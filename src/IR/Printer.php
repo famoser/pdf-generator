@@ -11,17 +11,15 @@
 
 namespace PdfGenerator\IR;
 
+use PdfGenerator\Backend\Content\Base\BaseContent;
 use PdfGenerator\Backend\Content\ImageContent;
 use PdfGenerator\Backend\Content\TextContent;
 use PdfGenerator\Backend\Document;
-use PdfGenerator\Backend\Structure\Builder\PageBuilder;
-use PdfGenerator\Backend\Structure\Supporting\FontCollection;
-use PdfGenerator\Backend\Structure\Supporting\ImageCollection;
-use PdfGenerator\IR\Content\TextFactory;
-use PdfGenerator\IR\Font\FontRepository;
-use PdfGenerator\IR\Printer\StatefulPrinter;
+use PdfGenerator\IR\Configuration\LevelFactory;
+use PdfGenerator\IR\Configuration\StateFactory;
+use PdfGenerator\IR\Structure\ContentFactory;
 
-class Printer extends StatefulPrinter
+class Printer
 {
     /**
      * @var Document
@@ -29,25 +27,29 @@ class Printer extends StatefulPrinter
     private $document;
 
     /**
-     * @var FontRepository
+     * @var ContentFactory
      */
-    private $fontRepository;
+    private $contentFactor;
 
     /**
-     * @var PageBuilder[]
+     * @var LevelFactory
      */
-    private $pageBuilders = [];
+    private $levelFactory;
+
+    /**
+     * @var StateFactory
+     */
+    private $stateFactory;
 
     /**
      * PdfDocument constructor.
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->document = new Document();
-        $this->fontRepository = new FontRepository($this->document);
-        $this->textFactory = new TextFactory($this->fontRepository);
+        $this->contentFactor = new ContentFactory($this->document);
+        $this->stateFactory = new StateFactory($this->contentFactor->getFontRepository());
+        $this->levelFactory = new LevelFactory($this->stateFactory);
     }
 
     /**
@@ -55,28 +57,22 @@ class Printer extends StatefulPrinter
      */
     public function printText(string $text)
     {
-        $this->ensureConfigurationApplied();
+        $textLevel = $this->levelFactory->getTextLevelRepository()->getTextLevel();
+        $textContent = new TextContent($text, $textLevel);
 
-        $textSymbols = $this->textFactory->create($text, $this->configuration);
-        $textContent = new TextContent($xPosition, $yPosition, $textSymbols);
-
-        $contentBuilder = $this->getActiveContentBuilder();
-        $contentBuilder->addContent($textContent);
+        $this->printContent($textContent);
     }
 
     /**
-     * @param float $width
-     * @param float $height
      * @param string $imagePath
      */
-    public function printImage(string $imagePath, float $width, float $height)
+    public function printImage(string $imagePath)
     {
-        $this->ensureConfigurationApplied();
+        $image = $this->contentFactor->getImageRepository()->getImage($imagePath);
+        $pageLevel = $this->levelFactory->getPageLevelRepository()->getPageLevel();
+        $textContent = new ImageContent($image, $pageLevel);
 
-        $image = $this->getImageCollection()->getOrCreateImage($imagePath);
-
-        $contentBuilder = $this->getActiveContentBuilder();
-        $contentBuilder->addContent(new ImageContent($xPosition, $yPosition, $image, $width, $height));
+        $this->printContent($textContent);
     }
 
     /**
@@ -85,50 +81,15 @@ class Printer extends StatefulPrinter
      */
     public function printRectangle(float $width, float $height)
     {
-        $this->ensureConfigurationApplied();
     }
 
     /**
-     * @return PageBuilder
+     * @param BaseContent $baseContent
      */
-    protected function getActivePageBuilder()
+    protected function printContent(BaseContent $baseContent)
     {
-        $pageBuildersCount = \count($this->pageBuilders);
-        $targetPageBuilderIndex = $this->page - 1;
-
-        while ($targetPageBuilderIndex >= $pageBuildersCount) {
-            $pageBuilder = $this->document->addPage();
-            $pageBuilder->setMediaBox($this->configuration->getPageWidth(), $this->configuration->getPageHeight());
-
-            $this->pageBuilders[] = $pageBuilder;
-            ++$pageBuildersCount;
-        }
-
-        return $this->pageBuilders[$targetPageBuilderIndex];
-    }
-
-    /**
-     * @return \PdfGenerator\Backend\Structure\Builder\ContentsBuilder
-     */
-    protected function getActiveContentBuilder()
-    {
-        return $this->getActivePageBuilder()->getContentsBuilder();
-    }
-
-    /**
-     * @return FontCollection
-     */
-    protected function getFontCollection()
-    {
-        return $this->document->getResourcesBuilder()->getFontCollection();
-    }
-
-    /**
-     * @return ImageCollection
-     */
-    protected function getImageCollection()
-    {
-        return $this->document->getResourcesBuilder()->getImageCollection();
+        $page = $this->contentFactor->getPageRepository()->getPage(1);
+        $page->getContentsBuilder()->addContent($baseContent);
     }
 
     /**
@@ -146,5 +107,13 @@ class Printer extends StatefulPrinter
     public function save()
     {
         return $this->document->render();
+    }
+
+    /**
+     * @return StateFactory
+     */
+    public function getStateFactory(): StateFactory
+    {
+        return $this->stateFactory;
     }
 }

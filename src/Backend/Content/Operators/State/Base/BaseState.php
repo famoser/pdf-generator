@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File\Structure\Base;
+namespace PdfGenerator\Backend\Content\Operators\State\Base;
 
 use PdfGenerator\Backend\Content\Operators\StateTransitionVisitor;
 
@@ -21,5 +21,5 @@ abstract class BaseState
      *
      * @return string[]
      */
-    abstract public function accept(StateTransitionVisitor $visitor, self $previousState): array;
+    abstract public function accept(StateTransitionVisitor $visitor, $previousState): array;
 }

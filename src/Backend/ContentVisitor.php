@@ -80,7 +80,7 @@ class ContentVisitor
      *
      * @return StreamObject
      */
-    private function createStreamObject(File $file, array $operators)
+    private function createStreamObject(File $file, array $operators): StreamObject
     {
         return $file->addStreamObject(implode(' ', $operators), StreamObject::CONTENT_TYPE_TEXT);
     }
@@ -90,7 +90,7 @@ class ContentVisitor
      *
      * @return string[]
      */
-    private function getTextOperators(string $text): string
+    private function getTextOperators(string $text): array
     {
         // split by newlines
         $cleanedText = str_replace("\n\r", "\n", $text);

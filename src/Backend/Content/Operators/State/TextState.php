@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Backend\Content\Operators\State;
 
+use PdfGenerator\Backend\Content\Operators\State\Base\BaseState;
 use PdfGenerator\Backend\Content\Operators\StateTransitionVisitor;
-use PdfGenerator\Backend\File\Structure\Base\BaseState;
 use PdfGenerator\Backend\Structure\Font;
 
 class TextState extends BaseState
@@ -91,11 +91,27 @@ class TextState extends BaseState
     private $rise = 0;
 
     /**
+     * @param Font $font
+     */
+    public function setFont(Font $font): void
+    {
+        $this->font = $font;
+    }
+
+    /**
      * @return Font|null
      */
     public function getFont(): ?Font
     {
         return $this->font;
+    }
+
+    /**
+     * @param float $fontSize
+     */
+    public function setFontSize(float $fontSize): void
+    {
+        $this->fontSize = $fontSize;
     }
 
     /**
@@ -210,7 +226,7 @@ class TextState extends BaseState
      *
      * @return string[]
      */
-    public function accept(StateTransitionVisitor $visitor, self $previousState): array
+    public function accept(StateTransitionVisitor $visitor, $previousState): array
     {
         return $visitor->visitText($this, $previousState);
     }

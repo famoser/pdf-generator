@@ -62,7 +62,7 @@ class PageLevel extends BaseLevel
      *
      * @return string[]
      */
-    public function accept(LevelTransitionVisitor $visitor, self $previousState): array
+    public function accept(LevelTransitionVisitor $visitor, $previousState): array
     {
         return $visitor->visitPage($this, $previousState);
     }

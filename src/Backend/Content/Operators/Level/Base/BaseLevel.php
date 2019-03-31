@@ -21,5 +21,5 @@ abstract class BaseLevel
      *
      * @return string[]
      */
-    abstract public function accept(LevelTransitionVisitor $visitor, self $previousState): array;
+    abstract public function accept(LevelTransitionVisitor $visitor, $previousState): array;
 }

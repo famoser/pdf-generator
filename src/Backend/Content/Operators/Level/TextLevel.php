@@ -78,7 +78,7 @@ class TextLevel extends BaseLevel
      *
      * @return string[]
      */
-    public function accept(LevelTransitionVisitor $visitor, self $previousState): array
+    public function accept(LevelTransitionVisitor $visitor, $previousState): array
     {
         return $visitor->visitText($this, $previousState);
     }

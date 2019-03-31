@@ -30,17 +30,12 @@ class StateTransitionVisitor
             return [];
         }
 
-        //if active state is null, we set the active state to the default values.
-        $forceApplyFont = false;
         if ($previousState === null) {
-            // font has no default, hence we take the font from the target state...
-            $previousState = new TextState($targetState->getFont(), $targetState->getFontSize());
-            // ... but force it to render as an operator later
-            $forceApplyFont = true;
+            $previousState = new TextState();
         }
 
         $operators = [];
-        if ($forceApplyFont || $previousState->getFont() !== $targetState->getFont() || $previousState->getFontSize() !== $targetState->getFontSize()) {
+        if ($previousState->getFont() !== $targetState->getFont() || $previousState->getFontSize() !== $targetState->getFontSize()) {
             $operators[] = '/' . $targetState->getFont()->getIdentifier() . ' ' . $targetState->getFontSize() . ' Tf';
         }
 
@@ -84,6 +79,10 @@ class StateTransitionVisitor
             return [];
         }
 
+        if ($previousState === null) {
+            $previousState = new GeneralGraphicState();
+        }
+
         $operators = [];
         if ($previousState->getCurrentTransformationMatrix() !== $targetState->getCurrentTransformationMatrix()) {
             $operators[] = implode(' ', $targetState->getCurrentTransformationMatrix()) . ' cm';
@@ -123,6 +122,10 @@ class StateTransitionVisitor
         // if reference matches, we do not need to do anything
         if ($previousState === $targetState) {
             return [];
+        }
+
+        if ($previousState === null) {
+            $previousState = new ColorState();
         }
 
         $operators = [];
