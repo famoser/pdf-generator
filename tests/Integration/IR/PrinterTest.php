@@ -73,6 +73,7 @@ class PrinterTest extends TestCase
         // assert
         $this->assertStringContainsString((string)$xPosition, $result);
         $this->assertStringContainsString((string)$yPosition, $result);
+        file_put_contents('pdf.pdf', $result);
     }
 
     /**
@@ -108,6 +109,5 @@ class PrinterTest extends TestCase
 
         // assert
         $this->assertTrue(true);
-        file_put_contents('pdf.pdf', $result);
     }
 }

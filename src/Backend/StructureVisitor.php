@@ -183,7 +183,7 @@ class StructureVisitor
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', '/Font');
         $dictionary->addTextEntry('Subtype', $structure->getSubtype());
-        $dictionary->addTextEntry('BaseFont', $structure->getBaseFont());
+        $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
 
         return $dictionary;
     }
