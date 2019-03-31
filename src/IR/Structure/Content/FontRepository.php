@@ -99,12 +99,12 @@ class FontRepository
      */
     public function getFont(string $font, string $style)
     {
-        if (!array_key_exists($font, $this->defaultFonts)) {
+        if (!\array_key_exists($font, $this->defaultFonts)) {
             throw new \Exception('The font ' . $font . ' is currently not supported');
         }
 
         $defaultStyles = $this->defaultFonts[$font];
-        if (!array_key_exists($style, $defaultStyles)) {
+        if (!\array_key_exists($style, $defaultStyles)) {
             throw new \Exception('This font style ' . $style . ' is currently not supported');
         }
 
