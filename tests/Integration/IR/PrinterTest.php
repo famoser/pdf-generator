@@ -79,6 +79,35 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
+    public function testPrintLine_cursorInResultFile()
+    {
+        // arrange
+        $xPosition = 40;
+        $yPosition = 20;
+        $width = 20;
+        $height = 30;
+        $printer = new Printer();
+        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition($xPosition, $yPosition);
+        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setLineWidth(0.5);
+        $printer->getStateFactory()->getColorStateRepository()->setFillColor('#aefaef');
+        $printer->getStateFactory()->getColorStateRepository()->setBorderColor('#abccba');
+
+        // act
+        $printer->printRectangle($width, $height, true);
+        $printer->printRectangle($width + 20, $height + 40, false);
+        $result = $printer->save();
+
+        // assert
+        $this->assertStringContainsString((string)$xPosition, $result);
+        $this->assertStringContainsString((string)$yPosition, $result);
+        $this->assertStringContainsString((string)$width, $result);
+        $this->assertStringContainsString((string)$height, $result);
+        file_put_contents('pdf.pdf', $result);
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function testPrintTest_withUtf8Text_inResultFile()
     {
         // arrange

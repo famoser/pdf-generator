@@ -13,6 +13,7 @@ namespace PdfGenerator\IR;
 
 use PdfGenerator\Backend\Content\Base\BaseContent;
 use PdfGenerator\Backend\Content\ImageContent;
+use PdfGenerator\Backend\Content\Rectangle;
 use PdfGenerator\Backend\Content\TextContent;
 use PdfGenerator\Backend\Document;
 use PdfGenerator\IR\Configuration\LevelFactory;
@@ -78,9 +79,15 @@ class Printer
     /**
      * @param float $width
      * @param float $height
+     * @param bool $fill
      */
-    public function printRectangle(float $width, float $height)
+    public function printRectangle(float $width, float $height, bool $fill)
     {
+        $pageLevel = $this->levelFactory->getPageLevelRepository()->getPageLevel();
+        $paintingMode = $fill ? Rectangle::PAINTING_MODE_STROKE_FILL : Rectangle::PAINTING_MODE_STROKE;
+        $rectangle = new Rectangle($width, $height, $paintingMode, $pageLevel);
+
+        $this->printContent($rectangle);
     }
 
     /**

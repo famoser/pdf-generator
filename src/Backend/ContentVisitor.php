@@ -12,6 +12,8 @@
 namespace PdfGenerator\Backend;
 
 use PdfGenerator\Backend\Content\GraphicStateRepository;
+use PdfGenerator\Backend\Content\ImageContent;
+use PdfGenerator\Backend\Content\Rectangle;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
@@ -75,6 +77,28 @@ class ContentVisitor
     }
 
     /**
+     * @param Content\Rectangle $cell
+     * @param File $file
+     * @param Page $page
+     *
+     * @return StreamObject
+     */
+    public function visitRectangle(Content\Rectangle $cell, File $file, Page $page): BaseObject
+    {
+        // gather operators to change to desired state
+        $stateTransitionOperators = $this->graphicStateRepository->applyPageLevelState($page, $cell->getPageLevel());
+
+        // gather operators to print the content
+        $paintingOperator = $this->getPaintingOperator($cell);
+        $imageOperator = '0 0 ' . $cell->getWidth() . ' ' . $cell->getHeight() . ' re ' . $paintingOperator;
+
+        // create stream object
+        $operators = array_merge($stateTransitionOperators, [$imageOperator]);
+
+        return $this->createStreamObject($file, $operators);
+    }
+
+    /**
      * @param File $file
      * @param array $operators
      *
@@ -108,5 +132,24 @@ class ContentVisitor
         }
 
         return $printOperators;
+    }
+
+    /**
+     * @param Rectangle $rectangle
+     *
+     * @return string
+     */
+    private function getPaintingOperator(Rectangle $rectangle): string
+    {
+        switch ($rectangle->getPaintingMode()) {
+            case Rectangle::PAINTING_MODE_STROKE:
+                return 's';
+            case Rectangle::PAINTING_MODE_FILL:
+                return 'f';
+            case Rectangle::PAINTING_MODE_STROKE_FILL:
+                return 'b';
+            default:
+                return 's';
+        }
     }
 }
