@@ -136,3 +136,9 @@ Lastly, the final API spec will be implemented using the IR.
 
 - [ ] define sensible way to print to layouted part
 - [ ] implement layouts
+
+### Fun Milestone
+What does not need to be done, but could.
+
+- [ ] compress string streams
+- [ ] optimize rectangle position (do not modify transform matrix)
