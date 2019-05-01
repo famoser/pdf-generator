@@ -6,7 +6,7 @@
     "authors": [
         {
             "name": "Florian Moser",
-            "email": "products@famoser.ch"
+            "email": "git@famoser.ch"
         }
     ],
     "require": {
@@ -30,6 +30,9 @@
         "psr-4": {
             "PdfGenerator\\Tests\\": "tests/"
         }
+    },
+    "config": {
+        "sort-packages": true
     },
     "scripts": {
         "configure-environment": [
