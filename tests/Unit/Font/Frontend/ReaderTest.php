@@ -197,7 +197,7 @@ class ReaderTest extends TestCase
     public function testUInt32_multipleNumbers_resultAsExpected()
     {
         $input = 576460754450916516;
-        $output = [576460752437641216, 2147493028];
+        $output = [134217728, 2147493028];
 
         $packed = pack('J', $input);
         $reader = new Reader($packed);
@@ -255,8 +255,8 @@ class ReaderTest extends TestCase
     public function testFixed_singleNumbers_resultAsExpected()
     {
         $testNumbers = [
-            1073741824 => 16384,
-            2147483648 => -32768,
+            1073741824 => 16384.0,
+            2147483648 => -32768.0,
             1280 => 0.128,
         ];
 
@@ -277,7 +277,7 @@ class ReaderTest extends TestCase
             0x7fff => 1.999939,
             0x7000 => 1.75,
             0x0001 => 0.000061,
-            0 => 0,
+            0 => 0.0,
             0xffff => -0.000061,
             0x8000 => -2.0,
         ];
