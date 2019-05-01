@@ -52,11 +52,11 @@ class StructureVisitor
         $output = $header->accept($this) . "\n";
 
         $crossReferenceTable = new CrossReferenceTable();
-        $crossReferenceTable->registerEntrySize(mb_strlen($output));
+        $crossReferenceTable->registerEntrySize(\strlen($output));
 
         foreach ($content as $baseObject) {
             $objectContent = $baseObject->accept($this->objectVisitor) . "\n";
-            $crossReferenceTable->registerEntrySize(mb_strlen($objectContent));
+            $crossReferenceTable->registerEntrySize(\strlen($objectContent));
             $output .= $objectContent;
         }
 

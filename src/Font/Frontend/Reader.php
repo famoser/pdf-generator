@@ -42,7 +42,7 @@ class Reader
     public function __construct($content)
     {
         $this->content = $content;
-        $this->byteCount = \mb_strlen($content);
+        $this->byteCount = \strlen($content);
     }
 
     /**
