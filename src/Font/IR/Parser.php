@@ -9,11 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Font\TTF;
+namespace PdfGenerator\Font\IR;
+
+use PdfGenerator\Font\Frontend\Reader;
 
 class Parser
 {
-    public function parse(string $path)
+    public function parse(string $content)
     {
+        $reader = new Reader($content);
     }
 }

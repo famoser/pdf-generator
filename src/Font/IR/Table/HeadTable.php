@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Font\TTF\Table;
+namespace PdfGenerator\Font\IR\Table;
 
 /**
  * the header table contains meta-data about the font

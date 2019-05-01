@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Font\TTF\Table;
+namespace PdfGenerator\Font\IR\Table;
 
 /**
  * the character map table maps character codes to glyph indices.

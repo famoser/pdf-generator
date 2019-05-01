@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Font\TTF\Table;
+namespace PdfGenerator\Font\IR\Table;
 
 /**
  * the font directly is at the start of the TTF file and defines where which tables are located.

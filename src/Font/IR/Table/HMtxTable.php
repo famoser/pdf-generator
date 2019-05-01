@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Font\TTF\Table;
+namespace PdfGenerator\Font\IR\Table;
 
 /**
  * the horizontal metrics table defines how the horizontal font has to be rendered
