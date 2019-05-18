@@ -65,7 +65,7 @@ class OffsetTable
 
     /**
      * how many tables are missed if only binary search tree is looked at
-     * calculated: numTables*16-searchRange.
+     * calculated: numTables*16-searchRange; which is equivalent to (numTables-binaryTreeTables)*16.
      *
      * @ttf-type uint16
      *
