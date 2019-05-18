@@ -11,13 +11,15 @@
 
 namespace PdfGenerator\Font\Frontend;
 
+use PdfGenerator\Font\Frontend\File\LongDateTime;
+
 /**
  * can read supported pdf value types.
  *
  * notes:
  *  - always uses Big Endian ordering for parsing
  */
-class Reader
+class FileReader
 {
     /**
      * @var string
@@ -257,6 +259,15 @@ class Reader
         $fraction = sprintf('%.6f', $numerator / 16384);
 
         return $decimal + $fraction;
+    }
+
+    /**
+     * aligns the pointer by long.
+     */
+    public function alignLong(): void
+    {
+        $align = 8 - $this->offset % 8;
+        $this->offset += $align;
     }
 
     /**

@@ -48,7 +48,7 @@ class Font extends BaseStructure
     private $baseFont;
 
     /**
-     * Font constructor.
+     * File constructor.
      *
      * @param string $identifier
      * @param string $subtype

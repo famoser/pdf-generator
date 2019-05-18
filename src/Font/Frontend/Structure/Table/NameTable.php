@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Table;
+namespace PdfGenerator\Font\Frontend\Structure\Table;
 
 /**
  * the name table associates strings with the font for different languages.

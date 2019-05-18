@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Tests\Unit\Font\Frontend;
 
-use PdfGenerator\Font\Frontend\Reader;
+use PdfGenerator\Font\Frontend\FileReader;
 use PHPUnit\Framework\TestCase;
 
 class ReaderTest extends TestCase
@@ -25,7 +25,7 @@ class ReaderTest extends TestCase
         $output = [0, 0, 8, 124];
 
         $packed = pack('N', $input);
-        $reader = new Reader($packed);
+        $reader = new FileReader($packed);
 
         $this->assertSame($output[0], $reader->readUInt8());
         $this->assertSame($output[1], $reader->readUInt8());
@@ -50,7 +50,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('n', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $reader->readUInt8();
             $this->assertSame($expectedOutput, $reader->readUInt8());
         }
@@ -65,7 +65,7 @@ class ReaderTest extends TestCase
         $output = [0, 11, -21, 55];
 
         $packed = pack('N', $input);
-        $reader = new Reader($packed);
+        $reader = new FileReader($packed);
 
         $this->assertSame($output[0], $reader->readInt8());
         $this->assertSame($output[1], $reader->readInt8());
@@ -91,7 +91,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('n', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $reader->readInt8();
             $this->assertSame($expectedOutput, $reader->readInt8());
         }
@@ -106,7 +106,7 @@ class ReaderTest extends TestCase
         $output = [1, 1];
 
         $packed = pack('N', $input);
-        $reader = new Reader($packed);
+        $reader = new FileReader($packed);
 
         $this->assertSame($output[0], $reader->readUInt16());
         $this->assertSame($output[1], $reader->readUInt16());
@@ -127,7 +127,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('N', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $reader->readUInt16();
             $this->assertSame($expectedOutput, $reader->readUInt16());
         }
@@ -142,7 +142,7 @@ class ReaderTest extends TestCase
         $output = [2048, -32641];
 
         $packed = pack('N', $input);
-        $reader = new Reader($packed);
+        $reader = new FileReader($packed);
 
         $this->assertSame($output[0], $reader->readInt16());
         $this->assertSame($output[1], $reader->readInt16());
@@ -162,7 +162,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('N', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $reader->readInt16();
             $this->assertSame($expectedOutput, $reader->readInt16());
         }
@@ -185,7 +185,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('N', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $reader->readUInt8();
             $this->assertSame($expectedOutput, $reader->readUInt24());
         }
@@ -200,7 +200,7 @@ class ReaderTest extends TestCase
         $output = [134217728, 2147493028];
 
         $packed = pack('J', $input);
-        $reader = new Reader($packed);
+        $reader = new FileReader($packed);
 
         $this->assertSame($output[0], $reader->readUInt32());
         $this->assertSame($output[1], $reader->readUInt32());
@@ -222,7 +222,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('J', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $reader->readUInt32();
             $this->assertSame($expectedOutput, $reader->readUInt32());
         }
@@ -243,7 +243,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('J', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $reader->readUInt32();
             $this->assertSame($expectedOutput, $reader->readInt32());
         }
@@ -263,7 +263,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('N', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $this->assertSame($expectedOutput, $reader->readFixed());
         }
     }
@@ -285,7 +285,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('N', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $reader->readInt16();
             $this->assertSame($expectedOutput, $reader->readF2DOT14());
         }
@@ -306,7 +306,7 @@ class ReaderTest extends TestCase
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('J', $input);
-            $reader = new Reader($packedInput);
+            $reader = new FileReader($packedInput);
             $this->assertSame($expectedOutput, $reader->readLONGDATETIME()->getValue());
         }
     }
@@ -320,7 +320,7 @@ class ReaderTest extends TestCase
         $output = [0, 0, 8, 124];
 
         $packed = pack('N', $input);
-        $reader = new Reader($packed);
+        $reader = new FileReader($packed);
 
         $tag = $reader->readTag();
         $this->assertSame($output[0], $tag[0]);
@@ -338,9 +338,27 @@ class ReaderTest extends TestCase
         $output = '    '; // four spaces
 
         $packed = pack('N', $input);
-        $reader = new Reader($packed);
+        $reader = new FileReader($packed);
 
         $tag = $reader->readTagAsString();
         $this->assertSame($tag, $output);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testAlignLong_alignedAsExpected()
+    {
+        $input = 0x2020202020202020;
+        $input2 = 0x3030;
+
+        $packed = pack('J', $input) . pack('n', $input2);
+        $reader = new FileReader($packed);
+
+        $reader->readUInt16();
+        $reader->alignLong();
+
+        $output = $reader->readUInt16();
+        $this->assertSame($output, $input2);
     }
 }

@@ -11,12 +11,23 @@
 
 namespace PdfGenerator\Font\IR;
 
-use PdfGenerator\Font\Frontend\Reader;
+use PdfGenerator\Font\Frontend\FileReader;
+use PdfGenerator\Font\Frontend\StructureReader;
 
 class Parser
 {
+    /**
+     * @param string $content
+     *
+     * @throws \Exception
+     *
+     * @return \PdfGenerator\Font\Frontend\Structure\FontDirectory
+     */
     public function parse(string $content)
     {
-        $reader = new Reader($content);
+        $fileReader = new FileReader($content);
+        $structureReader = new StructureReader();
+
+        return $structureReader->readFontDirectory($fileReader);
     }
 }

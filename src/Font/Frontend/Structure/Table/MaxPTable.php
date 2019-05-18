@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Table;
+namespace PdfGenerator\Font\Frontend\Structure\Table;
 
 /**
  * the maximum profile table contains performance metrics of the font.

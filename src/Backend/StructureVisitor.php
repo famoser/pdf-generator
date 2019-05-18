@@ -121,7 +121,7 @@ class StructureVisitor
 
         if (\count($structure->getFonts()) > 0) {
             $fontDictionary = $this->createReferenceDictionary($structure->getFonts(), $file);
-            $dictionary->addDictionaryEntry('Font', $fontDictionary);
+            $dictionary->addDictionaryEntry('File', $fontDictionary);
             $procSet[] = 'Text';
         }
 
@@ -181,7 +181,7 @@ class StructureVisitor
     public function visitFont(Structure\Font $structure, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
-        $dictionary->addTextEntry('Type', '/Font');
+        $dictionary->addTextEntry('Type', '/File');
         $dictionary->addTextEntry('Subtype', $structure->getSubtype());
         $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
 

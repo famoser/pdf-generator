@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Table;
+namespace PdfGenerator\Font\Frontend\Structure\Table;
 
 /**
  * the index-to-location table stores the location of glyphs in the glyf table

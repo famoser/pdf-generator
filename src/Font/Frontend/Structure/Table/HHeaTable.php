@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Table;
+namespace PdfGenerator\Font\Frontend\Structure\Table;
 
 /**
  * the horizontal header table defines how a horizontal font has to be rendered
