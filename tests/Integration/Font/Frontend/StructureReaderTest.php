@@ -12,19 +12,20 @@
 namespace PdfGenerator\Tests\Integration\Font\Frontend;
 
 use PdfGenerator\Font\Frontend\FileReader;
+use PdfGenerator\Font\Frontend\Structure\OffsetTable;
 use PdfGenerator\Font\Frontend\StructureReader;
 use PHPUnit\Framework\TestCase;
 
 class StructureReaderTest extends TestCase
 {
-    private static $defaultFile = __DIR__ . 'OpenSans-Regular.ttf';
+    private static $defaultFilePath = __DIR__ . \DIRECTORY_SEPARATOR . 'OpenSans-Regular.ttf';
 
     /**
      * @return FileReader
      */
     private static function getFileReader()
     {
-        $content = self::$defaultFile;
+        $content = file_get_contents(self::$defaultFilePath);
 
         return new FileReader($content);
     }
@@ -32,7 +33,7 @@ class StructureReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function ignore_testReadFontDirectory_offsetTableAsExpected()
+    public function testReadFontDirectory_offsetTableAsExpected()
     {
         // arrange
         $fileReader = $this->getFileReader();
@@ -41,14 +42,15 @@ class StructureReaderTest extends TestCase
         $fontDirectory = $structureReader->readFontDirectory($fileReader);
 
         // assert
-        var_dump($fontDirectory->getOffsetTable());
+        $this->assertOffsetTable($fontDirectory->getOffsetTable());
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function testOk()
+    private function assertOffsetTable(OffsetTable $offsetTable)
     {
-        $this->assertTrue(true);
+        $this->assertSame(65536, $offsetTable->getScalerType()); // hardcoded in our example font
+        $this->assertSame(17, $offsetTable->getNumTables()); // hardcoded in our example font
+        $this->assertSame(16 * 16, $offsetTable->getSearchRange()); // search 16 tables with binary tree; multiply by 16 because specification says so
+        $this->assertSame(4, $offsetTable->getEntrySelector()); // how many levels deep the binary tree is
+        $this->assertSame((17 - 16) * 16, $offsetTable->getRangeShift()); // 17 are number of tables; 16 are in binary tree; hence one is missed if not looking in binary tree
     }
 }

@@ -36,8 +36,8 @@ class StructureReader
         }
 
         for ($i = 0; $i < $offsetTable->getNumTables(); ++$i) {
-            $offsetTable = $this->readTableDirectoryEntry($fileReader);
-            $fontDirectory->addTableDirectoryEntry($offsetTable);
+            $tableDirectoryEntry = $this->readTableDirectoryEntry($fileReader);
+            $fontDirectory->addTableDirectoryEntry($tableDirectoryEntry);
         }
 
         return $fontDirectory;
