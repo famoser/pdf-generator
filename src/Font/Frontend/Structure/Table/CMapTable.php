@@ -24,4 +24,53 @@ namespace PdfGenerator\Font\Frontend\Structure\Table;
  */
 class CMapTable
 {
+    /**
+     * simply ignore or set to 0.
+     *
+     * @ttf-type uint16
+     *
+     * @var int
+     */
+    private $version;
+
+    /**
+     * the number of provided encoding subtables.
+     *
+     * @ttf-type uint16
+     *
+     * @var int
+     */
+    private $numberSubtables;
+
+    /**
+     * @return int
+     */
+    public function getVersion(): int
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param int $version
+     */
+    public function setVersion(int $version): void
+    {
+        $this->version = $version;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberSubtables(): int
+    {
+        return $this->numberSubtables;
+    }
+
+    /**
+     * @param int $numberSubtables
+     */
+    public function setNumberSubtables(int $numberSubtables): void
+    {
+        $this->numberSubtables = $numberSubtables;
+    }
 }
