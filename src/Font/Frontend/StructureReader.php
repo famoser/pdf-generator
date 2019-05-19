@@ -13,6 +13,7 @@ namespace PdfGenerator\Font\Frontend;
 
 use PdfGenerator\Font\Frontend\Structure\FontDirectory;
 use PdfGenerator\Font\Frontend\Structure\OffsetTable;
+use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
 use PdfGenerator\Font\Frontend\Structure\TableDirectoryEntry;
 
 class StructureReader
@@ -80,5 +81,22 @@ class StructureReader
         $tableDirectoryEntry->setLength($fileReader->readUInt32());
 
         return $tableDirectoryEntry;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     *
+     * @throws \Exception
+     *
+     * @return CMapTable
+     */
+    public function readCMapTable(FileReader $fileReader)
+    {
+        $cmapTable = new CMapTable();
+
+        $cmapTable->setVersion($fileReader->readUInt16());
+        $cmapTable->setNumberSubtables($fileReader->readUInt16());
+
+        return $cmapTable;
     }
 }

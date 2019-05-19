@@ -92,6 +92,23 @@ class FileReader
     }
 
     /**
+     * @param int $size
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function readUInt16Array(int $size): array
+    {
+        $array = [];
+        for ($i = 0; $i < $size; ++$i) {
+            $array[] = $this->readUInt16();
+        }
+
+        return $array;
+    }
+
+    /**
      * @throws \Exception
      *
      * @return int
@@ -335,5 +352,21 @@ class FileReader
         $cutoff = 2 ** ($bits - 1);
 
         return $number < $cutoff ? $number : $number - 2 ** $bits;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOffset(): int
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @param int $offset
+     */
+    public function setOffset(int $offset)
+    {
+        $this->offset = $offset;
     }
 }

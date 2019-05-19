@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Font\Frontend\Structure;
 
+use PdfGenerator\Font\Frontend\Structure\Traits\BinaryTreeSearchableTrait;
+
 /**
  * the offset table (also called sfnt) defines how many tables the font consists of.
  *
@@ -43,35 +45,20 @@ class OffsetTable
      */
     private $numTables;
 
-    /**
-     * how many tables can be indexed by a binary search tree
-     * calculated: (maximum power of 2 <= numTables)*16.
-     *
-     * @ttf-type uint16
-     *
-     * @var int
+    /*
+     * for numberOfEntries = numTables
      */
-    private $searchRange;
+    use BinaryTreeSearchableTrait;
 
     /**
-     * how deep the binary search tree will be
-     * calculated: log2(maximum power of 2 <= numTables).
+     * of which size the binary tree is constructed.
      *
-     * @ttf-type uint16
-     *
-     * @var int
+     * @return int
      */
-    private $entrySelector;
-
-    /**
-     * how many tables are missed if only binary search tree is looked at
-     * calculated: numTables*16-searchRange; which is equivalent to (numTables-binaryTreeTables)*16.
-     *
-     * @ttf-type uint16
-     *
-     * @var int
-     */
-    private $rangeShift;
+    protected function getNumberOfEntries()
+    {
+        return $this->numTables;
+    }
 
     /**
      * @return bool
@@ -111,53 +98,5 @@ class OffsetTable
     public function setNumTables(int $numTables): void
     {
         $this->numTables = $numTables;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSearchRange(): int
-    {
-        return $this->searchRange;
-    }
-
-    /**
-     * @param int $searchRange
-     */
-    public function setSearchRange(int $searchRange): void
-    {
-        $this->searchRange = $searchRange;
-    }
-
-    /**
-     * @return int
-     */
-    public function getEntrySelector(): int
-    {
-        return $this->entrySelector;
-    }
-
-    /**
-     * @param int $entrySelector
-     */
-    public function setEntrySelector(int $entrySelector): void
-    {
-        $this->entrySelector = $entrySelector;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRangeShift(): int
-    {
-        return $this->rangeShift;
-    }
-
-    /**
-     * @param int $rangeShift
-     */
-    public function setRangeShift(int $rangeShift): void
-    {
-        $this->rangeShift = $rangeShift;
     }
 }

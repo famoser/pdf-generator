@@ -11,7 +11,10 @@
 
 namespace PdfGenerator\Font\IR;
 
+use PdfGenerator\Font\Frontend\Content\Font;
+use PdfGenerator\Font\Frontend\ContentReader;
 use PdfGenerator\Font\Frontend\FileReader;
+use PdfGenerator\Font\Frontend\Structure\CMapFormatReader;
 use PdfGenerator\Font\Frontend\StructureReader;
 
 class Parser
@@ -21,13 +24,15 @@ class Parser
      *
      * @throws \Exception
      *
-     * @return \PdfGenerator\Font\Frontend\Structure\FontDirectory
+     * @return Font
      */
-    public function parse(string $content)
+    public function parse(string $content): Font
     {
         $fileReader = new FileReader($content);
         $structureReader = new StructureReader();
+        $cmapFormatReader = new CMapFormatReader();
+        $contentReader = new ContentReader($cmapFormatReader, $structureReader);
 
-        return $structureReader->readFontDirectory($fileReader);
+        return $contentReader->readFont($fileReader);
     }
 }
