@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 class ContentReaderTest extends TestCase
 {
-    public function testAssert()
+    public function testAssertTrue()
     {
         $this->assertTrue(true);
     }
@@ -36,7 +36,6 @@ class ContentReaderTest extends TestCase
 
         // act
         $font = $contentReader->readFont($fileReader);
-        var_dump($font);
 
         // assert
         $this->assertTableDirectory($font->getTableDirectory());

@@ -52,6 +52,8 @@ class ContentReader
     {
         $fontDirectory = $this->structureReader->readFontDirectory($fileReader);
 
+        var_dump($fontDirectory);
+        var_dump($fileReader->getOffset());
         $font = new Font();
         $font->setTableDirectory($this->readTables($fileReader, $fontDirectory->getTableDirectoryEntries()));
 
@@ -75,6 +77,7 @@ class ContentReader
             switch ($tableDirectoryEntry->getTag()) {
                 case 'cmap':
                     $cmapTable = $this->structureReader->readCMapTable($fileReader);
+                    $cmapSubTable = $this->structureReader->readCMapSubtables($fileReader, $cmapTable->getNumberSubtables());
                     $cmapFormatDirectory = $this->readCMapFormatTables($fileReader, $cmapTable->getNumberSubtables());
                     $tableDirectory->setCmapFormatDirectory($cmapFormatDirectory);
                     break;
