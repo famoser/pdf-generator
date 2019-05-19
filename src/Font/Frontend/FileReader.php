@@ -369,4 +369,26 @@ class FileReader
     {
         $this->offset = $offset;
     }
+
+    private $pushedOffsets = [];
+
+    /**
+     * remembers the current offset location and then sets the offset to the new value.
+     *
+     * @param int $offset
+     */
+    public function pushOffset(int $offset)
+    {
+        $this->pushedOffsets[] = $this->getOffset();
+        $this->setOffset($offset);
+    }
+
+    /**
+     * recovers the last remembered offset location.
+     */
+    public function popOffset()
+    {
+        $offset = array_pop($this->pushedOffsets);
+        $this->setOffset($offset);
+    }
 }

@@ -13,6 +13,7 @@ namespace PdfGenerator\Tests\Integration\Font\Frontend;
 
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\Structure\OffsetTable;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\FormatReader;
 use PdfGenerator\Font\Frontend\Structure\TableDirectoryEntry;
 use PdfGenerator\Font\Frontend\StructureReader;
 use PHPUnit\Framework\TestCase;
@@ -36,13 +37,15 @@ class StructureReaderTest extends TestCase
      */
     public static function getStructureReader()
     {
-        return new StructureReader();
+        $formatReader = new FormatReader();
+
+        return new StructureReader($formatReader);
     }
 
     /**
      * @throws \Exception
      */
-    public function testReadFontDirectory_offsetTableAsExpected()
+    public function testReadFontDirectory_fontDirectoryAsExpected()
     {
         // arrange
         $fileReader = self::getFileReader();
@@ -53,6 +56,46 @@ class StructureReaderTest extends TestCase
         // assert
         $this->assertOffsetTable($fontDirectory->getOffsetTable());
         $this->assertTableDirectoryEntries($fontDirectory->getTableDirectoryEntries());
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testReadCMapTable_cMapTableAsExpected()
+    {
+        // arrange
+        $fileReader = self::getFileReader();
+        $structureReader = self::getStructureReader();
+        $this->setToTableLocation($fileReader, $structureReader, 'cmap');
+
+        $cmapTable = $structureReader->readCMapTable($fileReader);
+
+        // assert
+        $this->assertTrue(true);
+        var_dump($cmapTable);
+    }
+
+    /**
+     * @param FileReader $fileReader
+     * @param StructureReader $structureReader
+     * @param string $tagName
+     *
+     * @throws \Exception
+     */
+    private function setToTableLocation(FileReader $fileReader, StructureReader $structureReader, string $tagName)
+    {
+        $fontDirectory = $structureReader->readFontDirectory($fileReader);
+
+        foreach ($fontDirectory->getTableDirectoryEntries() as $tableDirectoryEntry) {
+            if ($tableDirectoryEntry->getTag() === $tagName) {
+                $fileReader->setOffset($tableDirectoryEntry->getOffset());
+                var_dump('set offset to ' . $fileReader->getOffset());
+
+                return;
+            }
+        }
+
+        $this->fail('did not find the requested table in that font');
     }
 
     /**

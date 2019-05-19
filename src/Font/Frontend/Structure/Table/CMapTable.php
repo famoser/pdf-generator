@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Font\Frontend\Structure\Table;
 
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Subtable;
+
 /**
  * the character map table maps character codes to glyph indices.
  *
@@ -43,6 +45,13 @@ class CMapTable
     private $numberSubtables;
 
     /**
+     * the encoding subtables.
+     *
+     * @var Subtable[]
+     */
+    private $subtables;
+
+    /**
      * @return int
      */
     public function getVersion(): int
@@ -72,5 +81,21 @@ class CMapTable
     public function setNumberSubtables(int $numberSubtables): void
     {
         $this->numberSubtables = $numberSubtables;
+    }
+
+    /**
+     * @param Subtable $subtable
+     */
+    public function addSubtable(Subtable $subtable)
+    {
+        $this->subtables[] = $subtable;
+    }
+
+    /**
+     * @return Subtable[]
+     */
+    public function getSubtables(): array
+    {
+        return $this->subtables;
     }
 }

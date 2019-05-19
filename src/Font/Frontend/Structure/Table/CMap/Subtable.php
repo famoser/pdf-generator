@@ -9,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\Structure\Table;
+namespace PdfGenerator\Font\Frontend\Structure\Table\CMap;
+
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format;
 
 /**
  * contains character to glyph mapping; is part of the 'cmap' table.
  */
-class CMapSubtable
+class Subtable
 {
     /**
      * encoding identifier
@@ -65,6 +67,13 @@ class CMapSubtable
     private $offset;
 
     /**
+     * the encoding table.
+     *
+     * @var Format
+     */
+    private $format;
+
+    /**
      * @return int
      */
     public function getPlatformID(): int
@@ -110,5 +119,21 @@ class CMapSubtable
     public function setOffset(int $offset): void
     {
         $this->offset = $offset;
+    }
+
+    /**
+     * @return Format|null
+     */
+    public function getFormat(): ?Format
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param Format|null $format
+     */
+    public function setFormat(?Format $format): void
+    {
+        $this->format = $format;
     }
 }

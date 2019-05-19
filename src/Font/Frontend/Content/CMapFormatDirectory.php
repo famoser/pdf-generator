@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Font\Frontend\Content;
 
-use PdfGenerator\Font\Frontend\Structure\Table\CMapFormat\Format4;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
 
 class CMapFormatDirectory
 {

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\Structure\Table\CMapFormat;
+namespace PdfGenerator\Font\Frontend\Structure\Table\CMap\Format;
 
 abstract class Format
 {

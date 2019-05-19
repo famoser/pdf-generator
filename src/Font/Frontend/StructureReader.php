@@ -13,12 +13,28 @@ namespace PdfGenerator\Font\Frontend;
 
 use PdfGenerator\Font\Frontend\Structure\FontDirectory;
 use PdfGenerator\Font\Frontend\Structure\OffsetTable;
-use PdfGenerator\Font\Frontend\Structure\Table\CMapSubtable;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\FormatReader;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Subtable;
 use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
 use PdfGenerator\Font\Frontend\Structure\TableDirectoryEntry;
 
 class StructureReader
 {
+    /**
+     * @var FormatReader
+     */
+    private $formatReader;
+
+    /**
+     * StructureReader constructor.
+     *
+     * @param FormatReader $formatReader
+     */
+    public function __construct(FormatReader $formatReader)
+    {
+        $this->formatReader = $formatReader;
+    }
+
     /**
      * @param FileReader $fileReader
      *
@@ -98,6 +114,11 @@ class StructureReader
         $cmapTable->setVersion($fileReader->readUInt16());
         $cmapTable->setNumberSubtables($fileReader->readUInt16());
 
+        for ($i = 0; $i < $cmapTable->getNumberSubtables(); ++$i) {
+            $subTable = $this->readCMapSubtable($fileReader);
+            $cmapTable->addSubtable($subTable);
+        }
+
         return $cmapTable;
     }
 
@@ -106,22 +127,21 @@ class StructureReader
      *
      * @throws \Exception
      *
-     * @return CMapSubtable[]
+     * @return Subtable
      */
-    public function readCMapSubtables(FileReader $fileReader, int $count)
+    private function readCMapSubtable(FileReader $fileReader)
     {
-        $subtables = [];
+        $cMapSubtable = new Subtable();
 
-        for ($i = 0; $i < $count; ++$i) {
-            $cMapSubtable = new CMapSubtable();
+        $cMapSubtable->setPlatformID($fileReader->readUInt16());
+        $cMapSubtable->setPlatformSpecificID($fileReader->readUInt16());
+        $cMapSubtable->setOffset($fileReader->readUInt32());
 
-            $cMapSubtable->setPlatformID($fileReader->readUInt16());
-            $cMapSubtable->setPlatformSpecificID($fileReader->readUInt16());
-            $cMapSubtable->setOffset($fileReader->readUInt32());
+        $fileReader->pushOffset($cMapSubtable->getOffset());
+        $format = $this->formatReader->readFormat($fileReader);
+        $cMapSubtable->setFormat($format);
+        $fileReader->popOffset();
 
-            $subtables[] = $cMapSubtable;
-        }
-
-        return $subtables;
+        return $cMapSubtable;
     }
 }

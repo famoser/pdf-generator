@@ -9,14 +9,36 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\Structure;
+namespace PdfGenerator\Font\Frontend\Structure\Table\CMap;
 
 use PdfGenerator\Font\Frontend\FileReader;
-use PdfGenerator\Font\Frontend\Structure\Table\CMapFormat\Format;
-use PdfGenerator\Font\Frontend\Structure\Table\CMapFormat\Format4;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
 
-class CMapFormatReader
+class FormatReader
 {
+    /**
+     * @param FileReader $fileReader
+     *
+     * @throws \Exception
+     *
+     * @return Format4|null
+     */
+    public function readFormat(FileReader $fileReader)
+    {
+        $startOffset = $fileReader->getOffset();
+        $format = $fileReader->readUInt16();
+        switch ($format) {
+            case 4:
+                return $this->readFormat4($fileReader, $startOffset);
+                break;
+        }
+
+        var_dump('format ' . $format . ' unknown');
+
+        return null;
+    }
+
     /**
      * @param FileReader $fileReader
      * @param int $startOffset
@@ -25,11 +47,11 @@ class CMapFormatReader
      *
      * @return Format4
      */
-    public function readFormat4(FileReader $fileReader, int $startOffset)
+    private function readFormat4(FileReader $fileReader, int $startOffset)
     {
         $format4 = new Format4();
 
-        $this->readFormat($fileReader, $format4);
+        $this->readSharedFormat($fileReader, $format4);
 
         $format4->setSegCountX2($fileReader->readUInt16());
         $format4->setSearchRange($fileReader->readUInt16());
@@ -56,7 +78,7 @@ class CMapFormatReader
      *
      * @throws \Exception
      */
-    private function readFormat(FileReader $fileReader, Format $format)
+    private function readSharedFormat(FileReader $fileReader, Format $format)
     {
         $format->setLength($fileReader->readUInt16());
         $format->setLanguage($fileReader->readUInt16());
