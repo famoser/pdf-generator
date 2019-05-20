@@ -22,7 +22,7 @@ abstract class Format
     /**
      * length of subtable in bytes.
      *
-     * @ttf-type uint16
+     * @ttf-type uint16|uint32
      *
      * @var int
      */
@@ -31,7 +31,7 @@ abstract class Format
     /**
      * language (only relevant if used macintosh encoding).
      *
-     * @ttf-type uint16
+     * @ttf-type uint16|uint32
      *
      * @var int
      */
@@ -40,7 +40,7 @@ abstract class Format
     /**
      * the format of the encoding.
      *
-     * @ttf-type uint16
+     * @ttf-type uint16|fixed32
      *
      * @return int
      */

@@ -13,6 +13,8 @@ namespace PdfGenerator\Font\Frontend\Structure\Table\CMap;
 
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format12;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format12Group;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format6;
 
@@ -29,12 +31,22 @@ class FormatReader
     {
         $startOffset = $fileReader->getOffset();
         $format = $fileReader->readUInt16();
+
         switch ($format) {
             case 4:
                 return $this->readFormat4($fileReader, $startOffset);
                 break;
             case 6:
                 return $this->readFormat6($fileReader);
+                break;
+        }
+
+        $fileReader->setOffset($startOffset);
+        $formatFixed = $fileReader->readFixed();
+
+        switch ($formatFixed) {
+            case 12.0:
+                return $this->readFormat12($fileReader);
                 break;
         }
 
@@ -53,7 +65,7 @@ class FormatReader
     {
         $format = new Format4();
 
-        $this->readSharedFormat($fileReader, $format);
+        $this->readUInt16SharedFormat($fileReader, $format);
 
         $format->setSegCountX2($fileReader->readUInt16());
         $format->setSearchRange($fileReader->readUInt16());
@@ -85,7 +97,7 @@ class FormatReader
     {
         $format = new Format6();
 
-        $this->readSharedFormat($fileReader, $format);
+        $this->readUInt16SharedFormat($fileReader, $format);
 
         $format->setFirstCode($fileReader->readUInt16());
         $format->setEntryCount($fileReader->readUInt16());
@@ -96,11 +108,39 @@ class FormatReader
 
     /**
      * @param FileReader $fileReader
+     *
+     * @throws \Exception
+     *
+     * @return Format12
+     */
+    private function readFormat12(FileReader $fileReader)
+    {
+        $format = new Format12();
+
+        $format->setLength($fileReader->readUInt32());
+        $format->setLanguage($fileReader->readUInt32());
+        $format->setNGroups($fileReader->readUInt32());
+
+        for ($i = 0; $i < $format->getGroups(); ++$i) {
+            $group = new Format12Group();
+
+            $group->setStartCharCode($fileReader->readUInt32());
+            $group->setEndCharCode($fileReader->readUInt32());
+            $group->setStartGlyphCode($fileReader->readUInt32());
+
+            $format->addGroup($group);
+        }
+
+        return $format;
+    }
+
+    /**
+     * @param FileReader $fileReader
      * @param Format $format
      *
      * @throws \Exception
      */
-    private function readSharedFormat(FileReader $fileReader, Format $format)
+    private function readUInt16SharedFormat(FileReader $fileReader, Format $format)
     {
         $format->setLength($fileReader->readUInt16());
         $format->setLanguage($fileReader->readUInt16());

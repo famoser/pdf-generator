@@ -23,7 +23,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     /**
      * @param Format $format
      *
-     * @return string[]
+     * @return int[]
      */
     public function visitFormat(Format $format)
     {
@@ -33,7 +33,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     /**
      * @param Format4 $format4
      *
-     * @return string[]
+     * @return int[]
      */
     public function visitFormat4(Format4 $format4)
     {
@@ -53,20 +53,38 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     /**
      * @param Format6 $format6
      *
-     * @return mixed
+     * @return int[]
      */
     public function visitFormat6(Format6 $format6)
     {
-        // TODO: Implement visitFormat6() method.
+        $glyphIndexes = [];
+
+        for ($i = $format6->getFirstCode(), $zeroBased = 0; $i < $format6->getEntryCount(); $i++, $zeroBased++) {
+            $glyphIndexes[$i] = $format6->getGlyphIndexArray()[$zeroBased];
+        }
+
+        return $glyphIndexes;
     }
 
     /**
      * @param Format12 $format12
      *
-     * @return mixed
+     * @return int[]
      */
     public function visitFormat12(Format12 $format12)
     {
-        // TODO: Implement visitFormat12() method.
+        $glyphIndexes = [];
+        foreach ($format12->getGroups() as $group) {
+            $code = $group->getStartCharCode();
+            $zeroBased = 0;
+            while ($code !== $group->getEndCharCode()) {
+                $glyphIndexes[$code] = $group->getStartGlyphCode() + $zeroBased;
+
+                ++$zeroBased;
+                ++$code;
+            }
+        }
+
+        return $glyphIndexes;
     }
 }
