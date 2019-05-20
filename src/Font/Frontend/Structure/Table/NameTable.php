@@ -19,4 +19,5 @@ namespace PdfGenerator\Font\Frontend\Structure\Table;
  */
 class NameTable
 {
+    // version string id 5 used to determine version by windows; not from head table
 }

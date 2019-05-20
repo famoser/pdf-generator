@@ -15,8 +15,13 @@ use PdfGenerator\Font\Frontend\Structure\Font;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\FormatReader;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Subtable;
 use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
+use PdfGenerator\Font\Frontend\Structure\Table\GlyfTable;
+use PdfGenerator\Font\Frontend\Structure\Table\HeadTable;
+use PdfGenerator\Font\Frontend\Structure\Table\LocaTable;
+use PdfGenerator\Font\Frontend\Structure\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
 use PdfGenerator\Font\Frontend\Structure\Table\TableDirectoryEntry;
+use PdfGenerator\Font\Frontend\Structure\Traits\Reader;
 
 class StructureReader
 {
@@ -75,8 +80,36 @@ class StructureReader
             $fileReader->setOffset($tableDirectoryEntry->getOffset());
             switch ($tableDirectoryEntry->getTag()) {
                 case 'cmap':
-                    $cmapTable = $this->readCMapTable($fileReader);
-                    $font->setCMapTable($cmapTable);
+                    $table = $this->readCMapTable($fileReader);
+                    $font->setCMapTable($table);
+                    break;
+                case 'maxp':
+                    $table = $this->readMaxPTable($fileReader);
+                    $font->setMaxPTable($table);
+                    break;
+                case 'head':
+                    $table = $this->readHeadTable($fileReader);
+                    $font->setHeadTable($table);
+                    break;
+            }
+        }
+
+        foreach ($font->getTableDirectoryEntries() as $tableDirectoryEntry) {
+            $fileReader->setOffset($tableDirectoryEntry->getOffset());
+            switch ($tableDirectoryEntry->getTag()) {
+                case 'loca':
+                    $table = $this->readLocaTable($fileReader, $font->getHeadTable(), $font->getMaxPTable());
+                    $font->setLocaTable($table);
+                    break;
+            }
+        }
+
+        foreach ($font->getTableDirectoryEntries() as $tableDirectoryEntry) {
+            $fileReader->setOffset($tableDirectoryEntry->getOffset());
+            switch ($tableDirectoryEntry->getTag()) {
+                case 'glyf':
+                    $tables = $this->readGlyfTables($fileReader, $font->getLocaTable());
+                    $font->setGlyfTables($tables);
                     break;
             }
         }
@@ -95,9 +128,7 @@ class StructureReader
 
         $offsetTable->setScalerType($fileReader->readUInt32());
         $offsetTable->setNumTables($fileReader->readUInt16());
-        $offsetTable->setSearchRange($fileReader->readUInt16());
-        $offsetTable->setEntrySelector($fileReader->readUInt16());
-        $offsetTable->setRangeShift($fileReader->readUInt16());
+        Reader::readBinaryTreeSearchableUInt16($fileReader, $offsetTable);
 
         return $offsetTable;
     }
@@ -167,5 +198,121 @@ class StructureReader
         $fileReader->popOffset();
 
         return $cMapSubtable;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     * @param LocaTable $locaTable
+     *
+     * @throws \Exception
+     *
+     * @return GlyfTable[]
+     */
+    private function readGlyfTables(FileReader $fileReader, LocaTable $locaTable)
+    {
+        $glyfTables = [];
+
+        $glyphCount = \count($locaTable->getOffsets()) - 1;
+        for ($i = 0; $i < $glyphCount; ++$i) {
+            $offset = $locaTable->getOffsets()[$i];
+            $fileReader->setOffset($offset);
+
+            $glyfTable = new GlyfTable();
+            $glyfTable->setNumberOfContours($fileReader->readInt16());
+            Reader::readBoundingBoxFWORD($fileReader, $glyfTable);
+
+            $rawFontData = $fileReader->readUntil($locaTable->getOffsets()[$i + 1]);
+            $glyfTable->setContent($rawFontData);
+
+            $glyfTables[] = $glyfTable;
+        }
+
+        return $glyfTables;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     * @param HeadTable $headTable
+     * @param MaxPTable $maxPTable
+     *
+     * @throws \Exception
+     *
+     * @return LocaTable
+     */
+    private function readLocaTable(FileReader $fileReader, HeadTable $headTable, MaxPTable $maxPTable)
+    {
+        $glyfTable = new LocaTable();
+
+        $numberOfGlyphs = $maxPTable->getNumGlyphs() + 1;
+
+        if ($headTable->getIndexToLocFormat() === 0) {
+            $offsets = $fileReader->readOffset16Array($numberOfGlyphs);
+        } else {
+            $offsets = $fileReader->readOffset32Array($numberOfGlyphs);
+        }
+
+        $glyfTable->setOffsets($offsets);
+
+        return $glyfTable;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     *
+     * @throws \Exception
+     *
+     * @return MaxPTable
+     */
+    private function readMaxPTable(FileReader $fileReader)
+    {
+        $maxPTable = new MaxPTable();
+
+        $maxPTable->setVersion($fileReader->readFixed());
+        $maxPTable->setNumGlyphs($fileReader->readUInt16());
+        $maxPTable->setMaxPoints($fileReader->readUInt16());
+        $maxPTable->setMaxContours($fileReader->readUInt16());
+        $maxPTable->setMaxCompositePoints($fileReader->readUInt16());
+        $maxPTable->setMaxCompositeContours($fileReader->readUInt16());
+        $maxPTable->setMaxZones($fileReader->readUInt16());
+        $maxPTable->setMaxTwilightPoints($fileReader->readUInt16());
+        $maxPTable->setMaxStorage($fileReader->readUInt16());
+        $maxPTable->setMaxFunctionDefs($fileReader->readUInt16());
+        $maxPTable->setMaxInstructionDefs($fileReader->readUInt16());
+        $maxPTable->setMaxStackElements($fileReader->readUInt16());
+        $maxPTable->setMaxSizeOfInstructions($fileReader->readUInt16());
+        $maxPTable->setMaxComponentElements($fileReader->readUInt16());
+        $maxPTable->setMaxComponentDepth($fileReader->readUInt16());
+
+        return $maxPTable;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     *
+     * @throws \Exception
+     *
+     * @return HeadTable
+     */
+    private function readHeadTable(FileReader $fileReader)
+    {
+        $headTable = new HeadTable();
+
+        $headTable->setMajorVersion($fileReader->readUInt16());
+        $headTable->setMinorVersion($fileReader->readUInt16());
+        $headTable->setFontRevision($fileReader->readFixed());
+        $headTable->setCheckSumAdjustment($fileReader->readUInt32());
+        $headTable->setMagicNumber($fileReader->readUInt32());
+        $headTable->setFlags($fileReader->readUInt16());
+        $headTable->setUnitsPerEm($fileReader->readUInt16());
+        $headTable->setCreated($fileReader->readLONGDATETIME());
+        $headTable->setModified($fileReader->readLONGDATETIME());
+        Reader::readBoundingBoxInt16($fileReader, $headTable);
+        $headTable->setMacStyle($fileReader->readUInt16());
+        $headTable->setLowestRecPPEM($fileReader->readUInt16());
+        $headTable->setFontDirectionHints($fileReader->readInt16());
+        $headTable->setIndexToLocFormat($fileReader->readInt16());
+        $headTable->setGlyphDataFormat($fileReader->readInt16());
+
+        return $headTable;
     }
 }

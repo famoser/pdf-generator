@@ -71,7 +71,7 @@ class FileReader
      *
      * @throws \Exception
      *
-     * @return array
+     * @return int[]
      */
     public function readUInt8Array(int $size): array
     {
@@ -113,7 +113,7 @@ class FileReader
      *
      * @throws \Exception
      *
-     * @return array
+     * @return int[]
      */
     public function readUInt16Array(int $size): array
     {
@@ -161,6 +161,23 @@ class FileReader
         $this->offset += 4;
 
         return $uInt32;
+    }
+
+    /**
+     * @param int $size
+     *
+     * @throws \Exception
+     *
+     * @return int[]
+     */
+    public function readUInt32Array(int $size): array
+    {
+        $array = [];
+        for ($i = 0; $i < $size; ++$i) {
+            $array[] = $this->readUInt32();
+        }
+
+        return $array;
     }
 
     /**
@@ -254,6 +271,18 @@ class FileReader
     }
 
     /**
+     * @param int $size
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function readOffset16Array(int $size): array
+    {
+        return $this->readUInt16Array($size);
+    }
+
+    /**
      * @throws \Exception
      *
      * @return int
@@ -261,6 +290,18 @@ class FileReader
     public function readOffset32(): int
     {
         return $this->readUInt32();
+    }
+
+    /**
+     * @param int $size
+     *
+     * @throws \Exception
+     *
+     * @return int[]
+     */
+    public function readOffset32Array(int $size): array
+    {
+        return $this->readUInt32Array($size);
     }
 
     /**
@@ -407,5 +448,21 @@ class FileReader
     {
         $offset = array_pop($this->pushedOffsets);
         $this->setOffset($offset);
+    }
+
+    /**
+     * @param int $offset
+     *
+     * @return string
+     */
+    public function readUntil(int $offset)
+    {
+        $result = '';
+
+        while ($this->offset < $offset) {
+            $result .= $this->content[$this->offset++];
+        }
+
+        return $result;
     }
 }

@@ -18,6 +18,7 @@ use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format12;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format12Group;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format6;
+use PdfGenerator\Font\Frontend\Structure\Traits\Reader;
 
 class FormatReader
 {
@@ -90,9 +91,7 @@ class FormatReader
         $this->readUInt16SharedFormat($fileReader, $format);
 
         $format->setSegCountX2($fileReader->readUInt16());
-        $format->setSearchRange($fileReader->readUInt16());
-        $format->setEntrySelector($fileReader->readUInt16());
-        $format->setRangeShift($fileReader->readUInt16());
+        Reader::readBinaryTreeSearchableUInt16($fileReader, $format);
 
         $segCount = $format->getSegCountX2() / 2;
         $format->setEndCodes($fileReader->readUInt16Array($segCount));

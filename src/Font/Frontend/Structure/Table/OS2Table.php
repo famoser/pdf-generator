@@ -20,4 +20,5 @@ namespace PdfGenerator\Font\Frontend\Structure\Table;
  */
 class OS2Table
 {
+    // the fsSelection bits must agree to mac style bits
 }

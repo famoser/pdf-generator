@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Font\Frontend\Structure\Table;
 
+use PdfGenerator\Font\Frontend\Structure\Traits\BoundingBoxTrait;
+
 /**
  * the glyph table specified the appearance of the glyphs
  * needs numGlyphs from maxp table (to know how many glyphs are there)
@@ -23,4 +25,57 @@ namespace PdfGenerator\Font\Frontend\Structure\Table;
  */
 class GlyfTable
 {
+    /**
+     * number of contours
+     * if >=0 then simple glyph
+     * else composite graph.
+     *
+     * @ttf-type uint16
+     *
+     * @var int
+     */
+    private $numberOfContours;
+
+    use BoundingBoxTrait;
+
+    /**
+     * the font raw data.
+     *
+     * @ttf-type single/composite character
+     *
+     * @var string
+     */
+    private $content;
+
+    /**
+     * @return int
+     */
+    public function getNumberOfContours(): int
+    {
+        return $this->numberOfContours;
+    }
+
+    /**
+     * @param int $numberOfContours
+     */
+    public function setNumberOfContours(int $numberOfContours): void
+    {
+        $this->numberOfContours = $numberOfContours;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param string $content
+     */
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
+    }
 }

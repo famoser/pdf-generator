@@ -23,6 +23,13 @@ use PdfGenerator\Font\Frontend\Structure\Table\CMap\Subtable;
  * contains of multiple subtables, each defines a different encoding
  * when reading, support as many formats as possible; at least Windows format 4 and 12.
  * when writing, only need unicode platform (0) and unicode 2.0 encoding (4)
+ *
+ * limitations:
+ *  format2 not implemented as primarily for asian fonts
+ *  format8 not implemented because limited use, complicated, discouraged by apple/microsoft
+ *  format10 not implemented because limited use, not supported by windows
+ *  format13 not implemented because only used for last-resort fonts (used for debugging)
+ *  format14 not implemented because complicated, primarily useful for variations (emojis)
  */
 class CMapTable
 {

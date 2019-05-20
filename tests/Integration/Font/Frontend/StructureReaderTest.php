@@ -15,6 +15,10 @@ use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\FormatReader;
 use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
+use PdfGenerator\Font\Frontend\Structure\Table\GlyfTable;
+use PdfGenerator\Font\Frontend\Structure\Table\HeadTable;
+use PdfGenerator\Font\Frontend\Structure\Table\LocaTable;
+use PdfGenerator\Font\Frontend\Structure\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
 use PdfGenerator\Font\Frontend\Structure\Table\TableDirectoryEntry;
 use PdfGenerator\Font\Frontend\StructureReader;
@@ -53,12 +57,17 @@ class StructureReaderTest extends TestCase
         $fileReader = self::getFileReader();
         $structureReader = self::getStructureReader();
 
-        $fontDirectory = $structureReader->readFont($fileReader);
+        $font = $structureReader->readFont($fileReader);
 
         // assert
-        $this->assertOffsetTable($fontDirectory->getOffsetTable());
-        $this->assertTableDirectoryEntries($fontDirectory->getTableDirectoryEntries());
-        $this->assertCMapTable($fontDirectory->getCMapTable());
+        $this->assertOffsetTable($font->getOffsetTable());
+        $this->assertTableDirectoryEntries($font->getTableDirectoryEntries());
+        $this->assertCMapTable($font->getCMapTable());
+        $this->assertLocaTable($font->getLocaTable());
+        $this->assertHeadTable($font->getHeadTable());
+        $this->assertMaxPTable($font->getMaxPTable());
+        $this->assertGlyfTable($font->getGlyfTables());
+        var_dump($font);
     }
 
     /**
@@ -119,5 +128,41 @@ class StructureReaderTest extends TestCase
         }
 
         $this->assertCount($count, $format4->getGlyphIndexArray());
+    }
+
+    private function assertLocaTable(LocaTable $locaTable)
+    {
+        $this->assertCount(939, $locaTable->getOffsets());
+
+        $size = \count($locaTable->getOffsets()) - 1;
+        for ($i = 0; $i < $size; ++$i) {
+            $this->assertTrue($locaTable->getOffsets()[$i] <= $locaTable->getOffsets()[$i + 1]);
+        }
+    }
+
+    private function assertHeadTable(?HeadTable $headTable)
+    {
+        $this->assertSame(1, $headTable->getMajorVersion());
+        $this->assertSame(0x5F0F3CF5, $headTable->getMagicNumber());
+        $this->assertSame(2048, $headTable->getUnitsPerEm());
+        $this->assertSame(0, $headTable->getMacStyle());
+        $this->assertSame(2, $headTable->getFontDirectionHints());
+    }
+
+    private function assertMaxPTable(?MaxPTable $maxPTable)
+    {
+        $this->assertSame(938, $maxPTable->getNumGlyphs());
+        $this->assertSame(2, $maxPTable->getMaxZones());
+        $this->assertSame(1, $maxPTable->getMaxComponentDepth());
+    }
+
+    /**
+     * @param GlyfTable[] $glyfTables
+     */
+    private function assertGlyfTable(array $glyfTables)
+    {
+        $this->assertCount(938, $glyfTables);
+
+        $someGlyph = $glyfTables[32];
     }
 }

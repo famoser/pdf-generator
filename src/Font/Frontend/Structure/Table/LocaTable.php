@@ -23,4 +23,29 @@ namespace PdfGenerator\Font\Frontend\Structure\Table;
  */
 class LocaTable
 {
+    /**
+     * offset for each character
+     * last entry is not a character but is needed to calculate length of last character.
+     *
+     * @ttf-type uint16[]|uint32[]
+     *
+     * @var int[]
+     */
+    private $offsets;
+
+    /**
+     * @return int[]
+     */
+    public function getOffsets(): array
+    {
+        return $this->offsets;
+    }
+
+    /**
+     * @param int[] $offsets
+     */
+    public function setOffsets(array $offsets): void
+    {
+        $this->offsets = $offsets;
+    }
 }
