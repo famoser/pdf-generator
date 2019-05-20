@@ -13,6 +13,7 @@ namespace PdfGenerator\Font\Frontend\Structure\Table\CMap;
 
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format0;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format12;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format12Group;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
@@ -33,6 +34,9 @@ class FormatReader
         $format = $fileReader->readUInt16();
 
         switch ($format) {
+            case 0:
+                return $this->readFormat0($fileReader);
+                break;
             case 4:
                 return $this->readFormat4($fileReader, $startOffset);
                 break;
@@ -51,6 +55,24 @@ class FormatReader
         }
 
         return null;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     *
+     * @throws \Exception
+     *
+     * @return Format0
+     */
+    private function readFormat0(FileReader $fileReader)
+    {
+        $format = new Format0();
+
+        $this->readUInt16SharedFormat($fileReader, $format);
+
+        $format->setGlyphIndexArray($fileReader->readUInt8Array(256));
+
+        return $format;
     }
 
     /**

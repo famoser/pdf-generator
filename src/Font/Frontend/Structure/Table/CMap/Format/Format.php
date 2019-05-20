@@ -15,6 +15,8 @@ use PdfGenerator\Font\Frontend\Structure\Table\CMap\VisitorInterface;
 
 abstract class Format
 {
+    const FORMAT_0 = 0;
+    const FORMAT_2 = 2;
     const FORMAT_4 = 4;
     const FORMAT_6 = 6;
     const FORMAT_12 = 12;

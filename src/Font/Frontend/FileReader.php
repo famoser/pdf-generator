@@ -67,6 +67,23 @@ class FileReader
     }
 
     /**
+     * @param int $size
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
+    public function readUInt8Array(int $size): array
+    {
+        $array = [];
+        for ($i = 0; $i < $size; ++$i) {
+            $array[] = $this->readUInt8();
+        }
+
+        return $array;
+    }
+
+    /**
      * @throws \Exception
      *
      * @return int

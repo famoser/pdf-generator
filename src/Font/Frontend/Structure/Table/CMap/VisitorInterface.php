@@ -11,12 +11,20 @@
 
 namespace PdfGenerator\Font\Frontend\Structure\Table\CMap;
 
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format0;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format12;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format6;
 
 interface VisitorInterface
 {
+    /**
+     * @param Format0 $format0
+     *
+     * @return mixed
+     */
+    public function visitFormat0(Format0 $format0);
+
     /**
      * @param Format4 $format4
      *

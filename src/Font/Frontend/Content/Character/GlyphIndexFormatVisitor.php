@@ -13,6 +13,7 @@ namespace PdfGenerator\Font\Frontend\Content\Character;
 
 use PdfGenerator\Font\Frontend\Content\Character\Format4\Transformer;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format0;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format12;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format6;
@@ -31,11 +32,21 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
+     * @param Format0 $format0
+     *
+     * @return int[]
+     */
+    public function visitFormat0(Format0 $format0): array
+    {
+        return array_values($format0->getGlyphIndexArray());
+    }
+
+    /**
      * @param Format4 $format4
      *
      * @return int[]
      */
-    public function visitFormat4(Format4 $format4)
+    public function visitFormat4(Format4 $format4): array
     {
         $segments = Transformer::arraysToSegments($format4->getStartCodes(), $format4->getEndCodes(), $format4->getIdDeltas(), $format4->getIdRangeOffsets());
 
@@ -55,7 +66,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
      *
      * @return int[]
      */
-    public function visitFormat6(Format6 $format6)
+    public function visitFormat6(Format6 $format6): array
     {
         $glyphIndexes = [];
 
@@ -71,7 +82,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
      *
      * @return int[]
      */
-    public function visitFormat12(Format12 $format12)
+    public function visitFormat12(Format12 $format12): array
     {
         $glyphIndexes = [];
         foreach ($format12->getGroups() as $group) {

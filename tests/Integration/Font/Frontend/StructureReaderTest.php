@@ -13,7 +13,9 @@ namespace PdfGenerator\Tests\Integration\Font\Frontend;
 
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\Structure\OffsetTable;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\FormatReader;
+use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
 use PdfGenerator\Font\Frontend\Structure\TableDirectoryEntry;
 use PdfGenerator\Font\Frontend\StructureReader;
 use PHPUnit\Framework\TestCase;
@@ -71,8 +73,7 @@ class StructureReaderTest extends TestCase
         $cmapTable = $structureReader->readCMapTable($fileReader);
 
         // assert
-        $this->assertTrue(true);
-        var_dump($cmapTable);
+        $this->assertCMapTable($cmapTable);
     }
 
     /**
@@ -120,5 +121,40 @@ class StructureReaderTest extends TestCase
         $this->assertSame('GDEF', $firstEntry->getTag());
         $this->assertSame(95612, $firstEntry->getOffset());
         $this->assertSame(46, $firstEntry->getLength());
+    }
+
+    /**
+     * @param CMapTable $cmapTable
+     */
+    private function assertCMapTable(CMapTable $cmapTable)
+    {
+        $this->assertSame(0, $cmapTable->getVersion());
+        $this->assertSame(1, $cmapTable->getNumberSubtables());
+        $this->assertCount(1, $cmapTable->getSubtables());
+
+        $format4Subtable = $cmapTable->getSubtables()[0];
+        $this->assertSame(3, $format4Subtable->getPlatformID());
+        $this->assertSame(1, $format4Subtable->getPlatformSpecificID());
+        $this->assertSame(12, $format4Subtable->getOffset());
+        $this->assertInstanceOf(Format4::class, $format4Subtable->getFormat());
+
+        /** @var Format4 $format4 */
+        $format4 = $format4Subtable->getFormat();
+        $this->assertSame(198, $format4->getSegCountX2());
+        $this->assertSame(0, $format4->getReservedPad());
+        $this->assertCount(99, $format4->getEndCodes());
+        $this->assertCount(99, $format4->getStartCodes());
+        $this->assertCount(99, $format4->getIdDeltas());
+        $this->assertCount(99, $format4->getIdRangeOffsets());
+
+        $count = 0;
+        for ($i = 0; $i < 99; ++$i) {
+            $this->assertTrue($format4->getStartCodes()[$i] <= $format4->getEndCodes()[$i]);
+            if ($format4->getIdRangeOffsets()[$i] !== 0) {
+                $count += $format4->getEndCodes()[$i] - $format4->getStartCodes()[$i] + 1;
+            }
+        }
+
+        $this->assertCount($count, $format4->getGlyphIndexArray());
     }
 }
