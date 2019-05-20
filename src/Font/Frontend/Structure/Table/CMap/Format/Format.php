@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Font\Frontend\Structure\Table\CMap\Format;
 
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\VisitorInterface;
+
 abstract class Format
 {
     const FORMAT_4 = 4;
@@ -75,4 +77,11 @@ abstract class Format
     {
         $this->language = $language;
     }
+
+    /**
+     * @param VisitorInterface $formatVisitor
+     *
+     * @return mixed
+     */
+    abstract public function accept(VisitorInterface $formatVisitor);
 }

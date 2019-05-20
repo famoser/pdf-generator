@@ -14,6 +14,7 @@ namespace PdfGenerator\Font\Frontend\Structure\Table\CMap;
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format4;
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\Format\Format6;
 
 class FormatReader
 {
@@ -22,7 +23,7 @@ class FormatReader
      *
      * @throws \Exception
      *
-     * @return Format4|null
+     * @return Format|null
      */
     public function readFormat(FileReader $fileReader)
     {
@@ -32,9 +33,10 @@ class FormatReader
             case 4:
                 return $this->readFormat4($fileReader, $startOffset);
                 break;
+            case 6:
+                return $this->readFormat6($fileReader);
+                break;
         }
-
-        var_dump('format ' . $format . ' unknown');
 
         return null;
     }
@@ -49,27 +51,47 @@ class FormatReader
      */
     private function readFormat4(FileReader $fileReader, int $startOffset)
     {
-        $format4 = new Format4();
+        $format = new Format4();
 
-        $this->readSharedFormat($fileReader, $format4);
+        $this->readSharedFormat($fileReader, $format);
 
-        $format4->setSegCountX2($fileReader->readUInt16());
-        $format4->setSearchRange($fileReader->readUInt16());
-        $format4->setEntrySelector($fileReader->readUInt16());
-        $format4->setRangeShift($fileReader->readUInt16());
+        $format->setSegCountX2($fileReader->readUInt16());
+        $format->setSearchRange($fileReader->readUInt16());
+        $format->setEntrySelector($fileReader->readUInt16());
+        $format->setRangeShift($fileReader->readUInt16());
 
-        $segCount = $format4->getSegCountX2() / 2;
-        $format4->setEndCodes($fileReader->readUInt16Array($segCount));
-        $format4->setReservedPad($fileReader->readUInt16());
-        $format4->setStartCodes($fileReader->readUInt16Array($segCount));
-        $format4->setIdDeltas($fileReader->readUInt16Array($segCount));
-        $format4->setIdRangeOffsets($fileReader->readUInt16Array($segCount));
+        $segCount = $format->getSegCountX2() / 2;
+        $format->setEndCodes($fileReader->readUInt16Array($segCount));
+        $format->setReservedPad($fileReader->readUInt16());
+        $format->setStartCodes($fileReader->readUInt16Array($segCount));
+        $format->setIdDeltas($fileReader->readUInt16Array($segCount));
+        $format->setIdRangeOffsets($fileReader->readUInt16Array($segCount));
 
-        $tableEnd = $startOffset + $format4->getLength();
-        $glyphIndexes = $tableEnd - $fileReader->getOffset() / 2;
-        $format4->setGlyphIndexArray($fileReader->readUInt16Array($glyphIndexes));
+        $tableEnd = $startOffset + $format->getLength();
+        $glyphIndexes = ($tableEnd - $fileReader->getOffset()) / 2;
+        $format->setGlyphIndexArray($fileReader->readUInt16Array($glyphIndexes));
 
-        return $format4;
+        return $format;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     *
+     * @throws \Exception
+     *
+     * @return Format6
+     */
+    private function readFormat6(FileReader $fileReader)
+    {
+        $format = new Format6();
+
+        $this->readSharedFormat($fileReader, $format);
+
+        $format->setFirstCode($fileReader->readUInt16());
+        $format->setEntryCount($fileReader->readUInt16());
+        $format->setGlyphIndexArray($fileReader->readUInt16Array($format->getEntryCount()));
+
+        return $format;
     }
 
     /**

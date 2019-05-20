@@ -89,7 +89,6 @@ class StructureReaderTest extends TestCase
         foreach ($fontDirectory->getTableDirectoryEntries() as $tableDirectoryEntry) {
             if ($tableDirectoryEntry->getTag() === $tagName) {
                 $fileReader->setOffset($tableDirectoryEntry->getOffset());
-                var_dump('set offset to ' . $fileReader->getOffset());
 
                 return;
             }

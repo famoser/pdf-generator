@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Font\Frontend\Structure\Table\CMap\Format;
 
+use PdfGenerator\Font\Frontend\Structure\Table\CMap\VisitorInterface;
 use PdfGenerator\Font\Frontend\Structure\Traits\BinaryTreeSearchableTrait;
 
 /**
@@ -219,5 +220,15 @@ class Format4 extends Format
     public function setGlyphIndexArray(array $glyphIndexArray): void
     {
         $this->glyphIndexArray = $glyphIndexArray;
+    }
+
+    /**
+     * @param VisitorInterface $formatVisitor
+     *
+     * @return mixed
+     */
+    public function accept(VisitorInterface $formatVisitor)
+    {
+        return $formatVisitor->visitFormat4($this);
     }
 }

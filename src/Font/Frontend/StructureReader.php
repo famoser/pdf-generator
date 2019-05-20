@@ -94,7 +94,7 @@ class StructureReader
 
         $tableDirectoryEntry->setTag($fileReader->readTagAsString());
         $tableDirectoryEntry->setCheckSum($fileReader->readUInt32());
-        $tableDirectoryEntry->setOffset($fileReader->readUInt32());
+        $tableDirectoryEntry->setOffset($fileReader->readOffset32());
         $tableDirectoryEntry->setLength($fileReader->readUInt32());
 
         return $tableDirectoryEntry;
@@ -111,11 +111,13 @@ class StructureReader
     {
         $cmapTable = new CMapTable();
 
+        $offset = $fileReader->getOffset();
+
         $cmapTable->setVersion($fileReader->readUInt16());
         $cmapTable->setNumberSubtables($fileReader->readUInt16());
 
         for ($i = 0; $i < $cmapTable->getNumberSubtables(); ++$i) {
-            $subTable = $this->readCMapSubtable($fileReader);
+            $subTable = $this->readCMapSubtable($fileReader, $offset);
             $cmapTable->addSubtable($subTable);
         }
 
@@ -124,20 +126,21 @@ class StructureReader
 
     /**
      * @param FileReader $fileReader
+     * @param int $cmapTableOffset
      *
      * @throws \Exception
      *
      * @return Subtable
      */
-    private function readCMapSubtable(FileReader $fileReader)
+    private function readCMapSubtable(FileReader $fileReader, int $cmapTableOffset)
     {
         $cMapSubtable = new Subtable();
 
         $cMapSubtable->setPlatformID($fileReader->readUInt16());
         $cMapSubtable->setPlatformSpecificID($fileReader->readUInt16());
-        $cMapSubtable->setOffset($fileReader->readUInt32());
+        $cMapSubtable->setOffset($fileReader->readOffset32());
 
-        $fileReader->pushOffset($cMapSubtable->getOffset());
+        $fileReader->pushOffset($cmapTableOffset + $cMapSubtable->getOffset());
         $format = $this->formatReader->readFormat($fileReader);
         $cMapSubtable->setFormat($format);
         $fileReader->popOffset();
