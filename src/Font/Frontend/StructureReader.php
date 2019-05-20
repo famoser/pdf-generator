@@ -11,12 +11,12 @@
 
 namespace PdfGenerator\Font\Frontend;
 
-use PdfGenerator\Font\Frontend\Structure\FontDirectory;
-use PdfGenerator\Font\Frontend\Structure\OffsetTable;
+use PdfGenerator\Font\Frontend\Structure\Font;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\FormatReader;
 use PdfGenerator\Font\Frontend\Structure\Table\CMap\Subtable;
 use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
-use PdfGenerator\Font\Frontend\Structure\TableDirectoryEntry;
+use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
+use PdfGenerator\Font\Frontend\Structure\Table\TableDirectoryEntry;
 
 class StructureReader
 {
@@ -40,14 +40,14 @@ class StructureReader
      *
      * @throws \Exception
      *
-     * @return FontDirectory
+     * @return Font
      */
-    public function readFontDirectory(FileReader $fileReader)
+    public function readFont(FileReader $fileReader)
     {
-        $fontDirectory = new FontDirectory();
+        $font = new Font();
 
         $offsetTable = $this->readOffsetTable($fileReader);
-        $fontDirectory->setOffsetTable($offsetTable);
+        $font->setOffsetTable($offsetTable);
 
         if (!$offsetTable->isTrueTypeFont()) {
             throw new \Exception('This font type is not supported: ' . $offsetTable->getScalerType());
@@ -55,10 +55,31 @@ class StructureReader
 
         for ($i = 0; $i < $offsetTable->getNumTables(); ++$i) {
             $tableDirectoryEntry = $this->readTableDirectoryEntry($fileReader);
-            $fontDirectory->addTableDirectoryEntry($tableDirectoryEntry);
+            $font->addTableDirectoryEntry($tableDirectoryEntry);
         }
 
-        return $fontDirectory;
+        $this->readTables($fileReader, $font);
+
+        return $font;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     * @param Font $font
+     *
+     * @throws \Exception
+     */
+    private function readTables(FileReader $fileReader, Font $font)
+    {
+        foreach ($font->getTableDirectoryEntries() as $tableDirectoryEntry) {
+            $fileReader->setOffset($tableDirectoryEntry->getOffset());
+            switch ($tableDirectoryEntry->getTag()) {
+                case 'cmap':
+                    $cmapTable = $this->readCMapTable($fileReader);
+                    $font->setCMapTable($cmapTable);
+                    break;
+            }
+        }
     }
 
     /**
@@ -107,7 +128,7 @@ class StructureReader
      *
      * @return CMapTable
      */
-    public function readCMapTable(FileReader $fileReader)
+    private function readCMapTable(FileReader $fileReader)
     {
         $cmapTable = new CMapTable();
 

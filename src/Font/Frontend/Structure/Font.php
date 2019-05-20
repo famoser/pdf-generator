@@ -11,27 +11,26 @@
 
 namespace PdfGenerator\Font\Frontend\Structure;
 
-/**
- * the font directly is at the start of the TTF file and defines where which tables are located.
- *
- * @see https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6.html
- * @see https://docs.microsoft.com/en-us/typography/opentype/spec/otff
- */
-class FontDirectory
+use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
+use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
+use PdfGenerator\Font\Frontend\Structure\Table\TableDirectoryEntry;
+
+class Font
 {
     /**
-     * defines how many tables are contained in the font wrapper and what kind of wrapper it is.
-     *
      * @var OffsetTable
      */
     private $offsetTable;
 
     /**
-     * the table directory defines the type & location of the tables.
-     *
      * @var TableDirectoryEntry[]
      */
     private $tableDirectoryEntries = [];
+
+    /**
+     * @var CMapTable|null
+     */
+    private $cMapTable;
 
     /**
      * @return OffsetTable
@@ -63,5 +62,21 @@ class FontDirectory
     public function addTableDirectoryEntry(TableDirectoryEntry $tableDirectoryEntry): void
     {
         $this->tableDirectoryEntries[] = $tableDirectoryEntry;
+    }
+
+    /**
+     * @return CMapTable|null
+     */
+    public function getCMapTable(): ?CMapTable
+    {
+        return $this->cMapTable;
+    }
+
+    /**
+     * @param CMapTable|null $cMapTable
+     */
+    public function setCMapTable(?CMapTable $cMapTable): void
+    {
+        $this->cMapTable = $cMapTable;
     }
 }

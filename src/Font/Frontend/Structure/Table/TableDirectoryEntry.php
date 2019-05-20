@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\Structure;
+namespace PdfGenerator\Font\Frontend\Structure\Table;
 
 class TableDirectoryEntry
 {
