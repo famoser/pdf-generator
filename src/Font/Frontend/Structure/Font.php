@@ -24,6 +24,7 @@ use PdfGenerator\Font\Frontend\Structure\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\Structure\Table\NameTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OS2Table;
+use PdfGenerator\Font\Frontend\Structure\Table\PostTable;
 use PdfGenerator\Font\Frontend\Structure\Table\PrepTable;
 use PdfGenerator\Font\Frontend\Structure\Table\RawTable;
 use PdfGenerator\Font\Frontend\Structure\Table\TableDirectoryEntry;
@@ -109,6 +110,11 @@ class Font
      * @var RawTable[]
      */
     private $rawTables;
+
+    /**
+     * @var PostTable|null
+     */
+    private $postTable;
 
     /**
      * @return OffsetTable
@@ -364,5 +370,21 @@ class Font
     public function addRawTable(RawTable $rawTable): void
     {
         $this->rawTables[] = $rawTable;
+    }
+
+    /**
+     * @return PostTable|null
+     */
+    public function getPostTable(): ?PostTable
+    {
+        return $this->postTable;
+    }
+
+    /**
+     * @param PostTable|null $postTable
+     */
+    public function setPostTable(?PostTable $postTable): void
+    {
+        $this->postTable = $postTable;
     }
 }
