@@ -81,7 +81,7 @@ class Parser
     }
 
     /**
-     * @param array $characters
+     * @param Character[] $characters
      * @param FontFile $fontFile
      *
      * @throws \Exception
@@ -94,15 +94,16 @@ class Parser
 
         $mapping = $this->glyphIndexFormatVisitor->visitFormat($subtable->getFormat());
 
-        $characterMapping = [];
+        $mappedCharacters = [];
         foreach ($mapping as $unicode => $characterIndex) {
             $character = $characters[$characterIndex];
             if ($character !== null) {
-                $characterMapping[$unicode] = $character;
+                $character->setUnicodePoint($unicode);
+                $mappedCharacters[] = $character;
             }
         }
 
-        return $characterMapping;
+        return $mappedCharacters;
     }
 
     /**

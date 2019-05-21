@@ -31,7 +31,7 @@ class LocaTable
      *
      * @var int[]
      */
-    private $offsets;
+    private $offsets = [];
 
     /**
      * @return int[]
@@ -47,5 +47,13 @@ class LocaTable
     public function setOffsets(array $offsets): void
     {
         $this->offsets = $offsets;
+    }
+
+    /**
+     * @param int $offset
+     */
+    public function addOffset(int $offset): void
+    {
+        $this->offsets[] = $offset;
     }
 }

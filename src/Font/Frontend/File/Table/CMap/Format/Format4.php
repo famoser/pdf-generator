@@ -41,7 +41,7 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $endCodes;
+    private $endCodes = [];
 
     /**
      * padding set to 0.
@@ -59,7 +59,7 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $startCodes;
+    private $startCodes = [];
 
     /**
      * id delta per the continuous code range.
@@ -68,7 +68,7 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $idDeltas;
+    private $idDeltas = [];
 
     /**
      * id range offset per the continuous code range.
@@ -77,7 +77,7 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $idRangeOffsets;
+    private $idRangeOffsets = [];
 
     /**
      * entries referenced to for continuous code ranges where the idRangeOffset is not 0.
@@ -86,7 +86,7 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $glyphIndexArray;
+    private $glyphIndexArray = [];
 
     /**
      * the format of the encoding.
@@ -230,5 +230,37 @@ class Format4 extends Format
     public function accept(VisitorInterface $formatVisitor)
     {
         return $formatVisitor->visitFormat4($this);
+    }
+
+    /**
+     * @param int $startCode
+     */
+    public function addStartCode(int $startCode)
+    {
+        $this->startCodes[] = $startCode;
+    }
+
+    /**
+     * @param int $endCode
+     */
+    public function addEndCode(int $endCode)
+    {
+        $this->endCodes[] = $endCode;
+    }
+
+    /**
+     * @param int $idDelta
+     */
+    public function addIdDelta(int $idDelta)
+    {
+        $this->idDeltas[] = $idDelta;
+    }
+
+    /**
+     * @param int $idRangeOffset
+     */
+    public function addIdRangeOffset(int $idRangeOffset)
+    {
+        $this->idRangeOffsets[] = $idRangeOffset;
     }
 }

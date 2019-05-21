@@ -17,6 +17,11 @@ use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 class Character
 {
     /**
+     * @var int
+     */
+    private $unicodePoint;
+
+    /**
      * @var BoundingBox
      */
     private $boundingBox;
@@ -30,6 +35,22 @@ class Character
      * @var LongHorMetric
      */
     private $longHorMetric;
+
+    /**
+     * @return int
+     */
+    public function getUnicodePoint(): int
+    {
+        return $this->unicodePoint;
+    }
+
+    /**
+     * @param int $unicodePoint
+     */
+    public function setUnicodePoint(int $unicodePoint): void
+    {
+        $this->unicodePoint = $unicodePoint;
+    }
 
     /**
      * @return BoundingBox
