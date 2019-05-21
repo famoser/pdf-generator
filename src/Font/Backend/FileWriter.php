@@ -19,30 +19,58 @@ use PdfGenerator\Font\Frontend\File\Table\GlyfTable;
 use PdfGenerator\Font\Frontend\File\Table\HeadTable;
 use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
+use PdfGenerator\Font\Frontend\File\Table\Interfaces\WritableTableInterface;
 use PdfGenerator\Font\Frontend\File\Table\LocaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
+use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
+use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
 use PdfGenerator\Font\Frontend\File\Traits\BinaryTreeSearchableTrait;
 use PdfGenerator\Font\Frontend\Utils\Format4\Segment;
 use PdfGenerator\Font\IR\Structure\Character;
-use PdfGenerator\Font\IR\Structure\Font;
 
 class FileWriter
 {
     /**
-     * @param Font $fontFile
+     * @param FontFile $fontFile
      * @param Character[] $characters
-     * @param StreamWriter $streamWriter
      *
      * @return string
      */
-    public function writeSubset(FontFile $fontFile, array $characters, StreamWriter $streamWriter)
+    public function writeSubset(FontFile $fontFile, array $characters)
     {
         $this->removeInvalidTables($fontFile);
         $characters = $this->sortCharactersByCodePoint($characters);
 
         $this->recalculateTables($fontFile, $characters);
 
-        // add offset / tableDirectoryEntry tables
+        $tableStreamWriter = new StreamWriter();
+        $visitor = new WriteTablesVisitor($tableStreamWriter);
+        $tableDirectoryEntries = $this->writeTables($fontFile, $visitor);
+
+        $numTables = \count($tableDirectoryEntries);
+        $prefixOverhead = $numTables * 16 + 16;
+
+        foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
+            $tableDirectoryEntry->setOffset($tableDirectoryEntry->getOffset() + $prefixOverhead);
+        }
+
+        $streamWriter = new StreamWriter();
+        $visitor = new WriteTablesVisitor($streamWriter);
+        $offset = new OffsetTable();
+        $offset->setScalerType(0x00010000);
+        $offset->setNumTables($numTables);
+        $this->setBinaryTreeSearchableProperties($offset, $numTables);
+        $offset->accept($visitor);
+        foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
+            $tableDirectoryEntry->accept($visitor);
+        }
+        $streamWriter->writeStreamWriter($tableStreamWriter);
+
+        return $streamWriter->getOutput;
+    }
+
+    private function createTableDirectoryEntries()
+    {
     }
 
     /**
@@ -72,16 +100,6 @@ class FileWriter
         $fontFile->setGPOSTable(null);
         $fontFile->setGSUBTable(null);
         $fontFile->setPostTable(null);
-    }
-
-    /**
-     * @param array $tables
-     *
-     * @return string
-     */
-    private function writeTables(array $tables)
-    {
-        return '';
     }
 
     /**
@@ -300,5 +318,51 @@ class FileWriter
         }
 
         return $locaTable;
+    }
+
+    /**
+     * @param FontFile $fontFile
+     * @param WriteTablesVisitor $writeTablesVisitor
+     *
+     * @return array|TableDirectoryEntry[]
+     */
+    private function writeTables(FontFile $fontFile, WriteTablesVisitor $writeTablesVisitor)
+    {
+        /** @var WritableTableInterface[] $tables */
+        $tables = array_merge(
+            $fontFile->getRawTables(), [
+            'cmap' => $fontFile->getCMapTable(),
+            'cvt ' => $fontFile->getCvtTable(),
+            'fpqm' => $fontFile->getFpqmTable(),
+            'glyf' => $fontFile->getGlyfTables(),
+            'head' => $fontFile->getHeadTable(),
+            'hhea' => $fontFile->getHHeaTable(),
+            'hmtx' => $fontFile->getHMtxTable(),
+            'loca' => $fontFile->getLocaTable(),
+            'maxp' => $fontFile->getMaxPTable(),
+            'name' => $fontFile->getNameTable(),
+            'OS/2' => $fontFile->getOS2Table(),
+            'post' => $fontFile->getPostTable(),
+            'prep' => $fontFile->getPrepTable(),
+        ]);
+
+        ksort($tables);
+
+        /** @var TableDirectoryEntry[] $tableDirectoryEntries */
+        $tableDirectoryEntries = [];
+        $currentOffset = 0;
+        foreach ($tables as $tag => $table) {
+            $tableDirectoryEntry = new TableDirectoryEntry();
+            $tableDirectoryEntry->setOffset($currentOffset);
+
+            $table->accept($writeTablesVisitor);
+            $currentOffset = $writeTablesVisitor->getWriter()->getOffset();
+
+            $tableDirectoryEntry->setLength($currentOffset - $tableDirectoryEntry->getOffset());
+            $tableDirectoryEntry->setTag($tag);
+            $tableDirectoryEntries[] = $tableDirectoryEntry;
+        }
+
+        return $tableDirectoryEntries;
     }
 }

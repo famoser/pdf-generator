@@ -12,6 +12,8 @@
 namespace PdfGenerator\Font\Frontend\File\Table;
 
 use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
+use PdfGenerator\Font\Frontend\File\Table\Interfaces\WritableTableInterface;
+use PdfGenerator\Font\Frontend\File\Table\Interfaces\WritableTableVisitorInterface;
 
 /**
  * the character map table maps character codes to glyph indices.
@@ -28,7 +30,7 @@ use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
  *  format13 not implemented because only used for last-resort fonts (used for debugging)
  *  format14 not implemented because complicated, primarily useful for variations (emojis)
  */
-class CMapTable
+class CMapTable implements WritableTableInterface
 {
     /**
      * simply ignore or set to 0.
@@ -101,5 +103,15 @@ class CMapTable
     public function getSubtables(): array
     {
         return $this->subtables;
+    }
+
+    /**
+     * @param WritableTableVisitorInterface $writableTableVisitor
+     *
+     * @return mixed
+     */
+    public function accept(WritableTableVisitorInterface $writableTableVisitor)
+    {
+        return $writableTableVisitor->visitCMap($this);
     }
 }

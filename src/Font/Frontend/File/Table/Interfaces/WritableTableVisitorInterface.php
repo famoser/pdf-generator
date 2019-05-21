@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend;
+namespace PdfGenerator\Font\Frontend\File\Table\Interfaces;
 
-class StreamWriter
+use PdfGenerator\Font\Frontend\File\Table\CMapTable;
+
+interface WritableTableVisitorInterface
 {
     /**
-     * @return int
+     * @param CMapTable $cMapTable
      */
-    public function getOffset(): int
-    {
-        return 0;
-    }
+    public function visitCMap(CMapTable $cMapTable);
 }
