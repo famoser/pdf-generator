@@ -11,14 +11,37 @@
 
 namespace PdfGenerator\Font\IR;
 
-use PdfGenerator\Font\Frontend\Content\Font;
-use PdfGenerator\Font\Frontend\ContentReader;
+use PdfGenerator\Font\Frontend\Content\Character\GlyphIndexFormatVisitor;
+use PdfGenerator\Font\Frontend\File\FontFile;
+use PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
+use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
+use PdfGenerator\Font\Frontend\File\Table\CMapTable;
+use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
+use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
+use PdfGenerator\Font\Frontend\File\Traits\BoundingBoxTrait;
 use PdfGenerator\Font\Frontend\FileReader;
-use PdfGenerator\Font\Frontend\Structure\Table\CMap\FormatReader;
-use PdfGenerator\Font\Frontend\StructureReader;
+use PdfGenerator\Font\Frontend\StreamReader;
+use PdfGenerator\Font\IR\Structure\BoundingBox;
+use PdfGenerator\Font\IR\Structure\Character;
+use PdfGenerator\Font\IR\Structure\Font;
 
 class Parser
 {
+    /**
+     * @var GlyphIndexFormatVisitor
+     */
+    private $glyphIndexFormatVisitor;
+
+    /**
+     * Parser constructor.
+     *
+     * @param GlyphIndexFormatVisitor $glyphIndexFormatVisitor
+     */
+    public function __construct(GlyphIndexFormatVisitor $glyphIndexFormatVisitor)
+    {
+        $this->glyphIndexFormatVisitor = $glyphIndexFormatVisitor;
+    }
+
     /**
      * @param string $content
      *
@@ -28,11 +51,158 @@ class Parser
      */
     public function parse(string $content): Font
     {
-        $fileReader = new FileReader($content);
+        $streamReader = new StreamReader($content);
         $formatReader = new FormatReader();
-        $structureReader = new StructureReader($formatReader);
-        $contentReader = new ContentReader($structureReader);
+        $fileReader = new FileReader($formatReader);
 
-        return $contentReader->readFont($fileReader);
+        $fontFile = $fileReader->readFontFile($streamReader);
+        $font = $this->createFont($fontFile);
+
+        return $font;
+    }
+
+    /**
+     * @param FontFile $fontFile
+     *
+     * @throws \Exception
+     *
+     * @return Font
+     */
+    private function createFont(FontFile $fontFile): Font
+    {
+        $font = new Font();
+        $font->setFontFile($fontFile);
+
+        $characters = $this->createCharacters($fontFile);
+        $mappedCharacters = $this->mapCharacters($characters, $fontFile);
+        $font->setCharacters($mappedCharacters);
+
+        return $font;
+    }
+
+    /**
+     * @param array $characters
+     * @param FontFile $fontFile
+     *
+     * @throws \Exception
+     *
+     * @return Character[]
+     */
+    private function mapCharacters(array $characters, FontFile $fontFile)
+    {
+        $subtable = $this->chooseBestCMapSubtable($fontFile->getCMapTable());
+
+        $mapping = $this->glyphIndexFormatVisitor->visitFormat($subtable->getFormat());
+
+        if ($subtable->getPlatformID() !== 0 || $subtable->getPlatformSpecificID() !== 4) {
+            throw new \Exception('encoding not supported');
+            // unicode; nothing to do
+        }
+
+        $characterMapping = [];
+        foreach ($mapping as $unicode => $characterIndex) {
+            $characterMapping[$unicode] = $characters[$characterIndex];
+        }
+
+        return $characters;
+    }
+
+    /**
+     * @param CMapTable $cMapTable
+     *
+     * @return Subtable
+     */
+    private function chooseBestCMapSubtable(CMapTable $cMapTable)
+    {
+        /** @var Subtable[] $cMapSubtable */
+        $cMapSubtable = [];
+
+        $overflow = 20;
+        foreach ($cMapTable->getSubtables() as $subtable) {
+            if ($subtable->getPlatformID() === 0) {
+                if ($subtable->getPlatformSpecificID() <= 4) {
+                    $cMapSubtable[4 - $subtable->getPlatformSpecificID()] = $subtable;
+                    continue;
+                }
+            }
+
+            if ($subtable->getPlatformID() === 3) {
+                $cMapSubtable[10 + 10 - $subtable->getPlatformSpecificID()] = $subtable;
+                continue;
+            }
+
+            $cMapSubtable[$overflow++] = $subtable;
+        }
+
+        $minimalKey = min(array_keys($cMapSubtable));
+
+        return $cMapSubtable[$minimalKey];
+    }
+
+    /**
+     * @param FontFile $fontFile
+     *
+     * @return Character[]
+     */
+    private function createCharacters(FontFile $fontFile): array
+    {
+        $characters = [];
+
+        $characterCount = \count($fontFile->getGlyfTables());
+        for ($i = 0; $i < $characterCount; ++$i) {
+            $character = new Character();
+
+            $glyfTable = $fontFile->getGlyfTables()[$i];
+            $character->setGlyfTable($glyfTable);
+
+            $longHorMetric = $this->getLongHorMetric($fontFile->getHMtxTable(), $i);
+            $character->setLongHorMetric($longHorMetric);
+
+            $boundingBox = $this->calculateBoundingBox($glyfTable, $fontFile->getHeadTable()->getUnitsPerEm());
+            $character->setBoundingBox($boundingBox);
+
+            $characters[] = $character;
+        }
+
+        return $characters;
+    }
+
+    /**
+     * @param HMtxTable $hMtxTable
+     * @param int $entryIndex
+     *
+     * @return LongHorMetric
+     */
+    private function getLongHorMetric(HMtxTable $hMtxTable, int $entryIndex): LongHorMetric
+    {
+        $longHorMetricCount = \count($hMtxTable->getLongHorMetrics());
+        if ($entryIndex < $longHorMetricCount) {
+            return $hMtxTable->getLongHorMetrics()[$entryIndex];
+        }
+
+        $lastEntry = $hMtxTable->getLongHorMetrics()[$longHorMetricCount - 1];
+        $bearingIndex = $entryIndex % $longHorMetricCount;
+
+        $longHorMetric = new LongHorMetric();
+        $longHorMetric->setAdvanceWidth($hMtxTable->getLongHorMetrics()[$lastEntry]->getAdvanceWidth());
+        $longHorMetric->setLeftSideBearing($hMtxTable->getLeftSideBearings()[$bearingIndex]);
+
+        return $longHorMetric;
+    }
+
+    /**
+     * @param BoundingBoxTrait $boundingBoxTrait
+     * @param int $divisor
+     *
+     * @return BoundingBox
+     */
+    private function calculateBoundingBox($boundingBoxTrait, int $divisor)
+    {
+        $boundingBox = new BoundingBox();
+
+        $boundingBox->setHeight((float)($boundingBoxTrait->getYMax() - $boundingBoxTrait->getYMin()) / $divisor);
+        $boundingBox->setHeight(((float)$boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()) / $divisor);
+
+        return $boundingBox;
     }
 }

@@ -11,458 +11,495 @@
 
 namespace PdfGenerator\Font\Frontend;
 
-use PdfGenerator\Font\Frontend\File\LongDateTime;
+use PdfGenerator\Font\Frontend\File\FontFile;
+use PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
+use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
+use PdfGenerator\Font\Frontend\File\Table\CMapTable;
+use PdfGenerator\Font\Frontend\File\Table\CvtTable;
+use PdfGenerator\Font\Frontend\File\Table\FpgmTable;
+use PdfGenerator\Font\Frontend\File\Table\GaspTable;
+use PdfGenerator\Font\Frontend\File\Table\GDEFTable;
+use PdfGenerator\Font\Frontend\File\Table\GlyfTable;
+use PdfGenerator\Font\Frontend\File\Table\GPOSTable;
+use PdfGenerator\Font\Frontend\File\Table\GSUBTable;
+use PdfGenerator\Font\Frontend\File\Table\HeadTable;
+use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
+use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
+use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
+use PdfGenerator\Font\Frontend\File\Table\LocaTable;
+use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
+use PdfGenerator\Font\Frontend\File\Table\NameTable;
+use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
+use PdfGenerator\Font\Frontend\File\Table\OS2Table;
+use PdfGenerator\Font\Frontend\File\Table\PostTable;
+use PdfGenerator\Font\Frontend\File\Table\PrepTable;
+use PdfGenerator\Font\Frontend\File\Table\RawTable;
+use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
+use PdfGenerator\Font\Frontend\File\Traits\RawContent;
+use PdfGenerator\Font\Frontend\File\Traits\Reader;
 
-/**
- * can read supported pdf value types.
- *
- * notes:
- *  - always uses Big Endian ordering for parsing
- */
 class FileReader
 {
     /**
-     * @var string
+     * @var FormatReader
      */
-    private $content;
+    private $formatReader;
 
     /**
-     * @var int
-     */
-    private $offset = 0;
-
-    /**
-     * @var int
-     */
-    private $byteCount;
-
-    /**
-     * Reader constructor.
+     * StructureReader constructor.
      *
-     * @param string $content
+     * @param FormatReader $formatReader
      */
-    public function __construct($content)
+    public function __construct(FormatReader $formatReader)
     {
-        $this->content = $content;
-        $this->byteCount = \strlen($content);
+        $this->formatReader = $formatReader;
     }
 
     /**
-     * @throws \Exception
+     * @param StreamReader $fileReader
      *
-     * @return int
+     *@throws \Exception
+     *
+     * @return FontFile
      */
-    public function readUInt8(): int
+    public function readFontFile(StreamReader $fileReader)
     {
-        // append empty string if less than two bytes left because have to be able to unpack uInt16
-        $offset = $this->offset - 1;
-        if ($offset === -1) {
-            $uInt16 = static::unpackUInt16(' ' . $this->content[0], 0);
+        $font = new FontFile();
+
+        $offsetTable = $this->readOffsetTable($fileReader);
+        $font->setOffsetTable($offsetTable);
+
+        if (!$offsetTable->isTrueTypeFont()) {
+            throw new \Exception('This font type is not supported: ' . $offsetTable->getScalerType());
+        }
+
+        for ($i = 0; $i < $offsetTable->getNumTables(); ++$i) {
+            $tableDirectoryEntry = $this->readTableDirectoryEntry($fileReader);
+            $font->addTableDirectoryEntry($tableDirectoryEntry);
+        }
+
+        $this->readTables($fileReader, $font);
+
+        return $font;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     * @param FontFile $font
+     *
+     * @throws \Exception
+     */
+    private function readTables(StreamReader $fileReader, FontFile $font)
+    {
+        /** @var TableDirectoryEntry $locaEntry */
+        $locaEntry = null;
+        /** @var TableDirectoryEntry $hmtxEntry */
+        $hmtxEntry = null;
+        /** @var TableDirectoryEntry $glyfEntry */
+        $glyfEntry = null;
+
+        foreach ($font->getTableDirectoryEntries() as $tableDirectoryEntry) {
+            $fileReader->setOffset($tableDirectoryEntry->getOffset());
+
+            switch ($tableDirectoryEntry->getTag()) {
+                case 'cmap':
+                    $table = $this->readCMapTable($fileReader);
+                    $font->setCMapTable($table);
+                    break;
+                case 'maxp':
+                    $table = $this->readMaxPTable($fileReader);
+                    $font->setMaxPTable($table);
+                    break;
+                case 'head':
+                    $table = $this->readHeadTable($fileReader);
+                    $font->setHeadTable($table);
+                    break;
+                case 'OS/2':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new OS2Table());
+                    $font->setOS2Table($table);
+                    break;
+                case 'name':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new NameTable());
+                    $font->setNameTable($table);
+                    break;
+                case 'cvt ':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new CvtTable());
+                    $font->setCvtTable($table);
+                    break;
+                case 'fpgm':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new FpgmTable());
+                    $font->setFpqmTable($table);
+                    break;
+                case 'gasp':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GaspTable());
+                    $font->setGaspTable($table);
+                    break;
+                case 'prep':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new PrepTable());
+                    $font->setPrepTable($table);
+                    break;
+                case 'post':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new PostTable());
+                    $font->setPostTable($table);
+                    break;
+                case 'GDEF':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GDEFTable());
+                    $font->setGDEFTable($table);
+                    break;
+                case 'GPOS':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GPOSTable());
+                    $font->setGPOSTable($table);
+                    break;
+                case 'GSUB':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GSUBTable());
+                    $font->setGSUBTable($table);
+                    break;
+                case 'hhea':
+                    $table = $this->readHHeaTable($fileReader);
+                    $font->setHHeaTable($table);
+                    break;
+                case 'loca':
+                    $locaEntry = $tableDirectoryEntry;
+                    break;
+                case 'hmtx':
+                    $hmtxEntry = $tableDirectoryEntry;
+                    break;
+                case 'glyf':
+                    $glyfEntry = $tableDirectoryEntry;
+                    break;
+                default:
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry->getLength(), $tableDirectoryEntry->getTag());
+                    $font->addRawTable($table);
+                    break;
+            }
+        }
+
+        if ($locaEntry !== null) {
+            $fileReader->setOffset($locaEntry->getOffset());
+            $table = $this->readLocaTable($fileReader, $font->getHeadTable(), $font->getMaxPTable());
+            $font->setLocaTable($table);
+        }
+
+        if ($hmtxEntry !== null) {
+            $fileReader->setOffset($hmtxEntry->getOffset());
+            $table = $this->readHMtxTable($fileReader, $font->getHHeaTable(), $font->getMaxPTable());
+            $font->setHMtxTable($table);
+        }
+
+        if ($glyfEntry !== null) {
+            $fileReader->setOffset($glyfEntry->getOffset());
+            $tables = $this->readGlyfTables($fileReader, $font->getLocaTable(), $font->getHeadTable());
+            $font->setGlyfTables($tables);
+        }
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     *
+     *@throws \Exception
+     *
+     * @return OffsetTable
+     */
+    private function readOffsetTable(StreamReader $fileReader)
+    {
+        $offsetTable = new OffsetTable();
+
+        $offsetTable->setScalerType($fileReader->readUInt32());
+        $offsetTable->setNumTables($fileReader->readUInt16());
+        Reader::readBinaryTreeSearchableUInt16($fileReader, $offsetTable);
+
+        return $offsetTable;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     *
+     *@throws \Exception
+     *
+     * @return TableDirectoryEntry
+     */
+    private function readTableDirectoryEntry(StreamReader $fileReader)
+    {
+        $tableDirectoryEntry = new TableDirectoryEntry();
+
+        $tableDirectoryEntry->setTag($fileReader->readTagAsString());
+        $tableDirectoryEntry->setCheckSum($fileReader->readUInt32());
+        $tableDirectoryEntry->setOffset($fileReader->readOffset32());
+        $tableDirectoryEntry->setLength($fileReader->readUInt32());
+
+        return $tableDirectoryEntry;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     *
+     *@throws \Exception
+     *
+     * @return CMapTable
+     */
+    private function readCMapTable(StreamReader $fileReader)
+    {
+        $cmapTable = new CMapTable();
+
+        $offset = $fileReader->getOffset();
+
+        $cmapTable->setVersion($fileReader->readUInt16());
+        $cmapTable->setNumberSubtables($fileReader->readUInt16());
+
+        for ($i = 0; $i < $cmapTable->getNumberSubtables(); ++$i) {
+            $subTable = $this->readCMapSubtable($fileReader, $offset);
+            $cmapTable->addSubtable($subTable);
+        }
+
+        return $cmapTable;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     * @param int $cmapTableOffset
+     *
+     *@throws \Exception
+     *
+     * @return Subtable
+     */
+    private function readCMapSubtable(StreamReader $fileReader, int $cmapTableOffset)
+    {
+        $cMapSubtable = new Subtable();
+
+        $cMapSubtable->setPlatformID($fileReader->readUInt16());
+        $cMapSubtable->setPlatformSpecificID($fileReader->readUInt16());
+        $cMapSubtable->setOffset($fileReader->readOffset32());
+
+        $fileReader->pushOffset($cmapTableOffset + $cMapSubtable->getOffset());
+        $format = $this->formatReader->readFormat($fileReader);
+        $cMapSubtable->setFormat($format);
+        $fileReader->popOffset();
+
+        return $cMapSubtable;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     * @param LocaTable $locaTable
+     * @param HeadTable $headTable
+     *
+     *@throws \Exception
+     *
+     * @return GlyfTable[]
+     */
+    private function readGlyfTables(StreamReader $fileReader, LocaTable $locaTable, HeadTable $headTable)
+    {
+        $glyphTableOffset = $fileReader->getOffset();
+        // if short format the offsets are in words, else in bytes
+        $offsetMultiplier = $headTable->getIndexToLocFormat() === 0 ? 2 : 1;
+
+        $glyfTables = [];
+
+        $glyphCount = \count($locaTable->getOffsets()) - 1;
+        for ($i = 0; $i < $glyphCount; ++$i) {
+            $startGlyphOffset = $locaTable->getOffsets()[$i] * $offsetMultiplier;
+            $endGlyphOfOffset = $locaTable->getOffsets()[$i + 1] * $offsetMultiplier;
+
+            // skip glyph construction if length is 0
+            if ($startGlyphOffset === $endGlyphOfOffset) {
+                $glyfTables[] = null;
+                continue;
+            }
+
+            $fileReader->setOffset($startGlyphOffset + $glyphTableOffset);
+
+            $glyfTable = new GlyfTable();
+            $glyfTable->setNumberOfContours($fileReader->readInt16());
+            Reader::readBoundingBoxFWORD($fileReader, $glyfTable);
+
+            $rawFontData = $fileReader->readUntil($endGlyphOfOffset + $glyphTableOffset);
+            $glyfTable->setContent($rawFontData);
+
+            $glyfTables[] = $glyfTable;
+        }
+
+        return $glyfTables;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     * @param HeadTable $headTable
+     * @param MaxPTable $maxPTable
+     *
+     *@throws \Exception
+     *
+     * @return LocaTable
+     */
+    private function readLocaTable(StreamReader $fileReader, HeadTable $headTable, MaxPTable $maxPTable)
+    {
+        $glyfTable = new LocaTable();
+
+        $numberOfGlyphs = $maxPTable->getNumGlyphs() + 1;
+
+        if ($headTable->getIndexToLocFormat() === 0) {
+            $offsets = $fileReader->readOffset16Array($numberOfGlyphs);
         } else {
-            $uInt16 = static::unpackUInt16($this->content, $offset);
+            $offsets = $fileReader->readOffset32Array($numberOfGlyphs);
         }
-        ++$this->offset;
 
-        return self::transformTo8Bit($uInt16);
+        $glyfTable->setOffsets($offsets);
+
+        return $glyfTable;
     }
 
     /**
+     * @param StreamReader $fileReader
+     *
+     *@throws \Exception
+     *
+     * @return MaxPTable
+     */
+    private function readMaxPTable(StreamReader $fileReader)
+    {
+        $maxPTable = new MaxPTable();
+
+        $maxPTable->setVersion($fileReader->readFixed());
+        $maxPTable->setNumGlyphs($fileReader->readUInt16());
+        $maxPTable->setMaxPoints($fileReader->readUInt16());
+        $maxPTable->setMaxContours($fileReader->readUInt16());
+        $maxPTable->setMaxCompositePoints($fileReader->readUInt16());
+        $maxPTable->setMaxCompositeContours($fileReader->readUInt16());
+        $maxPTable->setMaxZones($fileReader->readUInt16());
+        $maxPTable->setMaxTwilightPoints($fileReader->readUInt16());
+        $maxPTable->setMaxStorage($fileReader->readUInt16());
+        $maxPTable->setMaxFunctionDefs($fileReader->readUInt16());
+        $maxPTable->setMaxInstructionDefs($fileReader->readUInt16());
+        $maxPTable->setMaxStackElements($fileReader->readUInt16());
+        $maxPTable->setMaxSizeOfInstructions($fileReader->readUInt16());
+        $maxPTable->setMaxComponentElements($fileReader->readUInt16());
+        $maxPTable->setMaxComponentDepth($fileReader->readUInt16());
+
+        return $maxPTable;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     *
+     *@throws \Exception
+     *
+     * @return HeadTable
+     */
+    private function readHeadTable(StreamReader $fileReader)
+    {
+        $headTable = new HeadTable();
+
+        $headTable->setMajorVersion($fileReader->readUInt16());
+        $headTable->setMinorVersion($fileReader->readUInt16());
+        $headTable->setFontRevision($fileReader->readFixed());
+        $headTable->setCheckSumAdjustment($fileReader->readUInt32());
+        $headTable->setMagicNumber($fileReader->readUInt32());
+        $headTable->setFlags($fileReader->readUInt16());
+        $headTable->setUnitsPerEm($fileReader->readUInt16());
+        $headTable->setCreated($fileReader->readLONGDATETIME());
+        $headTable->setModified($fileReader->readLONGDATETIME());
+        Reader::readBoundingBoxInt16($fileReader, $headTable);
+        $headTable->setMacStyle($fileReader->readUInt16());
+        $headTable->setLowestRecPPEM($fileReader->readUInt16());
+        $headTable->setFontDirectionHints($fileReader->readInt16());
+        $headTable->setIndexToLocFormat($fileReader->readInt16());
+        $headTable->setGlyphDataFormat($fileReader->readInt16());
+
+        return $headTable;
+    }
+
+    /**
+     * @param StreamReader $fileReader
      * @param int $size
+     * @param RawContent $targetTable
      *
-     * @throws \Exception
-     *
-     * @return int[]
+     * @return RawContent|OS2Table|NameTable|CvtTable|FpgmTable|GaspTable|PrepTable|PostTable|GDEFTable|GPOSTable|GSUBTable
      */
-    public function readUInt8Array(int $size): array
+    private function readRawContentTable(StreamReader $fileReader, int $size, $targetTable)
     {
-        $array = [];
-        for ($i = 0; $i < $size; ++$i) {
-            $array[] = $this->readUInt8();
-        }
+        $endOffset = $fileReader->getOffset() + $size;
 
-        return $array;
+        $targetTable->setContent($fileReader->readUntil($endOffset));
+
+        return $targetTable;
     }
 
     /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readInt8(): int
-    {
-        $uInt8 = $this->readUInt8();
-
-        return self::transformToSinged($uInt8, 8);
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readUInt16(): int
-    {
-        $uInt16 = static::unpackUInt16($this->content, $this->offset);
-        $this->offset += 2;
-
-        return $uInt16;
-    }
-
-    /**
+     * @param StreamReader $fileReader
      * @param int $size
+     * @param string $tag
      *
-     * @throws \Exception
-     *
-     * @return int[]
+     * @return RawTable|OS2Table|NameTable
      */
-    public function readUInt16Array(int $size): array
+    private function readRawTable(StreamReader $fileReader, int $size, string $tag)
     {
-        $array = [];
-        for ($i = 0; $i < $size; ++$i) {
-            $array[] = $this->readUInt16();
+        $rawTable = new RawTable();
+        $rawTable->setTag($tag);
+
+        $endOffset = $fileReader->getOffset() + $size;
+        $rawTable->setContent($fileReader->readUntil($endOffset));
+
+        return $rawTable;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     *
+     *@throws \Exception
+     *
+     * @return HHeaTable
+     */
+    private function readHHeaTable(StreamReader $fileReader)
+    {
+        $table = new HHeaTable();
+
+        $table->setVersion($fileReader->readFixed());
+        $table->setAscent($fileReader->readFWORD());
+        $table->setDecent($fileReader->readFWORD());
+        $table->setLineGap($fileReader->readFWORD());
+        $table->setAdvanceWidthMax($fileReader->readUFWORD());
+        $table->setMinLeftSideBearing($fileReader->readFWORD());
+        $table->setMinRightSideBearing($fileReader->readFWORD());
+        $table->setXMaxExtent($fileReader->readFWORD());
+        $table->setCaretSlopeRise($fileReader->readInt16());
+        $table->setCaretSlopeRun($fileReader->readInt16());
+        $table->setCaretOffset($fileReader->readFWORD());
+
+        // skip resevred characters
+        $fileReader->readInt32();
+        $fileReader->readInt32();
+
+        $table->setMetricDataFormat($fileReader->readInt16());
+        $table->setNumOfLongHorMetrics($fileReader->readUInt16());
+
+        return $table;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     * @param HHeaTable $hHeaTable
+     * @param MaxPTable $maxPTable
+     *
+     *@throws \Exception
+     *
+     * @return HMtxTable
+     */
+    private function readHMtxTable(StreamReader $fileReader, HHeaTable $hHeaTable, MaxPTable $maxPTable)
+    {
+        $hMtxTable = new HMtxTable();
+
+        for ($i = 0; $i < $hHeaTable->getNumOfLongHorMetrics(); ++$i) {
+            $longHorMetric = new LongHorMetric();
+            $longHorMetric->setAdvanceWidth($fileReader->readUInt16());
+            $longHorMetric->setLeftSideBearing($fileReader->readInt16());
+
+            $hMtxTable->addLongHorMetric($longHorMetric);
         }
 
-        return $array;
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readInt16(): int
-    {
-        $uInt16 = $this->readUInt16();
-
-        return self::transformToSinged($uInt16, 16);
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readUInt24(): int
-    {
-        $uInt16 = $this->readUInt16();
-        $uInt8 = $this->readUInt8();
-
-        return $uInt16 << 8 | $uInt8;
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readUInt32(): int
-    {
-        $uInt32 = static::unpackUInt32($this->content, $this->offset);
-        $this->offset += 4;
-
-        return $uInt32;
-    }
-
-    /**
-     * @param int $size
-     *
-     * @throws \Exception
-     *
-     * @return int[]
-     */
-    public function readUInt32Array(int $size): array
-    {
-        $array = [];
-        for ($i = 0; $i < $size; ++$i) {
-            $array[] = $this->readUInt32();
+        $leftSideBearingEntriesCount = $maxPTable->getNumGlyphs() - $hHeaTable->getNumOfLongHorMetrics();
+        for ($i = 0; $i < $leftSideBearingEntriesCount; ++$i) {
+            $hMtxTable->addLeftSideBearing($fileReader->readFWORD());
         }
 
-        return $array;
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readInt32(): int
-    {
-        $uInt32 = $this->readUInt32();
-
-        return self::transformToSinged($uInt32, 32);
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return float
-     */
-    public function readFixed(): float
-    {
-        $mantissa = $this->readInt16();
-        $fraction = $this->readUInt16();
-
-        return (float)((string)$mantissa . '.' . $fraction);
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readFWORD(): int
-    {
-        return $this->readInt16();
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return LongDateTime
-     */
-    public function readLONGDATETIME(): LongDateTime
-    {
-        $uInt64 = self::unpackUInt64($this->content, $this->offset);
-        $this->offset += 8;
-
-        $int64 = self::transformToSinged($uInt64, 64);
-
-        return new LongDateTime($int64);
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return array
-     */
-    public function readTag(): array
-    {
-        $uInt32 = $this->readUInt32();
-        $val1 = $uInt32 >> 8;
-        $val2 = $val1 >> 8;
-        $val3 = $val2 >> 8;
-
-        return [$val3 & 0xff, $val2 & 0xff, $val1 & 0xff, $uInt32 & 0xff];
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return string
-     */
-    public function readTagAsString(): string
-    {
-        $result = '';
-        foreach ($this->readTag() as $entry) {
-            $result .= \chr($entry);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readOffset16(): int
-    {
-        return $this->readUInt16();
-    }
-
-    /**
-     * @param int $size
-     *
-     * @throws \Exception
-     *
-     * @return array
-     */
-    public function readOffset16Array(int $size): array
-    {
-        return $this->readUInt16Array($size);
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readOffset32(): int
-    {
-        return $this->readUInt32();
-    }
-
-    /**
-     * @param int $size
-     *
-     * @throws \Exception
-     *
-     * @return int[]
-     */
-    public function readOffset32Array(int $size): array
-    {
-        return $this->readUInt32Array($size);
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return int
-     */
-    public function readUFWORD()
-    {
-        return $this->readUInt16();
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return float
-     */
-    public function readF2DOT14(): float
-    {
-        $uInt16 = $this->readUInt16();
-
-        // decimal are first two bits as two's complement
-        $decimal = $uInt16 >> 14;
-        if ($decimal > 1) {
-            $decimal -= 4;
-        }
-
-        // clear the top two entries as this are for the decimals
-        $numerator = $uInt16 & 0x3fff;
-        $fraction = sprintf('%.6f', $numerator / 16384);
-
-        return $decimal + $fraction;
-    }
-
-    /**
-     * aligns the pointer by long.
-     */
-    public function alignLong(): void
-    {
-        $align = 8 - $this->offset % 8;
-        $this->offset += $align;
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return bool
-     */
-    public function isEndOfFileReached(): bool
-    {
-        return $this->offset >= $this->byteCount - 1;
-    }
-
-    /**
-     * @param $content
-     * @param int $offset
-     *
-     * @return int
-     */
-    private static function unpackUInt16($content, int $offset): int
-    {
-        return unpack('nnumber', $content, $offset)['number'];
-    }
-
-    /**
-     * @param $content
-     * @param int $offset
-     *
-     * @return int
-     */
-    private static function unpackUInt32($content, int $offset): int
-    {
-        return unpack('Nnumber', $content, $offset)['number'];
-    }
-
-    /**
-     * @param $content
-     * @param int $offset
-     *
-     * @return int
-     */
-    private static function unpackUInt64($content, int $offset): int
-    {
-        return unpack('Jnumber', $content, $offset)['number'];
-    }
-
-    /**
-     * @param $number
-     *
-     * @return int
-     */
-    private static function transformTo8Bit(int $number): int
-    {
-        // zero out all bits except the last 8
-        return $number & 0xff;
-    }
-
-    /**
-     * @param int $number
-     * @param int $bits
-     *
-     * @return int
-     */
-    private static function transformToSinged(int $number, int $bits): int
-    {
-        $cutoff = 2 ** ($bits - 1);
-
-        return $number < $cutoff ? $number : $number - 2 ** $bits;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOffset(): int
-    {
-        return $this->offset;
-    }
-
-    /**
-     * @param int $offset
-     */
-    public function setOffset(int $offset)
-    {
-        $this->offset = $offset;
-    }
-
-    private $pushedOffsets = [];
-
-    /**
-     * remembers the current offset location and then sets the offset to the new value.
-     *
-     * @param int $offset
-     */
-    public function pushOffset(int $offset)
-    {
-        $this->pushedOffsets[] = $this->getOffset();
-        $this->setOffset($offset);
-    }
-
-    /**
-     * recovers the last remembered offset location.
-     */
-    public function popOffset()
-    {
-        $offset = array_pop($this->pushedOffsets);
-        $this->setOffset($offset);
-    }
-
-    /**
-     * @param int $offset
-     *
-     * @return string
-     */
-    public function readUntil(int $offset)
-    {
-        $result = '';
-
-        while ($this->offset < $offset) {
-            $result .= $this->content[$this->offset++];
-        }
-
-        return $result;
+        return $hMtxTable;
     }
 }
