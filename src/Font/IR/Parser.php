@@ -204,7 +204,7 @@ class Parser
         $boundingBox = new BoundingBox();
 
         $boundingBox->setHeight((float)($boundingBoxTrait->getYMax() - $boundingBoxTrait->getYMin()) / $divisor);
-        $boundingBox->setHeight(((float)$boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()) / $divisor);
+        $boundingBox->setWidth(((float)$boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()) / $divisor);
 
         return $boundingBox;
     }
