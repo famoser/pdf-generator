@@ -21,7 +21,6 @@ use PdfGenerator\Font\Frontend\Structure\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\Structure\Table\NameTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OS2Table;
-use PdfGenerator\Font\Frontend\Structure\Table\PostTable;
 use PdfGenerator\Font\Frontend\Structure\Table\TableDirectoryEntry;
 
 class Font
@@ -80,11 +79,6 @@ class Font
      * @var OS2Table|null
      */
     private $oS2Table;
-
-    /**
-     * @var PostTable|null
-     */
-    private $postTable;
 
     /**
      * @return OffsetTable
@@ -260,21 +254,5 @@ class Font
     public function setOS2Table(?OS2Table $oS2Table): void
     {
         $this->oS2Table = $oS2Table;
-    }
-
-    /**
-     * @return PostTable|null
-     */
-    public function getPostTable(): ?PostTable
-    {
-        return $this->postTable;
-    }
-
-    /**
-     * @param PostTable|null $postTable
-     */
-    public function setPostTable(?PostTable $postTable): void
-    {
-        $this->postTable = $postTable;
     }
 }
