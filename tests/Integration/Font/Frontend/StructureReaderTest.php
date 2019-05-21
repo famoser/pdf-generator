@@ -67,7 +67,6 @@ class StructureReaderTest extends TestCase
         $this->assertHeadTable($font->getHeadTable());
         $this->assertMaxPTable($font->getMaxPTable());
         $this->assertGlyfTable($font->getGlyfTables());
-        var_dump($font);
     }
 
     /**
@@ -163,6 +162,13 @@ class StructureReaderTest extends TestCase
     {
         $this->assertCount(938, $glyfTables);
 
-        $someGlyph = $glyfTables[32];
+        foreach ($glyfTables as $glyfTable) {
+            if ($glyfTable === null) {
+                continue;
+            }
+
+            $this->assertTrue($glyfTable->getXMin() <= $glyfTable->getXMax());
+            $this->assertTrue($glyfTable->getYMin() <= $glyfTable->getYMax());
+        }
     }
 }

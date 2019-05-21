@@ -108,7 +108,7 @@ class StructureReader
             $fileReader->setOffset($tableDirectoryEntry->getOffset());
             switch ($tableDirectoryEntry->getTag()) {
                 case 'glyf':
-                    $tables = $this->readGlyfTables($fileReader, $font->getLocaTable());
+                    $tables = $this->readGlyfTables($fileReader, $font->getLocaTable(), $font->getHeadTable());
                     $font->setGlyfTables($tables);
                     break;
             }
@@ -203,25 +203,38 @@ class StructureReader
     /**
      * @param FileReader $fileReader
      * @param LocaTable $locaTable
+     * @param HeadTable $headTable
      *
      * @throws \Exception
      *
      * @return GlyfTable[]
      */
-    private function readGlyfTables(FileReader $fileReader, LocaTable $locaTable)
+    private function readGlyfTables(FileReader $fileReader, LocaTable $locaTable, HeadTable $headTable)
     {
+        $glyphTableOffset = $fileReader->getOffset();
+        // if short format the offsets are in words, else in bytes
+        $offsetMultiplier = $headTable->getIndexToLocFormat() === 0 ? 2 : 1;
+
         $glyfTables = [];
 
         $glyphCount = \count($locaTable->getOffsets()) - 1;
         for ($i = 0; $i < $glyphCount; ++$i) {
-            $offset = $locaTable->getOffsets()[$i];
-            $fileReader->setOffset($offset);
+            $startGlyphOffset = $locaTable->getOffsets()[$i] * $offsetMultiplier;
+            $endGlyphOfOffset = $locaTable->getOffsets()[$i + 1] * $offsetMultiplier;
+
+            // skip glyph construction if length is 0
+            if ($startGlyphOffset === $endGlyphOfOffset) {
+                $glyfTables[] = null;
+                continue;
+            }
+
+            $fileReader->setOffset($startGlyphOffset + $glyphTableOffset);
 
             $glyfTable = new GlyfTable();
             $glyfTable->setNumberOfContours($fileReader->readInt16());
             Reader::readBoundingBoxFWORD($fileReader, $glyfTable);
 
-            $rawFontData = $fileReader->readUntil($locaTable->getOffsets()[$i + 1]);
+            $rawFontData = $fileReader->readUntil($endGlyphOfOffset + $glyphTableOffset);
             $glyfTable->setContent($rawFontData);
 
             $glyfTables[] = $glyfTable;
