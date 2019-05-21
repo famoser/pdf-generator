@@ -15,7 +15,10 @@ use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
 use PdfGenerator\Font\Frontend\Structure\Table\CvtTable;
 use PdfGenerator\Font\Frontend\Structure\Table\FpgmTable;
 use PdfGenerator\Font\Frontend\Structure\Table\GaspTable;
+use PdfGenerator\Font\Frontend\Structure\Table\GDEFTable;
 use PdfGenerator\Font\Frontend\Structure\Table\GlyfTable;
+use PdfGenerator\Font\Frontend\Structure\Table\GPOSTable;
+use PdfGenerator\Font\Frontend\Structure\Table\GSUBTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HeadTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HMtxTable;
@@ -62,9 +65,24 @@ class Font
     private $gaspTable;
 
     /**
+     * @var GDEFTable|null
+     */
+    private $gDEFTable;
+
+    /**
      * @var GlyfTable[]
      */
     private $glyfTables = [];
+
+    /**
+     * @var GPOSTable|null
+     */
+    private $gPOSTable;
+
+    /**
+     * @var GSUBTable|null
+     */
+    private $gSUBTable;
 
     /**
      * @var HeadTable|null
@@ -109,7 +127,7 @@ class Font
     /**
      * @var RawTable[]
      */
-    private $rawTables;
+    private $rawTables = [];
 
     /**
      * @var PostTable|null
@@ -386,5 +404,53 @@ class Font
     public function setPostTable(?PostTable $postTable): void
     {
         $this->postTable = $postTable;
+    }
+
+    /**
+     * @return GDEFTable|null
+     */
+    public function getGDEFTable(): ?GDEFTable
+    {
+        return $this->gDEFTable;
+    }
+
+    /**
+     * @param GDEFTable|null $gDEFTable
+     */
+    public function setGDEFTable(?GDEFTable $gDEFTable): void
+    {
+        $this->gDEFTable = $gDEFTable;
+    }
+
+    /**
+     * @return GPOSTable|null
+     */
+    public function getGPOSTable(): ?GPOSTable
+    {
+        return $this->gPOSTable;
+    }
+
+    /**
+     * @param GPOSTable|null $gPOSTable
+     */
+    public function setGPOSTable(?GPOSTable $gPOSTable): void
+    {
+        $this->gPOSTable = $gPOSTable;
+    }
+
+    /**
+     * @return GSUBTable|null
+     */
+    public function getGSUBTable(): ?GSUBTable
+    {
+        return $this->gSUBTable;
+    }
+
+    /**
+     * @param GSUBTable|null $gSUBTable
+     */
+    public function setGSUBTable(?GSUBTable $gSUBTable): void
+    {
+        $this->gSUBTable = $gSUBTable;
     }
 }

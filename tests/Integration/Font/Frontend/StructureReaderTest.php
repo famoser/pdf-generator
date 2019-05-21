@@ -71,6 +71,7 @@ class StructureReaderTest extends TestCase
         $this->assertGlyfTable($font->getGlyfTables());
         $this->assertHHeaTable($font->getHHeaTable());
         $this->assertHMtxTable($font->getHMtxTable());
+        $this->assertCount(0, $font->getRawTables());
     }
 
     /**

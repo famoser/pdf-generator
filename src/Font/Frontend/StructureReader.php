@@ -18,7 +18,10 @@ use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
 use PdfGenerator\Font\Frontend\Structure\Table\CvtTable;
 use PdfGenerator\Font\Frontend\Structure\Table\FpgmTable;
 use PdfGenerator\Font\Frontend\Structure\Table\GaspTable;
+use PdfGenerator\Font\Frontend\Structure\Table\GDEFTable;
 use PdfGenerator\Font\Frontend\Structure\Table\GlyfTable;
+use PdfGenerator\Font\Frontend\Structure\Table\GPOSTable;
+use PdfGenerator\Font\Frontend\Structure\Table\GSUBTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HeadTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HMtx\LongHorMetric;
@@ -28,6 +31,7 @@ use PdfGenerator\Font\Frontend\Structure\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\Structure\Table\NameTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OS2Table;
+use PdfGenerator\Font\Frontend\Structure\Table\PostTable;
 use PdfGenerator\Font\Frontend\Structure\Table\PrepTable;
 use PdfGenerator\Font\Frontend\Structure\Table\RawTable;
 use PdfGenerator\Font\Frontend\Structure\Table\TableDirectoryEntry;
@@ -133,6 +137,22 @@ class StructureReader
                 case 'prep':
                     $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new PrepTable());
                     $font->setPrepTable($table);
+                    break;
+                case 'post':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new PostTable());
+                    $font->setPostTable($table);
+                    break;
+                case 'GDEF':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GDEFTable());
+                    $font->setGDEFTable($table);
+                    break;
+                case 'GPOS':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GPOSTable());
+                    $font->setGPOSTable($table);
+                    break;
+                case 'GSUB':
+                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GSUBTable());
+                    $font->setGSUBTable($table);
                     break;
                 case 'hhea':
                     $table = $this->readHHeaTable($fileReader);
@@ -392,7 +412,7 @@ class StructureReader
      * @param int $size
      * @param RawContent $targetTable
      *
-     * @return RawContent|OS2Table|NameTable|CvtTable|FpgmTable|GaspTable|PrepTable
+     * @return RawContent|OS2Table|NameTable|CvtTable|FpgmTable|GaspTable|PrepTable|PostTable|GDEFTable|GPOSTable|GSUBTable
      */
     private function readRawContentTable(FileReader $fileReader, int $size, $targetTable)
     {
