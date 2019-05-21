@@ -17,6 +17,8 @@ use PdfGenerator\Font\Frontend\Structure\Table\CMap\FormatReader;
 use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
 use PdfGenerator\Font\Frontend\Structure\Table\GlyfTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HeadTable;
+use PdfGenerator\Font\Frontend\Structure\Table\HHeaTable;
+use PdfGenerator\Font\Frontend\Structure\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\Structure\Table\LocaTable;
 use PdfGenerator\Font\Frontend\Structure\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
@@ -67,6 +69,8 @@ class StructureReaderTest extends TestCase
         $this->assertHeadTable($font->getHeadTable());
         $this->assertMaxPTable($font->getMaxPTable());
         $this->assertGlyfTable($font->getGlyfTables());
+        $this->assertHHeaTable($font->getHHeaTable());
+        $this->assertHMtxTable($font->getHMtxTable());
     }
 
     /**
@@ -170,5 +174,29 @@ class StructureReaderTest extends TestCase
             $this->assertTrue($glyfTable->getXMin() <= $glyfTable->getXMax());
             $this->assertTrue($glyfTable->getYMin() <= $glyfTable->getYMax());
         }
+    }
+
+    /**
+     * @param HHeaTable $hHeaTable
+     */
+    private function assertHHeaTable(HHeaTable $hHeaTable)
+    {
+        $this->assertSame(-600, $hHeaTable->getDecent());
+        $this->assertSame(1, $hHeaTable->getCaretSlopeRise());
+        $this->assertSame(931, $hHeaTable->getNumOfLongHorMetrics());
+    }
+
+    /**
+     * @param HMtxTable $hMtxTable
+     */
+    private function assertHMtxTable(HMtxTable $hMtxTable)
+    {
+        $this->assertCount(931, $hMtxTable->getLongHorMetrics());
+
+        $someEntry = $hMtxTable->getLongHorMetrics()[930];
+        $this->assertSame(571, $someEntry->getAdvanceWidth());
+        $this->assertSame(201, $someEntry->getLeftSideBearing());
+
+        $this->assertSame(201, $hMtxTable->getLeftSideBearings()[1]);
     }
 }

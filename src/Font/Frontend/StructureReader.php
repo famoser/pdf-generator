@@ -17,6 +17,9 @@ use PdfGenerator\Font\Frontend\Structure\Table\CMap\Subtable;
 use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
 use PdfGenerator\Font\Frontend\Structure\Table\GlyfTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HeadTable;
+use PdfGenerator\Font\Frontend\Structure\Table\HHeaTable;
+use PdfGenerator\Font\Frontend\Structure\Table\HMtx\LongHorMetric;
+use PdfGenerator\Font\Frontend\Structure\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\Structure\Table\LocaTable;
 use PdfGenerator\Font\Frontend\Structure\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\Structure\Table\NameTable;
@@ -102,6 +105,10 @@ class StructureReader
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry->getLength(), new NameTable());
                     $font->setNameTable($table);
                     break;
+                case 'hhea':
+                    $table = $this->readHHeaTable($fileReader);
+                    $font->setHHeaTable($table);
+                    break;
             }
         }
 
@@ -111,6 +118,10 @@ class StructureReader
                 case 'loca':
                     $table = $this->readLocaTable($fileReader, $font->getHeadTable(), $font->getMaxPTable());
                     $font->setLocaTable($table);
+                    break;
+                case 'hmtx':
+                    $table = $this->readHMtxTable($fileReader, $font->getHHeaTable(), $font->getMaxPTable());
+                    $font->setHMtxTable($table);
                     break;
             }
         }
@@ -354,5 +365,67 @@ class StructureReader
         $targetTable->setContent($fileReader->readUntil($endOffset));
 
         return $targetTable;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     *
+     * @throws \Exception
+     *
+     * @return HHeaTable
+     */
+    private function readHHeaTable(FileReader $fileReader)
+    {
+        $table = new HHeaTable();
+
+        $table->setVersion($fileReader->readFixed());
+        $table->setAscent($fileReader->readFWORD());
+        $table->setDecent($fileReader->readFWORD());
+        $table->setLineGap($fileReader->readFWORD());
+        $table->setAdvanceWidthMax($fileReader->readUFWORD());
+        $table->setMinLeftSideBearing($fileReader->readFWORD());
+        $table->setMinRightSideBearing($fileReader->readFWORD());
+        $table->setXMaxExtent($fileReader->readFWORD());
+        $table->setCaretSlopeRise($fileReader->readInt16());
+        $table->setCaretSlopeRun($fileReader->readInt16());
+        $table->setCaretOffset($fileReader->readFWORD());
+
+        // skip resevred characters
+        $fileReader->readInt32();
+        $fileReader->readInt32();
+
+        $table->setMetricDataFormat($fileReader->readInt16());
+        $table->setNumOfLongHorMetrics($fileReader->readUInt16());
+
+        return $table;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     * @param HHeaTable $hHeaTable
+     * @param MaxPTable $maxPTable
+     *
+     * @throws \Exception
+     *
+     * @return HMtxTable
+     */
+    private function readHMtxTable(FileReader $fileReader, HHeaTable $hHeaTable, MaxPTable $maxPTable)
+    {
+        $hMtxTable = new HMtxTable();
+
+        for ($i = 0; $i < $hHeaTable->getNumOfLongHorMetrics(); ++$i) {
+            $longHorMetric = new LongHorMetric();
+            $longHorMetric->setAdvanceWidth($fileReader->readUInt16());
+            $longHorMetric->setLeftSideBearing($fileReader->readInt16());
+
+            $hMtxTable->addLongHorMetric($longHorMetric);
+        }
+
+        $leftSideBearingEntriesCount = $maxPTable->getNumGlyphs() - $hHeaTable->getNumOfLongHorMetrics();
+        for ($i = 0; $i < $leftSideBearingEntriesCount; ++$i) {
+            $hMtxTable->addLeftSideBearing($fileReader->readFWORD());
+        }
+
+        return $hMtxTable;
     }
 }

@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Font\Frontend\Structure\Table;
 
+use PdfGenerator\Font\Frontend\Structure\Table\HMtx\LongHorMetric;
+
 /**
  * the horizontal metrics table defines how the horizontal font has to be rendered
  * the numberOfHMetrics field of the htmx table defines how many entries this table has.
@@ -23,4 +25,54 @@ namespace PdfGenerator\Font\Frontend\Structure\Table;
  */
 class HMtxTable
 {
+    /**
+     * simply ignore or set to 0.
+     *
+     * @ttf-type longHorMetric[hhea.numOfLongHorMetrics]
+     *
+     * @var LongHorMetric[]
+     */
+    private $longHorMetrics = [];
+
+    /**
+     * the left side bearing of the characters not specified using the longHorMetric.
+     * these characters use an advanceWidth equal to the last entry in the array above.
+     *
+     * @ttf-type uint16
+     *
+     * @var int[]
+     */
+    private $leftSideBearings = [];
+
+    /**
+     * @return LongHorMetric[]
+     */
+    public function getLongHorMetrics(): array
+    {
+        return $this->longHorMetrics;
+    }
+
+    /**
+     * @param LongHorMetric $longHorMetric
+     */
+    public function addLongHorMetric(LongHorMetric $longHorMetric)
+    {
+        $this->longHorMetrics[] = $longHorMetric;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getLeftSideBearings(): array
+    {
+        return $this->leftSideBearings;
+    }
+
+    /**
+     * @param int $leftSideBearing
+     */
+    public function addLeftSideBearing(int $leftSideBearing): void
+    {
+        $this->leftSideBearings[] = $leftSideBearing;
+    }
 }
