@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Font\Frontend\Structure\Table;
 
+use PdfGenerator\Font\Frontend\Structure\Traits\RawContent;
+
 /**
  * the name table associates strings with the font for different languages.
  *
@@ -19,5 +21,13 @@ namespace PdfGenerator\Font\Frontend\Structure\Table;
  */
 class NameTable
 {
-    // version string id 5 used to determine version by windows; not from head table
+    /*
+     * the raw name data.
+     *
+     * does not depend on the characters included in the font.
+     * however, there is large space saving potential by removing unneeded strings.
+     *
+     * version string id 5 used to determine version by windows; not from head table.
+     */
+    use RawContent;
 }

@@ -12,6 +12,7 @@
 namespace PdfGenerator\Font\Frontend\Structure\Table;
 
 use PdfGenerator\Font\Frontend\Structure\Traits\BoundingBoxTrait;
+use PdfGenerator\Font\Frontend\Structure\Traits\RawContent;
 
 /**
  * the glyph table specified the appearance of the glyphs
@@ -38,14 +39,10 @@ class GlyfTable
 
     use BoundingBoxTrait;
 
-    /**
-     * the font raw data.
-     *
-     * @ttf-type single/composite character
-     *
-     * @var string
+    /*
+     * the raw glyph data
      */
-    private $content;
+    use RawContent;
 
     /**
      * @return int
@@ -61,21 +58,5 @@ class GlyfTable
     public function setNumberOfContours(int $numberOfContours): void
     {
         $this->numberOfContours = $numberOfContours;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContent(): string
-    {
-        return $this->content;
-    }
-
-    /**
-     * @param string $content
-     */
-    public function setContent(string $content): void
-    {
-        $this->content = $content;
     }
 }

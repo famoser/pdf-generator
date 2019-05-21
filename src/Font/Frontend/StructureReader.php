@@ -19,8 +19,11 @@ use PdfGenerator\Font\Frontend\Structure\Table\GlyfTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HeadTable;
 use PdfGenerator\Font\Frontend\Structure\Table\LocaTable;
 use PdfGenerator\Font\Frontend\Structure\Table\MaxPTable;
+use PdfGenerator\Font\Frontend\Structure\Table\NameTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
+use PdfGenerator\Font\Frontend\Structure\Table\OS2Table;
 use PdfGenerator\Font\Frontend\Structure\Table\TableDirectoryEntry;
+use PdfGenerator\Font\Frontend\Structure\Traits\RawContent;
 use PdfGenerator\Font\Frontend\Structure\Traits\Reader;
 
 class StructureReader
@@ -90,6 +93,14 @@ class StructureReader
                 case 'head':
                     $table = $this->readHeadTable($fileReader);
                     $font->setHeadTable($table);
+                    break;
+                case 'OS/2':
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry->getLength(), new OS2Table());
+                    $font->setOS2Table($table);
+                    break;
+                case 'name':
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry->getLength(), new NameTable());
+                    $font->setNameTable($table);
                     break;
             }
         }
@@ -327,5 +338,21 @@ class StructureReader
         $headTable->setGlyphDataFormat($fileReader->readInt16());
 
         return $headTable;
+    }
+
+    /**
+     * @param FileReader $fileReader
+     * @param int $size
+     * @param RawContent $targetTable
+     *
+     * @return RawContent|OS2Table|NameTable
+     */
+    private function readRawTable(FileReader $fileReader, int $size, $targetTable)
+    {
+        $endOffset = $fileReader->getOffset() + $size;
+
+        $targetTable->setContent($fileReader->readUntil($endOffset));
+
+        return $targetTable;
     }
 }

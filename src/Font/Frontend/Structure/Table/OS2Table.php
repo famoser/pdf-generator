@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Font\Frontend\Structure\Table;
 
+use PdfGenerator\Font\Frontend\Structure\Traits\RawContent;
+
 /**
  * the OS/2 table contains metrics of the font.
  * It is not required by MacOSX.
@@ -20,5 +22,9 @@ namespace PdfGenerator\Font\Frontend\Structure\Table;
  */
 class OS2Table
 {
-    // the fsSelection bits must agree to mac style bits
+    /*
+     * the raw OS/2 data
+     * does not depend to a big extend on the characters included in the font.
+     */
+    use RawContent;
 }
