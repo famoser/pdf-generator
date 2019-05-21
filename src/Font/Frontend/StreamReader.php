@@ -136,6 +136,23 @@ class StreamReader
     }
 
     /**
+     * @param int $size
+     *
+     * @throws \Exception
+     *
+     * @return int[]
+     */
+    public function readInt16Array(int $size): array
+    {
+        $array = [];
+        for ($i = 0; $i < $size; ++$i) {
+            $array[] = $this->readInt16();
+        }
+
+        return $array;
+    }
+
+    /**
      * @throws \Exception
      *
      * @return int

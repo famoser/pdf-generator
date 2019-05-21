@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Font\IR;
 
-use PdfGenerator\Font\Frontend\Content\Character\GlyphIndexFormatVisitor;
 use PdfGenerator\Font\Frontend\File\FontFile;
 use PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
@@ -21,6 +20,7 @@ use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\File\Traits\BoundingBoxTrait;
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\StreamReader;
+use PdfGenerator\Font\Frontend\Utils\GlyphIndexFormatVisitor;
 use PdfGenerator\Font\IR\Structure\BoundingBox;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
@@ -94,17 +94,15 @@ class Parser
 
         $mapping = $this->glyphIndexFormatVisitor->visitFormat($subtable->getFormat());
 
-        if ($subtable->getPlatformID() !== 0 || $subtable->getPlatformSpecificID() !== 4) {
-            throw new \Exception('encoding not supported');
-            // unicode; nothing to do
-        }
-
         $characterMapping = [];
         foreach ($mapping as $unicode => $characterIndex) {
-            $characterMapping[$unicode] = $characters[$characterIndex];
+            $character = $characters[$characterIndex];
+            if ($character !== null) {
+                $characterMapping[$unicode] = $character;
+            }
         }
 
-        return $characters;
+        return $characterMapping;
     }
 
     /**
@@ -150,9 +148,13 @@ class Parser
 
         $characterCount = \count($fontFile->getGlyfTables());
         for ($i = 0; $i < $characterCount; ++$i) {
-            $character = new Character();
-
             $glyfTable = $fontFile->getGlyfTables()[$i];
+            if ($glyfTable === null) {
+                $characters[] = null;
+                continue;
+            }
+
+            $character = new Character();
             $character->setGlyfTable($glyfTable);
 
             $longHorMetric = $this->getLongHorMetric($fontFile->getHMtxTable(), $i);
@@ -182,10 +184,11 @@ class Parser
 
         $lastEntry = $hMtxTable->getLongHorMetrics()[$longHorMetricCount - 1];
         $bearingIndex = $entryIndex % $longHorMetricCount;
+        $bearingEntry = $hMtxTable->getLeftSideBearings()[$bearingIndex];
 
         $longHorMetric = new LongHorMetric();
-        $longHorMetric->setAdvanceWidth($hMtxTable->getLongHorMetrics()[$lastEntry]->getAdvanceWidth());
-        $longHorMetric->setLeftSideBearing($hMtxTable->getLeftSideBearings()[$bearingIndex]);
+        $longHorMetric->setAdvanceWidth($lastEntry->getAdvanceWidth());
+        $longHorMetric->setLeftSideBearing($bearingEntry);
 
         return $longHorMetric;
     }

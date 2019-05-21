@@ -97,7 +97,7 @@ class FormatReader
         $format->setEndCodes($fileReader->readUInt16Array($segCount));
         $format->setReservedPad($fileReader->readUInt16());
         $format->setStartCodes($fileReader->readUInt16Array($segCount));
-        $format->setIdDeltas($fileReader->readUInt16Array($segCount));
+        $format->setIdDeltas($fileReader->readInt16Array($segCount));
         $format->setIdRangeOffsets($fileReader->readUInt16Array($segCount));
 
         $tableEnd = $startOffset + $format->getLength();

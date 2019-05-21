@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\Content\Character;
+namespace PdfGenerator\Font\Frontend\Utils;
 
-use PdfGenerator\Font\Frontend\Content\Character\Format4\Transformer;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format0;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format12;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
 use PdfGenerator\Font\Frontend\File\Table\CMap\VisitorInterface;
+use PdfGenerator\Font\Frontend\Utils\Format4\Transformer;
 
 class GlyphIndexFormatVisitor implements VisitorInterface
 {

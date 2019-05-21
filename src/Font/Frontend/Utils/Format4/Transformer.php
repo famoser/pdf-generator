@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\Content\Character\Format4;
+namespace PdfGenerator\Font\Frontend\Utils\Format4;
 
 class Transformer
 {
@@ -68,7 +68,7 @@ class Transformer
         $glyphIndexes = [];
 
         for ($i = $startCode; $i <= $endCode; ++$i) {
-            $glyphIndexes[$i] = $i - $idDelta;
+            $glyphIndexes[$i] = ($i + $idDelta) % 65536;
         }
 
         return $glyphIndexes;
@@ -88,8 +88,9 @@ class Transformer
         $addressOffset = $segment->getIdRangeOffset() / 2 - $segmentOffset; // offset from beginning of glyph index addresses
 
         $glyphIndexes = [];
+        $addressIndex = $addressOffset;
         for ($i = $segment->getStartCode(); $i <= $segment->getEndCode(); ++$i) {
-            $glyphIndexes[$i] = $glyphIndexAddresses[$addressOffset + $i];
+            $glyphIndexes[$i] = $glyphIndexAddresses[$addressIndex++];
         }
 
         return $glyphIndexes;

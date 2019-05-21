@@ -31,11 +31,19 @@ class FileReaderTest extends TestCase
     private static $defaultFilePath = __DIR__ . \DIRECTORY_SEPARATOR . 'OpenSans-Regular.ttf';
 
     /**
+     * @return string
+     */
+    public static function getDefaultFontContent()
+    {
+        return file_get_contents(self::$defaultFilePath);
+    }
+
+    /**
      * @return StreamReader
      */
     public static function getFileReader()
     {
-        $content = file_get_contents(self::$defaultFilePath);
+        $content = self::getDefaultFontContent();
 
         return new StreamReader($content);
     }
