@@ -12,6 +12,9 @@
 namespace PdfGenerator\Font\Frontend\Structure;
 
 use PdfGenerator\Font\Frontend\Structure\Table\CMapTable;
+use PdfGenerator\Font\Frontend\Structure\Table\CvtTable;
+use PdfGenerator\Font\Frontend\Structure\Table\FpgmTable;
+use PdfGenerator\Font\Frontend\Structure\Table\GaspTable;
 use PdfGenerator\Font\Frontend\Structure\Table\GlyfTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HeadTable;
 use PdfGenerator\Font\Frontend\Structure\Table\HHeaTable;
@@ -21,6 +24,8 @@ use PdfGenerator\Font\Frontend\Structure\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\Structure\Table\NameTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OffsetTable;
 use PdfGenerator\Font\Frontend\Structure\Table\OS2Table;
+use PdfGenerator\Font\Frontend\Structure\Table\PrepTable;
+use PdfGenerator\Font\Frontend\Structure\Table\RawTable;
 use PdfGenerator\Font\Frontend\Structure\Table\TableDirectoryEntry;
 
 class Font
@@ -39,6 +44,21 @@ class Font
      * @var CMapTable|null
      */
     private $cMapTable;
+
+    /**
+     * @var CvtTable|null
+     */
+    private $cvtTable;
+
+    /**
+     * @var FpgmTable|null
+     */
+    private $fpqmTable;
+
+    /**
+     * @var GaspTable|null
+     */
+    private $gaspTable;
 
     /**
      * @var GlyfTable[]
@@ -79,6 +99,16 @@ class Font
      * @var OS2Table|null
      */
     private $oS2Table;
+
+    /**
+     * @var PrepTable|null
+     */
+    private $prepTable;
+
+    /**
+     * @var RawTable[]
+     */
+    private $rawTables;
 
     /**
      * @return OffsetTable
@@ -126,6 +156,54 @@ class Font
     public function setCMapTable(?CMapTable $cMapTable): void
     {
         $this->cMapTable = $cMapTable;
+    }
+
+    /**
+     * @return CvtTable|null
+     */
+    public function getCvtTable(): ?CvtTable
+    {
+        return $this->cvtTable;
+    }
+
+    /**
+     * @param CvtTable|null $cvtTable
+     */
+    public function setCvtTable(?CvtTable $cvtTable): void
+    {
+        $this->cvtTable = $cvtTable;
+    }
+
+    /**
+     * @return FpgmTable|null
+     */
+    public function getFpqmTable(): ?FpgmTable
+    {
+        return $this->fpqmTable;
+    }
+
+    /**
+     * @param FpgmTable|null $fpqmTable
+     */
+    public function setFpqmTable(?FpgmTable $fpqmTable): void
+    {
+        $this->fpqmTable = $fpqmTable;
+    }
+
+    /**
+     * @return GaspTable|null
+     */
+    public function getGaspTable(): ?GaspTable
+    {
+        return $this->gaspTable;
+    }
+
+    /**
+     * @param GaspTable|null $gaspTable
+     */
+    public function setGaspTable(?GaspTable $gaspTable): void
+    {
+        $this->gaspTable = $gaspTable;
     }
 
     /**
@@ -254,5 +332,37 @@ class Font
     public function setOS2Table(?OS2Table $oS2Table): void
     {
         $this->oS2Table = $oS2Table;
+    }
+
+    /**
+     * @return PrepTable|null
+     */
+    public function getPrepTable(): ?PrepTable
+    {
+        return $this->prepTable;
+    }
+
+    /**
+     * @param PrepTable|null $prepTable
+     */
+    public function setPrepTable(?PrepTable $prepTable): void
+    {
+        $this->prepTable = $prepTable;
+    }
+
+    /**
+     * @return RawTable[]
+     */
+    public function getRawTables(): array
+    {
+        return $this->rawTables;
+    }
+
+    /**
+     * @param RawTable $rawTable
+     */
+    public function addRawTable(RawTable $rawTable): void
+    {
+        $this->rawTables[] = $rawTable;
     }
 }
