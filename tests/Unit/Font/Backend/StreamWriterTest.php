@@ -32,7 +32,7 @@ class StreamWriterTest extends TestCase
             32767,
         ];
 
-        $this->testValueWritesUsingReader($values, 'Int16');
+        $this->assertValueWritesUsingReader($values, 'Int16');
     }
 
     /**
@@ -46,7 +46,7 @@ class StreamWriterTest extends TestCase
             4294967295,
         ];
 
-        $this->testValueWritesUsingReader($values, 'UInt32');
+        $this->assertValueWritesUsingReader($values, 'UInt32');
     }
 
     /**
@@ -61,7 +61,7 @@ class StreamWriterTest extends TestCase
             42949672958123,
         ];
 
-        $this->testValueWritesUsingReader($values, 'LONGDATETIME');
+        $this->assertValueWritesUsingReader($values, 'LONGDATETIME');
     }
 
     /**
@@ -70,23 +70,23 @@ class StreamWriterTest extends TestCase
     public function testFixed()
     {
         $values = [
-            0,
+            0.0,
             1.25,
             4.5,
             8.125,
         ];
 
-        $this->testValueWritesUsingReader($values, 'Fixed');
+        $this->assertValueWritesUsingReader($values, 'Fixed');
     }
 
     /**
      * @param array $values
      * @param $type
      */
-    private function testValueWritesUsingReader(array $values, $type)
+    private function assertValueWritesUsingReader(array $values, $type)
     {
         foreach ($values as $value) {
-            $this->testValueWriteUsingReader($value, $type);
+            $this->assertValueWriteUsingReader($value, $type);
         }
     }
 
@@ -94,7 +94,7 @@ class StreamWriterTest extends TestCase
      * @param $value
      * @param $type
      */
-    private function testValueWriteUsingReader($value, $type)
+    private function assertValueWriteUsingReader($value, $type)
     {
         $writeFunction = 'write' . $type;
         $streamWriter = new StreamWriter();
