@@ -50,12 +50,18 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     {
         $segments = Transformer::arraysToSegments($format4->getStartCodes(), $format4->getEndCodes(), $format4->getIdDeltas(), $format4->getIdRangeOffsets());
 
-        $glyphIndexes = [];
-
+        $glyphIndexArrays = [];
         $segmentCount = \count($segments);
         for ($i = 0; $i < $segmentCount; ++$i) {
             $segmentGlyphIndexes = Transformer::segmentToGlyphIndex($segments[$i], $i, $segmentCount, $format4->getGlyphIndexArray());
-            $glyphIndexes = array_merge($glyphIndexes, $segmentGlyphIndexes);
+            $glyphIndexArrays[] = $segmentGlyphIndexes;
+        }
+
+        $glyphIndexes = [];
+        foreach ($glyphIndexArrays as $glyphIndexArray) {
+            foreach ($glyphIndexArray as $key => $value) {
+                $glyphIndexes[$key] = $value;
+            }
         }
 
         return $glyphIndexes;

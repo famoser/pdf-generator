@@ -48,7 +48,7 @@ class GlyphIndexFormatVisitorTest extends TestCase
 
         // assert
         $this->assertCount(3, $characterMapping);
-        $this->assertSame([40, 41, 42], $characterMapping);
+        $this->assertSame([50 => 40, 51 => 41, 52 => 42], $characterMapping);
     }
 
     /**
@@ -70,7 +70,7 @@ class GlyphIndexFormatVisitorTest extends TestCase
 
         // assert
         $this->assertCount(3, $characterMapping);
-        $this->assertSame([3, 4, 5], $characterMapping);
+        $this->assertSame([50 => 3, 51 => 4, 52 => 5], $characterMapping);
     }
 
     /**
@@ -92,6 +92,6 @@ class GlyphIndexFormatVisitorTest extends TestCase
 
         // assert
         $this->assertCount(5, $characterMapping);
-        $this->assertSame([40, 41, 42, 50, 51], $characterMapping);
+        $this->assertSame([50 => 40, 51 => 41, 52 => 42, 60 => 50, 61 => 51], $characterMapping);
     }
 }

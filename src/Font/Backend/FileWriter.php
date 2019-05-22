@@ -55,13 +55,31 @@ class FileWriter
     public function writeSubset(FontFile $fontFile, array $characters)
     {
         $this->removeInvalidTables($fontFile);
-        $characters = $this->sortCharactersByCodePoint($characters);
+        $characters = $this->prepareCharacters($fontFile, $characters);
 
         $this->recalculateTables($fontFile, $characters);
 
         $streamWriter = $this->writeFontFile($fontFile);
 
         return $streamWriter->getStream();
+    }
+
+    /**
+     * @param FontFile $fontFile
+     * @param Character[] $characters
+     *
+     * @return Character[]
+     */
+    private function prepareCharacters(FontFile $fontFile, array $characters)
+    {
+        $orderedCharacters = $this->sortCharactersByCodePoint($characters);
+
+        $missingGlyphCharacter = new Character();
+        $missingGlyphCharacter->setLongHorMetric($fontFile->getHMtxTable()->getLongHorMetrics()[0]);
+        $missingGlyphCharacter->setGlyfTable($fontFile->getGlyfTables()[0]);
+        array_unshift($orderedCharacters, $missingGlyphCharacter);
+
+        return $orderedCharacters;
     }
 
     /**
@@ -101,9 +119,9 @@ class FileWriter
     {
         $fontFile->setHMtxTable($this->generateHmtx($characters));
 
-        $this->recalculateCMapTable($fontFile->getCMapTable(), $characters);
+        $fontFile->setCMapTable($this->generateCMapTable($characters));
         $fontFile->setGlyfTables($this->getGlyfTables($characters));
-        $fontFile->setHMtxTable($this->getHMtxTable($characters));
+        $fontFile->setHMtxTable($this->generateHMtxTable($characters));
         $this->recalculateHeadTable($fontFile->getHeadTable());
         $this->recalculateHHeaTable($fontFile->getHHeaTable(), $fontFile->getHMtxTable());
         $this->recalculateMaxPTable($fontFile->getMaxPTable(), $characters);
@@ -147,20 +165,39 @@ class FileWriter
     /**
      * @param CMapTable $cMapTable
      * @param Character[] $characters
+     *
+     * @return CMapTable
      */
-    private function recalculateCMapTable(CMapTable $cMapTable, array $characters)
+    private function generateCMapTable(array $characters)
     {
+        $cMapTable = new CMapTable();
+        $cMapTable->setVersion(0);
         $cMapTable->setNumberSubtables(1);
 
+        $subtable = $this->generateSubtable($characters, 4);
+
+        $cMapTable->addSubtable($subtable);
+
+        return $cMapTable;
+    }
+
+    /**
+     * @param array $characters
+     * @param int $cmapOffset
+     *
+     * @return Subtable
+     */
+    private function generateSubtable(array $characters, int $cmapOffset): Subtable
+    {
         $subtable = new Subtable();
-        $subtable->setOffset(4);
         $subtable->setPlatformID(3);
         $subtable->setPlatformSpecificID(4);
+        $subtable->setOffset($cmapOffset + 8);
 
         $format = $this->generateFormat4($characters);
         $subtable->setFormat($format);
 
-        $cMapTable->addSubtable($subtable);
+        return $subtable;
     }
 
     /**
@@ -218,7 +255,9 @@ class FileWriter
         /** @var Segment $currentSegment */
         $currentSegment = null;
         $characterCount = \count($characters);
-        for ($i = 0; $i < $characterCount; ++$i) {
+
+        // start with index 1 because 0 is the missing glyph character
+        for ($i = 1; $i < $characterCount; ++$i) {
             $character = $characters[$i];
             if ($character->getUnicodePoint() + 1 === $lastUnicodePoint) {
                 $currentSegment->setEndCode($character->getUnicodePoint());
@@ -232,8 +271,20 @@ class FileWriter
 
             $currentSegment = new Segment();
             $currentSegment->setStartCode($character->getUnicodePoint());
-            $currentSegment->setIdDelta($character->getUnicodePoint() - $i);
+            $currentSegment->setEndCode($character->getUnicodePoint());
+            $currentSegment->setIdRangeOffset(0);
+            $currentSegment->setIdDelta($i - $character->getUnicodePoint());
         }
+
+        $segments[] = $currentSegment;
+
+        $endSegment = new Segment();
+        $endSegment->setStartCode(0xFFFF);
+        $endSegment->setEndCode(0xFFFF);
+        $endSegment->setIdDelta(1);
+        $endSegment->setIdRangeOffset(0);
+
+        $segments[] = $endSegment;
 
         return $segments;
     }
@@ -276,7 +327,7 @@ class FileWriter
      *
      * @return HMtxTable
      */
-    private function getHMtxTable(array $characters)
+    private function generateHMtxTable(array $characters)
     {
         $hMtxTable = new HMtxTable();
         foreach ($characters as $character) {

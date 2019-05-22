@@ -49,4 +49,25 @@ class FileWriterTest extends TestCase
         file_put_contents(__DIR__ . \DIRECTORY_SEPARATOR . 'myfont.ttf', $output);
         $this->assertContains($character->getGlyfTable()->getContent(), $output);
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function testReadSubset()
+    {
+        // arrange
+        $parser = ParserTest::getParser();
+        $font = $parser->parse(FileReaderTest::getDefaultFontContent());
+        $writer = self::getFileWriter();
+        $characterRepository = new CharacterRepository($font);
+        $character = $characterRepository->find('g');
+
+        // act
+        $output = $writer->writeSubset($font->getFontFile(), [$character]);
+
+        // assert
+        $font = $parser->parse($output);
+        $characterRepository = new CharacterRepository($font);
+        $this->assertNotNull($characterRepository->find('g'));
+    }
 }

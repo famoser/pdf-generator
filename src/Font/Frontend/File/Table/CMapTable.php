@@ -102,14 +102,4 @@ class CMapTable
     {
         return $this->subtables;
     }
-
-    /**
-     * @param WritableTableVisitorInterface $writableTableVisitor
-     *
-     * @return mixed
-     */
-    public function accept(WritableTableVisitorInterface $writableTableVisitor)
-    {
-        return $writableTableVisitor->visitCMap($this);
-    }
 }

@@ -94,6 +94,7 @@ class TableWriter
      */
     private function writeFormat4(Format4 $format, StreamWriter $writer)
     {
+        $writer->writeUInt16(4);
         $writer->writeUInt16($format->getLength());
         $writer->writeUInt16($format->getLanguage());
 
