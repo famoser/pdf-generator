@@ -40,7 +40,7 @@ class FileWriterTest extends TestCase
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());
         $writer = self::getFileWriter();
         $characterRepository = new CharacterRepository($font);
-        $character = $characterRepository->find('a');
+        $character = $characterRepository->find('g');
 
         // act
         $output = $writer->writeSubset($font->getFontFile(), [$character]);
