@@ -116,6 +116,9 @@ First, the backend will be created following closely the standard of adobe.
 - [x] draw rectangles
 - [x] style lines 
 - [ ] use TTF fonts
+    - [x] parse TTF
+    - [x] create IR which supplies pdf compiler with character space information
+    - [ ] create TTF subsets (still missing is the POST table; without it ttfdump will segfault)
 - [ ] print UTF-8 text
 
 ### Minimal IR Base
