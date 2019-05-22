@@ -257,7 +257,8 @@ class StreamReaderTest extends TestCase
         $testNumbers = [
             1073741824 => 16384.0,
             2147483648 => -32768.0,
-            1280 => 0.128,
+            2147483648 => -32768.0,
+            1280 => 0.01953125,
         ];
 
         // check one-by-one

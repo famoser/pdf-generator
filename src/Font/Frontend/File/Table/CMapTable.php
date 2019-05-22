@@ -12,8 +12,6 @@
 namespace PdfGenerator\Font\Frontend\File\Table;
 
 use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
-use PdfGenerator\Font\Frontend\File\Table\Interfaces\WritableTableInterface;
-use PdfGenerator\Font\Frontend\File\Table\Interfaces\WritableTableVisitorInterface;
 
 /**
  * the character map table maps character codes to glyph indices.
@@ -30,7 +28,7 @@ use PdfGenerator\Font\Frontend\File\Table\Interfaces\WritableTableVisitorInterfa
  *  format13 not implemented because only used for last-resort fonts (used for debugging)
  *  format14 not implemented because complicated, primarily useful for variations (emojis)
  */
-class CMapTable implements WritableTableInterface
+class CMapTable
 {
     /**
      * simply ignore or set to 0.

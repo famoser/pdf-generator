@@ -20,13 +20,22 @@ use PHPUnit\Framework\TestCase;
 class ParserTest extends TestCase
 {
     /**
+     * @return Parser
+     */
+    public static function getParser()
+    {
+        $glyphIndexFormatVisitor = new GlyphIndexFormatVisitor();
+
+        return new Parser($glyphIndexFormatVisitor);
+    }
+
+    /**
      * @throws \Exception
      */
     public function testParse()
     {
         // arrange
-        $glyphIndexFormatVisitor = new GlyphIndexFormatVisitor();
-        $parser = new Parser($glyphIndexFormatVisitor);
+        $parser = self::getParser();
 
         // act
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());

@@ -190,7 +190,7 @@ class FileReaderTest extends TestCase
      */
     private function assertHHeaTable(HHeaTable $hHeaTable)
     {
-        $this->assertSame(-600.0, $hHeaTable->getDecent());
+        $this->assertSame(-600, $hHeaTable->getDecent());
         $this->assertSame(1, $hHeaTable->getCaretSlopeRise());
         $this->assertSame(931, $hHeaTable->getNumOfLongHorMetrics());
     }

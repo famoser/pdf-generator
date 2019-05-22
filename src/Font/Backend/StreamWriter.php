@@ -34,59 +34,156 @@ class StreamWriter
         return $this->stream;
     }
 
-    public function writeUInt32(int $getScalerType)
+    /**
+     * @param int $value
+     */
+    public function writeInt16(int $value)
     {
+        $unsigned = self::transformToUnSinged($value, 16);
+        $this->writeUInt16($unsigned);
     }
 
-    public function writeUInt16(int $getNumTables)
+    /**
+     * @param int[] $values
+     */
+    public function writeInt16Array(array $values)
     {
+        foreach ($values as $value) {
+            $this->writeInt16($value);
+        }
     }
 
-    public function writeInt16(int $getXMin)
+    /**
+     * @param int $value
+     */
+    public function writeUInt16(int $value)
     {
+        $this->stream .= pack('n', $value);
     }
 
-    public function writeFWORD(int $getXMin)
+    /**
+     * @param int[] $values
+     */
+    public function writeUInt16Array(array $values)
     {
+        foreach ($values as $value) {
+            $this->writeUInt16($value);
+        }
     }
 
-    public function writeOffset32(int $getOffset)
+    /**
+     * @param int $value
+     */
+    public function writeUInt32(int $value)
     {
+        $this->stream .= pack('N', $value);
     }
 
-    public function writeUInt16Array(array $getEndCodes)
+    /**
+     * @param int $value
+     */
+    public function writeUInt64(int $value)
     {
+        $this->stream .= pack('J', $value);
     }
 
-    public function writeInt16Array(array $getIdDeltas)
+    /**
+     * @param int $value
+     */
+    public function writeFWORD(int $value)
     {
+        $this->writeInt16($value);
     }
 
-    public function writeTagFromString(string $getTag)
+    /**
+     * @param string $tag
+     */
+    public function writeTagFromString(string $tag)
     {
+        $this->stream .= $tag;
     }
 
-    public function writeRaw(string $getContent)
+    /**
+     * @param string $content
+     */
+    public function writeStream(string $content)
     {
+        $this->stream .= $content;
     }
 
-    public function writeOffset16Array(array $getOffsets)
+    /**
+     * @param int $value
+     */
+    private function writeOffset16(int $value)
     {
+        $this->writeUInt16($value);
     }
 
-    public function writeOffset32Array(array $getOffsets)
+    /**
+     * @param int[] $values
+     */
+    public function writeOffset16Array(array $values)
     {
+        foreach ($values as $value) {
+            $this->writeOffset16($value);
+        }
     }
 
-    public function writeFixed(float $getVersion)
+    /**
+     * @param int $value
+     */
+    public function writeOffset32(int $value)
     {
+        $this->writeUInt32($value);
     }
 
-    public function writeUFWORD(float $getLineGap)
+    /**
+     * @param int[] $values
+     */
+    public function writeOffset32Array(array $values)
     {
+        foreach ($values as $value) {
+            $this->writeOffset32($value);
+        }
     }
 
-    public function writeLONGDATETIME(int $getModified)
+    /**
+     * @param float $value
+     */
+    public function writeFixed(float $value)
     {
+        $mantissa = (int)$value;
+        $fraction = ($value - $mantissa) * 65536;
+
+        $this->writeInt16($mantissa);
+        $this->writeUInt16($fraction);
+    }
+
+    /**
+     * @param int $value
+     */
+    public function writeUFWORD(int $value)
+    {
+        $this->writeUInt16($value);
+    }
+
+    /**
+     * @param int $value
+     */
+    public function writeLONGDATETIME(int $value)
+    {
+        $unsigned = self::transformToUnSinged($value, 64);
+        $this->writeUInt64($unsigned);
+    }
+
+    /**
+     * @param int $number
+     * @param int $bits
+     *
+     * @return int
+     */
+    private static function transformToUnSinged(int $number, int $bits): int
+    {
+        return $number >= 0 ? $number : $number + 2 ** $bits;
     }
 }

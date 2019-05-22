@@ -217,7 +217,7 @@ class StreamReader
         $mantissa = $this->readInt16();
         $fraction = $this->readUInt16();
 
-        return (float)((string)$mantissa . '.' . $fraction);
+        return $mantissa + ($fraction / 65536.0);
     }
 
     /**
@@ -344,7 +344,7 @@ class StreamReader
             $decimal -= 4;
         }
 
-        // clear the top two entries as this are for the decimals
+        // clear the top two entries as these are for the decimals
         $numerator = $uInt16 & 0x3fff;
         $fraction = sprintf('%.6f', $numerator / 16384);
 

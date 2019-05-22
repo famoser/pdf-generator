@@ -37,7 +37,7 @@ class HHeaTable
      *
      * @ttf-type fword
      *
-     * @var float
+     * @var int
      */
     private $ascent;
 
@@ -47,7 +47,7 @@ class HHeaTable
      *
      * @ttf-type fword
      *
-     * @var float
+     * @var int
      */
     private $decent;
 
@@ -57,7 +57,7 @@ class HHeaTable
      *
      * @ttf-type fword
      *
-     * @var float
+     * @var int
      */
     private $lineGap;
 
@@ -67,7 +67,7 @@ class HHeaTable
      *
      * @ttf-type ufword
      *
-     * @var float
+     * @var int
      */
     private $advanceWidthMax;
 
@@ -77,7 +77,7 @@ class HHeaTable
      *
      * @ttf-type fword
      *
-     * @var float
+     * @var int
      */
     private $minLeftSideBearing;
 
@@ -87,7 +87,7 @@ class HHeaTable
      *
      * @ttf-type fword
      *
-     * @var float
+     * @var int
      */
     private $minRightSideBearing;
 
@@ -97,7 +97,7 @@ class HHeaTable
      *
      * @ttf-type fword
      *
-     * @var float
+     * @var int
      */
     private $xMaxExtent;
 
@@ -167,113 +167,113 @@ class HHeaTable
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getAscent(): float
+    public function getAscent(): int
     {
         return $this->ascent;
     }
 
     /**
-     * @param float $ascent
+     * @param int $ascent
      */
-    public function setAscent(float $ascent): void
+    public function setAscent(int $ascent): void
     {
         $this->ascent = $ascent;
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getDecent(): float
+    public function getDecent(): int
     {
         return $this->decent;
     }
 
     /**
-     * @param float $decent
+     * @param int $decent
      */
-    public function setDecent(float $decent): void
+    public function setDecent(int $decent): void
     {
         $this->decent = $decent;
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getLineGap(): float
+    public function getLineGap(): int
     {
         return $this->lineGap;
     }
 
     /**
-     * @param float $lineGap
+     * @param int $lineGap
      */
-    public function setLineGap(float $lineGap): void
+    public function setLineGap(int $lineGap): void
     {
         $this->lineGap = $lineGap;
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getAdvanceWidthMax(): float
+    public function getAdvanceWidthMax(): int
     {
         return $this->advanceWidthMax;
     }
 
     /**
-     * @param float $advanceWidthMax
+     * @param int $advanceWidthMax
      */
-    public function setAdvanceWidthMax(float $advanceWidthMax): void
+    public function setAdvanceWidthMax(int $advanceWidthMax): void
     {
         $this->advanceWidthMax = $advanceWidthMax;
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getMinLeftSideBearing(): float
+    public function getMinLeftSideBearing(): int
     {
         return $this->minLeftSideBearing;
     }
 
     /**
-     * @param float $minLeftSideBearing
+     * @param int $minLeftSideBearing
      */
-    public function setMinLeftSideBearing(float $minLeftSideBearing): void
+    public function setMinLeftSideBearing(int $minLeftSideBearing): void
     {
         $this->minLeftSideBearing = $minLeftSideBearing;
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getMinRightSideBearing(): float
+    public function getMinRightSideBearing(): int
     {
         return $this->minRightSideBearing;
     }
 
     /**
-     * @param float $minRightSideBearing
+     * @param int $minRightSideBearing
      */
-    public function setMinRightSideBearing(float $minRightSideBearing): void
+    public function setMinRightSideBearing(int $minRightSideBearing): void
     {
         $this->minRightSideBearing = $minRightSideBearing;
     }
 
     /**
-     * @return float
+     * @return int
      */
-    public function getXMaxExtent(): float
+    public function getXMaxExtent(): int
     {
         return $this->xMaxExtent;
     }
 
     /**
-     * @param float $xMaxExtent
+     * @param int $xMaxExtent
      */
-    public function setXMaxExtent(float $xMaxExtent): void
+    public function setXMaxExtent(int $xMaxExtent): void
     {
         $this->xMaxExtent = $xMaxExtent;
     }
