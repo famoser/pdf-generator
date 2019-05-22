@@ -98,7 +98,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testNameTableEqualAfterSubsetting()
+    public function testSomeTablesEqualAfterSubsetting()
     {
         // arrange
         $parser = ParserTest::getParser();
