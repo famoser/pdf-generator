@@ -377,8 +377,8 @@ class FileWriter
             case 'cvt ':
                 $this->tableWriter->writeRawContentTable($fontFile->getCvtTable(), $streamWriter);
                 break;
-            case 'fpqm':
-                $this->tableWriter->writeRawContentTable($fontFile->getFpqmTable(), $streamWriter);
+            case 'fpgm':
+                $this->tableWriter->writeRawContentTable($fontFile->getfpgmTable(), $streamWriter);
                 break;
             case 'glyf':
                 foreach ($fontFile->getGlyfTables() as $glyfTable) {
@@ -429,7 +429,7 @@ class FileWriter
         $tables = [
             'cmap' => $fontFile->getCMapTable(),
             'cvt ' => $fontFile->getCvtTable(),
-            'fpqm' => $fontFile->getFpqmTable(),
+            'fpgm' => $fontFile->getfpgmTable(),
             'glyf' => $fontFile->getGlyfTables(),
             'head' => $fontFile->getHeadTable(),
             'hhea' => $fontFile->getHHeaTable(),
@@ -457,7 +457,7 @@ class FileWriter
             }
 
             $rawIndex = strpos($tag, '_raw');
-            if ($rawIndex > 0) {
+            if ($rawIndex !== false) {
                 $this->tableWriter->writeRawTable($table, $tableStreamWriter);
 
                 $correctedTag = substr($tag, 0, $rawIndex);
@@ -468,10 +468,11 @@ class FileWriter
             }
         }
 
+        if ($offsetByTag['fpgm'] === 2274) {
+        }
+
         $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $tableStreamWriter->getLength());
         $offsetTable = $this->generateOffsetTable(\count($tableDirectoryEntries));
-
-        var_dump($tableDirectoryEntries);
 
         $streamWriter = new StreamWriter();
         $this->tableWriter->writeOffsetTable($offsetTable, $streamWriter);
@@ -509,15 +510,12 @@ class FileWriter
      */
     private function generateTableDirectoryEntries(array $offsetByTag, int $totalStreamLength): array
     {
-        $numTables = \count($offsetByTag);
-        $prefixOverhead = $numTables * 16 + 12;
-
         /** @var TableDirectoryEntry[] $tableDirectoryEntries */
         $tableDirectoryEntries = [];
         foreach ($offsetByTag as $tag => $offset) {
             $tableDirectoryEntry = new TableDirectoryEntry();
             $tableDirectoryEntry->setTag($tag);
-            $tableDirectoryEntry->setOffset($prefixOverhead + $offset);
+            $tableDirectoryEntry->setOffset($offset);
             $tableDirectoryEntry->setCheckSum(0);
 
             $tableDirectoryEntries[] = $tableDirectoryEntry;
@@ -533,6 +531,13 @@ class FileWriter
 
             $currentEntry = $tableDirectoryEntries[$i];
             $currentEntry->setLength($nextOffset - $currentEntry->getOffset());
+        }
+
+        // adjust offset
+        $numTables = \count($offsetByTag);
+        $prefixOverhead = $numTables * 16 + 12;
+        foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
+            $tableDirectoryEntry->setOffset($tableDirectoryEntry->getOffset() + $prefixOverhead);
         }
 
         return $tableDirectoryEntries;

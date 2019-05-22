@@ -57,7 +57,7 @@ class FontFile
     /**
      * @var FpgmTable|null
      */
-    private $fpqmTable;
+    private $fpgmTable;
 
     /**
      * @var GaspTable|null
@@ -201,17 +201,17 @@ class FontFile
     /**
      * @return FpgmTable|null
      */
-    public function getFpqmTable(): ?FpgmTable
+    public function getfpgmTable(): ?FpgmTable
     {
-        return $this->fpqmTable;
+        return $this->fpgmTable;
     }
 
     /**
-     * @param FpgmTable|null $fpqmTable
+     * @param FpgmTable|null $fpgmTable
      */
-    public function setFpqmTable(?FpgmTable $fpqmTable): void
+    public function setfpgmTable(?FpgmTable $fpgmTable): void
     {
-        $this->fpqmTable = $fpqmTable;
+        $this->fpgmTable = $fpgmTable;
     }
 
     /**

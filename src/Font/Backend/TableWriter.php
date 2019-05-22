@@ -261,8 +261,8 @@ class TableWriter
     private function writeBoundingBoxInt16($boundingBoxTrait, StreamWriter $writer)
     {
         $writer->writeInt16($boundingBoxTrait->getXMin());
-        $writer->writeInt16($boundingBoxTrait->getXMax());
         $writer->writeInt16($boundingBoxTrait->getYMin());
+        $writer->writeInt16($boundingBoxTrait->getXMax());
         $writer->writeInt16($boundingBoxTrait->getYMax());
     }
 
@@ -273,8 +273,8 @@ class TableWriter
     private function writeBoundingBoxFWORD($boundingBoxTrait, StreamWriter $writer)
     {
         $writer->writeFWORD($boundingBoxTrait->getXMin());
-        $writer->writeFWORD($boundingBoxTrait->getXMax());
         $writer->writeFWORD($boundingBoxTrait->getYMin());
+        $writer->writeFWORD($boundingBoxTrait->getXMax());
         $writer->writeFWORD($boundingBoxTrait->getYMax());
     }
 }

@@ -70,4 +70,28 @@ class FileWriterTest extends TestCase
         $characterRepository = new CharacterRepository($font);
         $this->assertNotNull($characterRepository->find('g'));
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function testRepeatedSubsettingProducesSameFile()
+    {
+        // arrange
+        $parser = ParserTest::getParser();
+        $font = $parser->parse(FileReaderTest::getDefaultFontContent());
+        $writer = self::getFileWriter();
+        $characterRepository = new CharacterRepository($font);
+        $character = $characterRepository->find('g');
+
+        // act
+        $output = $writer->writeSubset($font->getFontFile(), [$character]);
+        $font = $parser->parse($output);
+        $characterRepository = new CharacterRepository($font);
+        $character = $characterRepository->find('g');
+        $output2 = $writer->writeSubset($font->getFontFile(), [$character]);
+        $font2 = $parser->parse($output2);
+
+        // assert
+        $this->assertSame($font, $font2);
+    }
 }
