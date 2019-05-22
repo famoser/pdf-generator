@@ -16,3 +16,4 @@ material to work through
 - ttf are TrueType fonts, page 259
 - they can be included directly in the pdf, but there has to be an encoding defined
 - https://github.com/nicksagona/popphp-v1-legacy/blob/master/vendor/PopPHPFramework/src/Pop/Font/TrueType.php
+- ttfdump to check output
