@@ -201,7 +201,7 @@ class FontFile
     /**
      * @return FpgmTable|null
      */
-    public function getfpgmTable(): ?FpgmTable
+    public function getFpgmTable(): ?FpgmTable
     {
         return $this->fpgmTable;
     }
@@ -209,7 +209,7 @@ class FontFile
     /**
      * @param FpgmTable|null $fpgmTable
      */
-    public function setfpgmTable(?FpgmTable $fpgmTable): void
+    public function setFpgmTable(?FpgmTable $fpgmTable): void
     {
         $this->fpgmTable = $fpgmTable;
     }

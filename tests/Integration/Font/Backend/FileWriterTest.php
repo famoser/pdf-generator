@@ -94,4 +94,48 @@ class FileWriterTest extends TestCase
         // assert
         $this->assertSame($font, $font2);
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function testNameTableEqualAfterSubsetting()
+    {
+        // arrange
+        $parser = ParserTest::getParser();
+        $font = $parser->parse(FileReaderTest::getDefaultFontContent());
+        $writer = self::getFileWriter();
+        $characterRepository = new CharacterRepository($font);
+        $character = $characterRepository->find('g');
+
+        // act
+        $output = $writer->writeSubset($font->getFontFile(), [$character]);
+        $font2 = $parser->parse($output);
+
+        // assert
+        $this->assertSame($font->getFontFile()->getNameTable(), $font2->getFontFile()->getNameTable());
+        $this->assertSame($font->getFontFile()->getPrepTable(), $font2->getFontFile()->getPrepTable());
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function ignored_testWithOracle()
+    {
+        // arrange
+        $parser = ParserTest::getParser();
+        $content = file_get_contents(__DIR__ . \DIRECTORY_SEPARATOR . 'OpenSans-Regular-subset.ttf');
+        $font1 = $parser->parse($content);
+        $characterRepository = new CharacterRepository($font1);
+        $a1 = $characterRepository->find('a');
+
+        // act
+        $parser = ParserTest::getParser();
+        $font2 = $parser->parse(FileReaderTest::getDefaultFontContent());
+        $characterRepository = new CharacterRepository($font2);
+        $a2 = $characterRepository->find('a');
+
+        // assert
+        $this->assertSame($font1, $font2);
+        $this->assertSame($a1, $a2);
+    }
 }

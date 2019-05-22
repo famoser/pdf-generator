@@ -175,7 +175,6 @@ class FileWriter
         $cMapTable->setNumberSubtables(1);
 
         $subtable = $this->generateSubtable($characters, 4);
-
         $cMapTable->addSubtable($subtable);
 
         return $cMapTable;
@@ -211,7 +210,7 @@ class FileWriter
         $segmentsCount = \count($segments);
 
         $format = new Format4();
-        $format->setLength(15 + 8 * $segmentsCount); // +15 for fields; +8 because 4 arrays of 2 bytes
+        $format->setLength(8 * 2 + 4 * 2 * $segmentsCount); // 8 fields; 4 arrays of size 2 per entry
         $format->setLanguage(0);
         $format->setSegCountX2($segmentsCount * 2);
         $this->setBinaryTreeSearchableProperties($format, $format->getSegCountX2());
@@ -378,7 +377,10 @@ class FileWriter
                 $this->tableWriter->writeRawContentTable($fontFile->getCvtTable(), $streamWriter);
                 break;
             case 'fpgm':
-                $this->tableWriter->writeRawContentTable($fontFile->getfpgmTable(), $streamWriter);
+                $this->tableWriter->writeRawContentTable($fontFile->getFpgmTable(), $streamWriter);
+                break;
+            case 'gasp':
+                $this->tableWriter->writeRawContentTable($fontFile->getGaspTable(), $streamWriter);
                 break;
             case 'glyf':
                 foreach ($fontFile->getGlyfTables() as $glyfTable) {
@@ -429,7 +431,8 @@ class FileWriter
         $tables = [
             'cmap' => $fontFile->getCMapTable(),
             'cvt ' => $fontFile->getCvtTable(),
-            'fpgm' => $fontFile->getfpgmTable(),
+            'fpgm' => $fontFile->getFpgmTable(),
+            'gasp' => $fontFile->getGaspTable(),
             'glyf' => $fontFile->getGlyfTables(),
             'head' => $fontFile->getHeadTable(),
             'hhea' => $fontFile->getHHeaTable(),
@@ -466,9 +469,6 @@ class FileWriter
                 $offsetByTag[$tag] = $tableStreamWriter->getLength();
                 $this->writeTableByTag($tableStreamWriter, $fontFile, $tag);
             }
-        }
-
-        if ($offsetByTag['fpgm'] === 2274) {
         }
 
         $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $tableStreamWriter->getLength());

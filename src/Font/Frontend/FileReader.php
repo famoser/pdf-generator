@@ -128,7 +128,7 @@ class FileReader
                     break;
                 case 'fpgm':
                     $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new FpgmTable());
-                    $font->setfpgmTable($table);
+                    $font->setFpgmTable($table);
                     break;
                 case 'gasp':
                     $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GaspTable());
