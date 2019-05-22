@@ -47,7 +47,7 @@ class FileWriterTest extends TestCase
 
         // assert
         file_put_contents(__DIR__ . \DIRECTORY_SEPARATOR . 'myfont.ttf', $output);
-        $this->assertContains($character->getGlyfTable()->getContent(), $output);
+        $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
     }
 
     /**
