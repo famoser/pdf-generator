@@ -442,8 +442,8 @@ class FileWriter
             'prep' => $fontFile->getPrepTable(),
         ];
 
-        foreach ($fontFile->getRawTables() as $tag => $table) {
-            $tables[$tag . '_raw'] = $table;
+        foreach ($fontFile->getRawTables() as $table) {
+            $tables[$table->getTag() . '_raw'] = $table;
         }
 
         ksort($tables);
@@ -456,17 +456,22 @@ class FileWriter
                 continue;
             }
 
-            $offsetByTag[$tag] = $tableStreamWriter->getLength();
-
-            if (strpos($tag, '_raw') > 0) {
+            $rawIndex = strpos($tag, '_raw');
+            if ($rawIndex > 0) {
                 $this->tableWriter->writeRawTable($table, $tableStreamWriter);
+
+                $correctedTag = substr($tag, 0, $rawIndex);
+                $offsetByTag[$correctedTag] = $tableStreamWriter->getLength();
             } else {
+                $offsetByTag[$tag] = $tableStreamWriter->getLength();
                 $this->writeTableByTag($tableStreamWriter, $fontFile, $tag);
             }
         }
 
         $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $tableStreamWriter->getLength());
         $offsetTable = $this->generateOffsetTable(\count($tableDirectoryEntries));
+
+        var_dump($tableDirectoryEntries);
 
         $streamWriter = new StreamWriter();
         $this->tableWriter->writeOffsetTable($offsetTable, $streamWriter);
