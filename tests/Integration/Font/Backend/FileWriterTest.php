@@ -92,7 +92,7 @@ class FileWriterTest extends TestCase
         $font2 = $parser->parse($output2);
 
         // assert
-        $this->assertSame($font, $font2);
+        $this->assertEquals($font, $font2);
     }
 
     /**
@@ -112,8 +112,8 @@ class FileWriterTest extends TestCase
         $font2 = $parser->parse($output);
 
         // assert
-        $this->assertSame($font->getFontFile()->getNameTable(), $font2->getFontFile()->getNameTable());
-        $this->assertSame($font->getFontFile()->getPrepTable(), $font2->getFontFile()->getPrepTable());
+        $this->assertEquals($font->getFontFile()->getNameTable(), $font2->getFontFile()->getNameTable());
+        $this->assertEquals($font->getFontFile()->getPrepTable(), $font2->getFontFile()->getPrepTable());
     }
 
     /**
