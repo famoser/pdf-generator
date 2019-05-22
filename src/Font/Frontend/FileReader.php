@@ -58,7 +58,7 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return FontFile
      */
@@ -196,7 +196,7 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return OffsetTable
      */
@@ -214,7 +214,7 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return TableDirectoryEntry
      */
@@ -233,7 +233,7 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return CMapTable
      */
@@ -258,7 +258,7 @@ class FileReader
      * @param StreamReader $fileReader
      * @param int $cmapTableOffset
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return Subtable
      */
@@ -283,7 +283,7 @@ class FileReader
      * @param LocaTable $locaTable
      * @param HeadTable $headTable
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return GlyfTable[]
      */
@@ -326,7 +326,7 @@ class FileReader
      * @param HeadTable $headTable
      * @param MaxPTable $maxPTable
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return LocaTable
      */
@@ -350,7 +350,7 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return MaxPTable
      */
@@ -380,7 +380,7 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return HeadTable
      */
@@ -444,7 +444,7 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return HHeaTable
      */
@@ -464,7 +464,7 @@ class FileReader
         $table->setCaretSlopeRun($fileReader->readInt16());
         $table->setCaretOffset($fileReader->readFWORD());
 
-        // skip resevred characters
+        // skip reserved characters
         $fileReader->readInt32();
         $fileReader->readInt32();
 
@@ -479,7 +479,7 @@ class FileReader
      * @param HHeaTable $hHeaTable
      * @param MaxPTable $maxPTable
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return HMtxTable
      */

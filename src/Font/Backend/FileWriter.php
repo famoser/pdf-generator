@@ -48,7 +48,7 @@ class FileWriter
         $tableDirectoryEntries = $this->writeTables($fontFile, $visitor);
 
         $numTables = \count($tableDirectoryEntries);
-        $prefixOverhead = $numTables * 16 + 16;
+        $prefixOverhead = $numTables * 16 + 12;
 
         foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
             $tableDirectoryEntry->setOffset($tableDirectoryEntry->getOffset() + $prefixOverhead);
@@ -56,17 +56,17 @@ class FileWriter
 
         $streamWriter = new StreamWriter();
         $visitor = new WriteTablesVisitor($streamWriter);
-        $offset = new OffsetTable();
-        $offset->setScalerType(0x00010000);
-        $offset->setNumTables($numTables);
-        $this->setBinaryTreeSearchableProperties($offset, $numTables);
-        $offset->accept($visitor);
+        $offsetTable = new OffsetTable();
+        $offsetTable->setScalerType(0x00010000);
+        $offsetTable->setNumTables($numTables);
+        $this->setBinaryTreeSearchableProperties($offsetTable, $numTables);
+        $offsetTable->accept($visitor);
         foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
             $tableDirectoryEntry->accept($visitor);
         }
         $streamWriter->writeStreamWriter($tableStreamWriter);
 
-        return $streamWriter->getOutput;
+        return $streamWriter->getStream();
     }
 
     private function createTableDirectoryEntries()
@@ -156,8 +156,6 @@ class FileWriter
     /**
      * @param CMapTable $cMapTable
      * @param Character[] $characters
-     *
-     * @return Subtable
      */
     private function recalculateCMapTable(CMapTable $cMapTable, array $characters)
     {
@@ -171,7 +169,7 @@ class FileWriter
         $format = $this->generateFormat4($characters);
         $subtable->setFormat($format);
 
-        return $subtable;
+        $cMapTable->addSubtable($subtable);
     }
 
     /**
@@ -356,7 +354,7 @@ class FileWriter
             $tableDirectoryEntry->setOffset($currentOffset);
 
             $table->accept($writeTablesVisitor);
-            $currentOffset = $writeTablesVisitor->getWriter()->getOffset();
+            $currentOffset = $writeTablesVisitor->getWriter()->getLength();
 
             $tableDirectoryEntry->setLength($currentOffset - $tableDirectoryEntry->getOffset());
             $tableDirectoryEntry->setTag($tag);
