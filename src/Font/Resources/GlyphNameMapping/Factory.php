@@ -67,12 +67,15 @@ class Factory
                 break;
             }
 
-            // ignore comments
-            if (substr($line, 0, 1) === '#') {
+            // ignore comments or empty lines
+            if (substr($line, 0, 1) === '#' || \strlen($line) === 0) {
                 continue;
             }
 
             $content = explode(';', $line);
+            if (\count($content) < 2) {
+                continue;
+            }
 
             $codePoint = hexdec($content[0]);
             $result[$codePoint] = $content[1];

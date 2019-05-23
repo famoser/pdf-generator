@@ -37,9 +37,10 @@ class FactoryTest extends TestCase
 
         // assert
         $expectedMapping = [
-            'a' => 'A',
+            'a' => 'a',
+            'A' => 'A',
             '\\' => 'backslash',
-            'ä' => 'unknown',
+            'ä' => 'adieresis',
         ];
 
         foreach ($expectedMapping as $key => $value) {
@@ -63,14 +64,13 @@ class FactoryTest extends TestCase
         $this->assertCount(258, $mapping);
 
         $expectedMapping = [
-            '9' => 'nine',
-            '_' => 'underscore',
-            'ô' => 'ocircumflex',
+            0 => '.notdef',
+            201 => 'Aacute',
+            257 => 'dcroat',
         ];
 
         foreach ($expectedMapping as $key => $value) {
-            $character = mb_ord($key);
-            $this->assertEquals($value, $mapping[$character]);
+            $this->assertEquals($value, $mapping[$key]);
         }
     }
 }
