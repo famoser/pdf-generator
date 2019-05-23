@@ -62,7 +62,7 @@ class FormatReader
 
         $formatLength = 2 + 2 * $format2->getNumGlyphs();
         $remainingLength = $length - $formatLength;
-        $format2->setNames($streamReader->readUInt8Array($remainingLength));
+        $format2->setNames($streamReader->readFor($remainingLength));
 
         return $format2;
     }

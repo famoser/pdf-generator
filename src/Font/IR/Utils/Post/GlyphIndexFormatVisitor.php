@@ -27,6 +27,16 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     private $factory;
 
     /**
+     * GlyphIndexFormatVisitor constructor.
+     *
+     * @param Factory $factory
+     */
+    public function __construct(Factory $factory)
+    {
+        $this->factory = $factory;
+    }
+
+    /**
      * @param Format $format
      *
      * @return GlyphInfo[]
@@ -105,7 +115,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
 
         $result = [];
         while ($activeIndex < $length) {
-            $stringLength = $stream[$activeIndex];
+            $stringLength = (int)$stream[$activeIndex];
             $result[] = substr($stream, $activeIndex + 1, $stringLength);
 
             $activeIndex += $stringLength + 1;

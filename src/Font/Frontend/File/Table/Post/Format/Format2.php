@@ -43,11 +43,11 @@ class Format2 extends Format
     /**
      * glyph names with length byte.
      *
-     * @ttf-type int8[]
+     * @ttf-type pascal string stream
      *
-     * @var int[]
+     * @var string
      */
-    private $names = [];
+    private $names;
 
     /**
      * @return int
@@ -90,17 +90,17 @@ class Format2 extends Format
     }
 
     /**
-     * @return int[]
+     * @return string
      */
-    public function getNames(): array
+    public function getNames(): string
     {
         return $this->names;
     }
 
     /**
-     * @param int[] $names
+     * @param string $names
      */
-    public function setNames(array $names): void
+    public function setNames(string $names): void
     {
         $this->names = $names;
     }

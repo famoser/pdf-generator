@@ -577,8 +577,8 @@ class FileWriter
             }
         }
 
-        $nameArray = $this->generatePascalString($names);
-        $format2->setNames($nameArray);
+        $namePascalString = $this->generatePascalString($names);
+        $format2->setNames($namePascalString);
 
         return $format2;
     }
@@ -586,19 +586,16 @@ class FileWriter
     /**
      * @param string[] $names
      *
-     * @return int[]
+     * @return string
      */
-    private function generatePascalString(array $names): array
+    private function generatePascalString(array $names): string
     {
-        $nameArray = [];
+        $nameString = '';
         foreach ($names as $name) {
-            $nameArray[] = \strlen($name);
-
-            for ($i = 0; $i < \count($name); ++$i) {
-                $nameArray[] = $name[$i];
-            }
+            $nameString .= \strlen($name);
+            $nameString[] = $name;
         }
 
-        return $nameArray;
+        return $nameString;
     }
 }

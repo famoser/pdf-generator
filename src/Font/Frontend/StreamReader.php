@@ -497,4 +497,16 @@ class StreamReader
 
         return $result;
     }
+
+    /**
+     * @param int $length
+     *
+     * @return string
+     */
+    public function readFor(int $length)
+    {
+        $offset = $this->getOffset();
+
+        return $this->readUntil($offset + $length);
+    }
 }

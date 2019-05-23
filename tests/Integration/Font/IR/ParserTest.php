@@ -25,9 +25,9 @@ class ParserTest extends TestCase
      */
     public static function getParser()
     {
-        $cMapFormatVisitor = new GlyphIndexFormatVisitor();
-        $postFormatVisitor = new \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor();
         $factory = new Factory();
+        $cMapFormatVisitor = new GlyphIndexFormatVisitor();
+        $postFormatVisitor = new \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor($factory);
 
         return new Parser($cMapFormatVisitor, $postFormatVisitor, $factory);
     }

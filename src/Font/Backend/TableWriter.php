@@ -315,6 +315,6 @@ class TableWriter
     {
         $streamWriter->writeUInt16($format->getNumGlyphs());
         $streamWriter->writeUInt16Array($format->getGlyphNameIndex());
-        $streamWriter->writeInt8Array($format->getNames());
+        $streamWriter->writeStream($format->getNames());
     }
 }
