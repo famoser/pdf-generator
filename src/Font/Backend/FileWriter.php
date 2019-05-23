@@ -27,6 +27,7 @@ use PdfGenerator\Font\Frontend\File\Table\PostTable;
 use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
 use PdfGenerator\Font\Frontend\File\Traits\BinaryTreeSearchableTrait;
 use PdfGenerator\Font\IR\Structure\Character;
+use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
 
 class FileWriter
@@ -47,18 +48,32 @@ class FileWriter
     }
 
     /**
-     * @param FontFile $fontFile
+     * @param Font $font
      * @param Character[] $characters
      *
      * @throws \Exception
      *
      * @return string
      */
-    public function writeSubset(FontFile $fontFile, array $characters)
+    public function writeSubset(Font $font, array $characters)
     {
-        $this->removeInvalidTables($fontFile);
-        $characters = $this->prepareCharacters($fontFile, $characters);
+        return $this->writeSubsetFile($font->getFontFile(), $characters, $font->getMissingGlyphCharacter());
+    }
 
+    /**
+     * @param FontFile $fontFile
+     * @param Character[] $characters
+     * @param Character $missingGlyphCharacter
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    private function writeSubsetFile(FontFile $fontFile, array $characters, Character $missingGlyphCharacter)
+    {
+        $characters = $this->prepareCharacters($characters, $missingGlyphCharacter);
+
+        $this->removeInvalidTables($fontFile);
         $this->recalculateTables($fontFile, $characters);
 
         $streamWriter = $this->writeFontFile($fontFile);
@@ -69,16 +84,14 @@ class FileWriter
     /**
      * @param FontFile $fontFile
      * @param Character[] $characters
+     * @param Character $missingGlyphCharacter
      *
      * @return Character[]
      */
-    private function prepareCharacters(FontFile $fontFile, array $characters)
+    private function prepareCharacters(array $characters, Character $missingGlyphCharacter)
     {
         $orderedCharacters = $this->sortCharactersByCodePoint($characters);
 
-        $missingGlyphCharacter = new Character();
-        $missingGlyphCharacter->setLongHorMetric($fontFile->getHMtxTable()->getLongHorMetrics()[0]);
-        $missingGlyphCharacter->setGlyfTable($fontFile->getGlyfTables()[0]);
         array_unshift($orderedCharacters, $missingGlyphCharacter);
 
         return $orderedCharacters;
@@ -110,7 +123,6 @@ class FileWriter
         $fontFile->setGDEFTable(null);
         $fontFile->setGPOSTable(null);
         $fontFile->setGSUBTable(null);
-        $fontFile->setPostTable(null);
     }
 
     /**

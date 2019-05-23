@@ -95,6 +95,9 @@ class Parser
         $mappedCharacters = $this->mapCharacters($characters, $fontFile);
         $font->setCharacters($mappedCharacters);
 
+        $missingGlyphCharacter = $characters[0];
+        $font->setMissingGlyphCharacter($missingGlyphCharacter);
+
         return $font;
     }
 
@@ -119,12 +122,13 @@ class Parser
             $character = $characters[$characterIndex];
             if ($character !== null) {
                 $character->setUnicodePoint($unicode);
-                $mappedCharacters[] = $character;
 
                 $glyphInfo = \array_key_exists($characterIndex, $postMapping) ? $postMapping[$characterIndex] : null;
                 $aGLFInfo = \array_key_exists($unicode, $aGLFMapping) ? $aGLFMapping[$unicode] : null;
                 $postScriptInfo = $this->getPostScriptInfo($glyphInfo, $aGLFInfo);
                 $character->setPostScriptInfo($postScriptInfo);
+
+                $mappedCharacters[] = $character;
             }
         }
 

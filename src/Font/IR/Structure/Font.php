@@ -16,6 +16,11 @@ use PdfGenerator\Font\Frontend\File\FontFile;
 class Font
 {
     /**
+     * @var Character
+     */
+    private $missingGlyphCharacter = null;
+
+    /**
      * @var Character[]
      */
     private $characters = [];
@@ -24,6 +29,22 @@ class Font
      * @var FontFile
      */
     private $fontFile;
+
+    /**
+     * @return Character
+     */
+    public function getMissingGlyphCharacter(): Character
+    {
+        return $this->missingGlyphCharacter;
+    }
+
+    /**
+     * @param Character $missingGlyphCharacter
+     */
+    public function setMissingGlyphCharacter(Character $missingGlyphCharacter): void
+    {
+        $this->missingGlyphCharacter = $missingGlyphCharacter;
+    }
 
     /**
      * @return Character[]
