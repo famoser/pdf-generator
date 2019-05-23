@@ -20,26 +20,43 @@ use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\File\Traits\BoundingBoxTrait;
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\StreamReader;
-use PdfGenerator\Font\Frontend\Utils\GlyphIndexFormatVisitor;
 use PdfGenerator\Font\IR\Structure\BoundingBox;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
+use PdfGenerator\Font\IR\Structure\PostScriptInfo;
+use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
+use PdfGenerator\Font\IR\Utils\Post\GlyphInfo;
+use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 class Parser
 {
     /**
      * @var GlyphIndexFormatVisitor
      */
-    private $glyphIndexFormatVisitor;
+    private $cMapGlyphIndexFormatVisitor;
+
+    /**
+     * @var \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor
+     */
+    private $postGlyphIndexFormatVisitor;
+
+    /**
+     * @var Factory
+     */
+    private $glyphNameMappingFactory;
 
     /**
      * Parser constructor.
      *
-     * @param GlyphIndexFormatVisitor $glyphIndexFormatVisitor
+     * @param GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor
+     * @param \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor
+     * @param Factory $glyphNameMappingFactory
      */
-    public function __construct(GlyphIndexFormatVisitor $glyphIndexFormatVisitor)
+    public function __construct(GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, Factory $glyphNameMappingFactory)
     {
-        $this->glyphIndexFormatVisitor = $glyphIndexFormatVisitor;
+        $this->cMapGlyphIndexFormatVisitor = $cMapGlyphIndexFormatVisitor;
+        $this->postGlyphIndexFormatVisitor = $postGlyphIndexFormatVisitor;
+        $this->glyphNameMappingFactory = $glyphNameMappingFactory;
     }
 
     /**
@@ -52,8 +69,9 @@ class Parser
     public function parse(string $content): Font
     {
         $streamReader = new StreamReader($content);
-        $formatReader = new FormatReader();
-        $fileReader = new FileReader($formatReader);
+        $cMapFormatReader = new FormatReader();
+        $postFormatReader = new \PdfGenerator\Font\Frontend\File\Table\Post\FormatReader();
+        $fileReader = new FileReader($cMapFormatReader, $postFormatReader);
 
         $fontFile = $fileReader->readFontFile($streamReader);
         $font = $this->createFont($fontFile);
@@ -92,14 +110,21 @@ class Parser
     {
         $subtable = $this->chooseBestCMapSubtable($fontFile->getCMapTable());
 
-        $mapping = $this->glyphIndexFormatVisitor->visitFormat($subtable->getFormat());
+        $cMapMapping = $this->cMapGlyphIndexFormatVisitor->visitFormat($subtable->getFormat());
+        $postMapping = $this->postGlyphIndexFormatVisitor->visitFormat($fontFile->getPostTable()->getFormat());
+        $aGLFMapping = $this->glyphNameMappingFactory->getAGLFMapping();
 
         $mappedCharacters = [];
-        foreach ($mapping as $unicode => $characterIndex) {
+        foreach ($cMapMapping as $unicode => $characterIndex) {
             $character = $characters[$characterIndex];
             if ($character !== null) {
                 $character->setUnicodePoint($unicode);
                 $mappedCharacters[] = $character;
+
+                $glyphInfo = \array_key_exists($characterIndex, $postMapping) ? $postMapping[$characterIndex] : null;
+                $aGLFInfo = \array_key_exists($unicode, $aGLFMapping) ? $aGLFMapping[$unicode] : null;
+                $postScriptInfo = $this->getPostScriptInfo($glyphInfo, $aGLFInfo);
+                $character->setPostScriptInfo($postScriptInfo);
             }
         }
 
@@ -208,5 +233,30 @@ class Parser
         $boundingBox->setWidth(((float)$boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()) / $divisor);
 
         return $boundingBox;
+    }
+
+    /**
+     * @param GlyphInfo|null $glyphInfo
+     * @param string|null $aGLFName
+     *
+     * @return PostScriptInfo
+     */
+    private function getPostScriptInfo(?GlyphInfo $glyphInfo, ?string $aGLFName)
+    {
+        $postScriptInfo = new PostScriptInfo();
+
+        if ($glyphInfo === null && $aGLFName === null) {
+            $postScriptInfo->setName('.notdef');
+            $postScriptInfo->setMacintoshGlyphIndex(0);
+        } else {
+            if ($glyphInfo === null) {
+                $postScriptInfo->setName($aGLFName);
+            } else {
+                $postScriptInfo->setMacintoshGlyphIndex($glyphInfo->getMacintoshIndex());
+                $postScriptInfo->setName($glyphInfo->getName());
+            }
+        }
+
+        return $postScriptInfo;
     }
 }

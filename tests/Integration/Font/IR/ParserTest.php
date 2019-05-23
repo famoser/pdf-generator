@@ -11,9 +11,10 @@
 
 namespace PdfGenerator\Tests\Integration\Font\IR;
 
-use PdfGenerator\Font\Frontend\Utils\GlyphIndexFormatVisitor;
 use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\Font\IR\Structure\Character;
+use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
+use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 use PdfGenerator\Tests\Integration\Font\Frontend\FileReaderTest;
 use PHPUnit\Framework\TestCase;
 
@@ -24,9 +25,11 @@ class ParserTest extends TestCase
      */
     public static function getParser()
     {
-        $glyphIndexFormatVisitor = new GlyphIndexFormatVisitor();
+        $cMapFormatVisitor = new GlyphIndexFormatVisitor();
+        $postFormatVisitor = new \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor();
+        $factory = new Factory();
 
-        return new Parser($glyphIndexFormatVisitor);
+        return new Parser($cMapFormatVisitor, $postFormatVisitor, $factory);
     }
 
     /**

@@ -22,6 +22,11 @@ class Character
     private $unicodePoint;
 
     /**
+     * @var PostScriptInfo
+     */
+    private $postScriptInfo;
+
+    /**
      * @var BoundingBox
      */
     private $boundingBox;
@@ -50,6 +55,22 @@ class Character
     public function setUnicodePoint(int $unicodePoint): void
     {
         $this->unicodePoint = $unicodePoint;
+    }
+
+    /**
+     * @return PostScriptInfo
+     */
+    public function getPostScriptInfo(): PostScriptInfo
+    {
+        return $this->postScriptInfo;
+    }
+
+    /**
+     * @param PostScriptInfo $postScriptInfo
+     */
+    public function setPostScriptInfo(PostScriptInfo $postScriptInfo): void
+    {
+        $this->postScriptInfo = $postScriptInfo;
     }
 
     /**

@@ -13,19 +13,12 @@ namespace PdfGenerator\Font\Frontend\File\Table\Post\Format;
 
 use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
 
-/**
- * specifies that no PostScript information will be supplied
- * may breaks printers which relay on the PostScript information.
- */
-class Format3 extends Format
+abstract class Format
 {
     /**
      * @param VisitorInterface $visitor
      *
      * @return mixed
      */
-    public function accept(VisitorInterface $visitor)
-    {
-        return $visitor->visitFormat3($this);
-    }
+    abstract public function accept(VisitorInterface $visitor);
 }

@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table;
 
+use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format;
+
 /**
  * the post script table includes information needed by postscript printers.
  * is required by ttf files, but probably not useful for fonts used within pdf.
@@ -104,6 +106,11 @@ class PostTable
      * @var int
      */
     private $maxMemType1;
+
+    /**
+     * @var Format
+     */
+    private $format;
 
     /**
      * @return float
@@ -247,5 +254,21 @@ class PostTable
     public function setMaxMemType1(int $maxMemType1): void
     {
         $this->maxMemType1 = $maxMemType1;
+    }
+
+    /**
+     * @return Format
+     */
+    public function getFormat(): Format
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param Format $format
+     */
+    public function setFormat(Format $format): void
+    {
+        $this->format = $format;
     }
 }

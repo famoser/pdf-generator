@@ -21,6 +21,8 @@ use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\File\Table\LocaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
+use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format2;
+use PdfGenerator\Font\Frontend\File\Table\PostTable;
 use PdfGenerator\Font\Frontend\File\Table\RawTable;
 use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
 use PdfGenerator\Font\Frontend\File\Traits\BinaryTreeSearchableTrait;
@@ -85,14 +87,14 @@ class TableWriter
             throw new \Exception('format not supported for writing');
         }
 
-        $this->writeFormat4($format, $writer);
+        $this->writeCMapFormat4($format, $writer);
     }
 
     /**
      * @param Format4 $format
      * @param StreamWriter $writer
      */
-    private function writeFormat4(Format4 $format, StreamWriter $writer)
+    private function writeCMapFormat4(Format4 $format, StreamWriter $writer)
     {
         $writer->writeUInt16(4);
         $writer->writeUInt16($format->getLength());
@@ -276,5 +278,43 @@ class TableWriter
         $writer->writeFWORD($boundingBoxTrait->getYMin());
         $writer->writeFWORD($boundingBoxTrait->getXMax());
         $writer->writeFWORD($boundingBoxTrait->getYMax());
+    }
+
+    /**
+     * @param PostTable $postTable
+     * @param StreamWriter $streamWriter
+     *
+     * @throws \Exception
+     */
+    public function writePostTable(PostTable $postTable, StreamWriter $streamWriter)
+    {
+        $streamWriter->writeFixed($postTable->getVersion());
+        $streamWriter->writeFixed($postTable->getItalicAngle());
+        $streamWriter->writeFWORD($postTable->getUnderlinePosition());
+        $streamWriter->writeFWORD($postTable->getUnderlineThickness());
+
+        $streamWriter->writeUInt32($postTable->getIsFixedPitch());
+        $streamWriter->writeUInt32($postTable->getMinMemType42());
+        $streamWriter->writeUInt32($postTable->getMaxMemType42());
+        $streamWriter->writeUInt32($postTable->getMinMemType1());
+        $streamWriter->writeUInt32($postTable->getMaxMemType1());
+
+        $format = $postTable->getFormat();
+        if (!$format instanceof Format2) {
+            throw new \Exception('format not supported for writing');
+        }
+
+        $this->writePostFormat2($format, $streamWriter);
+    }
+
+    /**
+     * @param Format2 $format
+     * @param StreamWriter $streamWriter
+     */
+    private function writePostFormat2(Format2 $format, StreamWriter $streamWriter)
+    {
+        $streamWriter->writeUInt16($format->getNumGlyphs());
+        $streamWriter->writeUInt16Array($format->getGlyphNameIndex());
+        $streamWriter->writeInt8Array($format->getNames());
     }
 }

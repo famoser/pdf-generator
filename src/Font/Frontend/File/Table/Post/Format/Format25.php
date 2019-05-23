@@ -11,10 +11,12 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\Post\Format;
 
+use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
+
 /**
  * specifies offsets to the standard macintosh ordering.
  */
-class Format25
+class Format25 extends Format
 {
     /**
      * number of glyphs.
@@ -65,5 +67,15 @@ class Format25
     public function setOffsets(array $offsets): void
     {
         $this->offsets = $offsets;
+    }
+
+    /**
+     * @param VisitorInterface $visitor
+     *
+     * @return mixed
+     */
+    public function accept(VisitorInterface $visitor)
+    {
+        return $visitor->visitFormat25($this);
     }
 }

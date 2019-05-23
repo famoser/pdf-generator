@@ -20,6 +20,24 @@ class StreamWriterTest extends TestCase
     /**
      * @throws \Exception
      */
+    public function testInt8()
+    {
+        $values = [
+            -128,
+            -21,
+            -1,
+            0,
+            1,
+            56,
+            127,
+        ];
+
+        $this->assertValueWritesUsingReader($values, 'Int8');
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function testInt16()
     {
         $values = [

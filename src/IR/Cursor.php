@@ -77,7 +77,7 @@ class Cursor
     }
 
     /**
-     * @param Cursor $other
+     * @param self $other
      *
      * @return bool
      */

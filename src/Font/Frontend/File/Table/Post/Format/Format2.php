@@ -11,11 +11,13 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\Post\Format;
 
+use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
+
 /**
  * used to specific glyphs within or without the standard macintosh character set
  * the one format which should be used.
  */
-class Format2
+class Format2 extends Format
 {
     /**
      * number of glyphs.
@@ -36,7 +38,7 @@ class Format2
      *
      * @var int[]
      */
-    private $glyphNameIndex;
+    private $glyphNameIndex = [];
 
     /**
      * glyph names with length byte.
@@ -45,7 +47,7 @@ class Format2
      *
      * @var int[]
      */
-    private $names;
+    private $names = [];
 
     /**
      * @return int
@@ -80,6 +82,14 @@ class Format2
     }
 
     /**
+     * @param int $glyphNameIndex
+     */
+    public function addGlyphNameIndex(int $glyphNameIndex): void
+    {
+        $this->glyphNameIndex[] = $glyphNameIndex;
+    }
+
+    /**
      * @return int[]
      */
     public function getNames(): array
@@ -93,5 +103,15 @@ class Format2
     public function setNames(array $names): void
     {
         $this->names = $names;
+    }
+
+    /**
+     * @param VisitorInterface $visitor
+     *
+     * @return mixed
+     */
+    public function accept(VisitorInterface $visitor)
+    {
+        return $visitor->visitFormat2($this);
     }
 }

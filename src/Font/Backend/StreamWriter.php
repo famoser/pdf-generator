@@ -37,6 +37,36 @@ class StreamWriter
     /**
      * @param int $value
      */
+    public function writeUInt8(int $value)
+    {
+        $stream = pack('n', $value);
+
+        // big endian; hence first parts are 0
+        $this->stream .= substr($stream, 1);
+    }
+
+    /**
+     * @param int $value
+     */
+    public function writeInt8(int $value)
+    {
+        $unsigned = self::transformToUnSinged($value, 8);
+        $this->writeUInt8($unsigned);
+    }
+
+    /**
+     * @param int[] $values
+     */
+    public function writeInt8Array(array $values)
+    {
+        foreach ($values as $value) {
+            $this->writeInt8($value);
+        }
+    }
+
+    /**
+     * @param int $value
+     */
     public function writeInt16(int $value)
     {
         $unsigned = self::transformToUnSinged($value, 16);

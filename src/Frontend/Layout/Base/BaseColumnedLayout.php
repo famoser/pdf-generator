@@ -146,7 +146,7 @@ abstract class BaseColumnedLayout
     }
 
     /**
-     * @param BaseColumnedLayout $columnedLayout
+     * @param self $columnedLayout
      * @param PrintBuffer $printBuffer
      * @param Document $pdfDocumentTransaction
      * @param float $width

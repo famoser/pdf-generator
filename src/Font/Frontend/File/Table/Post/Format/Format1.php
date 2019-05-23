@@ -11,9 +11,20 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\Post\Format;
 
+use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
+
 /**
  * this format uses the standard macintosh ordering; hence all indexes are predefined.
  */
-class Format1
+class Format1 extends Format
 {
+    /**
+     * @param VisitorInterface $visitor
+     *
+     * @return mixed
+     */
+    public function accept(VisitorInterface $visitor)
+    {
+        return $visitor->visitFormat1($this);
+    }
 }

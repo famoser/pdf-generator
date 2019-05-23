@@ -43,16 +43,23 @@ class FileReader
     /**
      * @var FormatReader
      */
-    private $formatReader;
+    private $cMapFormatReader;
+
+    /**
+     * @var File\Table\Post\FormatReader
+     */
+    private $postFormatReader;
 
     /**
      * StructureReader constructor.
      *
-     * @param FormatReader $formatReader
+     * @param FormatReader $cMapFormatReader
+     * @param File\Table\Post\FormatReader $postFormatReader
      */
-    public function __construct(FormatReader $formatReader)
+    public function __construct(FormatReader $cMapFormatReader, File\Table\Post\FormatReader $postFormatReader)
     {
-        $this->formatReader = $formatReader;
+        $this->cMapFormatReader = $cMapFormatReader;
+        $this->postFormatReader = $postFormatReader;
     }
 
     /**
@@ -139,7 +146,7 @@ class FileReader
                     $font->setPrepTable($table);
                     break;
                 case 'post':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new PostTable());
+                    $table = $this->readPostTable($fileReader, $tableDirectoryEntry->getLength());
                     $font->setPostTable($table);
                     break;
                 case 'GDEF':
@@ -271,7 +278,7 @@ class FileReader
         $cMapSubtable->setOffset($fileReader->readOffset32());
 
         $fileReader->pushOffset($cmapTableOffset + $cMapSubtable->getOffset());
-        $format = $this->formatReader->readFormat($fileReader);
+        $format = $this->cMapFormatReader->readFormat($fileReader);
         $cMapSubtable->setFormat($format);
         $fileReader->popOffset();
 
@@ -470,6 +477,35 @@ class FileReader
 
         $table->setMetricDataFormat($fileReader->readInt16());
         $table->setNumOfLongHorMetrics($fileReader->readUInt16());
+
+        return $table;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     * @param int $length
+     *
+     * @throws \Exception
+     *
+     * @return PostTable
+     */
+    private function readPostTable(StreamReader $fileReader, int $length)
+    {
+        $table = new PostTable();
+
+        $table->setVersion($fileReader->readFixed());
+        $table->setItalicAngle($fileReader->readFixed());
+        $table->setUnderlinePosition($fileReader->readFWORD());
+        $table->setUnderlineThickness($fileReader->readFWORD());
+
+        $table->setIsFixedPitch($fileReader->readUInt32());
+        $table->setMinMemType42($fileReader->readUInt32());
+        $table->setMaxMemType42($fileReader->readUInt32());
+        $table->setMinMemType1($fileReader->readUInt32());
+        $table->setMaxMemType1($fileReader->readUInt32());
+
+        $remainingLength = $length - (4 * 2 + 2 * 2 + 4 * 5);
+        $table->setFormat($this->postFormatReader->readFormat($fileReader, $table->getVersion(), $remainingLength));
 
         return $table;
     }

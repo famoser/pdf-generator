@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\Utils\Format4;
+namespace PdfGenerator\Font\IR\Utils\CMap\Format4;
 
 class Segment
 {

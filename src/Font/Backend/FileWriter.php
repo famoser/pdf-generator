@@ -22,10 +22,12 @@ use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\File\Table\LocaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
+use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format2;
+use PdfGenerator\Font\Frontend\File\Table\PostTable;
 use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
 use PdfGenerator\Font\Frontend\File\Traits\BinaryTreeSearchableTrait;
-use PdfGenerator\Font\Frontend\Utils\Format4\Segment;
 use PdfGenerator\Font\IR\Structure\Character;
+use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
 
 class FileWriter
 {
@@ -126,6 +128,7 @@ class FileWriter
         $this->recalculateHHeaTable($fontFile->getHHeaTable(), $fontFile->getHMtxTable());
         $this->recalculateMaxPTable($fontFile->getMaxPTable(), $characters);
         $fontFile->setLocaTable($this->generateLocaTable($fontFile->getGlyfTables()));
+        $this->recalculatedPostTable($fontFile->getPostTable(), $characters);
     }
 
     /**
@@ -163,7 +166,6 @@ class FileWriter
     }
 
     /**
-     * @param CMapTable $cMapTable
      * @param Character[] $characters
      *
      * @return CMapTable
@@ -193,7 +195,7 @@ class FileWriter
         $subtable->setPlatformSpecificID(4);
         $subtable->setOffset($cmapOffset + 8);
 
-        $format = $this->generateFormat4($characters);
+        $format = $this->generateCMapFormat4($characters);
         $subtable->setFormat($format);
 
         return $subtable;
@@ -204,7 +206,7 @@ class FileWriter
      *
      * @return Format4
      */
-    private function generateFormat4(array $characters)
+    private function generateCMapFormat4(array $characters)
     {
         $segments = $this->generateSegments($characters);
         $segmentsCount = \count($segments);
@@ -363,7 +365,6 @@ class FileWriter
      * @param StreamWriter $streamWriter
      * @param FontFile $fontFile
      * @param string $tag
-     * @param $table
      *
      * @throws \Exception
      */
@@ -409,7 +410,7 @@ class FileWriter
                 $this->tableWriter->writeRawContentTable($fontFile->getOS2Table(), $streamWriter);
                 break;
             case 'post':
-                $this->tableWriter->writeRawContentTable($fontFile->getPostTable(), $streamWriter);
+                $this->tableWriter->writePostTable($fontFile->getPostTable(), $streamWriter);
                 break;
             case 'prep':
                 $this->tableWriter->writeRawContentTable($fontFile->getPrepTable(), $streamWriter);
@@ -541,5 +542,63 @@ class FileWriter
         }
 
         return $tableDirectoryEntries;
+    }
+
+    /**
+     * @param PostTable $postTable
+     * @param Character[] $characters
+     */
+    private function recalculatedPostTable(PostTable $postTable, array $characters)
+    {
+        $postTable->setVersion(2.0);
+        $postTable->setFormat($this->generatePostFormat2Table($characters));
+    }
+
+    /**
+     * @param Character[] $characters
+     *
+     * @return Format2
+     */
+    private function generatePostFormat2Table(array $characters)
+    {
+        $format2 = new Format2();
+
+        $format2->setNumGlyphs(\count($characters));
+
+        $names = [];
+        foreach ($characters as $character) {
+            $postScriptInfo = $character->getPostScriptInfo();
+            if ($postScriptInfo->isInStandardMacintoshSet()) {
+                $format2->addGlyphNameIndex($postScriptInfo->getMacintoshGlyphIndex());
+            } else {
+                $nameIndex = 258 + \count($names);
+                $format2->addGlyphNameIndex($nameIndex);
+                $names[] = $postScriptInfo->getName();
+            }
+        }
+
+        $nameArray = $this->generatePascalString($names);
+        $format2->setNames($nameArray);
+
+        return $format2;
+    }
+
+    /**
+     * @param string[] $names
+     *
+     * @return int[]
+     */
+    private function generatePascalString(array $names): array
+    {
+        $nameArray = [];
+        foreach ($names as $name) {
+            $nameArray[] = \strlen($name);
+
+            for ($i = 0; $i < \count($name); ++$i) {
+                $nameArray[] = $name[$i];
+            }
+        }
+
+        return $nameArray;
     }
 }

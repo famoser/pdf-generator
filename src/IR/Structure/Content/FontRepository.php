@@ -81,6 +81,8 @@ class FontRepository
     }
 
     /**
+     * @throws \Exception
+     *
      * @return Font
      */
     public function getDefaultFont()

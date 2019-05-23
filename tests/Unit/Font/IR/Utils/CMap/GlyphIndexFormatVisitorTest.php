@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Unit\Font\Frontend\Utils;
+namespace PdfGenerator\Tests\Unit\Font\IR\Utils\CMap;
 
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
-use PdfGenerator\Font\Frontend\Utils\GlyphIndexFormatVisitor;
+use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
 use PHPUnit\Framework\TestCase;
 
 class GlyphIndexFormatVisitorTest extends TestCase
