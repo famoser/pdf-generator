@@ -504,7 +504,7 @@ class FileReader
         $table->setMinMemType1($fileReader->readUInt32());
         $table->setMaxMemType1($fileReader->readUInt32());
 
-        $remainingLength = $length - (4 * 2 + 2 * 2 + 4 * 5);
+        $remainingLength = $length - (2 * 4 + 2 * 2 + 5 * 4);
         $table->setFormat($this->postFormatReader->readFormat($fileReader, $table->getVersion(), $remainingLength));
 
         return $table;

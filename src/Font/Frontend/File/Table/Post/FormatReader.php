@@ -60,7 +60,8 @@ class FormatReader
         $format2->setNumGlyphs($streamReader->readUInt16());
         $format2->setGlyphNameIndex($streamReader->readUInt16Array($format2->getNumGlyphs()));
 
-        $remainingLength = $length - 2 + 2 * $format2->getNumGlyphs();
+        $formatLength = 2 + 2 * $format2->getNumGlyphs();
+        $remainingLength = $length - $formatLength;
         $format2->setNames($streamReader->readUInt8Array($remainingLength));
 
         return $format2;
