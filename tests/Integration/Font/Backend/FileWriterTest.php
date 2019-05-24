@@ -43,7 +43,7 @@ class FileWriterTest extends TestCase
         $character = $characterRepository->find('g');
 
         // act
-        $output = $writer->writeSubset($font, [$character]);
+        $output = $writer->writeFile($font, [$character]);
 
         // assert
         $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
@@ -64,7 +64,7 @@ class FileWriterTest extends TestCase
         $character2 = $characterRepository->find('x');
 
         // act
-        $output = $writer->writeSubset($font, [$character, $character1, $character2]);
+        $output = $writer->writeFile($font, [$character, $character1, $character2]);
 
         // assert
         $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
@@ -83,7 +83,7 @@ class FileWriterTest extends TestCase
         $character = $characterRepository->find('g');
 
         // act
-        $output = $writer->writeSubset($font, [$character]);
+        $output = $writer->writeFile($font, [$character]);
 
         // assert
         $font = $parser->parse($output);
@@ -104,11 +104,11 @@ class FileWriterTest extends TestCase
         $character = $characterRepository->find('g');
 
         // act
-        $output = $writer->writeSubset($font, [$character]);
+        $output = $writer->writeFile($font, [$character]);
         $font = $parser->parse($output);
         $characterRepository = new CharacterRepository($font);
         $character = $characterRepository->find('g');
-        $output2 = $writer->writeSubset($font, [$character]);
+        $output2 = $writer->writeFile($font, [$character]);
         $font2 = $parser->parse($output2);
 
         // assert
@@ -128,7 +128,7 @@ class FileWriterTest extends TestCase
         $character = $characterRepository->find('g');
 
         // act
-        $output = $writer->writeSubset($font, [$character]);
+        $output = $writer->writeFile($font, [$character]);
         $font2 = $parser->parse($output);
 
         // assert

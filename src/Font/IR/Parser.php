@@ -24,6 +24,7 @@ use PdfGenerator\Font\IR\Structure\BoundingBox;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Structure\PostScriptInfo;
+use PdfGenerator\Font\IR\Structure\RawTableDirectory;
 use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
 use PdfGenerator\Font\IR\Utils\Post\GlyphInfo;
 use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
@@ -89,7 +90,7 @@ class Parser
     private function createFont(FontFile $fontFile): Font
     {
         $font = new Font();
-        $font->setFontFile($fontFile);
+        $font->setRawTableDirectory($this->createRawTableDirectory($fontFile));
 
         $characters = $this->createCharacters($fontFile);
         $mappedCharacters = $this->mapCharacters($characters, $fontFile);
@@ -99,6 +100,29 @@ class Parser
         $font->setMissingGlyphCharacter($missingGlyphCharacter);
 
         return $font;
+    }
+
+    /**
+     * @param FontFile $fontFile
+     *
+     * @return RawTableDirectory
+     */
+    private function createRawTableDirectory(FontFile $fontFile)
+    {
+        $rawTableDirectory = new RawTableDirectory();
+
+        $rawTableDirectory->setCvtTable($fontFile->getCvtTable());
+        $rawTableDirectory->setFpgmTable($fontFile->getFpgmTable());
+        $rawTableDirectory->setGaspTable($fontFile->getGaspTable());
+        $rawTableDirectory->setGdefTable($fontFile->getGDEFTable());
+        $rawTableDirectory->setGposTable($fontFile->getGPOSTable());
+        $rawTableDirectory->setGsubTable($fontFile->getGSUBTable());
+        $rawTableDirectory->setNameTable($fontFile->getNameTable());
+        $rawTableDirectory->setOs2Table($fontFile->getOS2Table());
+        $rawTableDirectory->setPrepTable($fontFile->getPrepTable());
+        $rawTableDirectory->setRawTables($fontFile->getRawTables());
+
+        return $rawTableDirectory;
     }
 
     /**

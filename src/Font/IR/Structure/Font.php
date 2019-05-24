@@ -31,6 +31,11 @@ class Font
     private $fontFile;
 
     /**
+     * @var RawTableDirectory
+     */
+    private $rawTableDirectory;
+
+    /**
      * @return Character
      */
     public function getMissingGlyphCharacter(): Character
@@ -71,10 +76,18 @@ class Font
     }
 
     /**
-     * @param FontFile $fontFile
+     * @return RawTableDirectory
      */
-    public function setFontFile(FontFile $fontFile): void
+    public function getRawTableDirectory(): RawTableDirectory
     {
-        $this->fontFile = $fontFile;
+        return $this->rawTableDirectory;
+    }
+
+    /**
+     * @param RawTableDirectory $rawTableDirectory
+     */
+    public function setRawTableDirectory(RawTableDirectory $rawTableDirectory): void
+    {
+        $this->rawTableDirectory = $rawTableDirectory;
     }
 }
