@@ -46,7 +46,6 @@ class FileWriterTest extends TestCase
         $output = $writer->writeSubset($font, [$character]);
 
         // assert
-        file_put_contents(__DIR__ . \DIRECTORY_SEPARATOR . 'myfont.ttf', $output);
         $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
     }
 
@@ -68,7 +67,6 @@ class FileWriterTest extends TestCase
         $output = $writer->writeSubset($font, [$character, $character1, $character2]);
 
         // assert
-        file_put_contents(__DIR__ . \DIRECTORY_SEPARATOR . 'myfont_three.ttf', $output);
         $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
     }
 
@@ -141,7 +139,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function ignored_testWithOracle()
+    public function testWithOracle()
     {
         // arrange
         $parser = ParserTest::getParser();
@@ -157,7 +155,7 @@ class FileWriterTest extends TestCase
         $a2 = $characterRepository->find('a');
 
         // assert
-        $this->assertSame($font1, $font2);
-        $this->assertSame($a1, $a2);
+        $this->assertEquals($font1, $font2);
+        $this->assertEquals($a1, $a2);
     }
 }
