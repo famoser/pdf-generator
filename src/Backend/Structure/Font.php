@@ -32,13 +32,6 @@ abstract class Font extends BaseStructure
     private $baseFont;
 
     /**
-     * for subtype 1 can be left null.
-     *
-     * @var CMap|null
-     */
-    private $encoding;
-
-    /**
      * File constructor.
      *
      * @param string $identifier

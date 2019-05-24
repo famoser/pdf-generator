@@ -35,6 +35,13 @@ class SimpleFont extends Font
     const BASE_FONT_COURIER__BOLDOBLIQUE = 'Courier-BoldOblique';
 
     /**
+     * TODO: implement for base fonts.
+     *
+     * @var Font\Structure\FontDescriptor
+     */
+    private $fontDescriptor;
+
+    /**
      * @param StructureVisitor $visitor
      * @param File $file
      *
@@ -43,5 +50,21 @@ class SimpleFont extends Font
     public function accept(StructureVisitor $visitor, File $file): BaseObject
     {
         return $visitor->visitSimpleFont($this, $file);
+    }
+
+    /**
+     * @return Structure\FontDescriptor
+     */
+    public function getFontDescriptor(): Structure\FontDescriptor
+    {
+        return $this->fontDescriptor;
+    }
+
+    /**
+     * @param Structure\FontDescriptor $fontDescriptor
+     */
+    public function setFontDescriptor(Structure\FontDescriptor $fontDescriptor): void
+    {
+        $this->fontDescriptor = $fontDescriptor;
     }
 }

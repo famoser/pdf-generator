@@ -439,7 +439,7 @@ class FileWriter
      *
      * @return StreamWriter
      */
-    private function writeFontFile(FontFile $fontFile)
+    public function writeFontFile(FontFile $fontFile)
     {
         $tables = [
             'cmap' => $fontFile->getCMapTable(),

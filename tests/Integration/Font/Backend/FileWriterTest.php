@@ -135,27 +135,4 @@ class FileWriterTest extends TestCase
         $this->assertEquals($font->getFontFile()->getNameTable(), $font2->getFontFile()->getNameTable());
         $this->assertEquals($font->getFontFile()->getPrepTable(), $font2->getFontFile()->getPrepTable());
     }
-
-    /**
-     * @throws \Exception
-     */
-    public function testWithOracle()
-    {
-        // arrange
-        $parser = ParserTest::getParser();
-        $content = file_get_contents(__DIR__ . \DIRECTORY_SEPARATOR . 'OpenSans-Regular-subset.ttf');
-        $font1 = $parser->parse($content);
-        $characterRepository = new CharacterRepository($font1);
-        $a1 = $characterRepository->find('a');
-
-        // act
-        $parser = ParserTest::getParser();
-        $font2 = $parser->parse(FileReaderTest::getDefaultFontContent());
-        $characterRepository = new CharacterRepository($font2);
-        $a2 = $characterRepository->find('a');
-
-        // assert
-        $this->assertEquals($font1, $font2);
-        $this->assertEquals($a1, $a2);
-    }
 }
