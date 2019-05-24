@@ -12,7 +12,7 @@
 namespace PdfGenerator\Font\Frontend\File\Table;
 
 /**
- * fallback table if an unknown table is encountered.
+ * fallback table if an unknown table is encountered or one that is not serialized.
  */
 class RawTable
 {

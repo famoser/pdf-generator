@@ -98,7 +98,7 @@ class Format4 extends Format
      */
     public function getFormat(): int
     {
-        return 4;
+        return self::FORMAT_4;
     }
 
     /**
@@ -261,6 +261,6 @@ class Format4 extends Format
      */
     public function accept(FormatVisitor $formatVisitor, StreamWriter $streamWriter): void
     {
-        return $formatVisitor->visitFormat4($this, $streamWriter);
+        $formatVisitor->visitFormat4($this, $streamWriter);
     }
 }

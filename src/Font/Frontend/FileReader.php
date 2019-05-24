@@ -15,27 +15,17 @@ use PdfGenerator\Font\Frontend\File\FontFile;
 use PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
 use PdfGenerator\Font\Frontend\File\Table\CMapTable;
-use PdfGenerator\Font\Frontend\File\Table\CvtTable;
-use PdfGenerator\Font\Frontend\File\Table\FpgmTable;
-use PdfGenerator\Font\Frontend\File\Table\GaspTable;
-use PdfGenerator\Font\Frontend\File\Table\GDEFTable;
 use PdfGenerator\Font\Frontend\File\Table\GlyfTable;
-use PdfGenerator\Font\Frontend\File\Table\GPOSTable;
-use PdfGenerator\Font\Frontend\File\Table\GSUBTable;
 use PdfGenerator\Font\Frontend\File\Table\HeadTable;
 use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\File\Table\LocaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
-use PdfGenerator\Font\Frontend\File\Table\NameTable;
 use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
-use PdfGenerator\Font\Frontend\File\Table\OS2Table;
 use PdfGenerator\Font\Frontend\File\Table\PostTable;
-use PdfGenerator\Font\Frontend\File\Table\PrepTable;
 use PdfGenerator\Font\Frontend\File\Table\RawTable;
 use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
-use PdfGenerator\Font\Frontend\File\Traits\RawContent;
 use PdfGenerator\Font\Frontend\File\Traits\Reader;
 
 class FileReader
@@ -69,35 +59,34 @@ class FileReader
      *
      * @return FontFile
      */
-    public function readFontFile(StreamReader $fileReader)
+    public function read(StreamReader $fileReader)
     {
-        $font = new FontFile();
-
         $offsetTable = $this->readOffsetTable($fileReader);
-        $font->setOffsetTable($offsetTable);
 
         if (!$offsetTable->isTrueTypeFont()) {
             throw new \Exception('This font type is not supported: ' . $offsetTable->getScalerType());
         }
 
+        $tableDirectoryEntries = [];
         for ($i = 0; $i < $offsetTable->getNumTables(); ++$i) {
-            $tableDirectoryEntry = $this->readTableDirectoryEntry($fileReader);
-            $font->addTableDirectoryEntry($tableDirectoryEntry);
+            $tableDirectoryEntries[] = $this->readTableDirectoryEntry($fileReader);
         }
 
-        $this->readTables($fileReader, $font);
-
-        return $font;
+        return $this->readFontFile($fileReader, $tableDirectoryEntries);
     }
 
     /**
      * @param StreamReader $fileReader
-     * @param FontFile $font
+     * @param TableDirectoryEntry[] $tableDirectoryEntries
      *
      * @throws \Exception
+     *
+     * @return FontFile
      */
-    private function readTables(StreamReader $fileReader, FontFile $font)
+    private function readFontFile(StreamReader $fileReader, array $tableDirectoryEntries): FontFile
     {
+        $font = new FontFile();
+
         /** @var TableDirectoryEntry $locaEntry */
         $locaEntry = null;
         /** @var TableDirectoryEntry $hmtxEntry */
@@ -105,7 +94,7 @@ class FileReader
         /** @var TableDirectoryEntry $glyfEntry */
         $glyfEntry = null;
 
-        foreach ($font->getTableDirectoryEntries() as $tableDirectoryEntry) {
+        foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
             $fileReader->setOffset($tableDirectoryEntry->getOffset());
 
             switch ($tableDirectoryEntry->getTag()) {
@@ -122,27 +111,27 @@ class FileReader
                     $font->setHeadTable($table);
                     break;
                 case 'OS/2':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new OS2Table());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setOS2Table($table);
                     break;
                 case 'name':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new NameTable());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setNameTable($table);
                     break;
                 case 'cvt ':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new CvtTable());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setCvtTable($table);
                     break;
                 case 'fpgm':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new FpgmTable());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setFpgmTable($table);
                     break;
                 case 'gasp':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GaspTable());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGaspTable($table);
                     break;
                 case 'prep':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new PrepTable());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setPrepTable($table);
                     break;
                 case 'post':
@@ -150,15 +139,15 @@ class FileReader
                     $font->setPostTable($table);
                     break;
                 case 'GDEF':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GDEFTable());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGDEFTable($table);
                     break;
                 case 'GPOS':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GPOSTable());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGPOSTable($table);
                     break;
                 case 'GSUB':
-                    $table = $this->readRawContentTable($fileReader, $tableDirectoryEntry->getLength(), new GSUBTable());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGSUBTable($table);
                     break;
                 case 'hhea':
@@ -175,7 +164,7 @@ class FileReader
                     $glyfEntry = $tableDirectoryEntry;
                     break;
                 default:
-                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry->getLength(), $tableDirectoryEntry->getTag());
+                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->addRawTable($table);
                     break;
             }
@@ -198,6 +187,8 @@ class FileReader
             $tables = $this->readGlyfTables($fileReader, $font->getLocaTable(), $font->getHeadTable());
             $font->setGlyfTables($tables);
         }
+
+        return $font;
     }
 
     /**
@@ -416,33 +407,16 @@ class FileReader
 
     /**
      * @param StreamReader $fileReader
-     * @param int $size
-     * @param RawContent $targetTable
+     * @param TableDirectoryEntry $tableDirectoryEntry
      *
-     * @return RawContent|OS2Table|NameTable|CvtTable|FpgmTable|GaspTable|PrepTable|PostTable|GDEFTable|GPOSTable|GSUBTable
+     * @return RawTable
      */
-    private function readRawContentTable(StreamReader $fileReader, int $size, $targetTable)
-    {
-        $endOffset = $fileReader->getOffset() + $size;
-
-        $targetTable->setContent($fileReader->readUntil($endOffset));
-
-        return $targetTable;
-    }
-
-    /**
-     * @param StreamReader $fileReader
-     * @param int $size
-     * @param string $tag
-     *
-     * @return RawTable|OS2Table|NameTable
-     */
-    private function readRawTable(StreamReader $fileReader, int $size, string $tag)
+    private function readRawTable(StreamReader $fileReader, TableDirectoryEntry $tableDirectoryEntry)
     {
         $rawTable = new RawTable();
-        $rawTable->setTag($tag);
+        $rawTable->setTag($tableDirectoryEntry->getTag());
 
-        $endOffset = $fileReader->getOffset() + $size;
+        $endOffset = $fileReader->getOffset() + $tableDirectoryEntry->getLength();
         $rawTable->setContent($fileReader->readUntil($endOffset));
 
         return $rawTable;

@@ -20,8 +20,6 @@ use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\File\Table\LocaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
-use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
-use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\StreamReader;
 use PHPUnit\Framework\TestCase;
@@ -68,11 +66,9 @@ class FileReaderTest extends TestCase
         $fileReader = self::getFileReader();
         $structureReader = self::getStructureReader();
 
-        $font = $structureReader->readFontFile($fileReader);
+        $font = $structureReader->read($fileReader);
 
         // assert
-        $this->assertOffsetTable($font->getOffsetTable());
-        $this->assertTableDirectoryEntries($font->getTableDirectoryEntries());
         $this->assertCMapTable($font->getCMapTable());
         $this->assertLocaTable($font->getLocaTable());
         $this->assertHeadTable($font->getHeadTable());
@@ -81,31 +77,6 @@ class FileReaderTest extends TestCase
         $this->assertHHeaTable($font->getHHeaTable());
         $this->assertHMtxTable($font->getHMtxTable());
         $this->assertCount(0, $font->getRawTables());
-    }
-
-    /**
-     * @param OffsetTable $offsetTable
-     */
-    private function assertOffsetTable(OffsetTable $offsetTable)
-    {
-        $this->assertSame(65536, $offsetTable->getScalerType()); // hardcoded in our example font
-        $this->assertSame(17, $offsetTable->getNumTables()); // hardcoded in our example font
-        $this->assertSame(16 * 16, $offsetTable->getSearchRange()); // search 16 tables with binary tree; multiply by 16 because specification says so
-        $this->assertSame(4, $offsetTable->getEntrySelector()); // how many levels deep the binary tree is
-        $this->assertSame((17 - 16) * 16, $offsetTable->getRangeShift()); // 17 are number of tables; 16 are in binary tree; hence one is missed if not looking in binary tree
-    }
-
-    /**
-     * @param TableDirectoryEntry[] $tableDirectoryEntries
-     */
-    private function assertTableDirectoryEntries(array $tableDirectoryEntries)
-    {
-        $this->assertCount(17, $tableDirectoryEntries);
-
-        $firstEntry = $tableDirectoryEntries[0];
-        $this->assertSame('GDEF', $firstEntry->getTag());
-        $this->assertSame(95612, $firstEntry->getOffset());
-        $this->assertSame(46, $firstEntry->getLength());
     }
 
     /**

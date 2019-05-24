@@ -24,7 +24,7 @@ use PdfGenerator\Font\IR\Structure\BoundingBox;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Structure\PostScriptInfo;
-use PdfGenerator\Font\IR\Structure\RawTableDirectory;
+use PdfGenerator\Font\IR\Structure\TableDirectory;
 use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
 use PdfGenerator\Font\IR\Utils\Post\GlyphInfo;
 use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
@@ -37,7 +37,7 @@ class Parser
     private $cMapGlyphIndexFormatVisitor;
 
     /**
-     * @var \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor
+     * @var Utils\Post\GlyphIndexFormatVisitor
      */
     private $postGlyphIndexFormatVisitor;
 
@@ -50,10 +50,10 @@ class Parser
      * Parser constructor.
      *
      * @param GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor
-     * @param \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor
+     * @param Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor
      * @param Factory $glyphNameMappingFactory
      */
-    public function __construct(GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, Factory $glyphNameMappingFactory)
+    public function __construct(GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, Factory $glyphNameMappingFactory)
     {
         $this->cMapGlyphIndexFormatVisitor = $cMapGlyphIndexFormatVisitor;
         $this->postGlyphIndexFormatVisitor = $postGlyphIndexFormatVisitor;
@@ -74,7 +74,7 @@ class Parser
         $postFormatReader = new \PdfGenerator\Font\Frontend\File\Table\Post\FormatReader();
         $fileReader = new FileReader($cMapFormatReader, $postFormatReader);
 
-        $fontFile = $fileReader->readFontFile($streamReader);
+        $fontFile = $fileReader->read($streamReader);
         $font = $this->createFont($fontFile);
 
         return $font;
@@ -90,7 +90,7 @@ class Parser
     private function createFont(FontFile $fontFile): Font
     {
         $font = new Font();
-        $font->setRawTableDirectory($this->createRawTableDirectory($fontFile));
+        $font->setTableDirectory($this->createTableDirectory($fontFile));
 
         $characters = $this->createCharacters($fontFile);
         $mappedCharacters = $this->mapCharacters($characters, $fontFile);
@@ -105,24 +105,28 @@ class Parser
     /**
      * @param FontFile $fontFile
      *
-     * @return RawTableDirectory
+     * @return TableDirectory
      */
-    private function createRawTableDirectory(FontFile $fontFile)
+    private function createTableDirectory(FontFile $fontFile)
     {
-        $rawTableDirectory = new RawTableDirectory();
+        $tableDirectory = new TableDirectory();
 
-        $rawTableDirectory->setCvtTable($fontFile->getCvtTable());
-        $rawTableDirectory->setFpgmTable($fontFile->getFpgmTable());
-        $rawTableDirectory->setGaspTable($fontFile->getGaspTable());
-        $rawTableDirectory->setGdefTable($fontFile->getGDEFTable());
-        $rawTableDirectory->setGposTable($fontFile->getGPOSTable());
-        $rawTableDirectory->setGsubTable($fontFile->getGSUBTable());
-        $rawTableDirectory->setNameTable($fontFile->getNameTable());
-        $rawTableDirectory->setOs2Table($fontFile->getOS2Table());
-        $rawTableDirectory->setPrepTable($fontFile->getPrepTable());
-        $rawTableDirectory->setRawTables($fontFile->getRawTables());
+        $tableDirectory->setCvtTable($fontFile->getCvtTable());
+        $tableDirectory->setFpgmTable($fontFile->getFpgmTable());
+        $tableDirectory->setGaspTable($fontFile->getGaspTable());
+        $tableDirectory->setGdefTable($fontFile->getGDEFTable());
+        $tableDirectory->setGposTable($fontFile->getGPOSTable());
+        $tableDirectory->setGsubTable($fontFile->getGSUBTable());
+        $tableDirectory->setHeadTable($fontFile->getHeadTable());
+        $tableDirectory->setHHeaTable($fontFile->getHHeaTable());
+        $tableDirectory->setMaxPTable($fontFile->getMaxPTable());
+        $tableDirectory->setNameTable($fontFile->getNameTable());
+        $tableDirectory->setOs2Table($fontFile->getOS2Table());
+        $tableDirectory->setPostTable($fontFile->getPostTable());
+        $tableDirectory->setPrepTable($fontFile->getPrepTable());
+        $tableDirectory->setRawTables($fontFile->getRawTables());
 
-        return $rawTableDirectory;
+        return $tableDirectory;
     }
 
     /**

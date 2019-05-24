@@ -12,7 +12,7 @@
 namespace PdfGenerator\Font\Backend\File\Table;
 
 use PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
-use PdfGenerator\Font\Backend\File\Table\Post\Format\Format2;
+use PdfGenerator\Font\Backend\File\Table\Post\Format\Format;
 use PdfGenerator\Font\Backend\File\TableVisitor;
 
 /**
@@ -110,7 +110,7 @@ class PostTable extends BaseTable
     private $maxMemType1;
 
     /**
-     * @var Format2
+     * @var Format
      */
     private $format;
 
@@ -259,22 +259,6 @@ class PostTable extends BaseTable
     }
 
     /**
-     * @return Format2
-     */
-    public function getFormat(): Format2
-    {
-        return $this->format;
-    }
-
-    /**
-     * @param Format2 $format
-     */
-    public function setFormat(Format2 $format): void
-    {
-        $this->format = $format;
-    }
-
-    /**
      * @param TableVisitor $visitor
      *
      * @return string
@@ -282,5 +266,21 @@ class PostTable extends BaseTable
     public function accept(TableVisitor $visitor): string
     {
         return $visitor->visitPostTable($this);
+    }
+
+    /**
+     * @return Format
+     */
+    public function getFormat(): Format
+    {
+        return $this->format;
+    }
+
+    /**
+     * @param Format $format
+     */
+    public function setFormat(Format $format): void
+    {
+        $this->format = $format;
     }
 }

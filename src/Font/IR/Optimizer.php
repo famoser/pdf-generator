@@ -12,7 +12,7 @@
 namespace PdfGenerator\Font\IR;
 
 use PdfGenerator\Font\IR\Structure\Font;
-use PdfGenerator\Font\IR\Structure\RawTableDirectory;
+use PdfGenerator\Font\IR\Structure\TableDirectory;
 
 class Optimizer
 {
@@ -28,24 +28,34 @@ class Optimizer
 
         $font->setMissingGlyphCharacter($source->getMissingGlyphCharacter());
         $font->setCharacters($characters);
-        $font->setRawTableDirectory($this->getRawTablesAfterSubsetting($source->getRawTableDirectory()));
+        $font->setTableDirectory($this->getTableDirectoryAfterSubsetting($source->getTableDirectory()));
 
         return $font;
     }
 
     /**
-     * @param RawTableDirectory $source
+     * @param TableDirectory $source
      *
-     * @return RawTableDirectory
+     * @return TableDirectory
      */
-    private function getRawTablesAfterSubsetting(RawTableDirectory $source)
+    private function getTableDirectoryAfterSubsetting(TableDirectory $source)
     {
-        $rawTableDirectory = new RawTableDirectory();
+        $rawTableDirectory = new TableDirectory();
 
         $rawTableDirectory->setCvtTable($source->getCvtTable());
         $rawTableDirectory->setFpgmTable($source->getFpgmTable());
+
+        /*
+         * intentionally skipping GDEF, GPOST, GSUB as these are dependant on glyphs
+         */
+
         $rawTableDirectory->setGaspTable($source->getGaspTable());
+        $rawTableDirectory->setHeadTable($source->getHeadTable());
+        $rawTableDirectory->setHHeaTable($source->getHHeaTable());
+        $rawTableDirectory->setMaxPTable($source->getMaxPTable());
+        $rawTableDirectory->setNameTable($source->getNameTable());
         $rawTableDirectory->setOS2Table($source->getOS2Table());
+        $rawTableDirectory->setPostTable($source->getPostTable());
         $rawTableDirectory->setPrepTable($source->getPrepTable());
 
         // per default include unknown tables

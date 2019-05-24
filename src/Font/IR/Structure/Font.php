@@ -31,9 +31,9 @@ class Font
     private $fontFile;
 
     /**
-     * @var RawTableDirectory
+     * @var TableDirectory
      */
-    private $rawTableDirectory;
+    private $tableDirectory;
 
     /**
      * @return Character
@@ -76,18 +76,18 @@ class Font
     }
 
     /**
-     * @return RawTableDirectory
+     * @return TableDirectory
      */
-    public function getRawTableDirectory(): RawTableDirectory
+    public function getTableDirectory(): TableDirectory
     {
-        return $this->rawTableDirectory;
+        return $this->tableDirectory;
     }
 
     /**
-     * @param RawTableDirectory $rawTableDirectory
+     * @param TableDirectory $tableDirectory
      */
-    public function setRawTableDirectory(RawTableDirectory $rawTableDirectory): void
+    public function setTableDirectory(TableDirectory $tableDirectory): void
     {
-        $this->rawTableDirectory = $rawTableDirectory;
+        $this->tableDirectory = $tableDirectory;
     }
 }
