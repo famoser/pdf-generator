@@ -15,12 +15,14 @@ use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Base\BaseStructure;
 use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\Structure\Font\CMap;
 use PdfGenerator\Backend\StructureVisitor;
 
 class Font extends BaseStructure
 {
     use IdentifiableStructureTrait;
 
+    const SUBTYPE_TYPE0 = 'Type0';
     const SUBTYPE_TYPE1 = 'Type1';
     const BASE_FONT_TIMES__ROMAN = 'Times-Roman';
     const BASE_FONT_HELVETICA = 'Helvetica';
@@ -43,9 +45,18 @@ class Font extends BaseStructure
     private $subtype;
 
     /**
+     * for subtype 0 calculated like CIDFont.BaseFont . '-' . CMap.CMapName.
+     *
      * @var string
      */
     private $baseFont;
+
+    /**
+     * for subtype 1 can be left null.
+     *
+     * @var CMap|null
+     */
+    private $encoding;
 
     /**
      * File constructor.
