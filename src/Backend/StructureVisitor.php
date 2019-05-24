@@ -119,8 +119,8 @@ class StructureVisitor
         // see PDF320000_2008 14.2
         $procSet = ['PDF'];
 
-        if (\count($structure->getFonts()) > 0) {
-            $fontDictionary = $this->createReferenceDictionary($structure->getFonts(), $file);
+        if (\count($structure->getSimpleFonts()) > 0) {
+            $fontDictionary = $this->createReferenceDictionary($structure->getSimpleFonts(), $file);
             $dictionary->addDictionaryEntry('File', $fontDictionary);
             $procSet[] = 'Text';
         }
@@ -173,12 +173,12 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Font $structure
+     * @param Structure\Font\SimpleFont $structure
      * @param File $file
      *
      * @return BaseObject
      */
-    public function visitFont(Structure\Font $structure, File $file): BaseObject
+    public function visitSimpleFont(Structure\Font\SimpleFont $structure, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', '/File');
