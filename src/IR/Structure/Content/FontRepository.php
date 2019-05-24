@@ -12,7 +12,7 @@
 namespace PdfGenerator\IR\Structure\Content;
 
 use PdfGenerator\Backend\Document;
-use PdfGenerator\Backend\Structure\Font\SimpleFont;
+use PdfGenerator\Backend\Structure\Font;
 
 class FontRepository
 {
@@ -22,37 +22,37 @@ class FontRepository
     private $document;
 
     /**
-     * @var SimpleFont[]
+     * @var Font[]
      */
-    private $simpleFontCache;
+    private $fontCache;
 
     /**
      * @var string[][]
      */
     private $defaultFonts = [
         self::FONT_HELVETICA => [
-            self::STYLE_DEFAULT => SimpleFont::BASE_FONT_HELVETICA,
-            self::STYLE_OBLIQUE => SimpleFont::BASE_FONT_HELVETICA__OBLIQUE,
-            self::STYLE_BOLD => SimpleFont::BASE_FONT_HELVETICA__BOLD,
-            self::STYLE_BOLD_OBLIQUE => SimpleFont::BASE_FONT_HELVETICA__BOLDOBLIQUE,
+            self::STYLE_DEFAULT => Font::BASE_FONT_HELVETICA,
+            self::STYLE_OBLIQUE => Font::BASE_FONT_HELVETICA__OBLIQUE,
+            self::STYLE_BOLD => Font::BASE_FONT_HELVETICA__BOLD,
+            self::STYLE_BOLD_OBLIQUE => Font::BASE_FONT_HELVETICA__BOLDOBLIQUE,
         ],
         self::FONT_COURIER => [
-            self::STYLE_ROMAN => SimpleFont::BASE_FONT_COURIER,
-            self::STYLE_OBLIQUE => SimpleFont::BASE_FONT_COURIER__OBLIQUE,
-            self::STYLE_BOLD => SimpleFont::BASE_FONT_COURIER__BOLD,
-            self::STYLE_BOLD_OBLIQUE => SimpleFont::BASE_FONT_COURIER__BOLDOBLIQUE,
+            self::STYLE_ROMAN => Font::BASE_FONT_COURIER,
+            self::STYLE_OBLIQUE => Font::BASE_FONT_COURIER__OBLIQUE,
+            self::STYLE_BOLD => Font::BASE_FONT_COURIER__BOLD,
+            self::STYLE_BOLD_OBLIQUE => Font::BASE_FONT_COURIER__BOLDOBLIQUE,
         ],
         self::FONT_TIMES => [
-            self::STYLE_ROMAN => SimpleFont::BASE_FONT_TIMES__ROMAN,
-            self::STYLE_ITALIC => SimpleFont::BASE_FONT_TIMES__ITALIC,
-            self::STYLE_BOLD => SimpleFont::BASE_FONT_TIMES__BOLD,
-            self::STYLE_BOLD_ITALIC => SimpleFont::BASE_FONT_TIMES__BOLDITALIC,
+            self::STYLE_ROMAN => Font::BASE_FONT_TIMES__ROMAN,
+            self::STYLE_ITALIC => Font::BASE_FONT_TIMES__ITALIC,
+            self::STYLE_BOLD => Font::BASE_FONT_TIMES__BOLD,
+            self::STYLE_BOLD_ITALIC => Font::BASE_FONT_TIMES__BOLDITALIC,
         ],
         self::FONT_ZAPFDINGBATS => [
-            self::STYLE_DEFAULT => SimpleFont::BASE_FONT_ZAPFDINGBATS,
+            self::STYLE_DEFAULT => Font::BASE_FONT_ZAPFDINGBATS,
         ],
         self::FONT_SYMBOL => [
-            self::STYLE_DEFAULT => SimpleFont::BASE_FONT_SYMBOL,
+            self::STYLE_DEFAULT => Font::BASE_FONT_SYMBOL,
         ],
     ];
 
@@ -81,14 +81,25 @@ class FontRepository
     }
 
     /**
+     * @throws \Exception
+     *
+     * @return Font
+     */
+    public function getDefaultFont()
+    {
+        /* @noinspection PhpUnhandledExceptionInspection */
+        return $this->getFont(self::FONT_HELVETICA, self::STYLE_DEFAULT);
+    }
+
+    /**
      * @param string $font
      * @param string $style
      *
      * @throws \Exception
      *
-     * @return SimpleFont
+     * @return Font
      */
-    public function getSimpleFont(string $font, string $style)
+    public function getFont(string $font, string $style)
     {
         if (!\array_key_exists($font, $this->defaultFonts)) {
             throw new \Exception('The font ' . $font . ' is currently not supported');
@@ -99,22 +110,22 @@ class FontRepository
             throw new \Exception('This font style ' . $style . ' is currently not supported');
         }
 
-        return $this->getOrCreateSimpleFont(SimpleFont::SUBTYPE_TYPE1, $defaultStyles[$style]);
+        return $this->getOrCreateFont(Font::SUBTYPE_TYPE1, $defaultStyles[$style]);
     }
 
     /**
      * @param string $subtype
      * @param string $baseFont
      *
-     * @return SimpleFont
+     * @return Font
      */
-    private function getOrCreateSimpleFont(string $subtype, string $baseFont)
+    private function getOrCreateFont(string $subtype, string $baseFont)
     {
         $cacheKey = $subtype . '_' . $baseFont;
-        if (!isset($this->simpleFontCache[$cacheKey])) {
-            $this->simpleFontCache[$cacheKey] = $this->document->getResourcesBuilder()->getResources()->addSimpleFont($subtype, $baseFont);
+        if (!isset($this->fontCache[$cacheKey])) {
+            $this->fontCache[$cacheKey] = $this->document->getResourcesBuilder()->getResources()->addFont($subtype, $baseFont);
         }
 
-        return $this->simpleFontCache[$cacheKey];
+        return $this->fontCache[$cacheKey];
     }
 }

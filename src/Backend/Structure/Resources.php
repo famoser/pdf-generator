@@ -14,8 +14,6 @@ namespace PdfGenerator\Backend\Structure;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Base\BaseStructure;
-use PdfGenerator\Backend\Structure\Font\CompositeFont;
-use PdfGenerator\Backend\Structure\Font\SimpleFont;
 use PdfGenerator\Backend\StructureVisitor;
 
 class Resources extends BaseStructure
@@ -26,14 +24,9 @@ class Resources extends BaseStructure
     private $resourceCounter;
 
     /**
-     * @var SimpleFont[]
+     * @var Font[]
      */
-    private $simpleFonts = [];
-
-    /**
-     * @var CompositeFont[]
-     */
-    private $compositeFonts = [];
+    private $fonts = [];
 
     /**
      * @var Image[]
@@ -44,13 +37,13 @@ class Resources extends BaseStructure
      * @param string $subtype
      * @param string $baseFont
      *
-     * @return SimpleFont
+     * @return Font
      */
-    public function addSimpleFont(string $subtype, string $baseFont)
+    public function addFont(string $subtype, string $baseFont)
     {
         $identifier = $this->generateIdentifier('F');
-        $font = new SimpleFont($identifier, $subtype, $baseFont);
-        $this->simpleFonts[$identifier] = $font;
+        $font = new Font($identifier, $subtype, $baseFont);
+        $this->fonts[$identifier] = $font;
 
         return $font;
     }
@@ -91,11 +84,11 @@ class Resources extends BaseStructure
     }
 
     /**
-     * @return SimpleFont[]
+     * @return Font[]
      */
-    public function getSimpleFonts(): array
+    public function getFonts(): array
     {
-        return $this->simpleFonts;
+        return $this->fonts;
     }
 
     /**
