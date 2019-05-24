@@ -48,6 +48,8 @@ class TextLevelRepository
     }
 
     /**
+     * @throws \Exception
+     *
      * @return TextLevel
      */
     public function getTextLevel()
