@@ -58,7 +58,7 @@ class FileWriter
      *
      * @return string
      */
-    public function writeFile(Font $font)
+    public function writeFont(Font $font)
     {
         $tableDirectory = $this->createTableDirectory($font);
 

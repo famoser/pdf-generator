@@ -47,7 +47,7 @@ class FileWriterTest extends TestCase
         $subset = self::getFontSubset($font, 'g');
 
         // act
-        $output = $writer->writeFile($subset);
+        $output = $writer->writeFont($subset);
 
         // assert
         $this->assertStringContainsString($subset->getCharacters()[0]->getGlyfTable()->getContent(), $output);
@@ -70,7 +70,7 @@ class FileWriterTest extends TestCase
         $subset = $optimizer->getFontSubset($font, [$character, $character1, $character2]);
 
         // act
-        $output = $writer->writeFile($subset);
+        $output = $writer->writeFont($subset);
 
         // assert
         $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
@@ -90,7 +90,7 @@ class FileWriterTest extends TestCase
         $subset = $this->getFontSubset($font, 'g');
 
         // act
-        $output = $writer->writeFile($subset);
+        $output = $writer->writeFont($subset);
 
         // assert
         $font = $parser->parse($output);
@@ -110,11 +110,11 @@ class FileWriterTest extends TestCase
         $subset = $this->getFontSubset($font, 'g');
 
         // act
-        $output = $writer->writeFile($subset);
+        $output = $writer->writeFont($subset);
         $font = $parser->parse($output);
 
         $subset2 = $this->getFontSubset($font, 'g');
-        $output2 = $writer->writeFile($subset2);
+        $output2 = $writer->writeFont($subset2);
         $font2 = $parser->parse($output2);
 
         // assert
@@ -133,7 +133,7 @@ class FileWriterTest extends TestCase
         $subset = self::getFontSubset($font, 'g');
 
         // act
-        $output = $writer->writeFile($subset);
+        $output = $writer->writeFont($subset);
         $font2 = $parser->parse($output);
 
         // assert
