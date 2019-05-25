@@ -11,21 +11,25 @@
 
 namespace PdfGenerator\Font\Backend;
 
-use PdfGenerator\Font\Frontend\File\FontFile;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
-use PdfGenerator\Font\Frontend\File\Table\CMapTable;
-use PdfGenerator\Font\Frontend\File\Table\GlyfTable;
-use PdfGenerator\Font\Frontend\File\Table\HeadTable;
-use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
-use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
-use PdfGenerator\Font\Frontend\File\Table\LocaTable;
-use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
-use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
-use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format2;
-use PdfGenerator\Font\Frontend\File\Table\PostTable;
-use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
-use PdfGenerator\Font\Frontend\File\Traits\BinaryTreeSearchableTrait;
+use PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
+use PdfGenerator\Font\Backend\File\Table\CMap\Format\Format4;
+use PdfGenerator\Font\Backend\File\Table\CMap\Subtable;
+use PdfGenerator\Font\Backend\File\Table\CMapTable;
+use PdfGenerator\Font\Backend\File\Table\GlyfTable;
+use PdfGenerator\Font\Backend\File\Table\HeadTable;
+use PdfGenerator\Font\Backend\File\Table\HHeaTable;
+use PdfGenerator\Font\Backend\File\Table\HMtx\LongHorMetric;
+use PdfGenerator\Font\Backend\File\Table\HMtxTable;
+use PdfGenerator\Font\Backend\File\Table\LocaTable;
+use PdfGenerator\Font\Backend\File\Table\MaxPTable;
+use PdfGenerator\Font\Backend\File\Table\OffsetTable;
+use PdfGenerator\Font\Backend\File\Table\Post\Format\Format2;
+use PdfGenerator\Font\Backend\File\Table\PostTable;
+use PdfGenerator\Font\Backend\File\Table\RawTable;
+use PdfGenerator\Font\Backend\File\Table\TableDirectoryEntry;
+use PdfGenerator\Font\Backend\File\TableDirectory;
+use PdfGenerator\Font\Backend\File\TableVisitor;
+use PdfGenerator\Font\Backend\File\Traits\BinaryTreeSearchableTrait;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
@@ -33,56 +37,35 @@ use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
 class FileWriter
 {
     /**
-     * @var TableWriter
+     * @var TableVisitor
      */
-    private $tableWriter;
+    private $tableVisitor;
 
     /**
      * FileWriter constructor.
      *
-     * @param TableWriter $tableWriter
+     * @param TableVisitor $tableVisitor
      */
-    public function __construct(TableWriter $tableWriter)
+    public function __construct(TableVisitor $tableVisitor)
     {
-        $this->tableWriter = $tableWriter;
+        $this->tableVisitor = $tableVisitor;
     }
 
     /**
      * @param Font $font
-     * @param Character[] $characters
      *
      * @throws \Exception
      *
      * @return string
      */
-    public function writeSubset(Font $font, array $characters)
+    public function writeFont(Font $font)
     {
-        return $this->writeSubsetFile($font->getFontFile(), $characters, $font->getMissingGlyphCharacter());
+        $tableDirectory = $this->createTableDirectory($font);
+
+        return $this->writeTableDirectory($tableDirectory);
     }
 
     /**
-     * @param FontFile $fontFile
-     * @param Character[] $characters
-     * @param Character $missingGlyphCharacter
-     *
-     * @throws \Exception
-     *
-     * @return string
-     */
-    private function writeSubsetFile(FontFile $fontFile, array $characters, Character $missingGlyphCharacter)
-    {
-        $characters = $this->prepareCharacters($characters, $missingGlyphCharacter);
-
-        $this->removeInvalidTables($fontFile);
-        $this->recalculateTables($fontFile, $characters);
-
-        $streamWriter = $this->writeFontFile($fontFile);
-
-        return $streamWriter->getStream();
-    }
-
-    /**
-     * @param FontFile $fontFile
      * @param Character[] $characters
      * @param Character $missingGlyphCharacter
      *
@@ -98,58 +81,100 @@ class FileWriter
     }
 
     /**
-     * @param HeadTable $headTable
+     * @param \PdfGenerator\Font\Frontend\File\Table\HeadTable $source
+     * @param Character[] $characters
      *
      * @return HeadTable
      */
-    private function recalculateHeadTable(HeadTable $headTable)
+    private function generateHeadTable(\PdfGenerator\Font\Frontend\File\Table\HeadTable $source, array $characters)
     {
-        $headTable->setIndexToLocFormat(0);
+        $headTable = new HeadTable();
+
+        $headTable->setMajorVersion($source->getMajorVersion());
+        $headTable->setMinorVersion($source->getMinorVersion());
+        $headTable->setFontRevision($source->getFontRevision());
 
         // skip the checksum calculation
         $headTable->setCheckSumAdjustment(0);
+        $headTable->setMagicNumber(0x5F0F3CF5);
+        $headTable->setFlags($source->getFlags());
+        $headTable->setUnitsPerEm($source->getUnitsPerEm());
+        $headTable->setCreated($source->getCreated());
+        $headTable->setModified($source->getModified());
+
+        $xMin = 0;
+        $yMin = 0;
+        $xMax = PHP_INT_MAX;
+        $yMax = PHP_INT_MAX;
+        foreach ($characters as $character) {
+            $xMin = min($character->getGlyfTable()->getXMin(), $xMin);
+            $yMin = min($character->getGlyfTable()->getYMin(), $yMin);
+            $xMax = max($character->getGlyfTable()->getXMax(), $xMax);
+            $yMax = max($character->getGlyfTable()->getYMax(), $yMax);
+        }
+
+        $headTable->setXMin($xMin);
+        $headTable->setYMin($yMin);
+        $headTable->setXMax($xMax);
+        $headTable->setYMax($yMax);
+
+        $headTable->setMacStyle($source->getMacStyle());
+        $headTable->setLowestRecPPEM($source->getLowestRecPPEM());
+        $headTable->setFontDirectionHints($source->getFontDirectionHints());
+        $headTable->setIndexToLocFormat(TableVisitor::$indexToLocFormat);
+        $headTable->setGlyphDataFormat(0);
 
         return $headTable;
     }
 
     /**
-     * @param FontFile $fontFile
-     */
-    private function removeInvalidTables(FontFile $fontFile)
-    {
-        /*
-         * can keep cvt, fpgm, gasp
-         */
-        $fontFile->setGDEFTable(null);
-        $fontFile->setGPOSTable(null);
-        $fontFile->setGSUBTable(null);
-    }
-
-    /**
-     * @param FontFile $fontFile
+     * @param \PdfGenerator\Font\Frontend\File\Table\HHeaTable $source
      * @param Character[] $characters
+     * @param int $longHorMetricCount
+     *
+     * @return HHeaTable
      */
-    private function recalculateTables(FontFile $fontFile, array $characters)
+    private function generateHHeaTable(\PdfGenerator\Font\Frontend\File\Table\HHeaTable $source, array $characters, int $longHorMetricCount)
     {
-        $fontFile->setHMtxTable($this->generateHmtx($characters));
+        $hHeaTable = new HHeaTable();
 
-        $fontFile->setCMapTable($this->generateCMapTable($characters));
-        $fontFile->setGlyfTables($this->getGlyfTables($characters));
-        $fontFile->setHMtxTable($this->generateHMtxTable($characters));
-        $this->recalculateHeadTable($fontFile->getHeadTable());
-        $this->recalculateHHeaTable($fontFile->getHHeaTable(), $fontFile->getHMtxTable());
-        $this->recalculateMaxPTable($fontFile->getMaxPTable(), $characters);
-        $fontFile->setLocaTable($this->generateLocaTable($fontFile->getGlyfTables()));
-        $this->recalculatedPostTable($fontFile->getPostTable(), $characters);
-    }
+        $hHeaTable->setVersion(1.0);
+        $hHeaTable->setAscent($source->getAscent());
+        $hHeaTable->setDecent($source->getDecent());
+        $hHeaTable->setLineGap($source->getLineGap());
 
-    /**
-     * @param HHeaTable $hHeaTable
-     * @param HMtxTable $hMtxTable
-     */
-    private function recalculateHHeaTable(HHeaTable $hHeaTable, HMtxTable $hMtxTable)
-    {
-        $hHeaTable->setNumOfLongHorMetrics(\count($hMtxTable->getLongHorMetrics()));
+        $advanceWidthMax = 0;
+        $minLeftSideBearing = PHP_INT_MAX;
+        $minRightSideBearing = PHP_INT_MAX;
+        $xMaxExtent = 0;
+        foreach ($characters as $character) {
+            $advanceWidth = $character->getLongHorMetric()->getAdvanceWidth();
+            $leftSideBearing = $character->getLongHorMetric()->getLeftSideBearing();
+
+            $advanceWidthMax = max($advanceWidthMax, $advanceWidth);
+            $minLeftSideBearing = min($minLeftSideBearing, $leftSideBearing);
+
+            $width = $character->getBoundingBox()->getWidth();
+            $rightSideBearing = $advanceWidth - $leftSideBearing - $width;
+            $minRightSideBearing = min($minRightSideBearing, $rightSideBearing);
+
+            $xExtend = $leftSideBearing + $width;
+            $xMaxExtent = max($xMaxExtent, $xExtend);
+        }
+
+        $hHeaTable->setAdvanceWidthMax($advanceWidthMax);
+        $hHeaTable->setMinLeftSideBearing($minLeftSideBearing);
+        $hHeaTable->setMinRightSideBearing($minRightSideBearing);
+        $hHeaTable->setXMaxExtent($xMaxExtent);
+
+        $hHeaTable->setCaretSlopeRise($source->getCaretSlopeRise());
+        $hHeaTable->setCaretSlopeRun($source->getCaretSlopeRun());
+        $hHeaTable->setCaretOffset($source->getCaretOffset());
+
+        $hHeaTable->setMetricDataFormat(0);
+        $hHeaTable->setNumOfLongHorMetrics($longHorMetricCount);
+
+        return $hHeaTable;
     }
 
     /**
@@ -157,58 +182,63 @@ class FileWriter
      *
      * @return HMtxTable
      */
-    private function generateHmtx(array $characters)
+    private function generateHMtxTable(array $characters)
     {
         $hmtx = new HMtxTable();
 
         foreach ($characters as $character) {
-            $hmtx->addLongHorMetric($character->getLongHorMetric());
+            $longHorMetric = new LongHorMetric();
+            $longHorMetric->setAdvanceWidth($character->getLongHorMetric()->getAdvanceWidth());
+            $longHorMetric->setLeftSideBearing($character->getLongHorMetric()->getLeftSideBearing());
+
+            $hmtx->addLongHorMetric($longHorMetric);
         }
 
         return $hmtx;
     }
 
     /**
-     * @param MaxPTable $maxPTable
-     * @param array $characters
-     */
-    private function recalculateMaxPTable(MaxPTable $maxPTable, array $characters)
-    {
-        $maxPTable->setNumGlyphs(\count($characters));
-    }
-
-    /**
+     * @param \PdfGenerator\Font\Frontend\File\Table\MaxPTable $source
      * @param Character[] $characters
      *
-     * @return CMapTable
+     * @return MaxPTable
      */
-    private function generateCMapTable(array $characters)
+    private function generateMaxPTable(\PdfGenerator\Font\Frontend\File\Table\MaxPTable $source, array $characters)
     {
-        $cMapTable = new CMapTable();
-        $cMapTable->setVersion(0);
-        $cMapTable->setNumberSubtables(1);
+        $maxPTable = new MaxPTable();
 
-        $subtable = $this->generateSubtable($characters, 4);
-        $cMapTable->addSubtable($subtable);
+        $maxPTable->setVersion(1.0);
+        $maxPTable->setNumGlyphs(\count($characters));
+        $maxPTable->setMaxPoints($source->getMaxPoints());
+        $maxPTable->setMaxContours($source->getMaxContours());
+        $maxPTable->setMaxCompositePoints($source->getMaxCompositePoints());
+        $maxPTable->setMaxCompositeContours($source->getMaxCompositeContours());
+        $maxPTable->setMaxZones($source->getMaxZones());
+        $maxPTable->setMaxTwilightPoints($source->getMaxTwilightPoints());
+        $maxPTable->setMaxStorage($source->getMaxStorage());
+        $maxPTable->setMaxFunctionDefs($source->getMaxFunctionDefs());
+        $maxPTable->setMaxInstructionDefs($source->getMaxInstructionDefs());
+        $maxPTable->setMaxStackElements($source->getMaxStackElements());
+        $maxPTable->setMaxSizeOfInstructions($source->getMaxSizeOfInstructions());
+        $maxPTable->setMaxComponentElements($source->getMaxComponentElements());
+        $maxPTable->setMaxComponentDepth($source->getMaxComponentDepth());
 
-        return $cMapTable;
+        return $maxPTable;
     }
 
     /**
      * @param array $characters
-     * @param int $cmapOffset
      *
      * @return Subtable
      */
-    private function generateSubtable(array $characters, int $cmapOffset): Subtable
+    private function generateSubtable(array $characters): Subtable
     {
         $subtable = new Subtable();
+
         $subtable->setPlatformID(3);
         $subtable->setPlatformSpecificID(4);
-        $subtable->setOffset($cmapOffset + 8);
 
-        $format = $this->generateCMapFormat4($characters);
-        $subtable->setFormat($format);
+        $subtable->setFormat($this->generateCMapFormat4($characters));
 
         return $subtable;
     }
@@ -227,7 +257,7 @@ class FileWriter
         $format->setLength(8 * 2 + 4 * 2 * $segmentsCount); // 8 fields; 4 arrays of size 2 per entry
         $format->setLanguage(0);
         $format->setSegCountX2($segmentsCount * 2);
-        $this->setBinaryTreeSearchableProperties($format, $format->getSegCountX2());
+        self::setBinaryTreeSearchableProperties($format, $format->getSegCountX2());
         $format->setEntrySelector($format->getEntrySelector() - 1);
         $format->setReservedPad(0);
 
@@ -242,22 +272,9 @@ class FileWriter
     }
 
     /**
-     * @param BinaryTreeSearchableTrait $binaryTreeSearchable
-     * @param int $numberOfEntries
-     */
-    private function setBinaryTreeSearchableProperties($binaryTreeSearchable, int $numberOfEntries)
-    {
-        $powerOfTwo = (int)log($numberOfEntries, 2);
-
-        $binaryTreeSearchable->setSearchRange(pow(2, $powerOfTwo));
-        $binaryTreeSearchable->setEntrySelector($powerOfTwo);
-        $binaryTreeSearchable->setRangeShift($numberOfEntries - $binaryTreeSearchable->getSearchRange());
-    }
-
-    /**
      * @param Character[] $characters
      *
-     * @return array|Segment[]
+     * @return Segment[]
      */
     private function generateSegments(array $characters): array
     {
@@ -324,30 +341,16 @@ class FileWriter
      *
      * @return GlyfTable[]
      */
-    private function getGlyfTables(array $characters)
+    private function generateGlyfTables(array $characters)
     {
+        /** @var GlyfTable[] $glyfTables */
         $glyfTables = [];
 
         foreach ($characters as $character) {
-            $glyfTables[] = $character->getGlyfTable();
+            $glyfTables[] = $this->generateGlyfTable($character->getGlyfTable());
         }
 
         return $glyfTables;
-    }
-
-    /**
-     * @param Character[] $characters
-     *
-     * @return HMtxTable
-     */
-    private function generateHMtxTable(array $characters)
-    {
-        $hMtxTable = new HMtxTable();
-        foreach ($characters as $character) {
-            $hMtxTable->addLongHorMetric($character->getLongHorMetric());
-        }
-
-        return $hMtxTable;
     }
 
     /**
@@ -374,92 +377,28 @@ class FileWriter
     }
 
     /**
-     * @param StreamWriter $streamWriter
-     * @param FontFile $fontFile
-     * @param string $tag
-     *
-     * @throws \Exception
-     */
-    private function writeTableByTag(StreamWriter $streamWriter, FontFile $fontFile, string $tag)
-    {
-        switch ($tag) {
-            case 'cmap':
-                $this->tableWriter->writeCMapTable($fontFile->getCMapTable(), $streamWriter);
-                break;
-            case 'cvt ':
-                $this->tableWriter->writeRawContentTable($fontFile->getCvtTable(), $streamWriter);
-                break;
-            case 'fpgm':
-                $this->tableWriter->writeRawContentTable($fontFile->getFpgmTable(), $streamWriter);
-                break;
-            case 'gasp':
-                $this->tableWriter->writeRawContentTable($fontFile->getGaspTable(), $streamWriter);
-                break;
-            case 'glyf':
-                foreach ($fontFile->getGlyfTables() as $glyfTable) {
-                    $this->tableWriter->writeGlyfTable($glyfTable, $streamWriter);
-                }
-                break;
-            case 'head':
-                $this->tableWriter->writeHeadTable($fontFile->getHeadTable(), $streamWriter);
-                break;
-            case 'hhea':
-                $this->tableWriter->writeHHeaTable($fontFile->getHHeaTable(), $streamWriter);
-                break;
-            case 'hmtx':
-                $this->tableWriter->writeHMtxTable($fontFile->getHMtxTable(), $streamWriter);
-                break;
-            case 'loca':
-                $this->tableWriter->writeLocaTable($fontFile->getLocaTable(), $streamWriter, $fontFile->getHeadTable()->getIndexToLocFormat());
-                break;
-            case 'maxp':
-                $this->tableWriter->writeMaxPTable($fontFile->getMaxPTable(), $streamWriter);
-                break;
-            case 'name':
-                $this->tableWriter->writeRawContentTable($fontFile->getNameTable(), $streamWriter);
-                break;
-            case 'OS/2':
-                $this->tableWriter->writeRawContentTable($fontFile->getOS2Table(), $streamWriter);
-                break;
-            case 'post':
-                $this->tableWriter->writePostTable($fontFile->getPostTable(), $streamWriter);
-                break;
-            case 'prep':
-                $this->tableWriter->writeRawContentTable($fontFile->getPrepTable(), $streamWriter);
-                break;
-            default:
-                throw new \Exception('can not write the table with tag ' . $tag);
-        }
-    }
-
-    /**
-     * @param FontFile $fontFile
+     * @param TableDirectory $fontFile
      *
      * @throws \Exception
      *
-     * @return StreamWriter
+     * @return string
      */
-    public function writeFontFile(FontFile $fontFile)
+    private function writeTableDirectory(TableDirectory $fontFile)
     {
+        /** @var BaseTable[] $tables */
         $tables = [
             'cmap' => $fontFile->getCMapTable(),
-            'cvt ' => $fontFile->getCvtTable(),
-            'fpgm' => $fontFile->getFpgmTable(),
-            'gasp' => $fontFile->getGaspTable(),
-            'glyf' => $fontFile->getGlyfTables(),
             'head' => $fontFile->getHeadTable(),
             'hhea' => $fontFile->getHHeaTable(),
             'hmtx' => $fontFile->getHMtxTable(),
             'loca' => $fontFile->getLocaTable(),
             'maxp' => $fontFile->getMaxPTable(),
-            'name' => $fontFile->getNameTable(),
-            'OS/2' => $fontFile->getOS2Table(),
             'post' => $fontFile->getPostTable(),
-            'prep' => $fontFile->getPrepTable(),
+            'glyf' => $fontFile->getGlyphTables(),
         ];
 
         foreach ($fontFile->getRawTables() as $table) {
-            $tables[$table->getTag() . '_raw'] = $table;
+            $tables[$table->getTag()] = $table;
         }
 
         ksort($tables);
@@ -472,15 +411,14 @@ class FileWriter
                 continue;
             }
 
-            $rawIndex = strpos($tag, '_raw');
-            if ($rawIndex !== false) {
-                $this->tableWriter->writeRawTable($table, $tableStreamWriter);
-
-                $correctedTag = substr($tag, 0, $rawIndex);
-                $offsetByTag[$correctedTag] = $tableStreamWriter->getLength();
+            $offsetByTag[$tag] = $tableStreamWriter->getLength();
+            if (\is_array($table)) {
+                foreach ($table as $item) {
+                    /* @var BaseTable $item */
+                    $tableStreamWriter->writeStream($item->accept($this->tableVisitor));
+                }
             } else {
-                $offsetByTag[$tag] = $tableStreamWriter->getLength();
-                $this->writeTableByTag($tableStreamWriter, $fontFile, $tag);
+                $tableStreamWriter->writeStream($table->accept($this->tableVisitor));
             }
         }
 
@@ -488,15 +426,15 @@ class FileWriter
         $offsetTable = $this->generateOffsetTable(\count($tableDirectoryEntries));
 
         $streamWriter = new StreamWriter();
-        $this->tableWriter->writeOffsetTable($offsetTable, $streamWriter);
+        $streamWriter->writeStream($offsetTable->accept($this->tableVisitor));
 
         foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
-            $this->tableWriter->writeTableDirectoryEntry($tableDirectoryEntry, $streamWriter);
+            $streamWriter->writeStream($tableDirectoryEntry->accept($this->tableVisitor));
         }
 
         $streamWriter->writeStream($tableStreamWriter->getStream());
 
-        return $streamWriter;
+        return $streamWriter->getStream();
     }
 
     /**
@@ -510,7 +448,7 @@ class FileWriter
 
         $offsetTable->setScalerType(0x00010000);
         $offsetTable->setNumTables($numTables);
-        $this->setBinaryTreeSearchableProperties($offsetTable, $numTables);
+        self::setBinaryTreeSearchableProperties($offsetTable, $numTables);
 
         return $offsetTable;
     }
@@ -557,13 +495,45 @@ class FileWriter
     }
 
     /**
-     * @param PostTable $postTable
+     * @param \PdfGenerator\Font\Frontend\File\Table\PostTable $source
      * @param Character[] $characters
+     *
+     * @return PostTable
      */
-    private function recalculatedPostTable(PostTable $postTable, array $characters)
+    private function generatePostTable(\PdfGenerator\Font\Frontend\File\Table\PostTable $source, array $characters)
     {
+        $postTable = new PostTable();
+
         $postTable->setVersion(2.0);
+        $postTable->setItalicAngle($source->getItalicAngle());
+        $postTable->setUnderlinePosition($source->getUnderlinePosition());
+        $postTable->setUnderlineThickness($source->getUnderlineThickness());
+        $postTable->setIsFixedPitch($source->getIsFixedPitch());
+        $postTable->setMinMemType42($source->getMinMemType42());
+        $postTable->setMaxMemType42($source->getMaxMemType42());
+        $postTable->setMinMemType1($source->getMinMemType1());
+        $postTable->setMaxMemType1($source->getMaxMemType1());
+
         $postTable->setFormat($this->generatePostFormat2Table($characters));
+
+        return $postTable;
+    }
+
+    /**
+     * @param Character[] $characters
+     *
+     * @return CMapTable
+     */
+    private function generateCMapTable(array $characters): CMapTable
+    {
+        $cMapTable = new CMapTable();
+
+        $cMapTable->setVersion(0);
+        $cMapTable->setNumberSubtables(1);
+
+        $cMapTable->addSubtable($this->generateSubtable($characters));
+
+        return $cMapTable;
     }
 
     /**
@@ -589,10 +559,25 @@ class FileWriter
             }
         }
 
-        $namePascalString = $this->generatePascalString($names);
+        $namePascalString = self::generatePascalString($names);
         $format2->setNames($namePascalString);
 
         return $format2;
+    }
+
+    /**
+     * @param \PdfGenerator\Font\Frontend\File\Table\RawTable $table
+     *
+     * @return RawTable
+     */
+    private function generateRawTable(\PdfGenerator\Font\Frontend\File\Table\RawTable $table)
+    {
+        $rawTable = new RawTable();
+
+        $rawTable->setTag($table->getTag());
+        $rawTable->setContent($table->getContent());
+
+        return $rawTable;
     }
 
     /**
@@ -600,7 +585,7 @@ class FileWriter
      *
      * @return string
      */
-    private function generatePascalString(array $names): string
+    private static function generatePascalString(array $names): string
     {
         $nameString = '';
         foreach ($names as $name) {
@@ -609,5 +594,93 @@ class FileWriter
         }
 
         return $nameString;
+    }
+
+    /**
+     * @param BinaryTreeSearchableTrait $binaryTreeSearchable
+     * @param int $numberOfEntries
+     */
+    private static function setBinaryTreeSearchableProperties($binaryTreeSearchable, int $numberOfEntries)
+    {
+        $powerOfTwo = (int)log($numberOfEntries, 2);
+
+        $binaryTreeSearchable->setSearchRange(pow(2, $powerOfTwo));
+        $binaryTreeSearchable->setEntrySelector($powerOfTwo);
+        $binaryTreeSearchable->setRangeShift($numberOfEntries - $binaryTreeSearchable->getSearchRange());
+    }
+
+    /**
+     * @param \PdfGenerator\Font\IR\Structure\TableDirectory $tableDirectory
+     *
+     * @return RawTable[]
+     */
+    private function generateRawTables(\PdfGenerator\Font\IR\Structure\TableDirectory $tableDirectory): array
+    {
+        $tables = array_merge([
+            $tableDirectory->getCvtTable(),
+            $tableDirectory->getFpgmTable(),
+            $tableDirectory->getGaspTable(),
+            $tableDirectory->getGDEFTable(),
+            $tableDirectory->getGPOSTable(),
+            $tableDirectory->getGSUBTable(),
+            $tableDirectory->getNameTable(),
+            $tableDirectory->getOS2Table(),
+            $tableDirectory->getPrepTable(),
+        ], $tableDirectory->getRawTables());
+
+        $rawTables = [];
+        foreach ($tables as $table) {
+            if ($table !== null) {
+                $rawTables[] = $this->generateRawTable($table);
+            }
+        }
+
+        return $rawTables;
+    }
+
+    /**
+     * @param Font $font
+     *
+     * @return TableDirectory
+     */
+    private function createTableDirectory(Font $font): TableDirectory
+    {
+        $characters = $this->prepareCharacters($font->getCharacters(), $font->getMissingGlyphCharacter());
+
+        $tableDirectory = new TableDirectory();
+        $tableDirectory->setCMapTable($this->generateCMapTable($characters));
+        $tableDirectory->setHMtxTable($this->generateHMtxTable($characters));
+        $tableDirectory->setHeadTable($this->generateHeadTable($font->getTableDirectory()->getHeadTable(), $characters));
+        $tableDirectory->setPostTable($this->generatePostTable($font->getTableDirectory()->getPostTable(), $characters));
+        $tableDirectory->setMaxPTable($this->generateMaxPTable($font->getTableDirectory()->getMaxPTable(), $characters));
+
+        $tableDirectory->setGlyphTables($this->generateGlyfTables($characters));
+        $tableDirectory->setLocaTable($this->generateLocaTable($tableDirectory->getGlyphTables()));
+
+        $longHorMetricCount = \count($tableDirectory->getHMtxTable()->getLongHorMetrics());
+        $tableDirectory->setHHeaTable($this->generateHHeaTable($font->getTableDirectory()->getHHeaTable(), $characters, $longHorMetricCount));
+
+        $tableDirectory->setRawTables($this->generateRawTables($font->getTableDirectory()));
+
+        return $tableDirectory;
+    }
+
+    /**
+     * @param \PdfGenerator\Font\Frontend\File\Table\GlyfTable $source
+     *
+     * @return GlyfTable
+     */
+    private function generateGlyfTable(\PdfGenerator\Font\Frontend\File\Table\GlyfTable $source): GlyfTable
+    {
+        $glyfTable = new GlyfTable();
+
+        $glyfTable->setNumberOfContours($source->getNumberOfContours());
+        $glyfTable->setXMin($source->getXMin());
+        $glyfTable->setXMax($source->getXMax());
+        $glyfTable->setYMin($source->getYMin());
+        $glyfTable->setYMax($source->getYMax());
+        $glyfTable->setContent($source->getContent());
+
+        return $glyfTable;
     }
 }

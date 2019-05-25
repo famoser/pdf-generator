@@ -9,94 +9,58 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File;
+namespace PdfGenerator\Font\IR\Structure;
 
-use PdfGenerator\Font\Frontend\File\Table\CMapTable;
-use PdfGenerator\Font\Frontend\File\Table\GlyfTable;
 use PdfGenerator\Font\Frontend\File\Table\HeadTable;
 use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
-use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
-use PdfGenerator\Font\Frontend\File\Table\LocaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\File\Table\PostTable;
 use PdfGenerator\Font\Frontend\File\Table\RawTable;
 
-class FontFile
+class TableDirectory
 {
     /**
-     * @var CMapTable|null
-     */
-    private $cMapTable;
-
-    /**
-     * lists values which can be referenced by instructions.
-     *
      * @var RawTable|null
      */
     private $cvtTable;
 
     /**
-     * lists instructions to be executed when first opening the font.
-     *
      * @var RawTable|null
      */
     private $fpgmTable;
 
     /**
-     * defines rasterization techniques based on the ppem of the device.
-     *
      * @var RawTable|null
      */
     private $gaspTable;
 
     /**
-     * contains additional glyph properties such as ligatures.
-     *
      * @var RawTable|null
      */
     private $gDEFTable;
 
     /**
-     * @var GlyfTable[]
-     */
-    private $glyfTables = [];
-
-    /**
-     * defines the position of glyphs for complex usages.
-     *
      * @var RawTable|null
      */
     private $gPOSTable;
 
     /**
-     * includes glyph substitutions.
-     *
      * @var RawTable|null
      */
     private $gSUBTable;
 
     /**
-     * @var HeadTable|null
+     * @var HeadTable
      */
     private $headTable;
 
     /**
-     * @var HHeaTable|null
+     * @var HHeaTable
      */
     private $hHeaTable;
 
     /**
-     * @var HMtxTable|null
-     */
-    private $hMtxTable;
-
-    /**
-     * @var LocaTable|null
-     */
-    private $locaTable;
-
-    /**
-     * @var MaxPTable|null
+     * @var MaxPTable
      */
     private $maxPTable;
 
@@ -106,46 +70,24 @@ class FontFile
     private $nameTable;
 
     /**
-     * contains metrics of the font only needed by microsoft/windows.
-     *
      * @var RawTable|null
      */
     private $oS2Table;
 
     /**
-     * lists instructions to be executed before each glyph is drawn.
-     *
+     * @var PostTable
+     */
+    private $postTable;
+
+    /**
      * @var RawTable|null
      */
     private $prepTable;
 
     /**
-     * @var PostTable|null
-     */
-    private $postTable;
-
-    /**
-     * any other table not recognised.
-     *
      * @var RawTable[]
      */
     private $rawTables = [];
-
-    /**
-     * @return CMapTable|null
-     */
-    public function getCMapTable(): ?CMapTable
-    {
-        return $this->cMapTable;
-    }
-
-    /**
-     * @param CMapTable|null $cMapTable
-     */
-    public function setCMapTable(?CMapTable $cMapTable): void
-    {
-        $this->cMapTable = $cMapTable;
-    }
 
     /**
      * @return RawTable|null
@@ -212,22 +154,6 @@ class FontFile
     }
 
     /**
-     * @return GlyfTable[]
-     */
-    public function getGlyfTables(): array
-    {
-        return $this->glyfTables;
-    }
-
-    /**
-     * @param GlyfTable[] $glyfTables
-     */
-    public function setGlyfTables(array $glyfTables): void
-    {
-        $this->glyfTables = $glyfTables;
-    }
-
-    /**
      * @return RawTable|null
      */
     public function getGPOSTable(): ?RawTable
@@ -260,81 +186,49 @@ class FontFile
     }
 
     /**
-     * @return HeadTable|null
+     * @return HeadTable
      */
-    public function getHeadTable(): ?HeadTable
+    public function getHeadTable(): HeadTable
     {
         return $this->headTable;
     }
 
     /**
-     * @param HeadTable|null $headTable
+     * @param HeadTable $headTable
      */
-    public function setHeadTable(?HeadTable $headTable): void
+    public function setHeadTable(HeadTable $headTable): void
     {
         $this->headTable = $headTable;
     }
 
     /**
-     * @return HHeaTable|null
+     * @return HHeaTable
      */
-    public function getHHeaTable(): ?HHeaTable
+    public function getHHeaTable(): HHeaTable
     {
         return $this->hHeaTable;
     }
 
     /**
-     * @param HHeaTable|null $hHeaTable
+     * @param HHeaTable $hHeaTable
      */
-    public function setHHeaTable(?HHeaTable $hHeaTable): void
+    public function setHHeaTable(HHeaTable $hHeaTable): void
     {
         $this->hHeaTable = $hHeaTable;
     }
 
     /**
-     * @return HMtxTable|null
+     * @return MaxPTable
      */
-    public function getHMtxTable(): ?HMtxTable
-    {
-        return $this->hMtxTable;
-    }
-
-    /**
-     * @param HMtxTable|null $hMtxTable
-     */
-    public function setHMtxTable(?HMtxTable $hMtxTable): void
-    {
-        $this->hMtxTable = $hMtxTable;
-    }
-
-    /**
-     * @return LocaTable|null
-     */
-    public function getLocaTable(): ?LocaTable
-    {
-        return $this->locaTable;
-    }
-
-    /**
-     * @param LocaTable|null $locaTable
-     */
-    public function setLocaTable(?LocaTable $locaTable): void
-    {
-        $this->locaTable = $locaTable;
-    }
-
-    /**
-     * @return MaxPTable|null
-     */
-    public function getMaxPTable(): ?MaxPTable
+    public function getMaxPTable(): MaxPTable
     {
         return $this->maxPTable;
     }
 
     /**
-     * @param MaxPTable|null $maxPTable
+     * @param MaxPTable $maxPTable
      */
-    public function setMaxPTable(?MaxPTable $maxPTable): void
+    public function setMaxPTable(MaxPTable $maxPTable): void
     {
         $this->maxPTable = $maxPTable;
     }
@@ -372,6 +266,22 @@ class FontFile
     }
 
     /**
+     * @return PostTable
+     */
+    public function getPostTable(): PostTable
+    {
+        return $this->postTable;
+    }
+
+    /**
+     * @param PostTable $postTable
+     */
+    public function setPostTable(PostTable $postTable): void
+    {
+        $this->postTable = $postTable;
+    }
+
+    /**
      * @return RawTable|null
      */
     public function getPrepTable(): ?RawTable
@@ -388,22 +298,6 @@ class FontFile
     }
 
     /**
-     * @return PostTable|null
-     */
-    public function getPostTable(): ?PostTable
-    {
-        return $this->postTable;
-    }
-
-    /**
-     * @param PostTable|null $postTable
-     */
-    public function setPostTable(?PostTable $postTable): void
-    {
-        $this->postTable = $postTable;
-    }
-
-    /**
      * @return RawTable[]
      */
     public function getRawTables(): array
@@ -412,10 +306,10 @@ class FontFile
     }
 
     /**
-     * @param RawTable $rawTable
+     * @param RawTable[] $rawTables
      */
-    public function addRawTable(RawTable $rawTable): void
+    public function setRawTables(array $rawTables): void
     {
-        $this->rawTables[] = $rawTable;
+        $this->rawTables = $rawTables;
     }
 }

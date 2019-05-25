@@ -11,9 +11,12 @@
 
 namespace PdfGenerator\Tests\Integration\Font\Backend;
 
+use PdfGenerator\Font\Backend\File\Table\CMap\FormatVisitor;
+use PdfGenerator\Font\Backend\File\TableVisitor;
 use PdfGenerator\Font\Backend\FileWriter;
-use PdfGenerator\Font\Backend\TableWriter;
 use PdfGenerator\Font\IR\CharacterRepository;
+use PdfGenerator\Font\IR\Optimizer;
+use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Tests\Integration\Font\Frontend\FileReaderTest;
 use PdfGenerator\Tests\Integration\Font\IR\ParserTest;
 use PHPUnit\Framework\TestCase;
@@ -25,9 +28,11 @@ class FileWriterTest extends TestCase
      */
     public static function getFileWriter()
     {
-        $tableWriter = new TableWriter();
+        $cMapFormatVisitor = new FormatVisitor();
+        $postFormatVisitor = new \PdfGenerator\Font\Backend\File\Table\Post\FormatVisitor();
+        $tableVisitor = new TableVisitor($cMapFormatVisitor, $postFormatVisitor);
 
-        return new FileWriter($tableWriter);
+        return new FileWriter($tableVisitor);
     }
 
     /**
@@ -39,14 +44,13 @@ class FileWriterTest extends TestCase
         $parser = ParserTest::getParser();
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());
         $writer = self::getFileWriter();
-        $characterRepository = new CharacterRepository($font);
-        $character = $characterRepository->find('g');
+        $subset = self::getFontSubset($font, 'g');
 
         // act
-        $output = $writer->writeSubset($font, [$character]);
+        $output = $writer->writeFont($subset);
 
         // assert
-        $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
+        $this->assertStringContainsString($subset->getCharacters()[0]->getGlyfTable()->getContent(), $output);
     }
 
     /**
@@ -62,12 +66,16 @@ class FileWriterTest extends TestCase
         $character = $characterRepository->find('g');
         $character1 = $characterRepository->find('a');
         $character2 = $characterRepository->find('x');
+        $optimizer = new Optimizer();
+        $subset = $optimizer->getFontSubset($font, [$character, $character1, $character2]);
 
         // act
-        $output = $writer->writeSubset($font, [$character, $character1, $character2]);
+        $output = $writer->writeFont($subset);
 
         // assert
         $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
+        $this->assertStringContainsString($character1->getGlyfTable()->getContent(), $output);
+        $this->assertStringContainsString($character2->getGlyfTable()->getContent(), $output);
     }
 
     /**
@@ -79,11 +87,10 @@ class FileWriterTest extends TestCase
         $parser = ParserTest::getParser();
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());
         $writer = self::getFileWriter();
-        $characterRepository = new CharacterRepository($font);
-        $character = $characterRepository->find('g');
+        $subset = $this->getFontSubset($font, 'g');
 
         // act
-        $output = $writer->writeSubset($font, [$character]);
+        $output = $writer->writeFont($subset);
 
         // assert
         $font = $parser->parse($output);
@@ -100,15 +107,14 @@ class FileWriterTest extends TestCase
         $parser = ParserTest::getParser();
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());
         $writer = self::getFileWriter();
-        $characterRepository = new CharacterRepository($font);
-        $character = $characterRepository->find('g');
+        $subset = $this->getFontSubset($font, 'g');
 
         // act
-        $output = $writer->writeSubset($font, [$character]);
+        $output = $writer->writeFont($subset);
         $font = $parser->parse($output);
-        $characterRepository = new CharacterRepository($font);
-        $character = $characterRepository->find('g');
-        $output2 = $writer->writeSubset($font, [$character]);
+
+        $subset2 = $this->getFontSubset($font, 'g');
+        $output2 = $writer->writeFont($subset2);
         $font2 = $parser->parse($output2);
 
         // assert
@@ -124,15 +130,30 @@ class FileWriterTest extends TestCase
         $parser = ParserTest::getParser();
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());
         $writer = self::getFileWriter();
-        $characterRepository = new CharacterRepository($font);
-        $character = $characterRepository->find('g');
+        $subset = self::getFontSubset($font, 'g');
 
         // act
-        $output = $writer->writeSubset($font, [$character]);
+        $output = $writer->writeFont($subset);
         $font2 = $parser->parse($output);
 
         // assert
-        $this->assertEquals($font->getFontFile()->getNameTable(), $font2->getFontFile()->getNameTable());
-        $this->assertEquals($font->getFontFile()->getPrepTable(), $font2->getFontFile()->getPrepTable());
+        $this->assertEquals($font->getTableDirectory()->getNameTable(), $font2->getTableDirectory()->getNameTable());
+        $this->assertEquals($font->getTableDirectory()->getPrepTable(), $font2->getTableDirectory()->getPrepTable());
+    }
+
+    /**
+     * @param Font $font
+     * @param string $character
+     *
+     * @return Font
+     */
+    private static function getFontSubset(Font $font, string $character): Font
+    {
+        $characterRepository = new CharacterRepository($font);
+        $character = $characterRepository->find($character);
+
+        $optimizer = new Optimizer();
+
+        return $optimizer->getFontSubset($font, [$character]);
     }
 }

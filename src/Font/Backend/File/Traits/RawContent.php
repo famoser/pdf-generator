@@ -9,38 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace PdfGenerator\Font\Backend\File\Traits;
 
-/**
- * fallback table if an unknown table is encountered or one that is not serialized.
- */
-class RawTable
+trait RawContent
 {
     /**
-     * @var string
-     */
-    private $tag;
-
-    /**
+     * raw byte data.
+     *
      * @var string
      */
     private $content;
-
-    /**
-     * @return string
-     */
-    public function getTag(): string
-    {
-        return $this->tag;
-    }
-
-    /**
-     * @param string $tag
-     */
-    public function setTag(string $tag): void
-    {
-        $this->tag = $tag;
-    }
 
     /**
      * @return string

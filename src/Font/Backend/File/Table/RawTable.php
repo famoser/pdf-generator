@@ -9,12 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace PdfGenerator\Font\Backend\File\Table;
+
+use PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
+use PdfGenerator\Font\Backend\File\TableVisitor;
 
 /**
- * fallback table if an unknown table is encountered or one that is not serialized.
+ * fallback table if an unknown table is encountered.
  */
-class RawTable
+class RawTable extends BaseTable
 {
     /**
      * @var string
@@ -56,5 +59,15 @@ class RawTable
     public function setContent(string $content): void
     {
         $this->content = $content;
+    }
+
+    /**
+     * @param TableVisitor $visitor
+     *
+     * @return string
+     */
+    public function accept(TableVisitor $visitor): string
+    {
+        return $visitor->visitRawTable($this);
     }
 }
