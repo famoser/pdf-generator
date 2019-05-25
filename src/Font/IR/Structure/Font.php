@@ -11,8 +11,6 @@
 
 namespace PdfGenerator\Font\IR\Structure;
 
-use PdfGenerator\Font\Frontend\File\FontFile;
-
 class Font
 {
     /**
@@ -24,11 +22,6 @@ class Font
      * @var Character[]
      */
     private $characters = [];
-
-    /**
-     * @var FontFile
-     */
-    private $fontFile;
 
     /**
      * @var TableDirectory
@@ -65,14 +58,6 @@ class Font
     public function setCharacters(array $characters): void
     {
         $this->characters = $characters;
-    }
-
-    /**
-     * @return FontFile
-     */
-    public function getFontFile(): FontFile
-    {
-        return $this->fontFile;
     }
 
     /**

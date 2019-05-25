@@ -15,7 +15,14 @@ use PdfGenerator\Font\Backend\StreamWriter;
 
 class FormatVisitor
 {
-    public function visitFormat2(Format\Format2 $param, StreamWriter $streamWriter)
+    /**
+     * @param Format\Format2 $format2
+     * @param StreamWriter $streamWriter
+     */
+    public function visitFormat2(Format\Format2 $format2, StreamWriter $streamWriter)
     {
+        $streamWriter->writeUInt16($format2->getNumGlyphs());
+        $streamWriter->writeUInt16Array($format2->getGlyphNameIndex());
+        $streamWriter->writeStream($format2->getNames());
     }
 }

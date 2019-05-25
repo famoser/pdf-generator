@@ -107,7 +107,7 @@ class FileWriterTest extends TestCase
         $parser = ParserTest::getParser();
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());
         $writer = self::getFileWriter();
-        $subset = $this->getFontSubset($font, 'a');
+        $subset = $this->getFontSubset($font, 'g');
 
         // act
         $output = $writer->writeFile($subset);
@@ -137,8 +137,8 @@ class FileWriterTest extends TestCase
         $font2 = $parser->parse($output);
 
         // assert
-        $this->assertEquals($font->getFontFile()->getNameTable(), $font2->getFontFile()->getNameTable());
-        $this->assertEquals($font->getFontFile()->getPrepTable(), $font2->getFontFile()->getPrepTable());
+        $this->assertEquals($font->getTableDirectory()->getNameTable(), $font2->getTableDirectory()->getNameTable());
+        $this->assertEquals($font->getTableDirectory()->getPrepTable(), $font2->getTableDirectory()->getPrepTable());
     }
 
     /**
