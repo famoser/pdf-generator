@@ -66,7 +66,6 @@ class FileWriter
     }
 
     /**
-     * @param TableDirectory $fontFile
      * @param Character[] $characters
      * @param Character $missingGlyphCharacter
      *
@@ -96,8 +95,8 @@ class FileWriter
         $headTable->setFontRevision($source->getFontRevision());
 
         // skip the checksum calculation
-        $headTable->setCheckSumAdjustment($source->getCheckSumAdjustment());
-        $headTable->setMagicNumber($source->getMagicNumber());
+        $headTable->setCheckSumAdjustment(0);
+        $headTable->setMagicNumber(0x5F0F3CF5);
         $headTable->setFlags($source->getFlags());
         $headTable->setUnitsPerEm($source->getUnitsPerEm());
         $headTable->setCreated($source->getCreated());
@@ -123,7 +122,7 @@ class FileWriter
         $headTable->setLowestRecPPEM($source->getLowestRecPPEM());
         $headTable->setFontDirectionHints($source->getFontDirectionHints());
         $headTable->setIndexToLocFormat(TableVisitor::$indexToLocFormat);
-        $headTable->setGlyphDataFormat($source->getGlyphDataFormat());
+        $headTable->setGlyphDataFormat(0);
 
         return $headTable;
     }
@@ -199,7 +198,7 @@ class FileWriter
     }
 
     /**
-     * @param MaxPTable $source
+     * @param \PdfGenerator\Font\Frontend\File\Table\MaxPTable $source
      * @param Character[] $characters
      *
      * @return MaxPTable
@@ -228,6 +227,8 @@ class FileWriter
     }
 
     /**
+     * @param array $characters
+     *
      * @return Subtable
      */
     private function generateSubtable(array $characters): Subtable
