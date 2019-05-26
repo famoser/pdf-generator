@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Font\Structure;
+namespace PdfGenerator\Backend\Structure\Font\Composite;
+
+use PdfGenerator\Backend\Structure\Font\FontDescriptor;
 
 class CIDFont
 {

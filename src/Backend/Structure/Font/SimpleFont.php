@@ -37,7 +37,7 @@ class SimpleFont extends Font
     /**
      * TODO: implement for base fonts.
      *
-     * @var Font\Structure\FontDescriptor
+     * @var Font\FontDescriptor
      */
     private $fontDescriptor;
 
@@ -53,17 +53,17 @@ class SimpleFont extends Font
     }
 
     /**
-     * @return Structure\FontDescriptor
+     * @return FontDescriptor
      */
-    public function getFontDescriptor(): Structure\FontDescriptor
+    public function getFontDescriptor(): FontDescriptor
     {
         return $this->fontDescriptor;
     }
 
     /**
-     * @param Structure\FontDescriptor $fontDescriptor
+     * @param FontDescriptor $fontDescriptor
      */
-    public function setFontDescriptor(Structure\FontDescriptor $fontDescriptor): void
+    public function setFontDescriptor(FontDescriptor $fontDescriptor): void
     {
         $this->fontDescriptor = $fontDescriptor;
     }

@@ -14,7 +14,7 @@ namespace PdfGenerator\Backend\Structure\Font;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Font;
-use PdfGenerator\Backend\Structure\Font\Structure\CMap;
+use PdfGenerator\Backend\Structure\Font\Composite\CMap;
 use PdfGenerator\Backend\StructureVisitor;
 
 class CompositeFont extends Font
@@ -25,7 +25,7 @@ class CompositeFont extends Font
     private $encoding;
 
     /**
-     * @var Font\Structure\CIDFont
+     * @var Font\Composite\CIDFont
      */
     private $descendantFont;
 
