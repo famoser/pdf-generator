@@ -189,29 +189,43 @@ class FontRepository
     public function finalizeFonts()
     {
         foreach ($this->type0ContainerCache as $type0Container) {
-            $optimizer = new Optimizer();
+            $optimizer = Optimizer::create();
             $fontSubset = $optimizer->getFontSubset($type0Container->getFont(), $type0Container->getMappedCharacters());
 
             $writer = FileWriter::create();
-            $content = $writer->writeFont($fontSubset);
+            $fontContent = $writer->writeFont($fontSubset);
+
+            $baseFontName = 'Some';
+
+            $fontStream = new Font\Structure\FontStream();
+            $fontStream->setFontData($fontContent);
+            $fontStream->setSubtype(Font\Structure\FontStream::SUBTYPE_OPEN_TYPE);
 
             $cIDSystemInfo = new Font\Structure\CIDSystemInfo();
             $cIDSystemInfo->setRegistry('famoser');
             $cIDSystemInfo->setOrdering(1);
             $cIDSystemInfo->setSupplement(1);
 
+            $fontDescriptor = $this->getFontDescriptor($fontSubset);
+            $fontDescriptor->setFontFile3($fontStream);
+
             $cidFont = new Font\Structure\CIDFont();
             $cidFont->setSubType(Font\Structure\CIDFont::SUBTYPE_CID_FONT_TYPE_2);
             $cidFont->setDW(1000);
             $cidFont->setCIDSystemInfo($cIDSystemInfo);
-            $cidFont->setFontDescriptor();
-            $cidFont->setBaseFont();
+            $cidFont->setFontDescriptor($fontDescriptor);
+            $cidFont->setBaseFont($baseFontName);
 
-            $widths = [];
-            $cidFont->setW();
+            $characterWidth = [$fontSubset->getMissingGlyphCharacter()->getLongHorMetric()->getAdvanceWidth()];
+            foreach ($fontSubset->getCharacters() as $character) {
+                $characterWidth[] = $character->getLongHorMetric()->getAdvanceWidth();
+            }
+
+            $cidFont->setW($characterWidth);
 
             $type0Font = $type0Container->getType0Font();
-            $type0Font->setDescendantFont();
+            $type0Font->setDescendantFont($cidFont);
+            $type0Font->setBaseFont($baseFontName);
         }
     }
 
@@ -237,6 +251,18 @@ class FontRepository
             return $lines;
         }
 
+        // TODO: various bad options.
+        /*
+         * using Encoding = Identity-H:
+         *  - no need to create CMap file
+         *  - can only include glyphs in order
+         *  - but copy-paste will be broken
+         *  - but there are strings which must be escaped -> could use Hex strings but 4times the size
+         *
+         * using Encoding = Custom:
+         *  - no idea how to do this
+         *
+         */
         if (\array_key_exists($fontIdentifier, $this->type0ContainerCache)) {
             $container = $this->type0ContainerCache[$fontIdentifier];
 
@@ -269,5 +295,15 @@ class FontRepository
         }
 
         return $mapped;
+    }
+
+    /**
+     * @param \PdfGenerator\Font\IR\Structure\Font $font
+     *
+     * @return Font\Structure\FontDescriptor
+     */
+    private function getFontDescriptor(\PdfGenerator\Font\IR\Structure\Font $font)
+    {
+        return new Font\Structure\FontDescriptor();
     }
 }

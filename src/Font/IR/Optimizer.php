@@ -18,6 +18,14 @@ use PdfGenerator\Font\IR\Structure\TableDirectory;
 class Optimizer
 {
     /**
+     * @return Optimizer
+     */
+    public static function create()
+    {
+        return new self();
+    }
+
+    /**
      * @param Font $source
      * @param Character[] $characters
      *
