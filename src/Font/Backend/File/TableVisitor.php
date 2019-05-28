@@ -45,6 +45,17 @@ class TableVisitor
     }
 
     /**
+     * @return TableVisitor
+     */
+    public static function create()
+    {
+        $cmapFormatVisitor = new FormatVisitor();
+        $postFormatVisitor = new Table\Post\FormatVisitor();
+
+        return new self($cmapFormatVisitor, $postFormatVisitor);
+    }
+
+    /**
      * @param Table\CMapTable $cMapTable
      *
      * @return string

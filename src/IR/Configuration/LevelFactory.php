@@ -13,15 +13,9 @@ namespace PdfGenerator\IR\Configuration;
 
 use PdfGenerator\IR\Configuration\Level\PageLevelRepository;
 use PdfGenerator\IR\Configuration\Level\TextLevelRepository;
-use PdfGenerator\IR\Structure\Content\FontRepository;
 
 class LevelFactory
 {
-    /**
-     * @var FontRepository
-     */
-    private $fontRepository;
-
     /**
      * @var PageLevelRepository
      */

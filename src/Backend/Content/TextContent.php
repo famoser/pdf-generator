@@ -21,9 +21,9 @@ use PdfGenerator\Backend\Structure\Page;
 class TextContent extends BaseContent
 {
     /**
-     * @var string
+     * @var string[]
      */
-    private $text;
+    private $lines;
 
     /**
      * @var TextLevel
@@ -33,21 +33,21 @@ class TextContent extends BaseContent
     /**
      * TextSymbol constructor.
      *
-     * @param string $content
+     * @param array $lines
      * @param TextLevel $textLevel
      */
-    public function __construct(string $content, TextLevel $textLevel)
+    public function __construct(array $lines, TextLevel $textLevel)
     {
-        $this->text = $content;
+        $this->lines = $lines;
         $this->textLevel = $textLevel;
     }
 
     /**
-     * @return string
+     * @return string[]
      */
-    public function getText(): string
+    public function getLines(): array
     {
-        return $this->text;
+        return $this->lines;
     }
 
     /**

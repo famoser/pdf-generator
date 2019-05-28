@@ -14,15 +14,9 @@ namespace PdfGenerator\IR\Configuration;
 use PdfGenerator\IR\Configuration\State\ColorStateRepository;
 use PdfGenerator\IR\Configuration\State\GeneralGraphicStateRepository;
 use PdfGenerator\IR\Configuration\State\TextStateRepository;
-use PdfGenerator\IR\Structure\Content\FontRepository;
 
 class StateFactory
 {
-    /**
-     * @var FontRepository
-     */
-    private $fontRepository;
-
     /**
      * @var GeneralGraphicStateRepository
      */
@@ -40,16 +34,12 @@ class StateFactory
 
     /**
      * TextBuilder constructor.
-     *
-     * @param FontRepository $fontRepository
      */
-    public function __construct(FontRepository $fontRepository)
+    public function __construct()
     {
-        $this->fontRepository = $fontRepository;
-
         $this->generalGraphicStateRepository = new GeneralGraphicStateRepository();
         $this->colorStateRepository = new ColorStateRepository();
-        $this->textStateRepository = new TextStateRepository($this->fontRepository);
+        $this->textStateRepository = new TextStateRepository();
     }
 
     /**

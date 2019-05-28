@@ -25,6 +25,7 @@ class PrinterTest extends TestCase
         // arrange
         $text = 'hi mom';
         $printer = new Printer();
+        $printer->setDefaultFont();
         $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
 
         // act
@@ -43,6 +44,7 @@ class PrinterTest extends TestCase
         // arrange
         $text = 'hi mom';
         $printer = new Printer();
+        $printer->setDefaultFont();
         $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
 
         // act
@@ -64,6 +66,7 @@ class PrinterTest extends TestCase
         $xPosition = 22;
         $yPosition = 20;
         $printer = new Printer();
+        $printer->setDefaultFont();
         $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition($xPosition, $yPosition);
 
         // act
@@ -87,6 +90,7 @@ class PrinterTest extends TestCase
         $width = 20;
         $height = 30;
         $printer = new Printer();
+        $printer->setDefaultFont();
         $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition($xPosition, $yPosition);
         $printer->getStateFactory()->getGeneralGraphicStateRepository()->setLineWidth(0.5);
         $printer->getStateFactory()->getColorStateRepository()->setFillColor('#aefaef');
@@ -113,6 +117,7 @@ class PrinterTest extends TestCase
         // arrange
         $text = 'äüö';
         $printer = new Printer();
+        $printer->setDefaultFont();
         $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
 
         // act
@@ -130,6 +135,7 @@ class PrinterTest extends TestCase
     {
         // arrange
         $printer = new Printer();
+        $printer->setDefaultFont();
         $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20, 100, 100);
 
         // act

@@ -12,7 +12,13 @@
 namespace PdfGenerator\IR\Structure\Content;
 
 use PdfGenerator\Backend\Document;
+use PdfGenerator\Backend\Structure\Font;
+use PdfGenerator\Backend\Structure\Font\Type0;
 use PdfGenerator\Backend\Structure\Font\Type1;
+use PdfGenerator\Font\Backend\FileWriter;
+use PdfGenerator\Font\IR\Optimizer;
+use PdfGenerator\Font\IR\Parser;
+use PdfGenerator\IR\Structure\Content\Font\Type0Container;
 
 class FontRepository
 {
@@ -22,9 +28,19 @@ class FontRepository
     private $document;
 
     /**
+     * @var Font
+     */
+    private $activeFont;
+
+    /**
+     * @var Type0Container[]
+     */
+    private $type0ContainerCache = [];
+
+    /**
      * @var Type1[]
      */
-    private $type1FontCache;
+    private $type1FontCache = [];
 
     /**
      * @var string[][]
@@ -81,10 +97,32 @@ class FontRepository
     }
 
     /**
+     * @throws \Exception
+     *
+     * @return Font
+     */
+    public function getActiveFont()
+    {
+        if ($this->activeFont === null) {
+            $this->activeFont = $this->getDefaultFont(self::FONT_HELVETICA, self::STYLE_DEFAULT);
+        }
+
+        return $this->activeFont;
+    }
+
+    /**
+     * @param Font $font
+     */
+    public function setActiveFont(Font $font)
+    {
+        $this->activeFont = $font;
+    }
+
+    /**
      * @param string $font
      * @param string $style
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return Type1
      */
@@ -94,27 +132,142 @@ class FontRepository
             throw new \Exception('The font ' . $font . ' is not part of the default set.');
         }
 
-        $defaultStyles = $this->defaultFonts[$font];
-        if (!\array_key_exists($style, $defaultStyles)) {
+        if (!\array_key_exists($style, $this->defaultFonts[$font])) {
             throw new \Exception('This font style ' . $style . ' is not part of the default set.');
         }
 
-        return $this->getOrCreateType1Font($defaultStyles[$style]);
+        $fontName = $this->defaultFonts[$font][$style];
+        $type1Font = $this->document->getResourcesBuilder()->getResources()->addType1Font($fontName);
+
+        $this->type1FontCache[$type1Font->getIdentifier()] = $type1Font;
+
+        return $type1Font;
     }
 
     /**
-     * @param string $subtype
-     * @param string $baseFont
+     * @param string $path
      *
-     * @return Type1
+     * @throws \Exception
+     *
+     * @return Type0
      */
-    private function getOrCreateType1Font(string $baseFont)
+    public function getFont(string $path)
     {
-        $cacheKey = $baseFont;
-        if (!isset($this->type1FontCache[$cacheKey])) {
-            $this->type1FontCache[$cacheKey] = $this->document->getResourcesBuilder()->getResources()->addType1Font($baseFont);
+        $container = $this->getType0Container($path);
+        $this->type0ContainerCache[$container->getType0Font()->getIdentifier()] = $container;
+
+        return $container->getType0Font();
+    }
+
+    /**
+     * @param string $path
+     *
+     * @throws \Exception
+     *
+     * @return Type0Container
+     */
+    private function getType0Container(string $path)
+    {
+        $container = new Type0Container();
+
+        $type0Font = $this->document->getResourcesBuilder()->getResources()->addType0Font();
+        $container->setType0Font($type0Font);
+
+        $parser = Parser::create();
+        $fontContent = file_get_contents($path);
+        $font = $parser->parse($fontContent);
+        $container->setFont($font);
+
+        return $container;
+    }
+
+    /**
+     * fills the font content with the.
+     *
+     * @throws \Exception
+     */
+    public function finalizeFonts()
+    {
+        foreach ($this->type0ContainerCache as $type0Container) {
+            $optimizer = new Optimizer();
+            $fontSubset = $optimizer->getFontSubset($type0Container->getFont(), $type0Container->getMappedCharacters());
+
+            $writer = FileWriter::create();
+            $content = $writer->writeFont($fontSubset);
+
+            $cIDSystemInfo = new Font\Structure\CIDSystemInfo();
+            $cIDSystemInfo->setRegistry('famoser');
+            $cIDSystemInfo->setOrdering(1);
+            $cIDSystemInfo->setSupplement(1);
+
+            $cidFont = new Font\Structure\CIDFont();
+            $cidFont->setSubType(Font\Structure\CIDFont::SUBTYPE_CID_FONT_TYPE_2);
+            $cidFont->setDW(1000);
+            $cidFont->setCIDSystemInfo($cIDSystemInfo);
+            $cidFont->setFontDescriptor();
+            $cidFont->setBaseFont();
+
+            $widths = [];
+            $cidFont->setW();
+
+            $type0Font = $type0Container->getType0Font();
+            $type0Font->setDescendantFont();
+        }
+    }
+
+    /**
+     * @param string $text
+     * @param Font $font
+     *
+     * @throws \Exception
+     *
+     * @return string[]
+     */
+    public function mapText(string $text, Font $font)
+    {
+        // split by newlines
+        $cleanedText = str_replace("\n\r", "\n", $text);
+        $lines = explode("\n", $cleanedText);
+
+        $fontIdentifier = $font->getIdentifier();
+        if (\array_key_exists($fontIdentifier, $this->type1FontCache)) {
+            // type 1 fonts use a standard encoding.
+            // we just assume the user knows this and the input text is as expected
+            // TODO: convert it to the default encoding used by the standard fonts
+            return $lines;
         }
 
-        return $this->type1FontCache[$cacheKey];
+        if (\array_key_exists($fontIdentifier, $this->type0ContainerCache)) {
+            $container = $this->type0ContainerCache[$fontIdentifier];
+
+            $result = [];
+            foreach ($lines as $line) {
+                $result[] = $this->mapType0Text($line, $container);
+            }
+
+            return $result;
+        }
+
+        throw new \Exception('unknown font with identifier ' . $font->getIdentifier());
+    }
+
+    /**
+     * @param string $text
+     * @param Type0Container $container
+     *
+     * @return string
+     */
+    private function mapType0Text(string $text, Type0Container $container)
+    {
+        $mapped = '';
+
+        $length = mb_strlen($text);
+        for ($i = 0; $i < $length; ++$i) {
+            $char = mb_substr($text, $i, 1);
+
+            $mapped .= $container->getOrCreateMapping($char);
+        }
+
+        return $mapped;
     }
 }

@@ -28,12 +28,12 @@ class Resources extends BaseStructure
     /**
      * @var Type1[]
      */
-    private $simpleFonts = [];
+    private $type1Fonts = [];
 
     /**
      * @var Type0[]
      */
-    private $compositeFonts = [];
+    private $type0Fonts = [];
 
     /**
      * @var Image[]
@@ -41,7 +41,18 @@ class Resources extends BaseStructure
     private $images = [];
 
     /**
-     * @param string $subtype
+     * @return Type0
+     */
+    public function addType0Font()
+    {
+        $identifier = $this->generateIdentifier('F');
+        $font = new Type0($identifier);
+        $this->type0Fonts[$identifier] = $font;
+
+        return $font;
+    }
+
+    /**
      * @param string $baseFont
      *
      * @return Type1
@@ -50,7 +61,7 @@ class Resources extends BaseStructure
     {
         $identifier = $this->generateIdentifier('F');
         $font = new Type1($identifier, $baseFont);
-        $this->simpleFonts[$identifier] = $font;
+        $this->type1Fonts[$identifier] = $font;
 
         return $font;
     }
@@ -91,11 +102,19 @@ class Resources extends BaseStructure
     }
 
     /**
+     * @return Type0[]
+     */
+    public function getType0Fonts(): array
+    {
+        return $this->type0Fonts;
+    }
+
+    /**
      * @return Type1[]
      */
-    public function getSimpleFonts(): array
+    public function getType1Fonts(): array
     {
-        return $this->simpleFonts;
+        return $this->type1Fonts;
     }
 
     /**

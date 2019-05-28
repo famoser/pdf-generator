@@ -123,8 +123,8 @@ class StructureVisitor
         // see PDF320000_2008 14.2
         $procSet = ['PDF'];
 
-        if (\count($structure->getSimpleFonts()) > 0) {
-            $fontDictionary = $this->createReferenceDictionary($structure->getSimpleFonts(), $file);
+        if (\count($structure->getType1Fonts()) > 0) {
+            $fontDictionary = $this->createReferenceDictionary($structure->getType1Fonts(), $file);
             $dictionary->addDictionaryEntry('File', $fontDictionary);
             $procSet[] = 'Text';
         }
@@ -274,14 +274,20 @@ class StructureVisitor
         $dictionary->addTextEntry('Subtype', '/Type0');
         $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
 
+        $dictionary->addTextEntry('Encoding', '/Identity-H');
+
+        /*
         $encoding = $structure->getEncoding()->accept($this, $file);
         $dictionary->addReferenceEntry('Encoding', $encoding);
+        */
 
         $descendantFont = $structure->getDescendantFont()->accept($this, $file);
         $dictionary->addReferenceArrayEntry('DescendantFonts', [$descendantFont]);
 
+        /*
         $toUnicode = $structure->getToUnicode()->accept($this, $file);
         $dictionary->addReferenceEntry('ToUnicode', $toUnicode);
+        */
 
         return $dictionary;
     }

@@ -47,7 +47,7 @@ class ContentVisitor
         $stateTransitionOperators = $this->graphicStateRepository->applyTextLevelState($page, $textContent->getTextLevel());
 
         // gather operators to print the content
-        $textOperators = $this->getTextOperators($textContent->getText());
+        $textOperators = $this->getTextOperators($textContent->getLines());
 
         // create stream object; BT before text and ET after all text
         $operators = array_merge(['BT'], $stateTransitionOperators, $textOperators, ['ET']);
@@ -110,16 +110,12 @@ class ContentVisitor
     }
 
     /**
-     * @param string $text
+     * @param array $lines
      *
      * @return string[]
      */
-    private function getTextOperators(string $text): array
+    private function getTextOperators(array $lines): array
     {
-        // split by newlines
-        $cleanedText = str_replace("\n\r", "\n", $text);
-        $lines = explode("\n", $cleanedText);
-
         $printOperators = [];
 
         // print first line

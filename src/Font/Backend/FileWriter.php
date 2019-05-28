@@ -52,6 +52,16 @@ class FileWriter
     }
 
     /**
+     * @return FileWriter
+     */
+    public static function create()
+    {
+        $tableVisitor = TableVisitor::create();
+
+        return new self($tableVisitor);
+    }
+
+    /**
      * @param Font $font
      *
      * @throws \Exception

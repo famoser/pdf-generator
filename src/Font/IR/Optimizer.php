@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Font\IR;
 
+use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Structure\TableDirectory;
 
@@ -18,7 +19,7 @@ class Optimizer
 {
     /**
      * @param Font $source
-     * @param array $characters
+     * @param Character[] $characters
      *
      * @return Font
      */

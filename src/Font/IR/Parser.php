@@ -61,6 +61,18 @@ class Parser
     }
 
     /**
+     * @return Parser
+     */
+    public static function create()
+    {
+        $factory = new Factory();
+        $cMapFormatVisitor = new GlyphIndexFormatVisitor();
+        $postFormatVisitor = new Utils\Post\GlyphIndexFormatVisitor($factory);
+
+        return new self($cMapFormatVisitor, $postFormatVisitor, $factory);
+    }
+
+    /**
      * @param string $content
      *
      * @throws \Exception

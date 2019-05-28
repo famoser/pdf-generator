@@ -34,13 +34,6 @@ class CMap extends BaseStructure
     private $cIDSystemInfo;
 
     /**
-     * the stream containing the actual cmap information.
-     *
-     * @var string
-     */
-    private $useCMap;
-
-    /**
      * the actual encoding data.
      *
      * @var string
@@ -77,22 +70,6 @@ class CMap extends BaseStructure
     public function setCIDSystemInfo(CIDSystemInfo $cIDSystemInfo): void
     {
         $this->cIDSystemInfo = $cIDSystemInfo;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUseCMap(): string
-    {
-        return $this->useCMap;
-    }
-
-    /**
-     * @param string $useCMap
-     */
-    public function setUseCMap(string $useCMap): void
-    {
-        $this->useCMap = $useCMap;
     }
 
     /**

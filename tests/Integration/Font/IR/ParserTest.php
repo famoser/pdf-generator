@@ -13,32 +13,18 @@ namespace PdfGenerator\Tests\Integration\Font\IR;
 
 use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\Font\IR\Structure\Character;
-use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
-use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 use PdfGenerator\Tests\Integration\Font\Frontend\FileReaderTest;
 use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase
 {
     /**
-     * @return Parser
-     */
-    public static function getParser()
-    {
-        $factory = new Factory();
-        $cMapFormatVisitor = new GlyphIndexFormatVisitor();
-        $postFormatVisitor = new \PdfGenerator\Font\IR\Utils\Post\GlyphIndexFormatVisitor($factory);
-
-        return new Parser($cMapFormatVisitor, $postFormatVisitor, $factory);
-    }
-
-    /**
      * @throws \Exception
      */
     public function testParse()
     {
         // arrange
-        $parser = self::getParser();
+        $parser = Parser::create();
 
         // act
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());

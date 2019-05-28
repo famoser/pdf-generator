@@ -13,7 +13,6 @@ namespace PdfGenerator\IR\Configuration\State;
 
 use PdfGenerator\Backend\Content\Operators\State\TextState;
 use PdfGenerator\Backend\Structure\Font;
-use PdfGenerator\IR\Structure\Content\FontRepository;
 
 class TextStateRepository
 {
@@ -38,21 +37,6 @@ class TextStateRepository
     private $activeTextState;
 
     /**
-     * @var FontRepository
-     */
-    private $fontRepository;
-
-    /**
-     * TextRepository constructor.
-     *
-     * @param FontRepository $fontRepository
-     */
-    public function __construct(FontRepository $fontRepository)
-    {
-        $this->fontRepository = $fontRepository;
-    }
-
-    /**
      * @param float $fontSize
      * @param float $lineHeight
      */
@@ -65,8 +49,16 @@ class TextStateRepository
     }
 
     /**
-     * @throws \Exception
-     *
+     * @param Font $font
+     */
+    public function setFont(Font $font): void
+    {
+        $this->font = $font;
+
+        $this->activeTextState = null;
+    }
+
+    /**
      * @return TextState
      */
     public function getTextState()
@@ -78,10 +70,6 @@ class TextStateRepository
         $this->activeTextState = new TextState();
         $this->activeTextState->setFontSize($this->fontSize);
         $this->activeTextState->setLeading($this->leading);
-
-        if ($this->font === null) {
-            $this->font = $this->fontRepository->getDefaultFont(FontRepository::FONT_HELVETICA, FontRepository::STYLE_DEFAULT);
-        }
         $this->activeTextState->setFont($this->font);
 
         return $this->activeTextState;

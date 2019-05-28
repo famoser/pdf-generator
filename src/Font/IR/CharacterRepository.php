@@ -41,13 +41,35 @@ class CharacterRepository
     }
 
     /**
+     * @return Character
+     */
+    public function getMissingCharacter()
+    {
+        return $this->font->getMissingGlyphCharacter();
+    }
+
+    /**
      * @param string $character
      *
      * @return Character
      */
-    public function find(string $character)
+    public function findByChar(string $character)
     {
         $codePoint = mb_ord($character);
+
+        return $this->findByCodePoint($codePoint);
+    }
+
+    /**
+     * @param int $codePoint
+     *
+     * @return Character
+     */
+    public function findByCodePoint(int $codePoint)
+    {
+        if (!\array_key_exists($codePoint, $this->charactersByCodePoint)) {
+            return null;
+        }
 
         return $this->charactersByCodePoint[$codePoint];
     }

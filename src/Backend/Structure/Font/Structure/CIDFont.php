@@ -154,22 +154,6 @@ class CIDFont extends BaseStructure
     }
 
     /**
-     * @return string
-     */
-    public function getCIDToGIDMap(): string
-    {
-        return $this->cIDToGIDMap;
-    }
-
-    /**
-     * @param string $cIDToGIDMap
-     */
-    public function setCIDToGIDMap(string $cIDToGIDMap): void
-    {
-        $this->cIDToGIDMap = $cIDToGIDMap;
-    }
-
-    /**
      * @param StructureVisitor $visitor
      * @param File $file
      *

@@ -49,17 +49,30 @@ class Printer
     {
         $this->document = new Document();
         $this->contentFactor = new ContentFactory($this->document);
-        $this->stateFactory = new StateFactory($this->contentFactor->getFontRepository());
+
+        $this->stateFactory = new StateFactory();
         $this->levelFactory = new LevelFactory($this->stateFactory);
     }
 
     /**
+     * @throws \Exception
+     */
+    public function setDefaultFont()
+    {
+        $activeFont = $this->contentFactor->getFontRepository()->getActiveFont();
+        $this->stateFactory->getTextStateRepository()->setFont($activeFont);
+    }
+
+    /**
      * @param string $text
+     *
+     * @throws \Exception
      */
     public function printText(string $text)
     {
         $textLevel = $this->levelFactory->getTextLevelRepository()->getTextLevel();
-        $textContent = new TextContent($text, $textLevel);
+        $mappedText = $this->contentFactor->getFontRepository()->mapText($text, $textLevel->getText()->getFont());
+        $textContent = new TextContent($mappedText, $textLevel);
 
         $this->printContent($textContent);
     }
@@ -113,6 +126,9 @@ class Printer
      */
     public function save()
     {
+        $this->contentFactor->getFontRepository()->finalizeFonts();
+        // TODO: implement similar improvement for image repo
+
         return $this->document->render();
     }
 
