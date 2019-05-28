@@ -20,45 +20,12 @@ abstract class Font extends BaseStructure
     use IdentifiableStructureTrait;
 
     /**
-     * @var string
-     */
-    private $subtype;
-
-    /**
-     * for subtype 0 calculated like CIDFont.BaseFont . '-' . CMap.CMapName.
-     *
-     * @var string
-     */
-    private $baseFont;
-
-    /**
      * File constructor.
      *
      * @param string $identifier
-     * @param string $subtype
-     * @param string $baseFont
      */
-    public function __construct(string $identifier, string $subtype, string $baseFont)
+    public function __construct(string $identifier)
     {
         $this->setIdentifier($identifier);
-
-        $this->subtype = $subtype;
-        $this->baseFont = $baseFont;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSubtype(): string
-    {
-        return $this->subtype;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBaseFont(): string
-    {
-        return $this->baseFont;
     }
 }

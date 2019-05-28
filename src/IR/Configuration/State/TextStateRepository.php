@@ -80,7 +80,7 @@ class TextStateRepository
         $this->activeTextState->setLeading($this->leading);
 
         if ($this->font === null) {
-            $this->font = $this->fontRepository->getSimpleFont(FontRepository::FONT_HELVETICA, FontRepository::STYLE_DEFAULT);
+            $this->font = $this->fontRepository->getDefaultFont(FontRepository::FONT_HELVETICA, FontRepository::STYLE_DEFAULT);
         }
         $this->activeTextState->setFont($this->font);
 

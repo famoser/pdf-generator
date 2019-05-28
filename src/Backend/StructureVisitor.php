@@ -13,10 +13,14 @@ namespace PdfGenerator\Backend;
 
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\File\Object\DictionaryObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
 use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\Structure\Font\Structure\CIDSystemInfo;
+use PdfGenerator\Backend\Structure\Font\Structure\CMap;
+use PdfGenerator\Backend\Structure\Font\Structure\FontDescriptor;
 use PdfGenerator\Backend\Structure\Page;
 
 class StructureVisitor
@@ -173,16 +177,17 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Font\SimpleFont $structure
+     * @param Structure\Font\Type1 $structure
      * @param File $file
      *
      * @return BaseObject
      */
-    public function visitSimpleFont(Structure\Font\SimpleFont $structure, File $file): BaseObject
+    public function visitType1Font(Structure\Font\Type1 $structure, File $file): BaseObject
     {
         $dictionary = $file->addDictionaryObject();
+
         $dictionary->addTextEntry('Type', '/File');
-        $dictionary->addTextEntry('Subtype', $structure->getSubtype());
+        $dictionary->addTextEntry('Subtype', '/Type1');
         $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
 
         return $dictionary;
@@ -209,5 +214,133 @@ class StructureVisitor
         $dictionary->setTextEntry('Filter', '/DCTDecode');
 
         return $stream;
+    }
+
+    /**
+     * @param Structure\Font\Structure\FontStream $structure
+     * @param File $file
+     *
+     * @return StreamObject
+     */
+    public function visitFontStream(Structure\Font\Structure\FontStream $structure, File $file)
+    {
+        $stream = $file->addStreamObject($structure->getFontData(), StreamObject::CONTENT_TYPE_FONT);
+
+        $dictionary = $stream->getMetaData();
+        $dictionary->setTextEntry('Subtype', '/' . $structure->getSubtype());
+
+        return $stream;
+    }
+
+    /**
+     * @param FontDescriptor $structure
+     * @param File $file
+     *
+     * @return DictionaryObject
+     */
+    public function visitFontDescriptor(FontDescriptor $structure, File $file)
+    {
+        $dictionary = $file->addDictionaryObject();
+
+        $dictionary->addTextEntry('Type', '/FontDescriptor');
+        $dictionary->addTextEntry('FontName', $structure->getFontName());
+        $dictionary->addTextEntry('Flags', $structure->getFlags());
+        $dictionary->addTextEntry('FontBBox', $structure->getFontBBox());
+        $dictionary->addTextEntry('ItalicAngle', $structure->getItalicAngle());
+        $dictionary->addTextEntry('Ascent', $structure->getAscent());
+        $dictionary->addTextEntry('Decent', $structure->getDecent());
+        $dictionary->addTextEntry('CapHeight', $structure->getCapHeight());
+        $dictionary->addTextEntry('StemV', $structure->getStemV());
+
+        if ($structure->getFontFile3() !== null) {
+            $reference = $structure->getFontFile3()->accept($this, $file);
+            $dictionary->addReferenceEntry('FontFile3', $reference);
+        }
+
+        return $dictionary;
+    }
+
+    /**
+     * @param Structure\Font\Type0 $structure
+     * @param File $file
+     *
+     * @return DictionaryObject
+     */
+    public function visitType0Font(Structure\Font\Type0 $structure, File $file)
+    {
+        $dictionary = $file->addDictionaryObject();
+
+        $dictionary->addTextEntry('Type', '/File');
+        $dictionary->addTextEntry('Subtype', '/Type0');
+        $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
+
+        $encoding = $structure->getEncoding()->accept($this, $file);
+        $dictionary->addReferenceEntry('Encoding', $encoding);
+
+        $descendantFont = $structure->getDescendantFont()->accept($this, $file);
+        $dictionary->addReferenceArrayEntry('DescendantFonts', [$descendantFont]);
+
+        $toUnicode = $structure->getToUnicode()->accept($this, $file);
+        $dictionary->addReferenceEntry('ToUnicode', $toUnicode);
+
+        return $dictionary;
+    }
+
+    /**
+     * @param Structure\Font\Structure\CIDFont $structure
+     * @param File $file
+     *
+     * @return DictionaryObject
+     */
+    public function visitCIDFont(Structure\Font\Structure\CIDFont $structure, File $file)
+    {
+        $dictionary = $file->addDictionaryObject();
+
+        $cidDictionary = $structure->getCIDSystemInfo()->accept($this);
+        $dictionary->addDictionaryEntry('CIDSystemInfo', $cidDictionary);
+
+        $reference = $structure->getFontDescriptor()->accept($this, $file);
+        $dictionary->addReferenceEntry('FontDescriptor', $reference);
+
+        $dictionary->addNumberEntry('DW', $structure->getDW());
+        $dictionary->addNumberArrayEntry('W', $structure->getW());
+
+        return $dictionary;
+    }
+
+    /**
+     * @param CMap $structure
+     * @param File $file
+     *
+     * @return StreamObject
+     */
+    public function visitCMap(CMap $structure, File $file)
+    {
+        $stream = $file->addStreamObject($structure->getCMapData(), StreamObject::CONTENT_TYPE_TEXT);
+
+        $dictionary = $stream->getMetaData();
+        $dictionary->setTextEntry('Type', '/CMap');
+        $dictionary->setTextEntry('CMapName', $structure->getCMapName());
+
+        $cidDictionary = $structure->getCIDSystemInfo()->accept($this);
+        $dictionary->setEntry('CIDSystemInfo', $cidDictionary);
+
+        return $stream;
+    }
+
+    /**
+     * @param CIDSystemInfo $structure
+     *
+     * @return DictionaryToken
+     */
+    public function visitCIDSystemInfo(CIDSystemInfo $structure)
+    {
+        $cidDictionary = new DictionaryToken();
+
+        $cidDictionary->setTextEntry('Registry', $structure->getRegistry());
+        $cidDictionary->setTextEntry('Ordering', $structure->getOrdering());
+        $cidDictionary->setNumberEntry('Supplement', $structure->getSupplement());
+
+        return $cidDictionary;
     }
 }

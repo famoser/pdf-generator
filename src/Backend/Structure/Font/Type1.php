@@ -16,7 +16,7 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Font;
 use PdfGenerator\Backend\StructureVisitor;
 
-class SimpleFont extends Font
+class Type1 extends Font
 {
     const SUBTYPE_TYPE1 = 'Type1';
     const BASE_FONT_TIMES__ROMAN = 'Times-Roman';
@@ -35,11 +35,38 @@ class SimpleFont extends Font
     const BASE_FONT_COURIER__BOLDOBLIQUE = 'Courier-BoldOblique';
 
     /**
-     * TODO: implement for base fonts.
-     *
-     * @var Font\FontDescriptor
+     * @var string
      */
-    private $fontDescriptor;
+    private $baseFont;
+
+    /**
+     * Type1 constructor.
+     *
+     * @param string $identifier
+     * @param string $baseFont
+     */
+    public function __construct(string $identifier, string $baseFont)
+    {
+        parent::__construct($identifier);
+
+        $this->baseFont = $baseFont;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseFont(): string
+    {
+        return $this->baseFont;
+    }
+
+    /**
+     * @param string $baseFont
+     */
+    public function setBaseFont(string $baseFont): void
+    {
+        $this->baseFont = $baseFont;
+    }
 
     /**
      * @param StructureVisitor $visitor
@@ -49,22 +76,6 @@ class SimpleFont extends Font
      */
     public function accept(StructureVisitor $visitor, File $file): BaseObject
     {
-        return $visitor->visitSimpleFont($this, $file);
-    }
-
-    /**
-     * @return FontDescriptor
-     */
-    public function getFontDescriptor(): FontDescriptor
-    {
-        return $this->fontDescriptor;
-    }
-
-    /**
-     * @param FontDescriptor $fontDescriptor
-     */
-    public function setFontDescriptor(FontDescriptor $fontDescriptor): void
-    {
-        $this->fontDescriptor = $fontDescriptor;
+        return $visitor->visitType1Font($this, $file);
     }
 }

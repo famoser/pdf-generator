@@ -34,6 +34,7 @@ class StreamObject extends BaseObject
 
     public const CONTENT_TYPE_TEXT = 1;
     public const CONTENT_TYPE_IMAGE = 2;
+    public const CONTENT_TYPE_FONT = 3;
 
     /**
      * StreamObject constructor.
