@@ -7,6 +7,7 @@ material to work through
     - implement 14.3 for nice metadata
     - see page 570 for a longer example
 - [Guided Hello world](https://blog.idrsolutions.com/2013/01/understanding-the-pdf-file-format-overview/#helloworld) for small examples
+- [PDF structure browser](http://podofo.sourceforge.net/tools.html)
 
 ## public api
 - [ITextSharp](https://www.mikesdotnetting.com/article/80/create-pdfs-in-asp-net-getting-started-with-itextsharp) because has nice public api
