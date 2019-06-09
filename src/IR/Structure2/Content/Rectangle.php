@@ -12,19 +12,20 @@
 namespace PdfGenerator\IR\Structure2\Content;
 
 use PdfGenerator\IR\Structure2\Content\Common\Position;
-use PdfGenerator\IR\Structure2\Content\Text\Style;
+use PdfGenerator\IR\Structure2\Content\Common\Size;
+use PdfGenerator\IR\Structure2\Content\Rectangle\Style;
 
-class TextContent
+class Rectangle
 {
-    /**
-     * @var string
-     */
-    private $text;
-
     /**
      * @var Position
      */
     private $position;
+
+    /**
+     * @var Size
+     */
+    private $size;
 
     /**
      * @var Style
@@ -32,25 +33,17 @@ class TextContent
     private $style;
 
     /**
-     * TextPlacement constructor.
+     * Rectangle constructor.
      *
-     * @param string $text
      * @param Position $position
+     * @param Size $size
      * @param Style $style
      */
-    public function __construct(string $text, Position $position, Style $style)
+    public function __construct(Position $position, Size $size, Style $style)
     {
-        $this->text = $text;
         $this->position = $position;
+        $this->size = $size;
         $this->style = $style;
-    }
-
-    /**
-     * @return string
-     */
-    public function getText(): string
-    {
-        return $this->text;
     }
 
     /**
@@ -59,6 +52,14 @@ class TextContent
     public function getPosition(): Position
     {
         return $this->position;
+    }
+
+    /**
+     * @return Size
+     */
+    public function getSize(): Size
+    {
+        return $this->size;
     }
 
     /**

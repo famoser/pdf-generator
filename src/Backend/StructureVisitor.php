@@ -18,6 +18,7 @@ use PdfGenerator\Backend\File\Object\StreamObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
 use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\Structure\ContentVisitor;
 use PdfGenerator\Backend\Structure\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Structure\Font\Structure\CMap;
 use PdfGenerator\Backend\Structure\Font\Structure\FontDescriptor;

@@ -13,31 +13,18 @@ namespace PdfGenerator\Backend\Content;
 
 use PdfGenerator\Backend\Content\Base\BaseContent;
 use PdfGenerator\Backend\Content\Operators\Level\PageLevel;
-use PdfGenerator\Backend\ContentVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\Structure\ContentVisitor;
+use PdfGenerator\Backend\Structure\Image;
 use PdfGenerator\Backend\Structure\Page;
 
-class Rectangle extends BaseContent
+class ImageContent extends BaseContent
 {
-    const PAINTING_MODE_STROKE = 1;
-    const PAINTING_MODE_FILL = 2;
-    const PAINTING_MODE_STROKE_FILL = 3;
-
     /**
-     * @var float
+     * @var Image
      */
-    private $width;
-
-    /**
-     * @var float
-     */
-    private $height;
-
-    /**
-     * @var int
-     */
-    private $paintingMode;
+    private $image;
 
     /**
      * @var PageLevel
@@ -45,41 +32,21 @@ class Rectangle extends BaseContent
     private $pageLevel;
 
     /**
-     * @param float $width
-     * @param float $height
-     * @param int $paintingMode
+     * @param Image $image
      * @param PageLevel $pageLevel
      */
-    public function __construct(float $width, float $height, int $paintingMode, PageLevel $pageLevel)
+    public function __construct(Image $image, PageLevel $pageLevel)
     {
-        $this->width = $width;
-        $this->height = $height;
-        $this->paintingMode = $paintingMode;
+        $this->image = $image;
         $this->pageLevel = $pageLevel;
     }
 
     /**
-     * @return float
+     * @return Image
      */
-    public function getWidth(): float
+    public function getImage(): Image
     {
-        return $this->width;
-    }
-
-    /**
-     * @return float
-     */
-    public function getHeight(): float
-    {
-        return $this->height;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPaintingMode(): int
-    {
-        return $this->paintingMode;
+        return $this->image;
     }
 
     /**
@@ -99,6 +66,6 @@ class Rectangle extends BaseContent
      */
     public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject
     {
-        return $visitor->visitRectangle($this, $file, $page);
+        return $visitor->visitImageContent($this, $file, $page);
     }
 }

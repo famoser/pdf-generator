@@ -11,11 +11,13 @@
 
 namespace PdfGenerator\IR\Structure2\Content;
 
+use PdfGenerator\Backend\Structure\Page;
+use PdfGenerator\IR\Structure2\Content\Base\BaseContent;
 use PdfGenerator\IR\Structure2\Content\Common\Position;
 use PdfGenerator\IR\Structure2\Content\Common\Size;
 use PdfGenerator\IR\Structure2\Image;
 
-class ImagePlacement
+class ImagePlacement extends BaseContent
 {
     /**
      * @var Image
@@ -68,5 +70,14 @@ class ImagePlacement
     public function getSize(): Size
     {
         return $this->size;
+    }
+
+    /**
+     * @param ContentVisitor $visitor
+     * @param Page $page
+     */
+    public function accept(ContentVisitor $visitor, Page $page)
+    {
+        $visitor->visitImagePlacement($this, $page);
     }
 }

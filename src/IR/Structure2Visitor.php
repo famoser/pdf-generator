@@ -11,10 +11,11 @@
 
 namespace PdfGenerator\IR;
 
+use PdfGenerator\Backend\Document;
 use PdfGenerator\Backend\Structure\Font\Type1;
 use PdfGenerator\IR\Structure2\Font\DefaultFont;
 
-class StructureVisitor
+class Structure2Visitor
 {
     /**
      * @var string[][]
@@ -45,4 +46,9 @@ class StructureVisitor
             DefaultFont::STYLE_DEFAULT => Type1::BASE_FONT_SYMBOL,
         ],
     ];
+
+    public function visitDocument(Structure2\Document $param)
+    {
+        $document = new Document();
+    }
 }

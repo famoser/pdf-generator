@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend;
+namespace PdfGenerator\Backend\Structure;
 
 use PdfGenerator\Backend\Content\GraphicStateRepository;
 use PdfGenerator\Backend\Content\ImageContent;
 use PdfGenerator\Backend\Content\Rectangle;
+use PdfGenerator\Backend\Content\TextContent;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
-use PdfGenerator\Backend\Structure\Page;
 
 class ContentVisitor
 {
@@ -35,13 +35,13 @@ class ContentVisitor
     }
 
     /**
-     * @param Content\TextContent $textContent
+     * @param TextContent $textContent
      * @param File $file
      * @param Page $page
      *
      * @return StreamObject
      */
-    public function visitTextContent(Content\TextContent $textContent, File $file, Page $page): BaseObject
+    public function visitTextContent(TextContent $textContent, File $file, Page $page): BaseObject
     {
         // gather operators to change to desired state
         $stateTransitionOperators = $this->graphicStateRepository->applyTextLevelState($page, $textContent->getTextLevel());
@@ -56,13 +56,13 @@ class ContentVisitor
     }
 
     /**
-     * @param Content\ImageContent $imageContent
+     * @param ImageContent $imageContent
      * @param File $file
      * @param Page $page
      *
      * @return StreamObject
      */
-    public function visitImageContent(Content\ImageContent $imageContent, File $file, Page $page): BaseObject
+    public function visitImageContent(ImageContent $imageContent, File $file, Page $page): BaseObject
     {
         // gather operators to change to desired state
         $stateTransitionOperators = $this->graphicStateRepository->applyPageLevelState($page, $imageContent->getPageLevel());
@@ -77,13 +77,13 @@ class ContentVisitor
     }
 
     /**
-     * @param Content\Rectangle $cell
+     * @param Rectangle $cell
      * @param File $file
      * @param Page $page
      *
      * @return StreamObject
      */
-    public function visitRectangle(Content\Rectangle $cell, File $file, Page $page): BaseObject
+    public function visitRectangle(Rectangle $cell, File $file, Page $page): BaseObject
     {
         // gather operators to change to desired state
         $stateTransitionOperators = $this->graphicStateRepository->applyPageLevelState($page, $cell->getPageLevel());

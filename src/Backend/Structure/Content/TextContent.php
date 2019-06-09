@@ -13,9 +13,9 @@ namespace PdfGenerator\Backend\Content;
 
 use PdfGenerator\Backend\Content\Base\BaseContent;
 use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
-use PdfGenerator\Backend\ContentVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\Structure\ContentVisitor;
 use PdfGenerator\Backend\Structure\Page;
 
 class TextContent extends BaseContent
