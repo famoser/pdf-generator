@@ -141,6 +141,7 @@ class PrinterTest extends TestCase
         // act
         $printer->printImage(ResourcesProvider::getImage1Path());
         $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertTrue(true);

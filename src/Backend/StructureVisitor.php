@@ -274,20 +274,14 @@ class StructureVisitor
         $dictionary->addTextEntry('Subtype', '/Type0');
         $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
 
-        $dictionary->addTextEntry('Encoding', '/Identity-H');
-
-        /*
         $encoding = $structure->getEncoding()->accept($this, $file);
         $dictionary->addReferenceEntry('Encoding', $encoding);
-        */
 
         $descendantFont = $structure->getDescendantFont()->accept($this, $file);
         $dictionary->addReferenceArrayEntry('DescendantFonts', [$descendantFont]);
 
-        /*
         $toUnicode = $structure->getToUnicode()->accept($this, $file);
         $dictionary->addReferenceEntry('ToUnicode', $toUnicode);
-        */
 
         return $dictionary;
     }

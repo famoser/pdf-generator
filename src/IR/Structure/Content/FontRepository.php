@@ -43,50 +43,6 @@ class FontRepository
     private $type1FontCache = [];
 
     /**
-     * @var string[][]
-     */
-    private $defaultFonts = [
-        self::FONT_HELVETICA => [
-            self::STYLE_DEFAULT => Type1::BASE_FONT_HELVETICA,
-            self::STYLE_OBLIQUE => Type1::BASE_FONT_HELVETICA__OBLIQUE,
-            self::STYLE_BOLD => Type1::BASE_FONT_HELVETICA__BOLD,
-            self::STYLE_BOLD_OBLIQUE => Type1::BASE_FONT_HELVETICA__BOLDOBLIQUE,
-        ],
-        self::FONT_COURIER => [
-            self::STYLE_ROMAN => Type1::BASE_FONT_COURIER,
-            self::STYLE_OBLIQUE => Type1::BASE_FONT_COURIER__OBLIQUE,
-            self::STYLE_BOLD => Type1::BASE_FONT_COURIER__BOLD,
-            self::STYLE_BOLD_OBLIQUE => Type1::BASE_FONT_COURIER__BOLDOBLIQUE,
-        ],
-        self::FONT_TIMES => [
-            self::STYLE_ROMAN => Type1::BASE_FONT_TIMES__ROMAN,
-            self::STYLE_ITALIC => Type1::BASE_FONT_TIMES__ITALIC,
-            self::STYLE_BOLD => Type1::BASE_FONT_TIMES__BOLD,
-            self::STYLE_BOLD_ITALIC => Type1::BASE_FONT_TIMES__BOLDITALIC,
-        ],
-        self::FONT_ZAPFDINGBATS => [
-            self::STYLE_DEFAULT => Type1::BASE_FONT_ZAPFDINGBATS,
-        ],
-        self::FONT_SYMBOL => [
-            self::STYLE_DEFAULT => Type1::BASE_FONT_SYMBOL,
-        ],
-    ];
-
-    const FONT_HELVETICA = 'Helvetica';
-    const FONT_COURIER = 'Courier';
-    const FONT_TIMES = 'Times';
-    const FONT_SYMBOL = 'Symbol';
-    const FONT_ZAPFDINGBATS = 'ZapfDingbats';
-
-    const STYLE_DEFAULT = self::STYLE_ROMAN;
-    const STYLE_ROMAN = 'ROMAN';
-    const STYLE_ITALIC = 'ITALIC';
-    const STYLE_BOLD = 'BOLD';
-    const STYLE_OBLIQUE = 'OBLIQUE';
-    const STYLE_BOLD_OBLIQUE = 'BOLD_OBLIQUE';
-    const STYLE_BOLD_ITALIC = 'BOLD_ITALIC';
-
-    /**
      * FontRepository constructor.
      *
      * @param Document $document

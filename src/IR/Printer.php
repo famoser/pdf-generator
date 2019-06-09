@@ -108,7 +108,7 @@ class Printer
      */
     protected function printContent(BaseContent $baseContent)
     {
-        $page = $this->contentFactor->getPageRepository()->getPage(1);
+        $page = $this->contentFactor->getPageRepository()->getPage(2);
         $page->getContentsBuilder()->addContent($baseContent);
     }
 
