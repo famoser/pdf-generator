@@ -12,7 +12,7 @@
 namespace PdfGenerator\Backend\Content\Operators\State;
 
 use PdfGenerator\Backend\Content\Operators\State\Base\BaseState;
-use PdfGenerator\Backend\Content\Operators\StateTransitionVisitor;
+use PdfGenerator\Backend\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Structure\Font;
 
 class TextState extends BaseState
@@ -222,12 +222,11 @@ class TextState extends BaseState
 
     /**
      * @param StateTransitionVisitor $visitor
-     * @param self $previousState
      *
      * @return string[]
      */
-    public function accept(StateTransitionVisitor $visitor, $previousState): array
+    public function accept(StateTransitionVisitor $visitor): array
     {
-        return $visitor->visitText($this, $previousState);
+        return $visitor->visitTextState($this);
     }
 }

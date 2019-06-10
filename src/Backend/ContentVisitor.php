@@ -13,9 +13,9 @@ namespace PdfGenerator\Backend\Structure;
 
 use PdfGenerator\Backend\Content\Base\BaseContent;
 use PdfGenerator\Backend\Content\ImageContent;
-use PdfGenerator\Backend\Content\Operators\StateTransitionVisitor;
 use PdfGenerator\Backend\Content\Rectangle;
 use PdfGenerator\Backend\Content\StateCollections\FullState;
+use PdfGenerator\Backend\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Content\TextContent;
 
 class ContentVisitor

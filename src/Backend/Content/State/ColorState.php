@@ -12,7 +12,7 @@
 namespace PdfGenerator\Backend\Content\Operators\State;
 
 use PdfGenerator\Backend\Content\Operators\State\Base\BaseState;
-use PdfGenerator\Backend\Content\Operators\StateTransitionVisitor;
+use PdfGenerator\Backend\Content\StateTransitionVisitor;
 
 class ColorState extends BaseState
 {
@@ -72,8 +72,8 @@ class ColorState extends BaseState
      *
      * @return string[]
      */
-    public function accept(StateTransitionVisitor $visitor, $previousState): array
+    public function accept(StateTransitionVisitor $visitor): array
     {
-        return $visitor->visitColor($this, $previousState);
+        return $visitor->visitColorState($this);
     }
 }
