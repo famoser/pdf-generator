@@ -142,6 +142,11 @@ class StructureVisitor
     }
 
     /**
+     * @var ReferenceToken[]
+     */
+    private $referenceLookup;
+
+    /**
      * @param IdentifiableStructureTrait[] $structures
      * @param File $file
      *
@@ -151,8 +156,15 @@ class StructureVisitor
     {
         $dictionary = new DictionaryToken();
         foreach ($structures as $structure) {
-            $reference = $structure->accept($this, $file);
-            $dictionary->setEntry($structure->getIdentifier(), new ReferenceToken($reference));
+            $identifier = $structure->getIdentifier();
+
+            if (!\array_key_exists($identifier, $this->referenceLookup)) {
+                $reference = $structure->accept($this, $file);
+                $this->referenceLookup[$identifier] = new ReferenceToken($reference);
+            }
+
+            $referenceToken = $this->referenceLookup[$identifier];
+            $dictionary->setEntry($structure->getIdentifier(), $referenceToken);
         }
 
         return $dictionary;
