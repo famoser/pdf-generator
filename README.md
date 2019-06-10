@@ -66,41 +66,29 @@ If the transaction is of the expected form, it can be committed and will be writ
 
 ### IR
 The Intermediate Representation provides an API that is convenient to use for the frontend.
+This structure could apply to any paginated document; hence does not expose PDF-specific details.
 
-The public API could apply to any document of fixed size;
-and hence does not expose PDF-specific details.
-
-Its main task is to translate the API calls into a high-level PDF structure of the backend.
-
-#### Configuration
-Takes care of converting the configuration into a PDF-specific structure.
 
 #### Structure
-Contains the various parts of the PDFs and allows to insert new ones easily. 
+Contains the structure of the IR.
+It can convert the user input to data supported by the backend (text encoding, image resizing).
 
 ### Backend
 The Backend itself is divided into multiple parts.
 
 #### Content
-The Content folder helps to render complex content streams like text and images.
-It represents the streams as symbols with a content and an attached state the pdf has to be in when the content is printed.
+Contains a minimal structure of supported structures by the backend.  
+It renders content types such as text / images into a stream consumable for PDFs.
+It creates the catalog structure of the PDF.
 
-It knows how to convert itself into streams which can then be inserted into the pdf.
-
-#### Structure
-The Structure folder contains the specific parts the PDF consists of (like a `Page` or an `Image`) .
-
-It provides convenience methods to the IR to extend the structure easily.
-
-It then converts the specific parts into dictionaries and streams.
+#### Catalog
+Contains the logical structure of a PDF.
+It converts this logical structure into a structure using only streams and dictionaries (the first higher-level structures of a PDF).
 
 #### File
-The File folder contains the lowest-level representation of pdf which is still code.
-
-It exposes basic blocks of a pdf like dictionaries and streams to the higher-level APIs.
-
-To finally write the file, it converts these basic blocks into printable tokens
-and creates the Header, Trailer and CrossReferenceTable of the document.
+Contains the structure of a PDF as it can be written to a file.
+It can setup the the file header/trailer/cross reference table given the body of the file (streams/dictionaries).
+It converts the body to tokens and then writes the content of the resulting file.
 
 ## Timeline
 
@@ -115,10 +103,11 @@ First, the backend will be created following closely the standard of adobe.
 - [x] draw lines
 - [x] draw rectangles
 - [x] style lines 
-- [ ] use TTF fonts
+- [x] use TTF fonts
     - [x] parse TTF
     - [x] create IR which supplies pdf compiler with character space information
-    - [ ] create TTF subsets (still missing is the POST table; without it ttfdump will segfault)
+    - [x] create TTF subsets (still missing is the POST table; without it ttfdump will segfault)
+    - [ ] include CID font capability into PDF
 - [ ] print UTF-8 text
 
 ### Minimal IR Base
