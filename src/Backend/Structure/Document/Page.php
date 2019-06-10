@@ -60,6 +60,22 @@ class Page
     }
 
     /**
+     * @param Font[] $fonts
+     */
+    public function setFonts(array $fonts): void
+    {
+        $this->fonts = $fonts;
+    }
+
+    /**
+     * @param Image[] $images
+     */
+    public function setImages(array $images): void
+    {
+        $this->images = $images;
+    }
+
+    /**
      * @param Pages $parent
      * @param DocumentResources $documentResources
      *
@@ -89,21 +105,5 @@ class Page
         }
 
         return new \PdfGenerator\Backend\Catalog\Page($parent, $this->mediaBox, $resources, $contents);
-    }
-
-    /**
-     * @param Font[] $fonts
-     */
-    public function setFonts(array $fonts): void
-    {
-        $this->fonts = $fonts;
-    }
-
-    /**
-     * @param Image[] $images
-     */
-    public function setImages(array $images): void
-    {
-        $this->images = $images;
     }
 }

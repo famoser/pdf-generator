@@ -63,4 +63,12 @@ class Catalog extends BaseStructure
 
         return $file->render();
     }
+
+    /**
+     * @return string
+     */
+    public function save()
+    {
+        return $this->render();
+    }
 }

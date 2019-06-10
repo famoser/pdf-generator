@@ -46,4 +46,12 @@ class Document
 
         return new Catalog([$pages]);
     }
+
+    /**
+     * @return string
+     */
+    public function save()
+    {
+        return $this->render()->save();
+    }
 }

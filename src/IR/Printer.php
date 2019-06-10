@@ -151,9 +151,6 @@ class Printer
      */
     public function save()
     {
-        $document = $this->document->render();
-        $catalog = $document->render();
-
-        return $catalog->render();
+        return $this->document->save();
     }
 }

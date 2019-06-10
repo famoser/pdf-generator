@@ -55,6 +55,8 @@ class DefaultFont extends Font
     /**
      * @param DocumentVisitor $visitor
      *
+     * @throws \Exception
+     *
      * @return mixed
      */
     public function accept(DocumentVisitor $visitor)

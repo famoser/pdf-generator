@@ -113,4 +113,12 @@ class Document
 
         return $document;
     }
+
+    /**
+     * @return string
+     */
+    public function save()
+    {
+        return $this->render()->save();
+    }
 }

@@ -43,13 +43,14 @@ class DocumentVisitor
      *
      * @throws \Exception
      *
-     * @return Type1
+     * @return \PdfGenerator\Backend\Structure\Font\DefaultFont
      */
     public function visitDefaultFont(DefaultFont $param)
     {
         $baseFont = $this->getDefaultFontBaseFont($param->getFont(), $param->getStyle());
+        $encoding = \PdfGenerator\Backend\Structure\Font\DefaultFont::ENCODING_WIN_ANSI_ENCODING;
 
-        return new Type1($identifier, $baseFont);
+        return new \PdfGenerator\Backend\Structure\Font\DefaultFont($baseFont, $encoding);
     }
 
     /**
@@ -93,7 +94,7 @@ class DocumentVisitor
         $writer = FileWriter::create();
         $content = $writer->writeFont($fontSubset);
 
-        // TODO: obviously not correct. need to parse name table to read this
+        // TODO: need to parse name table to fix this
         $fontName = 'SomeFont';
 
         return new EmbeddedFont($fontName, $content, [], []);
