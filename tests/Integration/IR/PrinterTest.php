@@ -12,7 +12,6 @@
 namespace PdfGenerator\Tests\Integration\Frontend;
 
 use PdfGenerator\IR\Printer;
-use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
 class PrinterTest extends TestCase
@@ -136,11 +135,16 @@ class PrinterTest extends TestCase
         // arrange
         $printer = new Printer();
         $printer->setDefaultFont();
-        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20, 100, 100);
+        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
+        $printer->getStateFactory()->getColorStateRepository()->setFillColor('#aefaef');
+        $printer->getStateFactory()->getColorStateRepository()->setBorderColor('#abccba');
 
         // act
-        $printer->printImage(ResourcesProvider::getImage1Path());
+        $printer->printRectangle(20, 20, true);
+        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(40, 20);
+        $printer->printText('hi mom');
         $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertTrue(true);
