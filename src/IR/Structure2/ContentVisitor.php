@@ -18,7 +18,6 @@ class ContentVisitor
 
     public function visitImagePlacement(ImagePlacement $param)
     {
-        $this->generalGraphicStateRepository->setPosition($param->getPosition()
         $image = new ImageContent($param->getImage(), )
     }
 }

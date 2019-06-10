@@ -18,6 +18,7 @@ use PdfGenerator\Backend\File\Object\StreamObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
 use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\Structure\Catalog;
 use PdfGenerator\Backend\Structure\ContentVisitor;
 use PdfGenerator\Backend\Structure\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Structure\Font\Structure\CMap;
@@ -42,6 +43,21 @@ class StructureVisitor
     public function __construct()
     {
         $this->contentVisitor = new ContentVisitor();
+    }
+
+    /**
+     * @param Catalog $catalog
+     *
+     * @return string
+     */
+    public static function renderCatalog(Catalog $catalog)
+    {
+        $structureVisitor = new self();
+        $file = new File();
+
+        $catalog = $structureVisitor->visitCatalog($catalog, $file);
+
+        return $file->render($catalog);
     }
 
     /**

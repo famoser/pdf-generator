@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR;
 
-use PdfGenerator\Backend\Document;
+use PdfGenerator\Backend\Structure\Catalog;
 use PdfGenerator\Backend\Structure\Font\Type1;
 use PdfGenerator\IR\Structure2\Font\DefaultFont;
 
@@ -49,6 +49,6 @@ class Structure2Visitor
 
     public function visitDocument(Structure2\Document $param)
     {
-        $document = new Document();
+        $catalog = new Catalog();
     }
 }
