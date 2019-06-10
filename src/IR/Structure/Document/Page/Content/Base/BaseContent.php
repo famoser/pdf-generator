@@ -18,7 +18,7 @@ abstract class BaseContent
     /**
      * @param ContentVisitor $visitor
      *
-     * @return \PdfGenerator\Backend\Content\Base\BaseContent
+     * @return \PdfGenerator\Backend\Structure\Base\BaseContent
      */
-    abstract public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Content\Base\BaseContent;
+    abstract public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Structure\Base\BaseContent;
 }

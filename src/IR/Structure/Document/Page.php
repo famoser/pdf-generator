@@ -11,9 +11,11 @@
 
 namespace PdfGenerator\IR\Structure;
 
+use PdfGenerator\IR\DocumentVisitor;
+use PdfGenerator\IR\Structure\Base\BaseDocumentStructure;
 use PdfGenerator\IR\Structure\PageContent\Base\BaseContent;
 
-class Page
+class Page extends BaseDocumentStructure
 {
     /**
      * @var int
@@ -57,5 +59,15 @@ class Page
     public function getContent(): array
     {
         return $this->content;
+    }
+
+    /**
+     * @param DocumentVisitor $visitor
+     *
+     * @return mixed
+     */
+    public function accept(DocumentVisitor $visitor)
+    {
+        return $visitor->visitPage($this);
     }
 }

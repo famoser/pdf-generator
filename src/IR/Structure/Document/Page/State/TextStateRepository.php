@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\IR\Configuration\State;
 
-use PdfGenerator\Backend\Content\Operators\State\TextState;
-use PdfGenerator\Backend\Structure\Font;
+use PdfGenerator\Backend\Catalog\Font;
+use PdfGenerator\Backend\Structure\Operators\State\TextState;
 
 class TextStateRepository
 {

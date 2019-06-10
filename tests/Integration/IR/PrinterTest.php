@@ -24,8 +24,6 @@ class PrinterTest extends TestCase
         // arrange
         $text = 'hi mom';
         $printer = new Printer();
-        $printer->setDefaultFont();
-        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
 
         // act
         $printer->printText($text);

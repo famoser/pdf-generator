@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR\Structure\Content\Font;
 
-use PdfGenerator\Backend\Structure\Font\Type0;
+use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Font\IR\CharacterRepository;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;

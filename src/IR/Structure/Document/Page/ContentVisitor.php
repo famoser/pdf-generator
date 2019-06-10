@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\IR\Structure\PageContent;
 
-use PdfGenerator\Backend\Content\ImageContent;
-use PdfGenerator\Backend\Content\TextContent;
-use PdfGenerator\Backend\Structure\Image;
+use PdfGenerator\Backend\Catalog\Image;
+use PdfGenerator\Backend\Structure\ImageContent;
+use PdfGenerator\Backend\Structure\TextContent;
 use PdfGenerator\IR\Structure\PageContent\Common\Position;
-use PdfGenerator\IR\Structure\PageContent\Rectangle\Style;
+use PdfGenerator\IR\Structure\PageContent\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Transformation\PageResources;
 
 class ContentVisitor
@@ -65,9 +65,9 @@ class ContentVisitor
     /**
      * @param Rectangle $rectangle
      *
-     * @return \PdfGenerator\Backend\Content\Rectangle
+     * @return \PdfGenerator\Backend\Structure\Rectangle
      */
-    public function visitRectangle(Rectangle $rectangle): \PdfGenerator\Backend\Content\Rectangle
+    public function visitRectangle(Rectangle $rectangle): \PdfGenerator\Backend\Structure\Rectangle
     {
         $width = $rectangle->getSize()->getWidth();
         $height = $rectangle->getSize()->getHeight();
@@ -76,7 +76,7 @@ class ContentVisitor
         $this->applyRectangleStyle($rectangle->getStyle());
         $pageLevel = $this->pageResources->getPageLevel();
 
-        return new \PdfGenerator\Backend\Content\Rectangle($width, $height, $paintingMode, $pageLevel);
+        return new \PdfGenerator\Backend\Structure\Rectangle($width, $height, $paintingMode, $pageLevel);
     }
 
     /**
@@ -93,9 +93,9 @@ class ContentVisitor
     }
 
     /**
-     * @param Style $style
+     * @param RectangleStyle $style
      */
-    private function applyRectangleStyle(Style $style)
+    private function applyRectangleStyle(RectangleStyle $style)
     {
         $this->pageResources->getColorStateRepository()->setBorderColor($style->getBorderColor());
         $this->pageResources->getColorStateRepository()->setFillColor($style->getFillColor());
@@ -111,15 +111,15 @@ class ContentVisitor
     {
         if ($rectangle->getStyle()->getFillColor() !== null) {
             if ($rectangle->getStyle()->getBorderColor() !== null) {
-                return \PdfGenerator\Backend\Content\Rectangle::PAINTING_MODE_STROKE_FILL;
+                return \PdfGenerator\Backend\Structure\Rectangle::PAINTING_MODE_STROKE_FILL;
             }
 
-            return \PdfGenerator\Backend\Content\Rectangle::PAINTING_MODE_FILL;
+            return \PdfGenerator\Backend\Structure\Rectangle::PAINTING_MODE_FILL;
         } elseif ($rectangle->getStyle()->getBorderColor() !== null) {
-            return \PdfGenerator\Backend\Content\Rectangle::PAINTING_MODE_STROKE;
+            return \PdfGenerator\Backend\Structure\Rectangle::PAINTING_MODE_STROKE;
         }
 
-        return \PdfGenerator\Backend\Content\Rectangle::PAINTING_MODE_NONE;
+        return \PdfGenerator\Backend\Structure\Rectangle::PAINTING_MODE_NONE;
     }
 
     /**
@@ -140,9 +140,9 @@ class ContentVisitor
     }
 
     /**
-     * @param Text\Style $style
+     * @param Text\TextStyle $style
      */
-    private function applyTextStyle(Text\Style $style)
+    private function applyTextStyle(Text\TextStyle $style)
     {
         $font = $this->pageResources->getFont($style->getFont());
         $this->pageResources->getTextStateRepository()->setFont($font);

@@ -13,7 +13,7 @@ namespace PdfGenerator\IR\Structure\PageContent;
 
 use PdfGenerator\IR\Structure\PageContent\Base\BaseContent;
 use PdfGenerator\IR\Structure\PageContent\Common\Position;
-use PdfGenerator\IR\Structure\PageContent\Text\Style;
+use PdfGenerator\IR\Structure\PageContent\Text\TextStyle;
 
 class Text extends BaseContent
 {
@@ -28,7 +28,7 @@ class Text extends BaseContent
     private $position;
 
     /**
-     * @var Style
+     * @var TextStyle
      */
     private $style;
 
@@ -37,9 +37,9 @@ class Text extends BaseContent
      *
      * @param string $text
      * @param Position $position
-     * @param Style $style
+     * @param TextStyle $style
      */
-    public function __construct(string $text, Position $position, Style $style)
+    public function __construct(string $text, Position $position, TextStyle $style)
     {
         $this->text = $text;
         $this->position = $position;
@@ -63,9 +63,9 @@ class Text extends BaseContent
     }
 
     /**
-     * @return Style
+     * @return TextStyle
      */
-    public function getStyle(): Style
+    public function getStyle(): TextStyle
     {
         return $this->style;
     }
@@ -73,9 +73,9 @@ class Text extends BaseContent
     /**
      * @param ContentVisitor $visitor
      *
-     * @return \PdfGenerator\Backend\Content\Base\BaseContent|null
+     * @return \PdfGenerator\Backend\Structure\Base\BaseContent|null
      */
-    public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Content\Base\BaseContent
+    public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Structure\Base\BaseContent
     {
         return $visitor->visitText($this);
     }

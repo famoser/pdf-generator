@@ -11,14 +11,17 @@
 
 namespace PdfGenerator\IR;
 
-use PdfGenerator\Backend\Content\Base\BaseContent;
-use PdfGenerator\Backend\Content\ImageContent;
-use PdfGenerator\Backend\Content\Rectangle;
-use PdfGenerator\Backend\Content\TextContent;
-use PdfGenerator\Backend\Document;
-use PdfGenerator\IR\Configuration\LevelFactory;
-use PdfGenerator\IR\Configuration\StateFactory;
-use PdfGenerator\IR\Structure\ContentFactory;
+use PdfGenerator\IR\Structure\Document;
+use PdfGenerator\IR\Structure\Font\DefaultFont;
+use PdfGenerator\IR\Structure\Image;
+use PdfGenerator\IR\Structure\PageContent\Common\Color;
+use PdfGenerator\IR\Structure\PageContent\Common\Position;
+use PdfGenerator\IR\Structure\PageContent\Common\Size;
+use PdfGenerator\IR\Structure\PageContent\ImagePlacement;
+use PdfGenerator\IR\Structure\PageContent\Rectangle;
+use PdfGenerator\IR\Structure\PageContent\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Structure\PageContent\Text;
+use PdfGenerator\IR\Structure\PageContent\Text\TextStyle;
 
 class Printer
 {
@@ -28,115 +31,129 @@ class Printer
     private $document;
 
     /**
-     * @var ContentFactory
+     * @var TextStyle
      */
-    private $contentFactor;
+    private $textStyle;
 
     /**
-     * @var LevelFactory
+     * @var RectangleStyle
      */
-    private $levelFactory;
+    private $rectangleStyle;
 
     /**
-     * @var StateFactory
+     * @var Cursor
      */
-    private $stateFactory;
+    private $cursor;
 
     /**
-     * PdfDocument constructor.
+     * Printer constructor.
      */
     public function __construct()
     {
         $this->document = new Document();
-        $this->contentFactor = new ContentFactory($this->document);
 
-        $this->stateFactory = new StateFactory();
-        $this->levelFactory = new LevelFactory($this->stateFactory);
-    }
+        $font = new DefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
+        $this->textStyle = new TextStyle($font, 12);
 
-    /**
-     * @throws \Exception
-     */
-    public function setDefaultFont()
-    {
-        $activeFont = $this->contentFactor->getFontRepository()->getActiveFont();
-        $this->stateFactory->getTextStateRepository()->setFont($activeFont);
+        $color = new Color(0, 0, 0);
+        $this->rectangleStyle = new RectangleStyle(1, $color, null);
+
+        $this->cursor = new Cursor(10, 10, 1);
     }
 
     /**
      * @param string $text
-     *
-     * @throws \Exception
      */
     public function printText(string $text)
     {
-        $textLevel = $this->levelFactory->getTextLevelRepository()->getTextLevel();
-        $mappedText = $this->contentFactor->getFontRepository()->mapText($text, $textLevel->getText()->getFont());
-        $textContent = new TextContent($mappedText, $textLevel);
+        $position = $this->getPosition();
 
-        $this->printContent($textContent);
+        $text = new Text($text, $position, $this->textStyle);
+
+        $page = $this->getPage();
+        $page->addContent($text);
     }
 
     /**
      * @param string $imagePath
+     * @param float $width
+     * @param float $height
      */
-    public function printImage(string $imagePath)
+    public function printImage(string $imagePath, float $width, float $height)
     {
-        $image = $this->contentFactor->getImageRepository()->getImage($imagePath);
-        $pageLevel = $this->levelFactory->getPageLevelRepository()->getPageLevel();
-        $textContent = new ImageContent($image, $pageLevel);
+        $position = $this->getPosition();
+        $size = new Size($width, $height);
 
-        $this->printContent($textContent);
+        $image = new Image($imagePath);
+        $imagePlacement = new ImagePlacement($image, $position, $size);
+
+        $page = $this->getPage();
+        $page->addContent($imagePlacement);
     }
 
     /**
      * @param float $width
      * @param float $height
-     * @param bool $fill
      */
-    public function printRectangle(float $width, float $height, bool $fill)
+    public function printRectangle(float $width, float $height)
     {
-        $pageLevel = $this->levelFactory->getPageLevelRepository()->getPageLevel();
-        $paintingMode = $fill ? Rectangle::PAINTING_MODE_STROKE_FILL : Rectangle::PAINTING_MODE_STROKE;
-        $rectangle = new Rectangle($width, $height, $paintingMode, $pageLevel);
+        $position = $this->getPosition();
+        $size = new Size($width, $height);
 
-        $this->printContent($rectangle);
+        $text = new Rectangle($position, $size, $this->rectangleStyle);
+
+        $page = $this->getPage();
+        $page->addContent($text);
     }
 
     /**
-     * @param BaseContent $baseContent
+     * @return Structure\Page
      */
-    protected function printContent(BaseContent $baseContent)
+    private function getPage()
     {
-        $page = $this->contentFactor->getPageRepository()->getPage(2);
-        $page->getContentsBuilder()->addContent($baseContent);
+        return $this->document->getOrCreatePage($this->cursor->getPage());
     }
 
     /**
-     * @param string $title
-     * @param string $author
+     * @return Position
      */
-    public function setMeta(string $title, string $author)
+    private function getPosition()
     {
-        // todo: use 14.3 for this
+        return new Position($this->cursor->getXCoordinate(), $this->cursor->getYCoordinate());
     }
 
-    /**     *
-     * @throws \Exception
+    /**
+     * @param TextStyle $textStyle
+     */
+    public function setTextStyle(TextStyle $textStyle): void
+    {
+        $this->textStyle = $textStyle;
+    }
+
+    /**
+     * @param RectangleStyle $rectangleStyle
+     */
+    public function setRectangleStyle(RectangleStyle $rectangleStyle): void
+    {
+        $this->rectangleStyle = $rectangleStyle;
+    }
+
+    /**
+     * @param Cursor $cursor
+     */
+    public function setCursor(Cursor $cursor): void
+    {
+        $this->cursor = $cursor;
+    }
+
+    /**
+     * @return string
      */
     public function save()
     {
-        $this->contentFactor->getFontRepository()->finalizeFonts();
-        // TODO: implement similar improvement for image repo
+        $document = $this->document->render();
+        $catalog = $document->render();
 
-        return $this->document->render();
-    }
-
-    /**
-     * @return StateFactory
-     */
-    public function getStateFactory(): StateFactory
-    {
-        return $this->stateFactory;
+        return $catalog->render();
     }
 }

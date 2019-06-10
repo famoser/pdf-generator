@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\IR\Structure;
 
-use PdfGenerator\IR\Structure\Base\BaseStructure2;
+use PdfGenerator\IR\DocumentVisitor;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Font\EmbeddedFont;
 
-class Document extends BaseStructure2
+class Document
 {
     /**
      * @var Page[]
@@ -38,14 +38,6 @@ class Document extends BaseStructure2
     private $embeddedFonts = [];
 
     /**
-     * @return Page[]
-     */
-    public function getPages(): array
-    {
-        return $this->pages;
-    }
-
-    /**
      * @param int $pageNumber
      *
      * @return Page
@@ -63,14 +55,6 @@ class Document extends BaseStructure2
     }
 
     /**
-     * @return Image[]
-     */
-    public function getImages(): array
-    {
-        return $this->images;
-    }
-
-    /**
      * @param string $imagePath
      *
      * @return Image
@@ -82,14 +66,6 @@ class Document extends BaseStructure2
         }
 
         return $this->images[$imagePath];
-    }
-
-    /**
-     * @return DefaultFont[]
-     */
-    public function getDefaultFonts(): array
-    {
-        return $this->defaultFonts;
     }
 
     /**
@@ -109,14 +85,6 @@ class Document extends BaseStructure2
     }
 
     /**
-     * @return EmbeddedFont[]
-     */
-    public function getEmbeddedFonts(): array
-    {
-        return $this->embeddedFonts;
-    }
-
-    /**
      * @param string $fontPath
      *
      * @return EmbeddedFont
@@ -128,5 +96,21 @@ class Document extends BaseStructure2
         }
 
         return $this->embeddedFonts[$fontPath];
+    }
+
+    /**
+     * @return \PdfGenerator\Backend\Structure\Document
+     */
+    public function render()
+    {
+        $document = new \PdfGenerator\Backend\Structure\Document();
+
+        $documentVisitor = new DocumentVisitor();
+        foreach ($this->pages as $page) {
+            $page = $page->accept($documentVisitor);
+            $document->addPage($page);
+        }
+
+        return $document;
     }
 }

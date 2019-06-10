@@ -11,10 +11,10 @@
 
 namespace PdfGenerator\IR\Transformation;
 
-use PdfGenerator\Backend\Content\Operators\Level\DrawingState;
-use PdfGenerator\Backend\Content\Operators\Level\WritingState;
-use PdfGenerator\Backend\Structure\Font;
-use PdfGenerator\Backend\Structure\Image;
+use PdfGenerator\Backend\Catalog\Font;
+use PdfGenerator\Backend\Catalog\Image;
+use PdfGenerator\Backend\Structure\Operators\Level\DrawingState;
+use PdfGenerator\Backend\Structure\Operators\Level\WritingState;
 use PdfGenerator\IR\Configuration\State\ColorStateRepository;
 use PdfGenerator\IR\Configuration\State\GeneralGraphicStateRepository;
 use PdfGenerator\IR\Configuration\State\TextStateRepository;

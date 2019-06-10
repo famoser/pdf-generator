@@ -11,11 +11,10 @@
 
 namespace PdfGenerator\IR\Transformation;
 
-use PdfGenerator\Backend\Structure\Font;
-use PdfGenerator\Backend\Structure\Image;
-use PdfGenerator\IR\ContentVisitor;
-use PdfGenerator\IR\Structure\Base\BaseContentStructure;
-use PdfGenerator\IR\Structure\Base\BaseStructure2;
+use PdfGenerator\Backend\Catalog\Font;
+use PdfGenerator\Backend\Catalog\Image;
+use PdfGenerator\IR\DocumentVisitor;
+use PdfGenerator\IR\Structure\Base\BaseDocumentStructure;
 
 class DocumentResources
 {
@@ -30,16 +29,16 @@ class DocumentResources
     private $imageCache = [];
 
     /**
-     * @var ContentVisitor
+     * @var DocumentVisitor
      */
     private $documentContentVisitor;
 
     /**
      * DocumentResources constructor.
      *
-     * @param ContentVisitor $documentContentVisitor
+     * @param DocumentVisitor $documentContentVisitor
      */
-    public function __construct(ContentVisitor $documentContentVisitor)
+    public function __construct(DocumentVisitor $documentContentVisitor)
     {
         $this->documentContentVisitor = $documentContentVisitor;
     }
@@ -65,10 +64,10 @@ class DocumentResources
     }
 
     /**
-     * @param BaseContentStructure $structure
-     * @param BaseStructure2[] $cache
+     * @param BaseDocumentStructure $structure
+     * @param BaseDocumentStructure[] $cache
      *
-     * @return BaseStructure2|mixed
+     * @return BaseDocumentStructure|mixed
      */
     private function getOrCreate($structure, array $cache)
     {

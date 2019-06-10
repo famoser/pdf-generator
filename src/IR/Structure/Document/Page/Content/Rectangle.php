@@ -14,7 +14,7 @@ namespace PdfGenerator\IR\Structure\PageContent;
 use PdfGenerator\IR\Structure\PageContent\Base\BaseContent;
 use PdfGenerator\IR\Structure\PageContent\Common\Position;
 use PdfGenerator\IR\Structure\PageContent\Common\Size;
-use PdfGenerator\IR\Structure\PageContent\Rectangle\Style;
+use PdfGenerator\IR\Structure\PageContent\Rectangle\RectangleStyle;
 
 class Rectangle extends BaseContent
 {
@@ -29,7 +29,7 @@ class Rectangle extends BaseContent
     private $size;
 
     /**
-     * @var Style
+     * @var RectangleStyle
      */
     private $style;
 
@@ -38,9 +38,9 @@ class Rectangle extends BaseContent
      *
      * @param Position $position
      * @param Size $size
-     * @param Style $style
+     * @param RectangleStyle $style
      */
-    public function __construct(Position $position, Size $size, Style $style)
+    public function __construct(Position $position, Size $size, RectangleStyle $style)
     {
         $this->position = $position;
         $this->size = $size;
@@ -64,9 +64,9 @@ class Rectangle extends BaseContent
     }
 
     /**
-     * @return Style
+     * @return RectangleStyle
      */
-    public function getStyle(): Style
+    public function getStyle(): RectangleStyle
     {
         return $this->style;
     }
@@ -74,9 +74,9 @@ class Rectangle extends BaseContent
     /**
      * @param ContentVisitor $visitor
      *
-     * @return \PdfGenerator\Backend\Content\Base\BaseContent
+     * @return \PdfGenerator\Backend\Structure\Base\BaseContent
      */
-    public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Content\Base\BaseContent
+    public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Structure\Base\BaseContent
     {
         return $visitor->visitRectangle($visitor);
     }

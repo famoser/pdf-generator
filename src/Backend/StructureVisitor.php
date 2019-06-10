@@ -11,18 +11,17 @@
 
 namespace PdfGenerator\Backend;
 
+use PdfGenerator\Backend\Catalog\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
+use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
+use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
+use PdfGenerator\Backend\Catalog\Page;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
-use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
-use PdfGenerator\Backend\Structure\ContentVisitor;
-use PdfGenerator\Backend\Structure\Font\Structure\CIDSystemInfo;
-use PdfGenerator\Backend\Structure\Font\Structure\CMap;
-use PdfGenerator\Backend\Structure\Font\Structure\FontDescriptor;
-use PdfGenerator\Backend\Structure\Page;
 
 class StructureVisitor
 {
@@ -47,11 +46,11 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Catalog $structure
+     * @param Catalog\Catalog $structure
      *
      * @return BaseObject
      */
-    public function visitCatalog(Structure\Catalog $structure): BaseObject
+    public function visitCatalog(Catalog\Catalog $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Catalog');
@@ -63,11 +62,11 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Pages $structure
+     * @param Catalog\Pages $structure
      *
      * @return BaseObject
      */
-    public function visitPages(Structure\Pages $structure): BaseObject
+    public function visitPages(Catalog\Pages $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Pages');
@@ -110,11 +109,11 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Resources $structure
+     * @param Catalog\Resources $structure
      *
      * @return BaseObject
      */
-    public function visitResources(Structure\Resources $structure): BaseObject
+    public function visitResources(Catalog\Resources $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
 
@@ -167,30 +166,27 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Contents $structure
-     * @param Page $page
+     * @param Catalog\Contents $structure
      *
      * @return BaseObject[]
      */
-    public function visitContents(Structure\Contents $structure, Page $page): array
+    public function visitContents(Catalog\Contents $structure): array
     {
-        $contentVisitor = new ContentVisitor($page);
-
         /** @var BaseObject[] $baseObjects */
         $baseObjects = [];
         foreach ($structure->getContent() as $baseContent) {
-            $baseObjects[] = $baseContent->accept($contentVisitor);
+            $baseObjects[] = $baseContent->accept($this);
         }
 
         return $baseObjects;
     }
 
     /**
-     * @param Structure\Font\Type1 $structure
+     * @param Catalog\Font\Type1 $structure
      *
      * @return BaseObject
      */
-    public function visitType1Font(Structure\Font\Type1 $structure): BaseObject
+    public function visitType1Font(Catalog\Font\Type1 $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
 
@@ -202,11 +198,11 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Image $structure
+     * @param Catalog\Image $structure
      *
      * @return BaseObject
      */
-    public function visitImage(Structure\Image $structure): BaseObject
+    public function visitImage(Catalog\Image $structure): BaseObject
     {
         $stream = $this->file->addStreamObject($structure->getImageData());
 
@@ -224,11 +220,11 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Font\Structure\FontStream $structure
+     * @param Catalog\Font\Structure\FontStream $structure
      *
      * @return StreamObject
      */
-    public function visitFontStream(Structure\Font\Structure\FontStream $structure)
+    public function visitFontStream(Catalog\Font\Structure\FontStream $structure)
     {
         $stream = $this->file->addStreamObject($structure->getFontData());
 
@@ -266,11 +262,11 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Font\Type0 $structure
+     * @param Catalog\Font\Type0 $structure
      *
      * @return DictionaryObject
      */
-    public function visitType0Font(Structure\Font\Type0 $structure)
+    public function visitType0Font(Catalog\Font\Type0 $structure)
     {
         $dictionary = $this->file->addDictionaryObject();
 
@@ -291,11 +287,11 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Font\Structure\CIDFont $structure
+     * @param Catalog\Font\Structure\CIDFont $structure
      *
      * @return DictionaryObject
      */
-    public function visitCIDFont(Structure\Font\Structure\CIDFont $structure)
+    public function visitCIDFont(Catalog\Font\Structure\CIDFont $structure)
     {
         $dictionary = $this->file->addDictionaryObject();
 
@@ -347,11 +343,11 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Content $param
+     * @param Catalog\Content $param
      *
      * @return StreamObject
      */
-    public function visitContent(Structure\Content $param)
+    public function visitContent(Catalog\Content $param)
     {
         /*
         could compress at this point with
