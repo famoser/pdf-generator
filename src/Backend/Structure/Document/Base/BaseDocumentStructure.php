@@ -21,9 +21,4 @@ abstract class BaseDocumentStructure
      * @return mixed
      */
     abstract public function accept(DocumentVisitor $documentVisitor);
-
-    /**
-     * @return string
-     */
-    abstract public function getIdentifier();
 }

@@ -44,7 +44,7 @@ class DocumentResources
     }
 
     /**
-     * @param \PdfGenerator\IR\Structure\Font $structure
+     * @param \PdfGenerator\Backend\Structure\Font $structure
      *
      * @return Font
      */
@@ -54,7 +54,7 @@ class DocumentResources
     }
 
     /**
-     * @param \PdfGenerator\IR\Structure\Image $structure
+     * @param \PdfGenerator\Backend\Structure\Document\Image $structure
      *
      * @return Image
      */
@@ -71,7 +71,7 @@ class DocumentResources
      */
     private function getOrCreate($structure, array $cache)
     {
-        $identifier = $structure->getIdentifier();
+        $identifier = spl_object_id($structure);
 
         if (!\array_key_exists($identifier, $cache)) {
             $font = $structure->accept($this->documentContentVisitor);

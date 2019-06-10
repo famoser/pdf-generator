@@ -42,6 +42,16 @@ class PageResources
     private $documentResources;
 
     /**
+     * @var Font[]
+     */
+    private $fonts;
+
+    /**
+     * @var Image[]
+     */
+    private $images;
+
+    /**
      * PageResources constructor.
      *
      * @param DocumentResources $documentResources
@@ -86,7 +96,10 @@ class PageResources
      */
     public function getFont(\PdfGenerator\IR\Structure\Font $structure)
     {
-        return $this->documentResources->getFont($structure);
+        $font = $this->documentResources->getFont($structure);
+        $this->fonts[$font->getIdentifier()] = $font;
+
+        return $font;
     }
 
     /**
@@ -96,7 +109,10 @@ class PageResources
      */
     public function getImage(\PdfGenerator\IR\Structure\Image $structure)
     {
-        return $this->documentResources->getImage($structure);
+        $image = $this->documentResources->getImage($structure);
+        $this->images[$image->getIdentifier()] = $image;
+
+        return $image;
     }
 
     /**
@@ -120,5 +136,21 @@ class PageResources
         $textState = $this->textStateRepository->getTextState();
 
         return new WritingState($generalGraphicState, $colorState, $textState);
+    }
+
+    /**
+     * @return Font[]
+     */
+    public function getFonts(): array
+    {
+        return $this->fonts;
+    }
+
+    /**
+     * @return Image[]
+     */
+    public function getImages(): array
+    {
+        return $this->images;
     }
 }

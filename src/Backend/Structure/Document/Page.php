@@ -15,9 +15,9 @@ use PdfGenerator\Backend\Catalog\Contents;
 use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\Catalog\Resources;
 use PdfGenerator\Backend\Structure\Base\BaseContent;
+use PdfGenerator\Backend\Structure\Document\Image;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use PdfGenerator\Backend\Transformation\DocumentResources;
-use PdfGenerator\Backend\Transformation\PageResources;
 
 class Page
 {
@@ -30,6 +30,16 @@ class Page
      * @var int[]
      */
     private $mediaBox;
+
+    /**
+     * @var Font[]
+     */
+    private $fonts;
+
+    /**
+     * @var Image[]
+     */
+    private $images;
 
     /**
      * Page constructor.
@@ -57,9 +67,7 @@ class Page
      */
     public function render(Pages $parent, DocumentResources $documentResources)
     {
-        $pageResources = new PageResources($documentResources);
-
-        $contentVisitor = new ContentVisitor($pageResources);
+        $contentVisitor = new ContentVisitor();
 
         $contentArray = [];
         foreach ($this->content as $item) {
@@ -68,8 +76,34 @@ class Page
         }
 
         $contents = new Contents($contentArray);
-        $resources = new Resources($pageResources->getFonts(), $pageResources->getImages());
+
+        $resources = new Resources();
+        foreach ($this->fonts as $font) {
+            $mappedFont = $documentResources->getFont($font);
+            $resources->addFont($mappedFont);
+        }
+
+        foreach ($this->images as $image) {
+            $mappedImage = $documentResources->getImage($image);
+            $resources->addImage($mappedImage);
+        }
 
         return new \PdfGenerator\Backend\Catalog\Page($parent, $this->mediaBox, $resources, $contents);
+    }
+
+    /**
+     * @param Font[] $fonts
+     */
+    public function setFonts(array $fonts): void
+    {
+        $this->fonts = $fonts;
+    }
+
+    /**
+     * @param Image[] $images
+     */
+    public function setImages(array $images): void
+    {
+        $this->images = $images;
     }
 }

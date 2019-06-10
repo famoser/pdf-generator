@@ -11,13 +11,7 @@
 
 namespace PdfGenerator\IR;
 
-use PdfGenerator\Backend\Catalog\Font\Structure\CIDFont;
-use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
-use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
-use PdfGenerator\Backend\Catalog\Font\Structure\FontStream;
-use PdfGenerator\Backend\Catalog\Font\Type0;
-use PdfGenerator\Backend\Catalog\Font\Type1;
-use PdfGenerator\Backend\Catalog\Image;
+use PdfGenerator\Backend\Structure\Document\Image;
 use PdfGenerator\Backend\Structure\Page;
 use PdfGenerator\Font\Backend\FileWriter;
 use PdfGenerator\Font\IR\Optimizer;
@@ -36,30 +30,11 @@ class DocumentVisitor
     private $documentResources;
 
     /**
-     * @var int[]
-     */
-    private $resourceCounters = [];
-
-    /**
      * DocumentStructureVisitor constructor.
      */
     public function __construct()
     {
         $this->documentResources = new DocumentResources($this);
-    }
-
-    /**
-     * @param string $prefix
-     *
-     * @return string
-     */
-    private function generateIdentifier(string $prefix)
-    {
-        if (!\array_key_exists($prefix, $this->resourceCounters)) {
-            $this->resourceCounters[$prefix] = 0;
-        }
-
-        return $prefix . $this->resourceCounters[$prefix]++;
     }
 
     /**
@@ -71,7 +46,6 @@ class DocumentVisitor
      */
     public function visitDefaultFont(DefaultFont $param)
     {
-        $identifier = $this->generateIdentifier('F');
         $baseFont = $this->getDefaultFontBaseFont($param->getFont(), $param->getStyle());
 
         return new Type1($identifier, $baseFont);
@@ -164,9 +138,10 @@ class DocumentVisitor
      */
     public function visitImage(Structure\Image $param)
     {
-        $identifier = $this->generateIdentifier('I');
+        list($width, $height) = getimagesize($param->getImagePath());
+        $imageData = file_get_contents($param->getImagePath());
 
-        return new Image($identifier, $param->getImagePath());
+        return new Image($imageData, $width, $height, \PdfGenerator\Backend\Catalog\Image::IMAGE_TYPE_JPEG);
     }
 
     /**
@@ -186,6 +161,9 @@ class DocumentVisitor
             $content = $item->accept($contentVisitor);
             $page->addContent($content);
         }
+
+        $page->setFonts($pageResources->getFonts());
+        $page->setImages($pageResources->getImages());
 
         return $page;
     }

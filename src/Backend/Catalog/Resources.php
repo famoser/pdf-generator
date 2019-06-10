@@ -28,25 +28,19 @@ class Resources extends BaseStructure
     private $images = [];
 
     /**
-     * Resources constructor.
-     *
-     * @param Font[] $fonts
-     * @param Image[] $images
+     * @param Font $font
      */
-    public function __construct(array $fonts, array $images)
+    public function addFont(Font $font)
     {
-        $this->fonts = $fonts;
-        $this->images = $images;
+        $this->fonts[] = $font;
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
-     * @return BaseObject
+     * @param Image $image
      */
-    public function accept(CatalogVisitor $visitor)
+    public function addImage(Image $image)
     {
-        return $visitor->visitResources($this);
+        $this->images[] = $image;
     }
 
     /**
@@ -63,5 +57,15 @@ class Resources extends BaseStructure
     public function getImages(): array
     {
         return $this->images;
+    }
+
+    /**
+     * @param CatalogVisitor $visitor
+     *
+     * @return BaseObject
+     */
+    public function accept(CatalogVisitor $visitor)
+    {
+        return $visitor->visitResources($this);
     }
 }

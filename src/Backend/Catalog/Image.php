@@ -20,6 +20,8 @@ class Image extends BaseStructure
 {
     use IdentifiableStructureTrait;
 
+    const IMAGE_TYPE_JPEG = 0;
+
     /**
      * @var float
      */
@@ -39,16 +41,20 @@ class Image extends BaseStructure
      * Image constructor.
      *
      * @param string $identifier
-     * @param string $imagePath
+     * @param int $imageType
+     * @param string $imageContent
+     * @param float $width
+     * @param float $height
      */
-    public function __construct(string $identifier, string $imagePath)
+    public function __construct(string $identifier, int $imageType, string $imageContent, float $width, float $height)
     {
         $this->setIdentifier($identifier);
 
-        list($width, $height) = getimagesize($imagePath);
+        \assert($imageType === self::IMAGE_TYPE_JPEG);
+
+        $this->imageData = $imageContent;
         $this->width = $width;
         $this->height = $height;
-        $this->imageData = file_get_contents($imagePath);
     }
 
     /**
