@@ -12,6 +12,7 @@
 namespace PdfGenerator\IR\Structure2\Font;
 
 use PdfGenerator\IR\Structure2\Font;
+use PdfGenerator\IR\Structure2Visitor;
 
 class DefaultFont extends Font
 {
@@ -49,5 +50,39 @@ class DefaultFont extends Font
     {
         $this->font = $font;
         $this->style = $style;
+    }
+
+    /**
+     * @param Structure2Visitor $visitor
+     *
+     * @return mixed
+     */
+    public function accept(Structure2Visitor $visitor)
+    {
+        return $visitor->visitDefaultFont($this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdentifier()
+    {
+        return $this->font . '_' . $this->style;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFont(): string
+    {
+        return $this->font;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStyle(): string
+    {
+        return $this->style;
     }
 }

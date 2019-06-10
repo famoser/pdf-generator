@@ -11,11 +11,12 @@
 
 namespace PdfGenerator\IR\Structure2\Content;
 
+use PdfGenerator\IR\Structure2\Content\Base\BaseContent;
 use PdfGenerator\IR\Structure2\Content\Common\Position;
 use PdfGenerator\IR\Structure2\Content\Common\Size;
 use PdfGenerator\IR\Structure2\Content\Rectangle\Style;
 
-class Rectangle
+class Rectangle extends BaseContent
 {
     /**
      * @var Position
@@ -68,5 +69,15 @@ class Rectangle
     public function getStyle(): Style
     {
         return $this->style;
+    }
+
+    /**
+     * @param ContentVisitor $visitor
+     *
+     * @return \PdfGenerator\Backend\Content\Base\BaseContent
+     */
+    public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Content\Base\BaseContent
+    {
+        return $visitor->visitRectangle($visitor);
     }
 }

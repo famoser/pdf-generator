@@ -12,6 +12,7 @@
 namespace PdfGenerator\IR\Structure2\Font;
 
 use PdfGenerator\IR\Structure2\Font;
+use PdfGenerator\IR\Structure2Visitor;
 
 class EmbeddedFont extends Font
 {
@@ -28,5 +29,31 @@ class EmbeddedFont extends Font
     public function __construct(string $fontPath)
     {
         $this->fontPath = $fontPath;
+    }
+
+    /**
+     * @param Structure2Visitor $visitor
+     *
+     * @return mixed
+     */
+    public function accept(Structure2Visitor $visitor)
+    {
+        return $visitor->visitEmbeddedFont($this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdentifier()
+    {
+        return $this->fontPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFontPath(): string
+    {
+        return $this->fontPath;
     }
 }

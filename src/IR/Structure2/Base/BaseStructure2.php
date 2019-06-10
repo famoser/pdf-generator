@@ -21,4 +21,9 @@ abstract class BaseStructure2
      * @return mixed
      */
     abstract public function accept(Structure2Visitor $visitor);
+
+    /**
+     * @return mixed
+     */
+    abstract public function getIdentifier();
 }

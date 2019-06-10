@@ -11,10 +11,11 @@
 
 namespace PdfGenerator\IR\Structure2\Content;
 
+use PdfGenerator\IR\Structure2\Content\Base\BaseContent;
 use PdfGenerator\IR\Structure2\Content\Common\Position;
 use PdfGenerator\IR\Structure2\Content\Text\Style;
 
-class Text
+class Text extends BaseContent
 {
     /**
      * @var string
@@ -67,5 +68,15 @@ class Text
     public function getStyle(): Style
     {
         return $this->style;
+    }
+
+    /**
+     * @param ContentVisitor $visitor
+     *
+     * @return \PdfGenerator\Backend\Content\Base\BaseContent|null
+     */
+    public function accept(ContentVisitor $visitor): ?\PdfGenerator\Backend\Content\Base\BaseContent
+    {
+        return $visitor->visitText($this);
     }
 }

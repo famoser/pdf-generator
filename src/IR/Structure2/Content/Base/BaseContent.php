@@ -11,14 +11,14 @@
 
 namespace PdfGenerator\IR\Structure2\Content\Base;
 
-use PdfGenerator\Backend\Structure\Page;
 use PdfGenerator\IR\Structure2\Content\ContentVisitor;
 
 abstract class BaseContent
 {
     /**
      * @param ContentVisitor $visitor
-     * @param Page $page
+     *
+     * @return \PdfGenerator\Backend\Content\Base\BaseContent|null
      */
-    abstract public function accept(ContentVisitor $visitor, Page $page);
+    abstract public function accept(ContentVisitor $visitor): ?\PdfGenerator\Backend\Content\Base\BaseContent;
 }

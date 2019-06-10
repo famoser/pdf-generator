@@ -41,4 +41,46 @@ class Color
         $this->green = $green;
         $this->blue = $blue;
     }
+
+    /**
+     * @param string $color
+     *
+     * @throws \Exception
+     *
+     * @return Color
+     */
+    public static function createFromHex(string $color)
+    {
+        if (!preg_match('/^#([a-f0-9]){6}$/', $color)) {
+            throw new \Exception('please pass the value in the form #000000');
+        }
+
+        $rgbArray = sscanf($value, '#%02x%02x%02x');
+
+        return new self(...$rgbArray);
+    }
+
+    /**
+     * @return int
+     */
+    public function getRed(): int
+    {
+        return $this->red;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGreen(): int
+    {
+        return $this->green;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlue(): int
+    {
+        return $this->blue;
+    }
 }
