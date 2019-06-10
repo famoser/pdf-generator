@@ -31,7 +31,7 @@ class TextLevelRepository
     /**
      * @var TextStateRepository
      */
-    private $texStateRepository;
+    private $textStateRepository;
 
     /**
      * PageLevelRepository constructor.
@@ -44,7 +44,7 @@ class TextLevelRepository
     {
         $this->generalGraphicStateRepository = $generalGraphicStateRepository;
         $this->colorStateRepository = $colorStateRepository;
-        $this->texStateRepository = $textStateRepository;
+        $this->textStateRepository = $textStateRepository;
     }
 
     /**
@@ -54,7 +54,7 @@ class TextLevelRepository
     {
         $generalGraphicState = $this->generalGraphicStateRepository->getGeneralGraphicState();
         $colorState = $this->colorStateRepository->getColorState();
-        $textState = $this->texStateRepository->getTextState();
+        $textState = $this->textStateRepository->getTextState();
 
         return new TextLevel($generalGraphicState, $colorState, $textState);
     }
