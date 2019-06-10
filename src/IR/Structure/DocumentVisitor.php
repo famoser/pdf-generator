@@ -18,7 +18,7 @@ use PdfGenerator\Font\Backend\FileWriter;
 use PdfGenerator\Font\IR\Optimizer;
 use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
-use PdfGenerator\IR\Structure\PageContent\ContentVisitor;
+use PdfGenerator\IR\Structure\PageContent\ToBackendContentVisitor;
 use PdfGenerator\IR\Transformation\Document\Font\DefaultFontMapping;
 use PdfGenerator\IR\Transformation\DocumentResources;
 use PdfGenerator\IR\Transformation\PageResources;
@@ -78,7 +78,7 @@ class DocumentVisitor
     /**
      * @param Structure\Font\EmbeddedFont $param
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return EmbeddedFont
      */
@@ -125,7 +125,7 @@ class DocumentVisitor
         $page = new Page($mediaBox);
 
         $pageResources = new PageResources($this->documentResources);
-        $contentVisitor = new ContentVisitor($pageResources);
+        $contentVisitor = new ToBackendContentVisitor($pageResources);
         foreach ($param->getContent() as $item) {
             $content = $item->accept($contentVisitor);
             $page->addContent($content);
