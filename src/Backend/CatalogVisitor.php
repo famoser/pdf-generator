@@ -23,7 +23,7 @@ use PdfGenerator\Backend\File\Object\StreamObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
 
-class StructureVisitor
+class CatalogVisitor
 {
     /**
      * @var BaseObject[]
@@ -102,7 +102,7 @@ class StructureVisitor
 
         $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
 
-        $contents = $structure->getContents()->accept($this, $structure);
+        $contents = $structure->getContents()->accept($this);
         $dictionary->addReferenceArrayEntry('Contents', $contents);
 
         return $dictionary;
@@ -193,6 +193,7 @@ class StructureVisitor
         $dictionary->addTextEntry('Type', '/Font');
         $dictionary->addTextEntry('Subtype', '/Type1');
         $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
+        $dictionary->addTextEntry('Encoding', '/' . $structure->getEncoding());
 
         return $dictionary;
     }

@@ -11,15 +11,15 @@
 
 namespace PdfGenerator\Backend\Catalog\Base;
 
+use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\StructureVisitor;
 
 abstract class BaseStructure
 {
     /**
-     * @param StructureVisitor $visitor
+     * @param CatalogVisitor $visitor
      *
      * @return BaseObject|BaseObject[]
      */
-    abstract public function accept(StructureVisitor $visitor);
+    abstract public function accept(CatalogVisitor $visitor);
 }

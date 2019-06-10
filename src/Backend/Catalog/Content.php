@@ -12,8 +12,8 @@
 namespace PdfGenerator\Backend\Catalog;
 
 use PdfGenerator\Backend\Catalog\Base\BaseStructure;
+use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\StructureVisitor;
 
 class Content extends BaseStructure
 {
@@ -52,11 +52,11 @@ class Content extends BaseStructure
     }
 
     /**
-     * @param StructureVisitor $visitor
+     * @param CatalogVisitor $visitor
      *
      * @return BaseObject|BaseObject[]
      */
-    public function accept(StructureVisitor $visitor)
+    public function accept(CatalogVisitor $visitor)
     {
         return $visitor->visitContent($this);
     }

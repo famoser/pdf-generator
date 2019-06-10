@@ -42,16 +42,6 @@ class PageResources
     private $documentResources;
 
     /**
-     * @var Font[]
-     */
-    private $fonts;
-
-    /**
-     * @var Image[]
-     */
-    private $images;
-
-    /**
      * PageResources constructor.
      *
      * @param DocumentResources $documentResources
@@ -96,10 +86,7 @@ class PageResources
      */
     public function getFont(\PdfGenerator\IR\Structure\Font $structure)
     {
-        $font = $this->documentResources->getFont($structure);
-        $this->fonts[$font->getIdentifier()] = $font;
-
-        return $font;
+        return $this->documentResources->getFont($structure);
     }
 
     /**
@@ -109,16 +96,13 @@ class PageResources
      */
     public function getImage(\PdfGenerator\IR\Structure\Image $structure)
     {
-        $image = $this->documentResources->getImage($structure);
-        $this->images[$image->getIdentifier()] = $image;
-
-        return $image;
+        return $this->documentResources->getImage($structure);
     }
 
     /**
      * @return DrawingState
      */
-    public function getPageLevel()
+    public function getDrawingState()
     {
         $generalGraphicState = $this->generalGraphicStateRepository->getGeneralGraphicState();
         $colorState = $this->colorStateRepository->getColorState();
@@ -129,28 +113,12 @@ class PageResources
     /**
      * @return WritingState
      */
-    public function getTextLevel()
+    public function getWritingState()
     {
         $generalGraphicState = $this->generalGraphicStateRepository->getGeneralGraphicState();
         $colorState = $this->colorStateRepository->getColorState();
         $textState = $this->textStateRepository->getTextState();
 
         return new WritingState($generalGraphicState, $colorState, $textState);
-    }
-
-    /**
-     * @return Font[]
-     */
-    public function getFonts(): array
-    {
-        return $this->fonts;
-    }
-
-    /**
-     * @return Image[]
-     */
-    public function getImages(): array
-    {
-        return $this->images;
     }
 }

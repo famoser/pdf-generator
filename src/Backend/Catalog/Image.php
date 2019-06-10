@@ -13,8 +13,8 @@ namespace PdfGenerator\Backend\Catalog;
 
 use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\Catalog\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\StructureVisitor;
 
 class Image extends BaseStructure
 {
@@ -52,11 +52,11 @@ class Image extends BaseStructure
     }
 
     /**
-     * @param StructureVisitor $visitor
+     * @param CatalogVisitor $visitor
      *
      * @return BaseObject
      */
-    public function accept(StructureVisitor $visitor)
+    public function accept(CatalogVisitor $visitor)
     {
         return $visitor->visitImage($this);
     }

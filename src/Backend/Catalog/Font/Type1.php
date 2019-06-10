@@ -12,8 +12,8 @@
 namespace PdfGenerator\Backend\Catalog\Font;
 
 use PdfGenerator\Backend\Catalog\Font;
+use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\StructureVisitor;
 
 class Type1 extends Font
 {
@@ -39,16 +39,23 @@ class Type1 extends Font
     private $baseFont;
 
     /**
+     * @var string
+     */
+    private $encoding;
+
+    /**
      * Type1 constructor.
      *
      * @param string $identifier
      * @param string $baseFont
+     * @param string $encoding
      */
-    public function __construct(string $identifier, string $baseFont)
+    public function __construct(string $identifier, string $baseFont, string $encoding)
     {
         parent::__construct($identifier);
 
         $this->baseFont = $baseFont;
+        $this->encoding = $encoding;
     }
 
     /**
@@ -60,20 +67,20 @@ class Type1 extends Font
     }
 
     /**
-     * @param string $baseFont
+     * @return string
      */
-    public function setBaseFont(string $baseFont): void
+    public function getEncoding(): string
     {
-        $this->baseFont = $baseFont;
+        return $this->encoding;
     }
 
     /**
-     * @param StructureVisitor $visitor
+     * @param CatalogVisitor $visitor
      *
      * @return BaseObject
      */
-    public function accept(StructureVisitor $visitor)
+    public function accept(CatalogVisitor $visitor)
     {
-        return $visitor->visitType1Font($this, $file);
+        return $visitor->visitType1Font($this);
     }
 }

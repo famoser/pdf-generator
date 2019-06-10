@@ -12,9 +12,9 @@
 namespace PdfGenerator\Backend\Catalog;
 
 use PdfGenerator\Backend\Catalog\Base\BaseStructure;
+use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\StructureVisitor;
 
 class Catalog extends BaseStructure
 {
@@ -34,11 +34,11 @@ class Catalog extends BaseStructure
     }
 
     /**
-     * @param StructureVisitor $visitor
+     * @param CatalogVisitor $visitor
      *
      * @return BaseObject
      */
-    public function accept(StructureVisitor $visitor)
+    public function accept(CatalogVisitor $visitor)
     {
         return $visitor->visitCatalog($this);
     }
@@ -57,7 +57,7 @@ class Catalog extends BaseStructure
     public function render()
     {
         $file = new File();
-        $structureVisitor = new StructureVisitor($file);
+        $structureVisitor = new CatalogVisitor($file);
 
         $structureVisitor->visitCatalog($this);
 

@@ -13,8 +13,8 @@ namespace PdfGenerator\Backend\Catalog\Font\Structure;
 
 use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\Catalog\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\StructureVisitor;
 
 class FontDescriptor extends BaseStructure
 {
@@ -272,11 +272,11 @@ class FontDescriptor extends BaseStructure
     }
 
     /**
-     * @param StructureVisitor $visitor
+     * @param CatalogVisitor $visitor
      *
      * @return BaseObject|BaseObject[]
      */
-    public function accept(StructureVisitor $visitor)
+    public function accept(CatalogVisitor $visitor)
     {
         return $visitor->visitFontDescriptor($this);
     }

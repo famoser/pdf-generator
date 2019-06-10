@@ -45,7 +45,7 @@ class ContentVisitor
         $image = $this->pageResources->getImage($placement->getImage());
 
         $this->applyImagePlacementPositionAndSize($image, $placement);
-        $pageLevel = $this->pageResources->getPageLevel();
+        $pageLevel = $this->pageResources->getDrawingState();
 
         return new ImageContent($image, $pageLevel);
     }
@@ -74,7 +74,7 @@ class ContentVisitor
         $paintingMode = $this->getPaintingMode($rectangle);
         $this->applyPosition($rectangle->getPosition());
         $this->applyRectangleStyle($rectangle->getStyle());
-        $pageLevel = $this->pageResources->getPageLevel();
+        $pageLevel = $this->pageResources->getDrawingState();
 
         return new \PdfGenerator\Backend\Structure\Rectangle($width, $height, $paintingMode, $pageLevel);
     }
@@ -134,7 +134,7 @@ class ContentVisitor
 
         $this->applyPosition($param->getPosition());
         $this->applyTextStyle($param->getStyle());
-        $textLevel = $this->pageResources->getTextLevel();
+        $textLevel = $this->pageResources->getWritingState();
 
         return new TextContent($lines, $textLevel);
     }

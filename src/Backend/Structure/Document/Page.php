@@ -16,6 +16,8 @@ use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\Catalog\Resources;
 use PdfGenerator\Backend\Structure\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
+use PdfGenerator\Backend\Transformation\DocumentResources;
+use PdfGenerator\Backend\Transformation\PageResources;
 
 class Page
 {
@@ -49,12 +51,15 @@ class Page
 
     /**
      * @param Pages $parent
+     * @param DocumentResources $documentResources
      *
      * @return \PdfGenerator\Backend\Catalog\Page
      */
-    public function render(Pages $parent)
+    public function render(Pages $parent, DocumentResources $documentResources)
     {
-        $contentVisitor = new ContentVisitor();
+        $pageResources = new PageResources($documentResources);
+
+        $contentVisitor = new ContentVisitor($pageResources);
 
         $contentArray = [];
         foreach ($this->content as $item) {

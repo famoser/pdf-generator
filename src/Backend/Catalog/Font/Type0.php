@@ -13,8 +13,8 @@ namespace PdfGenerator\Backend\Catalog\Font;
 
 use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
+use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\StructureVisitor;
 
 class Type0 extends Font
 {
@@ -103,12 +103,12 @@ class Type0 extends Font
     }
 
     /**
-     * @param StructureVisitor $visitor
+     * @param CatalogVisitor $visitor
      *
      * @return BaseObject|BaseObject[]
      */
-    public function accept(StructureVisitor $visitor)
+    public function accept(CatalogVisitor $visitor)
     {
-        return $visitor->visitType0Font($this, $file);
+        return $visitor->visitType0Font($this);
     }
 }

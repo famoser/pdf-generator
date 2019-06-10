@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Backend\Catalog\Font\Structure;
 
+use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
-use PdfGenerator\Backend\StructureVisitor;
 
 /**
  * specifies the character set used
@@ -94,11 +94,11 @@ class CIDSystemInfo
     }
 
     /**
-     * @param StructureVisitor $param
+     * @param CatalogVisitor $param
      *
      * @return DictionaryToken
      */
-    public function accept(StructureVisitor $param)
+    public function accept(CatalogVisitor $param)
     {
         return $param->visitCIDSystemInfo($this);
     }
