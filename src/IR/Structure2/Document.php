@@ -11,10 +11,12 @@
 
 namespace PdfGenerator\IR\Structure2;
 
+use PdfGenerator\IR\Structure2\Base\BaseStructure2;
 use PdfGenerator\IR\Structure2\Font\DefaultFont;
 use PdfGenerator\IR\Structure2\Font\EmbeddedFont;
+use PdfGenerator\IR\Structure2Visitor;
 
-class Document
+class Document extends BaseStructure2
 {
     /**
      * @var Page[]
@@ -51,15 +53,14 @@ class Document
      */
     public function getOrCreatePage(int $pageNumber): Page
     {
-        $pageBuildersCount = \count($this->pages);
-        $targetPageBuilderIndex = $pageNumber - 1;
+        $maxPageNumber = \count($this->pages);
 
-        while ($targetPageBuilderIndex >= $pageBuildersCount) {
-            $this->pages[] = new Page();
-            ++$pageBuildersCount;
+        while ($pageNumber > $maxPageNumber) {
+            $this->pages[] = new Page($maxPageNumber);
+            ++$maxPageNumber;
         }
 
-        return $this->pages[$targetPageBuilderIndex];
+        return $this->pages[$pageNumber - 1];
     }
 
     /**
@@ -128,5 +129,15 @@ class Document
         }
 
         return $this->embeddedFonts[$fontPath];
+    }
+
+    /**
+     * @param Structure2Visitor $visitor
+     *
+     * @return mixed
+     */
+    public function accept(Structure2Visitor $visitor)
+    {
+        return $visitor->visitDocument($this);
     }
 }

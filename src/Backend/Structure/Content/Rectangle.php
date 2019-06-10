@@ -20,6 +20,7 @@ use PdfGenerator\Backend\Structure\Page;
 
 class Rectangle extends BaseContent
 {
+    const PAINTING_MODE_NONE = 0;
     const PAINTING_MODE_STROKE = 1;
     const PAINTING_MODE_FILL = 2;
     const PAINTING_MODE_STROKE_FILL = 3;

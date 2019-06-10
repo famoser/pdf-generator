@@ -12,136 +12,75 @@
 namespace PdfGenerator\IR;
 
 use PdfGenerator\Backend\Structure\Catalog;
-use PdfGenerator\Backend\Structure\Font\Structure\CIDFont;
-use PdfGenerator\Backend\Structure\Font\Structure\CIDSystemInfo;
-use PdfGenerator\Backend\Structure\Font\Structure\FontDescriptor;
-use PdfGenerator\Backend\Structure\Font\Structure\FontStream;
-use PdfGenerator\Backend\Structure\Font\Type0;
-use PdfGenerator\Backend\Structure\Font\Type1;
-use PdfGenerator\Font\Backend\FileWriter;
-use PdfGenerator\Font\IR\Optimizer;
-use PdfGenerator\Font\IR\Parser;
-use PdfGenerator\IR\Structure2\Font\DefaultFont;
-use PdfGenerator\IR\Transformation\Document\Font\DefaultFontMapping;
+use PdfGenerator\Backend\Structure\Contents;
+use PdfGenerator\Backend\Structure\Page;
+use PdfGenerator\Backend\Structure\Pages;
+use PdfGenerator\Backend\Structure\Resources;
+use PdfGenerator\IR\Structure2\Content\ContentVisitor;
+use PdfGenerator\IR\Transformation\DocumentResources;
+use PdfGenerator\IR\Transformation\PageResources;
 
 class Structure2Visitor
 {
     /**
-     * @var int[]
+     * @var IdentifierGenerator
      */
-    private $resourceCounters = [];
+    private $identifierGenerator;
 
     /**
-     * @param string $prefix
-     *
-     * @return string
+     * @var DocumentResources
      */
-    private function generateIdentifier(string $prefix)
-    {
-        if (!\array_key_exists($prefix, $this->resourceCounters)) {
-            $this->resourceCounters[$prefix] = 0;
-        }
-
-        return $prefix . $this->resourceCounters[$prefix]++;
-    }
-
-    public static function renderDocument(Structure2\Document $param)
-    {
-        $catalog = new Catalog();
-    }
+    private $documentResources;
 
     /**
-     * @param DefaultFont $param
+     * Structure2Visitor constructor.
      *
-     * @throws \Exception
-     *
-     * @return Type1
+     * @param IdentifierGenerator $identifierGenerator
+     * @param DocumentResources $documentResources
      */
-    public function visitDefaultFont(DefaultFont $param)
+    public function __construct(IdentifierGenerator $identifierGenerator, DocumentResources $documentResources)
     {
-        $identifier = $this->generateIdentifier('F');
-        $baseFont = $this->getDefaultFontBaseFont($param->getFont(), $param->getStyle());
-
-        return new Type1($identifier, $baseFont);
+        $this->identifierGenerator = $identifierGenerator;
+        $this->documentResources = $documentResources;
     }
 
     /**
-     * @param string $font
-     * @param string $style
+     * @param Structure2\Document $param
      *
-     * @throws \Exception
-     *
-     * @return string
+     * @return Catalog
      */
-    private function getDefaultFontBaseFont(string $font, string $style): string
+    public function visitDocument(Structure2\Document $param)
     {
-        if (!\array_key_exists($font, DefaultFontMapping::$defaultFontMapping)) {
-            throw new \Exception('The font ' . $font . ' is not part of the default set.');
+        $pages = new Pages();
+        foreach ($param->getPages() as $page) {
+            $page = $this->visitPage($page, new Pages());
+            $pages->addPage($page);
         }
 
-        $styles = DefaultFontMapping::$defaultFontMapping[$font];
-        if (!\array_key_exists($style, $styles)) {
-            throw new \Exception('This font style ' . $style . ' is not part of the default set.');
-        }
-
-        return $styles[$style];
+        return new Catalog([$pages]);
     }
 
     /**
-     * @param Structure2\Font\EmbeddedFont $param
+     * @param Structure2\Page $param
+     * @param Pages $pages
      *
-     * @throws \Exception
-     *
-     * @return Type0
+     * @return Page
      */
-    public function visitEmbeddedFont(Structure2\Font\EmbeddedFont $param)
+    public function visitPage(Structure2\Page $param, Pages $pages)
     {
-        $parser = Parser::create();
-        $fontContent = file_get_contents($param->getFontPath());
-        $font = $parser->parse($fontContent);
+        $mediaBox = [0, 0, 210, 297];
 
-        $optimizer = Optimizer::create();
-        $fontSubset = $optimizer->getFontSubset($font, $characters);
-
-        $writer = FileWriter::create();
-        $fontContent = $writer->writeFont($fontSubset);
-
-        $baseFontName = 'Some';
-
-        $fontStream = new FontStream();
-        $fontStream->setFontData($fontContent);
-        $fontStream->setSubtype(FontStream::SUBTYPE_OPEN_TYPE);
-
-        $cIDSystemInfo = new CIDSystemInfo();
-        $cIDSystemInfo->setRegistry('famoser');
-        $cIDSystemInfo->setOrdering(1);
-        $cIDSystemInfo->setSupplement(1);
-
-        $fontDescriptor = new FontDescriptor();
-        // TODO: missing properties
-        $fontDescriptor->setFontFile3($fontStream);
-
-        $cidFont = new CIDFont();
-        $cidFont->setSubType(CIDFont::SUBTYPE_CID_FONT_TYPE_2);
-        $cidFont->setDW(1000);
-        $cidFont->setCIDSystemInfo($cIDSystemInfo);
-        $cidFont->setFontDescriptor($fontDescriptor);
-        $cidFont->setBaseFont($baseFontName);
-
-        $characterWidth = [$fontSubset->getMissingGlyphCharacter()->getLongHorMetric()->getAdvanceWidth()];
-        foreach ($fontSubset->getCharacters() as $character) {
-            $characterWidth[] = $character->getLongHorMetric()->getAdvanceWidth();
+        $pageResources = new PageResources($this->documentResources);
+        $contentVisitor = new ContentVisitor($pageResources);
+        $contentArray = [];
+        foreach ($param->getContent() as $item) {
+            $content = $item->accept($contentVisitor);
+            $contentArray[] = $content;
         }
 
-        $cidFont->setW($characterWidth);
+        $contents = new Contents($contentArray);
+        $resources = new Resources($pageResources->getFonts(), $pageResources->getImages());
 
-        $identifier = $this->generateIdentifier('F');
-        $type0Font = new Type0($identifier);
-        $type0Font->setDescendantFont($cidFont);
-        $type0Font->setBaseFont($baseFontName);
-        $type0Font->setEncoding($cMap);
-        $type0Font->setToUnicode($cMap);
-
-        return $type0Font;
+        return new Page($pages, $mediaBox, $resources, $contents);
     }
 }

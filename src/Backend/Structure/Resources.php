@@ -14,26 +14,14 @@ namespace PdfGenerator\Backend\Structure;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Base\BaseStructure;
-use PdfGenerator\Backend\Structure\Font\Type0;
-use PdfGenerator\Backend\Structure\Font\Type1;
 use PdfGenerator\Backend\StructureVisitor;
 
 class Resources extends BaseStructure
 {
     /**
-     * @var int
+     * @var Font[]
      */
-    private $resourceCounter;
-
-    /**
-     * @var Type1[]
-     */
-    private $type1Fonts = [];
-
-    /**
-     * @var Type0[]
-     */
-    private $type0Fonts = [];
+    private $fonts = [];
 
     /**
      * @var Image[]
@@ -41,53 +29,15 @@ class Resources extends BaseStructure
     private $images = [];
 
     /**
-     * @return Type0
-     */
-    public function addType0Font()
-    {
-        $identifier = $this->generateIdentifier('F');
-        $font = new Type0($identifier);
-        $this->type0Fonts[$identifier] = $font;
-
-        return $font;
-    }
-
-    /**
-     * @param string $baseFont
+     * Resources constructor.
      *
-     * @return Type1
+     * @param Font[] $fonts
+     * @param Image[] $images
      */
-    public function addType1Font(string $baseFont)
+    public function __construct(array $fonts, array $images)
     {
-        $identifier = $this->generateIdentifier('F');
-        $font = new Type1($identifier, $baseFont);
-        $this->type1Fonts[$identifier] = $font;
-
-        return $font;
-    }
-
-    /**
-     * @param string $imagePath
-     *
-     * @return Image
-     */
-    public function addImage(string $imagePath)
-    {
-        $identifier = $this->generateIdentifier('I');
-        $image = new Image($identifier, $imagePath);
-        $this->images[$identifier] = $image;
-
-        return $image;
-    }
-
-    /**
-     * @param string $prefix
-     *
-     * @return string
-     */
-    private function generateIdentifier(string $prefix)
-    {
-        return $prefix . $this->resourceCounter++;
+        $this->fonts = $fonts;
+        $this->images = $images;
     }
 
     /**
@@ -102,19 +52,11 @@ class Resources extends BaseStructure
     }
 
     /**
-     * @return Type0[]
+     * @return Font[]
      */
-    public function getType0Fonts(): array
+    public function getFonts(): array
     {
-        return $this->type0Fonts;
-    }
-
-    /**
-     * @return Type1[]
-     */
-    public function getType1Fonts(): array
-    {
-        return $this->type1Fonts;
+        return $this->fonts;
     }
 
     /**

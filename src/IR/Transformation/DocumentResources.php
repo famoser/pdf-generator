@@ -14,6 +14,7 @@ namespace PdfGenerator\IR\Transformation;
 use PdfGenerator\Backend\Structure\Font;
 use PdfGenerator\Backend\Structure\Image;
 use PdfGenerator\IR\Structure2\Base\BaseStructure2;
+use PdfGenerator\IR\Structure2\Base\DocumentStructure;
 use PdfGenerator\IR\Structure2Visitor;
 
 class DocumentResources
@@ -64,12 +65,12 @@ class DocumentResources
     }
 
     /**
-     * @param BaseStructure2 $structure
+     * @param DocumentStructure $structure
      * @param BaseStructure2[] $cache
      *
      * @return BaseStructure2|mixed
      */
-    private function getOrCreate(BaseStructure2 $structure, array $cache)
+    private function getOrCreate($structure, array $cache)
     {
         $identifier = $structure->getIdentifier();
 

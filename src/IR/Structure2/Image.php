@@ -11,10 +11,10 @@
 
 namespace PdfGenerator\IR\Structure2;
 
-use PdfGenerator\IR\Structure2\Base\BaseStructure2;
-use PdfGenerator\IR\Structure2Visitor;
+use PdfGenerator\IR\DocumentStructureVisitor;
+use PdfGenerator\IR\Structure2\Base\DocumentStructure;
 
-class Image extends BaseStructure2
+class Image extends DocumentStructure
 {
     /**
      * @var string
@@ -32,19 +32,27 @@ class Image extends BaseStructure2
     }
 
     /**
-     * @param Structure2Visitor $visitor
+     * @param DocumentStructureVisitor $visitor
      *
      * @return mixed
      */
-    public function accept(Structure2Visitor $visitor)
+    public function accept(DocumentStructureVisitor $visitor)
     {
         return $visitor->visitImage($this);
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIdentifier()
+    {
+        return $this->imagePath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImagePath(): string
     {
         return $this->imagePath;
     }

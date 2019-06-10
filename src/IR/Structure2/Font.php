@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\IR\Structure2;
 
-use PdfGenerator\IR\Structure2\Base\BaseStructure2;
+use PdfGenerator\IR\Structure2\Base\DocumentStructure;
 
-abstract class Font extends BaseStructure2
+abstract class Font extends DocumentStructure
 {
 }

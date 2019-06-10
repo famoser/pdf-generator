@@ -144,8 +144,9 @@ class ContentVisitor
                 return 'f';
             case Rectangle::PAINTING_MODE_STROKE_FILL:
                 return 'b';
+            case Rectangle::PAINTING_MODE_NONE:
             default:
-                return 's';
+                return 'n';
         }
     }
 }

@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\IR\Structure2\Font;
 
+use PdfGenerator\IR\DocumentStructureVisitor;
 use PdfGenerator\IR\Structure2\Font;
-use PdfGenerator\IR\Structure2Visitor;
 
 class EmbeddedFont extends Font
 {
@@ -32,11 +32,11 @@ class EmbeddedFont extends Font
     }
 
     /**
-     * @param Structure2Visitor $visitor
+     * @param DocumentStructureVisitor $visitor
      *
      * @return mixed
      */
-    public function accept(Structure2Visitor $visitor)
+    public function accept(DocumentStructureVisitor $visitor)
     {
         return $visitor->visitEmbeddedFont($this);
     }

@@ -13,6 +13,8 @@ namespace PdfGenerator\IR\Transformation;
 
 use PdfGenerator\Backend\Content\Operators\Level\PageLevel;
 use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
+use PdfGenerator\Backend\Structure\Font;
+use PdfGenerator\Backend\Structure\Image;
 use PdfGenerator\IR\Configuration\State\ColorStateRepository;
 use PdfGenerator\IR\Configuration\State\GeneralGraphicStateRepository;
 use PdfGenerator\IR\Configuration\State\TextStateRepository;
@@ -35,10 +37,29 @@ class PageResources
     private $textStateRepository;
 
     /**
-     * PageResources constructor.
+     * @var DocumentResources
      */
-    public function __construct()
+    private $documentResources;
+
+    /**
+     * @var Font[]
+     */
+    private $fonts;
+
+    /**
+     * @var Image[]
+     */
+    private $images;
+
+    /**
+     * PageResources constructor.
+     *
+     * @param DocumentResources $documentResources
+     */
+    public function __construct(DocumentResources $documentResources)
     {
+        $this->documentResources = $documentResources;
+
         $this->generalGraphicStateRepository = new GeneralGraphicStateRepository();
         $this->colorStateRepository = new ColorStateRepository();
         $this->textStateRepository = new TextStateRepository();
@@ -69,6 +90,32 @@ class PageResources
     }
 
     /**
+     * @param \PdfGenerator\IR\Structure2\Font $structure
+     *
+     * @return Font
+     */
+    public function getFont(\PdfGenerator\IR\Structure2\Font $structure)
+    {
+        $font = $this->documentResources->getFont($structure);
+        $this->fonts[$font->getIdentifier()] = $font;
+
+        return $font;
+    }
+
+    /**
+     * @param \PdfGenerator\IR\Structure2\Image $structure
+     *
+     * @return Image
+     */
+    public function getImage(\PdfGenerator\IR\Structure2\Image $structure)
+    {
+        $image = $this->documentResources->getImage($structure);
+        $this->images[$image->getIdentifier()] = $image;
+
+        return $image;
+    }
+
+    /**
      * @return PageLevel
      */
     public function getPageLevel()
@@ -89,5 +136,21 @@ class PageResources
         $textState = $this->textStateRepository->getTextState();
 
         return new TextLevel($generalGraphicState, $colorState, $textState);
+    }
+
+    /**
+     * @return Font[]
+     */
+    public function getFonts(): array
+    {
+        return $this->fonts;
+    }
+
+    /**
+     * @return Image[]
+     */
+    public function getImages(): array
+    {
+        return $this->images;
     }
 }

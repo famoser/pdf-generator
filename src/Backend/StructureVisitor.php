@@ -71,9 +71,8 @@ class StructureVisitor
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Catalog');
 
-        $pagesElement = $structure->getPages()->accept($this, $file);
-
-        $dictionary->addReferenceEntry('Pages', $pagesElement);
+        $pagesDictionary = $this->createReferenceDictionary($structure->getPages(), $file);
+        $dictionary->addDictionaryEntry('Pages', $pagesDictionary);
 
         return $dictionary;
     }
@@ -140,8 +139,8 @@ class StructureVisitor
         // see PDF320000_2008 14.2
         $procSet = ['PDF'];
 
-        if (\count($structure->getType1Fonts()) > 0) {
-            $fontDictionary = $this->createReferenceDictionary($structure->getType1Fonts(), $file);
+        if (\count($structure->getFonts()) > 0) {
+            $fontDictionary = $this->createReferenceDictionary($structure->getFonts(), $file);
             $dictionary->addDictionaryEntry('Font', $fontDictionary);
             $procSet[] = 'Text';
         }

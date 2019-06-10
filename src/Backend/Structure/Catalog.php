@@ -19,23 +19,25 @@ use PdfGenerator\Backend\StructureVisitor;
 class Catalog extends BaseStructure
 {
     /**
-     * @var Pages
+     * @var Pages[]
      */
     private $pages;
 
     /**
      * Catalog constructor.
+     *
+     * @param array $pages
      */
-    public function __construct()
+    public function __construct(array $pages)
     {
-        $this->pages = new Pages();
+        $this->pages = $pages;
     }
 
     /**
      * @param StructureVisitor $visitor
      * @param File $file
      *
-     * @return \PdfGenerator\Backend\File\Object\Base\BaseObject
+     * @return BaseObject
      */
     public function accept(StructureVisitor $visitor, File $file): BaseObject
     {
@@ -43,9 +45,9 @@ class Catalog extends BaseStructure
     }
 
     /**
-     * @return Pages
+     * @return Pages[]
      */
-    public function getPages(): Pages
+    public function getPages(): array
     {
         return $this->pages;
     }

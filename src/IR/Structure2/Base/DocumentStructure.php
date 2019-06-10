@@ -11,14 +11,20 @@
 
 namespace PdfGenerator\IR\Structure2\Base;
 
+use PdfGenerator\IR\DocumentStructureVisitor;
 use PdfGenerator\IR\Structure2Visitor;
 
-abstract class BaseStructure2
+abstract class DocumentStructure
 {
     /**
      * @param Structure2Visitor $visitor
      *
      * @return mixed
      */
-    abstract public function accept(Structure2Visitor $visitor);
+    abstract public function accept(DocumentStructureVisitor $visitor);
+
+    /**
+     * @return string
+     */
+    abstract public function getIdentifier();
 }
