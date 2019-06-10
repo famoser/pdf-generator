@@ -22,16 +22,25 @@ use PdfGenerator\Backend\File\Object\StreamObject;
 class ContentVisitor
 {
     /**
+     * @var Page
+     */
+    private $page;
+
+    /**
      * @var GraphicStateRepository
      */
     private $graphicStateRepository;
 
     /**
      * ContentVisitor constructor.
+     *
+     * @param Page $page
      */
-    public function __construct()
+    public function __construct(Page $page)
     {
-        $this->graphicStateRepository = new GraphicStateRepository();
+        $this->page = $page;
+
+        $this->graphicStateRepository = new GraphicStateRepository($page);
     }
 
     /**

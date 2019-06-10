@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Backend\Structure;
 
-use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Base\BaseStructure;
 use PdfGenerator\Backend\StructureVisitor;
@@ -33,11 +32,10 @@ class Pages extends BaseStructure
 
     /**
      * @param StructureVisitor $visitor
-     * @param File $file
      *
      * @return BaseObject
      */
-    public function accept(StructureVisitor $visitor, File $file): BaseObject
+    public function accept(StructureVisitor $visitor)
     {
         return $visitor->visitPages($this, $file);
     }

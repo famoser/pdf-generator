@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Backend\Structure\Base;
 
-use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Page;
 use PdfGenerator\Backend\StructureVisitor;
@@ -20,10 +19,9 @@ abstract class PageAwareStructure
 {
     /**
      * @param StructureVisitor $visitor
-     * @param File $file
      * @param Page $page
      *
      * @return BaseObject|BaseObject[]
      */
-    abstract public function accept(StructureVisitor $visitor, File $file, Page $page);
+    abstract public function accept(StructureVisitor $visitor, Page $page);
 }

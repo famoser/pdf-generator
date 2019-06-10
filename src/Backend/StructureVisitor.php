@@ -18,7 +18,6 @@ use PdfGenerator\Backend\File\Object\StreamObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
 use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
-use PdfGenerator\Backend\Structure\Catalog;
 use PdfGenerator\Backend\Structure\ContentVisitor;
 use PdfGenerator\Backend\Structure\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Structure\Font\Structure\CMap;
@@ -38,40 +37,33 @@ class StructureVisitor
     private $objectNodeLookup;
 
     /**
-     * StructureVisitor constructor.
+     * @var File
      */
-    public function __construct()
+    private $file;
+
+    /**
+     * StructureVisitor constructor.
+     *
+     * @param File $file
+     */
+    public function __construct(File $file)
     {
+        $this->file = $file;
+
         $this->contentVisitor = new ContentVisitor();
     }
 
     /**
-     * @param Catalog $catalog
-     *
-     * @return string
-     */
-    public static function renderCatalog(Catalog $catalog)
-    {
-        $structureVisitor = new self();
-        $file = new File();
-
-        $catalog = $structureVisitor->visitCatalog($catalog, $file);
-
-        return $file->render($catalog);
-    }
-
-    /**
      * @param Structure\Catalog $structure
-     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitCatalog(Structure\Catalog $structure, File $file): BaseObject
+    public function visitCatalog(Structure\Catalog $structure): BaseObject
     {
-        $dictionary = $file->addDictionaryObject();
+        $dictionary = $this->file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Catalog');
 
-        $pagesDictionary = $this->createReferenceDictionary($structure->getPages(), $file);
+        $pagesDictionary = $this->createReferenceDictionary($structure->getPages());
         $dictionary->addDictionaryEntry('Pages', $pagesDictionary);
 
         return $dictionary;
@@ -79,20 +71,19 @@ class StructureVisitor
 
     /**
      * @param Structure\Pages $structure
-     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitPages(Structure\Pages $structure, File $file): BaseObject
+    public function visitPages(Structure\Pages $structure): BaseObject
     {
-        $dictionary = $file->addDictionaryObject();
+        $dictionary = $this->file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Pages');
         $this->objectNodeLookup[spl_object_id($structure)] = $dictionary;
 
         /** @var Page[] $kids */
         $kids = [];
         foreach ($structure->getKids() as $kid) {
-            $kids[] = $kid->accept($this, $file);
+            $kids[] = $kid->accept($this);
         }
 
         $dictionary->addReferenceArrayEntry('Kids', $kids);
@@ -103,24 +94,23 @@ class StructureVisitor
 
     /**
      * @param Page $structure
-     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitPage(Page $structure, File $file): BaseObject
+    public function visitPage(Page $structure): BaseObject
     {
-        $dictionary = $file->addDictionaryObject();
+        $dictionary = $this->file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Page');
 
         $parentReference = $this->objectNodeLookup[spl_object_id($structure->getParent())];
         $dictionary->addReferenceEntry('Parent', $parentReference);
 
-        $resources = $structure->getResources()->accept($this, $file);
+        $resources = $structure->getResources()->accept($this);
         $dictionary->addReferenceEntry('Resources', $resources);
 
         $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
 
-        $contents = $structure->getContents()->accept($this, $file, $structure);
+        $contents = $structure->getContents()->accept($this, $structure);
         $dictionary->addReferenceArrayEntry('Contents', $contents);
 
         return $dictionary;
@@ -128,25 +118,24 @@ class StructureVisitor
 
     /**
      * @param Structure\Resources $structure
-     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitResources(Structure\Resources $structure, File $file): BaseObject
+    public function visitResources(Structure\Resources $structure): BaseObject
     {
-        $dictionary = $file->addDictionaryObject();
+        $dictionary = $this->file->addDictionaryObject();
 
         // see PDF320000_2008 14.2
         $procSet = ['PDF'];
 
         if (\count($structure->getFonts()) > 0) {
-            $fontDictionary = $this->createReferenceDictionary($structure->getFonts(), $file);
+            $fontDictionary = $this->createReferenceDictionary($structure->getFonts());
             $dictionary->addDictionaryEntry('Font', $fontDictionary);
             $procSet[] = 'Text';
         }
 
         if (\count($structure->getImages()) > 0) {
-            $fontDictionary = $this->createReferenceDictionary($structure->getImages(), $file);
+            $fontDictionary = $this->createReferenceDictionary($structure->getImages());
             $dictionary->addDictionaryEntry('XObject', $fontDictionary);
             $procSet[] = 'ImageC';
         }
@@ -163,18 +152,17 @@ class StructureVisitor
 
     /**
      * @param IdentifiableStructureTrait[] $structures
-     * @param File $file
      *
      * @return DictionaryToken
      */
-    private function createReferenceDictionary(array $structures, File $file)
+    private function createReferenceDictionary(array $structures)
     {
         $dictionary = new DictionaryToken();
         foreach ($structures as $structure) {
             $identifier = $structure->getIdentifier();
 
             if (!\array_key_exists($identifier, $this->referenceLookup)) {
-                $reference = $structure->accept($this, $file);
+                $reference = $structure->accept($this);
                 $this->referenceLookup[$identifier] = new ReferenceToken($reference);
             }
 
@@ -187,18 +175,17 @@ class StructureVisitor
 
     /**
      * @param Structure\Contents $structure
-     * @param File $file
      * @param Page $page
      *
      * @return BaseObject[]
      */
-    public function visitContents(Structure\Contents $structure, File $file, Page $page): array
+    public function visitContents(Structure\Contents $structure, Page $page): array
     {
         /** @var BaseObject[] $baseObjects */
         $baseObjects = [];
 
         foreach ($structure->getContent() as $baseContent) {
-            $baseObjects[] = $baseContent->accept($this->contentVisitor, $file, $page);
+            $baseObjects[] = $baseContent->accept($this->contentVisitor, $page);
         }
 
         return $baseObjects;
@@ -206,13 +193,12 @@ class StructureVisitor
 
     /**
      * @param Structure\Font\Type1 $structure
-     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitType1Font(Structure\Font\Type1 $structure, File $file): BaseObject
+    public function visitType1Font(Structure\Font\Type1 $structure): BaseObject
     {
-        $dictionary = $file->addDictionaryObject();
+        $dictionary = $this->file->addDictionaryObject();
 
         $dictionary->addTextEntry('Type', '/Font');
         $dictionary->addTextEntry('Subtype', '/Type1');
@@ -223,13 +209,12 @@ class StructureVisitor
 
     /**
      * @param Structure\Image $structure
-     * @param File $file
      *
      * @return BaseObject
      */
-    public function visitImage(Structure\Image $structure, File $file): BaseObject
+    public function visitImage(Structure\Image $structure): BaseObject
     {
-        $stream = $file->addStreamObject($structure->getImageData(), StreamObject::CONTENT_TYPE_IMAGE);
+        $stream = $this->file->addStreamObject($structure->getImageData(), StreamObject::CONTENT_TYPE_IMAGE);
 
         $dictionary = $stream->getMetaData();
         $dictionary->setTextEntry('Type', '/XObject');
@@ -246,13 +231,12 @@ class StructureVisitor
 
     /**
      * @param Structure\Font\Structure\FontStream $structure
-     * @param File $file
      *
      * @return StreamObject
      */
-    public function visitFontStream(Structure\Font\Structure\FontStream $structure, File $file)
+    public function visitFontStream(Structure\Font\Structure\FontStream $structure)
     {
-        $stream = $file->addStreamObject($structure->getFontData(), StreamObject::CONTENT_TYPE_FONT);
+        $stream = $this->file->addStreamObject($structure->getFontData(), StreamObject::CONTENT_TYPE_FONT);
 
         $dictionary = $stream->getMetaData();
         $dictionary->setTextEntry('Subtype', '/' . $structure->getSubtype());
@@ -262,13 +246,12 @@ class StructureVisitor
 
     /**
      * @param FontDescriptor $structure
-     * @param File $file
      *
      * @return DictionaryObject
      */
-    public function visitFontDescriptor(FontDescriptor $structure, File $file)
+    public function visitFontDescriptor(FontDescriptor $structure)
     {
-        $dictionary = $file->addDictionaryObject();
+        $dictionary = $this->file->addDictionaryObject();
 
         $dictionary->addTextEntry('Type', '/FontDescriptor');
         $dictionary->addTextEntry('FontName', $structure->getFontName());
@@ -281,7 +264,7 @@ class StructureVisitor
         $dictionary->addTextEntry('StemV', $structure->getStemV());
 
         if ($structure->getFontFile3() !== null) {
-            $reference = $structure->getFontFile3()->accept($this, $file);
+            $reference = $structure->getFontFile3()->accept($this);
             $dictionary->addReferenceEntry('FontFile3', $reference);
         }
 
@@ -290,25 +273,24 @@ class StructureVisitor
 
     /**
      * @param Structure\Font\Type0 $structure
-     * @param File $file
      *
      * @return DictionaryObject
      */
-    public function visitType0Font(Structure\Font\Type0 $structure, File $file)
+    public function visitType0Font(Structure\Font\Type0 $structure)
     {
-        $dictionary = $file->addDictionaryObject();
+        $dictionary = $this->file->addDictionaryObject();
 
         $dictionary->addTextEntry('Type', '/Font');
         $dictionary->addTextEntry('Subtype', '/Type0');
         $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
 
-        $encoding = $structure->getEncoding()->accept($this, $file);
+        $encoding = $structure->getEncoding()->accept($this);
         $dictionary->addReferenceEntry('Encoding', $encoding);
 
-        $descendantFont = $structure->getDescendantFont()->accept($this, $file);
+        $descendantFont = $structure->getDescendantFont()->accept($this);
         $dictionary->addReferenceArrayEntry('DescendantFonts', [$descendantFont]);
 
-        $toUnicode = $structure->getToUnicode()->accept($this, $file);
+        $toUnicode = $structure->getToUnicode()->accept($this);
         $dictionary->addReferenceEntry('ToUnicode', $toUnicode);
 
         return $dictionary;
@@ -316,18 +298,17 @@ class StructureVisitor
 
     /**
      * @param Structure\Font\Structure\CIDFont $structure
-     * @param File $file
      *
      * @return DictionaryObject
      */
-    public function visitCIDFont(Structure\Font\Structure\CIDFont $structure, File $file)
+    public function visitCIDFont(Structure\Font\Structure\CIDFont $structure)
     {
-        $dictionary = $file->addDictionaryObject();
+        $dictionary = $this->file->addDictionaryObject();
 
         $cidDictionary = $structure->getCIDSystemInfo()->accept($this);
         $dictionary->addDictionaryEntry('CIDSystemInfo', $cidDictionary);
 
-        $reference = $structure->getFontDescriptor()->accept($this, $file);
+        $reference = $structure->getFontDescriptor()->accept($this);
         $dictionary->addReferenceEntry('FontDescriptor', $reference);
 
         $dictionary->addNumberEntry('DW', $structure->getDW());
@@ -338,13 +319,12 @@ class StructureVisitor
 
     /**
      * @param CMap $structure
-     * @param File $file
      *
      * @return StreamObject
      */
-    public function visitCMap(CMap $structure, File $file)
+    public function visitCMap(CMap $structure)
     {
-        $stream = $file->addStreamObject($structure->getCMapData(), StreamObject::CONTENT_TYPE_TEXT);
+        $stream = $this->file->addStreamObject($structure->getCMapData(), StreamObject::CONTENT_TYPE_TEXT);
 
         $dictionary = $stream->getMetaData();
         $dictionary->setTextEntry('Type', '/CMap');

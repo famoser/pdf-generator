@@ -11,10 +11,9 @@
 
 namespace PdfGenerator\IR\Structure;
 
-use PdfGenerator\IR\Structure\Base\BaseStructure2;
 use PdfGenerator\IR\Structure\PageContent\Base\BaseContent;
 
-class Page extends BaseStructure2
+class Page
 {
     /**
      * @var int

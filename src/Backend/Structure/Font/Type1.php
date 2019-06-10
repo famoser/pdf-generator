@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Backend\Structure\Font;
 
-use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Font;
 use PdfGenerator\Backend\StructureVisitor;
@@ -70,11 +69,10 @@ class Type1 extends Font
 
     /**
      * @param StructureVisitor $visitor
-     * @param File $file
      *
      * @return BaseObject
      */
-    public function accept(StructureVisitor $visitor, File $file): BaseObject
+    public function accept(StructureVisitor $visitor)
     {
         return $visitor->visitType1Font($this, $file);
     }

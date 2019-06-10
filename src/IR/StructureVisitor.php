@@ -49,11 +49,11 @@ class StructureVisitor
      *
      * @return Catalog
      */
-    public function visitDocument(Structure\Document $param)
+    public function renderDocument(Structure\Document $param)
     {
         $pages = new Pages();
         foreach ($param->getPages() as $page) {
-            $page = $this->visitPage($page, new Pages());
+            $page = $this->renderPage($page, new Pages());
             $pages->addPage($page);
         }
 
@@ -66,7 +66,7 @@ class StructureVisitor
      *
      * @return Page
      */
-    public function visitPage(Structure\Page $param, Pages $pages)
+    public function renderPage(Structure\Page $param, Pages $pages)
     {
         $mediaBox = [0, 0, 210, 297];
 

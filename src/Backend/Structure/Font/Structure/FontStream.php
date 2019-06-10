@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Backend\Structure\Font\Structure;
 
-use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Base\BaseStructure;
 use PdfGenerator\Backend\Structure\Base\IdentifiableStructureTrait;
@@ -69,11 +68,10 @@ class FontStream extends BaseStructure
 
     /**
      * @param StructureVisitor $visitor
-     * @param File $file
      *
      * @return BaseObject|BaseObject[]
      */
-    public function accept(StructureVisitor $visitor, File $file)
+    public function accept(StructureVisitor $visitor)
     {
         return $visitor->visitFontStream($this, $file);
     }

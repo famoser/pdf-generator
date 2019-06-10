@@ -14,7 +14,6 @@ namespace PdfGenerator\IR\Structure;
 use PdfGenerator\IR\Structure\Base\BaseStructure2;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Font\EmbeddedFont;
-use PdfGenerator\IR\StructureVisitor;
 
 class Document extends BaseStructure2
 {
@@ -129,15 +128,5 @@ class Document extends BaseStructure2
         }
 
         return $this->embeddedFonts[$fontPath];
-    }
-
-    /**
-     * @param StructureVisitor $visitor
-     *
-     * @return mixed
-     */
-    public function accept(StructureVisitor $visitor)
-    {
-        return $visitor->visitDocument($this);
     }
 }

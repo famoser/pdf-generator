@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Backend\Structure\Font;
 
-use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Font;
 use PdfGenerator\Backend\Structure\Font\Structure\CMap;
@@ -105,11 +104,10 @@ class Type0 extends Font
 
     /**
      * @param StructureVisitor $visitor
-     * @param File $file
      *
      * @return BaseObject|BaseObject[]
      */
-    public function accept(StructureVisitor $visitor, File $file)
+    public function accept(StructureVisitor $visitor)
     {
         return $visitor->visitType0Font($this, $file);
     }
