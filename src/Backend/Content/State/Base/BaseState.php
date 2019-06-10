@@ -17,9 +17,16 @@ abstract class BaseState
 {
     /**
      * @param StateTransitionVisitor $visitor
-     * @param self $previousState
      *
      * @return string[]
      */
-    abstract public function accept(StateTransitionVisitor $visitor, $previousState): array;
+    abstract public function accept(StateTransitionVisitor $visitor): array;
+
+    /**
+     * @return string
+     */
+    public function stateIdentifier()
+    {
+        return \get_class($this);
+    }
 }

@@ -37,7 +37,7 @@ class Pages extends BaseStructure
      */
     public function accept(StructureVisitor $visitor)
     {
-        return $visitor->visitPages($this, $file);
+        return $visitor->visitPages($this);
     }
 
     /**

@@ -27,11 +27,6 @@ use PdfGenerator\Backend\Structure\Page;
 class StructureVisitor
 {
     /**
-     * @var ContentVisitor
-     */
-    private $contentVisitor;
-
-    /**
      * @var BaseObject[]
      */
     private $objectNodeLookup;
@@ -49,8 +44,6 @@ class StructureVisitor
     public function __construct(File $file)
     {
         $this->file = $file;
-
-        $this->contentVisitor = new ContentVisitor();
     }
 
     /**
@@ -181,11 +174,12 @@ class StructureVisitor
      */
     public function visitContents(Structure\Contents $structure, Page $page): array
     {
+        $contentVisitor = new ContentVisitor($page);
+
         /** @var BaseObject[] $baseObjects */
         $baseObjects = [];
-
         foreach ($structure->getContent() as $baseContent) {
-            $baseObjects[] = $baseContent->accept($this->contentVisitor, $page);
+            $baseObjects[] = $baseContent->accept($contentVisitor);
         }
 
         return $baseObjects;
@@ -214,7 +208,7 @@ class StructureVisitor
      */
     public function visitImage(Structure\Image $structure): BaseObject
     {
-        $stream = $this->file->addStreamObject($structure->getImageData(), StreamObject::CONTENT_TYPE_IMAGE);
+        $stream = $this->file->addStreamObject($structure->getImageData());
 
         $dictionary = $stream->getMetaData();
         $dictionary->setTextEntry('Type', '/XObject');
@@ -236,7 +230,7 @@ class StructureVisitor
      */
     public function visitFontStream(Structure\Font\Structure\FontStream $structure)
     {
-        $stream = $this->file->addStreamObject($structure->getFontData(), StreamObject::CONTENT_TYPE_FONT);
+        $stream = $this->file->addStreamObject($structure->getFontData());
 
         $dictionary = $stream->getMetaData();
         $dictionary->setTextEntry('Subtype', '/' . $structure->getSubtype());
@@ -324,7 +318,7 @@ class StructureVisitor
      */
     public function visitCMap(CMap $structure)
     {
-        $stream = $this->file->addStreamObject($structure->getCMapData(), StreamObject::CONTENT_TYPE_TEXT);
+        $stream = $this->file->addStreamObject($structure->getCMapData());
 
         $dictionary = $stream->getMetaData();
         $dictionary->setTextEntry('Type', '/CMap');
@@ -350,5 +344,24 @@ class StructureVisitor
         $cidDictionary->setNumberEntry('Supplement', $structure->getSupplement());
 
         return $cidDictionary;
+    }
+
+    /**
+     * @param Structure\Content $param
+     *
+     * @return StreamObject
+     */
+    public function visitContent(Structure\Content $param)
+    {
+        /*
+        could compress at this point with
+        if ($contentType === self::CONTENT_TYPE_TEXT && \extension_loaded('zlib')) {
+            $this->dictionary->setTextEntry('Filter', '/FlatDecode');
+            $this->content = gzcompress($this->content);
+        }
+
+        currently does not work and not the target of the project
+        */
+        return $this->file->addStreamObject($param->getContent());
     }
 }

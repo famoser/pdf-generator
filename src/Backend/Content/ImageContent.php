@@ -12,12 +12,11 @@
 namespace PdfGenerator\Backend\Content;
 
 use PdfGenerator\Backend\Content\Base\BaseContent;
-use PdfGenerator\Backend\Content\Operators\Level\PageLevel;
-use PdfGenerator\Backend\File\File;
+use PdfGenerator\Backend\Content\Operators\Level\DrawingState;
+use PdfGenerator\Backend\Content\Operators\State\Base\BaseState;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\ContentVisitor;
 use PdfGenerator\Backend\Structure\Image;
-use PdfGenerator\Backend\Structure\Page;
 
 class ImageContent extends BaseContent
 {
@@ -27,18 +26,18 @@ class ImageContent extends BaseContent
     private $image;
 
     /**
-     * @var PageLevel
+     * @var DrawingState
      */
-    private $pageLevel;
+    private $color;
 
     /**
      * @param Image $image
-     * @param PageLevel $pageLevel
+     * @param DrawingState $color
      */
-    public function __construct(Image $image, PageLevel $pageLevel)
+    public function __construct(Image $image, DrawingState $color)
     {
         $this->image = $image;
-        $this->pageLevel = $pageLevel;
+        $this->color = $color;
     }
 
     /**
@@ -50,22 +49,28 @@ class ImageContent extends BaseContent
     }
 
     /**
-     * @return PageLevel
+     * @return DrawingState
      */
-    public function getPageLevel(): PageLevel
+    public function getColor(): DrawingState
     {
-        return $this->pageLevel;
+        return $this->color;
+    }
+
+    /**
+     * @return BaseState[]
+     */
+    public function getInfluentialStates(): array
+    {
+        return $this->color->getState();
     }
 
     /**
      * @param ContentVisitor $visitor
-     * @param File $file
-     * @param Page $page
      *
      * @return BaseObject
      */
-    public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject
+    public function accept(ContentVisitor $visitor): BaseObject
     {
-        return $visitor->visitImageContent($this, $file, $page);
+        return $visitor->visitImageContent($this);
     }
 }

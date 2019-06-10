@@ -63,7 +63,7 @@ class Page extends BaseStructure
      */
     public function accept(StructureVisitor $visitor)
     {
-        return $visitor->visitPage($this, $file);
+        return $visitor->visitPage($this);
     }
 
     /**

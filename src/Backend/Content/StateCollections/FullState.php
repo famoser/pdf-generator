@@ -9,15 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Content\Operators\Level;
+namespace PdfGenerator\Backend\Content\StateCollections;
 
-use PdfGenerator\Backend\Content\Operators\Level\Base\BaseLevel;
-use PdfGenerator\Backend\Content\Operators\LevelTransitionVisitor;
 use PdfGenerator\Backend\Content\Operators\State\ColorState;
 use PdfGenerator\Backend\Content\Operators\State\GeneralGraphicState;
 use PdfGenerator\Backend\Content\Operators\State\TextState;
 
-class TextLevel extends BaseLevel
+class FullState
 {
     /**
      * @var GeneralGraphicState
@@ -32,20 +30,28 @@ class TextLevel extends BaseLevel
     /**
      * @var TextState
      */
-    private $text;
+    private $textState;
 
     /**
      * TextLevel constructor.
      *
      * @param GeneralGraphicState $generalGraphicsState
      * @param ColorState $colorState
-     * @param TextState $text
+     * @param TextState $textState
      */
-    public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState, TextState $text)
+    public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState, TextState $textState)
     {
         $this->generalGraphicsState = $generalGraphicsState;
         $this->colorState = $colorState;
-        $this->text = $text;
+        $this->textState = $textState;
+    }
+
+    /**
+     * @return FullState
+     */
+    public static function createInitial()
+    {
+        return new self(new GeneralGraphicState(), new ColorState(), new TextState());
     }
 
     /**
@@ -67,28 +73,8 @@ class TextLevel extends BaseLevel
     /**
      * @return TextState
      */
-    public function getText(): TextState
+    public function getTextState(): TextState
     {
-        return $this->text;
-    }
-
-    /**
-     * @param LevelTransitionVisitor $visitor
-     * @param self $previousState
-     *
-     * @return string[]
-     */
-    public function accept(LevelTransitionVisitor $visitor, $previousState): array
-    {
-        return $visitor->visitText($this, $previousState);
-    }
-
-    /**
-     * @param PageLevel $pageLevel
-     */
-    public function applyStateFromPage(PageLevel $pageLevel)
-    {
-        $this->colorState = $pageLevel->getColorState();
-        $this->generalGraphicsState = $pageLevel->getGeneralGraphicsState();
+        return $this->textState;
     }
 }

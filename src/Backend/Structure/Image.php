@@ -58,7 +58,7 @@ class Image extends BaseStructure
      */
     public function accept(StructureVisitor $visitor)
     {
-        return $visitor->visitImage($this, $file);
+        return $visitor->visitImage($this);
     }
 
     /**

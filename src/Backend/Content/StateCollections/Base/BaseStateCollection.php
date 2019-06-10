@@ -11,15 +11,12 @@
 
 namespace PdfGenerator\Backend\Content\Operators\Level\Base;
 
-use PdfGenerator\Backend\Content\Operators\LevelTransitionVisitor;
+use PdfGenerator\Backend\Content\Operators\State\Base\BaseState;
 
-abstract class BaseLevel
+abstract class BaseStateCollection
 {
     /**
-     * @param LevelTransitionVisitor $visitor
-     * @param self $previousState
-     *
-     * @return string[]
+     * @return BaseState[]
      */
-    abstract public function accept(LevelTransitionVisitor $visitor, $previousState): array;
+    abstract public function getState(): array;
 }

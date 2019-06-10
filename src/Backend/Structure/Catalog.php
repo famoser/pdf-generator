@@ -40,7 +40,7 @@ class Catalog extends BaseStructure
      */
     public function accept(StructureVisitor $visitor)
     {
-        return $visitor->visitCatalog($this, $file);
+        return $visitor->visitCatalog($this);
     }
 
     /**
@@ -52,17 +52,15 @@ class Catalog extends BaseStructure
     }
 
     /**
-     * @param Catalog $catalog
-     *
      * @return string
      */
     public function render()
     {
         $file = new File();
-        $structureVisitor = new StructureVisitor();
+        $structureVisitor = new StructureVisitor($file);
 
-        $catalog = $structureVisitor->visitCatalog($this, $file);
+        $structureVisitor->visitCatalog($this);
 
-        return $file->render($catalog);
+        return $file->render();
     }
 }

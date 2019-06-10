@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\IR\Transformation;
 
-use PdfGenerator\Backend\Content\Operators\Level\PageLevel;
-use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
+use PdfGenerator\Backend\Content\Operators\Level\DrawingState;
+use PdfGenerator\Backend\Content\Operators\Level\WritingState;
 use PdfGenerator\Backend\Structure\Font;
 use PdfGenerator\Backend\Structure\Image;
 use PdfGenerator\IR\Configuration\State\ColorStateRepository;
@@ -116,18 +116,18 @@ class PageResources
     }
 
     /**
-     * @return PageLevel
+     * @return DrawingState
      */
     public function getPageLevel()
     {
         $generalGraphicState = $this->generalGraphicStateRepository->getGeneralGraphicState();
         $colorState = $this->colorStateRepository->getColorState();
 
-        return new PageLevel($generalGraphicState, $colorState);
+        return new DrawingState($generalGraphicState, $colorState);
     }
 
     /**
-     * @return TextLevel
+     * @return WritingState
      */
     public function getTextLevel()
     {
@@ -135,7 +135,7 @@ class PageResources
         $colorState = $this->colorStateRepository->getColorState();
         $textState = $this->textStateRepository->getTextState();
 
-        return new TextLevel($generalGraphicState, $colorState, $textState);
+        return new WritingState($generalGraphicState, $colorState, $textState);
     }
 
     /**

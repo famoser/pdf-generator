@@ -28,34 +28,17 @@ class StreamObject extends BaseObject
     private $dictionary;
 
     /**
-     * @var int
-     */
-    private $contentType;
-
-    public const CONTENT_TYPE_TEXT = 1;
-    public const CONTENT_TYPE_IMAGE = 2;
-    public const CONTENT_TYPE_FONT = 3;
-
-    /**
      * StreamObject constructor.
      *
      * @param int $number
      * @param string $content
-     * @param int $contentType
      */
-    public function __construct(int $number, string $content, int $contentType)
+    public function __construct(int $number, string $content)
     {
         parent::__construct($number);
 
         $this->dictionary = new DictionaryToken();
         $this->content = $content;
-
-        /* should allow to compress, currently does not work and not the target of the project
-        if ($contentType === self::CONTENT_TYPE_TEXT && \extension_loaded('zlib')) {
-            $this->dictionary->setTextEntry('Filter', '/FlatDecode');
-            $this->content = gzcompress($this->content);
-        }
-        */
 
         $this->dictionary->setNumberEntry('Length', \strlen($this->content));
     }

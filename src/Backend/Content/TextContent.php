@@ -12,11 +12,10 @@
 namespace PdfGenerator\Backend\Content;
 
 use PdfGenerator\Backend\Content\Base\BaseContent;
-use PdfGenerator\Backend\Content\Operators\Level\TextLevel;
-use PdfGenerator\Backend\File\File;
+use PdfGenerator\Backend\Content\Operators\Level\WritingState;
+use PdfGenerator\Backend\Content\Operators\State\Base\BaseState;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\ContentVisitor;
-use PdfGenerator\Backend\Structure\Page;
 
 class TextContent extends BaseContent
 {
@@ -26,20 +25,20 @@ class TextContent extends BaseContent
     private $lines;
 
     /**
-     * @var TextLevel
+     * @var WritingState
      */
-    private $textLevel;
+    private $text;
 
     /**
      * TextSymbol constructor.
      *
      * @param array $lines
-     * @param TextLevel $textLevel
+     * @param WritingState $text
      */
-    public function __construct(array $lines, TextLevel $textLevel)
+    public function __construct(array $lines, WritingState $text)
     {
         $this->lines = $lines;
-        $this->textLevel = $textLevel;
+        $this->text = $text;
     }
 
     /**
@@ -51,22 +50,20 @@ class TextContent extends BaseContent
     }
 
     /**
-     * @return TextLevel
+     * @return BaseState[]
      */
-    public function getTextLevel(): TextLevel
+    public function getInfluentialStates(): array
     {
-        return $this->textLevel;
+        return $this->text->getState();
     }
 
     /**
      * @param ContentVisitor $visitor
-     * @param File $file
-     * @param Page $page
      *
      * @return BaseObject
      */
-    public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject
+    public function accept(ContentVisitor $visitor): BaseObject
     {
-        return $visitor->visitTextContent($this, $file, $page);
+        return $visitor->visitTextContent($this);
     }
 }

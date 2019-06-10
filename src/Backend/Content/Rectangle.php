@@ -12,7 +12,8 @@
 namespace PdfGenerator\Backend\Content;
 
 use PdfGenerator\Backend\Content\Base\BaseContent;
-use PdfGenerator\Backend\Content\Operators\Level\PageLevel;
+use PdfGenerator\Backend\Content\Operators\Level\DrawingState;
+use PdfGenerator\Backend\Content\Operators\State\Base\BaseState;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\ContentVisitor;
@@ -41,22 +42,22 @@ class Rectangle extends BaseContent
     private $paintingMode;
 
     /**
-     * @var PageLevel
+     * @var DrawingState
      */
-    private $pageLevel;
+    private $color;
 
     /**
      * @param float $width
      * @param float $height
      * @param int $paintingMode
-     * @param PageLevel $pageLevel
+     * @param DrawingState $color
      */
-    public function __construct(float $width, float $height, int $paintingMode, PageLevel $pageLevel)
+    public function __construct(float $width, float $height, int $paintingMode, DrawingState $color)
     {
         $this->width = $width;
         $this->height = $height;
         $this->paintingMode = $paintingMode;
-        $this->pageLevel = $pageLevel;
+        $this->color = $color;
     }
 
     /**
@@ -84,11 +85,19 @@ class Rectangle extends BaseContent
     }
 
     /**
-     * @return PageLevel
+     * @return DrawingState
      */
-    public function getPageLevel(): PageLevel
+    public function getColor(): DrawingState
     {
-        return $this->pageLevel;
+        return $this->color;
+    }
+
+    /**
+     * @return BaseState[]
+     */
+    public function getInfluentialStates(): array
+    {
+        return $this->color->getState();
     }
 
     /**
@@ -98,8 +107,8 @@ class Rectangle extends BaseContent
      *
      * @return BaseObject
      */
-    public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject
+    public function accept(ContentVisitor $visitor): BaseObject
     {
-        return $visitor->visitRectangle($this, $file, $page);
+        return $visitor->visitRectangle($this);
     }
 }

@@ -11,13 +11,12 @@
 
 namespace PdfGenerator\Backend\Structure;
 
-use PdfGenerator\Backend\Content\GraphicStateRepository;
+use PdfGenerator\Backend\Content\Base\BaseContent;
 use PdfGenerator\Backend\Content\ImageContent;
+use PdfGenerator\Backend\Content\Operators\StateTransitionVisitor;
 use PdfGenerator\Backend\Content\Rectangle;
+use PdfGenerator\Backend\Content\StateCollections\FullState;
 use PdfGenerator\Backend\Content\TextContent;
-use PdfGenerator\Backend\File\File;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\File\Object\StreamObject;
 
 class ContentVisitor
 {
@@ -27,9 +26,9 @@ class ContentVisitor
     private $page;
 
     /**
-     * @var GraphicStateRepository
+     * @var FullState
      */
-    private $graphicStateRepository;
+    private $state;
 
     /**
      * ContentVisitor constructor.
@@ -39,21 +38,18 @@ class ContentVisitor
     public function __construct(Page $page)
     {
         $this->page = $page;
-
-        $this->graphicStateRepository = new GraphicStateRepository($page);
+        $this->state = FullState::createInitial();
     }
 
     /**
      * @param TextContent $textContent
-     * @param File $file
-     * @param Page $page
      *
-     * @return StreamObject
+     * @return Content
      */
-    public function visitTextContent(TextContent $textContent, File $file, Page $page): BaseObject
+    public function visitTextContent(TextContent $textContent): Content
     {
         // gather operators to change to desired state
-        $stateTransitionOperators = $this->graphicStateRepository->applyTextLevelState($page, $textContent->getTextLevel());
+        $stateTransitionOperators = $this->applyState($textContent);
 
         // gather operators to print the content
         $textOperators = $this->getTextOperators($textContent->getLines());
@@ -61,20 +57,18 @@ class ContentVisitor
         // create stream object; BT before text and ET after all text
         $operators = array_merge(['BT'], $stateTransitionOperators, $textOperators, ['ET']);
 
-        return $this->createStreamObject($file, $operators);
+        return $this->createStreamObject($operators);
     }
 
     /**
      * @param ImageContent $imageContent
-     * @param File $file
-     * @param Page $page
      *
-     * @return StreamObject
+     * @return Content
      */
-    public function visitImageContent(ImageContent $imageContent, File $file, Page $page): BaseObject
+    public function visitImageContent(ImageContent $imageContent): Content
     {
         // gather operators to change to desired state
-        $stateTransitionOperators = $this->graphicStateRepository->applyPageLevelState($page, $imageContent->getPageLevel());
+        $stateTransitionOperators = $this->applyState($imageContent);
 
         // gather operators to print the content
         $imageOperator = '/' . $imageContent->getImage()->getIdentifier() . ' Do';
@@ -82,40 +76,37 @@ class ContentVisitor
         // create stream object
         $operators = array_merge($stateTransitionOperators, [$imageOperator]);
 
-        return $this->createStreamObject($file, $operators);
+        return $this->createStreamObject($operators);
     }
 
     /**
-     * @param Rectangle $cell
-     * @param File $file
-     * @param Page $page
+     * @param Rectangle $rectangle
      *
-     * @return StreamObject
+     * @return Content
      */
-    public function visitRectangle(Rectangle $cell, File $file, Page $page): BaseObject
+    public function visitRectangle(Rectangle $rectangle): Content
     {
         // gather operators to change to desired state
-        $stateTransitionOperators = $this->graphicStateRepository->applyPageLevelState($page, $cell->getPageLevel());
+        $stateTransitionOperators = $this->applyState($rectangle);
 
         // gather operators to print the content
-        $paintingOperator = $this->getPaintingOperator($cell);
-        $imageOperator = '0 0 ' . $cell->getWidth() . ' ' . $cell->getHeight() . ' re ' . $paintingOperator;
+        $paintingOperator = $this->getPaintingOperator($rectangle);
+        $imageOperator = '0 0 ' . $rectangle->getWidth() . ' ' . $rectangle->getHeight() . ' re ' . $paintingOperator;
 
         // create stream object
         $operators = array_merge($stateTransitionOperators, [$imageOperator]);
 
-        return $this->createStreamObject($file, $operators);
+        return $this->createStreamObject($operators);
     }
 
     /**
-     * @param File $file
      * @param array $operators
      *
-     * @return StreamObject
+     * @return Content
      */
-    private function createStreamObject(File $file, array $operators): StreamObject
+    private function createStreamObject(array $operators): Content
     {
-        return $file->addStreamObject(implode(' ', $operators), StreamObject::CONTENT_TYPE_TEXT);
+        return new Content(implode(' ', $operators), Content::CONTENT_TYPE_TEXT);
     }
 
     /**
@@ -157,5 +148,23 @@ class ContentVisitor
             default:
                 return 'n';
         }
+    }
+
+    /**
+     * @param BaseContent $baseContent
+     *
+     * @return string[]
+     */
+    private function applyState(BaseContent $baseContent): array
+    {
+        $stateTransitionVisitor = new StateTransitionVisitor($this->state);
+
+        /** @var string[] $operators */
+        $operators = [];
+        foreach ($baseContent->getInfluentialStates() as $influentialState) {
+            $operators = array_merge($operators, $influentialState->accept($stateTransitionVisitor));
+        }
+
+        return $operators;
     }
 }

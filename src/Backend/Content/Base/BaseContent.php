@@ -11,19 +11,21 @@
 
 namespace PdfGenerator\Backend\Content\Base;
 
-use PdfGenerator\Backend\File\File;
+use PdfGenerator\Backend\Content\Operators\State\Base\BaseState;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\ContentVisitor;
-use PdfGenerator\Backend\Structure\Page;
 
 abstract class BaseContent
 {
     /**
      * @param ContentVisitor $visitor
-     * @param File $file
-     * @param Page $page
      *
      * @return BaseObject
      */
-    abstract public function accept(ContentVisitor $visitor, File $file, Page $page): BaseObject;
+    abstract public function accept(ContentVisitor $visitor): BaseObject;
+
+    /**
+     * @return BaseState[]
+     */
+    abstract public function getInfluentialStates(): array;
 }

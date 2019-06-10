@@ -46,7 +46,7 @@ class Resources extends BaseStructure
      */
     public function accept(StructureVisitor $visitor)
     {
-        return $visitor->visitResources($this, $file);
+        return $visitor->visitResources($this);
     }
 
     /**
