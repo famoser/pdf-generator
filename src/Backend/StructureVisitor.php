@@ -46,20 +46,21 @@ class StructureVisitor
 
     /**
      * @param Structure\Catalog $structure
-     * @param File $file
      *
-     * @return BaseObject
+     * @return File
      */
-    public function visitCatalog(Structure\Catalog $structure, File $file): BaseObject
+    public function visitCatalog(Structure\Catalog $structure): File
     {
+        $file = new File();
+
         $dictionary = $file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Catalog');
 
-        $pagesElement = $structure->getPages()->accept($this, $file);
+        $pagesElement = $structure->getPages()->accept($this);
 
         $dictionary->addReferenceEntry('Pages', $pagesElement);
 
-        return $dictionary;
+        return $file;
     }
 
     /**
@@ -77,7 +78,7 @@ class StructureVisitor
         /** @var Page[] $kids */
         $kids = [];
         foreach ($structure->getKids() as $kid) {
-            $kids[] = $kid->accept($this, $file);
+            $kids[] = $kid->accept($this);
         }
 
         $dictionary->addReferenceArrayEntry('Kids', $kids);
@@ -100,7 +101,7 @@ class StructureVisitor
         $parentReference = $this->objectNodeLookup[spl_object_id($structure->getParent())];
         $dictionary->addReferenceEntry('Parent', $parentReference);
 
-        $resources = $structure->getResources()->accept($this, $file);
+        $resources = $structure->getResources()->accept($this);
         $dictionary->addReferenceEntry('Resources', $resources);
 
         $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
@@ -142,6 +143,11 @@ class StructureVisitor
     }
 
     /**
+     * @var ReferenceToken[]
+     */
+    private $referenceLookup;
+
+    /**
      * @param IdentifiableStructureTrait[] $structures
      * @param File $file
      *
@@ -151,8 +157,15 @@ class StructureVisitor
     {
         $dictionary = new DictionaryToken();
         foreach ($structures as $structure) {
-            $reference = $structure->accept($this, $file);
-            $dictionary->setEntry($structure->getIdentifier(), new ReferenceToken($reference));
+            $identifier = $structure->getIdentifier();
+
+            if (!\array_key_exists($identifier, $this->referenceLookup)) {
+                $reference = $structure->accept($this, $file);
+                $this->referenceLookup[$identifier] = new ReferenceToken($reference);
+            }
+
+            $referenceToken = $this->referenceLookup[$identifier];
+            $dictionary->setEntry($structure->getIdentifier(), $referenceToken);
         }
 
         return $dictionary;
@@ -254,7 +267,7 @@ class StructureVisitor
         $dictionary->addTextEntry('StemV', $structure->getStemV());
 
         if ($structure->getFontFile3() !== null) {
-            $reference = $structure->getFontFile3()->accept($this, $file);
+            $reference = $structure->getFontFile3()->accept($this);
             $dictionary->addReferenceEntry('FontFile3', $reference);
         }
 
@@ -275,13 +288,13 @@ class StructureVisitor
         $dictionary->addTextEntry('Subtype', '/Type0');
         $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
 
-        $encoding = $structure->getEncoding()->accept($this, $file);
+        $encoding = $structure->getEncoding()->accept($this);
         $dictionary->addReferenceEntry('Encoding', $encoding);
 
-        $descendantFont = $structure->getDescendantFont()->accept($this, $file);
+        $descendantFont = $structure->getDescendantFont()->accept($this);
         $dictionary->addReferenceArrayEntry('DescendantFonts', [$descendantFont]);
 
-        $toUnicode = $structure->getToUnicode()->accept($this, $file);
+        $toUnicode = $structure->getToUnicode()->accept($this);
         $dictionary->addReferenceEntry('ToUnicode', $toUnicode);
 
         return $dictionary;
@@ -300,7 +313,7 @@ class StructureVisitor
         $cidDictionary = $structure->getCIDSystemInfo()->accept($this);
         $dictionary->addDictionaryEntry('CIDSystemInfo', $cidDictionary);
 
-        $reference = $structure->getFontDescriptor()->accept($this, $file);
+        $reference = $structure->getFontDescriptor()->accept($this);
         $dictionary->addReferenceEntry('FontDescriptor', $reference);
 
         $dictionary->addNumberEntry('DW', $structure->getDW());
