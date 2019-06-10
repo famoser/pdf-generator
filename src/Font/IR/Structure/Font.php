@@ -14,11 +14,6 @@ namespace PdfGenerator\Font\IR\Structure;
 class Font
 {
     /**
-     * @var Character
-     */
-    private $missingGlyphCharacter = null;
-
-    /**
      * @var Character[]
      */
     private $characters = [];
@@ -33,15 +28,7 @@ class Font
      */
     public function getMissingGlyphCharacter(): Character
     {
-        return $this->missingGlyphCharacter;
-    }
-
-    /**
-     * @param Character $missingGlyphCharacter
-     */
-    public function setMissingGlyphCharacter(Character $missingGlyphCharacter): void
-    {
-        $this->missingGlyphCharacter = $missingGlyphCharacter;
+        return $this->characters[0];
     }
 
     /**

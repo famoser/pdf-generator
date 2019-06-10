@@ -13,6 +13,7 @@ namespace PdfGenerator\Backend\Structure;
 
 use PdfGenerator\Backend\Catalog\Catalog;
 use PdfGenerator\Backend\Catalog\Pages;
+use PdfGenerator\Backend\Transformation\DocumentResources;
 
 class Document
 {
@@ -34,10 +35,12 @@ class Document
      */
     public function render()
     {
-        $pages = new Pages();
+        $documentVisitor = new DocumentVisitor();
+        $documentResources = new DocumentResources($documentVisitor);
 
+        $pages = new Pages();
         foreach ($this->pages as $page) {
-            $renderedPage = $page->render($pages);
+            $renderedPage = $page->render($pages, $documentResources);
             $pages->addPage($renderedPage);
         }
 

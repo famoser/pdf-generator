@@ -12,6 +12,7 @@
 namespace PdfGenerator\IR;
 
 use PdfGenerator\Backend\Structure\Document\Image;
+use PdfGenerator\Backend\Structure\Font\EmbeddedFont;
 use PdfGenerator\Backend\Structure\Page;
 use PdfGenerator\Font\Backend\FileWriter;
 use PdfGenerator\Font\IR\Optimizer;
@@ -78,7 +79,7 @@ class DocumentVisitor
      *
      *@throws \Exception
      *
-     * @return Type0
+     * @return EmbeddedFont
      */
     public function visitEmbeddedFont(Structure\Font\EmbeddedFont $param)
     {
@@ -87,48 +88,15 @@ class DocumentVisitor
         $font = $parser->parse($fontContent);
 
         $optimizer = Optimizer::create();
-        $fontSubset = $optimizer->getFontSubset($font, $characters);
+        $fontSubset = $optimizer->getFontSubset($font, $font->getCharacters());
 
         $writer = FileWriter::create();
-        $fontContent = $writer->writeFont($fontSubset);
+        $content = $writer->writeFont($fontSubset);
 
-        $baseFontName = 'Some';
+        // TODO: obviously not correct. need to parse name table to read this
+        $fontName = 'SomeFont';
 
-        $fontStream = new FontStream();
-        $fontStream->setFontData($fontContent);
-        $fontStream->setSubtype(FontStream::SUBTYPE_OPEN_TYPE);
-
-        $cIDSystemInfo = new CIDSystemInfo();
-        $cIDSystemInfo->setRegistry('famoser');
-        $cIDSystemInfo->setOrdering(1);
-        $cIDSystemInfo->setSupplement(1);
-
-        $fontDescriptor = new FontDescriptor();
-        // TODO: missing properties
-        $fontDescriptor->setFontFile3($fontStream);
-
-        $cidFont = new CIDFont();
-        $cidFont->setSubType(CIDFont::SUBTYPE_CID_FONT_TYPE_2);
-        $cidFont->setDW(1000);
-        $cidFont->setCIDSystemInfo($cIDSystemInfo);
-        $cidFont->setFontDescriptor($fontDescriptor);
-        $cidFont->setBaseFont($baseFontName);
-
-        $characterWidth = [$fontSubset->getMissingGlyphCharacter()->getLongHorMetric()->getAdvanceWidth()];
-        foreach ($fontSubset->getCharacters() as $character) {
-            $characterWidth[] = $character->getLongHorMetric()->getAdvanceWidth();
-        }
-
-        $cidFont->setW($characterWidth);
-
-        $identifier = $this->generateIdentifier('F');
-        $type0Font = new Type0($identifier);
-        $type0Font->setDescendantFont($cidFont);
-        $type0Font->setBaseFont($baseFontName);
-        $type0Font->setEncoding($cMap);
-        $type0Font->setToUnicode($cMap);
-
-        return $type0Font;
+        return new EmbeddedFont($fontName, $content, [], []);
     }
 
     /**

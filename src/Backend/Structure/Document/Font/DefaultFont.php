@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Backend\Structure\Font;
 
+use PdfGenerator\Backend\Structure\DocumentVisitor;
 use PdfGenerator\Backend\Structure\Font;
 
 class DefaultFont extends Font
@@ -25,11 +26,6 @@ class DefaultFont extends Font
     /**
      * @var string
      */
-    private $baseFont;
-
-    /**
-     * @var string
-     */
     private $encoding;
 
     /**
@@ -40,7 +36,25 @@ class DefaultFont extends Font
      */
     public function __construct(string $baseFont, string $encoding)
     {
-        $this->baseFont = $baseFont;
+        parent::__construct($baseFont);
         $this->encoding = $encoding;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEncoding(): string
+    {
+        return $this->encoding;
+    }
+
+    /**
+     * @param DocumentVisitor $documentVisitor
+     *
+     * @return mixed
+     */
+    public function accept(DocumentVisitor $documentVisitor)
+    {
+        return $documentVisitor->visitDefaultFont($this);
     }
 }
