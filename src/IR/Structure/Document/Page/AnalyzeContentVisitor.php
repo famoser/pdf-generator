@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\IR\Structure\Document\Page;
 
+use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\PageContent\Common\Size;
 use PdfGenerator\IR\Structure\PageContent\ContentVisitor;
 use PdfGenerator\IR\Structure\PageContent\ImagePlacement;
@@ -70,5 +71,13 @@ class AnalyzeContentVisitor extends ContentVisitor
         }
 
         $this->textPerFont[$identifier] .= $param->getText();
+    }
+
+    /**
+     * @return AnalysisResult
+     */
+    public function getAnalysisResult()
+    {
+        return new AnalysisResult($this->maxSizePerImage, $this->textPerFont);
     }
 }

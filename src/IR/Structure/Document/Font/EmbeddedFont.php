@@ -56,4 +56,16 @@ class EmbeddedFont extends Font
     {
         return $this->fontPath;
     }
+
+    /**
+     * sets the encoding used by the font.
+     *
+     * @param string $escaped
+     *
+     * @return string
+     */
+    public function encode(string $escaped): string
+    {
+        return mb_convert_encoding($escaped, 'UTF-8');
+    }
 }

@@ -75,14 +75,43 @@ class ToBackendContentVisitor extends ContentVisitor
      */
     public function visitText(Text $param): TextContent
     {
-        $textWithNormalizedNewlines = str_replace(["\r\n", "\n\r", "\r"], "\n", $param->getText());
-        $lines = explode("\n", $textWithNormalizedNewlines);
+        $escaped = $this->escapeReservedCharacters($param->getText());
+        $encoded = $param->getStyle()->getFont()->encode($escaped);
+        $lines = $this->splitAtNewlines($encoded);
 
         $this->applyPosition($param->getPosition());
         $this->applyTextStyle($param->getStyle());
         $textLevel = $this->pageResources->getWritingState();
 
         return new TextContent($lines, $textLevel);
+    }
+
+    /**
+     * @param string $text
+     *
+     * @return mixed|string
+     */
+    private function escapeReservedCharacters(string $text)
+    {
+        $reserved = ['\\', '(', ')'];
+
+        foreach ($reserved as $entry) {
+            $text = str_replace($reserved, '\\' . $reserved, $text);
+        }
+
+        return $text;
+    }
+
+    /**
+     * @param string $text
+     *
+     * @return string[]
+     */
+    private function splitAtNewlines(string $text)
+    {
+        $textWithNormalizedNewlines = str_replace(["\r\n", "\n\r", "\r"], "\n", $text);
+
+        return explode("\n", $textWithNormalizedNewlines);
     }
 
     /**

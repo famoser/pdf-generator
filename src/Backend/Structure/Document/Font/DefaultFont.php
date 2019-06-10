@@ -18,8 +18,6 @@ class DefaultFont extends Font
 {
     /**
      * equivalent to Windows-1252 according to comment https://www.php.net/manual/de/haru.builtin.encodings.php.
-     *
-     * mb_convert_encoding($str, "Windows-1252", "UTF-8");
      */
     const ENCODING_WIN_ANSI_ENCODING = 'WinAnsiEncoding';
 

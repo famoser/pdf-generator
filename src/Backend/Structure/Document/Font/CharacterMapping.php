@@ -13,4 +13,56 @@ namespace PdfGenerator\Backend\Structure\Document\Font;
 
 class CharacterMapping
 {
+    /**
+     * @var int
+     */
+    private $startByte;
+
+    /**
+     * @var int
+     */
+    private $endByte;
+
+    /**
+     * @var int
+     */
+    private $startGlyphIndex;
+
+    /**
+     * CharacterMapping constructor.
+     *
+     * @param int $startByte
+     * @param int $endByte
+     * @param int $startGlyphIndex
+     */
+    public function __construct(int $startByte, int $endByte, int $startGlyphIndex)
+    {
+        $this->startByte = $startByte;
+        $this->endByte = $endByte;
+        $this->startGlyphIndex = $startGlyphIndex;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStartByte(): int
+    {
+        return $this->startByte;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEndByte(): int
+    {
+        return $this->endByte;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStartGlyphIndex(): int
+    {
+        return $this->startGlyphIndex;
+    }
 }

@@ -1,21 +1,20 @@
 %PDF-1.7
 1 0 obj<</Type Catalog /Pages 2 0 R>>
 endobj
-2 0 obj<</Type Pages /Kids [3 0 R 7 0 R] /Count 1>>
+2 0 obj<</Type Pages /Kids [3 0 R] /Count 1>>
 endobj
 3 0 obj<</Type Page /Parent 2 0 R /Resources 4 0 R /MediaBox [0 0 210 297] /Contents [6 0 R]>>
 endobj
-4 0 obj<</File <</F 5 0 R>> /ProcSet [/PDF /Text]>>
+4 0 obj<</Font <</F 5 0 R>> /ProcSet [/PDF /Text]>>
 endobj
-5 0 obj<</Type /File /Subtype /Type1 /BaseFont /Helvetica>>
+5 0 obj<</Type /Font /Subtype Type1 /BaseFont /Helvetica>>
 endobj
 6 0 obj
 <</Length 70>>
 stream
-BT 0 0 0 RG 0 0 0 rg /F 8 Tf 9.6 TL 1 0 0 1 20 20 cm 1 w (äüö)Tj ET
+BT 0 0 0 RG 0 0 0 rg /F 8 Tf 9.6 TL 1 0 0 1 20 20 cm 1 w (abc
+   a)Tj ET
 endstream
-endobj
-7 0 obj<</Type Page /Parent 2 0 R /Resources 4 0 R /MediaBox [0 0 210 297] /Contents [6 0 R]>>
 endobj
 xref
 0 8
@@ -25,10 +24,10 @@ xref
 1070000000 00000 n
 2090000000 00000 n
 2680000000 00000 n
-3350000000 00000 n
-4530000000 00000 n
+3340000000 00000 n
+4490000000 00000 n
 trailer
 <</Size 8 /Root 1 0 R>>
 startxref
-453
+449
 %%EOF

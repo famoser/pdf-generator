@@ -14,6 +14,7 @@ namespace PdfGenerator\IR;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Image;
+use PdfGenerator\IR\Structure\Optimization\Configuration;
 use PdfGenerator\IR\Structure\PageContent\Common\Color;
 use PdfGenerator\IR\Structure\PageContent\Common\Position;
 use PdfGenerator\IR\Structure\PageContent\Common\Size;
@@ -147,10 +148,16 @@ class Printer
     }
 
     /**
+     * @param Configuration|null $configuration
+     *
      * @return string
      */
-    public function save()
+    public function save(Configuration $configuration = null)
     {
-        return $this->document->save();
+        if ($configuration === null) {
+            $configuration = new Configuration();
+        }
+
+        return $this->document->save($configuration);
     }
 }

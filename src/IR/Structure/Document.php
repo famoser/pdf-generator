@@ -12,9 +12,11 @@
 namespace PdfGenerator\IR\Structure;
 
 use PdfGenerator\IR\DocumentVisitor;
+use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Document\Page\AnalyzeContentVisitor;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Font\EmbeddedFont;
+use PdfGenerator\IR\Structure\Optimization\Configuration;
 
 class Document
 {
@@ -100,20 +102,16 @@ class Document
     }
 
     /**
+     * @param Configuration $configuration
+     *
      * @return \PdfGenerator\Backend\Structure\Document
      */
-    public function render()
+    public function render(Configuration $configuration)
     {
+        $analysisResult = $this->analyze();
+
         $document = new \PdfGenerator\Backend\Structure\Document();
-
-        $analyzeContentVisitor = new AnalyzeContentVisitor();
-        foreach ($this->pages as $page) {
-            foreach ($page->getContent() as $content) {
-                $content->accept($analyzeContentVisitor);
-            }
-        }
-
-        $documentVisitor = new DocumentVisitor($analyzeContentVisitor);
+        $documentVisitor = new DocumentVisitor($analysisResult, $configuration);
         foreach ($this->pages as $page) {
             $page = $page->accept($documentVisitor);
             $document->addPage($page);
@@ -123,10 +121,28 @@ class Document
     }
 
     /**
+     * @param Configuration $configuration
+     *
      * @return string
      */
-    public function save()
+    public function save(Configuration $configuration)
     {
-        return $this->render()->save();
+        return $this->render($configuration)->save();
+    }
+
+    /**
+     * @return AnalysisResult
+     */
+    private function analyze(): AnalysisResult
+    {
+        $analyzeContentVisitor = new AnalyzeContentVisitor();
+
+        foreach ($this->pages as $page) {
+            foreach ($page->getContent() as $content) {
+                $content->accept($analyzeContentVisitor);
+            }
+        }
+
+        return $analyzeContentVisitor->getAnalysisResult();
     }
 }
