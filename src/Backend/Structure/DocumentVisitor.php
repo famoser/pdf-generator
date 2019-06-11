@@ -120,6 +120,77 @@ class DocumentVisitor
         $cmap->setCIDSystemInfo($cIDSystemInfo);
         $cmap->setCMapName($cMapName);
 
+        $header = $this->getCMapHeader($cIDSystemInfo, $cMapName);
+        $codeSpaces = $this->getCMapCodeSpaces($characterMapping);
+
+        $cMapData = $header . "\n" . $codeSpaces;
+        $cmap->setCMapData($cMapData);
+
         return $cmap;
+    }
+
+    /**
+     * @param CIDSystemInfo $cIDSystemInfo
+     * @param string $cMapName
+     *
+     * @return string
+     */
+    private function getCMapHeader(CIDSystemInfo $cIDSystemInfo, string $cMapName): string
+    {
+        $commentLines = [];
+        $commentLines[] = '%!PS-Adobe-3.0 Resource-CMap';
+        $commentLines[] = '%%DocumentNeededResources: procset CIDInit';
+        $commentLines[] = '%%IncludeResource: procset CIDInit';
+        $commentLines[] = '%%BeginResource: CMap ' . $cMapName;
+        $commentLines[] = '%%Title: (' . $cMapName . ' ' . $cIDSystemInfo->getRegistry() . ' ' . $cIDSystemInfo->getOrdering() . ' ' . $cIDSystemInfo->getSupplement() . ')';
+        $commentLines[] = '%%Version: 1';
+        $comments = implode("\n", $commentLines);
+
+        $cMapHeaderLines = [];
+        $cMapHeaderLines[] = '/CIDInit /ProcSet findresource begin'; // initializes cmap routines
+        $cMapHeaderLines[] = '9 dict begin'; // ensure dictionary with 4 entries can be created. +5 due to bug in old PS interpreters
+        $cMapHeaderLines[] = 'begincmap';
+        $cMapHeaderLines[] = '/CIDSystemInfo 3 dict dup begin';
+        $cMapHeaderLines[] = ' /Registry (' . $cIDSystemInfo->getRegistry() . ') def';
+        $cMapHeaderLines[] = ' /Ordering (' . $cIDSystemInfo->getOrdering() . ') def';
+        $cMapHeaderLines[] = ' /Supplement (' . $cIDSystemInfo->getSupplement() . ') def';
+        $cMapHeaderLines[] = 'end def';
+        $cMapHeaderLines[] = '/CMapName /' . $cMapName . ' def';
+        $cMapHeaderLines[] = '/CMapType 0 def'; // implemented type of CMap (still current)
+        /*
+         * omit XUID & UIDOffset because no longer required
+         * https://blogs.adobe.com/CCJKType/2016/06/no-more-xuid-arrays.html
+         */
+        $cMapHeaderLines[] = '/VMode 0 def'; // write horizontally
+        $cMapHeader = implode("\n", $cMapHeaderLines);
+
+        return $comments . "\n" . $cMapHeader;
+    }
+
+    /**
+     * @param CharacterMapping[] $characterMapping
+     *
+     * @return string
+     */
+    private function getCMapCodeSpaces(array $characterMapping)
+    {
+        $entries = [];
+        foreach ($characterMapping as $item) {
+            $endByte = dechex($item->getEndByte());
+            $byteLength = \strlen($endByte);
+
+            $startByte = dechex($item->getStartByte());
+            $adjustedStartByte = str_pad($startByte, $byteLength, '0', STR_PAD_LEFT);
+
+            // TODO: can only map rectangle byte ranges; but this is not guaranteed by the input
+            $entries[] = ' <' . $adjustedStartByte . '> <' . $endByte . '>';
+        }
+
+        $lines = [];
+        $lines[] = \count($entries) . ' begincodespacerange';
+        $lines = array_merge($lines, $entries);
+        $lines[] = 'endcodespacerange';
+
+        return implode("\n", $lines);
     }
 }
