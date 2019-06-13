@@ -147,10 +147,12 @@ class DocumentVisitor
      */
     public function visitImage(Structure\Image $param)
     {
-        list($width, $height) = getimagesize($param->getImagePath());
-        $imageData = $this->getImageData($param, $width, $height);
+        $imageData = file_get_contents($param->getImagePath());
+        $extension = pathinfo($param->getImagePath(), PATHINFO_EXTENSION);
 
-        return new Image($imageData, $width, $height, \PdfGenerator\Backend\Catalog\Image::IMAGE_TYPE_JPEG);
+        $maxSize = $this->analysisResult->getMaxSizePerImage($param);
+
+        return new Image($imageData, $extension, $maxSize->getWidth(), $maxSize->getHeight());
     }
 
     /**
@@ -175,57 +177,5 @@ class DocumentVisitor
         $page->setImages($pageResources->getImages());
 
         return $page;
-    }
-
-    /**
-     * @param int $width
-     * @param int $height
-     * @param Structure\PageContent\Common\Size $maxSize
-     *
-     * @return int[]
-     */
-    private function getTargetHeightWidth(int $width, int $height, Structure\PageContent\Common\Size $maxSize): array
-    {
-        $dpi = $this->configuration->getAutoResizeImagesDpi();
-        $maxWidth = $maxSize->getWidth() * $dpi;
-        $maxHeight = $maxSize->getHeight() * $dpi;
-
-        // if wider than needed, resize such that width = maxWidth
-        if ($width > $maxWidth) {
-            $smallerBy = $maxWidth / (float)$width;
-            $width = $maxWidth;
-            $height = $height * $smallerBy;
-        }
-
-        // if height is lower, resize such that height = maxHeight
-        if ($height < $maxHeight) {
-            $biggerBy = $maxHeight / (float)$height;
-            $height = $maxHeight;
-            $width = $width * $biggerBy;
-        }
-
-        return [$width, $height];
-    }
-
-    /**
-     * @param Structure\Image $param
-     * @param int $width
-     * @param int $height
-     *
-     * @return false|string
-     */
-    private function getImageData(Structure\Image $param, int $width, int $height)
-    {
-        if ($this->configuration->getAutoResizeImages()) {
-            $maxSize = $this->analysisResult->getMaxSizePerImage($param);
-
-            list($targetWidth, $targetHeight) = $this->getTargetHeightWidth($width, $height, $maxSize);
-
-            if ($targetWidth < $width) {
-                return $this->imageOptimizer->resize($param->getImagePath(), $targetWidth, $targetHeight);
-            }
-        }
-
-        return file_get_contents($param->getImagePath());
     }
 }

@@ -11,42 +11,33 @@
 
 namespace PdfGenerator\Backend\Structure\Font;
 
-use PdfGenerator\Backend\Structure\Document\Font\CharacterMapping;
 use PdfGenerator\Backend\Structure\DocumentVisitor;
 use PdfGenerator\Backend\Structure\Font;
 
 class EmbeddedFont extends Font
 {
+    const ENCODING_UTF_8 = 'UTF-8';
+
+    /**
+     * @var string
+     */
+    private $encoding;
+
     /**
      * @var string
      */
     private $fontContent;
 
     /**
-     * @var CharacterMapping[]
-     */
-    private $characterMappings;
-
-    /**
-     * @var int[]
-     */
-    private $characterWidths;
-
-    /**
      * EmbeddedFont constructor.
      *
-     * @param string $baseFont
+     * @param string $encoding
      * @param string $fontContent
-     * @param CharacterMapping[] $characterMappings
-     * @param array $characterWidths
      */
-    public function __construct(string $baseFont, string $fontContent, array $characterMappings, array $characterWidths)
+    public function __construct(string $encoding, string $fontContent)
     {
-        parent::__construct($baseFont);
-
+        $this->encoding = $encoding;
         $this->fontContent = $fontContent;
-        $this->characterMappings = $characterMappings;
-        $this->characterWidths = $characterWidths;
     }
 
     /**
@@ -55,22 +46,6 @@ class EmbeddedFont extends Font
     public function getFontContent(): string
     {
         return $this->fontContent;
-    }
-
-    /**
-     * @return CharacterMapping[]
-     */
-    public function getCharacterMappings(): array
-    {
-        return $this->characterMappings;
-    }
-
-    /**
-     * @return int[]
-     */
-    public function getCharacterWidths(): array
-    {
-        return $this->characterWidths;
     }
 
     /**

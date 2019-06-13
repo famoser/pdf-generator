@@ -20,13 +20,44 @@ use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Catalog\Font\Type1;
 use PdfGenerator\Backend\Catalog\Image;
 use PdfGenerator\Backend\Structure\Document\Font\CharacterMapping;
+use PdfGenerator\IR\Structure\Optimization\Configuration;
+use PdfGenerator\IR\Structure\Optimization\FontOptimizer;
+use PdfGenerator\IR\Structure\Optimization\ImageOptimizer;
 
 class DocumentVisitor
 {
     /**
+     * @var Configuration
+     */
+    private $configuration;
+
+    /**
      * @var int[]
      */
     private $resourceCounters = [];
+
+    /**
+     * @var FontOptimizer
+     */
+    private $fontOptimizer;
+
+    /**
+     * @var ImageOptimizer
+     */
+    private $imageOptimizer;
+
+    /**
+     * DocumentVisitor constructor.
+     *
+     * @param Configuration $configuration
+     */
+    public function __construct(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
+
+        $this->fontOptimizer = new FontOptimizer();
+        $this->imageOptimizer = new ImageOptimizer();
+    }
 
     /**
      * @param string $prefix
@@ -50,8 +81,53 @@ class DocumentVisitor
     public function visitImage(Document\Image $param)
     {
         $identifier = $this->generateIdentifier('I');
+        $imageContent = $param->getImageContent();
 
-        return new Image($identifier, $param->getImageType(), $param->getImageContent(), $param->getWidth(), $param->getHeight());
+        list($width, $height) = getimagesizefromstring($param->getImageContent());
+        if ($this->configuration->getAutoResizeImages()) {
+            list($targetWidth, $targetHeight) = $this->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight());
+
+            if ($targetWidth < $width) {
+                $imageContent = $this->imageOptimizer->transformToJpgAndResize($imageContent, $targetWidth, $targetHeight);
+                $width = $targetWidth;
+                $height = $targetHeight;
+            }
+        } elseif ($param->getType() !== Document\Image::TYPE_JPG && $param->getType() !== Document\Image::TYPE_JPEG) {
+            $imageContent = $this->imageOptimizer->transformToJpgAndResize($imageContent, $width, $height);
+        }
+
+        return new Image($identifier, Image::IMAGE_TYPE_JPEG, $imageContent, $width, $height);
+    }
+
+    /**
+     * @param int $width
+     * @param int $height
+     * @param int $maxWidth
+     * @param int $maxHeight
+     *
+     * @return int[]
+     */
+    private function getTargetHeightWidth(int $width, int $height, int $maxWidth, int $maxHeight): array
+    {
+        $dpi = $this->configuration->getAutoResizeImagesDpi();
+        $maxWidth = $maxWidth * $dpi;
+        $maxHeight = $maxHeight * $dpi;
+
+        // if wider than needed, resize such that width = maxWidth
+        if ($width > $maxWidth) {
+            $smallerBy = $maxWidth / (float)$width;
+            $width = $maxWidth;
+            $height = $height * $smallerBy;
+        }
+
+        // if height is lower, resize such that height = maxHeight
+        if ($height < $maxHeight) {
+            $biggerBy = $maxHeight / (float)$height;
+            $height = $maxHeight;
+            $width = $width * $biggerBy;
+        }
+
+        return [$width, $height];
     }
 
     /**

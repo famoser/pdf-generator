@@ -15,26 +15,4 @@ use PdfGenerator\Backend\Structure\Document\Base\BaseDocumentStructure;
 
 abstract class Font extends BaseDocumentStructure
 {
-    /**
-     * @var string
-     */
-    private $baseFont;
-
-    /**
-     * Font constructor.
-     *
-     * @param string $baseFont
-     */
-    public function __construct(string $baseFont)
-    {
-        $this->baseFont = $baseFont;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBaseFont(): string
-    {
-        return $this->baseFont;
-    }
 }

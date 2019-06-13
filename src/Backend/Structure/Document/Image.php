@@ -16,6 +16,11 @@ use PdfGenerator\Backend\Structure\DocumentVisitor;
 
 class Image extends BaseDocumentStructure
 {
+    const TYPE_JPG = 'jpg';
+    const TYPE_JPEG = 'jpeg';
+    const TYPE_PNG = 'png';
+    const TYPE_GIF = 'gif';
+
     /**
      * @var string
      */
@@ -24,32 +29,32 @@ class Image extends BaseDocumentStructure
     /**
      * @var int
      */
-    private $width;
+    private $type;
 
     /**
      * @var int
      */
-    private $height;
+    private $maxUsedWidth;
 
     /**
      * @var int
      */
-    private $imageType;
+    private $maxUsedHeight;
 
     /**
      * Image constructor.
      *
      * @param string $imageContent
-     * @param int $width
-     * @param int $height
      * @param int $imageType
+     * @param float $maxUsedWidth
+     * @param float $maxUsedHeight
      */
-    public function __construct(string $imageContent, int $width, int $height, int $imageType)
+    public function __construct(string $imageContent, int $imageType, int $maxUsedWidth, int $maxUsedHeight)
     {
         $this->imageContent = $imageContent;
-        $this->width = $width;
-        $this->height = $height;
-        $this->imageType = $imageType;
+        $this->type = $imageType;
+        $this->maxUsedWidth = $maxUsedWidth;
+        $this->maxUsedHeight = $maxUsedHeight;
     }
 
     /**
@@ -73,24 +78,24 @@ class Image extends BaseDocumentStructure
     /**
      * @return int
      */
-    public function getWidth(): int
+    public function getType(): int
     {
-        return $this->width;
+        return $this->type;
     }
 
     /**
      * @return int
      */
-    public function getHeight(): int
+    public function getMaxUsedWidth(): int
     {
-        return $this->height;
+        return $this->maxUsedWidth;
     }
 
     /**
      * @return int
      */
-    public function getImageType(): int
+    public function getMaxUsedHeight(): int
     {
-        return $this->imageType;
+        return $this->maxUsedHeight;
     }
 }

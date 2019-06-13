@@ -17,6 +17,11 @@ use PdfGenerator\Backend\Structure\Font;
 class DefaultFont extends Font
 {
     /**
+     * @var string
+     */
+    private $baseFont;
+
+    /**
      * equivalent to Windows-1252 according to comment https://www.php.net/manual/de/haru.builtin.encodings.php.
      */
     const ENCODING_WIN_ANSI_ENCODING = 'WinAnsiEncoding';
@@ -34,8 +39,16 @@ class DefaultFont extends Font
      */
     public function __construct(string $baseFont, string $encoding)
     {
-        parent::__construct($baseFont);
+        $this->baseFont = $baseFont;
         $this->encoding = $encoding;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBaseFont(): string
+    {
+        return $this->baseFont;
     }
 
     /**
