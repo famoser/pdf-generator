@@ -26,26 +26,49 @@ class EmbeddedFont extends Font
     /**
      * @var string
      */
-    private $fontContent;
+    private $content;
+
+    /**
+     * @var string
+     */
+    private $usedWithText;
 
     /**
      * EmbeddedFont constructor.
      *
      * @param string $encoding
-     * @param string $fontContent
+     * @param string $content
+     * @param string $usedWithText
      */
-    public function __construct(string $encoding, string $fontContent)
+    public function __construct(string $encoding, string $content, string $usedWithText)
     {
         $this->encoding = $encoding;
-        $this->fontContent = $fontContent;
+        $this->content = $content;
+        $this->usedWithText = $usedWithText;
     }
 
     /**
      * @return string
      */
-    public function getFontContent(): string
+    public function getEncoding(): string
     {
-        return $this->fontContent;
+        return $this->encoding;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsedWithText(): string
+    {
+        return $this->usedWithText;
     }
 
     /**

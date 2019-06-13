@@ -20,6 +20,8 @@ use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Catalog\Font\Type1;
 use PdfGenerator\Backend\Catalog\Image;
 use PdfGenerator\Backend\Structure\Document\Font\CharacterMapping;
+use PdfGenerator\Font\Backend\FileWriter;
+use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\IR\Structure\Optimization\Configuration;
 use PdfGenerator\IR\Structure\Optimization\FontOptimizer;
 use PdfGenerator\IR\Structure\Optimization\ImageOptimizer;
@@ -81,53 +83,28 @@ class DocumentVisitor
     public function visitImage(Document\Image $param)
     {
         $identifier = $this->generateIdentifier('I');
-        $imageContent = $param->getImageContent();
+        $type = $param->getType() === Document\Image::TYPE_JPG || $param->getType() === Document\Image::TYPE_JPEG ? Image::IMAGE_TYPE_JPEG : null;
 
+        $content = $param->getImageContent();
         list($width, $height) = getimagesizefromstring($param->getImageContent());
+
         if ($this->configuration->getAutoResizeImages()) {
-            list($targetWidth, $targetHeight) = $this->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight());
+            list($targetWidth, $targetHeight) = $this->imageOptimizer->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight(), $this->configuration->getAutoResizeImagesDpi());
 
             if ($targetWidth < $width) {
-                $imageContent = $this->imageOptimizer->transformToJpgAndResize($imageContent, $targetWidth, $targetHeight);
+                $content = $this->imageOptimizer->transformToJpgAndResize($content, $targetWidth, $targetHeight);
                 $width = $targetWidth;
                 $height = $targetHeight;
+                $type = Image::IMAGE_TYPE_JPEG;
             }
-        } elseif ($param->getType() !== Document\Image::TYPE_JPG && $param->getType() !== Document\Image::TYPE_JPEG) {
-            $imageContent = $this->imageOptimizer->transformToJpgAndResize($imageContent, $width, $height);
         }
 
-        return new Image($identifier, Image::IMAGE_TYPE_JPEG, $imageContent, $width, $height);
-    }
-
-    /**
-     * @param int $width
-     * @param int $height
-     * @param int $maxWidth
-     * @param int $maxHeight
-     *
-     * @return int[]
-     */
-    private function getTargetHeightWidth(int $width, int $height, int $maxWidth, int $maxHeight): array
-    {
-        $dpi = $this->configuration->getAutoResizeImagesDpi();
-        $maxWidth = $maxWidth * $dpi;
-        $maxHeight = $maxHeight * $dpi;
-
-        // if wider than needed, resize such that width = maxWidth
-        if ($width > $maxWidth) {
-            $smallerBy = $maxWidth / (float)$width;
-            $width = $maxWidth;
-            $height = $height * $smallerBy;
+        if ($type === null) {
+            $content = $this->imageOptimizer->transformToJpgAndResize($content, $width, $height);
+            $type = Image::IMAGE_TYPE_JPEG;
         }
 
-        // if height is lower, resize such that height = maxHeight
-        if ($height < $maxHeight) {
-            $biggerBy = $maxHeight / (float)$height;
-            $height = $maxHeight;
-            $width = $width * $biggerBy;
-        }
-
-        return [$width, $height];
+        return new Image($identifier, $type, $content, $width, $height);
     }
 
     /**
@@ -145,12 +122,34 @@ class DocumentVisitor
     /**
      * @param Font\EmbeddedFont $param
      *
+     * @throws \Exception
+     *
      * @return Type0
      */
     public function visitEmbeddedFont(Font\EmbeddedFont $param)
     {
+        $orderedCodepoints = $this->fontOptimizer->getOrderedCodepoints($param->getContent());
+
+        $parser = Parser::create();
+        $font = $parser->parse($param->getContent());
+
+        $fontSubset = $this->fontOptimizer->getFontSubset($font, $orderedCodepoints);
+
+        $writer = FileWriter::create();
+        $content = $writer->writeFont($fontSubset);
+
+        $widths = [];
+        foreach ($fontSubset->getCharacters() as $character) {
+            $widths[] = $character->getLongHorMetric()->getAdvanceWidth();
+        }
+
+        $characterMappings = $this->fontOptimizer->getCharacterMappings($orderedCodepoints);
+
+        // TODO: need to parse name table to fix this
+        $fontName = 'SomeFont';
+
         $fontStream = new FontStream();
-        $fontStream->setFontData($param->getFontContent());
+        $fontStream->setFontData($content);
         $fontStream->setSubtype(FontStream::SUBTYPE_OPEN_TYPE);
 
         $cIDSystemInfo = new CIDSystemInfo();
@@ -167,16 +166,16 @@ class DocumentVisitor
         $cidFont->setDW(1000);
         $cidFont->setCIDSystemInfo($cIDSystemInfo);
         $cidFont->setFontDescriptor($fontDescriptor);
-        $cidFont->setBaseFont($param->getBaseFont());
-        $cidFont->setW($param->getCharacterWidths());
+        $cidFont->setBaseFont($fontName);
+        $cidFont->setW($widths);
 
         $identifier = $this->generateIdentifier('F');
         $type0Font = new Type0($identifier);
         $type0Font->setDescendantFont($cidFont);
-        $type0Font->setBaseFont($param->getBaseFont());
+        $type0Font->setBaseFont($fontName);
 
         // TODO: CMaps not implemented yet
-        $cMap = $this->createCMap($cIDSystemInfo, 'someName', $param->getCharacterMappings());
+        $cMap = $this->createCMap($cIDSystemInfo, 'someName', $characterMappings);
         $type0Font->setEncoding($cMap);
         $type0Font->setToUnicode($cMap);
 

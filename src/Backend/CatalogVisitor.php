@@ -205,7 +205,7 @@ class CatalogVisitor
      */
     public function visitImage(Catalog\Image $structure): BaseObject
     {
-        $stream = $this->file->addStreamObject($structure->getImageData());
+        $stream = $this->file->addStreamObject($structure->getContent());
 
         $dictionary = $stream->getMetaData();
         $dictionary->setTextEntry('Type', '/XObject');

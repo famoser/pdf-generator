@@ -33,6 +33,37 @@ class ImageOptimizer
     }
 
     /**
+     * @param int $width
+     * @param int $height
+     * @param int $maxWidth
+     * @param int $maxHeight
+     * @param int $dpi
+     *
+     * @return int[]
+     */
+    public function getTargetHeightWidth(int $width, int $height, int $maxWidth, int $maxHeight, int $dpi): array
+    {
+        $maxWidth = $maxWidth * $dpi;
+        $maxHeight = $maxHeight * $dpi;
+
+        // if wider than needed, resize such that width = maxWidth
+        if ($width > $maxWidth) {
+            $smallerBy = $maxWidth / (float)$width;
+            $width = $maxWidth;
+            $height = $height * $smallerBy;
+        }
+
+        // if height is lower, resize such that height = maxHeight
+        if ($height < $maxHeight) {
+            $biggerBy = $maxHeight / (float)$height;
+            $height = $maxHeight;
+            $width = $width * $biggerBy;
+        }
+
+        return [$width, $height];
+    }
+
+    /**
      * @param callable $func
      *
      * @return string

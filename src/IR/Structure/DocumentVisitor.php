@@ -14,8 +14,6 @@ namespace PdfGenerator\IR;
 use PdfGenerator\Backend\Structure\Document\Image;
 use PdfGenerator\Backend\Structure\Font\EmbeddedFont;
 use PdfGenerator\Backend\Structure\Page;
-use PdfGenerator\Font\Backend\FileWriter;
-use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Optimization\Configuration;
@@ -115,29 +113,10 @@ class DocumentVisitor
      */
     public function visitEmbeddedFont(Structure\Font\EmbeddedFont $param)
     {
+        $content = file_get_contents($param->getFontPath());
         $text = $this->analysisResult->getTextPerFont($param);
-        $orderedCodepoints = $this->fontOptimizer->getOrderedCodepoints($text);
 
-        $parser = Parser::create();
-        $fontContent = file_get_contents($param->getFontPath());
-        $font = $parser->parse($fontContent);
-
-        $fontSubset = $this->fontOptimizer->getFontSubset($font, $orderedCodepoints);
-
-        $writer = FileWriter::create();
-        $content = $writer->writeFont($fontSubset);
-
-        $widths = [];
-        foreach ($fontSubset->getCharacters() as $character) {
-            $widths[] = $character->getLongHorMetric()->getAdvanceWidth();
-        }
-
-        $characterMappings = $this->fontOptimizer->getCharacterMappings($orderedCodepoints);
-
-        // TODO: need to parse name table to fix this
-        $fontName = 'SomeFont';
-
-        return new EmbeddedFont($fontName, $content, $characterMappings, $widths);
+        return new EmbeddedFont(EmbeddedFont::ENCODING_UTF_8, $content, $text);
     }
 
     /**
