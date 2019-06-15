@@ -113,7 +113,6 @@ class DocumentVisitor
      */
     public function visitEmbeddedFont(Structure\Font\EmbeddedFont $param)
     {
-        $content = file_get_contents($param->getFontPath());
         $text = $this->analysisResult->getTextPerFont($param);
 
         return new EmbeddedFont(EmbeddedFont::ENCODING_UTF_8, $content, $text);

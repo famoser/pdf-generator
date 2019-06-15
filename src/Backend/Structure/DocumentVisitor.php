@@ -21,7 +21,6 @@ use PdfGenerator\Backend\Catalog\Font\Type1;
 use PdfGenerator\Backend\Catalog\Image;
 use PdfGenerator\Backend\Structure\Document\Font\CharacterMapping;
 use PdfGenerator\Font\Backend\FileWriter;
-use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\IR\Structure\Optimization\Configuration;
 use PdfGenerator\IR\Structure\Optimization\FontOptimizer;
 use PdfGenerator\IR\Structure\Optimization\ImageOptimizer;
@@ -128,10 +127,9 @@ class DocumentVisitor
      */
     public function visitEmbeddedFont(Font\EmbeddedFont $param)
     {
-        $orderedCodepoints = $this->fontOptimizer->getOrderedCodepoints($param->getContent());
+        $orderedCodepoints = $this->fontOptimizer->getOrderedCodepoints($param->getFont());
 
-        $parser = Parser::create();
-        $font = $parser->parse($param->getContent());
+        $font = $param->getFont();
 
         $fontSubset = $this->fontOptimizer->getFontSubset($font, $orderedCodepoints);
 
