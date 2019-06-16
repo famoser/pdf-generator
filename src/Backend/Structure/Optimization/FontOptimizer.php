@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\IR\Structure\Optimization;
 
-use PdfGenerator\Backend\Structure\Document\Font\CharacterMapping;
 use PdfGenerator\Font\IR\CharacterRepository;
 use PdfGenerator\Font\IR\Optimizer;
 use PdfGenerator\Font\IR\Structure\Font;
@@ -72,31 +71,16 @@ class FontOptimizer
     /**
      * @param int[] $orderedCodepoints
      *
-     * @return CharacterMapping[]
+     * @return int[]
      */
-    public function getCharacterMappings($orderedCodepoints): array
+    public function getCharacterMappings(array $orderedCodepoints): array
     {
-        /** @var CharacterMapping[] $characterMaps */
+        /** @var int[] $characterMappings */
         $characterMappings = [];
         $totalCodePoints = \count($orderedCodepoints);
+        $glyphIndex = 1;
         for ($i = 0; $i < $totalCodePoints; ++$i) {
-            $startCodePoint = $orderedCodepoints[$i];
-            $startCharacterIndex = $i + 1; // +1 because at 0 is the missing glyph character
-
-            $sizeOfRange = 1;
-            for (; $i < $totalCodePoints - 1; $i++, $sizeOfRange++) {
-                $nextCodePoint = $orderedCodepoints[$i + 1];
-
-                // stop if no longer follow immediately
-                if ($nextCodePoint - $startCodePoint !== $sizeOfRange) {
-                    break;
-                }
-            }
-
-            // add new range to character mappings
-            $endCodePoint = $orderedCodepoints[$i];
-            $characterMapping = new CharacterMapping($startCodePoint, $endCodePoint, $startCharacterIndex);
-            $characterMappings[] = $characterMapping;
+            $characterMappings[$totalCodePoints] = $glyphIndex++;
         }
 
         return $characterMappings;

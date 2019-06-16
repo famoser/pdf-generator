@@ -19,7 +19,6 @@ use PdfGenerator\Backend\Catalog\Font\Structure\FontStream;
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Catalog\Font\Type1;
 use PdfGenerator\Backend\Catalog\Image;
-use PdfGenerator\Backend\Structure\Document\Font\CharacterMapping;
 use PdfGenerator\Font\Backend\FileWriter;
 use PdfGenerator\IR\Structure\Optimization\Configuration;
 use PdfGenerator\IR\Structure\Optimization\FontOptimizer;
@@ -141,8 +140,6 @@ class DocumentVisitor
             $widths[] = $character->getLongHorMetric()->getAdvanceWidth();
         }
 
-        $characterMappings = $this->fontOptimizer->getCharacterMappings($orderedCodepoints);
-
         // TODO: need to parse name table to fix this
         $fontName = 'SomeFont';
 
@@ -173,7 +170,7 @@ class DocumentVisitor
         $type0Font->setBaseFont($fontName);
 
         // TODO: CMaps not implemented yet
-        $cMap = $this->createCMap($cIDSystemInfo, 'someName', $characterMappings);
+        $cMap = $this->createCMap($cIDSystemInfo, 'someName', $orderedCodepoints);
         $type0Font->setEncoding($cMap);
         $type0Font->setToUnicode($cMap);
 
@@ -183,18 +180,18 @@ class DocumentVisitor
     /**
      * @param CIDSystemInfo $cIDSystemInfo
      * @param string $cMapName
-     * @param CharacterMapping[] $characterMapping
+     * @param int[] $orderedCodePoints
      *
      * @return CMap
      */
-    private function createCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $characterMapping)
+    private function createCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $orderedCodePoints)
     {
         $cmap = new CMap();
         $cmap->setCIDSystemInfo($cIDSystemInfo);
         $cmap->setCMapName($cMapName);
 
         $header = $this->getCMapHeader($cIDSystemInfo, $cMapName);
-        $codeSpaces = $this->getCMapCodeSpaces($characterMapping);
+        $codeSpaces = $this->getCMapCodeSpaces($orderedCodePoints);
 
         $cMapData = $header . "\n" . $codeSpaces;
         $cmap->setCMapData($cMapData);
@@ -241,29 +238,84 @@ class DocumentVisitor
     }
 
     /**
-     * @param CharacterMapping[] $characterMapping
+     * @param int[] $codePoints
      *
      * @return string
      */
-    private function getCMapCodeSpaces(array $characterMapping)
+    private function getCMapCodeSpaces(array $codePoints)
     {
-        $entries = [];
-        foreach ($characterMapping as $item) {
-            $endByte = dechex($item->getEndByte());
-            $byteLength = \strlen($endByte);
+        $hexCodePointsByLength = $this->getAsHexByLength($codePoints);
 
-            $startByte = dechex($item->getStartByte());
-            $adjustedStartByte = str_pad($startByte, $byteLength, '0', STR_PAD_LEFT);
+        $byteRanges = [];
+        foreach ($hexCodePointsByLength as $length => $hexPoints) {
+            sort($hexPoints);
 
-            // TODO: can only map rectangle byte ranges; but this is not guaranteed by the input
-            $entries[] = ' <' . $adjustedStartByte . '> <' . $endByte . '>';
+            $byteRanges = array_merge($byteRanges, $this->getByteRanges($hexPoints));
         }
 
         $lines = [];
-        $lines[] = \count($entries) . ' begincodespacerange';
-        $lines = array_merge($lines, $entries);
+        $lines[] = \count($byteRanges) . ' begincodespacerange';
+        $lines = array_merge($lines, $byteRanges);
         $lines[] = 'endcodespacerange';
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * @param array $codePoints
+     *
+     * @return array
+     */
+    private function getAsHexByLength(array $codePoints): array
+    {
+        $hexPointsByLength = [];
+        foreach ($codePoints as $codePoint) {
+            $byte = dechex($codePoint);
+            $length = \strlen($byte);
+            if ($length % 2 !== 0) {
+                $byte = '0' . $byte;
+            }
+
+            if (!isset($hexPointsByLength[$length])) {
+                $hexPointsByLength[$length] = [];
+            }
+
+            $hexPointsByLength[$length][] = $byte;
+        }
+
+        sort($hexPointsByLength);
+
+        return $hexPointsByLength;
+    }
+
+    /**
+     * @param string[] $hexPoints
+     *
+     * @return string[]
+     */
+    private function getByteRanges(array $hexPoints): array
+    {
+        $byteRanges = [];
+
+        $lastValue = null;
+        $firstHexPoint = null;
+        $lastHexPoint = null;
+        foreach ($hexPoints as $hexPoint) {
+            $currentValue = hexdec($hexPoint);
+
+            if ($currentValue - 1 !== $lastValue) {
+                if ($firstHexPoint !== null) {
+                    $byteRanges[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
+                }
+                $firstHexPoint = $hexPoint;
+            }
+
+            $lastHexPoint = $hexPoint;
+            $lastValue = $currentValue;
+        }
+
+        $byteRanges[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
+
+        return $byteRanges;
     }
 }
