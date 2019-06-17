@@ -11,10 +11,10 @@
 
 namespace PdfGenerator\IR\Structure\Page;
 
-use PdfGenerator\Backend\Catalog\Image;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
+use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\PageResources;
 use PdfGenerator\IR\Structure\Page\Content\Common\Position;
 use PdfGenerator\IR\Structure\Page\Content\ImagePlacement;
@@ -48,6 +48,7 @@ class ToBackendContentVisitor extends ContentVisitor
     {
         $image = $this->pageResources->getImage($placement->getImage());
 
+        // TODO: how to get width / height
         $this->applyImagePlacementPositionAndSize($image, $placement);
         $pageLevel = $this->pageResources->getDrawingState();
 

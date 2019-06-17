@@ -12,7 +12,7 @@
 namespace PdfGenerator\Backend\Structure\Document\Page\Content;
 
 use PdfGenerator\Backend\Catalog\Content;
-use PdfGenerator\Backend\Catalog\Image;
+use PdfGenerator\Backend\Structure\Document\Image;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
