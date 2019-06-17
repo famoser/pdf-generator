@@ -191,9 +191,10 @@ class DocumentVisitor
         $cmap->setCMapName($cMapName);
 
         $header = $this->getCMapHeader($cIDSystemInfo, $cMapName);
-        $codeSpaces = $this->getCMapCodeSpaces($orderedCodePoints);
+        $byteMappings = $this->getCMapByteMappings($orderedCodePoints);
+        $trailer = $this->getCMapTrailer();
 
-        $cMapData = $header . "\n" . $codeSpaces;
+        $cMapData = $header . "\n" . $byteMappings . "\n" . $trailer;
         $cmap->setCMapData($cMapData);
 
         return $cmap;
@@ -238,27 +239,74 @@ class DocumentVisitor
     }
 
     /**
+     * @return string
+     */
+    private function getCMapTrailer(): string
+    {
+        $tralerLines = [];
+        $tralerLines[] = 'endcmap';
+        $tralerLines[] = 'CMapName currentdict /CMap defineresource pop';
+        $tralerLines[] = 'end';
+        $tralerLines[] = 'end';
+        $tralerLines[] = '%%EndResource';
+        $tralerLines[] = '%%EOF';
+
+        return implode("\n", $tralerLines);
+    }
+
+    /**
      * @param int[] $codePoints
      *
      * @return string
      */
-    private function getCMapCodeSpaces(array $codePoints)
+    private function getCMapByteMappings(array $codePoints)
     {
         $hexCodePointsByLength = $this->getAsHexByLength($codePoints);
 
-        $byteRanges = [];
+        $codeSpaces = [];
         foreach ($hexCodePointsByLength as $length => $hexPoints) {
             sort($hexPoints);
 
-            $byteRanges = array_merge($byteRanges, $this->getByteRanges($hexPoints));
+            $codeSpaces = array_merge($codeSpaces, $this->getCodeSpaces($hexPoints));
         }
 
-        $lines = [];
-        $lines[] = \count($byteRanges) . ' begincodespacerange';
-        $lines = array_merge($lines, $byteRanges);
-        $lines[] = 'endcodespacerange';
+        $codeSpaceDictionaries = $this->toDictionary($codeSpaces, 'codespacerange');
 
-        return implode("\n", $lines);
+        $codeMappings = [];
+        foreach ($hexCodePointsByLength as $length => $hexPoints) {
+            sort($hexPoints);
+
+            $codeMappings = array_merge($codeMappings, $this->getCodeMappings($hexPoints));
+        }
+
+        $codeMappingDictionaries = $this->toDictionary($codeMappings, 'cidrange');
+
+        $validMappings = implode("\n\n", $codeSpaceDictionaries) . "\n\n" . implode("\n\n", $codeMappingDictionaries);
+
+        $notDefMapping = "1 beginnotdefrange\n <00> <00> 0\nendnotdefrange";
+
+        return $validMappings . "\n\n" . $notDefMapping;
+    }
+
+    /**
+     * @param string[] $entries
+     * @param string $identifier
+     * @param int $maxEntries
+     *
+     * @return string[]
+     */
+    private function toDictionary(array $entries, string $identifier, int $maxEntries = 100)
+    {
+        $dictionaries = [];
+        foreach (array_chunk($entries, $maxEntries) as $currentEntries) {
+            $dictionary = \count($currentEntries) . ' begin' . $identifier . "\n";
+            $dictionary .= implode("\n", $currentEntries) . "\n";
+            $dictionary .= 'end' . $identifier;
+
+            $dictionaries[] = $dictionary;
+        }
+
+        return $dictionaries;
     }
 
     /**
@@ -269,18 +317,20 @@ class DocumentVisitor
     private function getAsHexByLength(array $codePoints): array
     {
         $hexPointsByLength = [];
+        $characterIndex = 1;
         foreach ($codePoints as $codePoint) {
             $byte = dechex($codePoint);
             $length = \strlen($byte);
             if ($length % 2 !== 0) {
                 $byte = '0' . $byte;
+                ++$length;
             }
 
             if (!isset($hexPointsByLength[$length])) {
                 $hexPointsByLength[$length] = [];
             }
 
-            $hexPointsByLength[$length][] = $byte;
+            $hexPointsByLength[$length][$byte] = $characterIndex;
         }
 
         sort($hexPointsByLength);
@@ -289,23 +339,23 @@ class DocumentVisitor
     }
 
     /**
-     * @param string[] $hexPoints
+     * @param string[] $codePoints
      *
      * @return string[]
      */
-    private function getByteRanges(array $hexPoints): array
+    private function getCodeSpaces(array $codePoints): array
     {
-        $byteRanges = [];
+        $codeSpaces = [];
 
         $lastValue = null;
         $firstHexPoint = null;
         $lastHexPoint = null;
-        foreach ($hexPoints as $hexPoint) {
+        foreach ($codePoints as $hexPoint => $characterIndex) {
             $currentValue = hexdec($hexPoint);
 
             if ($currentValue - 1 !== $lastValue) {
                 if ($firstHexPoint !== null) {
-                    $byteRanges[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
+                    $codeSpaces[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
                 }
                 $firstHexPoint = $hexPoint;
             }
@@ -314,8 +364,43 @@ class DocumentVisitor
             $lastValue = $currentValue;
         }
 
-        $byteRanges[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
+        $codeSpaces[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
 
-        return $byteRanges;
+        return $codeSpaces;
+    }
+
+    /**
+     * @param string[] $hexPoints
+     *
+     * @return string[]
+     */
+    private function getCodeMappings(array $hexPoints): array
+    {
+        $codeMappings = [];
+
+        $lastValue = null;
+        $lastCharacterIndex = null;
+        $firstHexPoint = null;
+        $firstCharacterIndex = null;
+        $lastHexPoint = null;
+        foreach ($hexPoints as $hexPoint => $characterIndex) {
+            $currentValue = hexdec($hexPoint);
+
+            if ($currentValue - 1 !== $lastValue || $characterIndex - 1 !== $lastCharacterIndex) {
+                if ($firstHexPoint !== null) {
+                    $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $firstCharacterIndex;
+                }
+                $firstHexPoint = $hexPoint;
+                $firstCharacterIndex = $characterIndex;
+            }
+
+            $lastHexPoint = $hexPoint;
+            $lastValue = $currentValue;
+            $lastCharacterIndex = $characterIndex;
+        }
+
+        $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $firstCharacterIndex;
+
+        return $codeMappings;
     }
 }
