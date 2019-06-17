@@ -94,6 +94,6 @@ class CMap extends BaseStructure
      */
     public function accept(CatalogVisitor $visitor)
     {
-        return $visitor->visitCMap($this, $file);
+        return $visitor->visitCMap($this);
     }
 }

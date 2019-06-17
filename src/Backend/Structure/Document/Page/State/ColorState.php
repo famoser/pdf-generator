@@ -68,7 +68,6 @@ class ColorState extends BaseState
 
     /**
      * @param StateTransitionVisitor $visitor
-     * @param self $previousState
      *
      * @return string[]
      */

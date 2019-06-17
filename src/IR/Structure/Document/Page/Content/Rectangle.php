@@ -78,6 +78,6 @@ class Rectangle extends BaseContent
      */
     public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Structure\Base\BaseContent
     {
-        return $visitor->visitRectangle($visitor);
+        return $visitor->visitRectangle($this);
     }
 }

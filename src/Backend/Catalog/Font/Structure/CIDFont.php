@@ -159,6 +159,6 @@ class CIDFont extends BaseStructure
      */
     public function accept(CatalogVisitor $visitor)
     {
-        return $visitor->visitCIDFont($this, $file);
+        return $visitor->visitCIDFont($this);
     }
 }

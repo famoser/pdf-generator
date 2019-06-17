@@ -73,6 +73,6 @@ class FontStream extends BaseStructure
      */
     public function accept(CatalogVisitor $visitor)
     {
-        return $visitor->visitFontStream($this, $file);
+        return $visitor->visitFontStream($this);
     }
 }

@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\IR;
 
+use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont;
 use PdfGenerator\Backend\Structure\Document\Image;
-use PdfGenerator\Backend\Structure\Font\EmbeddedFont;
 use PdfGenerator\Backend\Structure\Page;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
@@ -72,14 +72,14 @@ class DocumentVisitor
      *
      * @throws \Exception
      *
-     * @return \PdfGenerator\Backend\Structure\Font\DefaultFont
+     * @return \PdfGenerator\Backend\Structure\Document\Font\DefaultFont
      */
     public function visitDefaultFont(DefaultFont $param)
     {
         $baseFont = $this->getDefaultFontBaseFont($param->getFont(), $param->getStyle());
-        $encoding = \PdfGenerator\Backend\Structure\Font\DefaultFont::ENCODING_WIN_ANSI_ENCODING;
+        $encoding = \PdfGenerator\Backend\Structure\Document\Font\DefaultFont::ENCODING_WIN_ANSI_ENCODING;
 
-        return new \PdfGenerator\Backend\Structure\Font\DefaultFont($baseFont, $encoding);
+        return new \PdfGenerator\Backend\Structure\Document\Font\DefaultFont($baseFont, $encoding);
     }
 
     /**
@@ -115,7 +115,7 @@ class DocumentVisitor
     {
         $text = $this->analysisResult->getTextPerFont($param);
 
-        return new EmbeddedFont(EmbeddedFont::ENCODING_UTF_8, $content, $text);
+        return new EmbeddedFont(EmbeddedFont::ENCODING_UTF_8, $param->getFont(), $text);
     }
 
     /**

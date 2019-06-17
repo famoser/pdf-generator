@@ -46,8 +46,8 @@ class Image extends BaseDocumentStructure
      *
      * @param string $imageContent
      * @param int $imageType
-     * @param float $maxUsedWidth
-     * @param float $maxUsedHeight
+     * @param int $maxUsedWidth
+     * @param int $maxUsedHeight
      */
     public function __construct(string $imageContent, int $imageType, int $maxUsedWidth, int $maxUsedHeight)
     {
