@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Backend\Structure\Operators\State;
 
+use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Structure\Operators\State\Base\BaseState;
-use PdfGenerator\Backend\Structure\StateTransitionVisitor;
 
 class ColorState extends BaseState
 {

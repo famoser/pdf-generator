@@ -74,9 +74,9 @@ class ImagePlacement extends BaseContent
     /**
      * @param ContentVisitor $visitor
      *
-     * @return \PdfGenerator\Backend\Structure\Base\BaseContent
+     * @return \PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent
      */
-    public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Structure\Base\BaseContent
+    public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent
     {
         return $visitor->visitImagePlacement($this);
     }

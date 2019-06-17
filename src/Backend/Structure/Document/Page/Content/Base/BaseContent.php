@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Base;
+namespace PdfGenerator\Backend\Structure\Page\Content\Base;
 
 use PdfGenerator\Backend\Catalog\Content;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure;
+namespace PdfGenerator\Backend\Structure\Document\Page\Content;
 
 use PdfGenerator\Backend\Structure\Operators\State\ColorState;
 use PdfGenerator\Backend\Structure\Operators\State\GeneralGraphicState;

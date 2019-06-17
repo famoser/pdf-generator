@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Backend\Structure\Operators\State\Base;
 
-use PdfGenerator\Backend\Structure\StateTransitionVisitor;
+use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 
 abstract class BaseState
 {

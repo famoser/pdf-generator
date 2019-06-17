@@ -14,9 +14,9 @@ namespace PdfGenerator\Backend\Structure;
 use PdfGenerator\Backend\Catalog\Contents;
 use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\Catalog\Resources;
-use PdfGenerator\Backend\Structure\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Image;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
+use PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Transformation\DocumentResources;
 
 class Page

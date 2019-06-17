@@ -12,12 +12,12 @@
 namespace PdfGenerator\Backend\Structure\Document\Page;
 
 use PdfGenerator\Backend\Catalog\Content;
-use PdfGenerator\Backend\Structure\Base\BaseContent;
-use PdfGenerator\Backend\Structure\ImageContent;
-use PdfGenerator\Backend\Structure\Rectangle;
+use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
+use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
+use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
+use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
+use PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\StateCollections\FullState;
-use PdfGenerator\Backend\Structure\StateTransitionVisitor;
-use PdfGenerator\Backend\Structure\TextContent;
 
 class ContentVisitor
 {
@@ -73,11 +73,11 @@ class ContentVisitor
     }
 
     /**
-     * @param Rectangle $rectangle
+     * @param RectangleContent $rectangle
      *
      * @return Content
      */
-    public function visitRectangle(Rectangle $rectangle): Content
+    public function visitRectangleContent(RectangleContent $rectangle): Content
     {
         // gather operators to change to desired state
         $stateTransitionOperators = $this->applyState($rectangle);
@@ -124,20 +124,20 @@ class ContentVisitor
     }
 
     /**
-     * @param Rectangle $rectangle
+     * @param RectangleContent $rectangle
      *
      * @return string
      */
-    private function getPaintingOperator(Rectangle $rectangle): string
+    private function getPaintingOperator(RectangleContent $rectangle): string
     {
         switch ($rectangle->getPaintingMode()) {
-            case Rectangle::PAINTING_MODE_STROKE:
+            case RectangleContent::PAINTING_MODE_STROKE:
                 return 's';
-            case Rectangle::PAINTING_MODE_FILL:
+            case RectangleContent::PAINTING_MODE_FILL:
                 return 'f';
-            case Rectangle::PAINTING_MODE_STROKE_FILL:
+            case RectangleContent::PAINTING_MODE_STROKE_FILL:
                 return 'b';
-            case Rectangle::PAINTING_MODE_NONE:
+            case RectangleContent::PAINTING_MODE_NONE:
             default:
                 return 'n';
         }

@@ -14,6 +14,7 @@ namespace PdfGenerator\Backend\Structure;
 use PdfGenerator\Backend\Catalog\Catalog;
 use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\Transformation\DocumentResources;
+use PdfGenerator\IR\Structure\Optimization\Configuration;
 
 class Document
 {
@@ -35,7 +36,7 @@ class Document
      */
     public function render()
     {
-        $documentVisitor = new DocumentVisitor();
+        $documentVisitor = new DocumentVisitor(new Configuration());
         $documentResources = new DocumentResources($documentVisitor);
 
         $pages = new Pages();

@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure;
+namespace PdfGenerator\Backend\Structure\Document\Page\Content;
 
 use PdfGenerator\Backend\Catalog\Content;
 use PdfGenerator\Backend\Catalog\Image;
-use PdfGenerator\Backend\Structure\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use PdfGenerator\Backend\Structure\Operators\Level\DrawingState;
 use PdfGenerator\Backend\Structure\Operators\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent;
 
 class ImageContent extends BaseContent
 {
