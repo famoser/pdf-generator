@@ -14,6 +14,7 @@ namespace PdfGenerator\IR\Structure\Page\Content;
 use PdfGenerator\IR\Structure\Page\Content\Base\BaseContent;
 use PdfGenerator\IR\Structure\Page\Content\Common\Position;
 use PdfGenerator\IR\Structure\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Structure\Page\ContentVisitor;
 
 class Text extends BaseContent
 {

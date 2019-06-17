@@ -15,6 +15,7 @@ use PdfGenerator\IR\Structure\Page\Content\Base\BaseContent;
 use PdfGenerator\IR\Structure\Page\Content\Common\Position;
 use PdfGenerator\IR\Structure\Page\Content\Common\Size;
 use PdfGenerator\IR\Structure\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Structure\Page\ContentVisitor;
 
 class Rectangle extends BaseContent
 {
