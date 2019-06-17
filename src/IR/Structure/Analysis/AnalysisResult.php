@@ -11,9 +11,9 @@
 
 namespace PdfGenerator\IR\Structure\Analysis;
 
-use PdfGenerator\IR\Structure\Font;
-use PdfGenerator\IR\Structure\Image;
-use PdfGenerator\IR\Structure\PageContent\Common\Size;
+use PdfGenerator\IR\Structure\Document\Font;
+use PdfGenerator\IR\Structure\Document\Image;
+use PdfGenerator\IR\Structure\Page\Content\Common\Size;
 
 class AnalysisResult
 {

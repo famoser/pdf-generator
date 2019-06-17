@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent\Text;
+namespace PdfGenerator\IR\Structure\Page\Content\Text;
 
-use PdfGenerator\IR\Structure\Font;
+use PdfGenerator\IR\Structure\Document\Font;
 
 class TextStyle
 {

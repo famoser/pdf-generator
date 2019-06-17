@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent;
+namespace PdfGenerator\IR\Structure\Page\Content;
 
-use PdfGenerator\IR\Structure\Image;
-use PdfGenerator\IR\Structure\PageContent\Base\BaseContent;
-use PdfGenerator\IR\Structure\PageContent\Common\Position;
-use PdfGenerator\IR\Structure\PageContent\Common\Size;
+use PdfGenerator\IR\Structure\Document\Image;
+use PdfGenerator\IR\Structure\Page\Content\Base\BaseContent;
+use PdfGenerator\IR\Structure\Page\Content\Common\Position;
+use PdfGenerator\IR\Structure\Page\Content\Common\Size;
 
 class ImagePlacement extends BaseContent
 {

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Configuration\State;
+namespace PdfGenerator\IR\Structure\Document\Page\State;
 
 use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\Structure\Document\Page\State\TextState;

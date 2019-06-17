@@ -9,15 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Transformation;
+namespace PdfGenerator\IR\Structure\Document\Page;
 
 use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\Catalog\Image;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
-use PdfGenerator\IR\Configuration\State\ColorStateRepository;
-use PdfGenerator\IR\Configuration\State\GeneralGraphicStateRepository;
-use PdfGenerator\IR\Configuration\State\TextStateRepository;
+use PdfGenerator\IR\Structure\Document\DocumentResources;
+use PdfGenerator\IR\Structure\Document\Page\State\ColorStateRepository;
+use PdfGenerator\IR\Structure\Document\Page\State\GeneralGraphicStateRepository;
+use PdfGenerator\IR\Structure\Document\Page\State\TextStateRepository;
 
 class PageResources
 {

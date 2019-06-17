@@ -12,7 +12,7 @@
 namespace PdfGenerator\IR\Transformation\Document\Font;
 
 use PdfGenerator\Backend\Catalog\Font\Type1;
-use PdfGenerator\IR\Structure\Font\DefaultFont;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 
 class DefaultFontMapping
 {

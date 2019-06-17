@@ -9,15 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent;
+namespace PdfGenerator\IR\Structure\Page;
 
 use PdfGenerator\Backend\Catalog\Image;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
-use PdfGenerator\IR\Structure\PageContent\Common\Position;
-use PdfGenerator\IR\Structure\PageContent\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Transformation\PageResources;
+use PdfGenerator\IR\Structure\Document\Page\PageResources;
+use PdfGenerator\IR\Structure\Page\Content\Common\Position;
+use PdfGenerator\IR\Structure\Page\Content\ImagePlacement;
+use PdfGenerator\IR\Structure\Page\Content\Rectangle;
+use PdfGenerator\IR\Structure\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Structure\Page\Content\Text;
 
 class ToBackendContentVisitor extends ContentVisitor
 {

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\Font;
+namespace PdfGenerator\IR\Structure\Document\Font;
 
 use PdfGenerator\IR\DocumentVisitor;
-use PdfGenerator\IR\Structure\Font;
+use PdfGenerator\IR\Structure\Document\Font;
 
 class EmbeddedFont extends Font
 {

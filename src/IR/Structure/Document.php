@@ -14,9 +14,11 @@ namespace PdfGenerator\IR\Structure;
 use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\IR\DocumentVisitor;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
+use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
+use PdfGenerator\IR\Structure\Document\Image;
+use PdfGenerator\IR\Structure\Document\Page;
 use PdfGenerator\IR\Structure\Document\Page\AnalyzeContentVisitor;
-use PdfGenerator\IR\Structure\Font\DefaultFont;
-use PdfGenerator\IR\Structure\Font\EmbeddedFont;
 
 class Document
 {

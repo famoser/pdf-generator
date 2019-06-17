@@ -9,13 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure;
+namespace PdfGenerator\Backend\Structure\Document;
 
 use PdfGenerator\Backend\Catalog\Contents;
 use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\Catalog\Resources;
-use PdfGenerator\Backend\Structure\Document\DocumentResources;
-use PdfGenerator\Backend\Structure\Document\Image;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent;
 

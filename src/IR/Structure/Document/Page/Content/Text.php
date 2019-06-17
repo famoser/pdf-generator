@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent;
+namespace PdfGenerator\IR\Structure\Page\Content;
 
-use PdfGenerator\IR\Structure\PageContent\Base\BaseContent;
-use PdfGenerator\IR\Structure\PageContent\Common\Position;
-use PdfGenerator\IR\Structure\PageContent\Text\TextStyle;
+use PdfGenerator\IR\Structure\Page\Content\Base\BaseContent;
+use PdfGenerator\IR\Structure\Page\Content\Common\Position;
+use PdfGenerator\IR\Structure\Page\Content\Text\TextStyle;
 
 class Text extends BaseContent
 {

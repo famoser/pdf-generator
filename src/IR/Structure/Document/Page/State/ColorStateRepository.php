@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Configuration\State;
+namespace PdfGenerator\IR\Structure\Document\Page\State;
 
 use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
-use PdfGenerator\IR\Structure\PageContent\Common\Color;
+use PdfGenerator\IR\Structure\Page\Content\Common\Color;
 
 class ColorStateRepository
 {

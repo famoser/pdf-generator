@@ -9,7 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent;
+namespace PdfGenerator\IR\Structure\Page;
+
+use PdfGenerator\IR\Structure\Page\Content\ImagePlacement;
+use PdfGenerator\IR\Structure\Page\Content\Rectangle;
+use PdfGenerator\IR\Structure\Page\Content\Text;
 
 abstract class ContentVisitor
 {

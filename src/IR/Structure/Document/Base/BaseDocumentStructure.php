@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\Base;
+namespace PdfGenerator\IR\Structure\Document\Base;
 
 use PdfGenerator\IR\DocumentVisitor;
 

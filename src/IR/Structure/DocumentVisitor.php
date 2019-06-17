@@ -11,15 +11,19 @@
 
 namespace PdfGenerator\IR;
 
-use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont;
-use PdfGenerator\Backend\Structure\Document\Image;
-use PdfGenerator\Backend\Structure\Page;
+use PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
+use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
+use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use PdfGenerator\Backend\Structure\Document\Page as BackendPage;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
-use PdfGenerator\IR\Structure\Font\DefaultFont;
-use PdfGenerator\IR\Structure\PageContent\ToBackendContentVisitor;
+use PdfGenerator\IR\Structure\Document\DocumentResources;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
+use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
+use PdfGenerator\IR\Structure\Document\Image;
+use PdfGenerator\IR\Structure\Document\Page;
+use PdfGenerator\IR\Structure\Document\Page\PageResources;
+use PdfGenerator\IR\Structure\Page\ToBackendContentVisitor;
 use PdfGenerator\IR\Transformation\Document\Font\DefaultFontMapping;
-use PdfGenerator\IR\Transformation\DocumentResources;
-use PdfGenerator\IR\Transformation\PageResources;
 
 class DocumentVisitor
 {
@@ -48,16 +52,16 @@ class DocumentVisitor
     /**
      * @param DefaultFont $param
      *
-     * @throws \Exception
+     *@throws \Exception
      *
-     * @return \PdfGenerator\Backend\Structure\Document\Font\DefaultFont
+     * @return BackendDefaultFont
      */
     public function visitDefaultFont(DefaultFont $param)
     {
         $baseFont = $this->getDefaultFontBaseFont($param->getFont(), $param->getStyle());
-        $encoding = \PdfGenerator\Backend\Structure\Document\Font\DefaultFont::ENCODING_WIN_ANSI_ENCODING;
+        $encoding = BackendDefaultFont::ENCODING_WIN_ANSI_ENCODING;
 
-        return new \PdfGenerator\Backend\Structure\Document\Font\DefaultFont($baseFont, $encoding);
+        return new BackendDefaultFont($baseFont, $encoding);
     }
 
     /**
@@ -83,44 +87,44 @@ class DocumentVisitor
     }
 
     /**
-     * @param Structure\Font\EmbeddedFont $param
+     * @param EmbeddedFont $param
      *
      * @throws \Exception
      *
-     * @return EmbeddedFont
+     * @return BackendEmbeddedFont
      */
-    public function visitEmbeddedFont(Structure\Font\EmbeddedFont $param)
+    public function visitEmbeddedFont(EmbeddedFont $param)
     {
         $text = $this->analysisResult->getTextPerFont($param);
 
-        return new EmbeddedFont(EmbeddedFont::ENCODING_UTF_8, $param->getFont(), $text);
+        return new BackendEmbeddedFont(BackendEmbeddedFont::ENCODING_UTF_8, $param->getFont(), $text);
     }
 
     /**
-     * @param Structure\Image $param
+     * @param Image $param
      *
-     * @return Image
+     * @return BackendImage
      */
-    public function visitImage(Structure\Image $param)
+    public function visitImage(Image $param)
     {
         $imageData = file_get_contents($param->getImagePath());
         $extension = pathinfo($param->getImagePath(), PATHINFO_EXTENSION);
 
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
-        return new Image($imageData, $extension, $maxSize->getWidth(), $maxSize->getHeight());
+        return new BackendImage($imageData, $extension, $maxSize->getWidth(), $maxSize->getHeight());
     }
 
     /**
-     * @param Structure\Page $param
+     * @param Page $param
      *
-     * @return Page
+     * @return BackendPage
      */
-    public function visitPage(Structure\Page $param)
+    public function visitPage(Page $param)
     {
         $mediaBox = [0, 0, 210, 297];
 
-        $page = new Page($mediaBox);
+        $page = new BackendPage($mediaBox);
 
         $pageResources = new PageResources($this->documentResources);
         $contentVisitor = new ToBackendContentVisitor($pageResources);

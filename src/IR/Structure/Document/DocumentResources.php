@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Transformation;
+namespace PdfGenerator\IR\Structure\Document;
 
 use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\Catalog\Image;
 use PdfGenerator\IR\DocumentVisitor;
-use PdfGenerator\IR\Structure\Base\BaseDocumentStructure;
+use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
 
 class DocumentResources
 {

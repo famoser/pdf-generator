@@ -12,16 +12,17 @@
 namespace PdfGenerator\IR;
 
 use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Structure\Font\DefaultFont;
-use PdfGenerator\IR\Structure\Image;
-use PdfGenerator\IR\Structure\PageContent\Common\Color;
-use PdfGenerator\IR\Structure\PageContent\Common\Position;
-use PdfGenerator\IR\Structure\PageContent\Common\Size;
-use PdfGenerator\IR\Structure\PageContent\ImagePlacement;
-use PdfGenerator\IR\Structure\PageContent\Rectangle;
-use PdfGenerator\IR\Structure\PageContent\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Structure\PageContent\Text;
-use PdfGenerator\IR\Structure\PageContent\Text\TextStyle;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
+use PdfGenerator\IR\Structure\Document\Image;
+use PdfGenerator\IR\Structure\Document\Page;
+use PdfGenerator\IR\Structure\Page\Content\Common\Color;
+use PdfGenerator\IR\Structure\Page\Content\Common\Position;
+use PdfGenerator\IR\Structure\Page\Content\Common\Size;
+use PdfGenerator\IR\Structure\Page\Content\ImagePlacement;
+use PdfGenerator\IR\Structure\Page\Content\Rectangle;
+use PdfGenerator\IR\Structure\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Structure\Page\Content\Text;
+use PdfGenerator\IR\Structure\Page\Content\Text\TextStyle;
 
 class Printer
 {
@@ -107,7 +108,7 @@ class Printer
     }
 
     /**
-     * @return Structure\Page
+     * @return Page
      */
     private function getPage()
     {
@@ -147,16 +148,10 @@ class Printer
     }
 
     /**
-     * @param Configuration|null $configuration
-     *
      * @return string
      */
-    public function save(Configuration $configuration = null)
+    public function save()
     {
-        if ($configuration === null) {
-            $configuration = new Configuration();
-        }
-
-        return $this->document->save($configuration);
+        return $this->document->save();
     }
 }

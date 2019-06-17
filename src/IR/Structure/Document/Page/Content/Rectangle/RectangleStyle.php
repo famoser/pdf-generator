@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent\Rectangle;
+namespace PdfGenerator\IR\Structure\Page\Content\Rectangle;
 
-use PdfGenerator\IR\Structure\PageContent\Common\Color;
+use PdfGenerator\IR\Structure\Page\Content\Common\Color;
 
 class RectangleStyle
 {
