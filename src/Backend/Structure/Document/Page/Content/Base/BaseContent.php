@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Structure\Page\Content\Base;
 
 use PdfGenerator\Backend\Catalog\Content;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
-use PdfGenerator\Backend\Structure\Operators\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
 abstract class BaseContent
 {

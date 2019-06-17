@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Transformation;
+namespace PdfGenerator\Backend\Structure\Document;
 
 use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\Catalog\Image;

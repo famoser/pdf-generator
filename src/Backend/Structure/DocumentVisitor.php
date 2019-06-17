@@ -21,10 +21,10 @@ use PdfGenerator\Backend\Catalog\Image;
 use PdfGenerator\Backend\Structure\Document\Font\CMapCreator;
 use PdfGenerator\Backend\Structure\Document\Font\DefaultFont;
 use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont;
+use PdfGenerator\Backend\Structure\Optimization\Configuration;
+use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
+use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
 use PdfGenerator\Font\Backend\FileWriter;
-use PdfGenerator\IR\Structure\Optimization\Configuration;
-use PdfGenerator\IR\Structure\Optimization\FontOptimizer;
-use PdfGenerator\IR\Structure\Optimization\ImageOptimizer;
 
 class DocumentVisitor
 {

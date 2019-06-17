@@ -14,7 +14,6 @@ namespace PdfGenerator\IR;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Image;
-use PdfGenerator\IR\Structure\Optimization\Configuration;
 use PdfGenerator\IR\Structure\PageContent\Common\Color;
 use PdfGenerator\IR\Structure\PageContent\Common\Position;
 use PdfGenerator\IR\Structure\PageContent\Common\Size;

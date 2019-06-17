@@ -16,8 +16,8 @@ use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
+use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 use PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent;
-use PdfGenerator\Backend\Structure\StateCollections\FullState;
 
 class ContentVisitor
 {

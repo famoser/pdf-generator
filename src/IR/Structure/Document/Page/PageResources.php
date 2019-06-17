@@ -13,8 +13,8 @@ namespace PdfGenerator\IR\Transformation;
 
 use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\Catalog\Image;
-use PdfGenerator\Backend\Structure\Operators\Level\DrawingState;
-use PdfGenerator\Backend\Structure\Operators\Level\WritingState;
+use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
+use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
 use PdfGenerator\IR\Configuration\State\ColorStateRepository;
 use PdfGenerator\IR\Configuration\State\GeneralGraphicStateRepository;
 use PdfGenerator\IR\Configuration\State\TextStateRepository;

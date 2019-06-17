@@ -12,7 +12,7 @@
 namespace PdfGenerator\IR\Configuration\State;
 
 use PdfGenerator\Backend\Catalog\Font;
-use PdfGenerator\Backend\Structure\Operators\State\TextState;
+use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 
 class TextStateRepository
 {

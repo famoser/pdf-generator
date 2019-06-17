@@ -16,9 +16,6 @@ use PdfGenerator\Backend\Structure\Document\Image;
 use PdfGenerator\Backend\Structure\Page;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
-use PdfGenerator\IR\Structure\Optimization\Configuration;
-use PdfGenerator\IR\Structure\Optimization\FontOptimizer;
-use PdfGenerator\IR\Structure\Optimization\ImageOptimizer;
 use PdfGenerator\IR\Structure\PageContent\ToBackendContentVisitor;
 use PdfGenerator\IR\Transformation\Document\Font\DefaultFontMapping;
 use PdfGenerator\IR\Transformation\DocumentResources;
@@ -32,39 +29,20 @@ class DocumentVisitor
     private $documentResources;
 
     /**
-     * @var ImageOptimizer
-     */
-    private $imageOptimizer;
-
-    /**
-     * @var FontOptimizer
-     */
-    private $fontOptimizer;
-
-    /**
      * @var AnalysisResult
      */
     private $analysisResult;
 
     /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    /**
      * DocumentStructureVisitor constructor.
      *
      * @param AnalysisResult $analysisResult
-     * @param Configuration $configuration
      */
-    public function __construct(AnalysisResult $analysisResult, Configuration $configuration)
+    public function __construct(AnalysisResult $analysisResult)
     {
         $this->analysisResult = $analysisResult;
-        $this->configuration = $configuration;
 
         $this->documentResources = new DocumentResources($this);
-        $this->imageOptimizer = new ImageOptimizer();
-        $this->fontOptimizer = new FontOptimizer();
     }
 
     /**

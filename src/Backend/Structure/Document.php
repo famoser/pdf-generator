@@ -13,8 +13,8 @@ namespace PdfGenerator\Backend\Structure;
 
 use PdfGenerator\Backend\Catalog\Catalog;
 use PdfGenerator\Backend\Catalog\Pages;
-use PdfGenerator\Backend\Transformation\DocumentResources;
-use PdfGenerator\IR\Structure\Optimization\Configuration;
+use PdfGenerator\Backend\Structure\Document\DocumentResources;
+use PdfGenerator\Backend\Structure\Optimization\Configuration;
 
 class Document
 {

@@ -14,8 +14,8 @@ namespace PdfGenerator\Backend\Structure\Document\Page\Content;
 use PdfGenerator\Backend\Catalog\Content;
 use PdfGenerator\Backend\Catalog\Image;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
-use PdfGenerator\Backend\Structure\Operators\Level\DrawingState;
-use PdfGenerator\Backend\Structure\Operators\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
 use PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent;
 
 class ImageContent extends BaseContent

@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR\Configuration\State;
 
-use PdfGenerator\Backend\Structure\Operators\State\GeneralGraphicState;
+use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
 
 class GeneralGraphicStateRepository
 {

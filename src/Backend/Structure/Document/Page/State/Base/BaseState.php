@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Operators\State\Base;
+namespace PdfGenerator\Backend\Structure\Document\Page\State\Base;
 
 use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 

@@ -17,7 +17,6 @@ use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Document\Page\AnalyzeContentVisitor;
 use PdfGenerator\IR\Structure\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Font\EmbeddedFont;
-use PdfGenerator\IR\Structure\Optimization\Configuration;
 
 class Document
 {
@@ -110,16 +109,14 @@ class Document
     }
 
     /**
-     * @param Configuration $configuration
-     *
      * @return \PdfGenerator\Backend\Structure\Document
      */
-    public function render(Configuration $configuration)
+    public function render()
     {
         $analysisResult = $this->analyze();
 
         $document = new \PdfGenerator\Backend\Structure\Document();
-        $documentVisitor = new DocumentVisitor($analysisResult, $configuration);
+        $documentVisitor = new DocumentVisitor($analysisResult);
         foreach ($this->pages as $page) {
             $page = $page->accept($documentVisitor);
             $document->addPage($page);
@@ -129,13 +126,11 @@ class Document
     }
 
     /**
-     * @param Configuration $configuration
-     *
      * @return string
      */
-    public function save(Configuration $configuration)
+    public function save()
     {
-        return $this->render($configuration)->save();
+        return $this->render()->save();
     }
 
     /**

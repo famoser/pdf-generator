@@ -11,10 +11,10 @@
 
 namespace PdfGenerator\Backend\Structure\Document\Page\Content;
 
-use PdfGenerator\Backend\Structure\Operators\State\ColorState;
-use PdfGenerator\Backend\Structure\Operators\State\GeneralGraphicState;
-use PdfGenerator\Backend\Structure\Operators\State\TextState;
-use PdfGenerator\Backend\Structure\StateCollections\FullState;
+use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
+use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
+use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
+use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
 class StateTransitionVisitor
 {
