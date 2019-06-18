@@ -81,7 +81,7 @@ class Page
      */
     public function render(Pages $parent, DocumentResources $documentResources)
     {
-        $contentVisitor = new ContentVisitor();
+        $contentVisitor = new ContentVisitor($documentResources);
 
         $contentArray = [];
         foreach ($this->content as $item) {

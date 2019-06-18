@@ -48,12 +48,14 @@ class Printer
 
     /**
      * Printer constructor.
+     *
+     * @param Document $document
      */
-    public function __construct()
+    public function __construct(Document $document)
     {
-        $this->document = new Document();
+        $this->document = $document;
 
-        $font = new DefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
+        $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
         $this->textStyle = new TextStyle($font, 12);
 
         $color = new Color(0, 0, 0);
