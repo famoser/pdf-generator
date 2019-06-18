@@ -9,17 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Transformation\Document\Font;
+namespace PdfGenerator\IR\Structure\Document\Font;
 
 use PdfGenerator\Backend\Catalog\Font\Type1;
-use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 
 class DefaultFontMapping
 {
     /**
      * @var string[][]
      */
-    public static $defaultFontMapping = [
+    public static $type1BaseFontMapping = [
         DefaultFont::FONT_HELVETICA => [
             DefaultFont::STYLE_DEFAULT => Type1::BASE_FONT_HELVETICA,
             DefaultFont::STYLE_OBLIQUE => Type1::BASE_FONT_HELVETICA__OBLIQUE,

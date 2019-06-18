@@ -22,12 +22,12 @@ class AnalyzeContentVisitor extends ContentVisitor
     /**
      * @var Size[]
      */
-    private $maxSizePerImage;
+    private $maxSizePerImage = [];
 
     /**
      * @var string[]
      */
-    private $textPerFont;
+    private $textPerFont = [];
 
     /**
      * @param ImagePlacement $placement

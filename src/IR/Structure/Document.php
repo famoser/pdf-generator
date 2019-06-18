@@ -12,7 +12,6 @@
 namespace PdfGenerator\IR\Structure;
 
 use PdfGenerator\Font\IR\Parser;
-use PdfGenerator\IR\DocumentVisitor;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;

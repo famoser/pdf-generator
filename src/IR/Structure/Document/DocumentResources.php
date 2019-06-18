@@ -13,8 +13,8 @@ namespace PdfGenerator\IR\Structure\Document;
 
 use PdfGenerator\Backend\Structure\Document\Font as BackendFont;
 use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
-use PdfGenerator\IR\DocumentVisitor;
 use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
+use PdfGenerator\IR\Structure\DocumentVisitor;
 
 class DocumentResources
 {

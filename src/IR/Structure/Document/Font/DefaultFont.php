@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\IR\Structure\Document\Font;
 
-use PdfGenerator\IR\DocumentVisitor;
 use PdfGenerator\IR\Structure\Document\Font;
+use PdfGenerator\IR\Structure\DocumentVisitor;
 
 class DefaultFont extends Font
 {

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\Page;
+namespace PdfGenerator\IR\Structure\Document\Page;
 
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
@@ -19,7 +19,6 @@ use PdfGenerator\IR\Structure\Document\Page\Content\ImagePlacement;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text;
-use PdfGenerator\IR\Structure\Document\Page\PageResources;
 
 class ToBackendContentVisitor extends ContentVisitor
 {

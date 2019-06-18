@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR\Structure\Document\Base;
 
-use PdfGenerator\IR\DocumentVisitor;
+use PdfGenerator\IR\Structure\DocumentVisitor;
 
 abstract class BaseDocumentStructure
 {

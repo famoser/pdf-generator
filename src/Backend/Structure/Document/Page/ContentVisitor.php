@@ -13,12 +13,12 @@ namespace PdfGenerator\Backend\Structure\Document\Page;
 
 use PdfGenerator\Backend\Catalog\Content;
 use PdfGenerator\Backend\Structure\Document\DocumentResources;
+use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
-use PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent;
 
 class ContentVisitor
 {

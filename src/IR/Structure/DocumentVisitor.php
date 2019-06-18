@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR;
+namespace PdfGenerator\IR\Structure;
 
 use PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
 use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
@@ -18,12 +18,12 @@ use PdfGenerator\Backend\Structure\Document\Page as BackendPage;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Document\DocumentResources;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFontMapping;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page;
 use PdfGenerator\IR\Structure\Document\Page\PageResources;
-use PdfGenerator\IR\Structure\Page\ToBackendContentVisitor;
-use PdfGenerator\IR\Transformation\Document\Font\DefaultFontMapping;
+use PdfGenerator\IR\Structure\Document\Page\ToBackendContentVisitor;
 
 class DocumentVisitor
 {
@@ -74,11 +74,11 @@ class DocumentVisitor
      */
     private function getDefaultFontBaseFont(string $font, string $style): string
     {
-        if (!\array_key_exists($font, DefaultFontMapping::$defaultFontMapping)) {
+        if (!\array_key_exists($font, DefaultFontMapping::$type1BaseFontMapping)) {
             throw new \Exception('The font ' . $font . ' is not part of the default set.');
         }
 
-        $styles = DefaultFontMapping::$defaultFontMapping[$font];
+        $styles = DefaultFontMapping::$type1BaseFontMapping[$font];
         if (!\array_key_exists($style, $styles)) {
             throw new \Exception('This font style ' . $style . ' is not part of the default set.');
         }

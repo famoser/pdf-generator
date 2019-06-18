@@ -13,10 +13,10 @@ namespace PdfGenerator\Backend\Structure\Document\Page\Content;
 
 use PdfGenerator\Backend\Catalog\Content;
 use PdfGenerator\Backend\Structure\Document\Image;
+use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
-use PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent;
 
 class ImageContent extends BaseContent
 {
