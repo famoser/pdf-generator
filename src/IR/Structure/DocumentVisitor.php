@@ -52,7 +52,7 @@ class DocumentVisitor
     /**
      * @param DefaultFont $param
      *
-     *@throws \Exception
+     * @throws \Exception
      *
      * @return BackendDefaultFont
      */
@@ -108,11 +108,12 @@ class DocumentVisitor
     public function visitImage(Image $param)
     {
         $imageData = file_get_contents($param->getImagePath());
+        list($width, $height) = getimagesizefromstring($imageData);
         $extension = pathinfo($param->getImagePath(), PATHINFO_EXTENSION);
 
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
-        return new BackendImage($imageData, $extension, $maxSize->getWidth(), $maxSize->getHeight());
+        return new BackendImage($imageData, $extension, $width, $height, $maxSize->getWidth(), $maxSize->getHeight());
     }
 
     /**

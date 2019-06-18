@@ -17,10 +17,11 @@ use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontStream;
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Catalog\Font\Type1;
-use PdfGenerator\Backend\Catalog\Image;
+use PdfGenerator\Backend\Catalog\Image as CatalogImage;
 use PdfGenerator\Backend\Structure\Document\Font\CMapCreator;
 use PdfGenerator\Backend\Structure\Document\Font\DefaultFont;
 use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont;
+use PdfGenerator\Backend\Structure\Document\Image;
 use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
@@ -82,17 +83,18 @@ class DocumentVisitor
     }
 
     /**
-     * @param Document\Image $param
+     * @param Image $param
      *
-     * @return Image
+     * @return CatalogImage
      */
-    public function visitImage(Document\Image $param)
+    public function visitImage(Image $param)
     {
         $identifier = $this->generateIdentifier('I');
-        $type = $param->getType() === Document\Image::TYPE_JPG || $param->getType() === Document\Image::TYPE_JPEG ? Image::IMAGE_TYPE_JPEG : null;
+        $type = $param->getType() === Image::TYPE_JPG || $param->getType() === Image::TYPE_JPEG ? CatalogImage::IMAGE_TYPE_JPEG : null;
 
         $content = $param->getImageContent();
-        list($width, $height) = getimagesizefromstring($param->getImageContent());
+        $width = $param->getWidth();
+        $height = $param->getHeight();
 
         if ($this->configuration->getAutoResizeImages()) {
             list($targetWidth, $targetHeight) = $this->imageOptimizer->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight(), $this->configuration->getAutoResizeImagesDpi());
@@ -101,16 +103,16 @@ class DocumentVisitor
                 $content = $this->imageOptimizer->transformToJpgAndResize($content, $targetWidth, $targetHeight);
                 $width = $targetWidth;
                 $height = $targetHeight;
-                $type = Image::IMAGE_TYPE_JPEG;
+                $type = CatalogImage::IMAGE_TYPE_JPEG;
             }
         }
 
         if ($type === null) {
             $content = $this->imageOptimizer->transformToJpgAndResize($content, $width, $height);
-            $type = Image::IMAGE_TYPE_JPEG;
+            $type = CatalogImage::IMAGE_TYPE_JPEG;
         }
 
-        return new Image($identifier, $type, $content, $width, $height);
+        return new CatalogImage($identifier, $type, $content, $width, $height);
     }
 
     /**

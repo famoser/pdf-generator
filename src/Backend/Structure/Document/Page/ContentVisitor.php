@@ -12,6 +12,7 @@
 namespace PdfGenerator\Backend\Structure\Document\Page;
 
 use PdfGenerator\Backend\Catalog\Content;
+use PdfGenerator\Backend\Structure\Document\DocumentResources;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
@@ -22,15 +23,24 @@ use PdfGenerator\Backend\Structure\Page\Content\Base\BaseContent;
 class ContentVisitor
 {
     /**
+     * @var DocumentResources
+     */
+    private $documentResources;
+
+    /**
      * @var FullState
      */
     private $state;
 
     /**
      * ContentVisitor constructor.
+     *
+     * @param DocumentResources $documentResources
      */
-    public function __construct()
+    public function __construct(DocumentResources $documentResources)
     {
+        $this->documentResources = $documentResources;
+
         $this->state = FullState::createInitial();
     }
 
@@ -62,9 +72,10 @@ class ContentVisitor
     {
         // gather operators to change to desired state
         $stateTransitionOperators = $this->applyState($imageContent);
+        $image = $this->documentResources->getImage($imageContent->getImage());
 
         // gather operators to print the content
-        $imageOperator = '/' . $imageContent->getImage()->getIdentifier() . ' Do';
+        $imageOperator = '/' . $image->getIdentifier() . ' Do';
 
         // create stream object
         $operators = array_merge($stateTransitionOperators, [$imageOperator]);
@@ -150,7 +161,7 @@ class ContentVisitor
      */
     private function applyState(BaseContent $baseContent): array
     {
-        $stateTransitionVisitor = new StateTransitionVisitor($this->state);
+        $stateTransitionVisitor = new StateTransitionVisitor($this->state, $this->documentResources);
 
         /** @var string[] $operators */
         $operators = [];

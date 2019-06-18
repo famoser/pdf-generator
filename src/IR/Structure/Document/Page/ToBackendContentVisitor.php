@@ -14,7 +14,6 @@ namespace PdfGenerator\IR\Structure\Page;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
-use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\PageResources;
 use PdfGenerator\IR\Structure\Page\Content\Common\Position;
 use PdfGenerator\IR\Structure\Page\Content\ImagePlacement;
@@ -48,8 +47,7 @@ class ToBackendContentVisitor extends ContentVisitor
     {
         $image = $this->pageResources->getImage($placement->getImage());
 
-        // TODO: how to get width / height
-        $this->applyImagePlacementPositionAndSize($image, $placement);
+        $this->applyImagePlacementPositionAndSize($image->getWidth(), $image->getHeight(), $placement);
         $pageLevel = $this->pageResources->getDrawingState();
 
         return new ImageContent($image, $pageLevel);
@@ -120,13 +118,14 @@ class ToBackendContentVisitor extends ContentVisitor
     }
 
     /**
-     * @param Image $image
+     * @param int $width
+     * @param int $height
      * @param ImagePlacement $placement
      */
-    private function applyImagePlacementPositionAndSize(Image $image, ImagePlacement $placement)
+    private function applyImagePlacementPositionAndSize(int $width, int $height, ImagePlacement $placement)
     {
-        $scaleX = $placement->getSize()->getWidth() / $image->getWidth();
-        $scaleY = $placement->getSize()->getHeight() / $image->getHeight();
+        $scaleX = $placement->getSize()->getWidth() / $width;
+        $scaleY = $placement->getSize()->getHeight() / $height;
 
         $this->applyPosition($placement->getPosition(), $scaleX, $scaleY);
     }

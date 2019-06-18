@@ -34,6 +34,16 @@ class Image extends BaseDocumentStructure
     /**
      * @var int
      */
+    private $width;
+
+    /**
+     * @var int
+     */
+    private $height;
+
+    /**
+     * @var int
+     */
     private $maxUsedWidth;
 
     /**
@@ -46,13 +56,17 @@ class Image extends BaseDocumentStructure
      *
      * @param string $imageContent
      * @param int $imageType
+     * @param int $width
+     * @param int $height
      * @param int $maxUsedWidth
      * @param int $maxUsedHeight
      */
-    public function __construct(string $imageContent, int $imageType, int $maxUsedWidth, int $maxUsedHeight)
+    public function __construct(string $imageContent, int $imageType, int $width, int $height, int $maxUsedWidth, int $maxUsedHeight)
     {
         $this->imageContent = $imageContent;
         $this->type = $imageType;
+        $this->width = $width;
+        $this->height = $height;
         $this->maxUsedWidth = $maxUsedWidth;
         $this->maxUsedHeight = $maxUsedHeight;
     }
@@ -81,6 +95,22 @@ class Image extends BaseDocumentStructure
     public function getType(): int
     {
         return $this->type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidth(): int
+    {
+        return $this->width;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeight(): int
+    {
+        return $this->height;
     }
 
     /**

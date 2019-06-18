@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Backend\Structure\Document\Page\Content;
 
+use PdfGenerator\Backend\Structure\Document\DocumentResources;
 use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
 use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
 use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
@@ -24,13 +25,20 @@ class StateTransitionVisitor
     private $previousState;
 
     /**
+     * @var DocumentResources
+     */
+    private $documentResources;
+
+    /**
      * StateTransitionVisitor constructor.
      *
      * @param FullState $state
+     * @param DocumentResources $documentResources
      */
-    public function __construct(FullState $state)
+    public function __construct(FullState $state, DocumentResources $documentResources)
     {
         $this->previousState = $state;
+        $this->documentResources = $documentResources;
     }
 
     /**
@@ -78,7 +86,8 @@ class StateTransitionVisitor
 
         $operators = [];
         if ($previousState->getFont() !== $targetState->getFont() || $previousState->getFontSize() !== $targetState->getFontSize()) {
-            $operators[] = '/' . $targetState->getFont()->getIdentifier() . ' ' . $targetState->getFontSize() . ' Tf';
+            $font = $this->documentResources->getFont($targetState->getFont());
+            $operators[] = '/' . $font->getIdentifier() . ' ' . $targetState->getFontSize() . ' Tf';
         }
 
         if ($previousState->getCharSpace() !== $targetState->getCharSpace()) {
