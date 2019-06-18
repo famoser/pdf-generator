@@ -12,11 +12,10 @@
 namespace PdfGenerator\IR\Structure\Document\Page;
 
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
-use PdfGenerator\IR\Structure\Page\Content\Common\Size;
-use PdfGenerator\IR\Structure\Page\Content\ImagePlacement;
-use PdfGenerator\IR\Structure\Page\Content\Rectangle;
-use PdfGenerator\IR\Structure\Page\Content\Text;
-use PdfGenerator\IR\Structure\Page\ContentVisitor;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
+use PdfGenerator\IR\Structure\Document\Page\Content\ImagePlacement;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text;
 
 class AnalyzeContentVisitor extends ContentVisitor
 {

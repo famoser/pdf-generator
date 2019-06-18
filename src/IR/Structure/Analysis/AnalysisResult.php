@@ -13,7 +13,7 @@ namespace PdfGenerator\IR\Structure\Analysis;
 
 use PdfGenerator\IR\Structure\Document\Font;
 use PdfGenerator\IR\Structure\Document\Image;
-use PdfGenerator\IR\Structure\Page\Content\Common\Size;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
 
 class AnalysisResult
 {

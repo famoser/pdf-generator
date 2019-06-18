@@ -13,7 +13,7 @@ namespace PdfGenerator\IR\Structure\Document;
 
 use PdfGenerator\IR\DocumentVisitor;
 use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
-use PdfGenerator\IR\Structure\Page\Content\Base\BaseContent;
+use PdfGenerator\IR\Structure\Document\Page\Content\Base\BaseContent;
 
 class Page extends BaseDocumentStructure
 {

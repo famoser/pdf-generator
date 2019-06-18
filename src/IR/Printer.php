@@ -15,14 +15,14 @@ use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page;
-use PdfGenerator\IR\Structure\Page\Content\Common\Color;
-use PdfGenerator\IR\Structure\Page\Content\Common\Position;
-use PdfGenerator\IR\Structure\Page\Content\Common\Size;
-use PdfGenerator\IR\Structure\Page\Content\ImagePlacement;
-use PdfGenerator\IR\Structure\Page\Content\Rectangle;
-use PdfGenerator\IR\Structure\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Structure\Page\Content\Text;
-use PdfGenerator\IR\Structure\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
+use PdfGenerator\IR\Structure\Document\Page\Content\ImagePlacement;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
 class Printer
 {

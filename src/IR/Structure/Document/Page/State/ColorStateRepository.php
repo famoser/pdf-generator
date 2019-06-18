@@ -12,7 +12,7 @@
 namespace PdfGenerator\IR\Structure\Document\Page\State;
 
 use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
-use PdfGenerator\IR\Structure\Page\Content\Common\Color;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 
 class ColorStateRepository
 {

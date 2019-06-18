@@ -14,9 +14,9 @@ namespace PdfGenerator\Tests\Integration\Frontend;
 use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\Printer;
 use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Structure\Page\Content\Common\Color;
-use PdfGenerator\IR\Structure\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Structure\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 use PHPUnit\Framework\TestCase;
 
 class PrinterTest extends TestCase

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\Page\Content\Common;
+namespace PdfGenerator\IR\Structure\Document\Page\Content\Common;
 
 class Position
 {

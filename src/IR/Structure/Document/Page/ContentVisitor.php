@@ -11,9 +11,9 @@
 
 namespace PdfGenerator\IR\Structure\Page;
 
-use PdfGenerator\IR\Structure\Page\Content\ImagePlacement;
-use PdfGenerator\IR\Structure\Page\Content\Rectangle;
-use PdfGenerator\IR\Structure\Page\Content\Text;
+use PdfGenerator\IR\Structure\Document\Page\Content\ImagePlacement;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text;
 
 abstract class ContentVisitor
 {

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\Page\Content\Base;
+namespace PdfGenerator\IR\Structure\Document\Page\Content\Base;
 
-use PdfGenerator\IR\Structure\Page\ContentVisitor;
+use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
 abstract class BaseContent
 {
