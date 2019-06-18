@@ -14,9 +14,12 @@ namespace PdfGenerator\Backend\Catalog;
 use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Utils\IdentifiableTrait;
 
 class Pages extends BaseStructure
 {
+    use IdentifiableTrait;
+
     /**
      * @var Page[]
      */

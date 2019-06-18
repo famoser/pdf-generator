@@ -16,6 +16,7 @@ use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
 use PdfGenerator\Backend\Catalog\Page;
+use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
@@ -28,7 +29,7 @@ class CatalogVisitor
     /**
      * @var BaseObject[]
      */
-    private $objectNodeLookup;
+    private $objectNodeLookup = [];
 
     /**
      * @var File
@@ -55,8 +56,14 @@ class CatalogVisitor
         $dictionary = $this->file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Catalog');
 
-        $pagesDictionary = $this->createReferenceDictionary($structure->getPages());
-        $dictionary->addDictionaryEntry('Pages', $pagesDictionary);
+        /** @var Pages[] $pagesArray */
+        //TODO: only single entry of pages allowed?
+        $pagesArray = [];
+        foreach ($structure->getPages() as $pages) {
+            $pagesArray[] = $pages->accept($this);
+        }
+
+        $dictionary->addReferenceArrayEntry('Pages', $pagesArray);
 
         return $dictionary;
     }
@@ -140,7 +147,7 @@ class CatalogVisitor
     /**
      * @var ReferenceToken[]
      */
-    private $referenceLookup;
+    private $referenceLookup = [];
 
     /**
      * @param IdentifiableStructureTrait[] $structures

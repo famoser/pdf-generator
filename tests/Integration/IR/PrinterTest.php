@@ -120,6 +120,7 @@ class PrinterTest extends TestCase
         // act
         $printer->printText($text);
         $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertStringContainsString($text, $result);
@@ -143,7 +144,6 @@ class PrinterTest extends TestCase
         $printer->printRectangle(20, 20);
         $printer->printText('hi mom');
         $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertTrue(true);

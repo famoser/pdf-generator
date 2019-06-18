@@ -47,12 +47,12 @@ class PageResources
     /**
      * @var BackendFont[]
      */
-    private $fonts;
+    private $fonts = [];
 
     /**
      * @var BackendImage[]
      */
-    private $images;
+    private $images = [];
 
     /**
      * PageResources constructor.
