@@ -16,7 +16,6 @@ use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
 use PdfGenerator\Backend\Catalog\Page;
-use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
@@ -56,14 +55,8 @@ class CatalogVisitor
         $dictionary = $this->file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Catalog');
 
-        /** @var Pages[] $pagesArray */
-        //TODO: only single entry of pages allowed?
-        $pagesArray = [];
-        foreach ($structure->getPages() as $pages) {
-            $pagesArray[] = $pages->accept($this);
-        }
-
-        $dictionary->addReferenceArrayEntry('Pages', $pagesArray);
+        $reference = $structure->getPages()->accept($this);
+        $dictionary->addReferenceEntry('Pages', $reference);
 
         return $dictionary;
     }

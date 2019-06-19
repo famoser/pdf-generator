@@ -46,7 +46,7 @@ class Document
             $pages->addPage($renderedPage);
         }
 
-        return new Catalog([$pages]);
+        return new Catalog($pages);
     }
 
     /**
