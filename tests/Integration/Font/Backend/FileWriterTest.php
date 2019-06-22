@@ -49,11 +49,11 @@ class FileWriterTest extends TestCase
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());
         $writer = FileWriter::create();
         $characterRepository = new CharacterRepository($font);
-        $character = $characterRepository->findByChar('g');
-        $character1 = $characterRepository->findByChar('a');
-        $character2 = $characterRepository->findByChar('x');
+        $character = $characterRepository->findByChar('O');
+        $character1 = $characterRepository->findByChar('o');
+        $character2 = $characterRepository->findByChar('m');
         $optimizer = new Optimizer();
-        $subset = $optimizer->getFontSubset($font, [$character, $character1, $character2]);
+        $subset = $optimizer->getFontSubset($font, [$characterRepository->getMissingCharacter(), $character, $character1, $character2]);
 
         // act
         $output = $writer->writeFont($subset);
@@ -131,6 +131,8 @@ class FileWriterTest extends TestCase
      * @param Font $font
      * @param string $character
      *
+     * @throws \Exception
+     *
      * @return Font
      */
     private static function getFontSubset(Font $font, string $character): Font
@@ -140,6 +142,6 @@ class FileWriterTest extends TestCase
 
         $optimizer = new Optimizer();
 
-        return $optimizer->getFontSubset($font, [$character]);
+        return $optimizer->getFontSubset($font, [$characterRepository->getMissingCharacter(), $character]);
     }
 }

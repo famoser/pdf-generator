@@ -75,7 +75,6 @@ class PrinterTest extends TestCase
         // assert
         $this->assertStringContainsString((string)$xPosition, $result);
         $this->assertStringContainsString((string)$yPosition, $result);
-        file_put_contents('pdf.pdf', $result);
     }
 
     /**
@@ -104,26 +103,6 @@ class PrinterTest extends TestCase
         $this->assertStringContainsString((string)$yPosition, $result);
         $this->assertStringContainsString((string)$width, $result);
         $this->assertStringContainsString((string)$height, $result);
-        file_put_contents('pdf.pdf', $result);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function testPrintTest_withUtf8Text_inResultFile()
-    {
-        // arrange
-        $text = 'a ää z';
-        $printer = new Printer(new Document());
-        $printer->setCursor(new Cursor(20, 20, 1));
-
-        // act
-        $printer->printText($text);
-        $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
-
-        // assert
-        $this->assertStringContainsString($text, $result);
     }
 
     /**
