@@ -80,9 +80,10 @@ class TableVisitor
         $formatOffset = $cMapOffset + $subtableOffset;
         for ($i = 0; $i < \count($cMapTable->getSubtables()); ++$i) {
             $formatOffset += $offsetBySubtable[$i];
+            $subTable = $cMapTable->getSubtables()[$i];
 
-            $writer->writeUInt16($subtable->getPlatformID());
-            $writer->writeUInt16($subtable->getPlatformSpecificID());
+            $writer->writeUInt16($subTable->getPlatformID());
+            $writer->writeUInt16($subTable->getPlatformSpecificID());
             $writer->writeOffset32($formatOffset);
         }
 

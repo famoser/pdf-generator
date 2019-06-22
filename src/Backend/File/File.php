@@ -11,17 +11,19 @@
 
 namespace PdfGenerator\Backend\File;
 
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
+use PdfGenerator\Backend\File\Structure\Body;
+use PdfGenerator\Backend\File\Structure\CrossReferenceTable;
 use PdfGenerator\Backend\File\Structure\FileHeader;
+use PdfGenerator\Backend\File\Structure\FileTrailer;
 
 class File
 {
     /**
-     * @var BaseObject[]
+     * @var Body
      */
-    private $body = [];
+    private $body;
 
     /**
      * @var int
@@ -29,15 +31,22 @@ class File
     private $bodyCounter = 1;
 
     /**
+     * File constructor.
+     */
+    public function __construct()
+    {
+        $this->body = new Body();
+    }
+
+    /**
      * @param string $content
-     * @param int $contentType
      *
      * @return StreamObject
      */
-    public function addStreamObject(string $content, int $contentType)
+    public function addStreamObject(string $content)
     {
-        $streamObject = new StreamObject($this->bodyCounter++, $content, $contentType);
-        $this->addObject($streamObject);
+        $streamObject = new StreamObject($this->bodyCounter++, $content);
+        $this->body->addObject($streamObject);
 
         return $streamObject;
     }
@@ -48,28 +57,32 @@ class File
     public function addDictionaryObject()
     {
         $dictionaryObject = new DictionaryObject($this->bodyCounter++);
-        $this->addObject($dictionaryObject);
+        $this->body->addObject($dictionaryObject);
 
         return $dictionaryObject;
     }
 
     /**
-     * @param BaseObject $baseObject
-     */
-    private function addObject(BaseObject $baseObject)
-    {
-        $this->body[] = $baseObject;
-    }
-
-    /**
-     * @param BaseObject $root
-     *
      * @return string
      */
-    public function render(BaseObject $root): string
+    public function render(): string
     {
         $structureVisitor = new StructureVisitor();
 
-        return $structureVisitor->render(new FileHeader(), $this->body, $root);
+        $header = new FileHeader();
+        $output = $header->accept($structureVisitor) . "\n";
+        $headerLength = \strlen($output);
+
+        $output .= $this->body->accept($structureVisitor);
+
+        $crossReferenceTable = new CrossReferenceTable();
+        $crossReferenceTable->registerEntrySize($headerLength);
+        $crossReferenceTable->registerEntrySizes($structureVisitor->getBodyEntrySizes());
+        $output .= $crossReferenceTable->accept($structureVisitor) . "\n";
+
+        $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $this->body->getEntries()[0]);
+        $output .= $trailer->accept($structureVisitor);
+
+        return $output;
     }
 }

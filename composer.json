@@ -1,60 +1,61 @@
 {
-    "name": "famoser/pdf-generator",
-    "description": "a clean pdf generator without dependencies",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Florian Moser",
-            "email": "git@famoser.ch"
-        }
-    ],
-    "require": {
-        "php": "^7.1",
-        "ext-bcmath": "^7.1"
-    },
-    "require-dev": {
-        "codacy/coverage": "^1.4",
-        "friendsofphp/php-cs-fixer": "^2.14",
-        "mockery/mockery": "^1.2",
-        "phpunit/phpunit": "^7.5",
-        "brainmaestro/composer-git-hooks": "^2.6"
-    },
-    "autoload": {
-        "psr-4": {
-            "PdfGenerator\\": "src/",
-            "DocumentGenerator\\": "document-generator/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "PdfGenerator\\Tests\\": "tests/"
-        }
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "scripts": {
-        "configure-environment": [
-            "cp -n .php_cs.dist .php_cs",
-            "cp -n phpunit.xml.dist phpunit.xml"
-        ],
-        "prepare-environment": [
-            "vendor/bin/cghooks update"
-        ],
-        "pre-install-cmd": "@configure-environment",
-        "post-install-cmd": "@prepare-environment",
-        "pre-update-cmd": "@configure-environment",
-        "post-update-cmd": "@prepare-environment"
-    },
-    "extra": {
-        "hooks": {
-            "pre-commit": [
-                "echo committing as $(git config user.name)",
-                "./vendor/bin/php-cs-fixer fix  --config=.php_cs",
-                "git update-index --again"
-            ],
-            "post-merge": "composer install"
-        }
+  "name": "famoser/pdf-generator",
+  "description": "a clean pdf generator without dependencies",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Florian Moser",
+      "email": "git@famoser.ch"
     }
+  ],
+  "require": {
+    "php": "^7.1",
+    "ext-bcmath": "^7.1",
+    "ext-gd": "*"
+  },
+  "require-dev": {
+    "codacy/coverage": "^1.4",
+    "friendsofphp/php-cs-fixer": "^2.14",
+    "mockery/mockery": "^1.2",
+    "phpunit/phpunit": "^7.5",
+    "brainmaestro/composer-git-hooks": "^2.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "PdfGenerator\\": "src/",
+      "DocumentGenerator\\": "document-generator/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PdfGenerator\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "scripts": {
+    "configure-environment": [
+      "cp -n .php_cs.dist .php_cs",
+      "cp -n phpunit.xml.dist phpunit.xml"
+    ],
+    "prepare-environment": [
+      "vendor/bin/cghooks update"
+    ],
+    "pre-install-cmd": "@configure-environment",
+    "post-install-cmd": "@prepare-environment",
+    "pre-update-cmd": "@configure-environment",
+    "post-update-cmd": "@prepare-environment"
+  },
+  "extra": {
+    "hooks": {
+      "pre-commit": [
+        "echo committing as $(git config user.name)",
+        "./vendor/bin/php-cs-fixer fix  --config=.php_cs",
+        "git update-index --again"
+      ],
+      "post-merge": "composer install"
+    }
+  }
 }

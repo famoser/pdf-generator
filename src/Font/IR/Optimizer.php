@@ -29,13 +29,18 @@ class Optimizer
      * @param Font $source
      * @param Character[] $characters
      *
+     * @throws \Exception
+     *
      * @return Font
      */
     public function getFontSubset(Font $source, array $characters)
     {
         $font = new Font();
 
-        $font->setMissingGlyphCharacter($source->getMissingGlyphCharacter());
+        if ($characters[0]->getUnicodePoint() !== 0) {
+            throw new \Exception('the first character must be the missing glyph character with unicode point 0');
+        }
+
         $font->setCharacters($characters);
         $font->setTableDirectory($this->getTableDirectoryAfterSubsetting($source->getTableDirectory()));
 

@@ -106,10 +106,15 @@ class Parser
 
         $characters = $this->createCharacters($fontFile);
         $mappedCharacters = $this->mapCharacters($characters, $fontFile);
-        $font->setCharacters($mappedCharacters);
 
-        $missingGlyphCharacter = $characters[0];
-        $font->setMissingGlyphCharacter($missingGlyphCharacter);
+        // ensure first character is .notdef character with unicode point 0
+        if ($mappedCharacters[0]->getUnicodePoint() !== 0) {
+            $missingGlyphCharacter = $characters[0];
+            $missingGlyphCharacter->setUnicodePoint(0);
+            array_unshift($mappedCharacters, $missingGlyphCharacter);
+        }
+
+        $font->setCharacters($mappedCharacters);
 
         return $font;
     }

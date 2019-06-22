@@ -36,6 +36,16 @@ class CrossReferenceTable extends BaseStructure
     }
 
     /**
+     * @param int[] $entrySizes
+     */
+    public function registerEntrySizes(array $entrySizes)
+    {
+        foreach ($entrySizes as $entrySize) {
+            $this->registerEntrySize($entrySize);
+        }
+    }
+
+    /**
      * @param StructureVisitor $visitor
      *
      * @return string

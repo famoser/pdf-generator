@@ -11,9 +11,7 @@
 
 namespace PdfGenerator\Backend\File;
 
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Structure\CrossReferenceTable;
-use PdfGenerator\Backend\File\Structure\FileHeader;
 use PdfGenerator\Backend\File\Structure\FileTrailer;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 use PdfGenerator\Backend\File\Token\NumberToken;
@@ -32,40 +30,17 @@ class StructureVisitor
     private $tokenVisitor;
 
     /**
+     * @var string[]
+     */
+    private $bodyEntrySizes = [];
+
+    /**
      * StructureVisitor constructor.
      */
     public function __construct()
     {
         $this->objectVisitor = new ObjectVisitor();
         $this->tokenVisitor = new TokenVisitor();
-    }
-
-    /**
-     * @param FileHeader $header
-     * @param BaseObject[] $content
-     * @param BaseObject $root
-     *
-     * @return string
-     */
-    public function render(FileHeader $header, array $content, BaseObject $root)
-    {
-        $output = $header->accept($this) . "\n";
-
-        $crossReferenceTable = new CrossReferenceTable();
-        $crossReferenceTable->registerEntrySize(\strlen($output));
-
-        foreach ($content as $baseObject) {
-            $objectContent = $baseObject->accept($this->objectVisitor) . "\n";
-            $crossReferenceTable->registerEntrySize(\strlen($objectContent));
-            $output .= $objectContent;
-        }
-
-        $output .= $crossReferenceTable->accept($this) . "\n";
-
-        $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $root);
-        $output .= $trailer->accept($this);
-
-        return $output;
     }
 
     /**
@@ -116,5 +91,33 @@ class StructureVisitor
         }
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * @param Structure\Body $param
+     *
+     * @return string
+     */
+    public function visitBody(Structure\Body $param)
+    {
+        $output = '';
+
+        foreach ($param->getEntries() as $baseObject) {
+            $objectContent = $baseObject->accept($this->objectVisitor) . "\n";
+
+            $this->bodyEntrySizes[] = \strlen($objectContent);
+
+            $output .= $objectContent;
+        }
+
+        return $output;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getBodyEntrySizes(): array
+    {
+        return $this->bodyEntrySizes;
     }
 }
