@@ -69,7 +69,7 @@ class DocumentResources
      *
      * @return BaseDocumentStructure|mixed
      */
-    private function getOrCreate($structure, array $cache)
+    private function getOrCreate($structure, array &$cache)
     {
         $identifier = spl_object_id($structure);
 

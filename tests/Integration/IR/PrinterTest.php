@@ -113,7 +113,7 @@ class PrinterTest extends TestCase
     public function testPrintTest_withUtf8Text_inResultFile()
     {
         // arrange
-        $text = 'äüö';
+        $text = 'a ää z';
         $printer = new Printer(new Document());
         $printer->setCursor(new Cursor(20, 20, 1));
 
