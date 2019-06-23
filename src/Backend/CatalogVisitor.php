@@ -247,9 +247,9 @@ class CatalogVisitor
         $dictionary->addTextEntry('Type', '/FontDescriptor');
         $dictionary->addTextEntry('FontName', $structure->getFontName());
         $dictionary->addTextEntry('Flags', $structure->getFlags());
-        $dictionary->addTextEntry('FontBBox', $structure->getFontBBox());
+        $dictionary->addNumberArrayEntry('FontBBox', $structure->getFontBBox());
         $dictionary->addTextEntry('ItalicAngle', $structure->getItalicAngle());
-        $dictionary->addTextEntry('Ascent', $structure->getAscent());
+        $dictionary->addTextEntry('Ascent', $structure->getAscent())
         $dictionary->addTextEntry('Decent', $structure->getDecent());
         $dictionary->addTextEntry('CapHeight', $structure->getCapHeight());
         $dictionary->addTextEntry('StemV', $structure->getStemV());
