@@ -106,7 +106,7 @@ class StateTransitionVisitor
         return new FullState(
             $this->appliedGeneralGraphicsState ? $this->appliedGeneralGraphicsState : $this->previousState->getGeneralGraphicsState(),
             $this->appliedColorState ? $this->appliedColorState : $this->previousState->getColorState(),
-            $this->appliedTextState ? $this->appliedTextState : $this->previousState->getTextState(),
+            $this->appliedTextState ? $this->appliedTextState : $this->previousState->getTextState()
         );
     }
 
@@ -211,6 +211,7 @@ class StateTransitionVisitor
         /*
          * for A = previousTransformationMatrix and B = targetTransformationMatrix
          * we need to calculate the matrix C such that C * A = B
+         * C * A is correct per pdf spec 8.3.4 Transformation Matrices
          *
          * C = A**-1 * B
          */
