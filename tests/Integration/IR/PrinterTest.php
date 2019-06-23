@@ -168,8 +168,7 @@ class PrinterTest extends TestCase
 
         // act
         $printer->printRectangle(20, 20);
-        $printer->setCursor(new Cursor(50, 20, 1));
-        $printer->printImage($imageSrc, 5, 5);
+        $printer->printImage($imageSrc, 20, 20);
         $result = $printer->save();
         file_put_contents('pdf.pdf', $result);
 

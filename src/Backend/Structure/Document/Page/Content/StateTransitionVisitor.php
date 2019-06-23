@@ -171,11 +171,8 @@ class StateTransitionVisitor
 
         $operators = [];
         if ($previousState->getCurrentTransformationMatrix() !== $targetState->getCurrentTransformationMatrix()) {
-            var_dump('previous: ' . implode(', ', $previousState->getCurrentTransformationMatrix()));
-            var_dump('target: ' . implode(', ', $targetState->getCurrentTransformationMatrix()));
             $transformationMatrix = $this->transformToCurrentTransformationMatrix($previousState->getCurrentTransformationMatrix(), $targetState->getCurrentTransformationMatrix());
             $operators[] = implode(' ', $transformationMatrix) . ' cm';
-            var_dump('result: ' . implode(', ', $transformationMatrix));
         }
 
         if ($previousState->getLineWidth() !== $targetState->getLineWidth()) {
@@ -211,16 +208,63 @@ class StateTransitionVisitor
      */
     private function transformToCurrentTransformationMatrix(array $previousTransformationMatrix, array $targetTransformationMatrix): array
     {
-        list($scaleX, $skewY, $skewX, $scaleY, $xPos, $yPos) = $previousTransformationMatrix;
-        list($scaleX2, $skewY2, $skewX2, $scaleY2, $xPos2, $yPos2) = $targetTransformationMatrix;
+        /*
+         * for A = previousTransformationMatrix and B = targetTransformationMatrix
+         * we need to calculate the matrix C such that C * A = B
+         *
+         * C = A**-1 * B
+         */
+        list($a, $b, $c, $d, $e, $f) = $targetTransformationMatrix;
+        list($a2, $b2, $c2, $d2, $e2, $f2) = $this->invertMatrix(...$previousTransformationMatrix);
+
+        /*
+         * formula from wolfram alpha
+         * {{a, b, 0}, {c, d, 0}, {e, f, 1}} * {{a_2, b_2, 0},{c_2, d_2, 0},{e_2, f_2, 1}}
+         */
+        return [
+            $a * $a2 + $b * $c2,
+            $a * $b2 + $b * $d2,
+            $c * $a2 + $d * $c2,
+            $c * $b2 + $d * $d2,
+            $e * $a2 + $f * $c2 + $e2,
+            $e * $b2 + $f * $d2 + $f2,
+        ];
+    }
+
+    /**
+     * inverts a matrix of the form.
+     *
+     * ---------
+     * | a b 0 |
+     * | c d 0 |
+     * | e f 1 |
+     * ---------
+     *
+     * @param float $a
+     * @param float $b
+     * @param float $c
+     * @param float $d
+     * @param float $e
+     * @param float $f
+     *
+     * @return array
+     */
+    private function invertMatrix(float $a, float $b, float $c, float $d, float $e, float $f)
+    {
+        /**
+         * formula from wolfram alpha
+         * inverse {{a, b, 0}, {c, d, 0}, {e, f, 1}}.
+         */
+        $divisor1 = $a * $d - $b * $c;
+        $divisor2 = $b * $c - $a * $d;
 
         return [
-            $scaleX2 - $scaleX,
-            $skewY2 - $skewY,
-            $skewX2 - $skewX,
-            $scaleY2 - $scaleY,
-            $xPos2 - $xPos,
-            $yPos2 - $yPos,
+            $d / $divisor1,
+            $b / $divisor2,
+            $c / $divisor2,
+            $a / $divisor1,
+            ($d * $e - $c * $f) / $divisor2,
+            ($b * $e - $a * $f) / $divisor1,
         ];
     }
 
