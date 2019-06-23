@@ -99,7 +99,6 @@ class PrinterTest extends TestCase
         $printer->setCursor(new Cursor(10, $yPosition, 1));
         $printer->printRectangle($width, $height);
         $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertStringContainsString((string)$xPosition, $result);
@@ -147,10 +146,9 @@ class PrinterTest extends TestCase
         $printer->setCursor(new Cursor(20, 20, 1));
         $printer->printRectangle(20, 20);
         $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
 
         // assert
-        $this->assertTrue(true);
+        $this->assertNotEmpty($result);
     }
 
     /**
@@ -170,9 +168,8 @@ class PrinterTest extends TestCase
         $printer->printRectangle(20, 20);
         $printer->printImage($imageSrc, 20, 20);
         $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
 
         // assert
-        $this->assertTrue(true);
+        $this->assertNotEmpty($result);
     }
 }
