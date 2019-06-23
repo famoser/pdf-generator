@@ -162,7 +162,7 @@ class DocumentVisitor
 
         $cIDSystemInfo = new CIDSystemInfo();
         $cIDSystemInfo->setRegistry('famoser');
-        $cIDSystemInfo->setOrdering(1);
+        $cIDSystemInfo->setOrdering('custom-1');
         $cIDSystemInfo->setSupplement(1);
 
         $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream);
