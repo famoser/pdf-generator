@@ -133,6 +133,29 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
+    public function testPrintRectangle_layersAsExpected()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $rectangleStyle = new RectangleStyle(1, Color::createFromHex('#aefaef'), Color::createFromHex('#e3e3e3'));
+        $printer->setRectangleStyle($rectangleStyle);
+
+        // act
+        $printer->setCursor(new Cursor(10, 10, 1));
+        $printer->printRectangle(20, 20);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $printer->printRectangle(20, 20);
+        $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function testPrintImage_imageAppears()
     {
         // arrange
@@ -140,9 +163,13 @@ class PrinterTest extends TestCase
         $document = new Document();
         $printer = new Printer($document);
         $printer->setCursor(new Cursor(20, 20, 1));
+        $rectangleStyle = new RectangleStyle(1, Color::createFromHex('#aefaef'), Color::createFromHex('#e3e3e3'));
+        $printer->setRectangleStyle($rectangleStyle);
 
         // act
-        $printer->printImage($imageSrc, 20, 20);
+        $printer->printRectangle(20, 20);
+        $printer->setCursor(new Cursor(50, 20, 1));
+        $printer->printImage($imageSrc, 5, 5);
         $result = $printer->save();
         file_put_contents('pdf.pdf', $result);
 

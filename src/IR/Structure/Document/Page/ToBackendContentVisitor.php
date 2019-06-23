@@ -123,8 +123,8 @@ class ToBackendContentVisitor extends ContentVisitor
      */
     private function applyImagePlacementPositionAndSize(int $width, int $height, ImagePlacement $placement)
     {
-        $scaleX = $placement->getSize()->getWidth() / $width;
-        $scaleY = $placement->getSize()->getHeight() / $height;
+        $scaleX = $placement->getSize()->getWidth() / $width * 100;
+        $scaleY = $placement->getSize()->getHeight() / $height * 100;
 
         $this->applyPosition($placement->getPosition(), $scaleX, $scaleY);
     }
