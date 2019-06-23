@@ -103,17 +103,43 @@ class DocumentVisitor
     /**
      * @param Image $param
      *
+     * @throws \Exception
+     *
      * @return BackendImage
      */
     public function visitImage(Image $param)
     {
         $imageData = file_get_contents($param->getImagePath());
         list($width, $height) = getimagesizefromstring($imageData);
-        $extension = pathinfo($param->getImagePath(), PATHINFO_EXTENSION);
+        $type = self::getImageType($param->getImagePath());
 
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
-        return new BackendImage($imageData, $extension, $width, $height, $maxSize->getWidth(), $maxSize->getHeight());
+        return new BackendImage($imageData, $type, $width, $height, $maxSize->getWidth(), $maxSize->getHeight());
+    }
+
+    /**
+     * @param string $imagePath
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    private static function getImageType(string $imagePath)
+    {
+        $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+        switch ($extension) {
+            case 'jpg':
+                return BackendImage::TYPE_JPG;
+            case 'jpeg':
+                return BackendImage::TYPE_JPEG;
+            case 'png':
+                return BackendImage::TYPE_PNG;
+            case 'gif':
+                return BackendImage::TYPE_GIF;
+            default:
+                throw new \Exception('Image type not supported: ' . $extension . '. Use jpg, jpeg, png or gif');
+        }
     }
 
     /**
