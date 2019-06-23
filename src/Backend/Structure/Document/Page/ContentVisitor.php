@@ -169,6 +169,8 @@ class ContentVisitor
             $operators = array_merge($operators, $influentialState->accept($stateTransitionVisitor));
         }
 
+        $this->state = $stateTransitionVisitor->getAppliedState();
+
         return $operators;
     }
 }

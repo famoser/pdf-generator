@@ -17,6 +17,7 @@ use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
 class PrinterTest extends TestCase
@@ -95,7 +96,8 @@ class PrinterTest extends TestCase
 
         // act
         $printer->printRectangle($width, $height);
-        $printer->printRectangle($width + 20, $height + 40);
+        $printer->setCursor(new Cursor(10, $yPosition, 1));
+        $printer->printRectangle($width, $height);
         $result = $printer->save();
 
         // assert
@@ -108,23 +110,66 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintImage_inResultFile()
+    public function testPrintText_differentDefaultFont_textAppears()
     {
         // arrange
         $document = new Document();
         $printer = new Printer($document);
         $printer->setCursor(new Cursor(20, 20, 1));
 
-        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_COURIER, Document\Font\DefaultFont::STYLE_DEFAULT);
+        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 30);
         $printer->setTextStyle($textStyle);
 
         // act
-        $printer->printRectangle(20, 20);
         $printer->printText('hi mom');
         $result = $printer->save();
 
         // assert
         $this->assertTrue(true);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintRectangle_layersAsExpected()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $rectangleStyle = new RectangleStyle(1, Color::createFromHex('#aefaef'), Color::createFromHex('#e3e3e3'));
+        $printer->setRectangleStyle($rectangleStyle);
+
+        // act
+        $printer->setCursor(new Cursor(10, 10, 1));
+        $printer->printRectangle(20, 20);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $printer->printRectangle(20, 20);
+        $result = $printer->save();
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintImage_imageAppears()
+    {
+        // arrange
+        $imageSrc = ResourcesProvider::getImage1Path();
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $rectangleStyle = new RectangleStyle(1, Color::createFromHex('#aefaef'), Color::createFromHex('#e3e3e3'));
+        $printer->setRectangleStyle($rectangleStyle);
+
+        // act
+        $printer->printRectangle(20, 20);
+        $printer->printImage($imageSrc, 20, 20);
+        $result = $printer->save();
+
+        // assert
+        $this->assertNotEmpty($result);
     }
 }

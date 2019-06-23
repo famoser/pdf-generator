@@ -46,7 +46,7 @@ class ToBackendContentVisitor extends ContentVisitor
     {
         $image = $this->pageResources->getImage($placement->getImage());
 
-        $this->applyImagePlacementPositionAndSize($image->getWidth(), $image->getHeight(), $placement);
+        $this->applyImagePlacementPositionAndSize($placement);
         $pageLevel = $this->pageResources->getDrawingState();
 
         return new ImageContent($image, $pageLevel);
@@ -117,14 +117,12 @@ class ToBackendContentVisitor extends ContentVisitor
     }
 
     /**
-     * @param int $width
-     * @param int $height
      * @param ImagePlacement $placement
      */
-    private function applyImagePlacementPositionAndSize(int $width, int $height, ImagePlacement $placement)
+    private function applyImagePlacementPositionAndSize(ImagePlacement $placement)
     {
-        $scaleX = $placement->getSize()->getWidth() / $width;
-        $scaleY = $placement->getSize()->getHeight() / $height;
+        $scaleX = $placement->getSize()->getWidth();
+        $scaleY = $placement->getSize()->getHeight();
 
         $this->applyPosition($placement->getPosition(), $scaleX, $scaleY);
     }

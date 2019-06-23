@@ -77,9 +77,11 @@ class DocumentVisitor
     {
         if (!\array_key_exists($prefix, $this->resourceCounters)) {
             $this->resourceCounters[$prefix] = 0;
+
+            return $prefix;
         }
 
-        return $prefix . $this->resourceCounters[$prefix]++;
+        return $prefix . (string)($this->resourceCounters[$prefix]++);
     }
 
     /**
