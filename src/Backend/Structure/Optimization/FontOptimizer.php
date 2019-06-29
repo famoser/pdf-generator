@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\Optimization;
+namespace PdfGenerator\Backend\Structure\Optimization;
 
 use PdfGenerator\Font\IR\CharacterRepository;
 use PdfGenerator\Font\IR\Optimizer;

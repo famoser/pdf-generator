@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\StateCollections;
+namespace PdfGenerator\Backend\Structure\Document\Page\StateCollections;
 
-use PdfGenerator\Backend\Structure\Operators\State\ColorState;
-use PdfGenerator\Backend\Structure\Operators\State\GeneralGraphicState;
-use PdfGenerator\Backend\Structure\Operators\State\TextState;
+use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
+use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
+use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 
 class FullState
 {

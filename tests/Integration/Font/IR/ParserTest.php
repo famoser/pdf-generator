@@ -11,8 +11,9 @@
 
 namespace PdfGenerator\Tests\Integration\Font\IR;
 
+use PdfGenerator\Font\IR\CharacterRepository;
 use PdfGenerator\Font\IR\Parser;
-use PdfGenerator\Font\IR\Structure\Character;
+use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Tests\Integration\Font\Frontend\FileReaderTest;
 use PHPUnit\Framework\TestCase;
 
@@ -30,21 +31,22 @@ class ParserTest extends TestCase
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());
 
         // assert
-        $this->assertCount(869, $font->getCharacters());
-        $this->assertSanityChecks($font->getCharacters());
+        $this->assertCount(870, $font->getCharacters());
+        $this->assertSanityChecks($font);
     }
 
     /**
-     * @param Character[] $characters
+     * @param Font $font
      */
-    private function assertSanityChecks(array $characters)
+    private function assertSanityChecks(Font $font)
     {
-        $oCharacter = $characters[mb_ord('o')];
-        $bigOCharacter = $characters[mb_ord('O')];
-        $mCharacter = $characters[mb_ord('m')];
+        $characterRepo = new CharacterRepository($font);
+        $oCharacter = $characterRepo->findByChar('o');
+        $bigOCharacter = $characterRepo->findByChar('O');
+        $mCharacter = $characterRepo->findByChar('m');
 
         $this->assertTrue($bigOCharacter->getBoundingBox()->getHeight() > $oCharacter->getBoundingBox()->getHeight());
         $this->assertTrue($mCharacter->getBoundingBox()->getWidth() > $oCharacter->getBoundingBox()->getWidth());
-        $this->assertTrue($mCharacter->getGlyfTable()->getNumberOfContours() > $oCharacter->getGlyfTable()->getNumberOfContours());
+        $this->assertTrue($mCharacter->getGlyfTable()->getNumberOfContours() < $oCharacter->getGlyfTable()->getNumberOfContours());
     }
 }

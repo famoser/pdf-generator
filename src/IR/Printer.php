@@ -12,17 +12,17 @@
 namespace PdfGenerator\IR;
 
 use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Structure\Font\DefaultFont;
-use PdfGenerator\IR\Structure\Image;
-use PdfGenerator\IR\Structure\Optimization\Configuration;
-use PdfGenerator\IR\Structure\PageContent\Common\Color;
-use PdfGenerator\IR\Structure\PageContent\Common\Position;
-use PdfGenerator\IR\Structure\PageContent\Common\Size;
-use PdfGenerator\IR\Structure\PageContent\ImagePlacement;
-use PdfGenerator\IR\Structure\PageContent\Rectangle;
-use PdfGenerator\IR\Structure\PageContent\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Structure\PageContent\Text;
-use PdfGenerator\IR\Structure\PageContent\Text\TextStyle;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
+use PdfGenerator\IR\Structure\Document\Image;
+use PdfGenerator\IR\Structure\Document\Page;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
+use PdfGenerator\IR\Structure\Document\Page\Content\ImagePlacement;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
 class Printer
 {
@@ -48,12 +48,14 @@ class Printer
 
     /**
      * Printer constructor.
+     *
+     * @param Document $document
      */
-    public function __construct()
+    public function __construct(Document $document)
     {
-        $this->document = new Document();
+        $this->document = $document;
 
-        $font = new DefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
+        $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
         $this->textStyle = new TextStyle($font, 12);
 
         $color = new Color(0, 0, 0);
@@ -108,7 +110,7 @@ class Printer
     }
 
     /**
-     * @return Structure\Page
+     * @return Page
      */
     private function getPage()
     {
@@ -148,16 +150,10 @@ class Printer
     }
 
     /**
-     * @param Configuration|null $configuration
-     *
      * @return string
      */
-    public function save(Configuration $configuration = null)
+    public function save()
     {
-        if ($configuration === null) {
-            $configuration = new Configuration();
-        }
-
-        return $this->document->save($configuration);
+        return $this->document->save();
     }
 }

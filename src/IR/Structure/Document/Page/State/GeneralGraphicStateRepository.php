@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Configuration\State;
+namespace PdfGenerator\IR\Structure\Document\Page\State;
 
-use PdfGenerator\Backend\Structure\Operators\State\GeneralGraphicState;
+use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
 
 class GeneralGraphicStateRepository
 {
     /**
      * @var float[]
      */
-    private $currentTransformationMatrix = [1, 0, 0, 1, 0, 0];
+    private $position = [1, 0, 0, 1, 0, 0];
 
     /**
      * @var float
@@ -38,7 +38,7 @@ class GeneralGraphicStateRepository
      */
     public function setPosition(float $xStart, float $yStart, float $scaleX = 1, float $scaleY = 1)
     {
-        $this->currentTransformationMatrix = [$scaleX, 0, 0, $scaleY, $xStart, $yStart];
+        $this->position = [$scaleX, $scaleY, $xStart, $yStart];
 
         $this->generalGraphicState = null;
     }
@@ -63,7 +63,8 @@ class GeneralGraphicStateRepository
         }
 
         $this->generalGraphicState = new GeneralGraphicState();
-        $this->generalGraphicState->setCurrentTransformationMatrix($this->currentTransformationMatrix);
+        $transformationMatrixShort = [$this->position[0], 0, 0, $this->position[1], $this->position[2], $this->position[3]];
+        $this->generalGraphicState->setCurrentTransformationMatrix($transformationMatrixShort);
         $this->generalGraphicState->setLineWidth($this->lineWidth);
 
         return $this->generalGraphicState;

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Transformation;
+namespace PdfGenerator\IR\Structure\Document;
 
-use PdfGenerator\Backend\Catalog\Font;
-use PdfGenerator\Backend\Catalog\Image;
-use PdfGenerator\IR\DocumentVisitor;
-use PdfGenerator\IR\Structure\Base\BaseDocumentStructure;
+use PdfGenerator\Backend\Structure\Document\Font as BackendFont;
+use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
+use PdfGenerator\IR\Structure\DocumentVisitor;
 
 class DocumentResources
 {
@@ -44,21 +44,21 @@ class DocumentResources
     }
 
     /**
-     * @param \PdfGenerator\IR\Structure\Font $structure
+     * @param Font $structure
      *
-     * @return Font
+     * @return BackendFont
      */
-    public function getFont(\PdfGenerator\IR\Structure\Font $structure)
+    public function getFont(Font $structure)
     {
         return $this->getOrCreate($structure, $this->fontCache);
     }
 
     /**
-     * @param \PdfGenerator\IR\Structure\Image $structure
+     * @param Image $structure
      *
-     * @return Image
+     * @return BackendImage
      */
-    public function getImage(\PdfGenerator\IR\Structure\Image $structure)
+    public function getImage(Image $structure)
     {
         return $this->getOrCreate($structure, $this->imageCache);
     }
@@ -69,7 +69,7 @@ class DocumentResources
      *
      * @return BaseDocumentStructure|mixed
      */
-    private function getOrCreate($structure, array $cache)
+    private function getOrCreate($structure, array &$cache)
     {
         $identifier = $structure->getIdentifier();
 

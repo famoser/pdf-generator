@@ -9,15 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure;
+namespace PdfGenerator\Backend\Structure\Document;
 
 use PdfGenerator\Backend\Catalog\Contents;
 use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\Catalog\Resources;
-use PdfGenerator\Backend\Structure\Base\BaseContent;
-use PdfGenerator\Backend\Structure\Document\Image;
+use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
-use PdfGenerator\Backend\Transformation\DocumentResources;
 
 class Page
 {
@@ -83,7 +81,7 @@ class Page
      */
     public function render(Pages $parent, DocumentResources $documentResources)
     {
-        $contentVisitor = new ContentVisitor();
+        $contentVisitor = new ContentVisitor($documentResources);
 
         $contentArray = [];
         foreach ($this->content as $item) {

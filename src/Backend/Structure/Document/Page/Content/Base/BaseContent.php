@@ -9,19 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Base;
+namespace PdfGenerator\Backend\Structure\Document\Page\Content\Base;
 
 use PdfGenerator\Backend\Catalog\Content;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
-use PdfGenerator\Backend\Structure\Operators\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
 abstract class BaseContent
 {
     /**
      * @param ContentVisitor $visitor
      *
-     * @return BaseObject
+     * @return Content
      */
     abstract public function accept(ContentVisitor $visitor): Content;
 

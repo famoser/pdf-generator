@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Operators\Level\Base;
+namespace PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base;
 
-use PdfGenerator\Backend\Structure\Operators\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
 abstract class BaseStateCollection
 {

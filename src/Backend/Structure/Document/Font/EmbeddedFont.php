@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Font;
+namespace PdfGenerator\Backend\Structure\Document\Font;
 
+use PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\DocumentVisitor;
-use PdfGenerator\Backend\Structure\Font;
 
 class EmbeddedFont extends Font
 {
@@ -37,7 +37,7 @@ class EmbeddedFont extends Font
      * EmbeddedFont constructor.
      *
      * @param string $encoding
-     * @param \PdfGenerator\IR\Structure\Font $font
+     * @param \PdfGenerator\Font\IR\Structure\Font $font
      * @param string $usedWithText
      */
     public function __construct(string $encoding, \PdfGenerator\Font\IR\Structure\Font $font, string $usedWithText)

@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Operators\Level;
+namespace PdfGenerator\Backend\Structure\Document\Page\StateCollections;
 
-use PdfGenerator\Backend\Structure\Operators\Level\Base\BaseStateCollection;
-use PdfGenerator\Backend\Structure\Operators\State\Base\BaseState;
-use PdfGenerator\Backend\Structure\Operators\State\ColorState;
-use PdfGenerator\Backend\Structure\Operators\State\GeneralGraphicState;
-use PdfGenerator\Backend\Structure\Operators\State\TextState;
+use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
+use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
+use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
+use PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base\BaseStateCollection;
 
 class WritingState extends BaseStateCollection
 {

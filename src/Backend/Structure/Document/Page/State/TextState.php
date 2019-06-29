@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Operators\State;
+namespace PdfGenerator\Backend\Structure\Document\Page\State;
 
-use PdfGenerator\Backend\Catalog\Font;
-use PdfGenerator\Backend\Structure\Operators\State\Base\BaseState;
-use PdfGenerator\Backend\Structure\StateTransitionVisitor;
+use PdfGenerator\Backend\Structure\Document\Font;
+use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
+use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
 class TextState extends BaseState
 {

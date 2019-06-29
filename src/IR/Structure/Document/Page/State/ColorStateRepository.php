@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Configuration\State;
+namespace PdfGenerator\IR\Structure\Document\Page\State;
 
-use PdfGenerator\Backend\Structure\Operators\State\ColorState;
-use PdfGenerator\IR\Structure\PageContent\Common\Color;
+use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 
 class ColorStateRepository
 {
@@ -32,9 +32,9 @@ class ColorStateRepository
     private $activeColorState;
 
     /**
-     * @param Color $fillColor
+     * @param Color|null $fillColor
      */
-    public function setFillColor(Color $fillColor)
+    public function setFillColor(?Color $fillColor)
     {
         if ($fillColor === $this->fillColor) {
             return;
@@ -45,9 +45,9 @@ class ColorStateRepository
     }
 
     /**
-     * @param Color $borderColor
+     * @param Color|null $borderColor
      */
-    public function setBorderColor(Color $borderColor)
+    public function setBorderColor(?Color $borderColor)
     {
         if ($borderColor === $this->borderColor) {
             return;

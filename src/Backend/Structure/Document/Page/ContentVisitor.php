@@ -12,15 +12,21 @@
 namespace PdfGenerator\Backend\Structure\Document\Page;
 
 use PdfGenerator\Backend\Catalog\Content;
-use PdfGenerator\Backend\Structure\Base\BaseContent;
-use PdfGenerator\Backend\Structure\ImageContent;
-use PdfGenerator\Backend\Structure\Rectangle;
-use PdfGenerator\Backend\Structure\StateCollections\FullState;
-use PdfGenerator\Backend\Structure\StateTransitionVisitor;
-use PdfGenerator\Backend\Structure\TextContent;
+use PdfGenerator\Backend\Structure\Document\DocumentResources;
+use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
+use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
+use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
+use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
+use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
+use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
 class ContentVisitor
 {
+    /**
+     * @var DocumentResources
+     */
+    private $documentResources;
+
     /**
      * @var FullState
      */
@@ -28,9 +34,13 @@ class ContentVisitor
 
     /**
      * ContentVisitor constructor.
+     *
+     * @param DocumentResources $documentResources
      */
-    public function __construct()
+    public function __construct(DocumentResources $documentResources)
     {
+        $this->documentResources = $documentResources;
+
         $this->state = FullState::createInitial();
     }
 
@@ -62,9 +72,10 @@ class ContentVisitor
     {
         // gather operators to change to desired state
         $stateTransitionOperators = $this->applyState($imageContent);
+        $image = $this->documentResources->getImage($imageContent->getImage());
 
         // gather operators to print the content
-        $imageOperator = '/' . $imageContent->getImage()->getIdentifier() . ' Do';
+        $imageOperator = '/' . $image->getIdentifier() . ' Do';
 
         // create stream object
         $operators = array_merge($stateTransitionOperators, [$imageOperator]);
@@ -73,11 +84,11 @@ class ContentVisitor
     }
 
     /**
-     * @param Rectangle $rectangle
+     * @param RectangleContent $rectangle
      *
      * @return Content
      */
-    public function visitRectangle(Rectangle $rectangle): Content
+    public function visitRectangleContent(RectangleContent $rectangle): Content
     {
         // gather operators to change to desired state
         $stateTransitionOperators = $this->applyState($rectangle);
@@ -124,20 +135,20 @@ class ContentVisitor
     }
 
     /**
-     * @param Rectangle $rectangle
+     * @param RectangleContent $rectangle
      *
      * @return string
      */
-    private function getPaintingOperator(Rectangle $rectangle): string
+    private function getPaintingOperator(RectangleContent $rectangle): string
     {
         switch ($rectangle->getPaintingMode()) {
-            case Rectangle::PAINTING_MODE_STROKE:
+            case RectangleContent::PAINTING_MODE_STROKE:
                 return 's';
-            case Rectangle::PAINTING_MODE_FILL:
+            case RectangleContent::PAINTING_MODE_FILL:
                 return 'f';
-            case Rectangle::PAINTING_MODE_STROKE_FILL:
+            case RectangleContent::PAINTING_MODE_STROKE_FILL:
                 return 'b';
-            case Rectangle::PAINTING_MODE_NONE:
+            case RectangleContent::PAINTING_MODE_NONE:
             default:
                 return 'n';
         }
@@ -150,13 +161,15 @@ class ContentVisitor
      */
     private function applyState(BaseContent $baseContent): array
     {
-        $stateTransitionVisitor = new StateTransitionVisitor($this->state);
+        $stateTransitionVisitor = new StateTransitionVisitor($this->state, $this->documentResources);
 
         /** @var string[] $operators */
         $operators = [];
         foreach ($baseContent->getInfluentialStates() as $influentialState) {
             $operators = array_merge($operators, $influentialState->accept($stateTransitionVisitor));
         }
+
+        $this->state = $stateTransitionVisitor->getAppliedState();
 
         return $operators;
     }

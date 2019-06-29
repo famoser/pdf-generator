@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent\Base;
+namespace PdfGenerator\IR\Structure\Document\Page\Content\Base;
 
-use PdfGenerator\IR\Structure\PageContent\ContentVisitor;
+use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
 abstract class BaseContent
 {
     /**
      * @param ContentVisitor $visitor
      *
-     * @return \PdfGenerator\Backend\Structure\Base\BaseContent
+     * @return \PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent|null
      */
-    abstract public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Structure\Base\BaseContent;
+    abstract public function accept(ContentVisitor $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 }

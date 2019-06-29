@@ -13,7 +13,6 @@ namespace PdfGenerator\Backend\Catalog;
 
 use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\Catalog\Base\IdentifiableStructureTrait;
-use PdfGenerator\Backend\File\File;
 
 abstract class Font extends BaseStructure
 {

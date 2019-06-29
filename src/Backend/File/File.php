@@ -80,7 +80,7 @@ class File
         $crossReferenceTable->registerEntrySizes($structureVisitor->getBodyEntrySizes());
         $output .= $crossReferenceTable->accept($structureVisitor) . "\n";
 
-        $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $this->body[0]);
+        $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $this->body->getEntries()[0]);
         $output .= $trailer->accept($structureVisitor);
 
         return $output;

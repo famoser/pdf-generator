@@ -9,20 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR;
+namespace PdfGenerator\IR\Structure;
 
-use PdfGenerator\Backend\Structure\Document\Image;
-use PdfGenerator\Backend\Structure\Font\EmbeddedFont;
-use PdfGenerator\Backend\Structure\Page;
+use PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
+use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
+use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use PdfGenerator\Backend\Structure\Document\Page as BackendPage;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
-use PdfGenerator\IR\Structure\Font\DefaultFont;
-use PdfGenerator\IR\Structure\Optimization\Configuration;
-use PdfGenerator\IR\Structure\Optimization\FontOptimizer;
-use PdfGenerator\IR\Structure\Optimization\ImageOptimizer;
-use PdfGenerator\IR\Structure\PageContent\ToBackendContentVisitor;
-use PdfGenerator\IR\Transformation\Document\Font\DefaultFontMapping;
-use PdfGenerator\IR\Transformation\DocumentResources;
-use PdfGenerator\IR\Transformation\PageResources;
+use PdfGenerator\IR\Structure\Document\DocumentResources;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFontMapping;
+use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
+use PdfGenerator\IR\Structure\Document\Image;
+use PdfGenerator\IR\Structure\Document\Page;
+use PdfGenerator\IR\Structure\Document\Page\PageResources;
+use PdfGenerator\IR\Structure\Document\Page\ToBackendContentVisitor;
 
 class DocumentVisitor
 {
@@ -32,39 +33,20 @@ class DocumentVisitor
     private $documentResources;
 
     /**
-     * @var ImageOptimizer
-     */
-    private $imageOptimizer;
-
-    /**
-     * @var FontOptimizer
-     */
-    private $fontOptimizer;
-
-    /**
      * @var AnalysisResult
      */
     private $analysisResult;
 
     /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    /**
      * DocumentStructureVisitor constructor.
      *
      * @param AnalysisResult $analysisResult
-     * @param Configuration $configuration
      */
-    public function __construct(AnalysisResult $analysisResult, Configuration $configuration)
+    public function __construct(AnalysisResult $analysisResult)
     {
         $this->analysisResult = $analysisResult;
-        $this->configuration = $configuration;
 
         $this->documentResources = new DocumentResources($this);
-        $this->imageOptimizer = new ImageOptimizer();
-        $this->fontOptimizer = new FontOptimizer();
     }
 
     /**
@@ -72,14 +54,14 @@ class DocumentVisitor
      *
      * @throws \Exception
      *
-     * @return \PdfGenerator\Backend\Structure\Font\DefaultFont
+     * @return BackendDefaultFont
      */
     public function visitDefaultFont(DefaultFont $param)
     {
         $baseFont = $this->getDefaultFontBaseFont($param->getFont(), $param->getStyle());
-        $encoding = \PdfGenerator\Backend\Structure\Font\DefaultFont::ENCODING_WIN_ANSI_ENCODING;
+        $encoding = BackendDefaultFont::ENCODING_WIN_ANSI_ENCODING;
 
-        return new \PdfGenerator\Backend\Structure\Font\DefaultFont($baseFont, $encoding);
+        return new BackendDefaultFont($baseFont, $encoding);
     }
 
     /**
@@ -92,11 +74,11 @@ class DocumentVisitor
      */
     private function getDefaultFontBaseFont(string $font, string $style): string
     {
-        if (!\array_key_exists($font, DefaultFontMapping::$defaultFontMapping)) {
+        if (!\array_key_exists($font, DefaultFontMapping::$type1BaseFontMapping)) {
             throw new \Exception('The font ' . $font . ' is not part of the default set.');
         }
 
-        $styles = DefaultFontMapping::$defaultFontMapping[$font];
+        $styles = DefaultFontMapping::$type1BaseFontMapping[$font];
         if (!\array_key_exists($style, $styles)) {
             throw new \Exception('This font style ' . $style . ' is not part of the default set.');
         }
@@ -105,44 +87,71 @@ class DocumentVisitor
     }
 
     /**
-     * @param Structure\Font\EmbeddedFont $param
+     * @param EmbeddedFont $param
      *
      * @throws \Exception
      *
-     * @return EmbeddedFont
+     * @return BackendEmbeddedFont
      */
-    public function visitEmbeddedFont(Structure\Font\EmbeddedFont $param)
+    public function visitEmbeddedFont(EmbeddedFont $param)
     {
         $text = $this->analysisResult->getTextPerFont($param);
 
-        return new EmbeddedFont(EmbeddedFont::ENCODING_UTF_8, $content, $text);
+        return new BackendEmbeddedFont(BackendEmbeddedFont::ENCODING_UTF_8, $param->getFont(), $text);
     }
 
     /**
-     * @param Structure\Image $param
+     * @param Image $param
      *
-     * @return Image
+     * @throws \Exception
+     *
+     * @return BackendImage
      */
-    public function visitImage(Structure\Image $param)
+    public function visitImage(Image $param)
     {
         $imageData = file_get_contents($param->getImagePath());
-        $extension = pathinfo($param->getImagePath(), PATHINFO_EXTENSION);
+        list($width, $height) = getimagesizefromstring($imageData);
+        $type = self::getImageType($param->getImagePath());
 
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
-        return new Image($imageData, $extension, $maxSize->getWidth(), $maxSize->getHeight());
+        return new BackendImage($imageData, $type, $width, $height, $maxSize->getWidth(), $maxSize->getHeight());
     }
 
     /**
-     * @param Structure\Page $param
+     * @param string $imagePath
      *
-     * @return Page
+     * @throws \Exception
+     *
+     * @return string
      */
-    public function visitPage(Structure\Page $param)
+    private static function getImageType(string $imagePath)
+    {
+        $extension = pathinfo($imagePath, PATHINFO_EXTENSION);
+        switch ($extension) {
+            case 'jpg':
+                return BackendImage::TYPE_JPG;
+            case 'jpeg':
+                return BackendImage::TYPE_JPEG;
+            case 'png':
+                return BackendImage::TYPE_PNG;
+            case 'gif':
+                return BackendImage::TYPE_GIF;
+            default:
+                throw new \Exception('Image type not supported: ' . $extension . '. Use jpg, jpeg, png or gif');
+        }
+    }
+
+    /**
+     * @param Page $param
+     *
+     * @return BackendPage
+     */
+    public function visitPage(Page $param)
     {
         $mediaBox = [0, 0, 210, 297];
 
-        $page = new Page($mediaBox);
+        $page = new BackendPage($mediaBox);
 
         $pageResources = new PageResources($this->documentResources);
         $contentVisitor = new ToBackendContentVisitor($pageResources);

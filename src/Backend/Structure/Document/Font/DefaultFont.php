@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Font;
+namespace PdfGenerator\Backend\Structure\Document\Font;
 
+use PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\DocumentVisitor;
-use PdfGenerator\Backend\Structure\Font;
 
 class DefaultFont extends Font
 {

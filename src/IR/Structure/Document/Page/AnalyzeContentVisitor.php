@@ -12,23 +12,22 @@
 namespace PdfGenerator\IR\Structure\Document\Page;
 
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
-use PdfGenerator\IR\Structure\PageContent\Common\Size;
-use PdfGenerator\IR\Structure\PageContent\ContentVisitor;
-use PdfGenerator\IR\Structure\PageContent\ImagePlacement;
-use PdfGenerator\IR\Structure\PageContent\Rectangle;
-use PdfGenerator\IR\Structure\PageContent\Text;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
+use PdfGenerator\IR\Structure\Document\Page\Content\ImagePlacement;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text;
 
 class AnalyzeContentVisitor extends ContentVisitor
 {
     /**
      * @var Size[]
      */
-    private $maxSizePerImage;
+    private $maxSizePerImage = [];
 
     /**
      * @var string[]
      */
-    private $textPerFont;
+    private $textPerFont = [];
 
     /**
      * @param ImagePlacement $placement

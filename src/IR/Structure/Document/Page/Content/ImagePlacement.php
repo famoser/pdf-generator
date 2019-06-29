@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent;
+namespace PdfGenerator\IR\Structure\Document\Page\Content;
 
-use PdfGenerator\IR\Structure\Image;
-use PdfGenerator\IR\Structure\PageContent\Base\BaseContent;
-use PdfGenerator\IR\Structure\PageContent\Common\Position;
-use PdfGenerator\IR\Structure\PageContent\Common\Size;
+use PdfGenerator\IR\Structure\Document\Image;
+use PdfGenerator\IR\Structure\Document\Page\Content\Base\BaseContent;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
+use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
 class ImagePlacement extends BaseContent
 {
@@ -74,9 +75,9 @@ class ImagePlacement extends BaseContent
     /**
      * @param ContentVisitor $visitor
      *
-     * @return \PdfGenerator\Backend\Structure\Base\BaseContent
+     * @return \PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent|null
      */
-    public function accept(ContentVisitor $visitor): \PdfGenerator\Backend\Structure\Base\BaseContent
+    public function accept(ContentVisitor $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent
     {
         return $visitor->visitImagePlacement($this);
     }

@@ -13,16 +13,20 @@ namespace PdfGenerator\Backend\Structure;
 
 use PdfGenerator\Backend\Catalog\Font\Structure\CIDFont;
 use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
-use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontStream;
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Catalog\Font\Type1;
-use PdfGenerator\Backend\Catalog\Image;
+use PdfGenerator\Backend\Catalog\Image as CatalogImage;
+use PdfGenerator\Backend\Structure\Document\Font\CMapCreator;
+use PdfGenerator\Backend\Structure\Document\Font\DefaultFont;
+use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont;
+use PdfGenerator\Backend\Structure\Document\Image;
+use PdfGenerator\Backend\Structure\Optimization\Configuration;
+use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
+use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
 use PdfGenerator\Font\Backend\FileWriter;
-use PdfGenerator\IR\Structure\Optimization\Configuration;
-use PdfGenerator\IR\Structure\Optimization\FontOptimizer;
-use PdfGenerator\IR\Structure\Optimization\ImageOptimizer;
+use PdfGenerator\Font\IR\Structure\Font;
 
 class DocumentVisitor
 {
@@ -42,6 +46,11 @@ class DocumentVisitor
     private $fontOptimizer;
 
     /**
+     * @var CMapCreator
+     */
+    private $cMapCreator;
+
+    /**
      * @var ImageOptimizer
      */
     private $imageOptimizer;
@@ -56,6 +65,7 @@ class DocumentVisitor
         $this->configuration = $configuration;
 
         $this->fontOptimizer = new FontOptimizer();
+        $this->cMapCreator = new CMapCreator();
         $this->imageOptimizer = new ImageOptimizer();
     }
 
@@ -68,23 +78,26 @@ class DocumentVisitor
     {
         if (!\array_key_exists($prefix, $this->resourceCounters)) {
             $this->resourceCounters[$prefix] = 0;
+
+            return $prefix;
         }
 
-        return $prefix . $this->resourceCounters[$prefix]++;
+        return $prefix . (string)($this->resourceCounters[$prefix]++);
     }
 
     /**
-     * @param Document\Image $param
+     * @param Image $param
      *
-     * @return Image
+     * @return CatalogImage
      */
-    public function visitImage(Document\Image $param)
+    public function visitImage(Image $param)
     {
         $identifier = $this->generateIdentifier('I');
-        $type = $param->getType() === Document\Image::TYPE_JPG || $param->getType() === Document\Image::TYPE_JPEG ? Image::IMAGE_TYPE_JPEG : null;
+        $type = $param->getType() === Image::TYPE_JPG || $param->getType() === Image::TYPE_JPEG ? CatalogImage::IMAGE_TYPE_JPEG : null;
 
         $content = $param->getImageContent();
-        list($width, $height) = getimagesizefromstring($param->getImageContent());
+        $width = $param->getWidth();
+        $height = $param->getHeight();
 
         if ($this->configuration->getAutoResizeImages()) {
             list($targetWidth, $targetHeight) = $this->imageOptimizer->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight(), $this->configuration->getAutoResizeImagesDpi());
@@ -93,24 +106,24 @@ class DocumentVisitor
                 $content = $this->imageOptimizer->transformToJpgAndResize($content, $targetWidth, $targetHeight);
                 $width = $targetWidth;
                 $height = $targetHeight;
-                $type = Image::IMAGE_TYPE_JPEG;
+                $type = CatalogImage::IMAGE_TYPE_JPEG;
             }
         }
 
         if ($type === null) {
             $content = $this->imageOptimizer->transformToJpgAndResize($content, $width, $height);
-            $type = Image::IMAGE_TYPE_JPEG;
+            $type = CatalogImage::IMAGE_TYPE_JPEG;
         }
 
-        return new Image($identifier, $type, $content, $width, $height);
+        return new CatalogImage($identifier, $type, $content, $width, $height);
     }
 
     /**
-     * @param Font\DefaultFont $param
+     * @param DefaultFont $param
      *
      * @return Type1
      */
-    public function visitDefaultFont(Font\DefaultFont $param)
+    public function visitDefaultFont(DefaultFont $param)
     {
         $identifier = $this->generateIdentifier('F');
 
@@ -118,15 +131,15 @@ class DocumentVisitor
     }
 
     /**
-     * @param Font\EmbeddedFont $param
+     * @param EmbeddedFont $param
      *
      * @throws \Exception
      *
      * @return Type0
      */
-    public function visitEmbeddedFont(Font\EmbeddedFont $param)
+    public function visitEmbeddedFont(EmbeddedFont $param)
     {
-        $orderedCodepoints = $this->fontOptimizer->getOrderedCodepoints($param->getFont());
+        $orderedCodepoints = $this->fontOptimizer->getOrderedCodepoints($param->getUsedWithText());
 
         $font = $param->getFont();
 
@@ -141,7 +154,7 @@ class DocumentVisitor
         }
 
         // TODO: need to parse name table to fix this
-        $fontName = 'SomeFont';
+        $fontName = 'SomeFont'; //TODO retrieve from name table
 
         $fontStream = new FontStream();
         $fontStream->setFontData($content);
@@ -149,12 +162,10 @@ class DocumentVisitor
 
         $cIDSystemInfo = new CIDSystemInfo();
         $cIDSystemInfo->setRegistry('famoser');
-        $cIDSystemInfo->setOrdering(1);
+        $cIDSystemInfo->setOrdering('custom-1');
         $cIDSystemInfo->setSupplement(1);
 
-        $fontDescriptor = new FontDescriptor();
-        // TODO: missing properties
-        $fontDescriptor->setFontFile3($fontStream);
+        $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream);
 
         $cidFont = new CIDFont();
         $cidFont->setSubType(CIDFont::SUBTYPE_CID_FONT_TYPE_2);
@@ -169,153 +180,34 @@ class DocumentVisitor
         $type0Font->setDescendantFont($cidFont);
         $type0Font->setBaseFont($fontName);
 
-        // TODO: CMaps not implemented yet
-        $cMap = $this->createCMap($cIDSystemInfo, 'someName', $orderedCodepoints);
+        $cMap = $this->cMapCreator->createCMap($cIDSystemInfo, 'someName', $orderedCodepoints);
         $type0Font->setEncoding($cMap);
-        $type0Font->setToUnicode($cMap);
+        $type0Font->setToUnicode($cMap); // TODO: unicode CMap not implemented yet
 
         return $type0Font;
     }
 
     /**
-     * @param CIDSystemInfo $cIDSystemInfo
-     * @param string $cMapName
-     * @param int[] $orderedCodePoints
+     * @param string $fontName
+     * @param Font $font
+     * @param FontStream $fontStream
      *
-     * @return CMap
+     * @return FontDescriptor
      */
-    private function createCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $orderedCodePoints)
+    private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream): FontDescriptor
     {
-        $cmap = new CMap();
-        $cmap->setCIDSystemInfo($cIDSystemInfo);
-        $cmap->setCMapName($cMapName);
+        $fontDescriptor = new FontDescriptor();
+        $fontDescriptor->setFontName($fontName);
+        $HHeaTable = $font->getTableDirectory()->getHHeaTable();
+        $fontDescriptor->setFlags(0); // TODO calculate from
+        $fontDescriptor->setFontBBox([0, 0]); // TODO calculate from characters
+        $fontDescriptor->setItalicAngle(0); // TODO  get from postscript table
+        $fontDescriptor->setAscent($HHeaTable->getAscent());
+        $fontDescriptor->setDecent($HHeaTable->getDecent());
+        $fontDescriptor->setCapHeight(0); // TODO get from OS/2 table
+        $fontDescriptor->setStemV(0); // TODO find out where to get this from
+        $fontDescriptor->setFontFile3($fontStream);
 
-        $header = $this->getCMapHeader($cIDSystemInfo, $cMapName);
-        $codeSpaces = $this->getCMapCodeSpaces($orderedCodePoints);
-
-        $cMapData = $header . "\n" . $codeSpaces;
-        $cmap->setCMapData($cMapData);
-
-        return $cmap;
-    }
-
-    /**
-     * @param CIDSystemInfo $cIDSystemInfo
-     * @param string $cMapName
-     *
-     * @return string
-     */
-    private function getCMapHeader(CIDSystemInfo $cIDSystemInfo, string $cMapName): string
-    {
-        $commentLines = [];
-        $commentLines[] = '%!PS-Adobe-3.0 Resource-CMap';
-        $commentLines[] = '%%DocumentNeededResources: procset CIDInit';
-        $commentLines[] = '%%IncludeResource: procset CIDInit';
-        $commentLines[] = '%%BeginResource: CMap ' . $cMapName;
-        $commentLines[] = '%%Title: (' . $cMapName . ' ' . $cIDSystemInfo->getRegistry() . ' ' . $cIDSystemInfo->getOrdering() . ' ' . $cIDSystemInfo->getSupplement() . ')';
-        $commentLines[] = '%%Version: 1';
-        $comments = implode("\n", $commentLines);
-
-        $cMapHeaderLines = [];
-        $cMapHeaderLines[] = '/CIDInit /ProcSet findresource begin'; // initializes cmap routines
-        $cMapHeaderLines[] = '9 dict begin'; // ensure dictionary with 4 entries can be created. +5 due to bug in old PS interpreters
-        $cMapHeaderLines[] = 'begincmap';
-        $cMapHeaderLines[] = '/CIDSystemInfo 3 dict dup begin';
-        $cMapHeaderLines[] = ' /Registry (' . $cIDSystemInfo->getRegistry() . ') def';
-        $cMapHeaderLines[] = ' /Ordering (' . $cIDSystemInfo->getOrdering() . ') def';
-        $cMapHeaderLines[] = ' /Supplement (' . $cIDSystemInfo->getSupplement() . ') def';
-        $cMapHeaderLines[] = 'end def';
-        $cMapHeaderLines[] = '/CMapName /' . $cMapName . ' def';
-        $cMapHeaderLines[] = '/CMapType 0 def'; // implemented type of CMap (still current)
-        /*
-         * omit XUID & UIDOffset because no longer required
-         * https://blogs.adobe.com/CCJKType/2016/06/no-more-xuid-arrays.html
-         */
-        $cMapHeaderLines[] = '/VMode 0 def'; // write horizontally
-        $cMapHeader = implode("\n", $cMapHeaderLines);
-
-        return $comments . "\n" . $cMapHeader;
-    }
-
-    /**
-     * @param int[] $codePoints
-     *
-     * @return string
-     */
-    private function getCMapCodeSpaces(array $codePoints)
-    {
-        $hexCodePointsByLength = $this->getAsHexByLength($codePoints);
-
-        $byteRanges = [];
-        foreach ($hexCodePointsByLength as $length => $hexPoints) {
-            sort($hexPoints);
-
-            $byteRanges = array_merge($byteRanges, $this->getByteRanges($hexPoints));
-        }
-
-        $lines = [];
-        $lines[] = \count($byteRanges) . ' begincodespacerange';
-        $lines = array_merge($lines, $byteRanges);
-        $lines[] = 'endcodespacerange';
-
-        return implode("\n", $lines);
-    }
-
-    /**
-     * @param array $codePoints
-     *
-     * @return array
-     */
-    private function getAsHexByLength(array $codePoints): array
-    {
-        $hexPointsByLength = [];
-        foreach ($codePoints as $codePoint) {
-            $byte = dechex($codePoint);
-            $length = \strlen($byte);
-            if ($length % 2 !== 0) {
-                $byte = '0' . $byte;
-            }
-
-            if (!isset($hexPointsByLength[$length])) {
-                $hexPointsByLength[$length] = [];
-            }
-
-            $hexPointsByLength[$length][] = $byte;
-        }
-
-        sort($hexPointsByLength);
-
-        return $hexPointsByLength;
-    }
-
-    /**
-     * @param string[] $hexPoints
-     *
-     * @return string[]
-     */
-    private function getByteRanges(array $hexPoints): array
-    {
-        $byteRanges = [];
-
-        $lastValue = null;
-        $firstHexPoint = null;
-        $lastHexPoint = null;
-        foreach ($hexPoints as $hexPoint) {
-            $currentValue = hexdec($hexPoint);
-
-            if ($currentValue - 1 !== $lastValue) {
-                if ($firstHexPoint !== null) {
-                    $byteRanges[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
-                }
-                $firstHexPoint = $hexPoint;
-            }
-
-            $lastHexPoint = $hexPoint;
-            $lastValue = $currentValue;
-        }
-
-        $byteRanges[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
-
-        return $byteRanges;
+        return $fontDescriptor;
     }
 }

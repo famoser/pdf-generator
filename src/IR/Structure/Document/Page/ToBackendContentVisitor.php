@@ -9,14 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent;
+namespace PdfGenerator\IR\Structure\Document\Page;
 
-use PdfGenerator\Backend\Catalog\Image;
-use PdfGenerator\Backend\Structure\ImageContent;
-use PdfGenerator\Backend\Structure\TextContent;
-use PdfGenerator\IR\Structure\PageContent\Common\Position;
-use PdfGenerator\IR\Structure\PageContent\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Transformation\PageResources;
+use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
+use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
+use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
+use PdfGenerator\IR\Structure\Document\Page\Content\ImagePlacement;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text;
 
 class ToBackendContentVisitor extends ContentVisitor
 {
@@ -44,7 +46,7 @@ class ToBackendContentVisitor extends ContentVisitor
     {
         $image = $this->pageResources->getImage($placement->getImage());
 
-        $this->applyImagePlacementPositionAndSize($image, $placement);
+        $this->applyImagePlacementPositionAndSize($placement);
         $pageLevel = $this->pageResources->getDrawingState();
 
         return new ImageContent($image, $pageLevel);
@@ -53,9 +55,9 @@ class ToBackendContentVisitor extends ContentVisitor
     /**
      * @param Rectangle $rectangle
      *
-     * @return \PdfGenerator\Backend\Structure\Rectangle
+     * @return RectangleContent
      */
-    public function visitRectangle(Rectangle $rectangle): \PdfGenerator\Backend\Structure\Rectangle
+    public function visitRectangle(Rectangle $rectangle): RectangleContent
     {
         $width = $rectangle->getSize()->getWidth();
         $height = $rectangle->getSize()->getHeight();
@@ -65,7 +67,7 @@ class ToBackendContentVisitor extends ContentVisitor
         $this->applyRectangleStyle($rectangle->getStyle());
         $pageLevel = $this->pageResources->getDrawingState();
 
-        return new \PdfGenerator\Backend\Structure\Rectangle($width, $height, $paintingMode, $pageLevel);
+        return new RectangleContent($width, $height, $paintingMode, $pageLevel);
     }
 
     /**
@@ -96,7 +98,7 @@ class ToBackendContentVisitor extends ContentVisitor
         $reserved = ['\\', '(', ')'];
 
         foreach ($reserved as $entry) {
-            $text = str_replace($reserved, '\\' . $reserved, $text);
+            $text = str_replace($entry, '\\' . $entry, $text);
         }
 
         return $text;
@@ -115,13 +117,12 @@ class ToBackendContentVisitor extends ContentVisitor
     }
 
     /**
-     * @param Image $image
      * @param ImagePlacement $placement
      */
-    private function applyImagePlacementPositionAndSize(Image $image, ImagePlacement $placement)
+    private function applyImagePlacementPositionAndSize(ImagePlacement $placement)
     {
-        $scaleX = $placement->getSize()->getWidth() / $image->getWidth();
-        $scaleY = $placement->getSize()->getHeight() / $image->getHeight();
+        $scaleX = $placement->getSize()->getWidth();
+        $scaleY = $placement->getSize()->getHeight();
 
         $this->applyPosition($placement->getPosition(), $scaleX, $scaleY);
     }
@@ -158,15 +159,15 @@ class ToBackendContentVisitor extends ContentVisitor
     {
         if ($rectangle->getStyle()->getFillColor() !== null) {
             if ($rectangle->getStyle()->getBorderColor() !== null) {
-                return \PdfGenerator\Backend\Structure\Rectangle::PAINTING_MODE_STROKE_FILL;
+                return RectangleContent::PAINTING_MODE_STROKE_FILL;
             }
 
-            return \PdfGenerator\Backend\Structure\Rectangle::PAINTING_MODE_FILL;
+            return RectangleContent::PAINTING_MODE_FILL;
         } elseif ($rectangle->getStyle()->getBorderColor() !== null) {
-            return \PdfGenerator\Backend\Structure\Rectangle::PAINTING_MODE_STROKE;
+            return RectangleContent::PAINTING_MODE_STROKE;
         }
 
-        return \PdfGenerator\Backend\Structure\Rectangle::PAINTING_MODE_NONE;
+        return RectangleContent::PAINTING_MODE_NONE;
     }
 
     /**

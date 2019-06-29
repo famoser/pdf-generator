@@ -11,7 +11,13 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
+use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\Printer;
+use PdfGenerator\IR\Structure\Document;
+use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
+use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
 class PrinterTest extends TestCase
@@ -23,7 +29,7 @@ class PrinterTest extends TestCase
     {
         // arrange
         $text = 'hi mom';
-        $printer = new Printer();
+        $printer = new Printer(new Document());
 
         // act
         $printer->printText($text);
@@ -40,9 +46,8 @@ class PrinterTest extends TestCase
     {
         // arrange
         $text = 'hi mom';
-        $printer = new Printer();
-        $printer->setDefaultFont();
-        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
+        $printer = new Printer(new Document());
+        $printer->setCursor(new Cursor(20, 20, 1));
 
         // act
         $printer->printText($text . '1');
@@ -62,10 +67,8 @@ class PrinterTest extends TestCase
         // arrange
         $xPosition = 22;
         $yPosition = 20;
-        $printer = new Printer();
-        $printer->setDefaultFont();
-        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition($xPosition, $yPosition);
-
+        $printer = new Printer(new Document());
+        $printer->setCursor(new Cursor($xPosition, $yPosition, 1));
         // act
         $printer->printText('text');
         $result = $printer->save();
@@ -73,7 +76,6 @@ class PrinterTest extends TestCase
         // assert
         $this->assertStringContainsString((string)$xPosition, $result);
         $this->assertStringContainsString((string)$yPosition, $result);
-        file_put_contents('pdf.pdf', $result);
     }
 
     /**
@@ -86,16 +88,16 @@ class PrinterTest extends TestCase
         $yPosition = 20;
         $width = 20;
         $height = 30;
-        $printer = new Printer();
-        $printer->setDefaultFont();
-        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition($xPosition, $yPosition);
-        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setLineWidth(0.5);
-        $printer->getStateFactory()->getColorStateRepository()->setFillColor('#aefaef');
-        $printer->getStateFactory()->getColorStateRepository()->setBorderColor('#abccba');
+        $printer = new Printer(new Document());
+        $printer->setCursor(new Cursor($xPosition, $yPosition, 1));
+
+        $rectangleStyle = new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
+        $printer->setRectangleStyle($rectangleStyle);
 
         // act
-        $printer->printRectangle($width, $height, true);
-        $printer->printRectangle($width + 20, $height + 40, false);
+        $printer->printRectangle($width, $height);
+        $printer->setCursor(new Cursor(10, $yPosition, 1));
+        $printer->printRectangle($width, $height);
         $result = $printer->save();
 
         // assert
@@ -103,48 +105,93 @@ class PrinterTest extends TestCase
         $this->assertStringContainsString((string)$yPosition, $result);
         $this->assertStringContainsString((string)$width, $result);
         $this->assertStringContainsString((string)$height, $result);
-        file_put_contents('pdf.pdf', $result);
     }
 
     /**
      * @throws \Exception
      */
-    public function testPrintTest_withUtf8Text_inResultFile()
+    public function testPrintText_differentDefaultFont_textAppears()
     {
         // arrange
-        $text = 'äüö';
-        $printer = new Printer();
-        $printer->setDefaultFont();
-        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+
+        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_DEFAULT);
+        $textStyle = new TextStyle($font, 30);
+        $printer->setTextStyle($textStyle);
 
         // act
-        $printer->printText($text);
-        $result = $printer->save();
-
-        // assert
-        $this->assertStringContainsString($text, $result);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function testPrintImage_inResultFile()
-    {
-        // arrange
-        $printer = new Printer();
-        $printer->setDefaultFont();
-        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(20, 20);
-        $printer->getStateFactory()->getColorStateRepository()->setFillColor('#aefaef');
-        $printer->getStateFactory()->getColorStateRepository()->setBorderColor('#abccba');
-
-        // act
-        $printer->printRectangle(20, 20, true);
-        $printer->getStateFactory()->getGeneralGraphicStateRepository()->setPosition(40, 20);
         $printer->printText('hi mom');
         $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertTrue(true);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintRectangle_layersAsExpected()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $rectangleStyle = new RectangleStyle(1, Color::createFromHex('#aefaef'), Color::createFromHex('#e3e3e3'));
+        $printer->setRectangleStyle($rectangleStyle);
+
+        // act
+        $printer->setCursor(new Cursor(10, 10, 1));
+        $printer->printRectangle(20, 20);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $printer->printRectangle(20, 20);
+        $result = $printer->save();
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintImage_imageAppears()
+    {
+        // arrange
+        $imageSrc = ResourcesProvider::getImage1Path();
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $rectangleStyle = new RectangleStyle(1, Color::createFromHex('#aefaef'), Color::createFromHex('#e3e3e3'));
+        $printer->setRectangleStyle($rectangleStyle);
+
+        // act
+        $printer->printRectangle(20, 20);
+        $printer->printImage($imageSrc, 20, 20);
+        $result = $printer->save();
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintText_withEmbeddedFont_textAppears()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $textStyle = new TextStyle($font, 12);
+
+        // act
+        $printer->setTextStyle($textStyle);
+        $printer->printText('hallo');
+        $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertNotEmpty($result);
     }
 }

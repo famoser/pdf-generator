@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Transformation;
+namespace PdfGenerator\Backend\Structure\Document;
 
-use PdfGenerator\Backend\Catalog\Font;
-use PdfGenerator\Backend\Catalog\Image;
+use PdfGenerator\Backend\Catalog\Font as CatalogFont;
+use PdfGenerator\Backend\Catalog\Image as CatalogImage;
 use PdfGenerator\Backend\Structure\Document\Base\BaseDocumentStructure;
 use PdfGenerator\Backend\Structure\DocumentVisitor;
 
@@ -44,21 +44,21 @@ class DocumentResources
     }
 
     /**
-     * @param \PdfGenerator\Backend\Structure\Font $structure
+     * @param Font $structure
      *
-     * @return Font
+     * @return CatalogFont
      */
-    public function getFont(\PdfGenerator\Backend\Structure\Font $structure)
+    public function getFont(Font $structure)
     {
         return $this->getOrCreate($structure, $this->fontCache);
     }
 
     /**
-     * @param \PdfGenerator\Backend\Structure\Document\Image $structure
+     * @param Image $structure
      *
-     * @return Image
+     * @return CatalogImage
      */
-    public function getImage(\PdfGenerator\Backend\Structure\Document\Image $structure)
+    public function getImage(Image $structure)
     {
         return $this->getOrCreate($structure, $this->imageCache);
     }
@@ -69,7 +69,7 @@ class DocumentResources
      *
      * @return BaseDocumentStructure|mixed
      */
-    private function getOrCreate($structure, array $cache)
+    private function getOrCreate($structure, array &$cache)
     {
         $identifier = spl_object_id($structure);
 

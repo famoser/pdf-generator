@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\PageContent\Common;
+namespace PdfGenerator\IR\Structure\Document\Page\Content\Common;
 
 class Color
 {
@@ -55,7 +55,7 @@ class Color
             throw new \Exception('please pass the value in the form #000000');
         }
 
-        $rgbArray = sscanf($value, '#%02x%02x%02x');
+        $rgbArray = sscanf($color, '#%02x%02x%02x');
 
         return new self(...$rgbArray);
     }

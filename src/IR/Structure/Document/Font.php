@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure;
+namespace PdfGenerator\IR\Structure\Document;
 
-use PdfGenerator\IR\Structure\Base\BaseDocumentStructure;
+use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
 
 abstract class Font extends BaseDocumentStructure
 {

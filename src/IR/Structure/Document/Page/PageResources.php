@@ -9,15 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Transformation;
+namespace PdfGenerator\IR\Structure\Document\Page;
 
-use PdfGenerator\Backend\Catalog\Font;
-use PdfGenerator\Backend\Catalog\Image;
-use PdfGenerator\Backend\Structure\Operators\Level\DrawingState;
-use PdfGenerator\Backend\Structure\Operators\Level\WritingState;
-use PdfGenerator\IR\Configuration\State\ColorStateRepository;
-use PdfGenerator\IR\Configuration\State\GeneralGraphicStateRepository;
-use PdfGenerator\IR\Configuration\State\TextStateRepository;
+use PdfGenerator\Backend\Structure\Document\Font as BackendFont;
+use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
+use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
+use PdfGenerator\IR\Structure\Document\DocumentResources;
+use PdfGenerator\IR\Structure\Document\Font;
+use PdfGenerator\IR\Structure\Document\Image;
+use PdfGenerator\IR\Structure\Document\Page\State\ColorStateRepository;
+use PdfGenerator\IR\Structure\Document\Page\State\GeneralGraphicStateRepository;
+use PdfGenerator\IR\Structure\Document\Page\State\TextStateRepository;
 
 class PageResources
 {
@@ -42,14 +45,14 @@ class PageResources
     private $documentResources;
 
     /**
-     * @var Font[]
+     * @var BackendFont[]
      */
-    private $fonts;
+    private $fonts = [];
 
     /**
-     * @var Image[]
+     * @var BackendImage[]
      */
-    private $images;
+    private $images = [];
 
     /**
      * PageResources constructor.
@@ -90,27 +93,27 @@ class PageResources
     }
 
     /**
-     * @param \PdfGenerator\IR\Structure\Font $structure
+     * @param Font $structure
      *
-     * @return Font
+     * @return BackendFont
      */
-    public function getFont(\PdfGenerator\IR\Structure\Font $structure)
+    public function getFont(Font $structure)
     {
         $font = $this->documentResources->getFont($structure);
-        $this->fonts[$font->getIdentifier()] = $font;
+        $this->fonts[$structure->getIdentifier()] = $font;
 
         return $font;
     }
 
     /**
-     * @param \PdfGenerator\IR\Structure\Image $structure
+     * @param Image $structure
      *
-     * @return Image
+     * @return BackendImage
      */
-    public function getImage(\PdfGenerator\IR\Structure\Image $structure)
+    public function getImage(Image $structure)
     {
         $image = $this->documentResources->getImage($structure);
-        $this->images[$image->getIdentifier()] = $image;
+        $this->images[$structure->getIdentifier()] = $image;
 
         return $image;
     }

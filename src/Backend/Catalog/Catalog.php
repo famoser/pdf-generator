@@ -19,16 +19,16 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 class Catalog extends BaseStructure
 {
     /**
-     * @var Pages[]
+     * @var Pages
      */
     private $pages;
 
     /**
      * Catalog constructor.
      *
-     * @param array $pages
+     * @param Pages $pages
      */
-    public function __construct(array $pages)
+    public function __construct(Pages $pages)
     {
         $this->pages = $pages;
     }
@@ -44,9 +44,9 @@ class Catalog extends BaseStructure
     }
 
     /**
-     * @return Pages[]
+     * @return Pages
      */
-    public function getPages(): array
+    public function getPages(): Pages
     {
         return $this->pages;
     }

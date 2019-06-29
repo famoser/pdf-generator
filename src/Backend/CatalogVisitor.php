@@ -28,7 +28,7 @@ class CatalogVisitor
     /**
      * @var BaseObject[]
      */
-    private $objectNodeLookup;
+    private $objectNodeLookup = [];
 
     /**
      * @var File
@@ -55,8 +55,8 @@ class CatalogVisitor
         $dictionary = $this->file->addDictionaryObject();
         $dictionary->addTextEntry('Type', 'Catalog');
 
-        $pagesDictionary = $this->createReferenceDictionary($structure->getPages());
-        $dictionary->addDictionaryEntry('Pages', $pagesDictionary);
+        $reference = $structure->getPages()->accept($this);
+        $dictionary->addReferenceEntry('Pages', $reference);
 
         return $dictionary;
     }
@@ -140,7 +140,7 @@ class CatalogVisitor
     /**
      * @var ReferenceToken[]
      */
-    private $referenceLookup;
+    private $referenceLookup = [];
 
     /**
      * @param IdentifiableStructureTrait[] $structures
@@ -247,7 +247,7 @@ class CatalogVisitor
         $dictionary->addTextEntry('Type', '/FontDescriptor');
         $dictionary->addTextEntry('FontName', $structure->getFontName());
         $dictionary->addTextEntry('Flags', $structure->getFlags());
-        $dictionary->addTextEntry('FontBBox', $structure->getFontBBox());
+        $dictionary->addNumberArrayEntry('FontBBox', $structure->getFontBBox());
         $dictionary->addTextEntry('ItalicAngle', $structure->getItalicAngle());
         $dictionary->addTextEntry('Ascent', $structure->getAscent());
         $dictionary->addTextEntry('Decent', $structure->getDecent());
@@ -319,7 +319,7 @@ class CatalogVisitor
 
         $dictionary = $stream->getMetaData();
         $dictionary->setTextEntry('Type', '/CMap');
-        $dictionary->setTextEntry('CMapName', $structure->getCMapName());
+        $dictionary->setTextEntry('CMapName', '/' . $structure->getCMapName());
 
         $cidDictionary = $structure->getCIDSystemInfo()->accept($this);
         $dictionary->setEntry('CIDSystemInfo', $cidDictionary);
@@ -336,8 +336,8 @@ class CatalogVisitor
     {
         $cidDictionary = new DictionaryToken();
 
-        $cidDictionary->setTextEntry('Registry', $structure->getRegistry());
-        $cidDictionary->setTextEntry('Ordering', $structure->getOrdering());
+        $cidDictionary->setTextEntry('Registry', '(' . $structure->getRegistry() . ')');
+        $cidDictionary->setTextEntry('Ordering', '(' . $structure->getOrdering() . ')');
         $cidDictionary->setNumberEntry('Supplement', $structure->getSupplement());
 
         return $cidDictionary;
