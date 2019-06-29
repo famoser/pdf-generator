@@ -22,6 +22,7 @@ use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\File\Table\LocaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
+use PdfGenerator\Font\Frontend\File\Table\NameTable;
 use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
 use PdfGenerator\Font\Frontend\File\Table\PostTable;
 use PdfGenerator\Font\Frontend\File\Table\RawTable;
@@ -466,6 +467,35 @@ class FileReader
     private function readPostTable(StreamReader $fileReader, int $length)
     {
         $table = new PostTable();
+
+        $table->setVersion($fileReader->readFixed());
+        $table->setItalicAngle($fileReader->readFixed());
+        $table->setUnderlinePosition($fileReader->readFWORD());
+        $table->setUnderlineThickness($fileReader->readFWORD());
+
+        $table->setIsFixedPitch($fileReader->readUInt32());
+        $table->setMinMemType42($fileReader->readUInt32());
+        $table->setMaxMemType42($fileReader->readUInt32());
+        $table->setMinMemType1($fileReader->readUInt32());
+        $table->setMaxMemType1($fileReader->readUInt32());
+
+        $remainingLength = $length - (2 * 4 + 2 * 2 + 5 * 4);
+        $table->setFormat($this->postFormatReader->readFormat($fileReader, $table->getVersion(), $remainingLength));
+
+        return $table;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     * @param int $length
+     *
+     * @throws \Exception
+     *
+     * @return PostTable
+     */
+    private function readNameTable(StreamReader $fileReader, int $length)
+    {
+        $table = new NameTable();
 
         $table->setVersion($fileReader->readFixed());
         $table->setItalicAngle($fileReader->readFixed());

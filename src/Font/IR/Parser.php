@@ -192,8 +192,10 @@ class Parser
 
         $overflow = 20;
         foreach ($cMapTable->getSubtables() as $subtable) {
+            // we prefer unicode over anything else
             if ($subtable->getPlatformID() === 0) {
                 if ($subtable->getPlatformSpecificID() <= 4) {
+                    // we prefer platform 4, then 3, then 2, then 1
                     $cMapSubtable[4 - $subtable->getPlatformSpecificID()] = $subtable;
                     continue;
                 }
