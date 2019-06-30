@@ -156,7 +156,7 @@ class CMapCreator
     private function getAsHexByLength(array $codePoints): array
     {
         $hexPointsByLength = [];
-        $characterIndex = 1;
+        $characterIndex = 2;
         foreach ($codePoints as $codePoint) {
             $byte = dechex($codePoint);
             $length = \strlen($byte);
