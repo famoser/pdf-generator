@@ -565,6 +565,8 @@ class FileWriter
 
             $nameRecord->setOffset($valueOffset);
             $valueOffset += $valueLength;
+
+            $nameTable->addNameRecord($nameRecord);
         }
 
         return $nameTable;

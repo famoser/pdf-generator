@@ -58,9 +58,9 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
+     * @return FontFile
      * @throws \Exception
      *
-     * @return FontFile
      */
     public function read(StreamReader $fileReader)
     {
@@ -82,9 +82,9 @@ class FileReader
      * @param StreamReader $fileReader
      * @param TableDirectoryEntry[] $tableDirectoryEntries
      *
+     * @return FontFile
      * @throws \Exception
      *
-     * @return FontFile
      */
     private function readFontFile(StreamReader $fileReader, array $tableDirectoryEntries): FontFile
     {
@@ -197,9 +197,9 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
+     * @return OffsetTable
      * @throws \Exception
      *
-     * @return OffsetTable
      */
     private function readOffsetTable(StreamReader $fileReader)
     {
@@ -215,9 +215,9 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
+     * @return TableDirectoryEntry
      * @throws \Exception
      *
-     * @return TableDirectoryEntry
      */
     private function readTableDirectoryEntry(StreamReader $fileReader)
     {
@@ -234,9 +234,9 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
+     * @return CMapTable
      * @throws \Exception
      *
-     * @return CMapTable
      */
     private function readCMapTable(StreamReader $fileReader)
     {
@@ -259,9 +259,9 @@ class FileReader
      * @param StreamReader $fileReader
      * @param int $cmapTableOffset
      *
+     * @return Subtable
      * @throws \Exception
      *
-     * @return Subtable
      */
     private function readCMapSubtable(StreamReader $fileReader, int $cmapTableOffset)
     {
@@ -284,9 +284,9 @@ class FileReader
      * @param LocaTable $locaTable
      * @param HeadTable $headTable
      *
+     * @return GlyfTable[]
      * @throws \Exception
      *
-     * @return GlyfTable[]
      */
     private function readGlyfTables(StreamReader $fileReader, LocaTable $locaTable, HeadTable $headTable)
     {
@@ -327,9 +327,9 @@ class FileReader
      * @param HeadTable $headTable
      * @param MaxPTable $maxPTable
      *
+     * @return LocaTable
      * @throws \Exception
      *
-     * @return LocaTable
      */
     private function readLocaTable(StreamReader $fileReader, HeadTable $headTable, MaxPTable $maxPTable)
     {
@@ -351,9 +351,9 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
+     * @return MaxPTable
      * @throws \Exception
      *
-     * @return MaxPTable
      */
     private function readMaxPTable(StreamReader $fileReader)
     {
@@ -381,9 +381,9 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
+     * @return HeadTable
      * @throws \Exception
      *
-     * @return HeadTable
      */
     private function readHeadTable(StreamReader $fileReader)
     {
@@ -428,9 +428,9 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
+     * @return HHeaTable
      * @throws \Exception
      *
-     * @return HHeaTable
      */
     private function readHHeaTable(StreamReader $fileReader)
     {
@@ -462,9 +462,9 @@ class FileReader
      * @param StreamReader $fileReader
      * @param int $length
      *
+     * @return PostTable
      * @throws \Exception
      *
-     * @return PostTable
      */
     private function readPostTable(StreamReader $fileReader, int $length)
     {
@@ -490,9 +490,9 @@ class FileReader
     /**
      * @param StreamReader $fileReader
      *
+     * @return NameTable
      * @throws \Exception
      *
-     * @return NameTable
      */
     private function readNameTable(StreamReader $fileReader)
     {
@@ -521,7 +521,15 @@ class FileReader
 
         foreach ($table->getNameRecords() as $nameRecord) {
             $fileReader->setOffset($stringOffset + $nameRecord->getOffset());
-            $nameRecord->setValue($fileReader->readFor($nameRecord->getLength()));
+
+            /*
+            one could decode the rawValue, but
+             - some encodings unclear from the TTF specification (unicode encoding = UTF-16?)
+             - some encodings in the standard not implemented in php
+            better to just push around the raw value for now
+            */
+            $rawValue = $fileReader->readFor($nameRecord->getLength());
+            $nameRecord->setValue($rawValue);
         }
 
         foreach ($table->getLangTagRecords() as $langTagRecord) {
@@ -535,9 +543,9 @@ class FileReader
     /**
      * @param StreamReader $streamReader
      *
+     * @return NameRecord
      * @throws \Exception
      *
-     * @return NameRecord
      */
     private function readNameRecord(StreamReader $streamReader)
     {
@@ -556,9 +564,9 @@ class FileReader
     /**
      * @param StreamReader $streamReader
      *
+     * @return LangTagRecord
      * @throws \Exception
      *
-     * @return LangTagRecord
      */
     private function readLangTagRecord(StreamReader $streamReader)
     {
@@ -575,9 +583,9 @@ class FileReader
      * @param HHeaTable $hHeaTable
      * @param MaxPTable $maxPTable
      *
+     * @return HMtxTable
      * @throws \Exception
      *
-     * @return HMtxTable
      */
     private function readHMtxTable(StreamReader $fileReader, HHeaTable $hHeaTable, MaxPTable $maxPTable)
     {
