@@ -66,9 +66,9 @@ class FileWriter
     /**
      * @param Font $font
      *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     public function writeFont(Font $font)
     {
@@ -391,9 +391,9 @@ class FileWriter
     /**
      * @param TableDirectory $fontFile
      *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     private function writeTableDirectory(TableDirectory $fontFile)
     {
@@ -534,6 +534,7 @@ class FileWriter
 
     /**
      * @param \PdfGenerator\Font\Frontend\File\Table\NameTable $source
+     *
      * @return NameTable
      */
     private function generateNameTable(\PdfGenerator\Font\Frontend\File\Table\NameTable $source)
@@ -542,7 +543,7 @@ class FileWriter
 
         // use version 0; hence no lang tag records
         $nameTable->setFormat(0);
-        $nameRecordCount = count($source->getNameRecords());
+        $nameRecordCount = \count($source->getNameRecords());
         $nameTable->setCount($nameRecordCount);
 
         $sizeOfNameRecords = $nameRecordCount * 12;
@@ -560,7 +561,7 @@ class FileWriter
             $value = $nameRecordSource->getValue();
             $nameRecord->setValue($value);
 
-            $valueLength = strlen($value);
+            $valueLength = \strlen($value);
             $nameRecord->setLength($valueLength);
 
             $nameRecord->setOffset($valueOffset);

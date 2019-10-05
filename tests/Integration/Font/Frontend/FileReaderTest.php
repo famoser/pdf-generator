@@ -194,7 +194,7 @@ class FileReaderTest extends TestCase
         // either the font file is broken, or the used encoding is indeed very weird
         $firstCharFirstValue = substr($nameTable->getNameRecords()[0]->getValue(), 1, 1);
         $firstCharSecondValue = substr($nameTable->getNameRecords()[1]->getValue(), 1, 1);
-        $this->assertEquals($firstCharFirstValue, "D");
-        $this->assertEquals($firstCharSecondValue, "O");
+        $this->assertEquals($firstCharFirstValue, 'D');
+        $this->assertEquals($firstCharSecondValue, 'O');
     }
 }

@@ -311,6 +311,7 @@ class TableVisitor
 
     /**
      * @param Table\NameTable $nameTable
+     *
      * @return string
      */
     public function visitNameTable(Table\NameTable $nameTable)
