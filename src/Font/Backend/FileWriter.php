@@ -22,6 +22,8 @@ use PdfGenerator\Font\Backend\File\Table\HMtx\LongHorMetric;
 use PdfGenerator\Font\Backend\File\Table\HMtxTable;
 use PdfGenerator\Font\Backend\File\Table\LocaTable;
 use PdfGenerator\Font\Backend\File\Table\MaxPTable;
+use PdfGenerator\Font\Backend\File\Table\Name\NameRecord;
+use PdfGenerator\Font\Backend\File\Table\NameTable;
 use PdfGenerator\Font\Backend\File\Table\OffsetTable;
 use PdfGenerator\Font\Backend\File\Table\Post\Format\Format2;
 use PdfGenerator\Font\Backend\File\Table\PostTable;
@@ -403,6 +405,7 @@ class FileWriter
             'hmtx' => $fontFile->getHMtxTable(),
             'loca' => $fontFile->getLocaTable(),
             'maxp' => $fontFile->getMaxPTable(),
+            'name' => $fontFile->getNameTable(),
             'post' => $fontFile->getPostTable(),
             'glyf' => $fontFile->getGlyphTables(),
         ];
@@ -530,6 +533,47 @@ class FileWriter
     }
 
     /**
+     * @param \PdfGenerator\Font\Frontend\File\Table\NameTable $source
+     *
+     * @return NameTable
+     */
+    private function generateNameTable(\PdfGenerator\Font\Frontend\File\Table\NameTable $source)
+    {
+        $nameTable = new NameTable();
+
+        // use version 0; hence no lang tag records
+        $nameTable->setFormat(0);
+        $nameRecordCount = \count($source->getNameRecords());
+        $nameTable->setCount($nameRecordCount);
+
+        $sizeOfNameRecords = $nameRecordCount * 12;
+        $stringOffset = 6 + $sizeOfNameRecords;
+        $nameTable->setStringOffset($stringOffset);
+
+        $valueOffset = 0;
+        foreach ($source->getNameRecords() as $nameRecordSource) {
+            $nameRecord = new NameRecord();
+            $nameRecord->setPlatformID($nameRecordSource->getPlatformID());
+            $nameRecord->setEncodingID($nameRecordSource->getEncodingID());
+            $nameRecord->setLanguageID($nameRecordSource->getLanguageID());
+            $nameRecord->setNameID($nameRecordSource->getNameID());
+
+            $value = $nameRecordSource->getValue();
+            $nameRecord->setValue($value);
+
+            $valueLength = \strlen($value);
+            $nameRecord->setLength($valueLength);
+
+            $nameRecord->setOffset($valueOffset);
+            $valueOffset += $valueLength;
+
+            $nameTable->addNameRecord($nameRecord);
+        }
+
+        return $nameTable;
+    }
+
+    /**
      * @param Character[] $characters
      *
      * @return CMapTable
@@ -633,7 +677,6 @@ class FileWriter
             $tableDirectory->getGDEFTable(),
             $tableDirectory->getGPOSTable(),
             $tableDirectory->getGSUBTable(),
-            $tableDirectory->getNameTable(),
             $tableDirectory->getOS2Table(),
             $tableDirectory->getPrepTable(),
         ], $tableDirectory->getRawTables());
@@ -663,6 +706,7 @@ class FileWriter
         $tableDirectory->setHeadTable($this->generateHeadTable($font->getTableDirectory()->getHeadTable(), $characters));
         $tableDirectory->setPostTable($this->generatePostTable($font->getTableDirectory()->getPostTable(), $characters));
         $tableDirectory->setMaxPTable($this->generateMaxPTable($font->getTableDirectory()->getMaxPTable(), $characters));
+        $tableDirectory->setNameTable($this->generateNameTable($font->getTableDirectory()->getNameTable()));
 
         $tableDirectory->setGlyphTables($this->generateGlyfTables($characters));
         $tableDirectory->setLocaTable($this->generateLocaTable($tableDirectory->getGlyphTables()));

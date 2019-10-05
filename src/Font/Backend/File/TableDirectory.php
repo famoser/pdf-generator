@@ -18,6 +18,7 @@ use PdfGenerator\Font\Backend\File\Table\HHeaTable;
 use PdfGenerator\Font\Backend\File\Table\HMtxTable;
 use PdfGenerator\Font\Backend\File\Table\LocaTable;
 use PdfGenerator\Font\Backend\File\Table\MaxPTable;
+use PdfGenerator\Font\Backend\File\Table\NameTable;
 use PdfGenerator\Font\Backend\File\Table\PostTable;
 use PdfGenerator\Font\Backend\File\Table\RawTable;
 
@@ -57,6 +58,11 @@ class TableDirectory
      * @var MaxPTable
      */
     private $maxPTable;
+
+    /**
+     * @var NameTable
+     */
+    private $nameTable;
 
     /**
      * @var PostTable
@@ -210,5 +216,21 @@ class TableDirectory
     public function setRawTables(array $rawTables)
     {
         $this->rawTables = $rawTables;
+    }
+
+    /**
+     * @return NameTable
+     */
+    public function getNameTable(): NameTable
+    {
+        return $this->nameTable;
+    }
+
+    /**
+     * @param NameTable $nameTable
+     */
+    public function setNameTable(NameTable $nameTable): void
+    {
+        $this->nameTable = $nameTable;
     }
 }

@@ -25,6 +25,7 @@ use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Structure\PostScriptInfo;
 use PdfGenerator\Font\IR\Structure\TableDirectory;
+use PdfGenerator\Font\IR\Structure\Tables\FontInformation;
 use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
 use PdfGenerator\Font\IR\Utils\Post\GlyphInfo;
 use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
@@ -103,6 +104,7 @@ class Parser
     {
         $font = new Font();
         $font->setTableDirectory($this->createTableDirectory($fontFile));
+        $font->setFontInformation($this->createFontInformation($fontFile));
 
         $characters = $this->createCharacters($fontFile);
         $mappedCharacters = $this->mapCharacters($characters, $fontFile);
@@ -192,8 +194,10 @@ class Parser
 
         $overflow = 20;
         foreach ($cMapTable->getSubtables() as $subtable) {
+            // we prefer unicode over anything else
             if ($subtable->getPlatformID() === 0) {
                 if ($subtable->getPlatformSpecificID() <= 4) {
+                    // we prefer platform 4, then 3, then 2, then 1
                     $cMapSubtable[4 - $subtable->getPlatformSpecificID()] = $subtable;
                     continue;
                 }
@@ -307,5 +311,88 @@ class Parser
         }
 
         return $postScriptInfo;
+    }
+
+    /**
+     * @param FontInformation $fontFile
+     */
+    private function createFontInformation(FontFile $fontFile)
+    {
+        $fontInformation = new FontInformation();
+
+        foreach ($fontFile->getNameTable()->getNameRecords() as $nameRecord) {
+            $value = $nameRecord->getValue();
+
+            switch ($nameRecord->getNameID()) {
+                case 0:
+                    $fontInformation->setCopyrightNotice($value);
+                    break;
+                case 1:
+                    $fontInformation->setFamily($value);
+                    break;
+                case 2:
+                    $fontInformation->setSubfamily($value);
+                    break;
+                case 3:
+                    $fontInformation->setIdentifier($value);
+                    break;
+                case 4:
+                    $fontInformation->setFullName($value);
+                    break;
+                case 5:
+                    $fontInformation->setVersion($value);
+                    break;
+                case 6:
+                    $fontInformation->setPostScriptName($value);
+                    break;
+                case 7:
+                    $fontInformation->setTrademarkNotice($value);
+                    break;
+                case 8:
+                    $fontInformation->setManufacturer($value);
+                    break;
+                case 9:
+                    $fontInformation->setDesigner($value);
+                    break;
+                case 10:
+                    $fontInformation->setDescription($value);
+                    break;
+                case 11:
+                    $fontInformation->setUrlVendor($value);
+                    break;
+                case 12:
+                    $fontInformation->setUrlDesigner($value);
+                    break;
+                case 13:
+                    $fontInformation->setLicenseDescription($value);
+                    break;
+                case 14:
+                    $fontInformation->setLicenseUrl($value);
+                    break;
+                case 16:
+                    $fontInformation->setTypographicFamily($value);
+                    break;
+                case 17:
+                    $fontInformation->setTypographicSubfamily($value);
+                    break;
+                case 18:
+                    $fontInformation->setCompatibleFull($value);
+                    break;
+                case 19:
+                    $fontInformation->setSampleText($value);
+                    break;
+                case 20:
+                    $fontInformation->setPostScriptCIDName($value);
+                    break;
+                case 21:
+                    $fontInformation->setWwsFamilyName($value);
+                    break;
+                case 22:
+                    $fontInformation->setWwsSubfamilyName($value);
+                    break;
+            }
+        }
+
+        return $fontInformation;
     }
 }
