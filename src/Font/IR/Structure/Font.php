@@ -11,12 +11,19 @@
 
 namespace PdfGenerator\Font\IR\Structure;
 
+use PdfGenerator\Font\IR\Structure\Tables\FontInformation;
+
 class Font
 {
     /**
      * @var Character[]
      */
     private $characters = [];
+
+    /**
+     * @var FontInformation
+     */
+    private $fontInformation;
 
     /**
      * @var TableDirectory
@@ -61,5 +68,21 @@ class Font
     public function setTableDirectory(TableDirectory $tableDirectory): void
     {
         $this->tableDirectory = $tableDirectory;
+    }
+
+    /**
+     * @return FontInformation
+     */
+    public function getFontInformation(): FontInformation
+    {
+        return $this->fontInformation;
+    }
+
+    /**
+     * @param FontInformation $fontInformation
+     */
+    public function setFontInformation(FontInformation $fontInformation): void
+    {
+        $this->fontInformation = $fontInformation;
     }
 }
