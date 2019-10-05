@@ -20,6 +20,7 @@ use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\File\Table\LocaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
+use PdfGenerator\Font\Frontend\File\Table\NameTable;
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\StreamReader;
 use PHPUnit\Framework\TestCase;
@@ -76,6 +77,7 @@ class FileReaderTest extends TestCase
         $this->assertGlyfTable($font->getGlyfTables());
         $this->assertHHeaTable($font->getHHeaTable());
         $this->assertHMtxTable($font->getHMtxTable());
+        $this->assertNameTable($font->getNameTable());
         $this->assertCount(0, $font->getRawTables());
     }
 
@@ -179,5 +181,18 @@ class FileReaderTest extends TestCase
         $this->assertSame(201, $someEntry->getLeftSideBearing());
 
         $this->assertSame(201, $hMtxTable->getLeftSideBearings()[1]);
+    }
+
+    /**
+     * @param NameTable|null $nameTable
+     */
+    private function assertNameTable(?NameTable $nameTable)
+    {
+        $this->assertCount(8, $nameTable->getNameRecords());
+
+        $firstCharFirstValue = substr($nameTable->getNameRecords()[0]->getValue(), 0, 1);
+        $firstCharSecondValue = substr($nameTable->getNameRecords()[1]->getValue(), 0, 1);
+        $this->assertEquals($firstCharFirstValue, "F");
+        $this->assertEquals($firstCharSecondValue, "F");
     }
 }

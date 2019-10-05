@@ -144,7 +144,7 @@ class StreamWriter
     /**
      * @param int $value
      */
-    private function writeOffset16(int $value)
+    public function writeOffset16(int $value)
     {
         $this->writeUInt16($value);
     }
