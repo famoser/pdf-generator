@@ -20,4 +20,12 @@ class ResourcesProvider
     {
         return realpath(__DIR__ . \DIRECTORY_SEPARATOR . 'images' . \DIRECTORY_SEPARATOR . 'image1.jpg');
     }
+
+    /**
+     * @return bool|string
+     */
+    public static function getFont1Path()
+    {
+        return realpath(__DIR__ . \DIRECTORY_SEPARATOR . 'fonts' . \DIRECTORY_SEPARATOR . 'OpenSans.ttf');
+    }
 }

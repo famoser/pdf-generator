@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace PdfGenerator\Font\Backend\File\Table;
 
-use PdfGenerator\Font\Frontend\File\Table\Name\LangTagRecord;
-use PdfGenerator\Font\Frontend\File\Table\Name\NameRecord;
+use PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
+use PdfGenerator\Font\Backend\File\Table\Name\NameRecord;
+use PdfGenerator\Font\Backend\File\TableVisitor;
 
 /**
  * the name table associates strings with the font for different languages.
@@ -21,7 +22,7 @@ use PdfGenerator\Font\Frontend\File\Table\Name\NameRecord;
  * @see https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6name.html
  * @see https://docs.microsoft.com/en-us/typography/opentype/spec/name
  */
-class NameTable
+class NameTable extends BaseTable
 {
     /**
      * the format of the table.
@@ -56,22 +57,6 @@ class NameTable
      * @var NameRecord[]
      */
     private $nameRecords = [];
-
-    /**
-     * number of lang tags.
-     *
-     * @ttf-type uint16
-     *
-     * @var int
-     */
-    private $langTagCount;
-
-    /**
-     * lang tags.
-     *
-     * @var LangTagRecord[]
-     */
-    private $langTagRecords = [];
 
     /**
      * @return int
@@ -138,34 +123,12 @@ class NameTable
     }
 
     /**
-     * @return int
+     * @param TableVisitor $visitor
+     *
+     * @return string
      */
-    public function getLangTagCount(): int
+    public function accept(TableVisitor $visitor): string
     {
-        return $this->langTagCount;
-    }
-
-    /**
-     * @param int $langTagCount
-     */
-    public function setLangTagCount(int $langTagCount): void
-    {
-        $this->langTagCount = $langTagCount;
-    }
-
-    /**
-     * @return LangTagRecord[]
-     */
-    public function getLangTagRecords(): array
-    {
-        return $this->langTagRecords;
-    }
-
-    /**
-     * @param LangTagRecord $langTagRecord
-     */
-    public function addLangTagRecord(LangTagRecord $langTagRecord): void
-    {
-        $this->langTagRecords[] = $langTagRecord;
+        return $visitor->visitNameTable($this);
     }
 }

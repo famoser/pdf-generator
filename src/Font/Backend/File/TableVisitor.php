@@ -308,4 +308,33 @@ class TableVisitor
 
         return $writer->getStream();
     }
+
+    /**
+     * @param Table\NameTable $nameTable
+     *
+     * @return string
+     */
+    public function visitNameTable(Table\NameTable $nameTable)
+    {
+        $writer = new StreamWriter();
+
+        $writer->writeUInt16($nameTable->getFormat());
+        $writer->writeUInt16($nameTable->getCount());
+        $writer->writeOffset16($nameTable->getStringOffset());
+
+        foreach ($nameTable->getNameRecords() as $nameRecord) {
+            $writer->writeUInt16($nameRecord->getPlatformID());
+            $writer->writeUInt16($nameRecord->getEncodingID());
+            $writer->writeUInt16($nameRecord->getLanguageID());
+            $writer->writeUInt16($nameRecord->getNameID());
+            $writer->writeUInt16($nameRecord->getLength());
+            $writer->writeOffset16($nameRecord->getOffset());
+        }
+
+        foreach ($nameTable->getNameRecords() as $nameRecord) {
+            $writer->writeStream($nameRecord->getValue());
+        }
+
+        return $writer->getStream();
+    }
 }

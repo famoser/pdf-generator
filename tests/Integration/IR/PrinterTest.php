@@ -172,4 +172,26 @@ class PrinterTest extends TestCase
         // assert
         $this->assertNotEmpty($result);
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintText_withEmbeddedFont_textAppears()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $textStyle = new TextStyle($font, 12);
+
+        // act
+        $printer->setTextStyle($textStyle);
+        $printer->printText('hallo');
+        $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
 }

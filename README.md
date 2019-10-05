@@ -106,14 +106,16 @@ First, the backend will be created following closely the standard of adobe.
 - [x] use TTF fonts
     - [x] parse TTF
     - [x] create IR which supplies pdf compiler with character space information
-    - [x] create TTF subsets (still missing is the POST table; without it ttfdump will segfault)
-    - [ ] include CID font capability into PDF
-- [ ] print UTF-8 text
+    - [x] create TTF subsets
+    - [x] include CID font capability into PDF
+- [x] print UTF-8 text
 
 ### Minimal IR Base
 To be able to print to the pdf sensible some initial works needs to be done to see whats doable and what is not.
 
 - [ ] calculate dimensions of text
+    - [ ] investigate text size tables
+    - [ ] parse OS/2 table
 - [ ] place text on pages with automatic breaks
 
 ### Public API Milestone

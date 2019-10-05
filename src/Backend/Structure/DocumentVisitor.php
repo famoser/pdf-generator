@@ -26,6 +26,7 @@ use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
 use PdfGenerator\Font\Backend\FileWriter;
+use PdfGenerator\Font\IR\Structure\Font;
 
 class DocumentVisitor
 {
@@ -138,7 +139,7 @@ class DocumentVisitor
      */
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
-        $orderedCodepoints = $this->fontOptimizer->getOrderedCodepoints($param->getFont());
+        $orderedCodepoints = $this->fontOptimizer->getOrderedCodepoints($param->getUsedWithText());
 
         $font = $param->getFont();
 
@@ -153,7 +154,7 @@ class DocumentVisitor
         }
 
         // TODO: need to parse name table to fix this
-        $fontName = 'SomeFont';
+        $fontName = 'SomeFont'; //TODO retrieve from name table
 
         $fontStream = new FontStream();
         $fontStream->setFontData($content);
@@ -161,12 +162,10 @@ class DocumentVisitor
 
         $cIDSystemInfo = new CIDSystemInfo();
         $cIDSystemInfo->setRegistry('famoser');
-        $cIDSystemInfo->setOrdering(1);
+        $cIDSystemInfo->setOrdering('custom-1');
         $cIDSystemInfo->setSupplement(1);
 
-        $fontDescriptor = new FontDescriptor();
-        // TODO: missing properties
-        $fontDescriptor->setFontFile3($fontStream);
+        $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream);
 
         $cidFont = new CIDFont();
         $cidFont->setSubType(CIDFont::SUBTYPE_CID_FONT_TYPE_2);
@@ -181,11 +180,34 @@ class DocumentVisitor
         $type0Font->setDescendantFont($cidFont);
         $type0Font->setBaseFont($fontName);
 
-        // TODO: CMaps not implemented yet
         $cMap = $this->cMapCreator->createCMap($cIDSystemInfo, 'someName', $orderedCodepoints);
         $type0Font->setEncoding($cMap);
-        $type0Font->setToUnicode($cMap);
+        $type0Font->setToUnicode($cMap); // TODO: unicode CMap not implemented yet
 
         return $type0Font;
+    }
+
+    /**
+     * @param string $fontName
+     * @param Font $font
+     * @param FontStream $fontStream
+     *
+     * @return FontDescriptor
+     */
+    private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream): FontDescriptor
+    {
+        $fontDescriptor = new FontDescriptor();
+        $fontDescriptor->setFontName($fontName);
+        $HHeaTable = $font->getTableDirectory()->getHHeaTable();
+        $fontDescriptor->setFlags(0); // TODO calculate from
+        $fontDescriptor->setFontBBox([0, 0]); // TODO calculate from characters
+        $fontDescriptor->setItalicAngle(0); // TODO  get from postscript table
+        $fontDescriptor->setAscent($HHeaTable->getAscent());
+        $fontDescriptor->setDecent($HHeaTable->getDecent());
+        $fontDescriptor->setCapHeight(0); // TODO get from OS/2 table
+        $fontDescriptor->setStemV(0); // TODO find out where to get this from
+        $fontDescriptor->setFontFile3($fontStream);
+
+        return $fontDescriptor;
     }
 }

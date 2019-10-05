@@ -104,7 +104,7 @@ class CMapCreator
 
         $codeSpaces = [];
         foreach ($hexCodePointsByLength as $length => $hexPoints) {
-            sort($hexPoints);
+            ksort($hexPoints);
 
             $codeSpaces = array_merge($codeSpaces, $this->getCodeSpaces($hexPoints));
         }
@@ -113,7 +113,7 @@ class CMapCreator
 
         $codeMappings = [];
         foreach ($hexCodePointsByLength as $length => $hexPoints) {
-            sort($hexPoints);
+            ksort($hexPoints);
 
             $codeMappings = array_merge($codeMappings, $this->getCodeMappings($hexPoints));
         }
@@ -156,7 +156,7 @@ class CMapCreator
     private function getAsHexByLength(array $codePoints): array
     {
         $hexPointsByLength = [];
-        $characterIndex = 1;
+        $characterIndex = 2;
         foreach ($codePoints as $codePoint) {
             $byte = dechex($codePoint);
             $length = \strlen($byte);
@@ -169,7 +169,7 @@ class CMapCreator
                 $hexPointsByLength[$length] = [];
             }
 
-            $hexPointsByLength[$length][$byte] = $characterIndex;
+            $hexPointsByLength[$length][$byte] = $characterIndex++;
         }
 
         sort($hexPointsByLength);

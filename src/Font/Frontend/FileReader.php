@@ -22,6 +22,9 @@ use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
 use PdfGenerator\Font\Frontend\File\Table\LocaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
+use PdfGenerator\Font\Frontend\File\Table\Name\LangTagRecord;
+use PdfGenerator\Font\Frontend\File\Table\Name\NameRecord;
+use PdfGenerator\Font\Frontend\File\Table\NameTable;
 use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
 use PdfGenerator\Font\Frontend\File\Table\PostTable;
 use PdfGenerator\Font\Frontend\File\Table\RawTable;
@@ -115,7 +118,7 @@ class FileReader
                     $font->setOS2Table($table);
                     break;
                 case 'name':
-                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
+                    $table = $this->readNameTable($fileReader);
                     $font->setNameTable($table);
                     break;
                 case 'cvt ':
@@ -482,6 +485,97 @@ class FileReader
         $table->setFormat($this->postFormatReader->readFormat($fileReader, $table->getVersion(), $remainingLength));
 
         return $table;
+    }
+
+    /**
+     * @param StreamReader $fileReader
+     *
+     * @throws \Exception
+     *
+     * @return NameTable
+     */
+    private function readNameTable(StreamReader $fileReader)
+    {
+        $startTableOffset = $fileReader->getOffset();
+
+        $table = new NameTable();
+
+        $table->setFormat($fileReader->readUInt16());
+        $table->setCount($fileReader->readUInt16());
+        $table->setStringOffset($fileReader->readOffset16());
+
+        for ($i = 0; $i < $table->getCount(); ++$i) {
+            $table->addNameRecord($this->readNameRecord($fileReader));
+        }
+
+        if ($table->getFormat() === 1) {
+            $table->setLangTagCount($fileReader->readUInt16());
+
+            for ($i = 0; $i < $table->getLangTagCount(); ++$i) {
+                $table->addLangTagRecord($this->readLangTagRecord($fileReader));
+            }
+        }
+
+        $stringOffset = $startTableOffset + $table->getStringOffset();
+        $fileReader->setOffset($stringOffset);
+
+        foreach ($table->getNameRecords() as $nameRecord) {
+            $fileReader->setOffset($stringOffset + $nameRecord->getOffset());
+
+            /*
+            one could decode the rawValue, but
+             - some encodings unclear from the TTF specification (unicode encoding = UTF-16?)
+             - some encodings in the standard not implemented in php
+            better to just push around the raw value for now
+            */
+            $rawValue = $fileReader->readFor($nameRecord->getLength());
+            $nameRecord->setValue($rawValue);
+        }
+
+        foreach ($table->getLangTagRecords() as $langTagRecord) {
+            $fileReader->setOffset($stringOffset + $langTagRecord->getOffset());
+            $langTagRecord->setValue($fileReader->readFor($langTagRecord->getLength()));
+        }
+
+        return $table;
+    }
+
+    /**
+     * @param StreamReader $streamReader
+     *
+     * @throws \Exception
+     *
+     * @return NameRecord
+     */
+    private function readNameRecord(StreamReader $streamReader)
+    {
+        $nameRecord = new NameRecord();
+
+        $nameRecord->setPlatformID($streamReader->readUInt16());
+        $nameRecord->setEncodingID($streamReader->readUInt16());
+        $nameRecord->setLanguageID($streamReader->readUInt16());
+        $nameRecord->setNameID($streamReader->readUInt16());
+        $nameRecord->setLength($streamReader->readUInt16());
+        $nameRecord->setOffset($streamReader->readOffset16());
+
+        return $nameRecord;
+    }
+
+    /**
+     * @param StreamReader $streamReader
+     *
+     * @throws \Exception
+     *
+     * @return LangTagRecord
+     */
+    private function readLangTagRecord(StreamReader $streamReader)
+    {
+        $langTagRecord = new LangTagRecord();
+
+        $langTagRecord->setLength($streamReader->readUInt16());
+        $langTagRecord->setOffset($streamReader->readOffset16());
+
+        return $langTagRecord;
     }
 
     /**
