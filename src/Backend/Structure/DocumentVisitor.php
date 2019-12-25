@@ -146,7 +146,7 @@ class DocumentVisitor
             $widths[] = $character->getLongHorMetric()->getAdvanceWidth();
         }
 
-        $fontName = $font->getFontInformation()->getFullName();
+        $fontName = $font->getFontInformation()->getFullName() ?? 'invalidFontName';
 
         $fontStream = new FontStream();
         $fontStream->setFontData($content);
