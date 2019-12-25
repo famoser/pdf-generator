@@ -261,8 +261,9 @@ class FileWriter
         $format->setLength(8 * 2 + 4 * 2 * $segmentsCount); // 8 fields; 4 arrays of size 2 per entry
         $format->setLanguage(0);
         $format->setSegCountX2($segmentsCount * 2);
-        self::setBinaryTreeSearchableProperties($format, $format->getSegCountX2());
-        $format->setEntrySelector($format->getEntrySelector() - 1);
+        $format->setSearchRange(2 * (2 ** ((int)(log($segmentsCount, 2)))));
+        $format->setEntrySelector(log($format->getSearchRange() / 2, 2));
+        $format->setRangeShift(2 * $segmentsCount - $format->getSearchRange());
         $format->setReservedPad(0);
 
         foreach ($segments as $segment) {
@@ -425,14 +426,13 @@ class FileWriter
 
                     /* @var BaseTable $item */
                     $tableStreamWriter->writeStream($item->accept($this->tableVisitor));
-                    $tableStreamWriter->byteAlign(4);
                 }
             } else {
                 $tableStreamWriter->writeStream($table->accept($this->tableVisitor));
-                $tableStreamWriter->byteAlign(4);
             }
         }
 
+        // why length of HEAD table wrong if byte align turned on?
         $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $tableStreamWriter->getLength());
         $offsetTable = $this->generateOffsetTable(\count($tableDirectoryEntries));
 
@@ -480,10 +480,10 @@ class FileWriter
 
         // calculate length
         for ($i = 0; $i < \count($tableDirectoryEntries); ++$i) {
-            if ($i + 1 === \count($tableDirectoryEntries)) {
-                $nextOffset = $totalStreamLength;
-            } else {
+            if ($i + 1 < \count($tableDirectoryEntries)) {
                 $nextOffset = $tableDirectoryEntries[$i + 1]->getOffset();
+            } else {
+                $nextOffset = $totalStreamLength;
             }
 
             $currentEntry = $tableDirectoryEntries[$i];
