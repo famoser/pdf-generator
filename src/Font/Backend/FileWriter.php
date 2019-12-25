@@ -405,7 +405,7 @@ class FileWriter
             $tables[$table->getTag()] = $table;
         }
 
-        ksort($tables);
+        ksort($tables, SORT_NATURAL | SORT_FLAG_CASE);
 
         $tableStreamWriter = new StreamWriter();
 
