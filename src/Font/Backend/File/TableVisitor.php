@@ -68,9 +68,10 @@ class TableVisitor
         }
 
         $subtableSize = 8;
-        $subtableOffset = \count($cMapTable->getSubtables()) * $subtableSize;
+        $subtableCount = \count($cMapTable->getSubtables());
+        $subtableOffset = $subtableCount * $subtableSize;
         $formatOffset = $cMapOffset + $subtableOffset;
-        for ($i = 0; $i < \count($cMapTable->getSubtables()); ++$i) {
+        for ($i = 0; $i < $subtableCount; ++$i) {
             $formatOffset += $offsetBySubtable[$i];
             $subTable = $cMapTable->getSubtables()[$i];
 

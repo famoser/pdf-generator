@@ -35,13 +35,10 @@ class FormatReader
         switch ($format) {
             case 0:
                 return $this->readFormat0($fileReader);
-                break;
             case 4:
                 return $this->readFormat4($fileReader, $startOffset);
-                break;
             case 6:
                 return $this->readFormat6($fileReader);
-                break;
         }
 
         $fileReader->setOffset($startOffset);
@@ -50,7 +47,6 @@ class FormatReader
         switch ($formatFixed) {
             case 12.0:
                 return $this->readFormat12($fileReader);
-                break;
         }
 
         return null;

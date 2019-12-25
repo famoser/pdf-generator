@@ -51,7 +51,7 @@ class CharacterRepository
      */
     public function findByChar(string $character)
     {
-        $codePoint = mb_ord($character);
+        $codePoint = mb_ord($character, 'UTF-8');
 
         return $this->findByCodePoint($codePoint);
     }

@@ -19,12 +19,12 @@ use PdfGenerator\IR\Structure\DocumentVisitor;
 class DocumentResources
 {
     /**
-     * @var Font[]
+     * @var BackendFont[]
      */
     private $fontCache = [];
 
     /**
-     * @var Image[]
+     * @var BackendImage[]
      */
     private $imageCache = [];
 
@@ -61,7 +61,7 @@ class DocumentResources
      * @param BaseDocumentStructure $structure
      * @param BaseDocumentStructure[] $cache
      *
-     * @return BaseDocumentStructure|mixed
+     * @return BaseDocumentStructure|BackendFont|BackendImage
      */
     private function getOrCreate($structure, array &$cache)
     {

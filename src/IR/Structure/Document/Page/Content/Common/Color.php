@@ -51,7 +51,7 @@ class Color
 
         $rgbArray = sscanf($color, '#%02x%02x%02x');
 
-        return new self(...$rgbArray);
+        return new self($rgbArray[0], $rgbArray[1], $rgbArray[2]);
     }
 
     public function getRed(): int

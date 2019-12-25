@@ -19,12 +19,12 @@ use PdfGenerator\Backend\Structure\DocumentVisitor;
 class DocumentResources
 {
     /**
-     * @var Font[]
+     * @var CatalogFont[]
      */
     private $fontCache = [];
 
     /**
-     * @var Image[]
+     * @var CatalogImage[]
      */
     private $imageCache = [];
 
@@ -61,16 +61,16 @@ class DocumentResources
      * @param BaseDocumentStructure $structure
      * @param BaseDocumentStructure[] $cache
      *
-     * @return BaseDocumentStructure|mixed
+     * @return BaseDocumentStructure|CatalogFont|CatalogImage
      */
     private function getOrCreate($structure, array &$cache)
     {
         $identifier = spl_object_id($structure);
 
         if (!\array_key_exists($identifier, $cache)) {
-            $font = $structure->accept($this->documentContentVisitor);
+            $entry = $structure->accept($this->documentContentVisitor);
 
-            $cache[$identifier] = $font;
+            $cache[$identifier] = $entry;
         }
 
         return $cache[$identifier];

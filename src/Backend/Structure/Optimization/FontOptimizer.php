@@ -70,12 +70,12 @@ class FontOptimizer
     {
         // split into characters (not bytes, like explode() or str_split() would)
         $characterArray = preg_split('//u', $characters, -1, PREG_SPLIT_NO_EMPTY);
-        $uniqueCharacters = array_unique($characterArray);
+        $uniqueCharacters = array_unique(/* @scrutinizer ignore-type */ $characterArray); // characterArray never false
 
         // get used codepoints
         $codePoints = [];
         foreach ($uniqueCharacters as $uniqueCharacter) {
-            $codePoint = mb_ord($uniqueCharacter);
+            $codePoint = mb_ord($uniqueCharacter, 'UTF-8');
             $codePoints[] = $codePoint;
         }
 

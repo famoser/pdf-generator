@@ -26,11 +26,11 @@ use PdfGenerator\Font\Backend\File\TableVisitor;
 class HHeaTable extends BaseTable
 {
     /**
-     * number of tables contained.
+     * version of table.
      *
-     * @ttf-type uint16
+     * @ttf-type fixed
      *
-     * @var int
+     * @var float
      */
     private $version;
 
@@ -153,12 +153,12 @@ class HHeaTable extends BaseTable
      */
     private $numOfLongHorMetrics;
 
-    public function getVersion(): int
+    public function getVersion(): float
     {
         return $this->version;
     }
 
-    public function setVersion(int $version): void
+    public function setVersion(float $version): void
     {
         $this->version = $version;
     }

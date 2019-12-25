@@ -272,7 +272,7 @@ class Parser
             $postScriptInfo->setName('.notdef');
             $postScriptInfo->setMacintoshGlyphIndex(0);
         } else {
-            if ($glyphInfo === null) {
+            if ($aGLFName !== null) {
                 $postScriptInfo->setName($aGLFName);
             } else {
                 $postScriptInfo->setMacintoshGlyphIndex($glyphInfo->getMacintoshIndex());

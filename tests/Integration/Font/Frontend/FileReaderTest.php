@@ -123,7 +123,7 @@ class FileReaderTest extends TestCase
         }
     }
 
-    private function assertHeadTable(?HeadTable $headTable)
+    private function assertHeadTable(HeadTable $headTable)
     {
         $this->assertSame(1, $headTable->getMajorVersion());
         $this->assertSame(0x5F0F3CF5, $headTable->getMagicNumber());
@@ -132,7 +132,7 @@ class FileReaderTest extends TestCase
         $this->assertSame(2, $headTable->getFontDirectionHints());
     }
 
-    private function assertMaxPTable(?MaxPTable $maxPTable)
+    private function assertMaxPTable(MaxPTable $maxPTable)
     {
         $this->assertSame(938, $maxPTable->getNumGlyphs());
         $this->assertSame(2, $maxPTable->getMaxZones());
@@ -174,7 +174,7 @@ class FileReaderTest extends TestCase
         $this->assertSame(201, $hMtxTable->getLeftSideBearings()[1]);
     }
 
-    private function assertNameTable(?NameTable $nameTable)
+    private function assertNameTable(NameTable $nameTable)
     {
         $this->assertCount(8, $nameTable->getNameRecords());
 

@@ -11,13 +11,10 @@
 
 namespace PdfGenerator\Backend\Catalog;
 
-use PdfGenerator\Backend\Catalog\Base\BaseStructure;
-use PdfGenerator\Backend\Catalog\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 
-abstract class Font extends BaseStructure
+abstract class Font extends BaseIdentifiableStructure
 {
-    use IdentifiableStructureTrait;
-
     /**
      * File constructor.
      */
