@@ -160,251 +160,156 @@ class MaxPTable extends BaseTable
      */
     private $maxComponentDepth;
 
-    /**
-     * @return float
-     */
     public function getVersion(): float
     {
         return $this->version;
     }
 
-    /**
-     * @param float $version
-     */
     public function setVersion(float $version): void
     {
         $this->version = $version;
     }
 
-    /**
-     * @return int
-     */
     public function getNumGlyphs(): int
     {
         return $this->numGlyphs;
     }
 
-    /**
-     * @param int $numGlyphs
-     */
     public function setNumGlyphs(int $numGlyphs): void
     {
         $this->numGlyphs = $numGlyphs;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxPoints(): int
     {
         return $this->maxPoints;
     }
 
-    /**
-     * @param int $maxPoints
-     */
     public function setMaxPoints(int $maxPoints): void
     {
         $this->maxPoints = $maxPoints;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxContours(): int
     {
         return $this->maxContours;
     }
 
-    /**
-     * @param int $maxContours
-     */
     public function setMaxContours(int $maxContours): void
     {
         $this->maxContours = $maxContours;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxCompositePoints(): int
     {
         return $this->maxCompositePoints;
     }
 
-    /**
-     * @param int $maxCompositePoints
-     */
     public function setMaxCompositePoints(int $maxCompositePoints): void
     {
         $this->maxCompositePoints = $maxCompositePoints;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxCompositeContours(): int
     {
         return $this->maxCompositeContours;
     }
 
-    /**
-     * @param int $maxCompositeContours
-     */
     public function setMaxCompositeContours(int $maxCompositeContours): void
     {
         $this->maxCompositeContours = $maxCompositeContours;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxZones(): int
     {
         return $this->maxZones;
     }
 
-    /**
-     * @param int $maxZones
-     */
     public function setMaxZones(int $maxZones): void
     {
         $this->maxZones = $maxZones;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxTwilightPoints(): int
     {
         return $this->maxTwilightPoints;
     }
 
-    /**
-     * @param int $maxTwilightPoints
-     */
     public function setMaxTwilightPoints(int $maxTwilightPoints): void
     {
         $this->maxTwilightPoints = $maxTwilightPoints;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxStorage(): int
     {
         return $this->maxStorage;
     }
 
-    /**
-     * @param int $maxStorage
-     */
     public function setMaxStorage(int $maxStorage): void
     {
         $this->maxStorage = $maxStorage;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxFunctionDefs(): int
     {
         return $this->maxFunctionDefs;
     }
 
-    /**
-     * @param int $maxFunctionDefs
-     */
     public function setMaxFunctionDefs(int $maxFunctionDefs): void
     {
         $this->maxFunctionDefs = $maxFunctionDefs;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxInstructionDefs(): int
     {
         return $this->maxInstructionDefs;
     }
 
-    /**
-     * @param int $maxInstructionDefs
-     */
     public function setMaxInstructionDefs(int $maxInstructionDefs): void
     {
         $this->maxInstructionDefs = $maxInstructionDefs;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxStackElements(): int
     {
         return $this->maxStackElements;
     }
 
-    /**
-     * @param int $maxStackElements
-     */
     public function setMaxStackElements(int $maxStackElements): void
     {
         $this->maxStackElements = $maxStackElements;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxSizeOfInstructions(): int
     {
         return $this->maxSizeOfInstructions;
     }
 
-    /**
-     * @param int $maxSizeOfInstructions
-     */
     public function setMaxSizeOfInstructions(int $maxSizeOfInstructions): void
     {
         $this->maxSizeOfInstructions = $maxSizeOfInstructions;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxComponentElements(): int
     {
         return $this->maxComponentElements;
     }
 
-    /**
-     * @param int $maxComponentElements
-     */
     public function setMaxComponentElements(int $maxComponentElements): void
     {
         $this->maxComponentElements = $maxComponentElements;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxComponentDepth(): int
     {
         return $this->maxComponentDepth;
     }
 
-    /**
-     * @param int $maxComponentDepth
-     */
     public function setMaxComponentDepth(int $maxComponentDepth): void
     {
         $this->maxComponentDepth = $maxComponentDepth;
     }
 
-    /**
-     * @param TableVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TableVisitor $visitor): string
     {
         return $visitor->visitMaxPTable($this);

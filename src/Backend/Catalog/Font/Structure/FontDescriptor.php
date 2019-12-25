@@ -127,33 +127,21 @@ class FontDescriptor extends BaseStructure
      */
     private $fontFile3;
 
-    /**
-     * @return string
-     */
     public function getFontName(): string
     {
         return $this->fontName;
     }
 
-    /**
-     * @param string $fontName
-     */
     public function setFontName(string $fontName): void
     {
         $this->fontName = $fontName;
     }
 
-    /**
-     * @return int
-     */
     public function getFlags(): int
     {
         return $this->flags;
     }
 
-    /**
-     * @param int $flags
-     */
     public function setFlags(int $flags): void
     {
         $this->flags = $flags;
@@ -175,105 +163,67 @@ class FontDescriptor extends BaseStructure
         $this->fontBBox = $fontBBox;
     }
 
-    /**
-     * @return int
-     */
     public function getItalicAngle(): int
     {
         return $this->italicAngle;
     }
 
-    /**
-     * @param int $italicAngle
-     */
     public function setItalicAngle(int $italicAngle): void
     {
         $this->italicAngle = $italicAngle;
     }
 
-    /**
-     * @return int
-     */
     public function getAscent(): int
     {
         return $this->ascent;
     }
 
-    /**
-     * @param int $ascent
-     */
     public function setAscent(int $ascent): void
     {
         $this->ascent = $ascent;
     }
 
-    /**
-     * @return int
-     */
     public function getDecent(): int
     {
         return $this->decent;
     }
 
-    /**
-     * @param int $decent
-     */
     public function setDecent(int $decent): void
     {
         $this->decent = $decent;
     }
 
-    /**
-     * @return int
-     */
     public function getCapHeight(): int
     {
         return $this->capHeight;
     }
 
-    /**
-     * @param int $capHeight
-     */
     public function setCapHeight(int $capHeight): void
     {
         $this->capHeight = $capHeight;
     }
 
-    /**
-     * @return int
-     */
     public function getStemV(): int
     {
         return $this->stemV;
     }
 
-    /**
-     * @param int $stemV
-     */
     public function setStemV(int $stemV): void
     {
         $this->stemV = $stemV;
     }
 
-    /**
-     * @return FontStream|null
-     */
     public function getFontFile3(): ?FontStream
     {
         return $this->fontFile3;
     }
 
-    /**
-     * @param FontStream|null $fontFile3
-     */
     public function setFontFile3(?FontStream $fontFile3): void
     {
         $this->fontFile3 = $fontFile3;
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject|BaseObject[]
      */
     public function accept(CatalogVisitor $visitor)

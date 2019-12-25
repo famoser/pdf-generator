@@ -26,7 +26,6 @@ class Optimizer
     }
 
     /**
-     * @param Font $source
      * @param Character[] $characters
      *
      * @throws \Exception
@@ -49,8 +48,6 @@ class Optimizer
     }
 
     /**
-     * @param TableDirectory $source
-     *
      * @return TableDirectory
      */
     private function getTableDirectoryAfterSubsetting(TableDirectory $source)

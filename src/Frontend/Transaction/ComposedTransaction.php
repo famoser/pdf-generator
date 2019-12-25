@@ -28,9 +28,6 @@ class ComposedTransaction implements TransactionInterface
 
     /**
      * PrintBuffer constructor.
-     *
-     * @param Document $pdfDocument
-     * @param array $transactions
      */
     public function __construct(Document $pdfDocument, array $transactions)
     {

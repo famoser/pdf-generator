@@ -33,9 +33,6 @@ class Content extends BaseStructure
 
     /**
      * Content constructor.
-     *
-     * @param string $content
-     * @param int $contentType
      */
     public function __construct(string $content, int $contentType)
     {
@@ -43,17 +40,12 @@ class Content extends BaseStructure
         $this->contentType = $contentType;
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject|BaseObject[]
      */
     public function accept(CatalogVisitor $visitor)

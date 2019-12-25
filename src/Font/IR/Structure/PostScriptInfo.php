@@ -23,41 +23,26 @@ class PostScriptInfo
      */
     private $name;
 
-    /**
-     * @return bool
-     */
     public function isInStandardMacintoshSet(): bool
     {
         return $this->macintoshGlyphIndex !== null;
     }
 
-    /**
-     * @return int|null
-     */
     public function getMacintoshGlyphIndex(): ?int
     {
         return $this->macintoshGlyphIndex;
     }
 
-    /**
-     * @param int|null $macintoshGlyphIndex
-     */
     public function setMacintoshGlyphIndex(?int $macintoshGlyphIndex): void
     {
         $this->macintoshGlyphIndex = $macintoshGlyphIndex;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name): void
     {
         $this->name = $name;

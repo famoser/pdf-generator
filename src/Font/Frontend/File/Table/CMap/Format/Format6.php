@@ -49,41 +49,27 @@ class Format6 extends Format
      * the format of the encoding.
      *
      * @ttf-type uint16
-     *
-     * @return int
      */
     public function getFormat(): int
     {
         return self::FORMAT_6;
     }
 
-    /**
-     * @return int
-     */
     public function getFirstCode(): int
     {
         return $this->firstCode;
     }
 
-    /**
-     * @param int $firstCode
-     */
     public function setFirstCode(int $firstCode): void
     {
         $this->firstCode = $firstCode;
     }
 
-    /**
-     * @return int
-     */
     public function getEntryCount(): int
     {
         return $this->entryCount;
     }
 
-    /**
-     * @param int $entryCount
-     */
     public function setEntryCount(int $entryCount): void
     {
         $this->entryCount = $entryCount;
@@ -106,8 +92,6 @@ class Format6 extends Format
     }
 
     /**
-     * @param VisitorInterface $formatVisitor
-     *
      * @return mixed
      */
     public function accept(VisitorInterface $formatVisitor)

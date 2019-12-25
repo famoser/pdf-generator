@@ -45,10 +45,6 @@ class Type1 extends Font
 
     /**
      * Type1 constructor.
-     *
-     * @param string $identifier
-     * @param string $baseFont
-     * @param string $encoding
      */
     public function __construct(string $identifier, string $baseFont, string $encoding)
     {
@@ -58,25 +54,17 @@ class Type1 extends Font
         $this->encoding = $encoding;
     }
 
-    /**
-     * @return string
-     */
     public function getBaseFont(): string
     {
         return $this->baseFont;
     }
 
-    /**
-     * @return string
-     */
     public function getEncoding(): string
     {
         return $this->encoding;
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject
      */
     public function accept(CatalogVisitor $visitor)

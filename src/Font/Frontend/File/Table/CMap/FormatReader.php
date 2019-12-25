@@ -23,8 +23,6 @@ use PdfGenerator\Font\Frontend\StreamReader;
 class FormatReader
 {
     /**
-     * @param StreamReader $fileReader
-     *
      *@throws \Exception
      *
      * @return Format|null
@@ -59,8 +57,6 @@ class FormatReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      *@throws \Exception
      *
      * @return Format0
@@ -77,9 +73,6 @@ class FormatReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     * @param int $startOffset
-     *
      *@throws \Exception
      *
      * @return Format4
@@ -108,8 +101,6 @@ class FormatReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      *@throws \Exception
      *
      * @return Format6
@@ -128,8 +119,6 @@ class FormatReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      *@throws \Exception
      *
      * @return Format12
@@ -156,9 +145,6 @@ class FormatReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     * @param Format $format
-     *
      * @throws \Exception
      */
     private function readUInt16SharedFormat(StreamReader $fileReader, Format $format)

@@ -17,11 +17,8 @@ use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 class CMapCreator
 {
     /**
-     * @param CIDSystemInfo $cIDSystemInfo
-     * @param string $cMapName
      * @param int[] $orderedCodePoints
      *
-     * @param array $missingCodePoints
      * @return CMap
      */
     public function createCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $orderedCodePoints, array $missingCodePoints)
@@ -40,12 +37,6 @@ class CMapCreator
         return $cmap;
     }
 
-    /**
-     * @param CIDSystemInfo $cIDSystemInfo
-     * @param string $cMapName
-     *
-     * @return string
-     */
     private function getCMapHeader(CIDSystemInfo $cIDSystemInfo, string $cMapName): string
     {
         $commentLines = [];
@@ -78,9 +69,6 @@ class CMapCreator
         return $comments . "\n" . $cMapHeader;
     }
 
-    /**
-     * @return string
-     */
     private function getCMapTrailer(): string
     {
         $tralerLines = [];
@@ -97,7 +85,6 @@ class CMapCreator
     /**
      * @param int[] $codePoints
      *
-     * @param array $missingCodePoints
      * @return string
      */
     private function getCMapByteMappings(array $codePoints, array $missingCodePoints)
@@ -126,8 +113,8 @@ class CMapCreator
 
         sort($missingCodePoints);
         // must always map 0 character
-        if (count($missingCodePoints) === 0 || $missingCodePoints[0] !== 0) {
-            $missingCodePoints  = array_merge([0], $missingCodePoints);
+        if (\count($missingCodePoints) === 0 || $missingCodePoints[0] !== 0) {
+            $missingCodePoints = array_merge([0], $missingCodePoints);
         }
         $notDefRanges = $this->getNotDefRanges($missingCodePoints, 0);
         $notDefRangeDictionaries = $this->toDictionary($notDefRanges, 'notdefrange');
@@ -137,8 +124,6 @@ class CMapCreator
 
     /**
      * @param string[] $entries
-     * @param string $identifier
-     * @param int $maxEntries
      *
      * @return string[]
      */
@@ -156,11 +141,6 @@ class CMapCreator
         return $dictionaries;
     }
 
-    /**
-     * @param array $codePoints
-     *
-     * @return array
-     */
     private function getAsHexByLength(array $codePoints): array
     {
         $hexPointsByLength = [];
@@ -254,7 +234,6 @@ class CMapCreator
     /**
      * @param string[] $hexPoints
      *
-     * @param int $notDefCharacterIndex
      * @return string[]
      */
     private function getNotDefRanges(array $hexPoints, int $notDefCharacterIndex): array

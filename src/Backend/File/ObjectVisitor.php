@@ -30,21 +30,11 @@ class ObjectVisitor
         $this->tokenVisitor = new TokenVisitor();
     }
 
-    /**
-     * @param DictionaryObject $dictionary
-     *
-     * @return string
-     */
     public function visitDictionary(DictionaryObject $dictionary): string
     {
         return $this->visitObject($dictionary, $dictionary->getDictionaryToken()->accept($this->tokenVisitor));
     }
 
-    /**
-     * @param StreamObject $param
-     *
-     * @return string
-     */
     public function visitStream(StreamObject $param): string
     {
         $lines = [];
@@ -57,9 +47,6 @@ class ObjectVisitor
     }
 
     /**
-     * @param BaseObject $object
-     * @param string $content
-     *
      * @return string
      */
     private function visitObject(BaseObject $object, string $content)

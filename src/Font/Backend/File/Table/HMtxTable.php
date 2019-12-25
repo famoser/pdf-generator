@@ -54,9 +54,6 @@ class HMtxTable extends BaseTable
         return $this->longHorMetrics;
     }
 
-    /**
-     * @param LongHorMetric $longHorMetric
-     */
     public function addLongHorMetric(LongHorMetric $longHorMetric)
     {
         $this->longHorMetrics[] = $longHorMetric;
@@ -70,19 +67,11 @@ class HMtxTable extends BaseTable
         return $this->leftSideBearings;
     }
 
-    /**
-     * @param int $leftSideBearing
-     */
     public function addLeftSideBearing(int $leftSideBearing): void
     {
         $this->leftSideBearings[] = $leftSideBearing;
     }
 
-    /**
-     * @param TableVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TableVisitor $visitor): string
     {
         return $visitor->visitHMtxTable($this);

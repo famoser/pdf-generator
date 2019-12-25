@@ -210,7 +210,7 @@ class PrinterTest extends TestCase
         $printer->setTextStyle($textStyle);
         $printer->printText("hallo welt\nhallo weltऄescape");
         $result = $printer->save();
-        file_put_contents("pdf.pdf", $result);
+        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertNotEmpty($result);

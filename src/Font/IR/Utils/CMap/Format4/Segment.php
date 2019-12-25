@@ -33,65 +33,41 @@ class Segment
      */
     private $idRangeOffset;
 
-    /**
-     * @return int
-     */
     public function getStartCode(): int
     {
         return $this->startCode;
     }
 
-    /**
-     * @param int $startCode
-     */
     public function setStartCode(int $startCode): void
     {
         $this->startCode = $startCode;
     }
 
-    /**
-     * @return int
-     */
     public function getEndCode(): int
     {
         return $this->endCode;
     }
 
-    /**
-     * @param int $endCode
-     */
     public function setEndCode(int $endCode): void
     {
         $this->endCode = $endCode;
     }
 
-    /**
-     * @return int
-     */
     public function getIdDelta(): int
     {
         return $this->idDelta;
     }
 
-    /**
-     * @param int $idDelta
-     */
     public function setIdDelta(int $idDelta): void
     {
         $this->idDelta = $idDelta;
     }
 
-    /**
-     * @return int
-     */
     public function getIdRangeOffset(): int
     {
         return $this->idRangeOffset;
     }
 
-    /**
-     * @param int $idRangeOffset
-     */
     public function setIdRangeOffset(int $idRangeOffset): void
     {
         $this->idRangeOffset = $idRangeOffset;

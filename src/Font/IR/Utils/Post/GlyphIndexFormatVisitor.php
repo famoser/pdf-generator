@@ -28,8 +28,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
 
     /**
      * GlyphIndexFormatVisitor constructor.
-     *
-     * @param Factory $factory
      */
     public function __construct(Factory $factory)
     {
@@ -37,8 +35,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param Format $format
-     *
      * @return GlyphInfo[]
      */
     public function visitFormat(Format $format)
@@ -47,8 +43,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param Format1 $format1
-     *
      * @return mixed
      */
     public function visitFormat1(Format1 $format1)
@@ -64,9 +58,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param int|null $glyphIndex
-     * @param string|null $name
-     *
      * @return GlyphInfo
      */
     private static function createGlyphInfo(?int $glyphIndex, ?string $name)
@@ -79,8 +70,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param Format2 $format2
-     *
      * @return GlyphInfo[]
      */
     public function visitFormat2(Format2 $format2)
@@ -104,8 +93,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param string $stream
-     *
      * @return array
      */
     private function streamToPascalStrings(string $stream)
@@ -125,8 +112,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param Format25 $format25
-     *
      * @return mixed
      */
     public function visitFormat25(Format25 $format25)
@@ -145,8 +130,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param Format3 $format3
-     *
      * @return mixed
      */
     public function visitFormat3(Format3 $format3)

@@ -34,9 +34,6 @@ class LayoutFactory implements LayoutFactoryInterface
 
     /**
      * Document constructor.
-     *
-     * @param Document $pdfDocument
-     * @param LayoutFactoryConfigurationInterface $layoutService
      */
     public function __construct(Document $pdfDocument, LayoutFactoryConfigurationInterface $layoutService)
     {
@@ -46,8 +43,6 @@ class LayoutFactory implements LayoutFactoryInterface
 
     /**
      * starts a region with columns.
-     *
-     * @param int $columnCount
      *
      * @return ColumnLayoutInterface
      */
@@ -72,8 +67,6 @@ class LayoutFactory implements LayoutFactoryInterface
 
     /**
      * starts a region with columns and the column is chosen automatically.
-     *
-     * @param int $columnCount
      *
      * @return AutoColumnLayoutInterface
      */

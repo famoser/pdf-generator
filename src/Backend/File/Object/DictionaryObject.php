@@ -33,26 +33,17 @@ class DictionaryObject extends BaseObject
         $this->dictionaryToken = new DictionaryToken();
     }
 
-    /**
-     * @param string $key
-     * @param BaseObject $object
-     */
     public function addReferenceEntry(string $key, BaseObject $object)
     {
         $this->dictionaryToken->setEntry($key, new ReferenceToken($object));
     }
 
-    /**
-     * @param string $key
-     * @param string $text
-     */
     public function addTextEntry(string $key, string $text)
     {
         $this->dictionaryToken->setTextEntry($key, $text);
     }
 
     /**
-     * @param string $key
      * @param float|int $number
      */
     public function addNumberEntry(string $key, $number)
@@ -60,17 +51,12 @@ class DictionaryObject extends BaseObject
         $this->dictionaryToken->setEntry($key, new NumberToken($number));
     }
 
-    /**
-     * @param string $key
-     * @param DictionaryToken $dictionaryToken
-     */
     public function addDictionaryEntry(string $key, DictionaryToken $dictionaryToken)
     {
         $this->dictionaryToken->setEntry($key, $dictionaryToken);
     }
 
     /**
-     * @param string $key
      * @param int[] $numbers
      */
     public function addNumberArrayEntry(string $key, array $numbers)
@@ -85,9 +71,7 @@ class DictionaryObject extends BaseObject
     }
 
     /**
-     * @param string $key
      * @param int[] $numbers
-     * @param string $prefix
      */
     public function addTextArrayEntry(string $key, array $numbers, string $prefix = '')
     {
@@ -101,7 +85,6 @@ class DictionaryObject extends BaseObject
     }
 
     /**
-     * @param string $key
      * @param BaseObject[] $references
      */
     public function addReferenceArrayEntry(string $key, array $references)
@@ -115,19 +98,11 @@ class DictionaryObject extends BaseObject
         $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));
     }
 
-    /**
-     * @param ObjectVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(ObjectVisitor $visitor): string
     {
         return $visitor->visitDictionary($this);
     }
 
-    /**
-     * @return DictionaryToken
-     */
     public function getDictionaryToken(): DictionaryToken
     {
         return $this->dictionaryToken;

@@ -33,8 +33,6 @@ class Contents extends BaseStructure
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject[]
      */
     public function accept(CatalogVisitor $visitor)

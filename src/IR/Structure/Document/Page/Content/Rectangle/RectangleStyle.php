@@ -33,7 +33,6 @@ class RectangleStyle
     /**
      * Style constructor.
      *
-     * @param float $lineWidth
      * @param Color $borderColor
      * @param Color $fillColor
      */
@@ -44,25 +43,16 @@ class RectangleStyle
         $this->lineWidth = $lineWidth;
     }
 
-    /**
-     * @return float
-     */
     public function getLineWidth(): float
     {
         return $this->lineWidth;
     }
 
-    /**
-     * @return Color|null
-     */
     public function getBorderColor(): ?Color
     {
         return $this->borderColor;
     }
 
-    /**
-     * @return Color|null
-     */
     public function getFillColor(): ?Color
     {
         return $this->fillColor;

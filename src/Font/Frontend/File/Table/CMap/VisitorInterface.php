@@ -19,29 +19,21 @@ use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
 interface VisitorInterface
 {
     /**
-     * @param Format0 $format0
-     *
      * @return mixed
      */
     public function visitFormat0(Format0 $format0);
 
     /**
-     * @param Format4 $format4
-     *
      * @return mixed
      */
     public function visitFormat4(Format4 $format4);
 
     /**
-     * @param Format6 $format6
-     *
      * @return mixed
      */
     public function visitFormat6(Format6 $format6);
 
     /**
-     * @param Format12 $format12
-     *
      * @return mixed
      */
     public function visitFormat12(Format12 $format12);

@@ -40,9 +40,6 @@ class Transformer
     }
 
     /**
-     * @param Segment $segment
-     * @param int $segmentIndex
-     * @param int $segmentCount
      * @param int[] $glyphIndexAddresses
      *
      * @return int[]
@@ -57,10 +54,6 @@ class Transformer
     }
 
     /**
-     * @param int $startCode
-     * @param int $endCode
-     * @param int $idDelta
-     *
      * @return int[]
      */
     private static function rangeToGlyphIndex(int $startCode, int $endCode, int $idDelta): array
@@ -74,14 +67,6 @@ class Transformer
         return $glyphIndexes;
     }
 
-    /**
-     * @param Segment $segment
-     * @param int $segmentIndex
-     * @param int $segmentCount
-     * @param array $glyphIndexAddresses
-     *
-     * @return array
-     */
     private static function offsetRangeToGlyphIndex(Segment $segment, int $segmentIndex, int $segmentCount, array $glyphIndexAddresses): array
     {
         $segmentOffset = $segmentCount - $segmentIndex; // until segment array finished

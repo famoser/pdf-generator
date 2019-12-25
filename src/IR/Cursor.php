@@ -30,10 +30,6 @@ class Cursor
 
     /**
      * Cursor constructor.
-     *
-     * @param float $xCoordinate
-     * @param float $yCoordinate
-     * @param int $page
      */
     public function __construct(float $xCoordinate, float $yCoordinate, int $page)
     {
@@ -42,33 +38,22 @@ class Cursor
         $this->page = $page;
     }
 
-    /**
-     * @return float
-     */
     public function getXCoordinate(): float
     {
         return $this->xCoordinate;
     }
 
-    /**
-     * @return float
-     */
     public function getYCoordinate(): float
     {
         return $this->yCoordinate;
     }
 
-    /**
-     * @return int
-     */
     public function getPage(): int
     {
         return $this->page;
     }
 
     /**
-     * @param float $startX
-     *
      * @return Cursor
      */
     public function setX(float $startX)
@@ -77,8 +62,6 @@ class Cursor
     }
 
     /**
-     * @param self $other
-     *
      * @return bool
      */
     public function isBiggerThan(self $other)
@@ -87,8 +70,6 @@ class Cursor
     }
 
     /**
-     * @param float $startY
-     *
      * @return Cursor
      */
     public function setY(float $startY)

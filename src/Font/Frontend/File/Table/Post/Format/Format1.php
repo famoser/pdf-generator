@@ -19,8 +19,6 @@ use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
 class Format1 extends Format
 {
     /**
-     * @param VisitorInterface $visitor
-     *
      * @return mixed
      */
     public function accept(VisitorInterface $visitor)

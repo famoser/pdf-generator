@@ -18,9 +18,6 @@ class StreamWriter
      */
     private $stream;
 
-    /**
-     * @return int
-     */
     public function getLength(): int
     {
         return \strlen($this->stream);
@@ -34,9 +31,6 @@ class StreamWriter
         return $this->stream;
     }
 
-    /**
-     * @param int $value
-     */
     public function writeUInt8(int $value)
     {
         $stream = pack('n', $value);
@@ -45,9 +39,6 @@ class StreamWriter
         $this->stream .= substr($stream, 1);
     }
 
-    /**
-     * @param int $value
-     */
     public function writeInt8(int $value)
     {
         $unsigned = self::transformToUnSinged($value, 8);
@@ -64,9 +55,6 @@ class StreamWriter
         }
     }
 
-    /**
-     * @param int $value
-     */
     public function writeInt16(int $value)
     {
         $unsigned = self::transformToUnSinged($value, 16);
@@ -83,9 +71,6 @@ class StreamWriter
         }
     }
 
-    /**
-     * @param int $value
-     */
     public function writeUInt16(int $value)
     {
         $this->stream .= pack('n', $value);
@@ -101,49 +86,31 @@ class StreamWriter
         }
     }
 
-    /**
-     * @param int $value
-     */
     public function writeUInt32(int $value)
     {
         $this->stream .= pack('N', $value);
     }
 
-    /**
-     * @param int $value
-     */
     public function writeUInt64(int $value)
     {
         $this->stream .= pack('J', $value);
     }
 
-    /**
-     * @param int $value
-     */
     public function writeFWORD(int $value)
     {
         $this->writeInt16($value);
     }
 
-    /**
-     * @param string $tag
-     */
     public function writeTagFromString(string $tag)
     {
         $this->stream .= $tag;
     }
 
-    /**
-     * @param string $content
-     */
     public function writeStream(string $content)
     {
         $this->stream .= $content;
     }
 
-    /**
-     * @param int $value
-     */
     public function writeOffset16(int $value)
     {
         $this->writeUInt16($value);
@@ -159,9 +126,6 @@ class StreamWriter
         }
     }
 
-    /**
-     * @param int $value
-     */
     public function writeOffset32(int $value)
     {
         $this->writeUInt32($value);
@@ -177,9 +141,6 @@ class StreamWriter
         }
     }
 
-    /**
-     * @param float $value
-     */
     public function writeFixed(float $value)
     {
         $mantissa = (int)$value;
@@ -189,29 +150,17 @@ class StreamWriter
         $this->writeUInt16($fraction);
     }
 
-    /**
-     * @param int $value
-     */
     public function writeUFWORD(int $value)
     {
         $this->writeUInt16($value);
     }
 
-    /**
-     * @param int $value
-     */
     public function writeLONGDATETIME(int $value)
     {
         $unsigned = self::transformToUnSinged($value, 64);
         $this->writeUInt64($unsigned);
     }
 
-    /**
-     * @param int $number
-     * @param int $bits
-     *
-     * @return int
-     */
     private static function transformToUnSinged(int $number, int $bits): int
     {
         return $number >= 0 ? $number : $number + 2 ** $bits;

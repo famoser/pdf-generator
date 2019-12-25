@@ -56,9 +56,6 @@ abstract class BaseColumnedLayout
     /**
      * ColumnLayout constructor.
      *
-     * @param Document $pdfDocument
-     * @param float $columnGutter
-     * @param float $totalWidth
      * @param float[] $widths
      */
     protected function __construct(Document $pdfDocument, float $columnGutter, float $totalWidth, array $widths)
@@ -88,9 +85,6 @@ abstract class BaseColumnedLayout
         return self::createTransaction($this, $this->printBuffer, $this->pdfDocument, $this->totalWidth);
     }
 
-    /**
-     * @return PrintBuffer
-     */
     protected function getPrintBuffer(): PrintBuffer
     {
         return $this->printBuffer;
@@ -104,9 +98,6 @@ abstract class BaseColumnedLayout
         return $this->columnWidths;
     }
 
-    /**
-     * @return int
-     */
     protected function getColumnCount(): int
     {
         return $this->columnCount;
@@ -123,9 +114,6 @@ abstract class BaseColumnedLayout
     /**
      * ensures the next printed elements are printed in the specified column
      * will throw an exception if the column region does not exist.
-     *
-     * @param int $currentColumn
-     * @param int $nextColumn
      */
     protected function switchColumns(int $currentColumn, int $nextColumn)
     {
@@ -136,9 +124,6 @@ abstract class BaseColumnedLayout
         $this->pdfDocument->setCursor($this->columnCursors[$nextColumn]);
     }
 
-    /**
-     * @param int $column
-     */
     protected function setColumnCursorFromDocument(int $column)
     {
         // save current cursor
@@ -146,11 +131,6 @@ abstract class BaseColumnedLayout
     }
 
     /**
-     * @param self $columnedLayout
-     * @param PrintBuffer $printBuffer
-     * @param Document $pdfDocumentTransaction
-     * @param float $width
-     *
      * @return PrintTransaction
      */
     private static function createTransaction(self $columnedLayout, PrintBuffer $printBuffer, Document $pdfDocumentTransaction, float $width)

@@ -90,209 +90,131 @@ class TableDirectory
      */
     private $rawTables = [];
 
-    /**
-     * @return RawTable|null
-     */
     public function getCvtTable(): ?RawTable
     {
         return $this->cvtTable;
     }
 
-    /**
-     * @param RawTable|null $cvtTable
-     */
     public function setCvtTable(?RawTable $cvtTable): void
     {
         $this->cvtTable = $cvtTable;
     }
 
-    /**
-     * @return RawTable|null
-     */
     public function getFpgmTable(): ?RawTable
     {
         return $this->fpgmTable;
     }
 
-    /**
-     * @param RawTable|null $fpgmTable
-     */
     public function setFpgmTable(?RawTable $fpgmTable): void
     {
         $this->fpgmTable = $fpgmTable;
     }
 
-    /**
-     * @return RawTable|null
-     */
     public function getGaspTable(): ?RawTable
     {
         return $this->gaspTable;
     }
 
-    /**
-     * @param RawTable|null $gaspTable
-     */
     public function setGaspTable(?RawTable $gaspTable): void
     {
         $this->gaspTable = $gaspTable;
     }
 
-    /**
-     * @return RawTable|null
-     */
     public function getGDEFTable(): ?RawTable
     {
         return $this->gDEFTable;
     }
 
-    /**
-     * @param RawTable|null $gDEFTable
-     */
     public function setGDEFTable(?RawTable $gDEFTable): void
     {
         $this->gDEFTable = $gDEFTable;
     }
 
-    /**
-     * @return RawTable|null
-     */
     public function getGPOSTable(): ?RawTable
     {
         return $this->gPOSTable;
     }
 
-    /**
-     * @param RawTable|null $gPOSTable
-     */
     public function setGPOSTable(?RawTable $gPOSTable): void
     {
         $this->gPOSTable = $gPOSTable;
     }
 
-    /**
-     * @return RawTable|null
-     */
     public function getGSUBTable(): ?RawTable
     {
         return $this->gSUBTable;
     }
 
-    /**
-     * @param RawTable|null $gSUBTable
-     */
     public function setGSUBTable(?RawTable $gSUBTable): void
     {
         $this->gSUBTable = $gSUBTable;
     }
 
-    /**
-     * @return HeadTable
-     */
     public function getHeadTable(): HeadTable
     {
         return $this->headTable;
     }
 
-    /**
-     * @param HeadTable $headTable
-     */
     public function setHeadTable(HeadTable $headTable): void
     {
         $this->headTable = $headTable;
     }
 
-    /**
-     * @return HHeaTable
-     */
     public function getHHeaTable(): HHeaTable
     {
         return $this->hHeaTable;
     }
 
-    /**
-     * @param HHeaTable $hHeaTable
-     */
     public function setHHeaTable(HHeaTable $hHeaTable): void
     {
         $this->hHeaTable = $hHeaTable;
     }
 
-    /**
-     * @return MaxPTable
-     */
     public function getMaxPTable(): MaxPTable
     {
         return $this->maxPTable;
     }
 
-    /**
-     * @param MaxPTable $maxPTable
-     */
     public function setMaxPTable(MaxPTable $maxPTable): void
     {
         $this->maxPTable = $maxPTable;
     }
 
-    /**
-     * @return NameTable|null
-     */
     public function getNameTable(): ?NameTable
     {
         return $this->nameTable;
     }
 
-    /**
-     * @param NameTable|null $nameTable
-     */
     public function setNameTable(?NameTable $nameTable): void
     {
         $this->nameTable = $nameTable;
     }
 
-    /**
-     * @return RawTable|null
-     */
     public function getOS2Table(): ?RawTable
     {
         return $this->oS2Table;
     }
 
-    /**
-     * @param RawTable|null $oS2Table
-     */
     public function setOS2Table(?RawTable $oS2Table): void
     {
         $this->oS2Table = $oS2Table;
     }
 
-    /**
-     * @return PostTable
-     */
     public function getPostTable(): PostTable
     {
         return $this->postTable;
     }
 
-    /**
-     * @param PostTable $postTable
-     */
     public function setPostTable(PostTable $postTable): void
     {
         $this->postTable = $postTable;
     }
 
-    /**
-     * @return RawTable|null
-     */
     public function getPrepTable(): ?RawTable
     {
         return $this->prepTable;
     }
 
-    /**
-     * @param RawTable|null $prepTable
-     */
     public function setPrepTable(?RawTable $prepTable): void
     {
         $this->prepTable = $prepTable;

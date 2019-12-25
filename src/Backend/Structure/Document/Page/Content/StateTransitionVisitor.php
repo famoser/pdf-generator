@@ -46,9 +46,6 @@ class StateTransitionVisitor
 
     /**
      * StateTransitionVisitor constructor.
-     *
-     * @param FullState $state
-     * @param DocumentResources $documentResources
      */
     public function __construct(FullState $state, DocumentResources $documentResources)
     {
@@ -57,8 +54,6 @@ class StateTransitionVisitor
     }
 
     /**
-     * @param ColorState $targetState
-     *
      * @return string[]
      */
     public function visitColorState(ColorState $targetState)
@@ -71,8 +66,6 @@ class StateTransitionVisitor
     }
 
     /**
-     * @param GeneralGraphicState $targetState
-     *
      * @return string[]
      */
     public function visitGeneralGraphicState(GeneralGraphicState $targetState)
@@ -85,8 +78,6 @@ class StateTransitionVisitor
     }
 
     /**
-     * @param TextState $targetState
-     *
      * @return string[]
      */
     public function visitTextState(TextState $targetState)
@@ -98,9 +89,6 @@ class StateTransitionVisitor
         return $this->getTextOperators($targetState, $previousState);
     }
 
-    /**
-     * @return FullState
-     */
     public function getAppliedState(): FullState
     {
         return new FullState(
@@ -111,9 +99,6 @@ class StateTransitionVisitor
     }
 
     /**
-     * @param TextState $targetState
-     * @param TextState $previousState
-     *
      * @return string[]
      */
     private function getTextOperators(TextState $targetState, TextState $previousState): array
@@ -157,9 +142,6 @@ class StateTransitionVisitor
     }
 
     /**
-     * @param GeneralGraphicState $targetState
-     * @param GeneralGraphicState $previousState
-     *
      * @return string[]
      */
     private function getGeneralGraphicsOperators(GeneralGraphicState $targetState, GeneralGraphicState $previousState): array
@@ -200,11 +182,6 @@ class StateTransitionVisitor
 
     /**
      * calculates a matrix for the diff between previous & current transformation matrix.
-     *
-     * @param array $previousTransformationMatrix
-     * @param array $targetTransformationMatrix
-     *
-     * @return array
      */
     private function transformToCurrentTransformationMatrix(array $previousTransformationMatrix, array $targetTransformationMatrix): array
     {
@@ -241,13 +218,6 @@ class StateTransitionVisitor
      * | e f 1 |
      * ---------
      *
-     * @param float $a
-     * @param float $b
-     * @param float $c
-     * @param float $d
-     * @param float $e
-     * @param float $f
-     *
      * @return array
      */
     private function invertMatrix(float $a, float $b, float $c, float $d, float $e, float $f)
@@ -270,9 +240,6 @@ class StateTransitionVisitor
     }
 
     /**
-     * @param ColorState $targetState
-     * @param ColorState $previousState
-     *
      * @return string[]
      */
     private function getColorOperators(ColorState $targetState, ColorState $previousState): array

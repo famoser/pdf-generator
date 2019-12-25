@@ -31,8 +31,6 @@ class Format0 extends Format
      * the format of the encoding.
      *
      * @ttf-type uint16
-     *
-     * @return int
      */
     public function getFormat(): int
     {
@@ -56,8 +54,6 @@ class Format0 extends Format
     }
 
     /**
-     * @param VisitorInterface $formatVisitor
-     *
      * @return mixed
      */
     public function accept(VisitorInterface $formatVisitor)

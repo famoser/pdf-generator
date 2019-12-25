@@ -22,9 +22,6 @@ class Body extends BaseStructure
      */
     private $entries = [];
 
-    /**
-     * @param BaseObject $baseObject
-     */
     public function addObject(BaseObject $baseObject)
     {
         $this->entries[] = $baseObject;
@@ -38,11 +35,6 @@ class Body extends BaseStructure
         return $this->entries;
     }
 
-    /**
-     * @param StructureVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(StructureVisitor $visitor): string
     {
         return $visitor->visitBody($this);

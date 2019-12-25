@@ -24,9 +24,6 @@ class Document
      */
     private $pages = [];
 
-    /**
-     * @param Page $page
-     */
     public function addPage(Page $page)
     {
         $this->pages[] = $page;

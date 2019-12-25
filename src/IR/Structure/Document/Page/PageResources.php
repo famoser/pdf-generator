@@ -56,8 +56,6 @@ class PageResources
 
     /**
      * PageResources constructor.
-     *
-     * @param DocumentResources $documentResources
      */
     public function __construct(DocumentResources $documentResources)
     {
@@ -68,33 +66,22 @@ class PageResources
         $this->textStateRepository = new TextStateRepository();
     }
 
-    /**
-     * @return GeneralGraphicStateRepository
-     */
     public function getGeneralGraphicStateRepository(): GeneralGraphicStateRepository
     {
         return $this->generalGraphicStateRepository;
     }
 
-    /**
-     * @return ColorStateRepository
-     */
     public function getColorStateRepository(): ColorStateRepository
     {
         return $this->colorStateRepository;
     }
 
-    /**
-     * @return TextStateRepository
-     */
     public function getTextStateRepository(): TextStateRepository
     {
         return $this->textStateRepository;
     }
 
     /**
-     * @param Font $structure
-     *
      * @return BackendFont
      */
     public function getFont(Font $structure)
@@ -106,8 +93,6 @@ class PageResources
     }
 
     /**
-     * @param Image $structure
-     *
      * @return BackendImage
      */
     public function getImage(Image $structure)

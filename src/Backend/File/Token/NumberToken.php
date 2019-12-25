@@ -31,11 +31,6 @@ class NumberToken extends BaseToken
         $this->number = $number;
     }
 
-    /**
-     * @param TokenVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TokenVisitor $visitor): string
     {
         return $visitor->visitNumberToken($this);

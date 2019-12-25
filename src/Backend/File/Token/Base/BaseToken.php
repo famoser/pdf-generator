@@ -15,10 +15,5 @@ use PdfGenerator\Backend\File\TokenVisitor;
 
 abstract class BaseToken
 {
-    /**
-     * @param TokenVisitor $visitor
-     *
-     * @return string
-     */
     abstract public function accept(TokenVisitor $visitor): string;
 }

@@ -45,8 +45,6 @@ class Format12 extends Format
      * the format of the encoding.
      *
      * @ttf-type fixed32
-     *
-     * @return int
      */
     public function getFormat(): int
     {
@@ -54,8 +52,6 @@ class Format12 extends Format
     }
 
     /**
-     * @param VisitorInterface $formatVisitor
-     *
      * @return mixed
      */
     public function accept(VisitorInterface $formatVisitor)
@@ -63,17 +59,11 @@ class Format12 extends Format
         return $formatVisitor->visitFormat12($this);
     }
 
-    /**
-     * @return int
-     */
     public function getNGroups(): int
     {
         return $this->nGroups;
     }
 
-    /**
-     * @param int $nGroups
-     */
     public function setNGroups(int $nGroups): void
     {
         $this->nGroups = $nGroups;
@@ -87,9 +77,6 @@ class Format12 extends Format
         return $this->groups;
     }
 
-    /**
-     * @param Format12Group $group
-     */
     public function addGroup(Format12Group $group): void
     {
         $this->groups[] = $group;

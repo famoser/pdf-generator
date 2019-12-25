@@ -51,9 +51,6 @@ class TableLayout implements TableLayoutInterface
     private $rows;
 
     /**
-     * @param Document $pdfDocument
-     * @param float $width
-     * @param float $columnGutter
      * @param ColumnConfiguration[] $columnConfiguration
      *
      * @throws \Exception
@@ -96,11 +93,7 @@ class TableLayout implements TableLayoutInterface
     }
 
     /**
-     * @param Document $pdfDocument
      * @param ColumnConfiguration[] $columnConfiguration
-     * @param float $width
-     * @param float $columnGutter
-     * @param int $columnCount
      *
      * @throws \Exception
      *

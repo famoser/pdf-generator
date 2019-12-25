@@ -26,33 +26,21 @@ class RawTable
      */
     private $content;
 
-    /**
-     * @return string
-     */
     public function getTag(): string
     {
         return $this->tag;
     }
 
-    /**
-     * @param string $tag
-     */
     public function setTag(string $tag): void
     {
         $this->tag = $tag;
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     */
     public function setContent(string $content): void
     {
         $this->content = $content;

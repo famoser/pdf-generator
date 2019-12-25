@@ -55,41 +55,26 @@ class CMapTable
      */
     private $subtables;
 
-    /**
-     * @return int
-     */
     public function getVersion(): int
     {
         return $this->version;
     }
 
-    /**
-     * @param int $version
-     */
     public function setVersion(int $version): void
     {
         $this->version = $version;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberSubtables(): int
     {
         return $this->numberSubtables;
     }
 
-    /**
-     * @param int $numberSubtables
-     */
     public function setNumberSubtables(int $numberSubtables): void
     {
         $this->numberSubtables = $numberSubtables;
     }
 
-    /**
-     * @param Subtable $subtable
-     */
     public function addSubtable(Subtable $subtable)
     {
         $this->subtables[] = $subtable;

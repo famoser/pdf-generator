@@ -42,9 +42,6 @@ class DefaultFont extends Font
 
     /**
      * DefaultFont constructor.
-     *
-     * @param string $font
-     * @param string $style
      */
     public function __construct(string $font, string $style)
     {
@@ -53,8 +50,6 @@ class DefaultFont extends Font
     }
 
     /**
-     * @param DocumentVisitor $visitor
-     *
      * @throws \Exception
      *
      * @return mixed
@@ -72,17 +67,11 @@ class DefaultFont extends Font
         return $this->font . '_' . $this->style;
     }
 
-    /**
-     * @return string
-     */
     public function getFont(): string
     {
         return $this->font;
     }
 
-    /**
-     * @return string
-     */
     public function getStyle(): string
     {
         return $this->style;
@@ -90,10 +79,6 @@ class DefaultFont extends Font
 
     /**
      * sets the encoding used by the font.
-     *
-     * @param string $escaped
-     *
-     * @return string
      */
     public function encode(string $escaped): string
     {

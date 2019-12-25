@@ -41,81 +41,51 @@ class Character
      */
     private $longHorMetric;
 
-    /**
-     * @return int
-     */
     public function getUnicodePoint(): int
     {
         return $this->unicodePoint;
     }
 
-    /**
-     * @param int $unicodePoint
-     */
     public function setUnicodePoint(int $unicodePoint): void
     {
         $this->unicodePoint = $unicodePoint;
     }
 
-    /**
-     * @return PostScriptInfo
-     */
     public function getPostScriptInfo(): PostScriptInfo
     {
         return $this->postScriptInfo;
     }
 
-    /**
-     * @param PostScriptInfo $postScriptInfo
-     */
     public function setPostScriptInfo(PostScriptInfo $postScriptInfo): void
     {
         $this->postScriptInfo = $postScriptInfo;
     }
 
-    /**
-     * @return BoundingBox|null
-     */
     public function getBoundingBox(): ?BoundingBox
     {
         return $this->boundingBox;
     }
 
-    /**
-     * @param BoundingBox|null $boundingBox
-     */
     public function setBoundingBox(?BoundingBox $boundingBox): void
     {
         $this->boundingBox = $boundingBox;
     }
 
-    /**
-     * @return GlyfTable|null
-     */
     public function getGlyfTable(): ?GlyfTable
     {
         return $this->glyfTable;
     }
 
-    /**
-     * @param GlyfTable|null $glyfTable
-     */
     public function setGlyfTable(?GlyfTable $glyfTable): void
     {
         $this->glyfTable = $glyfTable;
     }
 
-    /**
-     * @return LongHorMetric
-     */
     public function getLongHorMetric(): LongHorMetric
     {
         return $this->longHorMetric;
     }
 
-    /**
-     * @param LongHorMetric $longHorMetric
-     */
     public function setLongHorMetric(LongHorMetric $longHorMetric): void
     {
         $this->longHorMetric = $longHorMetric;

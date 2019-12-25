@@ -19,11 +19,6 @@ class ColumnLayout extends StatefulColumnedLayout implements ColumnLayoutInterfa
 {
     /**
      * ColumnLayout constructor.
-     *
-     * @param Document $pdfDocument
-     * @param int $columnCount
-     * @param float $columnGutter
-     * @param float $totalWidth
      */
     public function __construct(Document $pdfDocument, int $columnCount, float $columnGutter, float $totalWidth)
     {

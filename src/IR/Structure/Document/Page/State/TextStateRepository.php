@@ -36,10 +36,6 @@ class TextStateRepository
      */
     private $activeTextState;
 
-    /**
-     * @param float $fontSize
-     * @param float $lineHeight
-     */
     public function setFontSize(float $fontSize, float $lineHeight = 1.2)
     {
         $this->fontSize = $fontSize;
@@ -48,9 +44,6 @@ class TextStateRepository
         $this->activeTextState = null;
     }
 
-    /**
-     * @param Font $font
-     */
     public function setFont(Font $font): void
     {
         $this->font = $font;

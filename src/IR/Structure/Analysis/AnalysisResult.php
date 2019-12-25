@@ -39,21 +39,11 @@ class AnalysisResult
         $this->textPerFont = $textPerFont;
     }
 
-    /**
-     * @param Image $image
-     *
-     * @return Size
-     */
     public function getMaxSizePerImage(Image $image): Size
     {
         return $this->maxSizePerImage[$image->getIdentifier()];
     }
 
-    /**
-     * @param Font $font
-     *
-     * @return string
-     */
     public function getTextPerFont(Font $font): string
     {
         return $this->textPerFont[$font->getIdentifier()];

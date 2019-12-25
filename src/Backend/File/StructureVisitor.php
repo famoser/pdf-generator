@@ -44,8 +44,6 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\FileHeader $param
-     *
      * @return string
      */
     public function visitFileHeader(Structure\FileHeader $param)
@@ -75,8 +73,6 @@ class StructureVisitor
     }
 
     /**
-     * @param CrossReferenceTable $param
-     *
      * @return string
      */
     public function visitCrossReferenceTable(CrossReferenceTable $param)
@@ -94,8 +90,6 @@ class StructureVisitor
     }
 
     /**
-     * @param Structure\Body $param
-     *
      * @return string
      */
     public function visitBody(Structure\Body $param)

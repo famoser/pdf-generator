@@ -26,7 +26,6 @@ use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
 use PdfGenerator\Font\Backend\FileWriter;
-use PdfGenerator\Font\IR\CharacterRepository;
 use PdfGenerator\Font\IR\Optimizer;
 use PdfGenerator\Font\IR\Structure\Font;
 
@@ -59,8 +58,6 @@ class DocumentVisitor
 
     /**
      * DocumentVisitor constructor.
-     *
-     * @param Configuration $configuration
      */
     public function __construct(Configuration $configuration)
     {
@@ -72,8 +69,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param string $prefix
-     *
      * @return string
      */
     private function generateIdentifier(string $prefix)
@@ -88,8 +83,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param Image $param
-     *
      * @return CatalogImage
      */
     public function visitImage(Image $param)
@@ -121,8 +114,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param DefaultFont $param
-     *
      * @return Type1
      */
     public function visitDefaultFont(DefaultFont $param)
@@ -132,78 +123,20 @@ class DocumentVisitor
         return new Type1($identifier, $param->getBaseFont(), $param->getEncoding());
     }
 
-
     /**
-     * puts all used codepoints into ascending array.
-     *
-     * @param string $characters
-     *
-     * @return int[]
-     */
-    public function getOrderedCodepoints(string $characters): array
-    {
-        // split into characters (not bytes, like explode() or str_split() would)
-        $characterArray = preg_split('//u', $characters, -1, PREG_SPLIT_NO_EMPTY);
-        $uniqueCharacters = array_unique($characterArray);
-
-        // get used codepoints
-        $codePoints = [];
-        foreach ($uniqueCharacters as $uniqueCharacter) {
-            $codePoint = mb_ord($uniqueCharacter);
-            $codePoints[] = $codePoint;
-        }
-
-        sort($codePoints);
-
-        return $codePoints;
-    }
-
-    /**
-     * @param EmbeddedFont $param
-     *
      * @throws \Exception
      *
      * @return Type0
      */
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
-        $orderedCodePoints = $this->getOrderedCodepoints($param->getUsedWithText());
-
         $font = $param->getFont();
 
-        $characterRepository = new CharacterRepository($font);
-
-        // build up newly needed characters
-        $characters = [$font->getMissingGlyphCharacter()];
-        $missingCodePoints = [];
-        foreach ($orderedCodePoints as $index => $codePoint) {
-            $character = $characterRepository->findByCodePoint($codePoint);
-            if ($character !== null) {
-                $characters[] = $character;
-            } else {
-                $missingCodePoints[$index] = $codePoint;
-            }
-        }
-
-        $notEncodedChars = [];
-        foreach ($missingCodePoints as $index => $value) {
-            unset($orderedCodePoints[$index]);
-
-            if ($value == 10) {
-                $notEncodedChars[] = $index;
-            }
-        }
-
-        foreach ($notEncodedChars as $notEncodedChar) {
-            unset($missingCodePoints[$index]);
-        }
-
-        $orderedCodePoints = array_values($orderedCodePoints);
-        $missingCodePoints = array_values($missingCodePoints);
+        $fontSubsetDefinition = $this->fontOptimizer->generateFontSubset($font, $param->getUsedWithText());
 
         // create subset
         $optimizer = Optimizer::create();
-        $fontSubset = $optimizer->getFontSubset($font, $characters);
+        $fontSubset = $optimizer->getFontSubset($font, $fontSubsetDefinition->getCharacters());
 
         $writer = FileWriter::create();
         $content = $writer->writeFont($fontSubset);
@@ -239,20 +172,13 @@ class DocumentVisitor
         $type0Font->setDescendantFont($cidFont);
         $type0Font->setBaseFont($fontName);
 
-        $cMap = $this->cMapCreator->createCMap($cIDSystemInfo, 'someName', $orderedCodePoints, $missingCodePoints);
+        $cMap = $this->cMapCreator->createCMap($cIDSystemInfo, 'someName', $fontSubsetDefinition->getCodePoints(), $fontSubsetDefinition->getMissingCodePoints());
         $type0Font->setEncoding($cMap);
         $type0Font->setToUnicode($cMap); // TODO: unicode CMap not implemented yet
 
         return $type0Font;
     }
 
-    /**
-     * @param string $fontName
-     * @param Font $font
-     * @param FontStream $fontStream
-     *
-     * @return FontDescriptor
-     */
     private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream): FontDescriptor
     {
         $fontDescriptor = new FontDescriptor();

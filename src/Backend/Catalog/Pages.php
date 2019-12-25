@@ -25,17 +25,12 @@ class Pages extends BaseStructure
      */
     private $kids = [];
 
-    /**
-     * @param Page $page
-     */
     public function addPage(Page $page)
     {
         $this->kids[] = $page;
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject
      */
     public function accept(CatalogVisitor $visitor)

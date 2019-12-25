@@ -23,8 +23,6 @@ class Image extends BaseDocumentStructure
 
     /**
      * Image constructor.
-     *
-     * @param string $imagePath
      */
     public function __construct(string $imagePath)
     {
@@ -32,8 +30,6 @@ class Image extends BaseDocumentStructure
     }
 
     /**
-     * @param DocumentVisitor $visitor
-     *
      * @return mixed
      */
     public function accept(DocumentVisitor $visitor)
@@ -49,9 +45,6 @@ class Image extends BaseDocumentStructure
         return $this->imagePath;
     }
 
-    /**
-     * @return string
-     */
     public function getImagePath(): string
     {
         return $this->imagePath;

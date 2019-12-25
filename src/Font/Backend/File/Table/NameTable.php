@@ -58,49 +58,31 @@ class NameTable extends BaseTable
      */
     private $nameRecords = [];
 
-    /**
-     * @return int
-     */
     public function getFormat(): int
     {
         return $this->format;
     }
 
-    /**
-     * @param int $format
-     */
     public function setFormat(int $format): void
     {
         $this->format = $format;
     }
 
-    /**
-     * @return int
-     */
     public function getCount(): int
     {
         return $this->count;
     }
 
-    /**
-     * @param int $count
-     */
     public function setCount(int $count): void
     {
         $this->count = $count;
     }
 
-    /**
-     * @return int
-     */
     public function getStringOffset(): int
     {
         return $this->stringOffset;
     }
 
-    /**
-     * @param int $stringOffset
-     */
     public function setStringOffset(int $stringOffset): void
     {
         $this->stringOffset = $stringOffset;
@@ -114,19 +96,11 @@ class NameTable extends BaseTable
         return $this->nameRecords;
     }
 
-    /**
-     * @param NameRecord $nameRecord
-     */
     public function addNameRecord(NameRecord $nameRecord): void
     {
         $this->nameRecords[] = $nameRecord;
     }
 
-    /**
-     * @param TableVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TableVisitor $visitor): string
     {
         return $visitor->visitNameTable($this);

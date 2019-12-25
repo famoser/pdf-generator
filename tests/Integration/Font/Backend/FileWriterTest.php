@@ -128,12 +128,7 @@ class FileWriterTest extends TestCase
     }
 
     /**
-     * @param Font $font
-     * @param string $character
-     *
      * @throws \Exception
-     *
-     * @return Font
      */
     private static function getFontSubset(Font $font, string $character): Font
     {

@@ -64,49 +64,31 @@ class Subtable
      */
     private $format;
 
-    /**
-     * @return int
-     */
     public function getPlatformID(): int
     {
         return $this->platformID;
     }
 
-    /**
-     * @param int $platformID
-     */
     public function setPlatformID(int $platformID): void
     {
         $this->platformID = $platformID;
     }
 
-    /**
-     * @return int
-     */
     public function getPlatformSpecificID(): int
     {
         return $this->platformSpecificID;
     }
 
-    /**
-     * @param int $platformSpecificID
-     */
     public function setPlatformSpecificID(int $platformSpecificID): void
     {
         $this->platformSpecificID = $platformSpecificID;
     }
 
-    /**
-     * @return Format
-     */
     public function getFormat(): Format
     {
         return $this->format;
     }
 
-    /**
-     * @param Format $format
-     */
     public function setFormat(Format $format): void
     {
         $this->format = $format;

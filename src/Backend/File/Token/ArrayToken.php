@@ -31,11 +31,6 @@ class ArrayToken extends BaseToken
         $this->values = $values;
     }
 
-    /**
-     * @param TokenVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TokenVisitor $visitor): string
     {
         return $visitor->visitArrayToken($this);

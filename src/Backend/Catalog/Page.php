@@ -42,11 +42,6 @@ class Page extends BaseStructure
 
     /**
      * Page constructor.
-     *
-     * @param Pages $parent
-     * @param array $mediaBox
-     * @param Resources $resources
-     * @param Contents $contents
      */
     public function __construct(Pages $parent, array $mediaBox, Resources $resources, Contents $contents)
     {
@@ -57,8 +52,6 @@ class Page extends BaseStructure
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject
      */
     public function accept(CatalogVisitor $visitor)
@@ -66,9 +59,6 @@ class Page extends BaseStructure
         return $visitor->visitPage($this);
     }
 
-    /**
-     * @return Pages
-     */
     public function getParent(): Pages
     {
         return $this->parent;
@@ -82,17 +72,11 @@ class Page extends BaseStructure
         return $this->mediaBox;
     }
 
-    /**
-     * @return Contents
-     */
     public function getContents(): Contents
     {
         return $this->contents;
     }
 
-    /**
-     * @return Resources
-     */
     public function getResources(): Resources
     {
         return $this->resources;

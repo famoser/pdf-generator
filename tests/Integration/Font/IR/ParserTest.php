@@ -35,9 +35,6 @@ class ParserTest extends TestCase
         $this->assertSanityChecks($font);
     }
 
-    /**
-     * @param Font $font
-     */
     private function assertSanityChecks(Font $font)
     {
         $characterRepo = new CharacterRepository($font);

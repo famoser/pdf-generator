@@ -93,8 +93,6 @@ class Format4 extends Format
      * the format of the encoding.
      *
      * @ttf-type uint16
-     *
-     * @return int
      */
     public function getFormat(): int
     {
@@ -111,17 +109,11 @@ class Format4 extends Format
         return $this->segCountX2;
     }
 
-    /**
-     * @return int
-     */
     public function getSegCountX2(): int
     {
         return $this->segCountX2;
     }
 
-    /**
-     * @param int $segCountX2
-     */
     public function setSegCountX2(int $segCountX2): void
     {
         $this->segCountX2 = $segCountX2;
@@ -143,17 +135,11 @@ class Format4 extends Format
         $this->endCodes = $endCodes;
     }
 
-    /**
-     * @return int
-     */
     public function getReservedPad(): int
     {
         return $this->reservedPad;
     }
 
-    /**
-     * @param int $reservedPad
-     */
     public function setReservedPad(int $reservedPad): void
     {
         $this->reservedPad = $reservedPad;
@@ -223,42 +209,26 @@ class Format4 extends Format
         $this->glyphIndexArray = $glyphIndexArray;
     }
 
-    /**
-     * @param int $startCode
-     */
     public function addStartCode(int $startCode)
     {
         $this->startCodes[] = $startCode;
     }
 
-    /**
-     * @param int $endCode
-     */
     public function addEndCode(int $endCode)
     {
         $this->endCodes[] = $endCode;
     }
 
-    /**
-     * @param int $idDelta
-     */
     public function addIdDelta(int $idDelta)
     {
         $this->idDeltas[] = $idDelta;
     }
 
-    /**
-     * @param int $idRangeOffset
-     */
     public function addIdRangeOffset(int $idRangeOffset)
     {
         $this->idRangeOffsets[] = $idRangeOffset;
     }
 
-    /**
-     * @param FormatVisitor $formatVisitor
-     * @param StreamWriter $streamWriter
-     */
     public function accept(FormatVisitor $formatVisitor, StreamWriter $streamWriter): void
     {
         $formatVisitor->visitFormat4($this, $streamWriter);

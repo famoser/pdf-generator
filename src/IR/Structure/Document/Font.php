@@ -17,10 +17,6 @@ abstract class Font extends BaseDocumentStructure
 {
     /**
      * sets the encoding used by the font.
-     *
-     * @param string $escaped
-     *
-     * @return string
      */
     abstract public function encode(string $escaped): string;
 }

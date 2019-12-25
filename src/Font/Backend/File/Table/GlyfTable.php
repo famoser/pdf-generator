@@ -46,27 +46,16 @@ class GlyfTable extends BaseTable
      */
     use RawContent;
 
-    /**
-     * @return int
-     */
     public function getNumberOfContours(): int
     {
         return $this->numberOfContours;
     }
 
-    /**
-     * @param int $numberOfContours
-     */
     public function setNumberOfContours(int $numberOfContours): void
     {
         $this->numberOfContours = $numberOfContours;
     }
 
-    /**
-     * @param TableVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TableVisitor $visitor): string
     {
         return $visitor->visitGlyfTable($this);

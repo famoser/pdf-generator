@@ -47,8 +47,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readUInt8(): int
     {
@@ -65,8 +63,6 @@ class StreamReader
     }
 
     /**
-     * @param int $size
-     *
      * @throws \Exception
      *
      * @return int[]
@@ -83,8 +79,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readInt8(): int
     {
@@ -94,8 +88,6 @@ class StreamReader
     }
 
     /**
-     * @param int $size
-     *
      * @throws \Exception
      *
      * @return int[]
@@ -112,8 +104,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readUInt16(): int
     {
@@ -124,8 +114,6 @@ class StreamReader
     }
 
     /**
-     * @param int $size
-     *
      * @throws \Exception
      *
      * @return int[]
@@ -142,8 +130,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readInt16(): int
     {
@@ -153,8 +139,6 @@ class StreamReader
     }
 
     /**
-     * @param int $size
-     *
      * @throws \Exception
      *
      * @return int[]
@@ -171,8 +155,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readUInt24(): int
     {
@@ -184,8 +166,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readUInt32(): int
     {
@@ -196,8 +176,6 @@ class StreamReader
     }
 
     /**
-     * @param int $size
-     *
      * @throws \Exception
      *
      * @return int[]
@@ -214,8 +192,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readInt32(): int
     {
@@ -226,8 +202,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return float
      */
     public function readFixed(): float
     {
@@ -239,8 +213,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readFWORD(): int
     {
@@ -249,8 +221,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readLONGDATETIME(): int
     {
@@ -264,8 +234,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return array
      */
     public function readTag(): array
     {
@@ -279,8 +247,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return string
      */
     public function readTagAsString(): string
     {
@@ -294,8 +260,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readOffset16(): int
     {
@@ -303,11 +267,7 @@ class StreamReader
     }
 
     /**
-     * @param int $size
-     *
      * @throws \Exception
-     *
-     * @return array
      */
     public function readOffset16Array(int $size): array
     {
@@ -316,8 +276,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return int
      */
     public function readOffset32(): int
     {
@@ -325,8 +283,6 @@ class StreamReader
     }
 
     /**
-     * @param int $size
-     *
      * @throws \Exception
      *
      * @return int[]
@@ -348,8 +304,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return float
      */
     public function readF2DOT14(): float
     {
@@ -379,8 +333,6 @@ class StreamReader
 
     /**
      * @throws \Exception
-     *
-     * @return bool
      */
     public function isEndOfFileReached(): bool
     {
@@ -389,9 +341,6 @@ class StreamReader
 
     /**
      * @param $content
-     * @param int $offset
-     *
-     * @return int
      */
     private static function unpackUInt16($content, int $offset): int
     {
@@ -400,9 +349,6 @@ class StreamReader
 
     /**
      * @param $content
-     * @param int $offset
-     *
-     * @return int
      */
     private static function unpackUInt32($content, int $offset): int
     {
@@ -411,9 +357,6 @@ class StreamReader
 
     /**
      * @param $content
-     * @param int $offset
-     *
-     * @return int
      */
     private static function unpackUInt64($content, int $offset): int
     {
@@ -422,8 +365,6 @@ class StreamReader
 
     /**
      * @param $number
-     *
-     * @return int
      */
     private static function transformTo8Bit(int $number): int
     {
@@ -431,12 +372,6 @@ class StreamReader
         return $number & 0xff;
     }
 
-    /**
-     * @param int $number
-     * @param int $bits
-     *
-     * @return int
-     */
     private static function transformToSinged(int $number, int $bits): int
     {
         $cutoff = 2 ** ($bits - 1);
@@ -444,17 +379,11 @@ class StreamReader
         return $number < $cutoff ? $number : $number - 2 ** $bits;
     }
 
-    /**
-     * @return int
-     */
     public function getOffset(): int
     {
         return $this->offset;
     }
 
-    /**
-     * @param int $offset
-     */
     public function setOffset(int $offset)
     {
         $this->offset = $offset;
@@ -464,8 +393,6 @@ class StreamReader
 
     /**
      * remembers the current offset location and then sets the offset to the new value.
-     *
-     * @param int $offset
      */
     public function pushOffset(int $offset)
     {
@@ -483,8 +410,6 @@ class StreamReader
     }
 
     /**
-     * @param int $offset
-     *
      * @return string
      */
     public function readUntil(int $offset)
@@ -499,8 +424,6 @@ class StreamReader
     }
 
     /**
-     * @param int $length
-     *
      * @return string
      */
     public function readFor(int $length)

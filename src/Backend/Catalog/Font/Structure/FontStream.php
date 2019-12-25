@@ -34,41 +34,27 @@ class FontStream extends BaseStructure
      */
     private $fontData;
 
-    /**
-     * @return string
-     */
     public function getSubtype(): string
     {
         return $this->subtype;
     }
 
-    /**
-     * @param string $subtype
-     */
     public function setSubtype(string $subtype): void
     {
         $this->subtype = $subtype;
     }
 
-    /**
-     * @return string
-     */
     public function getFontData(): string
     {
         return $this->fontData;
     }
 
-    /**
-     * @param string $fontData
-     */
     public function setFontData(string $fontData): void
     {
         $this->fontData = $fontData;
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject|BaseObject[]
      */
     public function accept(CatalogVisitor $visitor)

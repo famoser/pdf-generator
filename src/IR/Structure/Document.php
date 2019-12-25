@@ -41,11 +41,6 @@ class Document
      */
     private $embeddedFonts = [];
 
-    /**
-     * @param int $pageNumber
-     *
-     * @return Page
-     */
     public function getOrCreatePage(int $pageNumber): Page
     {
         $maxPageNumber = \count($this->pages);
@@ -58,11 +53,6 @@ class Document
         return $this->pages[$pageNumber - 1];
     }
 
-    /**
-     * @param string $imagePath
-     *
-     * @return Image
-     */
     public function getOrCreateImage(string $imagePath): Image
     {
         if (!\array_key_exists($imagePath, $this->images)) {
@@ -72,12 +62,6 @@ class Document
         return $this->images[$imagePath];
     }
 
-    /**
-     * @param string $font
-     * @param string $style
-     *
-     * @return DefaultFont
-     */
     public function getOrCreateDefaultFont(string $font, string $style): DefaultFont
     {
         $key = $font . '_' . $style;
@@ -89,11 +73,7 @@ class Document
     }
 
     /**
-     * @param string $fontPath
-     *
      * @throws \Exception
-     *
-     * @return EmbeddedFont
      */
     public function getOrCreateEmbeddedFont(string $fontPath): EmbeddedFont
     {
@@ -134,9 +114,6 @@ class Document
         return $this->render()->save();
     }
 
-    /**
-     * @return AnalysisResult
-     */
     private function analyze(): AnalysisResult
     {
         $analyzeContentVisitor = new AnalyzeContentVisitor();

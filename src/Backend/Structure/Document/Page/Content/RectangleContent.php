@@ -44,12 +44,6 @@ class RectangleContent extends BaseContent
      */
     private $color;
 
-    /**
-     * @param float $width
-     * @param float $height
-     * @param int $paintingMode
-     * @param DrawingState $color
-     */
     public function __construct(float $width, float $height, int $paintingMode, DrawingState $color)
     {
         $this->width = $width;
@@ -58,33 +52,21 @@ class RectangleContent extends BaseContent
         $this->color = $color;
     }
 
-    /**
-     * @return float
-     */
     public function getWidth(): float
     {
         return $this->width;
     }
 
-    /**
-     * @return float
-     */
     public function getHeight(): float
     {
         return $this->height;
     }
 
-    /**
-     * @return int
-     */
     public function getPaintingMode(): int
     {
         return $this->paintingMode;
     }
 
-    /**
-     * @return DrawingState
-     */
     public function getColor(): DrawingState
     {
         return $this->color;
@@ -98,11 +80,6 @@ class RectangleContent extends BaseContent
         return $this->color->getState();
     }
 
-    /**
-     * @param ContentVisitor $visitor
-     *
-     * @return Content
-     */
     public function accept(ContentVisitor $visitor): Content
     {
         return $visitor->visitRectangleContent($this);

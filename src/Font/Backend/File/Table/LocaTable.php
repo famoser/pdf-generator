@@ -52,19 +52,11 @@ class LocaTable extends BaseTable
         $this->offsets = $offsets;
     }
 
-    /**
-     * @param int $offset
-     */
     public function addOffset(int $offset): void
     {
         $this->offsets[] = $offset;
     }
 
-    /**
-     * @param TableVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TableVisitor $visitor): string
     {
         return $visitor->visitLocaTable($this);

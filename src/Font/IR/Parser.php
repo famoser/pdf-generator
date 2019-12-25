@@ -49,10 +49,6 @@ class Parser
 
     /**
      * Parser constructor.
-     *
-     * @param GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor
-     * @param Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor
-     * @param Factory $glyphNameMappingFactory
      */
     public function __construct(GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, Factory $glyphNameMappingFactory)
     {
@@ -74,11 +70,7 @@ class Parser
     }
 
     /**
-     * @param string $content
-     *
-     * @return Font
      * @throws \Exception
-     *
      */
     public function parse(string $content): Font
     {
@@ -94,11 +86,7 @@ class Parser
     }
 
     /**
-     * @param FontFile $fontFile
-     *
-     * @return Font
      * @throws \Exception
-     *
      */
     private function createFont(FontFile $fontFile): Font
     {
@@ -122,8 +110,6 @@ class Parser
     }
 
     /**
-     * @param FontFile $fontFile
-     *
      * @return TableDirectory
      */
     private function createTableDirectory(FontFile $fontFile)
@@ -150,11 +136,10 @@ class Parser
 
     /**
      * @param Character[] $characters
-     * @param FontFile $fontFile
      *
-     * @return Character[]
      * @throws \Exception
      *
+     * @return Character[]
      */
     private function mapCharacters(array $characters, FontFile $fontFile)
     {
@@ -183,8 +168,6 @@ class Parser
     }
 
     /**
-     * @param CMapTable $cMapTable
-     *
      * @return Subtable
      */
     private function chooseBestCMapSubtable(CMapTable $cMapTable)
@@ -217,8 +200,6 @@ class Parser
     }
 
     /**
-     * @param FontFile $fontFile
-     *
      * @return Character[]
      */
     private function createCharacters(FontFile $fontFile): array
@@ -247,12 +228,6 @@ class Parser
         return $characters;
     }
 
-    /**
-     * @param HMtxTable $hMtxTable
-     * @param int $entryIndex
-     *
-     * @return LongHorMetric
-     */
     private function getLongHorMetric(HMtxTable $hMtxTable, int $entryIndex): LongHorMetric
     {
         $longHorMetricCount = \count($hMtxTable->getLongHorMetrics());
@@ -273,7 +248,6 @@ class Parser
 
     /**
      * @param BoundingBoxTrait $boundingBoxTrait
-     * @param int $divisor
      *
      * @return BoundingBox
      */
@@ -288,9 +262,6 @@ class Parser
     }
 
     /**
-     * @param GlyphInfo|null $glyphInfo
-     * @param string|null $aGLFName
-     *
      * @return PostScriptInfo
      */
     private function getPostScriptInfo(?GlyphInfo $glyphInfo, ?string $aGLFName)

@@ -39,8 +39,6 @@ class DocumentVisitor
 
     /**
      * DocumentStructureVisitor constructor.
-     *
-     * @param AnalysisResult $analysisResult
      */
     public function __construct(AnalysisResult $analysisResult)
     {
@@ -50,8 +48,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param DefaultFont $param
-     *
      * @throws \Exception
      *
      * @return BackendDefaultFont
@@ -65,12 +61,7 @@ class DocumentVisitor
     }
 
     /**
-     * @param string $font
-     * @param string $style
-     *
      * @throws \Exception
-     *
-     * @return string
      */
     private function getDefaultFontBaseFont(string $font, string $style): string
     {
@@ -87,8 +78,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param EmbeddedFont $param
-     *
      * @throws \Exception
      *
      * @return BackendEmbeddedFont
@@ -101,8 +90,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param Image $param
-     *
      * @throws \Exception
      *
      * @return BackendImage
@@ -119,8 +106,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param string $imagePath
-     *
      * @throws \Exception
      *
      * @return string
@@ -143,8 +128,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param Page $param
-     *
      * @return BackendPage
      */
     public function visitPage(Page $param)

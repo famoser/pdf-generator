@@ -50,41 +50,26 @@ class CMapTable extends BaseTable
      */
     private $subtables;
 
-    /**
-     * @return int
-     */
     public function getVersion(): int
     {
         return $this->version;
     }
 
-    /**
-     * @param int $version
-     */
     public function setVersion(int $version): void
     {
         $this->version = $version;
     }
 
-    /**
-     * @return int
-     */
     public function getNumberSubtables(): int
     {
         return $this->numberSubtables;
     }
 
-    /**
-     * @param int $numberSubtables
-     */
     public function setNumberSubtables(int $numberSubtables): void
     {
         $this->numberSubtables = $numberSubtables;
     }
 
-    /**
-     * @param Subtable $subtable
-     */
     public function addSubtable(Subtable $subtable)
     {
         $this->subtables[] = $subtable;
@@ -98,11 +83,6 @@ class CMapTable extends BaseTable
         return $this->subtables;
     }
 
-    /**
-     * @param TableVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TableVisitor $visitor): string
     {
         return $visitor->visitCMapTable($this);

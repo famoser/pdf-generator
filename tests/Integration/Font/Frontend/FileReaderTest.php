@@ -81,9 +81,6 @@ class FileReaderTest extends TestCase
         $this->assertCount(0, $font->getRawTables());
     }
 
-    /**
-     * @param CMapTable $cmapTable
-     */
     private function assertCMapTable(CMapTable $cmapTable)
     {
         $this->assertSame(0, $cmapTable->getVersion());
@@ -159,9 +156,6 @@ class FileReaderTest extends TestCase
         }
     }
 
-    /**
-     * @param HHeaTable $hHeaTable
-     */
     private function assertHHeaTable(HHeaTable $hHeaTable)
     {
         $this->assertSame(-600, $hHeaTable->getDecent());
@@ -169,9 +163,6 @@ class FileReaderTest extends TestCase
         $this->assertSame(931, $hHeaTable->getNumOfLongHorMetrics());
     }
 
-    /**
-     * @param HMtxTable $hMtxTable
-     */
     private function assertHMtxTable(HMtxTable $hMtxTable)
     {
         $this->assertCount(931, $hMtxTable->getLongHorMetrics());
@@ -183,9 +174,6 @@ class FileReaderTest extends TestCase
         $this->assertSame(201, $hMtxTable->getLeftSideBearings()[1]);
     }
 
-    /**
-     * @param NameTable|null $nameTable
-     */
     private function assertNameTable(?NameTable $nameTable)
     {
         $this->assertCount(8, $nameTable->getNameRecords());

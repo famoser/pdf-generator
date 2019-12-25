@@ -67,8 +67,6 @@ class ColorState extends BaseState
     }
 
     /**
-     * @param StateTransitionVisitor $visitor
-     *
      * @return string[]
      */
     public function accept(StateTransitionVisitor $visitor): array

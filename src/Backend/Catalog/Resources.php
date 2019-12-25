@@ -27,17 +27,11 @@ class Resources extends BaseStructure
      */
     private $images = [];
 
-    /**
-     * @param Font $font
-     */
     public function addFont(Font $font)
     {
         $this->fonts[] = $font;
     }
 
-    /**
-     * @param Image $image
-     */
     public function addImage(Image $image)
     {
         $this->images[] = $image;
@@ -60,8 +54,6 @@ class Resources extends BaseStructure
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject
      */
     public function accept(CatalogVisitor $visitor)

@@ -21,10 +21,6 @@ use PdfGenerator\Font\Frontend\StreamReader;
 class FormatReader
 {
     /**
-     * @param StreamReader $streamReader
-     * @param float $format
-     * @param int $length
-     *
      * @throws \Exception
      *
      * @return Format
@@ -46,9 +42,6 @@ class FormatReader
     }
 
     /**
-     * @param StreamReader $streamReader
-     * @param int $length
-     *
      * @throws \Exception
      *
      * @return Format2
@@ -68,8 +61,6 @@ class FormatReader
     }
 
     /**
-     * @param StreamReader $streamReader
-     *
      * @throws \Exception
      *
      * @return Format25

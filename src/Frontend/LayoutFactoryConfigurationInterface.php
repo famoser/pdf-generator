@@ -13,18 +13,9 @@ namespace PdfGenerator\Frontend;
 
 interface LayoutFactoryConfigurationInterface
 {
-    /**
-     * @return float
-     */
     public function getContentXSize(): float;
 
-    /**
-     * @return float
-     */
     public function getColumnGutter(): float;
 
-    /**
-     * @return float
-     */
     public function getTableColumnGutter(): float;
 }

@@ -15,10 +15,5 @@ use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
 abstract class BaseContent
 {
-    /**
-     * @param ContentVisitor $visitor
-     *
-     * @return \PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent|null
-     */
     abstract public function accept(ContentVisitor $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 }

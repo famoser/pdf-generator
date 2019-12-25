@@ -45,8 +45,6 @@ class FileWriter
 
     /**
      * FileWriter constructor.
-     *
-     * @param TableVisitor $tableVisitor
      */
     public function __construct(TableVisitor $tableVisitor)
     {
@@ -64,11 +62,9 @@ class FileWriter
     }
 
     /**
-     * @param Font $font
-     *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     public function writeFont(Font $font)
     {
@@ -79,7 +75,6 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     * @param Character $missingGlyphCharacter
      *
      * @return Character[]
      */
@@ -93,7 +88,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\HeadTable $source
      * @param Character[] $characters
      *
      * @return HeadTable
@@ -144,9 +138,7 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\HHeaTable $source
      * @param Character[] $characters
-     * @param int $longHorMetricCount
      *
      * @return HHeaTable
      */
@@ -216,7 +208,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\MaxPTable $source
      * @param Character[] $characters
      *
      * @return MaxPTable
@@ -244,11 +235,6 @@ class FileWriter
         return $maxPTable;
     }
 
-    /**
-     * @param array $characters
-     *
-     * @return Subtable
-     */
     private function generateSubtable(array $characters): Subtable
     {
         $subtable = new Subtable();
@@ -337,11 +323,6 @@ class FileWriter
         return $segments;
     }
 
-    /**
-     * @param array $characters
-     *
-     * @return array
-     */
     private function sortCharactersByCodePoint(array $characters): array
     {
         $charactersByCodePoint = [];
@@ -401,11 +382,9 @@ class FileWriter
     }
 
     /**
-     * @param TableDirectory $fontFile
-     *
-     * @return string
      * @throws \Exception
      *
+     * @return string
      */
     private function writeTableDirectory(TableDirectory $fontFile)
     {
@@ -468,8 +447,6 @@ class FileWriter
     }
 
     /**
-     * @param int $numTables
-     *
      * @return OffsetTable
      */
     private function generateOffsetTable(int $numTables)
@@ -484,9 +461,6 @@ class FileWriter
     }
 
     /**
-     * @param array $offsetByTag
-     * @param int $totalStreamLength
-     *
      * @return TableDirectoryEntry[]
      */
     private function generateTableDirectoryEntries(array $offsetByTag, int $totalStreamLength): array
@@ -525,7 +499,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\PostTable $source
      * @param Character[] $characters
      *
      * @return PostTable
@@ -550,8 +523,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\NameTable $source
-     *
      * @return NameTable
      */
     private function generateNameTable(\PdfGenerator\Font\Frontend\File\Table\NameTable $source)
@@ -592,8 +563,6 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return CMapTable
      */
     private function generateCMapTable(array $characters): CMapTable
     {
@@ -637,8 +606,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\RawTable $table
-     *
      * @return RawTable
      */
     private function generateRawTable(\PdfGenerator\Font\Frontend\File\Table\RawTable $table)
@@ -653,8 +620,6 @@ class FileWriter
 
     /**
      * @param string[] $names
-     *
-     * @return string
      */
     private static function generatePascalString(array $names): string
     {
@@ -669,7 +634,6 @@ class FileWriter
 
     /**
      * @param BinaryTreeSearchableTrait $binaryTreeSearchable
-     * @param int $numberOfEntries
      */
     private static function setBinaryTreeSearchableProperties($binaryTreeSearchable, int $numberOfEntries)
     {
@@ -681,8 +645,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\IR\Structure\TableDirectory $tableDirectory
-     *
      * @return RawTable[]
      */
     private function generateRawTables(\PdfGenerator\Font\IR\Structure\TableDirectory $tableDirectory): array
@@ -708,11 +670,6 @@ class FileWriter
         return $rawTables;
     }
 
-    /**
-     * @param Font $font
-     *
-     * @return TableDirectory
-     */
     private function createTableDirectory(Font $font): TableDirectory
     {
         $characters = $this->prepareCharacters($font->getCharacters(), $font->getMissingGlyphCharacter());
@@ -736,11 +693,6 @@ class FileWriter
         return $tableDirectory;
     }
 
-    /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\GlyfTable $source
-     *
-     * @return GlyfTable
-     */
     private function generateGlyfTable(\PdfGenerator\Font\Frontend\File\Table\GlyfTable $source): GlyfTable
     {
         $glyfTable = new GlyfTable();
