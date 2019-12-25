@@ -411,6 +411,8 @@ class FileWriter
         $tableStreamWriter = new StreamWriter();
 
         $offsetByTag = [];
+        $lengthByTag = [];
+
         foreach ($tables as $tag => $table) {
             if ($table === null) {
                 continue;
@@ -430,10 +432,14 @@ class FileWriter
             } else {
                 $tableStreamWriter->writeStream($table->accept($this->tableVisitor));
             }
+
+            $lengthByTag[$tag] = $tableStreamWriter->getLength() - $offsetByTag[$tag];
+
+            $tableStreamWriter->byteAlign(4);
         }
 
         // why length of HEAD table wrong if byte align turned on?
-        $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $tableStreamWriter->getLength());
+        $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $lengthByTag);
         $offsetTable = $this->generateOffsetTable(\count($tableDirectoryEntries));
 
         $streamWriter = new StreamWriter();
@@ -465,7 +471,7 @@ class FileWriter
     /**
      * @return TableDirectoryEntry[]
      */
-    private function generateTableDirectoryEntries(array $offsetByTag, int $totalStreamLength): array
+    private function generateTableDirectoryEntries(array $offsetByTag, array $lengthByTag): array
     {
         /** @var TableDirectoryEntry[] $tableDirectoryEntries */
         $tableDirectoryEntries = [];
@@ -473,21 +479,10 @@ class FileWriter
             $tableDirectoryEntry = new TableDirectoryEntry();
             $tableDirectoryEntry->setTag($tag);
             $tableDirectoryEntry->setOffset($offset);
+            $tableDirectoryEntry->setLength($lengthByTag[$tag]);
             $tableDirectoryEntry->setCheckSum(0);
 
             $tableDirectoryEntries[] = $tableDirectoryEntry;
-        }
-
-        // calculate length
-        for ($i = 0; $i < \count($tableDirectoryEntries); ++$i) {
-            if ($i + 1 < \count($tableDirectoryEntries)) {
-                $nextOffset = $tableDirectoryEntries[$i + 1]->getOffset();
-            } else {
-                $nextOffset = $totalStreamLength;
-            }
-
-            $currentEntry = $tableDirectoryEntries[$i];
-            $currentEntry->setLength($nextOffset - $currentEntry->getOffset());
         }
 
         // adjust offset
