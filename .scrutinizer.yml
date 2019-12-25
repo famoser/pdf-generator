@@ -2,7 +2,8 @@ build:
     nodes:
         analysis:
             environment:
-                node: v10.13
+                php:
+                    version: 7.2 
             project_setup:
                 override: true
             tests:
