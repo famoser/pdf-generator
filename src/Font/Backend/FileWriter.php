@@ -425,9 +425,11 @@ class FileWriter
 
                     /* @var BaseTable $item */
                     $tableStreamWriter->writeStream($item->accept($this->tableVisitor));
+                    $tableStreamWriter->byteAlign(4);
                 }
             } else {
                 $tableStreamWriter->writeStream($table->accept($this->tableVisitor));
+                $tableStreamWriter->byteAlign(4);
             }
         }
 

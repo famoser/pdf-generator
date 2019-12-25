@@ -111,6 +111,30 @@ class StreamWriter
         $this->stream .= $content;
     }
 
+    public function byteAlign(int $multiple)
+    {
+        $length = $this->getLength();
+        $rest = $length % $multiple;
+        while ($rest >= 8) {
+            $this->writeUInt64(0);
+            $rest -= 8;
+        }
+
+        if ($rest >= 4) {
+            $this->writeUInt32(0);
+            $rest -= 4;
+        }
+
+        if ($rest >= 2) {
+            $this->writeUInt16(0);
+            $rest -= 2;
+        }
+
+        if ($rest === 1) {
+            $this->writeUInt8(0);
+        }
+    }
+
     public function writeOffset16(int $value)
     {
         $this->writeUInt16($value);
