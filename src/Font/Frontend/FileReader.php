@@ -113,7 +113,7 @@ class FileReader
                     $table = $this->readHeadTable($fileReader);
                     $font->setHeadTable($table);
                     break;
-                case 'OS/2':
+                case 'OS/2': // sizing infos used only by windows
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setOS2Table($table);
                     break;
@@ -121,19 +121,19 @@ class FileReader
                     $table = $this->readNameTable($fileReader);
                     $font->setNameTable($table);
                     break;
-                case 'cvt ':
+                case 'cvt ': // list of instructions
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setCvtTable($table);
                     break;
-                case 'fpgm':
+                case 'fpgm': // font program before font is used
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setFpgmTable($table);
                     break;
-                case 'gasp':
+                case 'gasp': // grid-fitting rasterization properties
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGaspTable($table);
                     break;
-                case 'prep':
+                case 'prep': // font program before glyph is printed
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setPrepTable($table);
                     break;
@@ -141,15 +141,15 @@ class FileReader
                     $table = $this->readPostTable($fileReader, $tableDirectoryEntry->getLength());
                     $font->setPostTable($table);
                     break;
-                case 'GDEF':
+                case 'GDEF': // emoji things 1
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGDEFTable($table);
                     break;
-                case 'GPOS':
+                case 'GPOS': // emoji things 2
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGPOSTable($table);
                     break;
-                case 'GSUB':
+                case 'GSUB': // emoji things 3
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGSUBTable($table);
                     break;

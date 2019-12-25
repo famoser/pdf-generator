@@ -153,8 +153,7 @@ class DocumentVisitor
             $widths[] = $character->getLongHorMetric()->getAdvanceWidth();
         }
 
-        // TODO: need to parse name table to fix this
-        $fontName = 'SomeFont'; //TODO retrieve from name table
+        $fontName = $font->getFontInformation()->getFullName();
 
         $fontStream = new FontStream();
         $fontStream->setFontData($content);

@@ -61,13 +61,11 @@ Before any printed content appears on the document, a transaction has to be crea
 The transaction knows its position and appearance on the final document, 
 hence is useful to investigate everything will appear as expected and to position future layouts.
 
-
 If the transaction is of the expected form, it can be committed and will be written to the final document.
 
 ### IR
 The Intermediate Representation provides an API that is convenient to use for the frontend.
 This structure could apply to any paginated document; hence does not expose PDF-specific details.
-
 
 #### Structure
 Contains the structure of the IR.

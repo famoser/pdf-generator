@@ -126,7 +126,7 @@ class PrinterTest extends TestCase
         $result = $printer->save();
 
         // assert
-        $this->assertTrue(true);
+        $this->assertNotEmpty($result);
     }
 
     /**
@@ -189,7 +189,28 @@ class PrinterTest extends TestCase
         $printer->setTextStyle($textStyle);
         $printer->printText('hallo');
         $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintText_withEmbeddedFont_textAppearsWithNewlines()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $textStyle = new TextStyle($font, 12);
+
+        // act
+        $printer->setTextStyle($textStyle);
+        $printer->printText("hallo\nwelt");
+        $result = $printer->save();
+        file_put_contents("pdf.pdf", $result);
 
         // assert
         $this->assertNotEmpty($result);
