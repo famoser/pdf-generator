@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Backend\Catalog\Base;
 
-trait IdentifiableStructureTrait
+abstract class BaseIdentifiableStructure extends BaseStructure
 {
     /**
      * @var string

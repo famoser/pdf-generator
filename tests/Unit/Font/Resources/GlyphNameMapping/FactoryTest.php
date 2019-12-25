@@ -44,7 +44,7 @@ class FactoryTest extends TestCase
         ];
 
         foreach ($expectedMapping as $key => $value) {
-            $character = mb_ord($key);
+            $character = mb_ord($key, 'UTF-8');
             $this->assertEquals($value, $mapping[$character]);
         }
     }

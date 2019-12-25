@@ -127,7 +127,7 @@ class PageResources
     }
 
     /**
-     * @return Font[]
+     * @return BackendFont[]
      */
     public function getFonts(): array
     {
@@ -135,7 +135,7 @@ class PageResources
     }
 
     /**
-     * @return Image[]
+     * @return BackendImage[]
      */
     public function getImages(): array
     {

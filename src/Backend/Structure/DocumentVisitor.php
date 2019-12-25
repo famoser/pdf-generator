@@ -98,9 +98,10 @@ class DocumentVisitor
             list($targetWidth, $targetHeight) = $this->imageOptimizer->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight(), $this->configuration->getAutoResizeImagesDpi());
 
             if ($targetWidth < $width) {
-                $content = $this->imageOptimizer->transformToJpgAndResize($content, $targetWidth, $targetHeight);
-                $width = $targetWidth;
-                $height = $targetHeight;
+                $width = (int)$targetWidth;
+                $height = (int)$targetHeight;
+
+                $content = $this->imageOptimizer->transformToJpgAndResize($content, $width, $height);
                 $type = CatalogImage::IMAGE_TYPE_JPEG;
             }
         }

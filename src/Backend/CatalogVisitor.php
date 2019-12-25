@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Backend;
 
-use PdfGenerator\Backend\Catalog\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
@@ -121,7 +121,7 @@ class CatalogVisitor
     private $referenceLookup = [];
 
     /**
-     * @param IdentifiableStructureTrait[] $structures
+     * @param BaseIdentifiableStructure[] $structures
      *
      * @return DictionaryToken
      */

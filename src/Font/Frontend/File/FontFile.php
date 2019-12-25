@@ -102,7 +102,7 @@ class FontFile
     private $maxPTable;
 
     /**
-     * @var NameTable|null
+     * @var NameTable
      */
     private $nameTable;
 
@@ -268,12 +268,12 @@ class FontFile
         $this->maxPTable = $maxPTable;
     }
 
-    public function getNameTable(): ?NameTable
+    public function getNameTable(): NameTable
     {
         return $this->nameTable;
     }
 
-    public function setNameTable(?NameTable $nameTable): void
+    public function setNameTable(NameTable $nameTable): void
     {
         $this->nameTable = $nameTable;
     }

@@ -168,7 +168,7 @@ class StreamWriter
     public function writeFixed(float $value)
     {
         $mantissa = (int)$value;
-        $fraction = ($value - $mantissa) * 65536;
+        $fraction = (int)(($value - $mantissa) * 65536);
 
         $this->writeInt16($mantissa);
         $this->writeUInt16($fraction);

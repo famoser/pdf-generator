@@ -11,15 +11,12 @@
 
 namespace PdfGenerator\Backend\Catalog\Font\Structure;
 
-use PdfGenerator\Backend\Catalog\Base\BaseStructure;
-use PdfGenerator\Backend\Catalog\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
-class FontDescriptor extends BaseStructure
+class FontDescriptor extends BaseIdentifiableStructure
 {
-    use IdentifiableStructureTrait;
-
     /**
      * all characters have same with.
      */

@@ -30,7 +30,7 @@ class TextState extends BaseState
      * the font
      * pdf-operator: Tt.
      *
-     * @var Font?
+     * @var Font
      */
     private $font;
 

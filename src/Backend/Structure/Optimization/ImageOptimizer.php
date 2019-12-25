@@ -21,6 +21,11 @@ class ImageOptimizer
         $originalImage = imagecreatefromstring($imageContent);
         $newImage = imagecreatetruecolor($targetWidth, $targetHeight);
 
+        // if construction fails; do not change anything
+        if (!$originalImage || !$newImage) {
+            return $imageContent;
+        }
+
         imagecopyresampled($newImage, $originalImage, 0, 0, 0, 0, $targetWidth, $targetHeight, imagesx($originalImage), imagesy($originalImage));
 
         return $this->catchOutput(function () use ($newImage) {

@@ -112,8 +112,10 @@ First, the backend will be created following closely the standard of adobe.
 To be able to print to the pdf sensible some initial works needs to be done to see whats doable and what is not.
 
 - [ ] calculate dimensions of text
-    - [ ] investigate text size tables
+    - [ ] stabilize font generation
     - [ ] parse OS/2 table
+    - [ ] create cmap from CID encoding to utf-8
+    - [ ] investigate weather width array is needed 
 - [ ] place text on pages with automatic breaks
 
 ### Public API Milestone

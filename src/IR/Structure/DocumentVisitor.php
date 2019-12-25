@@ -102,7 +102,7 @@ class DocumentVisitor
 
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
-        return new BackendImage($imageData, $type, $width, $height, $maxSize->getWidth(), $maxSize->getHeight());
+        return new BackendImage($imageData, $type, $width, $height, (int)round($maxSize->getWidth(), 0), (int)round($maxSize->getHeight(), 0));
     }
 
     /**
@@ -139,6 +139,7 @@ class DocumentVisitor
         $pageResources = new PageResources($this->documentResources);
         $contentVisitor = new ToBackendContentVisitor($pageResources);
         foreach ($param->getContent() as $item) {
+            /** @var BackendPage\Content\Base\BaseContent $content can never be null as contentVisitor always returns something */
             $content = $item->accept($contentVisitor);
             $page->addContent($content);
         }

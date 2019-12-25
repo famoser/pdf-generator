@@ -11,15 +11,12 @@
 
 namespace PdfGenerator\Backend\Catalog;
 
-use PdfGenerator\Backend\Catalog\Base\BaseStructure;
-use PdfGenerator\Backend\Catalog\Base\IdentifiableStructureTrait;
+use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
-class Image extends BaseStructure
+class Image extends BaseIdentifiableStructure
 {
-    use IdentifiableStructureTrait;
-
     const IMAGE_TYPE_JPEG = 0;
 
     /**

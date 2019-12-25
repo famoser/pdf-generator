@@ -262,7 +262,7 @@ class FileWriter
         $format->setLanguage(0);
         $format->setSegCountX2($segmentsCount * 2);
         $format->setSearchRange(2 * (2 ** ((int)(log($segmentsCount, 2)))));
-        $format->setEntrySelector(log($format->getSearchRange() / 2, 2));
+        $format->setEntrySelector((int)log($format->getSearchRange() / 2, 2));
         $format->setRangeShift(2 * $segmentsCount - $format->getSearchRange());
         $format->setReservedPad(0);
 
@@ -623,7 +623,7 @@ class FileWriter
         $nameString = '';
         foreach ($names as $name) {
             $nameString .= \strlen($name);
-            $nameString[] = $name;
+            $nameString .= $name;
         }
 
         return $nameString;
