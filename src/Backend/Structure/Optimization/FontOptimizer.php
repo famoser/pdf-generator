@@ -11,19 +11,22 @@
 
 namespace PdfGenerator\Backend\Structure\Optimization;
 
-use PdfGenerator\Backend\Structure\Optimization\FontOptimizer\FontOptimizerPayload;
+use PdfGenerator\Backend\Structure\Optimization\FontOptimizer\FontSubsetDefinition;
 use PdfGenerator\Font\IR\CharacterRepository;
 use PdfGenerator\Font\IR\Structure\Font;
 
 class FontOptimizer
 {
+    /**
+     * @return FontSubsetDefinition
+     */
     public function generateFontSubset(Font $font, string $usedText)
     {
         $orderedCodePoints = $this->getOrderedCodepoints($usedText);
 
         $characterRepository = new CharacterRepository($font);
 
-        // build up newly needed characters
+        // extract needed characters
         $characters = [$font->getMissingGlyphCharacter()];
         $missingCodePoints = [];
         foreach ($orderedCodePoints as $index => $codePoint) {
@@ -35,24 +38,27 @@ class FontOptimizer
             }
         }
 
+        // remove missing characters from all code points
         $notEncodedCharIndexes = [];
         foreach ($missingCodePoints as $index => $value) {
             unset($orderedCodePoints[$index]);
 
+            // 10 is space character and does not need to be encoded
             if ($value === 10) {
                 $notEncodedCharIndexes[] = $index;
             }
         }
 
+        // remove missing characters that do not need to be encoded
         foreach ($notEncodedCharIndexes as $notEncodedCharIndex) {
             unset($missingCodePoints[$notEncodedCharIndex]);
         }
 
+        // normalize arrays
         $orderedCodePoints = array_values($orderedCodePoints);
         $missingCodePoints = array_values($missingCodePoints);
 
-        // todo: rename &create constructor
-        return new FontOptimizerPayload();
+        return new FontSubsetDefinition($characters, $orderedCodePoints, $missingCodePoints);
     }
 
     /**

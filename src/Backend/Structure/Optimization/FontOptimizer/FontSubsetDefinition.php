@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 
 use PdfGenerator\Font\IR\Structure\Character;
 
-class FontOptimizerPayload
+class FontSubsetDefinition
 {
     /**
      * @var Character[]
@@ -31,19 +31,25 @@ class FontOptimizerPayload
     private $missingCodePoints;
 
     /**
+     * FontOptimizerPayload constructor.
+     *
+     * @param Character[] $characters
+     * @param int[] $codePoints
+     * @param int[] $missingCodePoints
+     */
+    public function __construct(array $characters, array $codePoints, array $missingCodePoints)
+    {
+        $this->characters = $characters;
+        $this->codePoints = $codePoints;
+        $this->missingCodePoints = $missingCodePoints;
+    }
+
+    /**
      * @return Character[]
      */
     public function getCharacters(): array
     {
         return $this->characters;
-    }
-
-    /**
-     * @param Character[] $characters
-     */
-    public function setCharacters(array $characters): void
-    {
-        $this->characters = $characters;
     }
 
     /**
@@ -55,26 +61,10 @@ class FontOptimizerPayload
     }
 
     /**
-     * @param int[] $codePoints
-     */
-    public function setCodePoints(array $codePoints): void
-    {
-        $this->codePoints = $codePoints;
-    }
-
-    /**
      * @return int[]
      */
     public function getMissingCodePoints(): array
     {
         return $this->missingCodePoints;
-    }
-
-    /**
-     * @param int[] $missingCodePoints
-     */
-    public function setMissingCodePoints(array $missingCodePoints): void
-    {
-        $this->missingCodePoints = $missingCodePoints;
     }
 }
