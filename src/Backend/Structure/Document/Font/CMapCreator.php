@@ -21,16 +21,17 @@ class CMapCreator
      * @param string $cMapName
      * @param int[] $orderedCodePoints
      *
+     * @param array $missingCodePoints
      * @return CMap
      */
-    public function createCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $orderedCodePoints)
+    public function createCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $orderedCodePoints, array $missingCodePoints)
     {
         $cmap = new CMap();
         $cmap->setCIDSystemInfo($cIDSystemInfo);
         $cmap->setCMapName($cMapName);
 
         $header = $this->getCMapHeader($cIDSystemInfo, $cMapName);
-        $byteMappings = $this->getCMapByteMappings($orderedCodePoints);
+        $byteMappings = $this->getCMapByteMappings($orderedCodePoints, $missingCodePoints);
         $trailer = $this->getCMapTrailer();
 
         $cMapData = $header . "\n" . $byteMappings . "\n" . $trailer;
@@ -96,9 +97,10 @@ class CMapCreator
     /**
      * @param int[] $codePoints
      *
+     * @param array $missingCodePoints
      * @return string
      */
-    private function getCMapByteMappings(array $codePoints)
+    private function getCMapByteMappings(array $codePoints, array $missingCodePoints)
     {
         $hexCodePointsByLength = $this->getAsHexByLength($codePoints);
 
@@ -122,9 +124,16 @@ class CMapCreator
 
         $validMappings = implode("\n\n", $codeSpaceDictionaries) . "\n\n" . implode("\n\n", $codeMappingDictionaries);
 
-        $notDefMapping = "1 beginnotdefrange\n <00> <00> 0\nendnotdefrange";
+        sort($missingCodePoints);
+        // must always map 0 character
+        if ($missingCodePoints[0] !== 0) {
+            $missingCodePoints  = array_merge([0], $missingCodePoints);
+        }
 
-        return $validMappings . "\n\n" . $notDefMapping;
+        $notDefRanges = $this->getNotDefRanges($missingCodePoints, 0);
+        $notDefRangeDictionaries = $this->toDictionary($notDefRanges, 'notdefrange');
+
+        return $validMappings . "\n\n" . implode("\n\n", $notDefRangeDictionaries);
     }
 
     /**
@@ -239,6 +248,38 @@ class CMapCreator
         }
 
         $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $firstCharacterIndex;
+
+        return $codeMappings;
+    }
+
+    /**
+     * @param string[] $hexPoints
+     *
+     * @param int $notDefCharacterIndex
+     * @return string[]
+     */
+    private function getNotDefRanges(array $hexPoints, int $notDefCharacterIndex): array
+    {
+        $codeMappings = [];
+
+        $lastValue = null;
+        $firstHexPoint = null;
+        $lastHexPoint = null;
+        foreach ($hexPoints as $hexPoint) {
+            $currentValue = hexdec($hexPoint);
+
+            if ($currentValue - 1 !== $lastValue) {
+                if ($firstHexPoint !== null) {
+                    $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $notDefCharacterIndex;
+                }
+                $firstHexPoint = $hexPoint;
+            }
+
+            $lastHexPoint = $hexPoint;
+            $lastValue = $currentValue;
+        }
+
+        $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $notDefCharacterIndex;
 
         return $codeMappings;
     }

@@ -208,7 +208,7 @@ class PrinterTest extends TestCase
 
         // act
         $printer->setTextStyle($textStyle);
-        $printer->printText("hallo welt");
+        $printer->printText("hallo welt\nhallo welt");
         $result = $printer->save();
         file_put_contents("pdf.pdf", $result);
 
