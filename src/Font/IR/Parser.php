@@ -76,9 +76,9 @@ class Parser
     /**
      * @param string $content
      *
+     * @return Font
      * @throws \Exception
      *
-     * @return Font
      */
     public function parse(string $content): Font
     {
@@ -96,9 +96,9 @@ class Parser
     /**
      * @param FontFile $fontFile
      *
+     * @return Font
      * @throws \Exception
      *
-     * @return Font
      */
     private function createFont(FontFile $fontFile): Font
     {
@@ -152,9 +152,9 @@ class Parser
      * @param Character[] $characters
      * @param FontFile $fontFile
      *
+     * @return Character[]
      * @throws \Exception
      *
-     * @return Character[]
      */
     private function mapCharacters(array $characters, FontFile $fontFile)
     {
@@ -228,19 +228,18 @@ class Parser
         $characterCount = \count($fontFile->getGlyfTables());
         for ($i = 0; $i < $characterCount; ++$i) {
             $glyfTable = $fontFile->getGlyfTables()[$i];
-            if ($glyfTable === null) {
-                $characters[] = null;
-                continue;
-            }
 
             $character = new Character();
-            $character->setGlyfTable($glyfTable);
 
             $longHorMetric = $this->getLongHorMetric($fontFile->getHMtxTable(), $i);
             $character->setLongHorMetric($longHorMetric);
 
-            $boundingBox = $this->calculateBoundingBox($glyfTable, $fontFile->getHeadTable()->getUnitsPerEm());
-            $character->setBoundingBox($boundingBox);
+            if ($glyfTable !== null) {
+                $character->setGlyfTable($glyfTable);
+
+                $boundingBox = $this->calculateBoundingBox($glyfTable, $fontFile->getHeadTable()->getUnitsPerEm());
+                $character->setBoundingBox($boundingBox);
+            }
 
             $characters[] = $character;
         }

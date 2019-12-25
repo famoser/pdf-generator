@@ -46,9 +46,9 @@ class FontOptimizer
      * @param Font $font
      * @param int[] $orderedCodePoints
      *
+     * @return Font
      * @throws \Exception
      *
-     * @return Font
      */
     public function getFontSubset(Font $font, array $orderedCodePoints): Font
     {

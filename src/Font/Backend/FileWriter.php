@@ -66,9 +66,9 @@ class FileWriter
     /**
      * @param Font $font
      *
+     * @return string
      * @throws \Exception
      *
-     * @return string
      */
     public function writeFont(Font $font)
     {
@@ -119,6 +119,10 @@ class FileWriter
         $xMax = PHP_INT_MAX;
         $yMax = PHP_INT_MAX;
         foreach ($characters as $character) {
+            if ($character->getGlyfTable() === null) {
+                continue;
+            }
+
             $xMin = min($character->getGlyfTable()->getXMin(), $xMin);
             $yMin = min($character->getGlyfTable()->getYMin(), $yMin);
             $xMax = max($character->getGlyfTable()->getXMax(), $xMax);
@@ -166,12 +170,14 @@ class FileWriter
             $advanceWidthMax = max($advanceWidthMax, $advanceWidth);
             $minLeftSideBearing = min($minLeftSideBearing, $leftSideBearing);
 
-            $width = $character->getBoundingBox()->getWidth();
-            $rightSideBearing = $advanceWidth - $leftSideBearing - $width;
-            $minRightSideBearing = min($minRightSideBearing, $rightSideBearing);
+            if ($character->getBoundingBox() !== null) {
+                $width = $character->getBoundingBox()->getWidth();
+                $rightSideBearing = $advanceWidth - $leftSideBearing - $width;
+                $minRightSideBearing = min($minRightSideBearing, $rightSideBearing);
 
-            $xExtend = $leftSideBearing + $width;
-            $xMaxExtent = max($xMaxExtent, $xExtend);
+                $xExtend = $leftSideBearing + $width;
+                $xMaxExtent = max($xMaxExtent, $xExtend);
+            }
         }
 
         $hHeaTable->setAdvanceWidthMax($advanceWidthMax);
@@ -359,7 +365,11 @@ class FileWriter
         $glyfTables = [];
 
         foreach ($characters as $character) {
-            $glyfTables[] = $this->generateGlyfTable($character->getGlyfTable());
+            if ($character->getGlyfTable() === null) {
+                $glyfTables[] = null;
+            } else {
+                $glyfTables[] = $this->generateGlyfTable($character->getGlyfTable());
+            }
         }
 
         return $glyfTables;
@@ -379,9 +389,11 @@ class FileWriter
 
         $locaTable->addOffset($currentOffset);
         foreach ($glyfTables as $glyfTable) {
-            $size = \strlen($glyfTable->getContent()) + 10;
+            if ($glyfTable !== null) {
+                $size = \strlen($glyfTable->getContent()) + 10;
+                $currentOffset += $size / 2;
+            }
 
-            $currentOffset += $size / 2;
             $locaTable->addOffset($currentOffset);
         }
 
@@ -391,9 +403,9 @@ class FileWriter
     /**
      * @param TableDirectory $fontFile
      *
+     * @return string
      * @throws \Exception
      *
-     * @return string
      */
     private function writeTableDirectory(TableDirectory $fontFile)
     {
@@ -427,6 +439,11 @@ class FileWriter
             $offsetByTag[$tag] = $tableStreamWriter->getLength();
             if (\is_array($table)) {
                 foreach ($table as $item) {
+                    // glyph tables can be null if they have no content
+                    if ($item === null) {
+                        continue;
+                    }
+
                     /* @var BaseTable $item */
                     $tableStreamWriter->writeStream($item->accept($this->tableVisitor));
                 }

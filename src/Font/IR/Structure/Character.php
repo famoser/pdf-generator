@@ -27,12 +27,12 @@ class Character
     private $postScriptInfo;
 
     /**
-     * @var BoundingBox
+     * @var BoundingBox|null
      */
     private $boundingBox;
 
     /**
-     * @var GlyfTable
+     * @var GlyfTable|null
      */
     private $glyfTable;
 
@@ -74,33 +74,33 @@ class Character
     }
 
     /**
-     * @return BoundingBox
+     * @return BoundingBox|null
      */
-    public function getBoundingBox(): BoundingBox
+    public function getBoundingBox(): ?BoundingBox
     {
         return $this->boundingBox;
     }
 
     /**
-     * @param BoundingBox $boundingBox
+     * @param BoundingBox|null $boundingBox
      */
-    public function setBoundingBox(BoundingBox $boundingBox): void
+    public function setBoundingBox(?BoundingBox $boundingBox): void
     {
         $this->boundingBox = $boundingBox;
     }
 
     /**
-     * @return GlyfTable
+     * @return GlyfTable|null
      */
-    public function getGlyfTable(): GlyfTable
+    public function getGlyfTable(): ?GlyfTable
     {
         return $this->glyfTable;
     }
 
     /**
-     * @param GlyfTable $glyfTable
+     * @param GlyfTable|null $glyfTable
      */
-    public function setGlyfTable(GlyfTable $glyfTable): void
+    public function setGlyfTable(?GlyfTable $glyfTable): void
     {
         $this->glyfTable = $glyfTable;
     }
