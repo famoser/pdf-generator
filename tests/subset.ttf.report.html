@@ -113,7 +113,7 @@
     <TABLE WIDTH="100%">
       <TR>
         <TD WIDTH="15%"><I>Run DateTime: </I></TD>
-        <TD>Wednesday, December 25, 2019 5:38 PM</TD>
+        <TD>Wednesday, December 25, 2019 5:57 PM</TD>
       </TR>
       <TR>
         <TD WIDTH="15%"><I>Machine Name: </I></TD>
@@ -148,17 +148,9 @@
       </TR>
       <TR>
         <TD><A
-				HREF='#OS_2_0'
-				>OS/2</A></TD>
-        <TD>0x000000ec</TD>
-        <TD>0x00000060</TD>
-        <TD>0x00000000</TD>
-      </TR>
-      <TR>
-        <TD><A
 				HREF='#cmap_0'
 				>cmap</A></TD>
-        <TD>0x0000014c</TD>
+        <TD>0x000000ec</TD>
         <TD>0x00000044</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -166,7 +158,7 @@
         <TD><A
 				HREF='#cvt__0'
 				>cvt </A></TD>
-        <TD>0x00000190</TD>
+        <TD>0x00000130</TD>
         <TD>0x000000a2</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -174,7 +166,7 @@
         <TD><A
 				HREF='#fpgm_0'
 				>fpgm</A></TD>
-        <TD>0x00000232</TD>
+        <TD>0x000001d2</TD>
         <TD>0x000007b4</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -182,7 +174,7 @@
         <TD><A
 				HREF='#gasp_0'
 				>gasp</A></TD>
-        <TD>0x000009e6</TD>
+        <TD>0x00000986</TD>
         <TD>0x00000010</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -190,7 +182,7 @@
         <TD><A
 				HREF='#glyf_0'
 				>glyf</A></TD>
-        <TD>0x000009f6</TD>
+        <TD>0x00000996</TD>
         <TD>0x0000023a</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -198,7 +190,7 @@
         <TD><A
 				HREF='#head_0'
 				>head</A></TD>
-        <TD>0x00000c30</TD>
+        <TD>0x00000bd0</TD>
         <TD>0x00000036</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -206,7 +198,7 @@
         <TD><A
 				HREF='#hhea_0'
 				>hhea</A></TD>
-        <TD>0x00000c66</TD>
+        <TD>0x00000c06</TD>
         <TD>0x00000024</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -214,7 +206,7 @@
         <TD><A
 				HREF='#hmtx_0'
 				>hmtx</A></TD>
-        <TD>0x00000c8a</TD>
+        <TD>0x00000c2a</TD>
         <TD>0x00000014</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -222,7 +214,7 @@
         <TD><A
 				HREF='#loca_0'
 				>loca</A></TD>
-        <TD>0x00000c9e</TD>
+        <TD>0x00000c3e</TD>
         <TD>0x0000000c</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -230,7 +222,7 @@
         <TD><A
 				HREF='#maxp_0'
 				>maxp</A></TD>
-        <TD>0x00000caa</TD>
+        <TD>0x00000c4a</TD>
         <TD>0x00000020</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -238,8 +230,16 @@
         <TD><A
 				HREF='#name_0'
 				>name</A></TD>
-        <TD>0x00000cca</TD>
+        <TD>0x00000c6a</TD>
         <TD>0x000001da</TD>
+        <TD>0x00000000</TD>
+      </TR>
+      <TR>
+        <TD><A
+				HREF='#OS_2_0'
+				>OS/2</A></TD>
+        <TD>0x00000e44</TD>
+        <TD>0x00000060</TD>
         <TD>0x00000000</TD>
       </TR>
       <TR>
@@ -268,17 +268,14 @@
 		><TD VALIGN="TOP">P0011</TD>
       <TD VALIGN="TOP">The numTables field is non-zero</TD>
       <TD VALIGN="TOP">14</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E0014</TD>
-      <TD VALIGN="TOP">The searchRange field is invalid</TD>
-      <TD VALIGN="TOP">8</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E0013</TD>
-      <TD VALIGN="TOP">The rangeShift field is invalid</TD>
-      <TD VALIGN="TOP">6</TD></TR><TR
 		class='class_P'
-		><TD VALIGN="TOP">P0032</TD>
-      <TD VALIGN="TOP">The directory entry tags are in ascending order</TD>
+		><TD VALIGN="TOP">P0010</TD>
+      <TD VALIGN="TOP">The searchRange, entrySelector, and rangeShift fields are all valid</TD>
+      <TD VALIGN="TOP">
+      </TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E0038</TD>
+      <TD VALIGN="TOP">The directory entry tags are not in ascending order</TD>
       <TD VALIGN="TOP">
       </TD></TR><TR
 		class='class_P'
@@ -352,15 +349,11 @@
 		class='class_W'
 		><TD VALIGN="TOP">W0020</TD>
       <TD VALIGN="TOP">Tables are not in optimal order</TD>
-      <TD VALIGN="TOP">table 'OS/2' precedes table 'head'</TD></TR><TR
+      <TD VALIGN="TOP">table 'cmap' precedes table 'head'</TD></TR><TR
 		class='class_E'
 		><TD VALIGN="TOP">E0030</TD>
       <TD VALIGN="TOP">Directory Entry checksum error</TD>
-      <TD VALIGN="TOP">table 'OS/2', calc: 0xa1369ec9, font: 0x00000000</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E0030</TD>
-      <TD VALIGN="TOP">Directory Entry checksum error</TD>
-      <TD VALIGN="TOP">table 'cmap', calc: 0x01290075, font: 0x00000000</TD></TR><TR
+      <TD VALIGN="TOP">table 'cmap', calc: 0x01bf0075, font: 0x00000000</TD></TR><TR
 		class='class_E'
 		><TD VALIGN="TOP">E0030</TD>
       <TD VALIGN="TOP">Directory Entry checksum error</TD>
@@ -404,218 +397,15 @@
 		class='class_E'
 		><TD VALIGN="TOP">E0030</TD>
       <TD VALIGN="TOP">Directory Entry checksum error</TD>
+      <TD VALIGN="TOP">table 'OS/2', calc: 0xa1369ec9, font: 0x00000000</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E0030</TD>
+      <TD VALIGN="TOP">Directory Entry checksum error</TD>
       <TD VALIGN="TOP">table 'post', calc: 0xffbd00ea, font: 0x00000000</TD></TR><TR
 		class='class_E'
 		><TD VALIGN="TOP">E0030</TD>
       <TD VALIGN="TOP">Directory Entry checksum error</TD>
       <TD VALIGN="TOP">table 'prep', calc: 0x43b796a4, font: 0x00000000</TD></TR><BR></TABLE><BR><BR><INPUT
-				id='cb_OS_2_0' type='checkbox' name='cb_OS_2_0' onclick='display_table(table_OS_2_0)'
-				checked ><B><A
-				NAME='OS_2_0'
-				>OS/2</A></B><BR><TABLE
-				WIDTH='100%' id='table_OS_2_0'
-				><TR CLASS="caption">
-      <TD WIDTH="10%"><I>Error code</I></TD>
-      <TD WIDTH="50%"><I>Message</I></TD>
-      <TD WIDTH="40%"><I>Details</I></TD>
-    </TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2106</TD>
-    <TD VALIGN="TOP">The version number is valid, but less than 5</TD>
-    <TD VALIGN="TOP">3</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2112</TD>
-    <TD VALIGN="TOP">The table length matches the expected length for this version</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2135</TD>
-    <TD VALIGN="TOP">The xAvgCharWidth field does not equal the calculated value</TD>
-    <TD VALIGN="TOP">actual = 1206, calc = 1439</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2122</TD>
-    <TD VALIGN="TOP">The usWeightClass is consistent with the PANOSE weight value</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2118</TD>
-    <TD VALIGN="TOP">The usWeightClass is a valid value</TD>
-    <TD VALIGN="TOP">400</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2119</TD>
-    <TD VALIGN="TOP">The width class is a valid value</TD>
-    <TD VALIGN="TOP">5</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2103</TD>
-    <TD VALIGN="TOP">The fsType field is valid</TD>
-    <TD VALIGN="TOP">0x0000, Installable Embedding</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2109</TD>
-    <TD VALIGN="TOP">All subscript and superscript values appear valid</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2108</TD>
-    <TD VALIGN="TOP">The yStrikeoutSize and yStrikeoutPosition appear valid</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2107</TD>
-    <TD VALIGN="TOP">The sFamilyClass Class ID and Subclass ID values are in a valid range</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2104</TD>
-    <TD VALIGN="TOP">All panose values are in a valid range</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Basic Latin' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Latin-1 Supplement' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Latin Extended-A' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Latin Extended-B' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Spacing Modifier Letters' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Combining Diacritical Marks' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Greek' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No characters are present in the ranges: Cyrillic, Cyrillic Supplementary</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Latin Extended Additional' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Greek Extended' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'General Punctuation' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Superscripts and Subscripts' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Currency Symbols' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Letterlike Symbols' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Number Forms' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No characters are present in the ranges: Mathematical Operators, Supplemental Mathematical Operators, Mathematical Symbols A, Mathematical Symbols B</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Geometric Shapes' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Alphabetic Presentation Forms' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Arabic Presentation Forms-B' characters are present</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2113</TD>
-    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
-    <TD VALIGN="TOP">No 'Specials' characters are present</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2102</TD>
-    <TD VALIGN="TOP">The fsSelection field appears to be valid</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2117</TD>
-    <TD VALIGN="TOP">The value of sTypoAscender minus sTypoDescender is greater than unitsPerEm</TD>
-    <TD VALIGN="TOP">sTypoAscender = 1567, sTypoDescender = -492</TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2101</TD>
-    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
-    <TD VALIGN="TOP">bit #0, Latin 1 (218 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2101</TD>
-    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
-    <TD VALIGN="TOP">bit #1, Latin 2 (218 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2101</TD>
-    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
-    <TD VALIGN="TOP">bit #2, Cyrillic (222 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2101</TD>
-    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
-    <TD VALIGN="TOP">bit #3, Greek (206 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2101</TD>
-    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
-    <TD VALIGN="TOP">bit #4, Turkish (216 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2101</TD>
-    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
-    <TD VALIGN="TOP">bit #7, Baltic (211 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2101</TD>
-    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
-    <TD VALIGN="TOP">bit #8, Vietnamese (214 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2101</TD>
-    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
-    <TD VALIGN="TOP">bit #29, Mac character set (222 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2101</TD>
-    <TD VALIGN="TOP">The CodePage Range fields' bits are all allowable values</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2110</TD>
-    <TD VALIGN="TOP">The sxHeight field is nonzero</TD>
-    <TD VALIGN="TOP">1096</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2105</TD>
-    <TD VALIGN="TOP">The sCapHeight field is nonzero</TD>
-    <TD VALIGN="TOP">1462</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2116</TD>
-    <TD VALIGN="TOP">The usDefaultChar field is zero</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2128</TD>
-    <TD VALIGN="TOP">The usBreakChar is not mapped to a glyf</TD>
-    <TD VALIGN="TOP">0x0020</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2148</TD>
-    <TD VALIGN="TOP">The usMaxContext field doesn't match the calculated value</TD>
-    <TD VALIGN="TOP">calc = 0, actual = 3</TD></TR><BR></TABLE><BR><BR><INPUT
 				id='cb_cmap_0' type='checkbox' name='cb_cmap_0' onclick='display_table(table_cmap_0)'
 				checked ><B><A
 				NAME='cmap_0'
@@ -661,10 +451,14 @@
     <TD VALIGN="TOP">Each subtable's format number is valid</TD>
     <TD VALIGN="TOP">
     </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P0305</TD>
-    <TD VALIGN="TOP">The subtable internal format appears valid</TD>
-    <TD VALIGN="TOP">PlatID = 3, EncID = 4, Fmt = 4</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E0311</TD>
+    <TD VALIGN="TOP">The searchRange field does not equal the calculated value</TD>
+    <TD VALIGN="TOP">PlatID = 3, EncID = 4, Fmt = 4, searchRange = 128, calc = 8</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E0309</TD>
+    <TD VALIGN="TOP">The rangeShift field does not equal the calculated value</TD>
+    <TD VALIGN="TOP">PlatID = 3, EncID = 4, Fmt = 4, rangeShift = 32, calc = 2</TD></TR><TR
 		class='class_W'
 		><TD VALIGN="TOP">W0302</TD>
     <TD VALIGN="TOP">The table does not contain any Apple subtables</TD>
@@ -1191,6 +985,213 @@
     <TD VALIGN="TOP">No inconsistencies were found for Description strings</TD>
     <TD VALIGN="TOP">
     </TD></TR><BR></TABLE><BR><BR><INPUT
+				id='cb_OS_2_0' type='checkbox' name='cb_OS_2_0' onclick='display_table(table_OS_2_0)'
+				checked ><B><A
+				NAME='OS_2_0'
+				>OS/2</A></B><BR><TABLE
+				WIDTH='100%' id='table_OS_2_0'
+				><TR CLASS="caption">
+      <TD WIDTH="10%"><I>Error code</I></TD>
+      <TD WIDTH="50%"><I>Message</I></TD>
+      <TD WIDTH="40%"><I>Details</I></TD>
+    </TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2106</TD>
+    <TD VALIGN="TOP">The version number is valid, but less than 5</TD>
+    <TD VALIGN="TOP">3</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2112</TD>
+    <TD VALIGN="TOP">The table length matches the expected length for this version</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2135</TD>
+    <TD VALIGN="TOP">The xAvgCharWidth field does not equal the calculated value</TD>
+    <TD VALIGN="TOP">actual = 1206, calc = 1439</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2122</TD>
+    <TD VALIGN="TOP">The usWeightClass is consistent with the PANOSE weight value</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2118</TD>
+    <TD VALIGN="TOP">The usWeightClass is a valid value</TD>
+    <TD VALIGN="TOP">400</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2119</TD>
+    <TD VALIGN="TOP">The width class is a valid value</TD>
+    <TD VALIGN="TOP">5</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2103</TD>
+    <TD VALIGN="TOP">The fsType field is valid</TD>
+    <TD VALIGN="TOP">0x0000, Installable Embedding</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2109</TD>
+    <TD VALIGN="TOP">All subscript and superscript values appear valid</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2108</TD>
+    <TD VALIGN="TOP">The yStrikeoutSize and yStrikeoutPosition appear valid</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2107</TD>
+    <TD VALIGN="TOP">The sFamilyClass Class ID and Subclass ID values are in a valid range</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2104</TD>
+    <TD VALIGN="TOP">All panose values are in a valid range</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Basic Latin' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Latin-1 Supplement' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Latin Extended-A' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Latin Extended-B' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Spacing Modifier Letters' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Combining Diacritical Marks' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Greek' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No characters are present in the ranges: Cyrillic, Cyrillic Supplementary</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Latin Extended Additional' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Greek Extended' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'General Punctuation' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Superscripts and Subscripts' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Currency Symbols' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Letterlike Symbols' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Number Forms' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No characters are present in the ranges: Mathematical Operators, Supplemental Mathematical Operators, Mathematical Symbols A, Mathematical Symbols B</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Geometric Shapes' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Alphabetic Presentation Forms' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Arabic Presentation Forms-B' characters are present</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2113</TD>
+    <TD VALIGN="TOP">A unicode range was indicated in ulUnicodeRange, but the font has no characters in that range</TD>
+    <TD VALIGN="TOP">No 'Specials' characters are present</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2102</TD>
+    <TD VALIGN="TOP">The fsSelection field appears to be valid</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2117</TD>
+    <TD VALIGN="TOP">The value of sTypoAscender minus sTypoDescender is greater than unitsPerEm</TD>
+    <TD VALIGN="TOP">sTypoAscender = 1567, sTypoDescender = -492</TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2101</TD>
+    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
+    <TD VALIGN="TOP">bit #0, Latin 1 (218 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2101</TD>
+    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
+    <TD VALIGN="TOP">bit #1, Latin 2 (218 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2101</TD>
+    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
+    <TD VALIGN="TOP">bit #2, Cyrillic (222 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2101</TD>
+    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
+    <TD VALIGN="TOP">bit #3, Greek (206 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2101</TD>
+    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
+    <TD VALIGN="TOP">bit #4, Turkish (216 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2101</TD>
+    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
+    <TD VALIGN="TOP">bit #7, Baltic (211 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2101</TD>
+    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
+    <TD VALIGN="TOP">bit #8, Vietnamese (214 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2101</TD>
+    <TD VALIGN="TOP">A CodePage bit is set in ulCodePageRange, but the font is missing some of the printable characters from that codepage</TD>
+    <TD VALIGN="TOP">bit #29, Mac character set (222 missing, first ten missing chars are: U0020 U0021 U0022 U0023 U0024 U0025 U0026 U0027 U0028 U0029)</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2101</TD>
+    <TD VALIGN="TOP">The CodePage Range fields' bits are all allowable values</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2110</TD>
+    <TD VALIGN="TOP">The sxHeight field is nonzero</TD>
+    <TD VALIGN="TOP">1096</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2105</TD>
+    <TD VALIGN="TOP">The sCapHeight field is nonzero</TD>
+    <TD VALIGN="TOP">1462</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2116</TD>
+    <TD VALIGN="TOP">The usDefaultChar field is zero</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2128</TD>
+    <TD VALIGN="TOP">The usBreakChar is not mapped to a glyf</TD>
+    <TD VALIGN="TOP">0x0020</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2148</TD>
+    <TD VALIGN="TOP">The usMaxContext field doesn't match the calculated value</TD>
+    <TD VALIGN="TOP">calc = 0, actual = 3</TD></TR><BR></TABLE><BR><BR><INPUT
 				id='cb_post_0' type='checkbox' name='cb_post_0' onclick='display_table(table_post_0)'
 				checked ><B><A
 				NAME='post_0'

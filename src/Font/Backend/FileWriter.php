@@ -639,9 +639,9 @@ class FileWriter
     {
         $powerOfTwo = (int)log($numberOfEntries, 2);
 
-        $binaryTreeSearchable->setSearchRange(pow(2, $powerOfTwo));
+        $binaryTreeSearchable->setSearchRange(pow(2, $powerOfTwo) * 16);
         $binaryTreeSearchable->setEntrySelector($powerOfTwo);
-        $binaryTreeSearchable->setRangeShift($numberOfEntries - $binaryTreeSearchable->getSearchRange());
+        $binaryTreeSearchable->setRangeShift($numberOfEntries * 16 - $binaryTreeSearchable->getSearchRange());
     }
 
     /**

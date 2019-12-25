@@ -57,7 +57,7 @@ class FileWriterTest extends TestCase
 
         // act
         $output = $writer->writeFont($subset);
-        file_put_contents('subset.tff', $output);
+        file_put_contents('subset.ttf', $output);
 
         // assert
         $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
