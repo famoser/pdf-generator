@@ -30,12 +30,6 @@ class GeneralGraphicStateRepository
      */
     private $generalGraphicState;
 
-    /**
-     * @param float $xStart
-     * @param float $yStart
-     * @param float $scaleX
-     * @param float $scaleY
-     */
     public function setPosition(float $xStart, float $yStart, float $scaleX = 1, float $scaleY = 1)
     {
         $this->position = [$scaleX, $scaleY, $xStart, $yStart];
@@ -43,9 +37,6 @@ class GeneralGraphicStateRepository
         $this->generalGraphicState = null;
     }
 
-    /**
-     * @param float $lineWidth
-     */
     public function setLineWidth(float $lineWidth)
     {
         $this->lineWidth = $lineWidth;

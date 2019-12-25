@@ -33,9 +33,6 @@ class DefaultFont extends Font
 
     /**
      * DefaultFont constructor.
-     *
-     * @param string $baseFont
-     * @param string $encoding
      */
     public function __construct(string $baseFont, string $encoding)
     {
@@ -43,25 +40,17 @@ class DefaultFont extends Font
         $this->encoding = $encoding;
     }
 
-    /**
-     * @return string
-     */
     public function getBaseFont(): string
     {
         return $this->baseFont;
     }
 
-    /**
-     * @return string
-     */
     public function getEncoding(): string
     {
         return $this->encoding;
     }
 
     /**
-     * @param DocumentVisitor $documentVisitor
-     *
      * @return mixed
      */
     public function accept(DocumentVisitor $documentVisitor)

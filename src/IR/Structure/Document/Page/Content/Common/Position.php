@@ -25,9 +25,6 @@ class Position
 
     /**
      * Position constructor.
-     *
-     * @param float $startX
-     * @param float $startY
      */
     public function __construct(float $startX, float $startY)
     {
@@ -35,17 +32,11 @@ class Position
         $this->startY = $startY;
     }
 
-    /**
-     * @return float
-     */
     public function getStartX(): float
     {
         return $this->startX;
     }
 
-    /**
-     * @return float
-     */
     public function getStartY(): float
     {
         return $this->startY;

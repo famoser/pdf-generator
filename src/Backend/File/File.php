@@ -39,8 +39,6 @@ class File
     }
 
     /**
-     * @param string $content
-     *
      * @return StreamObject
      */
     public function addStreamObject(string $content)
@@ -62,9 +60,6 @@ class File
         return $dictionaryObject;
     }
 
-    /**
-     * @return string
-     */
     public function render(): string
     {
         $structureVisitor = new StructureVisitor();

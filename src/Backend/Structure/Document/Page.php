@@ -49,9 +49,6 @@ class Page
         $this->mediaBox = $mediaBox;
     }
 
-    /**
-     * @param BaseContent $content
-     */
     public function addContent(BaseContent $content)
     {
         $this->content[] = $content;
@@ -74,9 +71,6 @@ class Page
     }
 
     /**
-     * @param Pages $parent
-     * @param DocumentResources $documentResources
-     *
      * @return \PdfGenerator\Backend\Catalog\Page
      */
     public function render(Pages $parent, DocumentResources $documentResources)

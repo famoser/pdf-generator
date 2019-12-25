@@ -20,8 +20,6 @@ abstract class Font extends BaseStructure
 
     /**
      * File constructor.
-     *
-     * @param string $identifier
      */
     public function __construct(string $identifier)
     {

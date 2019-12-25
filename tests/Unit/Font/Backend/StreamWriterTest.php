@@ -98,7 +98,6 @@ class StreamWriterTest extends TestCase
     }
 
     /**
-     * @param array $values
      * @param $type
      */
     private function assertValueWritesUsingReader(array $values, $type)

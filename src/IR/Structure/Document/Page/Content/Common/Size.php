@@ -25,9 +25,6 @@ class Size
 
     /**
      * Size constructor.
-     *
-     * @param float $width
-     * @param float $height
      */
     public function __construct(float $width, float $height)
     {
@@ -35,17 +32,11 @@ class Size
         $this->height = $height;
     }
 
-    /**
-     * @return float
-     */
     public function getWidth(): float
     {
         return $this->width;
     }
 
-    /**
-     * @return float
-     */
     public function getHeight(): float
     {
         return $this->height;

@@ -29,9 +29,6 @@ class AnalyzeContentVisitor extends ContentVisitor
      */
     private $textPerFont = [];
 
-    /**
-     * @param ImagePlacement $placement
-     */
     public function visitImagePlacement(ImagePlacement $placement)
     {
         $identifier = $placement->getImage()->getIdentifier();
@@ -52,16 +49,10 @@ class AnalyzeContentVisitor extends ContentVisitor
         $this->maxSizePerImage[$identifier] = $size;
     }
 
-    /**
-     * @param Rectangle $rectangle
-     */
     public function visitRectangle(Rectangle $rectangle)
     {
     }
 
-    /**
-     * @param Text $param
-     */
     public function visitText(Text $param)
     {
         $identifier = $param->getStyle()->getFont()->getIdentifier();

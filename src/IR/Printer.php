@@ -48,8 +48,6 @@ class Printer
 
     /**
      * Printer constructor.
-     *
-     * @param Document $document
      */
     public function __construct(Document $document)
     {
@@ -64,9 +62,6 @@ class Printer
         $this->cursor = new Cursor(10, 10, 1);
     }
 
-    /**
-     * @param string $text
-     */
     public function printText(string $text)
     {
         $position = $this->getPosition();
@@ -77,11 +72,6 @@ class Printer
         $page->addContent($text);
     }
 
-    /**
-     * @param string $imagePath
-     * @param float $width
-     * @param float $height
-     */
     public function printImage(string $imagePath, float $width, float $height)
     {
         $position = $this->getPosition();
@@ -94,10 +84,6 @@ class Printer
         $page->addContent($imagePlacement);
     }
 
-    /**
-     * @param float $width
-     * @param float $height
-     */
     public function printRectangle(float $width, float $height)
     {
         $position = $this->getPosition();
@@ -125,25 +111,16 @@ class Printer
         return new Position($this->cursor->getXCoordinate(), $this->cursor->getYCoordinate());
     }
 
-    /**
-     * @param TextStyle $textStyle
-     */
     public function setTextStyle(TextStyle $textStyle): void
     {
         $this->textStyle = $textStyle;
     }
 
-    /**
-     * @param RectangleStyle $rectangleStyle
-     */
     public function setRectangleStyle(RectangleStyle $rectangleStyle): void
     {
         $this->rectangleStyle = $rectangleStyle;
     }
 
-    /**
-     * @param Cursor $cursor
-     */
     public function setCursor(Cursor $cursor): void
     {
         $this->cursor = $cursor;

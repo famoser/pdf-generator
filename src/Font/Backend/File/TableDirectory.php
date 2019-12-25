@@ -74,17 +74,11 @@ class TableDirectory
      */
     private $rawTables = [];
 
-    /**
-     * @return CMapTable
-     */
     public function getCMapTable(): CMapTable
     {
         return $this->cMapTable;
     }
 
-    /**
-     * @param CMapTable $cMapTable
-     */
     public function setCMapTable(CMapTable $cMapTable): void
     {
         $this->cMapTable = $cMapTable;
@@ -106,97 +100,61 @@ class TableDirectory
         $this->glyphTables = $glyphTables;
     }
 
-    /**
-     * @return HeadTable
-     */
     public function getHeadTable(): HeadTable
     {
         return $this->headTable;
     }
 
-    /**
-     * @param HeadTable $headTable
-     */
     public function setHeadTable(HeadTable $headTable): void
     {
         $this->headTable = $headTable;
     }
 
-    /**
-     * @return HHeaTable
-     */
     public function getHHeaTable(): HHeaTable
     {
         return $this->hHeaTable;
     }
 
-    /**
-     * @param HHeaTable $hHeaTable
-     */
     public function setHHeaTable(HHeaTable $hHeaTable): void
     {
         $this->hHeaTable = $hHeaTable;
     }
 
-    /**
-     * @return HMtxTable
-     */
     public function getHMtxTable(): HMtxTable
     {
         return $this->hMtxTable;
     }
 
-    /**
-     * @param HMtxTable $hMtxTable
-     */
     public function setHMtxTable(HMtxTable $hMtxTable): void
     {
         $this->hMtxTable = $hMtxTable;
     }
 
-    /**
-     * @return LocaTable
-     */
     public function getLocaTable(): LocaTable
     {
         return $this->locaTable;
     }
 
-    /**
-     * @param LocaTable $locaTable
-     */
     public function setLocaTable(LocaTable $locaTable): void
     {
         $this->locaTable = $locaTable;
     }
 
-    /**
-     * @return MaxPTable
-     */
     public function getMaxPTable(): MaxPTable
     {
         return $this->maxPTable;
     }
 
-    /**
-     * @param MaxPTable $maxPTable
-     */
     public function setMaxPTable(MaxPTable $maxPTable): void
     {
         $this->maxPTable = $maxPTable;
     }
 
-    /**
-     * @return PostTable
-     */
     public function getPostTable(): PostTable
     {
         return $this->postTable;
     }
 
-    /**
-     * @param PostTable $postTable
-     */
     public function setPostTable(PostTable $postTable): void
     {
         $this->postTable = $postTable;
@@ -218,17 +176,11 @@ class TableDirectory
         $this->rawTables = $rawTables;
     }
 
-    /**
-     * @return NameTable
-     */
     public function getNameTable(): NameTable
     {
         return $this->nameTable;
     }
 
-    /**
-     * @param NameTable $nameTable
-     */
     public function setNameTable(NameTable $nameTable): void
     {
         $this->nameTable = $nameTable;

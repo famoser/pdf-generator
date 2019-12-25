@@ -35,8 +35,6 @@ class DocumentResources
 
     /**
      * DocumentResources constructor.
-     *
-     * @param DocumentVisitor $documentContentVisitor
      */
     public function __construct(DocumentVisitor $documentContentVisitor)
     {
@@ -44,8 +42,6 @@ class DocumentResources
     }
 
     /**
-     * @param Font $structure
-     *
      * @return BackendFont
      */
     public function getFont(Font $structure)
@@ -54,8 +50,6 @@ class DocumentResources
     }
 
     /**
-     * @param Image $structure
-     *
      * @return BackendImage
      */
     public function getImage(Image $structure)

@@ -36,10 +36,6 @@ class Rectangle extends BaseContent
 
     /**
      * Rectangle constructor.
-     *
-     * @param Position $position
-     * @param Size $size
-     * @param RectangleStyle $style
      */
     public function __construct(Position $position, Size $size, RectangleStyle $style)
     {
@@ -48,35 +44,21 @@ class Rectangle extends BaseContent
         $this->style = $style;
     }
 
-    /**
-     * @return Position
-     */
     public function getPosition(): Position
     {
         return $this->position;
     }
 
-    /**
-     * @return Size
-     */
     public function getSize(): Size
     {
         return $this->size;
     }
 
-    /**
-     * @return RectangleStyle
-     */
     public function getStyle(): RectangleStyle
     {
         return $this->style;
     }
 
-    /**
-     * @param ContentVisitor $visitor
-     *
-     * @return \PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent|null
-     */
     public function accept(ContentVisitor $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent
     {
         return $visitor->visitRectangle($this);

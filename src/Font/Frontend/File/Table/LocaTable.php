@@ -49,9 +49,6 @@ class LocaTable
         $this->offsets = $offsets;
     }
 
-    /**
-     * @param int $offset
-     */
     public function addOffset(int $offset): void
     {
         $this->offsets[] = $offset;

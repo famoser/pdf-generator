@@ -31,9 +31,6 @@ class TextContent extends BaseContent
 
     /**
      * TextSymbol constructor.
-     *
-     * @param array $lines
-     * @param WritingState $text
      */
     public function __construct(array $lines, WritingState $text)
     {
@@ -57,11 +54,6 @@ class TextContent extends BaseContent
         return $this->text->getState();
     }
 
-    /**
-     * @param ContentVisitor $visitor
-     *
-     * @return Content
-     */
     public function accept(ContentVisitor $visitor): Content
     {
         return $visitor->visitTextContent($this);

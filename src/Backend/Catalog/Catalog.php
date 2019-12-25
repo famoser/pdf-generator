@@ -25,8 +25,6 @@ class Catalog extends BaseStructure
 
     /**
      * Catalog constructor.
-     *
-     * @param Pages $pages
      */
     public function __construct(Pages $pages)
     {
@@ -34,8 +32,6 @@ class Catalog extends BaseStructure
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject
      */
     public function accept(CatalogVisitor $visitor)
@@ -43,9 +39,6 @@ class Catalog extends BaseStructure
         return $visitor->visitCatalog($this);
     }
 
-    /**
-     * @return Pages
-     */
     public function getPages(): Pages
     {
         return $this->pages;

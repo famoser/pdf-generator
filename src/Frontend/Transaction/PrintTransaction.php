@@ -34,10 +34,6 @@ class PrintTransaction implements TransactionInterface
 
     /**
      * PrintBuffer constructor.
-     *
-     * @param Document $pdfDocument
-     * @param float $width
-     * @param PrintBuffer $printBuffer
      */
     public function __construct(Document $pdfDocument, float $width, PrintBuffer $printBuffer)
     {

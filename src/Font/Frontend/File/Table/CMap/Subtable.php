@@ -73,65 +73,41 @@ class Subtable
      */
     private $format;
 
-    /**
-     * @return int
-     */
     public function getPlatformID(): int
     {
         return $this->platformID;
     }
 
-    /**
-     * @param int $platformID
-     */
     public function setPlatformID(int $platformID): void
     {
         $this->platformID = $platformID;
     }
 
-    /**
-     * @return int
-     */
     public function getPlatformSpecificID(): int
     {
         return $this->platformSpecificID;
     }
 
-    /**
-     * @param int $platformSpecificID
-     */
     public function setPlatformSpecificID(int $platformSpecificID): void
     {
         $this->platformSpecificID = $platformSpecificID;
     }
 
-    /**
-     * @return int
-     */
     public function getOffset(): int
     {
         return $this->offset;
     }
 
-    /**
-     * @param int $offset
-     */
     public function setOffset(int $offset): void
     {
         $this->offset = $offset;
     }
 
-    /**
-     * @return Format|null
-     */
     public function getFormat(): ?Format
     {
         return $this->format;
     }
 
-    /**
-     * @param Format|null $format
-     */
     public function setFormat(?Format $format): void
     {
         $this->format = $format;

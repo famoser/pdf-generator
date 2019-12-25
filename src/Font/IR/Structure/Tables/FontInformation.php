@@ -176,353 +176,221 @@ class FontInformation
      */
     private $wwsSubfamilyName;
 
-    /**
-     * @return string|null
-     */
     public function getCopyrightNotice(): ?string
     {
         return $this->copyrightNotice;
     }
 
-    /**
-     * @param string|null $copyrightNotice
-     */
     public function setCopyrightNotice(?string $copyrightNotice): void
     {
         $this->copyrightNotice = $copyrightNotice;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFamily(): ?string
     {
         return $this->family;
     }
 
-    /**
-     * @param string|null $family
-     */
     public function setFamily(?string $family): void
     {
         $this->family = $family;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSubfamily(): ?string
     {
         return $this->subfamily;
     }
 
-    /**
-     * @param string|null $subfamily
-     */
     public function setSubfamily(?string $subfamily): void
     {
         $this->subfamily = $subfamily;
     }
 
-    /**
-     * @return string|null
-     */
     public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
 
-    /**
-     * @param string|null $identifier
-     */
     public function setIdentifier(?string $identifier): void
     {
         $this->identifier = $identifier;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFullName(): ?string
     {
         return $this->fullName;
     }
 
-    /**
-     * @param string|null $fullName
-     */
     public function setFullName(?string $fullName): void
     {
         $this->fullName = $fullName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    /**
-     * @param string|null $version
-     */
     public function setVersion(?string $version): void
     {
         $this->version = $version;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPostScriptName(): ?string
     {
         return $this->postScriptName;
     }
 
-    /**
-     * @param string|null $postScriptName
-     */
     public function setPostScriptName(?string $postScriptName): void
     {
         $this->postScriptName = $postScriptName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTrademarkNotice(): ?string
     {
         return $this->trademarkNotice;
     }
 
-    /**
-     * @param string|null $trademarkNotice
-     */
     public function setTrademarkNotice(?string $trademarkNotice): void
     {
         $this->trademarkNotice = $trademarkNotice;
     }
 
-    /**
-     * @return string|null
-     */
     public function getManufacturer(): ?string
     {
         return $this->manufacturer;
     }
 
-    /**
-     * @param string|null $manufacturer
-     */
     public function setManufacturer(?string $manufacturer): void
     {
         $this->manufacturer = $manufacturer;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDesigner(): ?string
     {
         return $this->designer;
     }
 
-    /**
-     * @param string|null $designer
-     */
     public function setDesigner(?string $designer): void
     {
         $this->designer = $designer;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string|null $description
-     */
     public function setDescription(?string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return string|null
-     */
     public function getUrlVendor(): ?string
     {
         return $this->urlVendor;
     }
 
-    /**
-     * @param string|null $urlVendor
-     */
     public function setUrlVendor(?string $urlVendor): void
     {
         $this->urlVendor = $urlVendor;
     }
 
-    /**
-     * @return string|null
-     */
     public function getUrlDesigner(): ?string
     {
         return $this->urlDesigner;
     }
 
-    /**
-     * @param string|null $urlDesigner
-     */
     public function setUrlDesigner(?string $urlDesigner): void
     {
         $this->urlDesigner = $urlDesigner;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLicenseDescription(): ?string
     {
         return $this->licenseDescription;
     }
 
-    /**
-     * @param string|null $licenseDescription
-     */
     public function setLicenseDescription(?string $licenseDescription): void
     {
         $this->licenseDescription = $licenseDescription;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLicenseUrl(): ?string
     {
         return $this->licenseUrl;
     }
 
-    /**
-     * @param string|null $licenseUrl
-     */
     public function setLicenseUrl(?string $licenseUrl): void
     {
         $this->licenseUrl = $licenseUrl;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTypographicFamily(): ?string
     {
         return $this->typographicFamily;
     }
 
-    /**
-     * @param string|null $typographicFamily
-     */
     public function setTypographicFamily(?string $typographicFamily): void
     {
         $this->typographicFamily = $typographicFamily;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTypographicSubfamily(): ?string
     {
         return $this->typographicSubfamily;
     }
 
-    /**
-     * @param string|null $typographicSubfamily
-     */
     public function setTypographicSubfamily(?string $typographicSubfamily): void
     {
         $this->typographicSubfamily = $typographicSubfamily;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCompatibleFull(): ?string
     {
         return $this->compatibleFull;
     }
 
-    /**
-     * @param string|null $compatibleFull
-     */
     public function setCompatibleFull(?string $compatibleFull): void
     {
         $this->compatibleFull = $compatibleFull;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSampleText(): ?string
     {
         return $this->sampleText;
     }
 
-    /**
-     * @param string|null $sampleText
-     */
     public function setSampleText(?string $sampleText): void
     {
         $this->sampleText = $sampleText;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPostScriptCIDName(): ?string
     {
         return $this->postScriptCIDName;
     }
 
-    /**
-     * @param string|null $postScriptCIDName
-     */
     public function setPostScriptCIDName(?string $postScriptCIDName): void
     {
         $this->postScriptCIDName = $postScriptCIDName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getWwsFamilyName(): ?string
     {
         return $this->wwsFamilyName;
     }
 
-    /**
-     * @param string|null $wwsFamilyName
-     */
     public function setWwsFamilyName(?string $wwsFamilyName): void
     {
         $this->wwsFamilyName = $wwsFamilyName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getWwsSubfamilyName(): ?string
     {
         return $this->wwsSubfamilyName;
     }
 
-    /**
-     * @param string|null $wwsSubfamilyName
-     */
     public function setWwsSubfamilyName(?string $wwsSubfamilyName): void
     {
         $this->wwsSubfamilyName = $wwsSubfamilyName;

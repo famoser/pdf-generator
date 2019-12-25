@@ -90,105 +90,66 @@ class TextState extends BaseState
      */
     private $rise = 0;
 
-    /**
-     * @param Font $font
-     */
     public function setFont(Font $font): void
     {
         $this->font = $font;
     }
 
-    /**
-     * @return Font|null
-     */
     public function getFont(): ?Font
     {
         return $this->font;
     }
 
-    /**
-     * @param float $fontSize
-     */
     public function setFontSize(float $fontSize): void
     {
         $this->fontSize = $fontSize;
     }
 
-    /**
-     * @return float
-     */
     public function getFontSize(): float
     {
         return $this->fontSize;
     }
 
-    /**
-     * @param float $charSpace
-     */
     public function setCharSpace(float $charSpace): void
     {
         $this->charSpace = $charSpace;
     }
 
-    /**
-     * @return float
-     */
     public function getCharSpace(): float
     {
         return $this->charSpace;
     }
 
-    /**
-     * @param float $wordSpace
-     */
     public function setWordSpace(float $wordSpace): void
     {
         $this->wordSpace = $wordSpace;
     }
 
-    /**
-     * @return float
-     */
     public function getWordSpace(): float
     {
         return $this->wordSpace;
     }
 
-    /**
-     * @param float $scale
-     */
     public function setScale(float $scale): void
     {
         $this->scale = $scale;
     }
 
-    /**
-     * @return float
-     */
     public function getScale(): float
     {
         return $this->scale;
     }
 
-    /**
-     * @param float $leading
-     */
     public function setLeading(float $leading): void
     {
         $this->leading = $leading;
     }
 
-    /**
-     * @return float
-     */
     public function getLeading(): float
     {
         return $this->leading;
     }
 
-    /**
-     * @param int $renderMode
-     */
     public function setRenderMode(int $renderMode): void
     {
         \assert($renderMode >= self::RENDER_MODE_FILL && $renderMode <= self::RENDER_MODE_PATH_INVISIBLE);
@@ -196,33 +157,22 @@ class TextState extends BaseState
         $this->renderMode = $renderMode;
     }
 
-    /**
-     * @return float
-     */
     public function getRenderMode(): float
     {
         return $this->renderMode;
     }
 
-    /**
-     * @param float $rise
-     */
     public function setRise(float $rise): void
     {
         $this->rise = $rise;
     }
 
-    /**
-     * @return float
-     */
     public function getRise(): float
     {
         return $this->rise;
     }
 
     /**
-     * @param StateTransitionVisitor $visitor
-     *
      * @return string[]
      */
     public function accept(StateTransitionVisitor $visitor): array

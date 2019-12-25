@@ -56,81 +56,51 @@ class CIDFont extends BaseStructure
      */
     private $w = [];
 
-    /**
-     * @return string
-     */
     public function getSubType(): string
     {
         return $this->subType;
     }
 
-    /**
-     * @param string $subType
-     */
     public function setSubType(string $subType): void
     {
         $this->subType = $subType;
     }
 
-    /**
-     * @return string
-     */
     public function getBaseFont(): string
     {
         return $this->baseFont;
     }
 
-    /**
-     * @param string $baseFont
-     */
     public function setBaseFont(string $baseFont): void
     {
         $this->baseFont = $baseFont;
     }
 
-    /**
-     * @return CIDSystemInfo
-     */
     public function getCIDSystemInfo(): CIDSystemInfo
     {
         return $this->cIDSystemInfo;
     }
 
-    /**
-     * @param CIDSystemInfo $cIDSystemInfo
-     */
     public function setCIDSystemInfo(CIDSystemInfo $cIDSystemInfo): void
     {
         $this->cIDSystemInfo = $cIDSystemInfo;
     }
 
-    /**
-     * @return FontDescriptor
-     */
     public function getFontDescriptor(): FontDescriptor
     {
         return $this->fontDescriptor;
     }
 
-    /**
-     * @param FontDescriptor $fontDescriptor
-     */
     public function setFontDescriptor(FontDescriptor $fontDescriptor): void
     {
         $this->fontDescriptor = $fontDescriptor;
     }
 
-    /**
-     * @return int
-     */
     public function getDW(): int
     {
         return $this->dW;
     }
 
-    /**
-     * @param int $dW
-     */
     public function setDW(int $dW): void
     {
         $this->dW = $dW;
@@ -153,8 +123,6 @@ class CIDFont extends BaseStructure
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject|BaseObject[]
      */
     public function accept(CatalogVisitor $visitor)

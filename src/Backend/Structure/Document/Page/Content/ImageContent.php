@@ -30,27 +30,17 @@ class ImageContent extends BaseContent
      */
     private $color;
 
-    /**
-     * @param Image $image
-     * @param DrawingState $color
-     */
     public function __construct(Image $image, DrawingState $color)
     {
         $this->image = $image;
         $this->color = $color;
     }
 
-    /**
-     * @return Image
-     */
     public function getImage(): Image
     {
         return $this->image;
     }
 
-    /**
-     * @return DrawingState
-     */
     public function getColor(): DrawingState
     {
         return $this->color;
@@ -64,11 +54,6 @@ class ImageContent extends BaseContent
         return $this->color->getState();
     }
 
-    /**
-     * @param ContentVisitor $visitor
-     *
-     * @return Content
-     */
     public function accept(ContentVisitor $visitor): Content
     {
         return $visitor->visitImageContent($this);

@@ -32,9 +32,6 @@ class PrintBuffer
 
     /**
      * PrintBuffer constructor.
-     *
-     * @param Document $pdfDocument
-     * @param float $width
      */
     public function __construct(Document $pdfDocument, float $width)
     {
@@ -43,7 +40,6 @@ class PrintBuffer
     }
 
     /**
-     * @param callable $callable
      * @param callable $prepareArguments
      */
     public function prependPrintable(callable $callable, callable $prepareArguments = null)
@@ -52,7 +48,6 @@ class PrintBuffer
     }
 
     /**
-     * @param callable $callable
      * @param callable $prepareArguments
      */
     public function addPrintable(callable $callable, callable $prepareArguments = null)
@@ -60,9 +55,6 @@ class PrintBuffer
         $this->printBuffer[] = $this->getPrintBufferEntry($callable, $prepareArguments);
     }
 
-    /**
-     * @return \Closure
-     */
     public function flushBufferClosure(): \Closure
     {
         return function () {
@@ -73,8 +65,6 @@ class PrintBuffer
     }
 
     /**
-     * @param self $buffer
-     *
      * @return PrintBuffer
      */
     public static function createFromExisting(self $buffer)
@@ -86,7 +76,6 @@ class PrintBuffer
     }
 
     /**
-     * @param callable $callable
      * @param callable $prepareArguments
      *
      * @return \Closure

@@ -35,10 +35,6 @@ class Text extends BaseContent
 
     /**
      * TextPlacement constructor.
-     *
-     * @param string $text
-     * @param Position $position
-     * @param TextStyle $style
      */
     public function __construct(string $text, Position $position, TextStyle $style)
     {
@@ -47,35 +43,21 @@ class Text extends BaseContent
         $this->style = $style;
     }
 
-    /**
-     * @return string
-     */
     public function getText(): string
     {
         return $this->text;
     }
 
-    /**
-     * @return Position
-     */
     public function getPosition(): Position
     {
         return $this->position;
     }
 
-    /**
-     * @return TextStyle
-     */
     public function getStyle(): TextStyle
     {
         return $this->style;
     }
 
-    /**
-     * @param ContentVisitor $visitor
-     *
-     * @return \PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent|null
-     */
     public function accept(ContentVisitor $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent
     {
         return $visitor->visitText($this);

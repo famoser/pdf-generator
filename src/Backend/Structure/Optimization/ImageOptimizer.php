@@ -14,10 +14,6 @@ namespace PdfGenerator\Backend\Structure\Optimization;
 class ImageOptimizer
 {
     /**
-     * @param string $imageContent
-     * @param int $targetWidth
-     * @param int $targetHeight
-     *
      * @return string
      */
     public function transformToJpgAndResize(string $imageContent, int $targetWidth, int $targetHeight)
@@ -33,12 +29,6 @@ class ImageOptimizer
     }
 
     /**
-     * @param int $width
-     * @param int $height
-     * @param int $maxWidth
-     * @param int $maxHeight
-     * @param int $dpi
-     *
      * @return int[]
      */
     public function getTargetHeightWidth(int $width, int $height, int $maxWidth, int $maxHeight, int $dpi): array
@@ -64,8 +54,6 @@ class ImageOptimizer
     }
 
     /**
-     * @param callable $func
-     *
      * @return string
      */
     private function catchOutput(callable $func)

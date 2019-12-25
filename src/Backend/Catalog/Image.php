@@ -39,12 +39,6 @@ class Image extends BaseStructure
 
     /**
      * Image constructor.
-     *
-     * @param string $identifier
-     * @param int $type
-     * @param string $content
-     * @param float $width
-     * @param float $height
      */
     public function __construct(string $identifier, int $type, string $content, float $width, float $height)
     {
@@ -58,8 +52,6 @@ class Image extends BaseStructure
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject
      */
     public function accept(CatalogVisitor $visitor)
@@ -67,33 +59,21 @@ class Image extends BaseStructure
         return $visitor->visitImage($this);
     }
 
-    /**
-     * @return float
-     */
     public function getWidth(): float
     {
         return $this->width;
     }
 
-    /**
-     * @return float
-     */
     public function getHeight(): float
     {
         return $this->height;
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @return string
-     */
     public function getFilter(): string
     {
         return 'JPXDecode';

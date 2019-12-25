@@ -231,235 +231,146 @@ class HeadTable extends BaseTable
      */
     private $glyphDataFormat;
 
-    /**
-     * @return int
-     */
     public function getMajorVersion(): int
     {
         return $this->majorVersion;
     }
 
-    /**
-     * @param int $majorVersion
-     */
     public function setMajorVersion(int $majorVersion): void
     {
         $this->majorVersion = $majorVersion;
     }
 
-    /**
-     * @return int
-     */
     public function getMinorVersion(): int
     {
         return $this->minorVersion;
     }
 
-    /**
-     * @param int $minorVersion
-     */
     public function setMinorVersion(int $minorVersion): void
     {
         $this->minorVersion = $minorVersion;
     }
 
-    /**
-     * @return float
-     */
     public function getFontRevision(): float
     {
         return $this->fontRevision;
     }
 
-    /**
-     * @param float $fontRevision
-     */
     public function setFontRevision(float $fontRevision): void
     {
         $this->fontRevision = $fontRevision;
     }
 
-    /**
-     * @return int
-     */
     public function getCheckSumAdjustment(): int
     {
         return $this->checkSumAdjustment;
     }
 
-    /**
-     * @param int $checkSumAdjustment
-     */
     public function setCheckSumAdjustment(int $checkSumAdjustment): void
     {
         $this->checkSumAdjustment = $checkSumAdjustment;
     }
 
-    /**
-     * @return int
-     */
     public function getMagicNumber(): int
     {
         return $this->magicNumber;
     }
 
-    /**
-     * @param int $magicNumber
-     */
     public function setMagicNumber(int $magicNumber): void
     {
         $this->magicNumber = $magicNumber;
     }
 
-    /**
-     * @return int
-     */
     public function getFlags(): int
     {
         return $this->flags;
     }
 
-    /**
-     * @param int $flags
-     */
     public function setFlags(int $flags): void
     {
         $this->flags = $flags;
     }
 
-    /**
-     * @return int
-     */
     public function getUnitsPerEm(): int
     {
         return $this->unitsPerEm;
     }
 
-    /**
-     * @param int $unitsPerEm
-     */
     public function setUnitsPerEm(int $unitsPerEm): void
     {
         $this->unitsPerEm = $unitsPerEm;
     }
 
-    /**
-     * @return int
-     */
     public function getCreated(): int
     {
         return $this->created;
     }
 
-    /**
-     * @param int $created
-     */
     public function setCreated(int $created): void
     {
         $this->created = $created;
     }
 
-    /**
-     * @return int
-     */
     public function getModified(): int
     {
         return $this->modified;
     }
 
-    /**
-     * @param int $modified
-     */
     public function setModified(int $modified): void
     {
         $this->modified = $modified;
     }
 
-    /**
-     * @return int
-     */
     public function getMacStyle(): int
     {
         return $this->macStyle;
     }
 
-    /**
-     * @param int $macStyle
-     */
     public function setMacStyle(int $macStyle): void
     {
         $this->macStyle = $macStyle;
     }
 
-    /**
-     * @return int
-     */
     public function getLowestRecPPEM(): int
     {
         return $this->lowestRecPPEM;
     }
 
-    /**
-     * @param int $lowestRecPPEM
-     */
     public function setLowestRecPPEM(int $lowestRecPPEM): void
     {
         $this->lowestRecPPEM = $lowestRecPPEM;
     }
 
-    /**
-     * @return int
-     */
     public function getFontDirectionHints(): int
     {
         return $this->fontDirectionHints;
     }
 
-    /**
-     * @param int $fontDirectionHints
-     */
     public function setFontDirectionHints(int $fontDirectionHints): void
     {
         $this->fontDirectionHints = $fontDirectionHints;
     }
 
-    /**
-     * @return int
-     */
     public function getIndexToLocFormat(): int
     {
         return $this->indexToLocFormat;
     }
 
-    /**
-     * @param int $indexToLocFormat
-     */
     public function setIndexToLocFormat(int $indexToLocFormat): void
     {
         $this->indexToLocFormat = $indexToLocFormat;
     }
 
-    /**
-     * @return int
-     */
     public function getGlyphDataFormat(): int
     {
         return $this->glyphDataFormat;
     }
 
-    /**
-     * @param int $glyphDataFormat
-     */
     public function setGlyphDataFormat(int $glyphDataFormat): void
     {
         $this->glyphDataFormat = $glyphDataFormat;
     }
 
-    /**
-     * @param TableVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TableVisitor $visitor): string
     {
         return $visitor->visitHeadTable($this);

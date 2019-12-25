@@ -45,9 +45,6 @@ class FileReader
 
     /**
      * StructureReader constructor.
-     *
-     * @param FormatReader $cMapFormatReader
-     * @param File\Table\Post\FormatReader $postFormatReader
      */
     public function __construct(FormatReader $cMapFormatReader, File\Table\Post\FormatReader $postFormatReader)
     {
@@ -56,8 +53,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      * @throws \Exception
      *
      * @return FontFile
@@ -79,12 +74,9 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
      * @param TableDirectoryEntry[] $tableDirectoryEntries
      *
      * @throws \Exception
-     *
-     * @return FontFile
      */
     private function readFontFile(StreamReader $fileReader, array $tableDirectoryEntries): FontFile
     {
@@ -113,7 +105,7 @@ class FileReader
                     $table = $this->readHeadTable($fileReader);
                     $font->setHeadTable($table);
                     break;
-                case 'OS/2':
+                case 'OS/2': // sizing infos used only by windows
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setOS2Table($table);
                     break;
@@ -121,19 +113,19 @@ class FileReader
                     $table = $this->readNameTable($fileReader);
                     $font->setNameTable($table);
                     break;
-                case 'cvt ':
+                case 'cvt ': // list of instructions
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setCvtTable($table);
                     break;
-                case 'fpgm':
+                case 'fpgm': // font program before font is used
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setFpgmTable($table);
                     break;
-                case 'gasp':
+                case 'gasp': // grid-fitting rasterization properties
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGaspTable($table);
                     break;
-                case 'prep':
+                case 'prep': // font program before glyph is printed
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setPrepTable($table);
                     break;
@@ -141,15 +133,15 @@ class FileReader
                     $table = $this->readPostTable($fileReader, $tableDirectoryEntry->getLength());
                     $font->setPostTable($table);
                     break;
-                case 'GDEF':
+                case 'GDEF': // emoji things 1
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGDEFTable($table);
                     break;
-                case 'GPOS':
+                case 'GPOS': // emoji things 2
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGPOSTable($table);
                     break;
-                case 'GSUB':
+                case 'GSUB': // emoji things 3
                     $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
                     $font->setGSUBTable($table);
                     break;
@@ -195,8 +187,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      * @throws \Exception
      *
      * @return OffsetTable
@@ -213,8 +203,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      * @throws \Exception
      *
      * @return TableDirectoryEntry
@@ -232,8 +220,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      * @throws \Exception
      *
      * @return CMapTable
@@ -256,9 +242,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     * @param int $cmapTableOffset
-     *
      * @throws \Exception
      *
      * @return Subtable
@@ -280,10 +263,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     * @param LocaTable $locaTable
-     * @param HeadTable $headTable
-     *
      * @throws \Exception
      *
      * @return GlyfTable[]
@@ -323,10 +302,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     * @param HeadTable $headTable
-     * @param MaxPTable $maxPTable
-     *
      * @throws \Exception
      *
      * @return LocaTable
@@ -349,8 +324,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      * @throws \Exception
      *
      * @return MaxPTable
@@ -379,8 +352,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      * @throws \Exception
      *
      * @return HeadTable
@@ -409,9 +380,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     * @param TableDirectoryEntry $tableDirectoryEntry
-     *
      * @return RawTable
      */
     private function readRawTable(StreamReader $fileReader, TableDirectoryEntry $tableDirectoryEntry)
@@ -426,8 +394,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      * @throws \Exception
      *
      * @return HHeaTable
@@ -459,9 +425,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     * @param int $length
-     *
      * @throws \Exception
      *
      * @return PostTable
@@ -488,8 +451,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     *
      * @throws \Exception
      *
      * @return NameTable
@@ -541,8 +502,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $streamReader
-     *
      * @throws \Exception
      *
      * @return NameRecord
@@ -562,8 +521,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $streamReader
-     *
      * @throws \Exception
      *
      * @return LangTagRecord
@@ -579,10 +536,6 @@ class FileReader
     }
 
     /**
-     * @param StreamReader $fileReader
-     * @param HHeaTable $hHeaTable
-     * @param MaxPTable $maxPTable
-     *
      * @throws \Exception
      *
      * @return HMtxTable

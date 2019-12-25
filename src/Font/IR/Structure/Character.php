@@ -27,12 +27,12 @@ class Character
     private $postScriptInfo;
 
     /**
-     * @var BoundingBox
+     * @var BoundingBox|null
      */
     private $boundingBox;
 
     /**
-     * @var GlyfTable
+     * @var GlyfTable|null
      */
     private $glyfTable;
 
@@ -41,81 +41,51 @@ class Character
      */
     private $longHorMetric;
 
-    /**
-     * @return int
-     */
     public function getUnicodePoint(): int
     {
         return $this->unicodePoint;
     }
 
-    /**
-     * @param int $unicodePoint
-     */
     public function setUnicodePoint(int $unicodePoint): void
     {
         $this->unicodePoint = $unicodePoint;
     }
 
-    /**
-     * @return PostScriptInfo
-     */
     public function getPostScriptInfo(): PostScriptInfo
     {
         return $this->postScriptInfo;
     }
 
-    /**
-     * @param PostScriptInfo $postScriptInfo
-     */
     public function setPostScriptInfo(PostScriptInfo $postScriptInfo): void
     {
         $this->postScriptInfo = $postScriptInfo;
     }
 
-    /**
-     * @return BoundingBox
-     */
-    public function getBoundingBox(): BoundingBox
+    public function getBoundingBox(): ?BoundingBox
     {
         return $this->boundingBox;
     }
 
-    /**
-     * @param BoundingBox $boundingBox
-     */
-    public function setBoundingBox(BoundingBox $boundingBox): void
+    public function setBoundingBox(?BoundingBox $boundingBox): void
     {
         $this->boundingBox = $boundingBox;
     }
 
-    /**
-     * @return GlyfTable
-     */
-    public function getGlyfTable(): GlyfTable
+    public function getGlyfTable(): ?GlyfTable
     {
         return $this->glyfTable;
     }
 
-    /**
-     * @param GlyfTable $glyfTable
-     */
-    public function setGlyfTable(GlyfTable $glyfTable): void
+    public function setGlyfTable(?GlyfTable $glyfTable): void
     {
         $this->glyfTable = $glyfTable;
     }
 
-    /**
-     * @return LongHorMetric
-     */
     public function getLongHorMetric(): LongHorMetric
     {
         return $this->longHorMetric;
     }
 
-    /**
-     * @param LongHorMetric $longHorMetric
-     */
     public function setLongHorMetric(LongHorMetric $longHorMetric): void
     {
         $this->longHorMetric = $longHorMetric;

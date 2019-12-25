@@ -16,7 +16,6 @@ use PdfGenerator\Font\Frontend\StreamReader;
 class Reader
 {
     /**
-     * @param StreamReader $fileReader
      * @param BinaryTreeSearchableTrait $binaryTreeSearchable
      *
      * @throws \Exception
@@ -29,7 +28,6 @@ class Reader
     }
 
     /**
-     * @param StreamReader $fileReader
      * @param BoundingBoxTrait $boundingBoxTrait
      *
      * @throws \Exception
@@ -43,7 +41,6 @@ class Reader
     }
 
     /**
-     * @param StreamReader $fileReader
      * @param BoundingBoxTrait $boundingBoxTrait
      *
      * @throws \Exception

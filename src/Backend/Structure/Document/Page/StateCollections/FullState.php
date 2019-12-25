@@ -34,10 +34,6 @@ class FullState
 
     /**
      * TextLevel constructor.
-     *
-     * @param GeneralGraphicState $generalGraphicsState
-     * @param ColorState $colorState
-     * @param TextState $textState
      */
     public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState, TextState $textState)
     {
@@ -54,25 +50,16 @@ class FullState
         return new self(new GeneralGraphicState(), new ColorState(), new TextState());
     }
 
-    /**
-     * @return GeneralGraphicState
-     */
     public function getGeneralGraphicsState(): GeneralGraphicState
     {
         return $this->generalGraphicsState;
     }
 
-    /**
-     * @return ColorState
-     */
     public function getColorState(): ColorState
     {
         return $this->colorState;
     }
 
-    /**
-     * @return TextState
-     */
     public function getTextState(): TextState
     {
         return $this->textState;

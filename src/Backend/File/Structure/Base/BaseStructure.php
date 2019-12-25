@@ -15,10 +15,5 @@ use PdfGenerator\Backend\File\StructureVisitor;
 
 abstract class BaseStructure
 {
-    /**
-     * @param StructureVisitor $visitor
-     *
-     * @return string
-     */
     abstract public function accept(StructureVisitor $visitor): string;
 }

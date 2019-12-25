@@ -44,17 +44,11 @@ class GlyfTable
      */
     use RawContent;
 
-    /**
-     * @return int
-     */
     public function getNumberOfContours(): int
     {
         return $this->numberOfContours;
     }
 
-    /**
-     * @param int $numberOfContours
-     */
     public function setNumberOfContours(int $numberOfContours): void
     {
         $this->numberOfContours = $numberOfContours;

@@ -31,33 +31,21 @@ class LongHorMetric
      */
     private $leftSideBearing;
 
-    /**
-     * @return int
-     */
     public function getAdvanceWidth(): int
     {
         return $this->advanceWidth;
     }
 
-    /**
-     * @param int $advanceWidth
-     */
     public function setAdvanceWidth(int $advanceWidth): void
     {
         $this->advanceWidth = $advanceWidth;
     }
 
-    /**
-     * @return int
-     */
     public function getLeftSideBearing(): int
     {
         return $this->leftSideBearing;
     }
 
-    /**
-     * @param int $leftSideBearing
-     */
     public function setLeftSideBearing(int $leftSideBearing): void
     {
         $this->leftSideBearing = $leftSideBearing;

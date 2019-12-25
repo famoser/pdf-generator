@@ -94,9 +94,6 @@ class GeneralGraphicState extends BaseState
      */
     private $dashPhase = 0;
 
-    /**
-     * @param float $angle
-     */
     public function setMinimalAngleOfMiterJoin(float $angle)
     {
         $this->miterLimit = $this->lineWidth * sin($angle / 2);
@@ -120,33 +117,21 @@ class GeneralGraphicState extends BaseState
         $this->currentTransformationMatrix = $currentTransformationMatrix;
     }
 
-    /**
-     * @return float
-     */
     public function getLineWidth(): float
     {
         return $this->lineWidth;
     }
 
-    /**
-     * @param float $lineWidth
-     */
     public function setLineWidth(float $lineWidth): void
     {
         $this->lineWidth = $lineWidth;
     }
 
-    /**
-     * @return int
-     */
     public function getLineCap(): int
     {
         return $this->lineCap;
     }
 
-    /**
-     * @param int $lineCap
-     */
     public function setLineCap(int $lineCap): void
     {
         \assert($lineCap >= self::LINE_CAP_BUTT && $lineCap <= self::LINE_CAP_PROJECTING_SQUARE);
@@ -154,17 +139,11 @@ class GeneralGraphicState extends BaseState
         $this->lineCap = $lineCap;
     }
 
-    /**
-     * @return int
-     */
     public function getLineJoin(): int
     {
         return $this->lineJoin;
     }
 
-    /**
-     * @param int $lineJoin
-     */
     public function setLineJoin(int $lineJoin): void
     {
         \assert($lineJoin >= self::LINE_JOIN_MITER && $lineJoin <= self::LINE_JOIN_BEVEL);
@@ -172,17 +151,11 @@ class GeneralGraphicState extends BaseState
         $this->lineJoin = $lineJoin;
     }
 
-    /**
-     * @return float
-     */
     public function getMiterLimit(): float
     {
         return $this->miterLimit;
     }
 
-    /**
-     * @param float $miterLimit
-     */
     public function setMiterLimit(float $miterLimit): void
     {
         $this->miterLimit = $miterLimit;
@@ -204,25 +177,17 @@ class GeneralGraphicState extends BaseState
         $this->dashArray = $dashArray;
     }
 
-    /**
-     * @return float
-     */
     public function getDashPhase(): float
     {
         return $this->dashPhase;
     }
 
-    /**
-     * @param float $dashPhase
-     */
     public function setDashPhase(float $dashPhase): void
     {
         $this->dashPhase = $dashPhase;
     }
 
     /**
-     * @param StateTransitionVisitor $visitor
-     *
      * @return string[]
      */
     public function accept(StateTransitionVisitor $visitor): array

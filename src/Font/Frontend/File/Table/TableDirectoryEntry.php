@@ -49,65 +49,41 @@ class TableDirectoryEntry
      */
     private $length;
 
-    /**
-     * @return string
-     */
     public function getTag(): string
     {
         return $this->tag;
     }
 
-    /**
-     * @param string $tag
-     */
     public function setTag(string $tag): void
     {
         $this->tag = $tag;
     }
 
-    /**
-     * @return int
-     */
     public function getCheckSum(): int
     {
         return $this->checkSum;
     }
 
-    /**
-     * @param int $checkSum
-     */
     public function setCheckSum(int $checkSum): void
     {
         $this->checkSum = $checkSum;
     }
 
-    /**
-     * @return int
-     */
     public function getOffset(): int
     {
         return $this->offset;
     }
 
-    /**
-     * @param int $offset
-     */
     public function setOffset(int $offset): void
     {
         $this->offset = $offset;
     }
 
-    /**
-     * @return int
-     */
     public function getLength(): int
     {
         return $this->length;
     }
 
-    /**
-     * @param int $length
-     */
     public function setLength(int $length): void
     {
         $this->length = $length;

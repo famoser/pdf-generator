@@ -23,33 +23,21 @@ class Configuration
      */
     private $autoResizeImagesDpi = 72;
 
-    /**
-     * @return bool
-     */
     public function getAutoResizeImages(): bool
     {
         return $this->autoResizeImages;
     }
 
-    /**
-     * @param bool $autoResizeImages
-     */
     public function setAutoResizeImages(bool $autoResizeImages): void
     {
         $this->autoResizeImages = $autoResizeImages;
     }
 
-    /**
-     * @return int
-     */
     public function getAutoResizeImagesDpi(): int
     {
         return $this->autoResizeImagesDpi;
     }
 
-    /**
-     * @param int $autoResizeImagesDpi
-     */
     public function setAutoResizeImagesDpi(int $autoResizeImagesDpi): void
     {
         $this->autoResizeImagesDpi = $autoResizeImagesDpi;

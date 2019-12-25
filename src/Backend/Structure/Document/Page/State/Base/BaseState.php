@@ -16,8 +16,6 @@ use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 abstract class BaseState
 {
     /**
-     * @param StateTransitionVisitor $visitor
-     *
      * @return string[]
      */
     abstract public function accept(StateTransitionVisitor $visitor): array;

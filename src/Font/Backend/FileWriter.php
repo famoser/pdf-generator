@@ -45,8 +45,6 @@ class FileWriter
 
     /**
      * FileWriter constructor.
-     *
-     * @param TableVisitor $tableVisitor
      */
     public function __construct(TableVisitor $tableVisitor)
     {
@@ -64,8 +62,6 @@ class FileWriter
     }
 
     /**
-     * @param Font $font
-     *
      * @throws \Exception
      *
      * @return string
@@ -79,7 +75,6 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     * @param Character $missingGlyphCharacter
      *
      * @return Character[]
      */
@@ -93,7 +88,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\HeadTable $source
      * @param Character[] $characters
      *
      * @return HeadTable
@@ -119,6 +113,10 @@ class FileWriter
         $xMax = PHP_INT_MAX;
         $yMax = PHP_INT_MAX;
         foreach ($characters as $character) {
+            if ($character->getGlyfTable() === null) {
+                continue;
+            }
+
             $xMin = min($character->getGlyfTable()->getXMin(), $xMin);
             $yMin = min($character->getGlyfTable()->getYMin(), $yMin);
             $xMax = max($character->getGlyfTable()->getXMax(), $xMax);
@@ -140,9 +138,7 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\HHeaTable $source
      * @param Character[] $characters
-     * @param int $longHorMetricCount
      *
      * @return HHeaTable
      */
@@ -166,12 +162,14 @@ class FileWriter
             $advanceWidthMax = max($advanceWidthMax, $advanceWidth);
             $minLeftSideBearing = min($minLeftSideBearing, $leftSideBearing);
 
-            $width = $character->getBoundingBox()->getWidth();
-            $rightSideBearing = $advanceWidth - $leftSideBearing - $width;
-            $minRightSideBearing = min($minRightSideBearing, $rightSideBearing);
+            if ($character->getBoundingBox() !== null) {
+                $width = $character->getBoundingBox()->getWidth();
+                $rightSideBearing = $advanceWidth - $leftSideBearing - $width;
+                $minRightSideBearing = min($minRightSideBearing, $rightSideBearing);
 
-            $xExtend = $leftSideBearing + $width;
-            $xMaxExtent = max($xMaxExtent, $xExtend);
+                $xExtend = $leftSideBearing + $width;
+                $xMaxExtent = max($xMaxExtent, $xExtend);
+            }
         }
 
         $hHeaTable->setAdvanceWidthMax($advanceWidthMax);
@@ -210,7 +208,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\MaxPTable $source
      * @param Character[] $characters
      *
      * @return MaxPTable
@@ -238,11 +235,6 @@ class FileWriter
         return $maxPTable;
     }
 
-    /**
-     * @param array $characters
-     *
-     * @return Subtable
-     */
     private function generateSubtable(array $characters): Subtable
     {
         $subtable = new Subtable();
@@ -269,8 +261,9 @@ class FileWriter
         $format->setLength(8 * 2 + 4 * 2 * $segmentsCount); // 8 fields; 4 arrays of size 2 per entry
         $format->setLanguage(0);
         $format->setSegCountX2($segmentsCount * 2);
-        self::setBinaryTreeSearchableProperties($format, $format->getSegCountX2());
-        $format->setEntrySelector($format->getEntrySelector() - 1);
+        $format->setSearchRange(2 * (2 ** ((int)(log($segmentsCount, 2)))));
+        $format->setEntrySelector(log($format->getSearchRange() / 2, 2));
+        $format->setRangeShift(2 * $segmentsCount - $format->getSearchRange());
         $format->setReservedPad(0);
 
         foreach ($segments as $segment) {
@@ -331,11 +324,6 @@ class FileWriter
         return $segments;
     }
 
-    /**
-     * @param array $characters
-     *
-     * @return array
-     */
     private function sortCharactersByCodePoint(array $characters): array
     {
         $charactersByCodePoint = [];
@@ -359,7 +347,11 @@ class FileWriter
         $glyfTables = [];
 
         foreach ($characters as $character) {
-            $glyfTables[] = $this->generateGlyfTable($character->getGlyfTable());
+            if ($character->getGlyfTable() === null) {
+                $glyfTables[] = null;
+            } else {
+                $glyfTables[] = $this->generateGlyfTable($character->getGlyfTable());
+            }
         }
 
         return $glyfTables;
@@ -379,9 +371,11 @@ class FileWriter
 
         $locaTable->addOffset($currentOffset);
         foreach ($glyfTables as $glyfTable) {
-            $size = \strlen($glyfTable->getContent()) + 10;
+            if ($glyfTable !== null) {
+                $size = \strlen($glyfTable->getContent()) + 10;
+                $currentOffset += $size / 2;
+            }
 
-            $currentOffset += $size / 2;
             $locaTable->addOffset($currentOffset);
         }
 
@@ -389,8 +383,6 @@ class FileWriter
     }
 
     /**
-     * @param TableDirectory $fontFile
-     *
      * @throws \Exception
      *
      * @return string
@@ -414,11 +406,13 @@ class FileWriter
             $tables[$table->getTag()] = $table;
         }
 
-        ksort($tables);
+        ksort($tables, SORT_NATURAL | SORT_FLAG_CASE);
 
         $tableStreamWriter = new StreamWriter();
 
         $offsetByTag = [];
+        $lengthByTag = [];
+
         foreach ($tables as $tag => $table) {
             if ($table === null) {
                 continue;
@@ -427,15 +421,25 @@ class FileWriter
             $offsetByTag[$tag] = $tableStreamWriter->getLength();
             if (\is_array($table)) {
                 foreach ($table as $item) {
+                    // glyph tables can be null if they have no content
+                    if ($item === null) {
+                        continue;
+                    }
+
                     /* @var BaseTable $item */
                     $tableStreamWriter->writeStream($item->accept($this->tableVisitor));
                 }
             } else {
                 $tableStreamWriter->writeStream($table->accept($this->tableVisitor));
             }
+
+            $lengthByTag[$tag] = $tableStreamWriter->getLength() - $offsetByTag[$tag];
+
+            $tableStreamWriter->byteAlign(4);
         }
 
-        $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $tableStreamWriter->getLength());
+        // why length of HEAD table wrong if byte align turned on?
+        $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $lengthByTag);
         $offsetTable = $this->generateOffsetTable(\count($tableDirectoryEntries));
 
         $streamWriter = new StreamWriter();
@@ -451,8 +455,6 @@ class FileWriter
     }
 
     /**
-     * @param int $numTables
-     *
      * @return OffsetTable
      */
     private function generateOffsetTable(int $numTables)
@@ -467,12 +469,9 @@ class FileWriter
     }
 
     /**
-     * @param array $offsetByTag
-     * @param int $totalStreamLength
-     *
      * @return TableDirectoryEntry[]
      */
-    private function generateTableDirectoryEntries(array $offsetByTag, int $totalStreamLength): array
+    private function generateTableDirectoryEntries(array $offsetByTag, array $lengthByTag): array
     {
         /** @var TableDirectoryEntry[] $tableDirectoryEntries */
         $tableDirectoryEntries = [];
@@ -480,21 +479,10 @@ class FileWriter
             $tableDirectoryEntry = new TableDirectoryEntry();
             $tableDirectoryEntry->setTag($tag);
             $tableDirectoryEntry->setOffset($offset);
+            $tableDirectoryEntry->setLength($lengthByTag[$tag]);
             $tableDirectoryEntry->setCheckSum(0);
 
             $tableDirectoryEntries[] = $tableDirectoryEntry;
-        }
-
-        // calculate length
-        for ($i = 0; $i < \count($tableDirectoryEntries); ++$i) {
-            if ($i + 1 === \count($tableDirectoryEntries)) {
-                $nextOffset = $totalStreamLength;
-            } else {
-                $nextOffset = $tableDirectoryEntries[$i + 1]->getOffset();
-            }
-
-            $currentEntry = $tableDirectoryEntries[$i];
-            $currentEntry->setLength($nextOffset - $currentEntry->getOffset());
         }
 
         // adjust offset
@@ -508,7 +496,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\PostTable $source
      * @param Character[] $characters
      *
      * @return PostTable
@@ -533,8 +520,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\NameTable $source
-     *
      * @return NameTable
      */
     private function generateNameTable(\PdfGenerator\Font\Frontend\File\Table\NameTable $source)
@@ -575,8 +560,6 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return CMapTable
      */
     private function generateCMapTable(array $characters): CMapTable
     {
@@ -620,8 +603,6 @@ class FileWriter
     }
 
     /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\RawTable $table
-     *
      * @return RawTable
      */
     private function generateRawTable(\PdfGenerator\Font\Frontend\File\Table\RawTable $table)
@@ -636,8 +617,6 @@ class FileWriter
 
     /**
      * @param string[] $names
-     *
-     * @return string
      */
     private static function generatePascalString(array $names): string
     {
@@ -652,20 +631,17 @@ class FileWriter
 
     /**
      * @param BinaryTreeSearchableTrait $binaryTreeSearchable
-     * @param int $numberOfEntries
      */
     private static function setBinaryTreeSearchableProperties($binaryTreeSearchable, int $numberOfEntries)
     {
         $powerOfTwo = (int)log($numberOfEntries, 2);
 
-        $binaryTreeSearchable->setSearchRange(pow(2, $powerOfTwo));
+        $binaryTreeSearchable->setSearchRange(pow(2, $powerOfTwo) * 16);
         $binaryTreeSearchable->setEntrySelector($powerOfTwo);
-        $binaryTreeSearchable->setRangeShift($numberOfEntries - $binaryTreeSearchable->getSearchRange());
+        $binaryTreeSearchable->setRangeShift($numberOfEntries * 16 - $binaryTreeSearchable->getSearchRange());
     }
 
     /**
-     * @param \PdfGenerator\Font\IR\Structure\TableDirectory $tableDirectory
-     *
      * @return RawTable[]
      */
     private function generateRawTables(\PdfGenerator\Font\IR\Structure\TableDirectory $tableDirectory): array
@@ -691,11 +667,6 @@ class FileWriter
         return $rawTables;
     }
 
-    /**
-     * @param Font $font
-     *
-     * @return TableDirectory
-     */
     private function createTableDirectory(Font $font): TableDirectory
     {
         $characters = $this->prepareCharacters($font->getCharacters(), $font->getMissingGlyphCharacter());
@@ -719,11 +690,6 @@ class FileWriter
         return $tableDirectory;
     }
 
-    /**
-     * @param \PdfGenerator\Font\Frontend\File\Table\GlyfTable $source
-     *
-     * @return GlyfTable
-     */
     private function generateGlyfTable(\PdfGenerator\Font\Frontend\File\Table\GlyfTable $source): GlyfTable
     {
         $glyfTable = new GlyfTable();

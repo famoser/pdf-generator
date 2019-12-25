@@ -20,31 +20,16 @@ use PdfGenerator\Backend\File\Token\TextToken;
 
 class TokenVisitor
 {
-    /**
-     * @param ArrayToken $token
-     *
-     * @return string
-     */
     public function visitArrayToken(ArrayToken $token): string
     {
         return '[' . implode(' ', $this->evaluateTokenArray($token->getValues())) . ']';
     }
 
-    /**
-     * @param NumberToken $token
-     *
-     * @return string
-     */
     public function visitNumberToken(NumberToken $token): string
     {
         return $token->getNumber();
     }
 
-    /**
-     * @param DictionaryToken $token
-     *
-     * @return string
-     */
     public function visitDictionaryToken(DictionaryToken $token): string
     {
         $entries = [];
@@ -56,21 +41,11 @@ class TokenVisitor
         return '<<' . implode(' ', $entries) . '>>';
     }
 
-    /**
-     * @param ReferenceToken $token
-     *
-     * @return string
-     */
     public function visitReferenceToken(ReferenceToken $token): string
     {
         return $token->getTarget()->getNumber() . ' 0 R';
     }
 
-    /**
-     * @param TextToken $token
-     *
-     * @return string
-     */
     public function visitTextToken(TextToken $token): string
     {
         return $token->getText();

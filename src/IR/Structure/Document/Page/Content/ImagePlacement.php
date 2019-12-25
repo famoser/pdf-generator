@@ -36,10 +36,6 @@ class ImagePlacement extends BaseContent
 
     /**
      * ImagePlacement constructor.
-     *
-     * @param Image $image
-     * @param Position $position
-     * @param Size $size
      */
     public function __construct(Image $image, Position $position, Size $size)
     {
@@ -48,35 +44,21 @@ class ImagePlacement extends BaseContent
         $this->size = $size;
     }
 
-    /**
-     * @return Image
-     */
     public function getImage(): Image
     {
         return $this->image;
     }
 
-    /**
-     * @return Position
-     */
     public function getPosition(): Position
     {
         return $this->position;
     }
 
-    /**
-     * @return Size
-     */
     public function getSize(): Size
     {
         return $this->size;
     }
 
-    /**
-     * @param ContentVisitor $visitor
-     *
-     * @return \PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent|null
-     */
     public function accept(ContentVisitor $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent
     {
         return $visitor->visitImagePlacement($this);

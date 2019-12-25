@@ -29,19 +29,12 @@ class ToBackendContentVisitor extends ContentVisitor
 
     /**
      * ContentVisitor constructor.
-     *
-     * @param PageResources $pageResources
      */
     public function __construct(PageResources $pageResources)
     {
         $this->pageResources = $pageResources;
     }
 
-    /**
-     * @param ImagePlacement $placement
-     *
-     * @return ImageContent
-     */
     public function visitImagePlacement(ImagePlacement $placement): ImageContent
     {
         $image = $this->pageResources->getImage($placement->getImage());
@@ -52,11 +45,6 @@ class ToBackendContentVisitor extends ContentVisitor
         return new ImageContent($image, $pageLevel);
     }
 
-    /**
-     * @param Rectangle $rectangle
-     *
-     * @return RectangleContent
-     */
     public function visitRectangle(Rectangle $rectangle): RectangleContent
     {
         $width = $rectangle->getSize()->getWidth();
@@ -70,11 +58,6 @@ class ToBackendContentVisitor extends ContentVisitor
         return new RectangleContent($width, $height, $paintingMode, $pageLevel);
     }
 
-    /**
-     * @param Text $param
-     *
-     * @return TextContent
-     */
     public function visitText(Text $param): TextContent
     {
         $escaped = $this->escapeReservedCharacters($param->getText());
@@ -89,8 +72,6 @@ class ToBackendContentVisitor extends ContentVisitor
     }
 
     /**
-     * @param string $text
-     *
      * @return mixed|string
      */
     private function escapeReservedCharacters(string $text)
@@ -105,8 +86,6 @@ class ToBackendContentVisitor extends ContentVisitor
     }
 
     /**
-     * @param string $text
-     *
      * @return string[]
      */
     private function splitAtNewlines(string $text)
@@ -116,9 +95,6 @@ class ToBackendContentVisitor extends ContentVisitor
         return explode("\n", $textWithNormalizedNewlines);
     }
 
-    /**
-     * @param ImagePlacement $placement
-     */
     private function applyImagePlacementPositionAndSize(ImagePlacement $placement)
     {
         $scaleX = $placement->getSize()->getWidth();
@@ -127,11 +103,6 @@ class ToBackendContentVisitor extends ContentVisitor
         $this->applyPosition($placement->getPosition(), $scaleX, $scaleY);
     }
 
-    /**
-     * @param Position $position
-     * @param float $scaleX
-     * @param float $scaleY
-     */
     private function applyPosition(Position $position, float $scaleX = 1, float $scaleY = 1)
     {
         $startX = $position->getStartX();
@@ -140,9 +111,6 @@ class ToBackendContentVisitor extends ContentVisitor
         $this->pageResources->getGeneralGraphicStateRepository()->setPosition($startX, $startY, $scaleX, $scaleY);
     }
 
-    /**
-     * @param RectangleStyle $style
-     */
     private function applyRectangleStyle(RectangleStyle $style)
     {
         $this->pageResources->getColorStateRepository()->setBorderColor($style->getBorderColor());
@@ -151,8 +119,6 @@ class ToBackendContentVisitor extends ContentVisitor
     }
 
     /**
-     * @param Rectangle $rectangle
-     *
      * @return bool|int
      */
     private function getPaintingMode(Rectangle $rectangle)
@@ -170,9 +136,6 @@ class ToBackendContentVisitor extends ContentVisitor
         return RectangleContent::PAINTING_MODE_NONE;
     }
 
-    /**
-     * @param Text\TextStyle $style
-     */
     private function applyTextStyle(Text\TextStyle $style)
     {
         $font = $this->pageResources->getFont($style->getFont());

@@ -80,113 +80,71 @@ class NameRecord
      */
     private $value;
 
-    /**
-     * @return int
-     */
     public function getPlatformID(): int
     {
         return $this->platformID;
     }
 
-    /**
-     * @param int $platformID
-     */
     public function setPlatformID(int $platformID): void
     {
         $this->platformID = $platformID;
     }
 
-    /**
-     * @return int
-     */
     public function getEncodingID(): int
     {
         return $this->encodingID;
     }
 
-    /**
-     * @param int $encodingID
-     */
     public function setEncodingID(int $encodingID): void
     {
         $this->encodingID = $encodingID;
     }
 
-    /**
-     * @return int
-     */
     public function getLanguageID(): int
     {
         return $this->languageID;
     }
 
-    /**
-     * @param int $languageID
-     */
     public function setLanguageID(int $languageID): void
     {
         $this->languageID = $languageID;
     }
 
-    /**
-     * @return int
-     */
     public function getNameID(): int
     {
         return $this->nameID;
     }
 
-    /**
-     * @param int $nameID
-     */
     public function setNameID(int $nameID): void
     {
         $this->nameID = $nameID;
     }
 
-    /**
-     * @return int
-     */
     public function getLength(): int
     {
         return $this->length;
     }
 
-    /**
-     * @param int $length
-     */
     public function setLength(int $length): void
     {
         $this->length = $length;
     }
 
-    /**
-     * @return int
-     */
     public function getOffset(): int
     {
         return $this->offset;
     }
 
-    /**
-     * @param int $offset
-     */
     public function setOffset(int $offset): void
     {
         $this->offset = $offset;
     }
 
-    /**
-     * @return string
-     */
     public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     */
     public function setValue(string $value): void
     {
         $this->value = $value;

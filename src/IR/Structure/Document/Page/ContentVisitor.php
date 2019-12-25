@@ -18,22 +18,16 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Text;
 abstract class ContentVisitor
 {
     /**
-     * @param ImagePlacement $placement
-     *
      * @return mixed
      */
     abstract public function visitImagePlacement(ImagePlacement $placement);
 
     /**
-     * @param Rectangle $rectangle
-     *
      * @return mixed
      */
     abstract public function visitRectangle(Rectangle $rectangle);
 
     /**
-     * @param Text $param
-     *
      * @return mixed
      */
     abstract public function visitText(Text $param);

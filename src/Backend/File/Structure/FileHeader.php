@@ -21,19 +21,11 @@ class FileHeader extends BaseStructure
      */
     private $version = 1.7;
 
-    /**
-     * @param StructureVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(StructureVisitor $visitor): string
     {
         return $visitor->visitFileHeader($this);
     }
 
-    /**
-     * @return float
-     */
     public function getVersion(): float
     {
         return $this->version;

@@ -57,6 +57,7 @@ class FileWriterTest extends TestCase
 
         // act
         $output = $writer->writeFont($subset);
+        file_put_contents('subset.ttf', $output);
 
         // assert
         $this->assertStringContainsString($character->getGlyfTable()->getContent(), $output);
@@ -128,12 +129,7 @@ class FileWriterTest extends TestCase
     }
 
     /**
-     * @param Font $font
-     * @param string $character
-     *
      * @throws \Exception
-     *
-     * @return Font
      */
     private static function getFontSubset(Font $font, string $character): Font
     {

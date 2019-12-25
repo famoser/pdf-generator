@@ -26,9 +26,6 @@ class CrossReferenceTable extends BaseStructure
      */
     private $entries = [];
 
-    /**
-     * @param int $entrySize
-     */
     public function registerEntrySize(int $entrySize)
     {
         $this->lastEntry += $entrySize;
@@ -45,19 +42,11 @@ class CrossReferenceTable extends BaseStructure
         }
     }
 
-    /**
-     * @param StructureVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(StructureVisitor $visitor): string
     {
         return $visitor->visitCrossReferenceTable($this);
     }
 
-    /**
-     * @return int
-     */
     public function getLastEntry(): int
     {
         return $this->lastEntry;

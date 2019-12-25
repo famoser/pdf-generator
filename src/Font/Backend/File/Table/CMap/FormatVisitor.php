@@ -16,10 +16,6 @@ use PdfGenerator\Font\Backend\StreamWriter;
 
 class FormatVisitor
 {
-    /**
-     * @param Format\Format4 $format
-     * @param StreamWriter $writer
-     */
     public function visitFormat4(Format\Format4 $format, StreamWriter $writer)
     {
         $writer->writeUInt16(4);

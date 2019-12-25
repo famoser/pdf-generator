@@ -17,7 +17,6 @@ class Writer
 {
     /**
      * @param BinaryTreeSearchableTrait $binaryTreeSearchable
-     * @param StreamWriter $writer
      */
     public static function writeBinaryTreeSearchableUInt16($binaryTreeSearchable, StreamWriter $writer)
     {
@@ -28,7 +27,6 @@ class Writer
 
     /**
      * @param BoundingBoxTrait $boundingBoxTrait
-     * @param StreamWriter $writer
      */
     public static function writeBoundingBoxInt16($boundingBoxTrait, StreamWriter $writer)
     {
@@ -40,7 +38,6 @@ class Writer
 
     /**
      * @param BoundingBoxTrait $boundingBoxTrait
-     * @param StreamWriter $writer
      */
     public static function writeBoundingBoxFWORD($boundingBoxTrait, StreamWriter $writer)
     {

@@ -20,17 +20,12 @@ trait IdentifiableStructureTrait
 
     /**
      * IdentifiableStructure constructor.
-     *
-     * @param string $identifier
      */
     protected function setIdentifier(string $identifier)
     {
         $this->identifier = $identifier;
     }
 
-    /**
-     * @return string
-     */
     public function getIdentifier(): string
     {
         return $this->identifier;

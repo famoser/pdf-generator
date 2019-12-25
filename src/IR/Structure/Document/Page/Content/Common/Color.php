@@ -30,10 +30,6 @@ class Color
 
     /**
      * Color constructor.
-     *
-     * @param int $red
-     * @param int $green
-     * @param int $blue
      */
     public function __construct(int $red, int $green, int $blue)
     {
@@ -43,8 +39,6 @@ class Color
     }
 
     /**
-     * @param string $color
-     *
      * @throws \Exception
      *
      * @return Color
@@ -60,25 +54,16 @@ class Color
         return new self(...$rgbArray);
     }
 
-    /**
-     * @return int
-     */
     public function getRed(): int
     {
         return $this->red;
     }
 
-    /**
-     * @return int
-     */
     public function getGreen(): int
     {
         return $this->green;
     }
 
-    /**
-     * @return int
-     */
     public function getBlue(): int
     {
         return $this->blue;

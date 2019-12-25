@@ -26,6 +26,7 @@ use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
 use PdfGenerator\Font\Backend\FileWriter;
+use PdfGenerator\Font\IR\Optimizer;
 use PdfGenerator\Font\IR\Structure\Font;
 
 class DocumentVisitor
@@ -57,8 +58,6 @@ class DocumentVisitor
 
     /**
      * DocumentVisitor constructor.
-     *
-     * @param Configuration $configuration
      */
     public function __construct(Configuration $configuration)
     {
@@ -70,8 +69,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param string $prefix
-     *
      * @return string
      */
     private function generateIdentifier(string $prefix)
@@ -86,8 +83,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param Image $param
-     *
      * @return CatalogImage
      */
     public function visitImage(Image $param)
@@ -119,8 +114,6 @@ class DocumentVisitor
     }
 
     /**
-     * @param DefaultFont $param
-     *
      * @return Type1
      */
     public function visitDefaultFont(DefaultFont $param)
@@ -131,19 +124,19 @@ class DocumentVisitor
     }
 
     /**
-     * @param EmbeddedFont $param
-     *
      * @throws \Exception
      *
      * @return Type0
      */
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
-        $orderedCodepoints = $this->fontOptimizer->getOrderedCodepoints($param->getUsedWithText());
-
         $font = $param->getFont();
 
-        $fontSubset = $this->fontOptimizer->getFontSubset($font, $orderedCodepoints);
+        $fontSubsetDefinition = $this->fontOptimizer->generateFontSubset($font, $param->getUsedWithText());
+
+        // create subset
+        $optimizer = Optimizer::create();
+        $fontSubset = $optimizer->getFontSubset($font, $fontSubsetDefinition->getCharacters());
 
         $writer = FileWriter::create();
         $content = $writer->writeFont($fontSubset);
@@ -153,8 +146,7 @@ class DocumentVisitor
             $widths[] = $character->getLongHorMetric()->getAdvanceWidth();
         }
 
-        // TODO: need to parse name table to fix this
-        $fontName = 'SomeFont'; //TODO retrieve from name table
+        $fontName = $font->getFontInformation()->getFullName() ?? 'invalidFontName';
 
         $fontStream = new FontStream();
         $fontStream->setFontData($content);
@@ -180,20 +172,13 @@ class DocumentVisitor
         $type0Font->setDescendantFont($cidFont);
         $type0Font->setBaseFont($fontName);
 
-        $cMap = $this->cMapCreator->createCMap($cIDSystemInfo, 'someName', $orderedCodepoints);
+        $cMap = $this->cMapCreator->createCMap($cIDSystemInfo, 'someName', $fontSubsetDefinition->getCodePoints(), $fontSubsetDefinition->getMissingCodePoints());
         $type0Font->setEncoding($cMap);
         $type0Font->setToUnicode($cMap); // TODO: unicode CMap not implemented yet
 
         return $type0Font;
     }
 
-    /**
-     * @param string $fontName
-     * @param Font $font
-     * @param FontStream $fontStream
-     *
-     * @return FontDescriptor
-     */
     private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream): FontDescriptor
     {
         $fontDescriptor = new FontDescriptor();

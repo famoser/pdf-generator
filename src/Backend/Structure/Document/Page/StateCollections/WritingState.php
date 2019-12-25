@@ -36,10 +36,6 @@ class WritingState extends BaseStateCollection
 
     /**
      * TextLevel constructor.
-     *
-     * @param GeneralGraphicState $generalGraphicsState
-     * @param ColorState $colorState
-     * @param TextState $textState
      */
     public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState, TextState $textState)
     {

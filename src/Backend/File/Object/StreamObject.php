@@ -29,9 +29,6 @@ class StreamObject extends BaseObject
 
     /**
      * StreamObject constructor.
-     *
-     * @param int $number
-     * @param string $content
      */
     public function __construct(int $number, string $content)
     {
@@ -43,27 +40,16 @@ class StreamObject extends BaseObject
         $this->dictionary->setNumberEntry('Length', \strlen($this->content));
     }
 
-    /**
-     * @param ObjectVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(ObjectVisitor $visitor): string
     {
         return $visitor->visitStream($this);
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @return DictionaryToken
-     */
     public function getMetaData(): DictionaryToken
     {
         return $this->dictionary;

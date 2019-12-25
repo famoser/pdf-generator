@@ -29,17 +29,12 @@ class Page extends BaseDocumentStructure
 
     /**
      * Page constructor.
-     *
-     * @param int $pageNumber
      */
     public function __construct(int $pageNumber)
     {
         $this->pageNumber = $pageNumber;
     }
 
-    /**
-     * @param BaseContent $baseContent
-     */
     public function addContent(BaseContent $baseContent)
     {
         $this->content[] = $baseContent;
@@ -62,8 +57,6 @@ class Page extends BaseDocumentStructure
     }
 
     /**
-     * @param DocumentVisitor $visitor
-     *
      * @return mixed
      */
     public function accept(DocumentVisitor $visitor)

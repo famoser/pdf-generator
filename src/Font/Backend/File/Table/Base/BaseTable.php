@@ -15,10 +15,5 @@ use PdfGenerator\Font\Backend\File\TableVisitor;
 
 abstract class BaseTable
 {
-    /**
-     * @param TableVisitor $visitor
-     *
-     * @return string
-     */
     abstract public function accept(TableVisitor $visitor): string;
 }

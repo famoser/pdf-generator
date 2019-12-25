@@ -47,49 +47,31 @@ trait BinaryTreeSearchableTrait
      */
     private $rangeShift;
 
-    /**
-     * @return int
-     */
     public function getSearchRange(): int
     {
         return $this->searchRange;
     }
 
-    /**
-     * @param int $searchRange
-     */
     public function setSearchRange(int $searchRange): void
     {
         $this->searchRange = $searchRange;
     }
 
-    /**
-     * @return int
-     */
     public function getEntrySelector(): int
     {
         return $this->entrySelector;
     }
 
-    /**
-     * @param int $entrySelector
-     */
     public function setEntrySelector(int $entrySelector): void
     {
         $this->entrySelector = $entrySelector;
     }
 
-    /**
-     * @return int
-     */
     public function getRangeShift(): int
     {
         return $this->rangeShift;
     }
 
-    /**
-     * @param int $rangeShift
-     */
     public function setRangeShift(int $rangeShift): void
     {
         $this->rangeShift = $rangeShift;

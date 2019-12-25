@@ -22,8 +22,6 @@ use PdfGenerator\Font\IR\Utils\CMap\Format4\Transformer;
 class GlyphIndexFormatVisitor implements VisitorInterface
 {
     /**
-     * @param Format $format
-     *
      * @return int[]
      */
     public function visitFormat(Format $format)
@@ -32,8 +30,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param Format0 $format0
-     *
      * @return int[]
      */
     public function visitFormat0(Format0 $format0): array
@@ -42,8 +38,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param Format4 $format4
-     *
      * @return int[]
      */
     public function visitFormat4(Format4 $format4): array
@@ -68,8 +62,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param Format6 $format6
-     *
      * @return int[]
      */
     public function visitFormat6(Format6 $format6): array
@@ -84,8 +76,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @param Format12 $format12
-     *
      * @return int[]
      */
     public function visitFormat12(Format12 $format12): array

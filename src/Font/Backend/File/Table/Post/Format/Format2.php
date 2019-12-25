@@ -50,17 +50,11 @@ class Format2 extends Format
      */
     private $names;
 
-    /**
-     * @return int
-     */
     public function getNumGlyphs(): int
     {
         return $this->numGlyphs;
     }
 
-    /**
-     * @param int $numGlyphs
-     */
     public function setNumGlyphs(int $numGlyphs): void
     {
         $this->numGlyphs = $numGlyphs;
@@ -82,34 +76,21 @@ class Format2 extends Format
         $this->glyphNameIndex = $glyphNameIndex;
     }
 
-    /**
-     * @param int $glyphNameIndex
-     */
     public function addGlyphNameIndex(int $glyphNameIndex): void
     {
         $this->glyphNameIndex[] = $glyphNameIndex;
     }
 
-    /**
-     * @return string
-     */
     public function getNames(): string
     {
         return $this->names;
     }
 
-    /**
-     * @param string $names
-     */
     public function setNames(string $names): void
     {
         $this->names = $names;
     }
 
-    /**
-     * @param FormatVisitor $formatVisitor
-     * @param StreamWriter $streamWriter
-     */
     public function accept(FormatVisitor $formatVisitor, StreamWriter $streamWriter): void
     {
         $formatVisitor->visitFormat2($this, $streamWriter);

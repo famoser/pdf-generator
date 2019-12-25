@@ -28,8 +28,6 @@ class CharacterRepository
 
     /**
      * FontRepository constructor.
-     *
-     * @param Font $font
      */
     public function __construct(Font $font)
     {
@@ -49,8 +47,6 @@ class CharacterRepository
     }
 
     /**
-     * @param string $character
-     *
      * @return Character
      */
     public function findByChar(string $character)
@@ -61,8 +57,6 @@ class CharacterRepository
     }
 
     /**
-     * @param int $codePoint
-     *
      * @return Character
      */
     public function findByCodePoint(int $codePoint)

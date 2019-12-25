@@ -39,57 +39,37 @@ class CMap extends BaseStructure
      */
     private $cMapData;
 
-    /**
-     * @return string
-     */
     public function getCMapName(): string
     {
         return $this->cMapName;
     }
 
-    /**
-     * @param string $cMapName
-     */
     public function setCMapName(string $cMapName): void
     {
         $this->cMapName = $cMapName;
     }
 
-    /**
-     * @return CIDSystemInfo
-     */
     public function getCIDSystemInfo(): CIDSystemInfo
     {
         return $this->cIDSystemInfo;
     }
 
-    /**
-     * @param CIDSystemInfo $cIDSystemInfo
-     */
     public function setCIDSystemInfo(CIDSystemInfo $cIDSystemInfo): void
     {
         $this->cIDSystemInfo = $cIDSystemInfo;
     }
 
-    /**
-     * @return string
-     */
     public function getCMapData(): string
     {
         return $this->cMapData;
     }
 
-    /**
-     * @param string $cMapData
-     */
     public function setCMapData(string $cMapData): void
     {
         $this->cMapData = $cMapData;
     }
 
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject|BaseObject[]
      */
     public function accept(CatalogVisitor $visitor)

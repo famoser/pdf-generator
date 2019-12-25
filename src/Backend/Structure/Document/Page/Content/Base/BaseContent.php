@@ -17,11 +17,6 @@ use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
 abstract class BaseContent
 {
-    /**
-     * @param ContentVisitor $visitor
-     *
-     * @return Content
-     */
     abstract public function accept(ContentVisitor $visitor): Content;
 
     /**

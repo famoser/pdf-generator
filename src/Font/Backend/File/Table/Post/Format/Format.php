@@ -16,9 +16,5 @@ use PdfGenerator\Font\Backend\StreamWriter;
 
 abstract class Format
 {
-    /**
-     * @param FormatVisitor $formatVisitor
-     * @param StreamWriter $streamWriter
-     */
     abstract public function accept(FormatVisitor $formatVisitor, StreamWriter $streamWriter): void;
 }

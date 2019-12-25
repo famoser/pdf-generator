@@ -22,24 +22,14 @@ abstract class BaseObject
 
     /**
      * BaseObject constructor.
-     *
-     * @param int $number
      */
     public function __construct(int $number)
     {
         $this->number = $number;
     }
 
-    /**
-     * @param ObjectVisitor $visitor
-     *
-     * @return string
-     */
     abstract public function accept(ObjectVisitor $visitor): string;
 
-    /**
-     * @return int
-     */
     public function getNumber(): int
     {
         return $this->number;

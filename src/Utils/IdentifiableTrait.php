@@ -23,9 +23,6 @@ trait IdentifiableTrait
      */
     private $identifier = null;
 
-    /**
-     * @return int
-     */
     public function getIdentifier(): int
     {
         if ($this->identifier === null) {

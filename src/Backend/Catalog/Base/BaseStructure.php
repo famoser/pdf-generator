@@ -17,8 +17,6 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 abstract class BaseStructure
 {
     /**
-     * @param CatalogVisitor $visitor
-     *
      * @return BaseObject|BaseObject[]
      */
     abstract public function accept(CatalogVisitor $visitor);

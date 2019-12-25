@@ -34,9 +34,6 @@ class TableVisitor
 
     /**
      * TableWriter constructor.
-     *
-     * @param FormatVisitor $cMapFormatVisitor
-     * @param Table\Post\FormatVisitor $postFormatVisitor
      */
     public function __construct(FormatVisitor $cMapFormatVisitor, Table\Post\FormatVisitor $postFormatVisitor)
     {
@@ -55,11 +52,6 @@ class TableVisitor
         return new self($cmapFormatVisitor, $postFormatVisitor);
     }
 
-    /**
-     * @param Table\CMapTable $cMapTable
-     *
-     * @return string
-     */
     public function visitCMapTable(Table\CMapTable $cMapTable): string
     {
         $writer = new StreamWriter();
@@ -92,11 +84,6 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    /**
-     * @param Table\GlyfTable $glyfTable
-     *
-     * @return string
-     */
     public function visitGlyfTable(Table\GlyfTable $glyfTable): string
     {
         $writer = new StreamWriter();
@@ -109,11 +96,6 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    /**
-     * @param Table\HeadTable $headTable
-     *
-     * @return string
-     */
     public function visitHeadTable(Table\HeadTable $headTable): string
     {
         $writer = new StreamWriter();
@@ -139,11 +121,6 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    /**
-     * @param Table\HHeaTable $hHeaTable
-     *
-     * @return string
-     */
     public function visitHHeaTable(Table\HHeaTable $hHeaTable): string
     {
         $writer = new StreamWriter();
@@ -170,11 +147,6 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    /**
-     * @param Table\HMtxTable $hMtxTable
-     *
-     * @return string
-     */
     public function visitHMtxTable(Table\HMtxTable $hMtxTable): string
     {
         $writer = new StreamWriter();
@@ -191,11 +163,6 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    /**
-     * @param Table\LocaTable $locaTable
-     *
-     * @return string
-     */
     public function visitLocaTable(Table\LocaTable $locaTable): string
     {
         $writer = new StreamWriter();
@@ -209,11 +176,6 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    /**
-     * @param Table\MaxPTable $maxPTable
-     *
-     * @return string
-     */
     public function visitMaxPTable(Table\MaxPTable $maxPTable): string
     {
         $writer = new StreamWriter();
@@ -237,11 +199,6 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    /**
-     * @param Table\OffsetTable $offsetTable
-     *
-     * @return string
-     */
     public function visitOffsetTable(Table\OffsetTable $offsetTable): string
     {
         $writer = new StreamWriter();
@@ -253,11 +210,6 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    /**
-     * @param Table\PostTable $postTable
-     *
-     * @return string
-     */
     public function visitPostTable(Table\PostTable $postTable): string
     {
         $streamWriter = new StreamWriter();
@@ -278,11 +230,6 @@ class TableVisitor
         return $streamWriter->getStream();
     }
 
-    /**
-     * @param Table\RawTable $rawTable
-     *
-     * @return string
-     */
     public function visitRawTable(Table\RawTable $rawTable): string
     {
         $writer = new StreamWriter();
@@ -292,11 +239,6 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    /**
-     * @param Table\TableDirectoryEntry $tableDirectoryEntry
-     *
-     * @return string
-     */
     public function visitTableDirectoryEntry(Table\TableDirectoryEntry $tableDirectoryEntry): string
     {
         $writer = new StreamWriter();
@@ -310,8 +252,6 @@ class TableVisitor
     }
 
     /**
-     * @param Table\NameTable $nameTable
-     *
      * @return string
      */
     public function visitNameTable(Table\NameTable $nameTable)

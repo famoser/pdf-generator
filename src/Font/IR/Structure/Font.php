@@ -30,9 +30,6 @@ class Font
      */
     private $tableDirectory;
 
-    /**
-     * @return Character
-     */
     public function getMissingGlyphCharacter(): Character
     {
         return $this->characters[0];
@@ -54,33 +51,21 @@ class Font
         $this->characters = $characters;
     }
 
-    /**
-     * @return TableDirectory
-     */
     public function getTableDirectory(): TableDirectory
     {
         return $this->tableDirectory;
     }
 
-    /**
-     * @param TableDirectory $tableDirectory
-     */
     public function setTableDirectory(TableDirectory $tableDirectory): void
     {
         $this->tableDirectory = $tableDirectory;
     }
 
-    /**
-     * @return FontInformation
-     */
     public function getFontInformation(): FontInformation
     {
         return $this->fontInformation;
     }
 
-    /**
-     * @param FontInformation $fontInformation
-     */
     public function setFontInformation(FontInformation $fontInformation): void
     {
         $this->fontInformation = $fontInformation;

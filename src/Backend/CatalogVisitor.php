@@ -37,19 +37,12 @@ class CatalogVisitor
 
     /**
      * StructureVisitor constructor.
-     *
-     * @param File $file
      */
     public function __construct(File $file)
     {
         $this->file = $file;
     }
 
-    /**
-     * @param Catalog\Catalog $structure
-     *
-     * @return BaseObject
-     */
     public function visitCatalog(Catalog\Catalog $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
@@ -61,11 +54,6 @@ class CatalogVisitor
         return $dictionary;
     }
 
-    /**
-     * @param Catalog\Pages $structure
-     *
-     * @return BaseObject
-     */
     public function visitPages(Catalog\Pages $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
@@ -84,11 +72,6 @@ class CatalogVisitor
         return $dictionary;
     }
 
-    /**
-     * @param Page $structure
-     *
-     * @return BaseObject
-     */
     public function visitPage(Page $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
@@ -108,11 +91,6 @@ class CatalogVisitor
         return $dictionary;
     }
 
-    /**
-     * @param Catalog\Resources $structure
-     *
-     * @return BaseObject
-     */
     public function visitResources(Catalog\Resources $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
@@ -166,8 +144,6 @@ class CatalogVisitor
     }
 
     /**
-     * @param Catalog\Contents $structure
-     *
      * @return BaseObject[]
      */
     public function visitContents(Catalog\Contents $structure): array
@@ -181,11 +157,6 @@ class CatalogVisitor
         return $baseObjects;
     }
 
-    /**
-     * @param Catalog\Font\Type1 $structure
-     *
-     * @return BaseObject
-     */
     public function visitType1Font(Catalog\Font\Type1 $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
@@ -198,11 +169,6 @@ class CatalogVisitor
         return $dictionary;
     }
 
-    /**
-     * @param Catalog\Image $structure
-     *
-     * @return BaseObject
-     */
     public function visitImage(Catalog\Image $structure): BaseObject
     {
         $stream = $this->file->addStreamObject($structure->getContent());
@@ -221,8 +187,6 @@ class CatalogVisitor
     }
 
     /**
-     * @param Catalog\Font\Structure\FontStream $structure
-     *
      * @return StreamObject
      */
     public function visitFontStream(Catalog\Font\Structure\FontStream $structure)
@@ -236,8 +200,6 @@ class CatalogVisitor
     }
 
     /**
-     * @param FontDescriptor $structure
-     *
      * @return DictionaryObject
      */
     public function visitFontDescriptor(FontDescriptor $structure)
@@ -263,8 +225,6 @@ class CatalogVisitor
     }
 
     /**
-     * @param Catalog\Font\Type0 $structure
-     *
      * @return DictionaryObject
      */
     public function visitType0Font(Catalog\Font\Type0 $structure)
@@ -288,8 +248,6 @@ class CatalogVisitor
     }
 
     /**
-     * @param Catalog\Font\Structure\CIDFont $structure
-     *
      * @return DictionaryObject
      */
     public function visitCIDFont(Catalog\Font\Structure\CIDFont $structure)
@@ -309,8 +267,6 @@ class CatalogVisitor
     }
 
     /**
-     * @param CMap $structure
-     *
      * @return StreamObject
      */
     public function visitCMap(CMap $structure)
@@ -328,8 +284,6 @@ class CatalogVisitor
     }
 
     /**
-     * @param CIDSystemInfo $structure
-     *
      * @return DictionaryToken
      */
     public function visitCIDSystemInfo(CIDSystemInfo $structure)
@@ -344,8 +298,6 @@ class CatalogVisitor
     }
 
     /**
-     * @param Catalog\Content $param
-     *
      * @return StreamObject
      */
     public function visitContent(Catalog\Content $param)

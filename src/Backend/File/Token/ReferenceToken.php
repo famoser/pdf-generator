@@ -24,27 +24,17 @@ class ReferenceToken extends BaseToken
 
     /**
      * ReferenceEntry constructor.
-     *
-     * @param BaseObject $target
      */
     public function __construct(BaseObject $target)
     {
         $this->target = $target;
     }
 
-    /**
-     * @param TokenVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TokenVisitor $visitor): string
     {
         return $visitor->visitReferenceToken($this);
     }
 
-    /**
-     * @return BaseObject
-     */
     public function getTarget(): BaseObject
     {
         return $this->target;

@@ -35,10 +35,6 @@ class EmbeddedFont extends Font
 
     /**
      * EmbeddedFont constructor.
-     *
-     * @param string $encoding
-     * @param \PdfGenerator\Font\IR\Structure\Font $font
-     * @param string $usedWithText
      */
     public function __construct(string $encoding, \PdfGenerator\Font\IR\Structure\Font $font, string $usedWithText)
     {
@@ -47,33 +43,22 @@ class EmbeddedFont extends Font
         $this->usedWithText = $usedWithText;
     }
 
-    /**
-     * @return string
-     */
     public function getEncoding(): string
     {
         return $this->encoding;
     }
 
-    /**
-     * @return \PdfGenerator\Font\IR\Structure\Font
-     */
     public function getFont(): \PdfGenerator\Font\IR\Structure\Font
     {
         return $this->font;
     }
 
-    /**
-     * @return string
-     */
     public function getUsedWithText(): string
     {
         return $this->usedWithText;
     }
 
     /**
-     * @param DocumentVisitor $documentVisitor
-     *
      * @throws \Exception
      *
      * @return mixed

@@ -53,13 +53,6 @@ class Image extends BaseDocumentStructure
 
     /**
      * Image constructor.
-     *
-     * @param string $imageContent
-     * @param string $imageType
-     * @param int $width
-     * @param int $height
-     * @param int $maxUsedWidth
-     * @param int $maxUsedHeight
      */
     public function __construct(string $imageContent, string $imageType, int $width, int $height, int $maxUsedWidth, int $maxUsedHeight)
     {
@@ -72,8 +65,6 @@ class Image extends BaseDocumentStructure
     }
 
     /**
-     * @param DocumentVisitor $documentVisitor
-     *
      * @return mixed
      */
     public function accept(DocumentVisitor $documentVisitor)
@@ -81,49 +72,31 @@ class Image extends BaseDocumentStructure
         return $documentVisitor->visitImage($this);
     }
 
-    /**
-     * @return string
-     */
     public function getImageContent(): string
     {
         return $this->imageContent;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return int
-     */
     public function getWidth(): int
     {
         return $this->width;
     }
 
-    /**
-     * @return int
-     */
     public function getHeight(): int
     {
         return $this->height;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxUsedWidth(): int
     {
         return $this->maxUsedWidth;
     }
 
-    /**
-     * @return int
-     */
     public function getMaxUsedHeight(): int
     {
         return $this->maxUsedHeight;

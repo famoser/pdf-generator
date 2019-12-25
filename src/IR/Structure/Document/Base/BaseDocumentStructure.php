@@ -16,8 +16,6 @@ use PdfGenerator\IR\Structure\DocumentVisitor;
 abstract class BaseDocumentStructure
 {
     /**
-     * @param DocumentVisitor $visitor
-     *
      * @return mixed
      */
     abstract public function accept(DocumentVisitor $visitor);

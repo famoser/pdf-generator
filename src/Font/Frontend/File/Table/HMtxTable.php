@@ -52,9 +52,6 @@ class HMtxTable
         return $this->longHorMetrics;
     }
 
-    /**
-     * @param LongHorMetric $longHorMetric
-     */
     public function addLongHorMetric(LongHorMetric $longHorMetric)
     {
         $this->longHorMetrics[] = $longHorMetric;
@@ -68,9 +65,6 @@ class HMtxTable
         return $this->leftSideBearings;
     }
 
-    /**
-     * @param int $leftSideBearing
-     */
     public function addLeftSideBearing(int $leftSideBearing): void
     {
         $this->leftSideBearings[] = $leftSideBearing;

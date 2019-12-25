@@ -34,8 +34,6 @@ class ContentVisitor
 
     /**
      * ContentVisitor constructor.
-     *
-     * @param DocumentResources $documentResources
      */
     public function __construct(DocumentResources $documentResources)
     {
@@ -44,11 +42,6 @@ class ContentVisitor
         $this->state = FullState::createInitial();
     }
 
-    /**
-     * @param TextContent $textContent
-     *
-     * @return Content
-     */
     public function visitTextContent(TextContent $textContent): Content
     {
         // gather operators to change to desired state
@@ -63,11 +56,6 @@ class ContentVisitor
         return $this->createStreamObject($operators);
     }
 
-    /**
-     * @param ImageContent $imageContent
-     *
-     * @return Content
-     */
     public function visitImageContent(ImageContent $imageContent): Content
     {
         // gather operators to change to desired state
@@ -83,11 +71,6 @@ class ContentVisitor
         return $this->createStreamObject($operators);
     }
 
-    /**
-     * @param RectangleContent $rectangle
-     *
-     * @return Content
-     */
     public function visitRectangleContent(RectangleContent $rectangle): Content
     {
         // gather operators to change to desired state
@@ -103,19 +86,12 @@ class ContentVisitor
         return $this->createStreamObject($operators);
     }
 
-    /**
-     * @param array $operators
-     *
-     * @return Content
-     */
     private function createStreamObject(array $operators): Content
     {
         return new Content(implode(' ', $operators), Content::CONTENT_TYPE_TEXT);
     }
 
     /**
-     * @param array $lines
-     *
      * @return string[]
      */
     private function getTextOperators(array $lines): array
@@ -134,11 +110,6 @@ class ContentVisitor
         return $printOperators;
     }
 
-    /**
-     * @param RectangleContent $rectangle
-     *
-     * @return string
-     */
     private function getPaintingOperator(RectangleContent $rectangle): string
     {
         switch ($rectangle->getPaintingMode()) {
@@ -155,8 +126,6 @@ class ContentVisitor
     }
 
     /**
-     * @param BaseContent $baseContent
-     *
      * @return string[]
      */
     private function applyState(BaseContent $baseContent): array

@@ -28,9 +28,6 @@ abstract class StatefulColumnedLayout extends BaseColumnedLayout
     /**
      * ColumnLayout constructor.
      *
-     * @param Document $pdfDocument
-     * @param float $columnGutter
-     * @param float $totalWidth
      * @param float[] $widths
      */
     protected function __construct(Document $pdfDocument, float $columnGutter, float $totalWidth, array $widths)
@@ -41,8 +38,6 @@ abstract class StatefulColumnedLayout extends BaseColumnedLayout
     /**
      * ensures the next printed elements are printed in the specified column
      * will throw an exception if the column region does not exist.
-     *
-     * @param int $column
      *
      * @throws \Exception
      */

@@ -37,17 +37,11 @@ class Format25 extends Format
      */
     private $offsets;
 
-    /**
-     * @return int
-     */
     public function getNumGlyphs(): int
     {
         return $this->numGlyphs;
     }
 
-    /**
-     * @param int $numGlyphs
-     */
     public function setNumGlyphs(int $numGlyphs): void
     {
         $this->numGlyphs = $numGlyphs;
@@ -70,8 +64,6 @@ class Format25 extends Format
     }
 
     /**
-     * @param VisitorInterface $visitor
-     *
      * @return mixed
      */
     public function accept(VisitorInterface $visitor)

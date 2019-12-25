@@ -150,209 +150,131 @@ class HHeaTable
      */
     private $numOfLongHorMetrics;
 
-    /**
-     * @return int
-     */
     public function getVersion(): int
     {
         return $this->version;
     }
 
-    /**
-     * @param int $version
-     */
     public function setVersion(int $version): void
     {
         $this->version = $version;
     }
 
-    /**
-     * @return int
-     */
     public function getAscent(): int
     {
         return $this->ascent;
     }
 
-    /**
-     * @param int $ascent
-     */
     public function setAscent(int $ascent): void
     {
         $this->ascent = $ascent;
     }
 
-    /**
-     * @return int
-     */
     public function getDecent(): int
     {
         return $this->decent;
     }
 
-    /**
-     * @param int $decent
-     */
     public function setDecent(int $decent): void
     {
         $this->decent = $decent;
     }
 
-    /**
-     * @return int
-     */
     public function getLineGap(): int
     {
         return $this->lineGap;
     }
 
-    /**
-     * @param int $lineGap
-     */
     public function setLineGap(int $lineGap): void
     {
         $this->lineGap = $lineGap;
     }
 
-    /**
-     * @return int
-     */
     public function getAdvanceWidthMax(): int
     {
         return $this->advanceWidthMax;
     }
 
-    /**
-     * @param int $advanceWidthMax
-     */
     public function setAdvanceWidthMax(int $advanceWidthMax): void
     {
         $this->advanceWidthMax = $advanceWidthMax;
     }
 
-    /**
-     * @return int
-     */
     public function getMinLeftSideBearing(): int
     {
         return $this->minLeftSideBearing;
     }
 
-    /**
-     * @param int $minLeftSideBearing
-     */
     public function setMinLeftSideBearing(int $minLeftSideBearing): void
     {
         $this->minLeftSideBearing = $minLeftSideBearing;
     }
 
-    /**
-     * @return int
-     */
     public function getMinRightSideBearing(): int
     {
         return $this->minRightSideBearing;
     }
 
-    /**
-     * @param int $minRightSideBearing
-     */
     public function setMinRightSideBearing(int $minRightSideBearing): void
     {
         $this->minRightSideBearing = $minRightSideBearing;
     }
 
-    /**
-     * @return int
-     */
     public function getXMaxExtent(): int
     {
         return $this->xMaxExtent;
     }
 
-    /**
-     * @param int $xMaxExtent
-     */
     public function setXMaxExtent(int $xMaxExtent): void
     {
         $this->xMaxExtent = $xMaxExtent;
     }
 
-    /**
-     * @return int
-     */
     public function getCaretSlopeRise(): int
     {
         return $this->caretSlopeRise;
     }
 
-    /**
-     * @param int $caretSlopeRise
-     */
     public function setCaretSlopeRise(int $caretSlopeRise): void
     {
         $this->caretSlopeRise = $caretSlopeRise;
     }
 
-    /**
-     * @return int
-     */
     public function getCaretSlopeRun(): int
     {
         return $this->caretSlopeRun;
     }
 
-    /**
-     * @param int $caretSlopeRun
-     */
     public function setCaretSlopeRun(int $caretSlopeRun): void
     {
         $this->caretSlopeRun = $caretSlopeRun;
     }
 
-    /**
-     * @return float
-     */
     public function getCaretOffset(): float
     {
         return $this->caretOffset;
     }
 
-    /**
-     * @param float $caretOffset
-     */
     public function setCaretOffset(float $caretOffset): void
     {
         $this->caretOffset = $caretOffset;
     }
 
-    /**
-     * @return int
-     */
     public function getMetricDataFormat(): int
     {
         return $this->metricDataFormat;
     }
 
-    /**
-     * @param int $metricDataFormat
-     */
     public function setMetricDataFormat(int $metricDataFormat): void
     {
         $this->metricDataFormat = $metricDataFormat;
     }
 
-    /**
-     * @return int
-     */
     public function getNumOfLongHorMetrics(): int
     {
         return $this->numOfLongHorMetrics;
     }
 
-    /**
-     * @param int $numOfLongHorMetrics
-     */
     public function setNumOfLongHorMetrics(int $numOfLongHorMetrics): void
     {
         $this->numOfLongHorMetrics = $numOfLongHorMetrics;

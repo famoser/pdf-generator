@@ -23,33 +23,21 @@ class GlyphInfo
      */
     private $name;
 
-    /**
-     * @return int|null
-     */
     public function getMacintoshIndex(): ?int
     {
         return $this->macintoshIndex;
     }
 
-    /**
-     * @param int|null $macintoshIndex
-     */
     public function setMacintoshIndex(?int $macintoshIndex): void
     {
         $this->macintoshIndex = $macintoshIndex;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string|null $name
-     */
     public function setName(?string $name): void
     {
         $this->name = $name;

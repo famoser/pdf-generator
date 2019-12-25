@@ -27,9 +27,6 @@ class TextStyle
 
     /**
      * Style constructor.
-     *
-     * @param Font $font
-     * @param float $fontSize
      */
     public function __construct(Font $font, float $fontSize)
     {
@@ -37,17 +34,11 @@ class TextStyle
         $this->fontSize = $fontSize;
     }
 
-    /**
-     * @return Font
-     */
     public function getFont(): Font
     {
         return $this->font;
     }
 
-    /**
-     * @return float
-     */
     public function getFontSize(): float
     {
         return $this->fontSize;

@@ -11,16 +11,58 @@
 
 namespace PdfGenerator\Backend\Structure\Optimization;
 
+use PdfGenerator\Backend\Structure\Optimization\FontOptimizer\FontSubsetDefinition;
 use PdfGenerator\Font\IR\CharacterRepository;
-use PdfGenerator\Font\IR\Optimizer;
 use PdfGenerator\Font\IR\Structure\Font;
 
 class FontOptimizer
 {
     /**
+     * @return FontSubsetDefinition
+     */
+    public function generateFontSubset(Font $font, string $usedText)
+    {
+        $orderedCodePoints = $this->getOrderedCodepoints($usedText);
+
+        $characterRepository = new CharacterRepository($font);
+
+        // extract needed characters
+        $characters = [$font->getMissingGlyphCharacter()];
+        $missingCodePoints = [];
+        foreach ($orderedCodePoints as $index => $codePoint) {
+            $character = $characterRepository->findByCodePoint($codePoint);
+            if ($character !== null) {
+                $characters[] = $character;
+            } else {
+                $missingCodePoints[$index] = $codePoint;
+            }
+        }
+
+        // remove missing characters from all code points
+        $notEncodedCharIndexes = [];
+        foreach ($missingCodePoints as $index => $value) {
+            unset($orderedCodePoints[$index]);
+
+            // 10 is space character and does not need to be encoded
+            if ($value === 10) {
+                $notEncodedCharIndexes[] = $index;
+            }
+        }
+
+        // remove missing characters that do not need to be encoded
+        foreach ($notEncodedCharIndexes as $notEncodedCharIndex) {
+            unset($missingCodePoints[$notEncodedCharIndex]);
+        }
+
+        // normalize arrays
+        $orderedCodePoints = array_values($orderedCodePoints);
+        $missingCodePoints = array_values($missingCodePoints);
+
+        return new FontSubsetDefinition($characters, $orderedCodePoints, $missingCodePoints);
+    }
+
+    /**
      * puts all used codepoints into ascending array.
-     *
-     * @param string $characters
      *
      * @return int[]
      */
@@ -40,49 +82,5 @@ class FontOptimizer
         sort($codePoints);
 
         return $codePoints;
-    }
-
-    /**
-     * @param Font $font
-     * @param int[] $orderedCodePoints
-     *
-     * @throws \Exception
-     *
-     * @return Font
-     */
-    public function getFontSubset(Font $font, array $orderedCodePoints): Font
-    {
-        $characterRepository = new CharacterRepository($font);
-
-        // build up newly needed characters
-        $characters = [$font->getMissingGlyphCharacter()];
-        foreach ($orderedCodePoints as $codePoint) {
-            $character = $characterRepository->findByCodePoint($codePoint);
-            $characters[] = $character;
-        }
-
-        // create subset
-        $optimizer = Optimizer::create();
-        $subset = $optimizer->getFontSubset($font, $characters);
-
-        return $subset;
-    }
-
-    /**
-     * @param int[] $orderedCodepoints
-     *
-     * @return int[]
-     */
-    public function getCharacterMappings(array $orderedCodepoints): array
-    {
-        /** @var int[] $characterMappings */
-        $characterMappings = [];
-        $totalCodePoints = \count($orderedCodepoints);
-        $glyphIndex = 1;
-        for ($i = 0; $i < $totalCodePoints; ++$i) {
-            $characterMappings[$totalCodePoints] = $glyphIndex++;
-        }
-
-        return $characterMappings;
     }
 }

@@ -19,11 +19,6 @@ class TableRowLayout extends StatefulColumnedLayout implements TableRowLayoutInt
 {
     /**
      * ColumnLayout constructor.
-     *
-     * @param Document $pdfDocument
-     * @param float $columnGutter
-     * @param float $totalWidth
-     * @param array $columnWidths
      */
     public function __construct(Document $pdfDocument, float $columnGutter, float $totalWidth, array $columnWidths)
     {

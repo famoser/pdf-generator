@@ -45,57 +45,37 @@ class CIDSystemInfo
      */
     private $supplement = 0;
 
-    /**
-     * @return string
-     */
     public function getRegistry(): string
     {
         return $this->registry;
     }
 
-    /**
-     * @param string $registry
-     */
     public function setRegistry(string $registry): void
     {
         $this->registry = $registry;
     }
 
-    /**
-     * @return string
-     */
     public function getOrdering(): string
     {
         return $this->ordering;
     }
 
-    /**
-     * @param string $ordering
-     */
     public function setOrdering(string $ordering): void
     {
         $this->ordering = $ordering;
     }
 
-    /**
-     * @return int
-     */
     public function getSupplement(): int
     {
         return $this->supplement;
     }
 
-    /**
-     * @param int $supplement
-     */
     public function setSupplement(int $supplement): void
     {
         $this->supplement = $supplement;
     }
 
     /**
-     * @param CatalogVisitor $param
-     *
      * @return DictionaryToken
      */
     public function accept(CatalogVisitor $param)

@@ -62,51 +62,31 @@ class OffsetTable extends BaseTable
         return $this->numTables;
     }
 
-    /**
-     * @return bool
-     */
     public function isTrueTypeFont(): bool
     {
         return $this->scalerType === 0x74727565 || $this->scalerType === 0x00010000;
     }
 
-    /**
-     * @return int
-     */
     public function getScalerType(): int
     {
         return $this->scalerType;
     }
 
-    /**
-     * @param int $scalerType
-     */
     public function setScalerType(int $scalerType): void
     {
         $this->scalerType = $scalerType;
     }
 
-    /**
-     * @return int
-     */
     public function getNumTables(): int
     {
         return $this->numTables;
     }
 
-    /**
-     * @param int $numTables
-     */
     public function setNumTables(int $numTables): void
     {
         $this->numTables = $numTables;
     }
 
-    /**
-     * @param TableVisitor $visitor
-     *
-     * @return string
-     */
     public function accept(TableVisitor $visitor): string
     {
         return $visitor->visitOffsetTable($this);
