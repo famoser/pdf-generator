@@ -176,14 +176,20 @@ class DocumentVisitor
         // build up newly needed characters
         $characters = [$font->getMissingGlyphCharacter()];
         $missingCodePoints = [];
-        foreach ($orderedCodePoints as $codePoint) {
+        foreach ($orderedCodePoints as $index => $codePoint) {
             $character = $characterRepository->findByCodePoint($codePoint);
             if ($character !== null) {
                 $characters[] = $character;
             } else {
-                $missingCodePoints[] = $codePoint;
+                $missingCodePoints[$index] = $codePoint;
             }
         }
+
+        foreach ($missingCodePoints as $index => $value) {
+            unset($orderedCodePoints[$index]);
+        }
+        $orderedCodePoints = array_values($orderedCodePoints);
+        $missingCodePoints = array_values($missingCodePoints);
 
         // create subset
         $optimizer = Optimizer::create();

@@ -129,7 +129,6 @@ class CMapCreator
         if ($missingCodePoints[0] !== 0) {
             $missingCodePoints  = array_merge([0], $missingCodePoints);
         }
-
         $notDefRanges = $this->getNotDefRanges($missingCodePoints, 0);
         $notDefRangeDictionaries = $this->toDictionary($notDefRanges, 'notdefrange');
 
