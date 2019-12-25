@@ -136,7 +136,7 @@ class TableVisitor
         $writer->writeFWORD($hHeaTable->getXMaxExtent());
         $writer->writeInt16($hHeaTable->getCaretSlopeRise());
         $writer->writeInt16($hHeaTable->getCaretSlopeRun());
-        $writer->writeFWORD($hHeaTable->getCaretOffset());
+        $writer->writeInt16($hHeaTable->getCaretOffset());
 
         // skip reserved characters
         $writer->writeUInt32(0);

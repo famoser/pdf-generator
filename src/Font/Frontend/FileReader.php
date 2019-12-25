@@ -412,7 +412,7 @@ class FileReader
         $table->setXMaxExtent($fileReader->readFWORD());
         $table->setCaretSlopeRise($fileReader->readInt16());
         $table->setCaretSlopeRun($fileReader->readInt16());
-        $table->setCaretOffset($fileReader->readFWORD());
+        $table->setCaretOffset($fileReader->readInt16());
 
         // skip reserved characters
         $fileReader->readInt32();

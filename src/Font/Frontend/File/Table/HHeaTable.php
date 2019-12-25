@@ -125,7 +125,7 @@ class HHeaTable
      * caret offset
      * by which amount the highlight of the slanted character should be shifted.
      *
-     * @ttf-type fword
+     * @ttf-type int16
      *
      * @var int
      */

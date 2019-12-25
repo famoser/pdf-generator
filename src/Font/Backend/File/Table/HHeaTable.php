@@ -128,9 +128,9 @@ class HHeaTable extends BaseTable
      * caret offset
      * by which amount the highlight of the slanted character should be shifted.
      *
-     * @ttf-type fword
+     * @ttf-type int16
      *
-     * @var float
+     * @var int
      */
     private $caretOffset;
 
@@ -253,12 +253,12 @@ class HHeaTable extends BaseTable
         $this->caretSlopeRun = $caretSlopeRun;
     }
 
-    public function getCaretOffset(): float
+    public function getCaretOffset(): int
     {
         return $this->caretOffset;
     }
 
-    public function setCaretOffset(float $caretOffset): void
+    public function setCaretOffset(int $caretOffset): void
     {
         $this->caretOffset = $caretOffset;
     }
