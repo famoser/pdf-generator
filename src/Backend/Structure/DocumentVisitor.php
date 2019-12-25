@@ -185,9 +185,19 @@ class DocumentVisitor
             }
         }
 
+        $notEncodedChars = [];
         foreach ($missingCodePoints as $index => $value) {
             unset($orderedCodePoints[$index]);
+
+            if ($value == 10) {
+                $notEncodedChars[] = $index;
+            }
         }
+
+        foreach ($notEncodedChars as $notEncodedChar) {
+            unset($missingCodePoints[$index]);
+        }
+
         $orderedCodePoints = array_values($orderedCodePoints);
         $missingCodePoints = array_values($missingCodePoints);
 

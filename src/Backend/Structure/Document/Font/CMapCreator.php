@@ -126,7 +126,7 @@ class CMapCreator
 
         sort($missingCodePoints);
         // must always map 0 character
-        if ($missingCodePoints[0] !== 0) {
+        if (count($missingCodePoints) === 0 || $missingCodePoints[0] !== 0) {
             $missingCodePoints  = array_merge([0], $missingCodePoints);
         }
         $notDefRanges = $this->getNotDefRanges($missingCodePoints, 0);
