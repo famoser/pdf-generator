@@ -623,7 +623,7 @@ class FileWriter
         $nameString = '';
         foreach ($names as $name) {
             $nameString .= \strlen($name);
-            $nameString[] = $name;
+            $nameString .= $name;
         }
 
         return $nameString;
