@@ -26,6 +26,7 @@ use PdfGenerator\Font\Frontend\File\Table\Name\LangTagRecord;
 use PdfGenerator\Font\Frontend\File\Table\Name\NameRecord;
 use PdfGenerator\Font\Frontend\File\Table\NameTable;
 use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
+use PdfGenerator\Font\Frontend\File\Table\OS2Table;
 use PdfGenerator\Font\Frontend\File\Table\PostTable;
 use PdfGenerator\Font\Frontend\File\Table\RawTable;
 use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
@@ -106,7 +107,7 @@ class FileReader
                     $font->setHeadTable($table);
                     break;
                 case 'OS/2': // sizing infos used only by windows
-                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
+                    $table = $this->readOS2Table($fileReader);
                     $font->setOS2Table($table);
                     break;
                 case 'name':
@@ -518,6 +519,82 @@ class FileReader
         $nameRecord->setOffset($streamReader->readOffset16());
 
         return $nameRecord;
+    }
+
+    /**
+     * @throws \Exception
+     *
+     * @return OS2Table
+     */
+    private function readOS2Table(StreamReader $streamReader)
+    {
+        $os2Table = new OS2Table();
+
+        $os2Table->setVersion($streamReader->readUInt16());
+
+        $os2Table->setXAvgCharWidth($streamReader->readInt16());
+
+        $os2Table->setUsWeightClass($streamReader->readUInt16());
+        $os2Table->setUsWidthClass($streamReader->readUInt16());
+
+        $os2Table->setFsType($streamReader->readUInt16());
+
+        $os2Table->setYSubscriptXSize($streamReader->readInt16());
+        $os2Table->setYSubscriptYSize($streamReader->readInt16());
+        $os2Table->setYSubscriptXOffset($streamReader->readInt16());
+        $os2Table->setYSubscriptYOffset($streamReader->readInt16());
+
+        $os2Table->setYSuperscriptXSize($streamReader->readInt16());
+        $os2Table->setYSuperscriptYSize($streamReader->readInt16());
+        $os2Table->setYSuperscriptXOffset($streamReader->readInt16());
+        $os2Table->setYSuperscriptYOffset($streamReader->readInt16());
+
+        $os2Table->setYStrikeoutSize($streamReader->readInt16());
+        $os2Table->setYStrikeoutPosition($streamReader->readInt16());
+        $os2Table->setSFamilyClass($streamReader->readInt16());
+
+        $os2Table->setPanose($streamReader->readUInt8Array(10));
+
+        $os2Table->setUlUnicodeRanges($streamReader->readUInt32Array(4));
+
+        $os2Table->setAchVendID($streamReader->readTagAsString());
+
+        $os2Table->setFsSelection($streamReader->readUInt16());
+
+        $os2Table->setUsFirstCharIndex($streamReader->readUInt16());
+        $os2Table->setUsLastCharIndex($streamReader->readUInt16());
+
+        $os2Table->setSTypoAscender($streamReader->readInt16());
+        $os2Table->setSTypoDecender($streamReader->readInt16());
+        $os2Table->setSTypoLineGap($streamReader->readInt16());
+
+        $os2Table->setUsWinAscent($streamReader->readUInt16());
+        $os2Table->setUsWinDecent($streamReader->readUInt16());
+
+        if ($os2Table->getVersion() <= 0) {
+            return $os2Table;
+        }
+
+        $os2Table->setUlCodePageRanges($streamReader->readUInt32Array(2));
+
+        if ($os2Table->getVersion() <= 3) {
+            return $os2Table;
+        }
+
+        $os2Table->setSxHeight($streamReader->readInt16());
+        $os2Table->setSCapHeight($streamReader->readInt16());
+        $os2Table->setUsDefaultChar($streamReader->readUInt16());
+        $os2Table->setUsBreakChar($streamReader->readUInt16());
+        $os2Table->setUsMaxContext($streamReader->readUInt16());
+
+        if ($os2Table->getVersion() === 4) {
+            return $os2Table;
+        }
+
+        $os2Table->setUsLowerOptimalPointSize($streamReader->readUInt16());
+        $os2Table->setUsUpperOptimalPointSize($streamReader->readUInt16());
+
+        return $os2Table;
     }
 
     /**

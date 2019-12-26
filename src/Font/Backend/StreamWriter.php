@@ -189,4 +189,18 @@ class StreamWriter
     {
         return $number >= 0 ? $number : $number + 2 ** $bits;
     }
+
+    public function writeUInt32Array(array $values)
+    {
+        foreach ($values as $value) {
+            $this->writeUInt32($value);
+        }
+    }
+
+    public function writeUInt8Array(array $values)
+    {
+        foreach ($values as $value) {
+            $this->writeUInt8($value);
+        }
+    }
 }

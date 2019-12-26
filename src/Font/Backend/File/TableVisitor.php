@@ -278,4 +278,75 @@ class TableVisitor
 
         return $writer->getStream();
     }
+
+    public function visitOS2Table(Table\OS2Table $os2Table)
+    {
+        $writer = new StreamWriter();
+
+        $writer->writeUInt16($os2Table->getVersion());
+
+        $writer->writeInt16($os2Table->getXAvgCharWidth());
+
+        $writer->writeUInt16($os2Table->getUsWeightClass());
+        $writer->writeUInt16($os2Table->getUsWidthClass());
+
+        $writer->writeUInt16($os2Table->getFsType());
+
+        $writer->writeInt16($os2Table->getYSubscriptXSize());
+        $writer->writeInt16($os2Table->getYSubscriptYSize());
+        $writer->writeInt16($os2Table->getYSubscriptXOffset());
+        $writer->writeInt16($os2Table->getYSubscriptYOffset());
+
+        $writer->writeInt16($os2Table->getYSuperscriptXSize());
+        $writer->writeInt16($os2Table->getYSuperscriptYSize());
+        $writer->writeInt16($os2Table->getYSuperscriptXOffset());
+        $writer->writeInt16($os2Table->getYSuperscriptYOffset());
+
+        $writer->writeInt16($os2Table->getYStrikeoutSize());
+        $writer->writeInt16($os2Table->getYStrikeoutPosition());
+        $writer->writeInt16($os2Table->getSFamilyClass());
+
+        $writer->writeUInt8Array($os2Table->getPanose());
+
+        $writer->writeUInt32Array($os2Table->getUlUnicodeRanges());
+
+        $writer->writeTagFromString($os2Table->getAchVendID());
+
+        $writer->writeUInt16($os2Table->getFsSelection());
+
+        $writer->writeUInt16($os2Table->getUsFirstCharIndex());
+        $writer->writeUInt16($os2Table->getUsLastCharIndex());
+
+        $writer->writeInt16($os2Table->getSTypoAscender());
+        $writer->writeInt16($os2Table->getSTypoDecender());
+        $writer->writeInt16($os2Table->getSTypoLineGap());
+
+        $writer->writeUInt16($os2Table->getUsWinAscent());
+        $writer->writeUInt16($os2Table->getUsWinDecent());
+
+        if ($os2Table->getVersion() <= 0) {
+            return $writer->getStream();
+        }
+
+        $writer->writeUInt32Array($os2Table->getUlCodePageRanges());
+
+        if ($os2Table->getVersion() <= 3) {
+            return $writer->getStream();
+        }
+
+        $writer->writeInt16($os2Table->getSxHeight());
+        $writer->writeInt16($os2Table->getSCapHeight());
+        $writer->writeUInt16($os2Table->getUsDefaultChar());
+        $writer->writeUInt16($os2Table->getUsBreakChar());
+        $writer->writeUInt16($os2Table->getUsMaxContext());
+
+        if ($os2Table->getVersion() === 4) {
+            return $writer->getStream();
+        }
+
+        $writer->writeUInt16($os2Table->getUsLowerOptimalPointSize());
+        $writer->writeUInt16($os2Table->getUsUpperOptimalPointSize());
+
+        return $writer->getStream();
+    }
 }

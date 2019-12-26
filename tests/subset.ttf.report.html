@@ -113,7 +113,7 @@
     <TABLE WIDTH="100%">
       <TR>
         <TD WIDTH="15%"><I>Run DateTime: </I></TD>
-        <TD>Wednesday, December 25, 2019 7:58 PM</TD>
+        <TD>Wednesday, December 25, 2019 9:28 PM</TD>
       </TR>
       <TR>
         <TD WIDTH="15%"><I>Machine Name: </I></TD>
@@ -247,14 +247,14 @@
 				HREF='#post_0'
 				>post</A></TD>
         <TD>0x00000eac</TD>
-        <TD>0x0000002c</TD>
+        <TD>0x00000032</TD>
         <TD>0x00000000</TD>
       </TR>
       <TR>
         <TD><A
 				HREF='#prep_0'
 				>prep</A></TD>
-        <TD>0x00000ed8</TD>
+        <TD>0x00000ee0</TD>
         <TD>0x00000109</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -369,7 +369,7 @@
 		class='class_E'
 		><TD VALIGN="TOP">E0030</TD>
       <TD VALIGN="TOP">Directory Entry checksum error</TD>
-      <TD VALIGN="TOP">table 'post', calc: 0xffbd00ea, font: 0x00000000</TD></TR><TR
+      <TD VALIGN="TOP">table 'post', calc: 0x632e33d9, font: 0x00000000</TD></TR><TR
 		class='class_E'
 		><TD VALIGN="TOP">E0030</TD>
       <TD VALIGN="TOP">Directory Entry checksum error</TD>
@@ -1200,16 +1200,18 @@
     <TD VALIGN="TOP">The numberOfGlyphs field equals maxp.numGlyphs</TD>
     <TD VALIGN="TOP">
     </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2300</TD>
-    <TD VALIGN="TOP">The glyphNameIndex array contains valid indexes</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2303</TD>
-    <TD VALIGN="TOP">The names in the post table are consistent with the Adobe Glyph List names</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><BR></TABLE><BR><BR><INPUT
+		class='class_E'
+		><TD VALIGN="TOP">E2300</TD>
+    <TD VALIGN="TOP">An entry in the glyphNameIndex - 258 is greater than the number of names</TD>
+    <TD VALIGN="TOP">glyphNameIndex[3] = 259, # names = 1</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2300</TD>
+    <TD VALIGN="TOP">An entry in the glyphNameIndex - 258 is greater than the number of names</TD>
+    <TD VALIGN="TOP">glyphNameIndex[4] = 260, # names = 1</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2312</TD>
+    <TD VALIGN="TOP">The post name extends past the end of the table</TD>
+    <TD VALIGN="TOP">name index = 258</TD></TR><BR></TABLE><BR><BR><INPUT
 				id='cb_prep_0' type='checkbox' name='cb_prep_0' onclick='display_table(table_prep_0)'
 				checked ><B><A
 				NAME='prep_0'
