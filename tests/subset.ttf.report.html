@@ -113,7 +113,7 @@
     <TABLE WIDTH="100%">
       <TR>
         <TD WIDTH="15%"><I>Run DateTime: </I></TD>
-        <TD>Thursday, December 26, 2019 2:34 PM</TD>
+        <TD>Thursday, December 26, 2019 2:41 PM</TD>
       </TR>
       <TR>
         <TD WIDTH="15%"><I>Machine Name: </I></TD>
@@ -148,9 +148,17 @@
       </TR>
       <TR>
         <TD><A
+				HREF='#OS_2_0'
+				>OS/2</A></TD>
+        <TD>0x000000ec</TD>
+        <TD>0x00000064</TD>
+        <TD>0x00000000</TD>
+      </TR>
+      <TR>
+        <TD><A
 				HREF='#cmap_0'
 				>cmap</A></TD>
-        <TD>0x000000ec</TD>
+        <TD>0x00000150</TD>
         <TD>0x0000003c</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -158,7 +166,7 @@
         <TD><A
 				HREF='#cvt__0'
 				>cvt </A></TD>
-        <TD>0x00000128</TD>
+        <TD>0x0000018c</TD>
         <TD>0x000000a2</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -166,7 +174,7 @@
         <TD><A
 				HREF='#fpgm_0'
 				>fpgm</A></TD>
-        <TD>0x000001cc</TD>
+        <TD>0x00000230</TD>
         <TD>0x000007b4</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -174,7 +182,7 @@
         <TD><A
 				HREF='#gasp_0'
 				>gasp</A></TD>
-        <TD>0x00000980</TD>
+        <TD>0x000009e4</TD>
         <TD>0x00000010</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -182,7 +190,7 @@
         <TD><A
 				HREF='#glyf_0'
 				>glyf</A></TD>
-        <TD>0x00000990</TD>
+        <TD>0x000009f4</TD>
         <TD>0x000001a4</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -190,7 +198,7 @@
         <TD><A
 				HREF='#head_0'
 				>head</A></TD>
-        <TD>0x00000b34</TD>
+        <TD>0x00000b98</TD>
         <TD>0x00000036</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -198,7 +206,7 @@
         <TD><A
 				HREF='#hhea_0'
 				>hhea</A></TD>
-        <TD>0x00000b6c</TD>
+        <TD>0x00000bd0</TD>
         <TD>0x00000024</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -206,7 +214,7 @@
         <TD><A
 				HREF='#hmtx_0'
 				>hmtx</A></TD>
-        <TD>0x00000b90</TD>
+        <TD>0x00000bf4</TD>
         <TD>0x00000010</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -214,7 +222,7 @@
         <TD><A
 				HREF='#loca_0'
 				>loca</A></TD>
-        <TD>0x00000ba0</TD>
+        <TD>0x00000c04</TD>
         <TD>0x0000000a</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -222,7 +230,7 @@
         <TD><A
 				HREF='#maxp_0'
 				>maxp</A></TD>
-        <TD>0x00000bac</TD>
+        <TD>0x00000c10</TD>
         <TD>0x00000020</TD>
         <TD>0x00000000</TD>
       </TR>
@@ -230,16 +238,8 @@
         <TD><A
 				HREF='#name_0'
 				>name</A></TD>
-        <TD>0x00000bcc</TD>
+        <TD>0x00000c30</TD>
         <TD>0x000001da</TD>
-        <TD>0x00000000</TD>
-      </TR>
-      <TR>
-        <TD><A
-				HREF='#OS_2_0'
-				>OS/2</A></TD>
-        <TD>0x00000da8</TD>
-        <TD>0x00000064</TD>
         <TD>0x00000000</TD>
       </TR>
       <TR>
@@ -273,9 +273,9 @@
       <TD VALIGN="TOP">The searchRange, entrySelector, and rangeShift fields are all valid</TD>
       <TD VALIGN="TOP">
       </TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E0038</TD>
-      <TD VALIGN="TOP">The directory entry tags are not in ascending order</TD>
+		class='class_P'
+		><TD VALIGN="TOP">P0032</TD>
+      <TD VALIGN="TOP">The directory entry tags are in ascending order</TD>
       <TD VALIGN="TOP">
       </TD></TR><TR
 		class='class_P'
@@ -317,7 +317,11 @@
 		class='class_W'
 		><TD VALIGN="TOP">W0020</TD>
       <TD VALIGN="TOP">Tables are not in optimal order</TD>
-      <TD VALIGN="TOP">table 'cmap' precedes table 'head'</TD></TR><TR
+      <TD VALIGN="TOP">table 'OS/2' precedes table 'head'</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E0030</TD>
+      <TD VALIGN="TOP">Directory Entry checksum error</TD>
+      <TD VALIGN="TOP">table 'OS/2', calc: 0x76705a38, font: 0x00000000</TD></TR><TR
 		class='class_E'
 		><TD VALIGN="TOP">E0030</TD>
       <TD VALIGN="TOP">Directory Entry checksum error</TD>
@@ -365,15 +369,112 @@
 		class='class_E'
 		><TD VALIGN="TOP">E0030</TD>
       <TD VALIGN="TOP">Directory Entry checksum error</TD>
-      <TD VALIGN="TOP">table 'OS/2', calc: 0x76705a38, font: 0x00000000</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E0030</TD>
-      <TD VALIGN="TOP">Directory Entry checksum error</TD>
       <TD VALIGN="TOP">table 'post', calc: 0x72376a40, font: 0x00000000</TD></TR><TR
 		class='class_E'
 		><TD VALIGN="TOP">E0030</TD>
       <TD VALIGN="TOP">Directory Entry checksum error</TD>
       <TD VALIGN="TOP">table 'prep', calc: 0x43b796a4, font: 0x00000000</TD></TR><BR></TABLE><BR><BR><INPUT
+				id='cb_OS_2_0' type='checkbox' name='cb_OS_2_0' onclick='display_table(table_OS_2_0)'
+				checked ><B><A
+				NAME='OS_2_0'
+				>OS/2</A></B><BR><TABLE
+				WIDTH='100%' id='table_OS_2_0'
+				><TR CLASS="caption">
+      <TD WIDTH="10%"><I>Error code</I></TD>
+      <TD WIDTH="50%"><I>Message</I></TD>
+      <TD WIDTH="40%"><I>Details</I></TD>
+    </TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2117</TD>
+    <TD VALIGN="TOP">The version number is valid and is the current version number</TD>
+    <TD VALIGN="TOP">5</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2112</TD>
+    <TD VALIGN="TOP">The table length matches the expected length for this version</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2120</TD>
+    <TD VALIGN="TOP">The xAvgCharWidth field equals the calculated value</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2122</TD>
+    <TD VALIGN="TOP">The usWeightClass is consistent with the PANOSE weight value</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2118</TD>
+    <TD VALIGN="TOP">The usWeightClass is a valid value</TD>
+    <TD VALIGN="TOP">400</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2119</TD>
+    <TD VALIGN="TOP">The width class is a valid value</TD>
+    <TD VALIGN="TOP">5</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2103</TD>
+    <TD VALIGN="TOP">The fsType field is valid</TD>
+    <TD VALIGN="TOP">0x0000, Installable Embedding</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2109</TD>
+    <TD VALIGN="TOP">All subscript and superscript values appear valid</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2108</TD>
+    <TD VALIGN="TOP">The yStrikeoutSize and yStrikeoutPosition appear valid</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2107</TD>
+    <TD VALIGN="TOP">The sFamilyClass Class ID and Subclass ID values are in a valid range</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2104</TD>
+    <TD VALIGN="TOP">All panose values are in a valid range</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2113</TD>
+    <TD VALIGN="TOP">The Unicode Range fields' bits are all allowable values</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2102</TD>
+    <TD VALIGN="TOP">The fsSelection field appears to be valid</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_W'
+		><TD VALIGN="TOP">W2117</TD>
+    <TD VALIGN="TOP">The value of sTypoAscender minus sTypoDescender is greater than unitsPerEm</TD>
+    <TD VALIGN="TOP">sTypoAscender = 1567, sTypoDescender = -492</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2101</TD>
+    <TD VALIGN="TOP">The CodePage Range fields' bits are all allowable values</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2111</TD>
+    <TD VALIGN="TOP">The sxHeight field is zero, and U+0078 is not mapped to a glyf</TD>
+    <TD VALIGN="TOP">0</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2106</TD>
+    <TD VALIGN="TOP">The sCapHeight field is zero, and U+0048 is not mapped to a glyf</TD>
+    <TD VALIGN="TOP">0</TD></TR><TR
+		class='class_P'
+		><TD VALIGN="TOP">P2116</TD>
+    <TD VALIGN="TOP">The usDefaultChar field is zero</TD>
+    <TD VALIGN="TOP">
+    </TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2128</TD>
+    <TD VALIGN="TOP">The usBreakChar is not mapped to a glyf</TD>
+    <TD VALIGN="TOP">0x0020</TD></TR><TR
+		class='class_E'
+		><TD VALIGN="TOP">E2148</TD>
+    <TD VALIGN="TOP">The usMaxContext field doesn't match the calculated value</TD>
+    <TD VALIGN="TOP">calc = 0, actual = 3</TD></TR><BR></TABLE><BR><BR><INPUT
 				id='cb_cmap_0' type='checkbox' name='cb_cmap_0' onclick='display_table(table_cmap_0)'
 				checked ><B><A
 				NAME='cmap_0'
@@ -941,107 +1042,6 @@
     <TD VALIGN="TOP">No inconsistencies were found for Description strings</TD>
     <TD VALIGN="TOP">
     </TD></TR><BR></TABLE><BR><BR><INPUT
-				id='cb_OS_2_0' type='checkbox' name='cb_OS_2_0' onclick='display_table(table_OS_2_0)'
-				checked ><B><A
-				NAME='OS_2_0'
-				>OS/2</A></B><BR><TABLE
-				WIDTH='100%' id='table_OS_2_0'
-				><TR CLASS="caption">
-      <TD WIDTH="10%"><I>Error code</I></TD>
-      <TD WIDTH="50%"><I>Message</I></TD>
-      <TD WIDTH="40%"><I>Details</I></TD>
-    </TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2117</TD>
-    <TD VALIGN="TOP">The version number is valid and is the current version number</TD>
-    <TD VALIGN="TOP">5</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2112</TD>
-    <TD VALIGN="TOP">The table length matches the expected length for this version</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2120</TD>
-    <TD VALIGN="TOP">The xAvgCharWidth field equals the calculated value</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2122</TD>
-    <TD VALIGN="TOP">The usWeightClass is consistent with the PANOSE weight value</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2118</TD>
-    <TD VALIGN="TOP">The usWeightClass is a valid value</TD>
-    <TD VALIGN="TOP">400</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2119</TD>
-    <TD VALIGN="TOP">The width class is a valid value</TD>
-    <TD VALIGN="TOP">5</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2103</TD>
-    <TD VALIGN="TOP">The fsType field is valid</TD>
-    <TD VALIGN="TOP">0x0000, Installable Embedding</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2109</TD>
-    <TD VALIGN="TOP">All subscript and superscript values appear valid</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2108</TD>
-    <TD VALIGN="TOP">The yStrikeoutSize and yStrikeoutPosition appear valid</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2107</TD>
-    <TD VALIGN="TOP">The sFamilyClass Class ID and Subclass ID values are in a valid range</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2104</TD>
-    <TD VALIGN="TOP">All panose values are in a valid range</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2113</TD>
-    <TD VALIGN="TOP">The Unicode Range fields' bits are all allowable values</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2102</TD>
-    <TD VALIGN="TOP">The fsSelection field appears to be valid</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_W'
-		><TD VALIGN="TOP">W2117</TD>
-    <TD VALIGN="TOP">The value of sTypoAscender minus sTypoDescender is greater than unitsPerEm</TD>
-    <TD VALIGN="TOP">sTypoAscender = 1567, sTypoDescender = -492</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2101</TD>
-    <TD VALIGN="TOP">The CodePage Range fields' bits are all allowable values</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2111</TD>
-    <TD VALIGN="TOP">The sxHeight field is zero, and U+0078 is not mapped to a glyf</TD>
-    <TD VALIGN="TOP">0</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2106</TD>
-    <TD VALIGN="TOP">The sCapHeight field is zero, and U+0048 is not mapped to a glyf</TD>
-    <TD VALIGN="TOP">0</TD></TR><TR
-		class='class_P'
-		><TD VALIGN="TOP">P2116</TD>
-    <TD VALIGN="TOP">The usDefaultChar field is zero</TD>
-    <TD VALIGN="TOP">
-    </TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2128</TD>
-    <TD VALIGN="TOP">The usBreakChar is not mapped to a glyf</TD>
-    <TD VALIGN="TOP">0x0020</TD></TR><TR
-		class='class_E'
-		><TD VALIGN="TOP">E2148</TD>
-    <TD VALIGN="TOP">The usMaxContext field doesn't match the calculated value</TD>
-    <TD VALIGN="TOP">calc = 0, actual = 3</TD></TR><BR></TABLE><BR><BR><INPUT
 				id='cb_post_0' type='checkbox' name='cb_post_0' onclick='display_table(table_post_0)'
 				checked ><B><A
 				NAME='post_0'

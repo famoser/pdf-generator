@@ -429,7 +429,7 @@ class FileWriter
             $tables[$table->getTag()] = $table;
         }
 
-        ksort($tables, SORT_NATURAL | SORT_FLAG_CASE);
+        ksort($tables);
 
         $tableStreamWriter = new StreamWriter();
 
