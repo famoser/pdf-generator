@@ -364,7 +364,7 @@ class OS2Table extends BaseTable
      *
      * @ttf-type uint32[2]
      *
-     * @var int[]
+     * @var int[]|null
      */
     private $ulCodePageRanges;
 
@@ -378,7 +378,7 @@ class OS2Table extends BaseTable
      *
      * @ttf-type int16
      *
-     * @var int
+     * @var int|null
      */
     private $sxHeight;
 
@@ -387,7 +387,7 @@ class OS2Table extends BaseTable
      *
      * @ttf-type int16
      *
-     * @var int
+     * @var int|null
      */
     private $sCapHeight;
 
@@ -397,7 +397,7 @@ class OS2Table extends BaseTable
      *
      * @ttf-type uint16
      *
-     * @var int
+     * @var int|null
      */
     private $usDefaultChar;
 
@@ -406,7 +406,7 @@ class OS2Table extends BaseTable
      *
      * @ttf-type uint16
      *
-     * @var int
+     * @var int|null
      */
     private $usBreakChar;
 
@@ -416,7 +416,7 @@ class OS2Table extends BaseTable
      *
      * @ttf-type uint16
      *
-     * @var int
+     * @var int|null
      */
     private $usMaxContext;
 
@@ -425,7 +425,7 @@ class OS2Table extends BaseTable
      *
      * @ttf-type uint16
      *
-     * @var int
+     * @var int|null
      */
     private $usLowerOptimalPointSize;
 
@@ -434,7 +434,7 @@ class OS2Table extends BaseTable
      *
      * @ttf-type uint16
      *
-     * @var int
+     * @var int|null
      */
     private $usUpperOptimalPointSize;
 
@@ -721,87 +721,87 @@ class OS2Table extends BaseTable
     }
 
     /**
-     * @return int[]
+     * @return int[]|null
      */
-    public function getUlCodePageRanges(): array
+    public function getUlCodePageRanges(): ?array
     {
         return $this->ulCodePageRanges;
     }
 
     /**
-     * @param int[] $ulCodePageRanges
+     * @param int[]|null $ulCodePageRanges
      */
-    public function setUlCodePageRanges(array $ulCodePageRanges): void
+    public function setUlCodePageRanges(?array $ulCodePageRanges): void
     {
         $this->ulCodePageRanges = $ulCodePageRanges;
     }
 
-    public function getSxHeight(): int
+    public function getSxHeight(): ?int
     {
         return $this->sxHeight;
     }
 
-    public function setSxHeight(int $sxHeight): void
+    public function setSxHeight(?int $sxHeight): void
     {
         $this->sxHeight = $sxHeight;
     }
 
-    public function getSCapHeight(): int
+    public function getSCapHeight(): ?int
     {
         return $this->sCapHeight;
     }
 
-    public function setSCapHeight(int $sCapHeight): void
+    public function setSCapHeight(?int $sCapHeight): void
     {
         $this->sCapHeight = $sCapHeight;
     }
 
-    public function getUsDefaultChar(): int
+    public function getUsDefaultChar(): ?int
     {
         return $this->usDefaultChar;
     }
 
-    public function setUsDefaultChar(int $usDefaultChar): void
+    public function setUsDefaultChar(?int $usDefaultChar): void
     {
         $this->usDefaultChar = $usDefaultChar;
     }
 
-    public function getUsBreakChar(): int
+    public function getUsBreakChar(): ?int
     {
         return $this->usBreakChar;
     }
 
-    public function setUsBreakChar(int $usBreakChar): void
+    public function setUsBreakChar(?int $usBreakChar): void
     {
         $this->usBreakChar = $usBreakChar;
     }
 
-    public function getUsMaxContext(): int
+    public function getUsMaxContext(): ?int
     {
         return $this->usMaxContext;
     }
 
-    public function setUsMaxContext(int $usMaxContext): void
+    public function setUsMaxContext(?int $usMaxContext): void
     {
         $this->usMaxContext = $usMaxContext;
     }
 
-    public function getUsLowerOptimalPointSize(): int
+    public function getUsLowerOptimalPointSize(): ?int
     {
         return $this->usLowerOptimalPointSize;
     }
 
-    public function setUsLowerOptimalPointSize(int $usLowerOptimalPointSize): void
+    public function setUsLowerOptimalPointSize(?int $usLowerOptimalPointSize): void
     {
         $this->usLowerOptimalPointSize = $usLowerOptimalPointSize;
     }
 
-    public function getUsUpperOptimalPointSize(): int
+    public function getUsUpperOptimalPointSize(): ?int
     {
         return $this->usUpperOptimalPointSize;
     }
 
-    public function setUsUpperOptimalPointSize(int $usUpperOptimalPointSize): void
+    public function setUsUpperOptimalPointSize(?int $usUpperOptimalPointSize): void
     {
         $this->usUpperOptimalPointSize = $usUpperOptimalPointSize;
     }

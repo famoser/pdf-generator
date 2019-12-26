@@ -375,7 +375,7 @@ class OS2Table
      *
      * @ttf-type int16
      *
-     * @var int
+     * @var int|null
      */
     private $sxHeight;
 
@@ -733,12 +733,12 @@ class OS2Table
         $this->ulCodePageRanges = $ulCodePageRanges;
     }
 
-    public function getSxHeight(): int
+    public function getSxHeight(): ?int
     {
         return $this->sxHeight;
     }
 
-    public function setSxHeight(int $sxHeight): void
+    public function setSxHeight(?int $sxHeight): void
     {
         $this->sxHeight = $sxHeight;
     }
