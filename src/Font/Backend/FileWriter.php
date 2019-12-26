@@ -109,12 +109,12 @@ class FileWriter
         $headTable->setCreated($source->getCreated());
         $headTable->setModified($source->getModified());
 
-        $xMin = 0;
-        $yMin = 0;
-        $xMax = PHP_INT_MAX;
-        $yMax = PHP_INT_MAX;
+        $xMin = PHP_INT_MAX;
+        $yMin = PHP_INT_MAX;
+        $xMax = 0;
+        $yMax = 0;
         foreach ($characters as $character) {
-            if ($character->getGlyfTable() === null) {
+            if ($character->getGlyfTable() === null || $character->getGlyfTable()->getNumberOfContours() === 0) {
                 continue;
             }
 

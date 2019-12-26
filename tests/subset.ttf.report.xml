@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="fval.xsl"?>
-<FontValidatorReport RunDateTime="Thursday, December 26, 2019 1:59 PM" MachineName="ARCH-X1-7">
+<FontValidatorReport RunDateTime="Thursday, December 26, 2019 2:02 PM" MachineName="ARCH-X1-7">
 <FontFile FileName="subset.ttf" FileNameAndPath="/home/famoser/Repos/pdf-generator/subset.ttf">
 <Report ErrorType="I" ErrorCode="I0004" Message="The file begins with an Offset Table (file contains a single font)" />
 <Font FontIndex="0">
@@ -51,7 +51,7 @@
 <TableEntry Tag="glyf" Offset="0x00000990" Length="0x000001a4" Checksum="0x00000000" CodeFriendlyTag="glyf">
 <Report ErrorType="P" ErrorCode="P1700" Message="Correct format of loca (0 or 1)" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'head', calc: 0xfd7e5b4c, font: 0x00000000" />
+<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'head', calc: 0x01d66103, font: 0x00000000" />
 <TableEntry Tag="head" Offset="0x00000b34" Length="0x00000036" Checksum="0x00000000" CodeFriendlyTag="head">
 <Report ErrorType="P" ErrorCode="P1323" Message="Table length is 54 bytes" TestName="head_TableLength" />
 <Report ErrorType="P" ErrorCode="P1324" Message="The table version number is 0x00010000" TestName="head_TableVersion" />
@@ -65,11 +65,10 @@
 <Report ErrorType="P" ErrorCode="P1325" Message="The unitsPerEm value is a power of two in the range 64..16384" Details="2048" TestName="head_UnitsPerEmValues" />
 <Report ErrorType="P" ErrorCode="P1300" Message="The created time is not zero" Details="created = 3375706507 (Monday, December 20, 2010 4:15 PM)" TestName="head_Dates" />
 <Report ErrorType="P" ErrorCode="P1322" Message="The modified time is not zero" Details="modified = 3576417493 (Sunday, April 30, 2017 5:18 PM)" TestName="head_Dates" />
-<Report ErrorType="E" ErrorCode="E1327" Message="xMin is greater than xMax" TestName="head_MinMaxValues" />
-<Report ErrorType="E" ErrorCode="E1326" Message="The xMin value does not match the minimum glyph xMin" Details="actual: 0, expected: 39" TestName="head_MinMaxValues" />
+<Report ErrorType="P" ErrorCode="P1327" Message="The xMin value matches the minimum glyph xMin" Details="xMin = 39" TestName="head_MinMaxValues" />
 <Report ErrorType="P" ErrorCode="P1329" Message="The yMin value matches the minimum glyph yMin" Details="yMin = -492" TestName="head_MinMaxValues" />
-<Report ErrorType="E" ErrorCode="E1325" Message="The xMax value does not match the maximum glyph xMax" Details="actual: -1, expected: 1073" TestName="head_MinMaxValues" />
-<Report ErrorType="E" ErrorCode="E1328" Message="The yMax value does not match the maximum glyph yMax" Details="actual: -1, expected: 1462" TestName="head_MinMaxValues" />
+<Report ErrorType="P" ErrorCode="P1326" Message="The xMax value matches the maximum glyph xMax" Details="xMax = 1073" TestName="head_MinMaxValues" />
+<Report ErrorType="P" ErrorCode="P1328" Message="The yMax value matches the maximum glyph yMax" Details="yMax = 1462" TestName="head_MinMaxValues" />
 <Report ErrorType="P" ErrorCode="P1316" Message="The macStyle bold bit matches the name table's font subfamily string" TestName="head_MacStyleBits" />
 <Report ErrorType="P" ErrorCode="P1320" Message="The macStyle italic bit matches the name table's font subfamily string" TestName="head_MacStyleBits" />
 <Report ErrorType="P" ErrorCode="P1314" Message="The macStyle bold bit matches the OS/2 fsSelection bit" TestName="head_MacStyleBits" />
@@ -86,7 +85,7 @@
 <Report ErrorType="P" ErrorCode="P1406" Message="The table version number is 0x00010000" TestName="hhea_version" />
 <Report ErrorType="P" ErrorCode="P1409" Message="The Ascender value is greater than zero" TestName="hhea_AscenderPositive" />
 <Report ErrorType="P" ErrorCode="P1411" Message="The Descender is less than zero" TestName="hhea_DescenderNegative" />
-<Report ErrorType="I" ErrorCode="I1401" Message="Ascender should be less than or equal to head.yMax" Details="Ascender = 2189, head.yMax = -1" TestName="hhea_Ascender_yMax" />
+<Report ErrorType="I" ErrorCode="I1401" Message="Ascender should be less than or equal to head.yMax" Details="Ascender = 2189, head.yMax = 1462" TestName="hhea_Ascender_yMax" />
 <Report ErrorType="I" ErrorCode="I1402" Message="Descender should be greater than or equal to head.yMin" Details="Descender = -600, head.yMin = -492" TestName="hhea_Descender_yMin" />
 <Report ErrorType="P" ErrorCode="P1413" Message="LineGap is greater than or equal to 0" TestName="hhea_LineGapPositive" />
 <Report ErrorType="P" ErrorCode="P1415" Message="Ascender is same value as OS/2.usWinAscent" TestName="hhea_Ascender_usWinAscent" />
