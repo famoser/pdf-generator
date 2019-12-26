@@ -222,10 +222,26 @@ class FileWriter
     {
         $maxPTable = new MaxPTable();
 
+        /*
+         * some of the values here are wrong because we do not analyse the content of the glyphs
+         * we leave the value same than they were with the input font; assuming the font gets less complex
+         * we riks using too much memory for parses that trust these numbers, but they should not crash (because not enough memory allocated)
+         */
+
         $maxPTable->setVersion(1.0);
         $maxPTable->setNumGlyphs(\count($characters));
         $maxPTable->setMaxPoints($source->getMaxPoints());
-        $maxPTable->setMaxContours($source->getMaxContours());
+
+        $maxContours = 0;
+        foreach ($characters as $character) {
+            if ($character->getGlyfTable() === null || $character->getGlyfTable()->getNumberOfContours() === 0) {
+                continue;
+            }
+
+            $maxContours = max($maxContours, $character->getGlyfTable()->getNumberOfContours());
+        }
+
+        $maxPTable->setMaxContours($maxContours);
         $maxPTable->setMaxCompositePoints($source->getMaxCompositePoints());
         $maxPTable->setMaxCompositeContours($source->getMaxCompositeContours());
         $maxPTable->setMaxZones($source->getMaxZones());
@@ -626,13 +642,14 @@ class FileWriter
      */
     private static function generatePascalString(array $names): string
     {
-        $nameString = '';
+        $writer = new StreamWriter();
+
         foreach ($names as $name) {
-            $nameString .= \strlen($name);
-            $nameString .= $name;
+            $writer->writeUInt8(\strlen($name));
+            $writer->writeStream($name);
         }
 
-        return $nameString;
+        return $writer->getStream();
     }
 
     /**
@@ -792,7 +809,7 @@ class FileWriter
 
             $os2Table->setUsDefaultChar(0); // use glyph 0
             $os2Table->setUsBreakChar(32); // use space, glyph 2
-            $os2Table->setUsMaxContext(3); // would need to check for ligratures & the like; now we just assume 3 which should be enough
+            $os2Table->setUsMaxContext(3); // would need to check for ligatures & the like; now we just assume 3 which should be enough
         }
 
         if ($source->getVersion() > 4) {

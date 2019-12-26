@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="fval.xsl"?>
-<FontValidatorReport RunDateTime="Thursday, December 26, 2019 2:02 PM" MachineName="ARCH-X1-7">
+<FontValidatorReport RunDateTime="Thursday, December 26, 2019 2:34 PM" MachineName="ARCH-X1-7">
 <FontFile FileName="subset.ttf" FileNameAndPath="/home/famoser/Repos/pdf-generator/subset.ttf">
 <Report ErrorType="I" ErrorCode="I0004" Message="The file begins with an Offset Table (file contains a single font)" />
 <Font FontIndex="0">
@@ -115,13 +115,12 @@
 <Report ErrorType="I" ErrorCode="I1700" Message="Loca references a zero-length entry in the glyf table" Details="Number of glyphs that are empty = 1" />
 <Report ErrorType="P" ErrorCode="P1703" Message="All glyphs in the glyf table are referenced by the loca table" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'maxp', calc: 0x019d020a, font: 0x00000000" />
+<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'maxp', calc: 0x018a020a, font: 0x00000000" />
 <TableEntry Tag="maxp" Offset="0x00000bac" Length="0x00000020" Checksum="0x00000000" CodeFriendlyTag="maxp">
 <Report ErrorType="P" ErrorCode="P1905" Message="Table version is 1.0 and a glyf table is present and no CFF table is present" TestName="maxp_TableVersion" />
 <Report ErrorType="P" ErrorCode="P1902" Message="Table version is 1.0 and the table is 32 bytes long" TestName="maxp_TableLength" />
 <Report ErrorType="P" ErrorCode="P1903" Message="The numGlyphs value equals the number of entries in the loca array plus one" Details="numGlyphs = 4" TestName="maxp_NumGlyphsMatchLoca" />
 <Report ErrorType="E" ErrorCode="E1900" Message="The value doesn't match the calculated value" Details="maxPoints = 138, calculated = 66" TestName="maxp_GlyphStats" />
-<Report ErrorType="E" ErrorCode="E1900" Message="The value doesn't match the calculated value" Details="maxContours = 22, calculated = 3" TestName="maxp_GlyphStats" />
 <Report ErrorType="E" ErrorCode="E1900" Message="The value doesn't match the calculated value" Details="maxCompositePoints = 86, calculated = 0" TestName="maxp_GlyphStats" />
 <Report ErrorType="E" ErrorCode="E1900" Message="The value doesn't match the calculated value" Details="maxCompositeContours = 5, calculated = 0" TestName="maxp_GlyphStats" />
 <Report ErrorType="W" ErrorCode="W1900" Message="maxSizeOfInstructions computation not via either approved method" Details="glyf maxSizeOfInstructions=110, prep size=265, fpgm size=1972, whereas maxp maxSizeOfInstruction is 248" TestName="maxp_GlyphStats" />
@@ -171,7 +170,7 @@
 <Report ErrorType="E" ErrorCode="E2128" Message="The usBreakChar is not mapped to a glyf" Details="0x0020" TestName="OS_2_usBreakChar" />
 <Report ErrorType="E" ErrorCode="E2148" Message="The usMaxContext field doesn't match the calculated value" Details="calc = 0, actual = 3" TestName="OS_2_usMaxContext" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'post', calc: 0xa2379a40, font: 0x00000000" />
+<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'post', calc: 0x72376a40, font: 0x00000000" />
 <TableEntry Tag="post" Offset="0x00000e0c" Length="0x00000032" Checksum="0x00000000" CodeFriendlyTag="post">
 <Report ErrorType="P" ErrorCode="P2304" Message="The table length is valid" TestName="post_TableLength" />
 <Report ErrorType="P" ErrorCode="P2308" Message="The version number is valid" TestName="post_Version" />
@@ -180,8 +179,8 @@
 <Report ErrorType="P" ErrorCode="P2306" Message="The underlineThickness value is reasonable" TestName="post_underlineThickness" />
 <Report ErrorType="P" ErrorCode="P2301" Message="The isFixedPitch field is consistent with other table(s)" Details="matches the hmtx and OS/2 tables" TestName="post_isFixedPitch" />
 <Report ErrorType="P" ErrorCode="P2307" Message="The numberOfGlyphs field equals maxp.numGlyphs" TestName="post_v2_numberOfGlyphs" />
-<Report ErrorType="E" ErrorCode="E2300" Message="An entry in the glyphNameIndex - 258 is greater than the number of names" Details="glyphNameIndex[3] = 259, # names = 1" TestName="post_v2_glyphNameIndex" />
-<Report ErrorType="E" ErrorCode="E2312" Message="The post name extends past the end of the table" Details="name index = 258" TestName="post_v2_names" />
+<Report ErrorType="P" ErrorCode="P2300" Message="The glyphNameIndex array contains valid indexes" TestName="post_v2_glyphNameIndex" />
+<Report ErrorType="P" ErrorCode="P2303" Message="The names in the post table are consistent with the Adobe Glyph List names" TestName="post_v2_names" />
 </TableEntry>
 <Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'prep', calc: 0x43b796a4, font: 0x00000000" />
 <TableEntry Tag="prep" Offset="0x00000e40" Length="0x00000109" Checksum="0x00000000" CodeFriendlyTag="prep">
