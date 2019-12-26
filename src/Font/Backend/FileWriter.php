@@ -33,6 +33,7 @@ use PdfGenerator\Font\Backend\File\Table\TableDirectoryEntry;
 use PdfGenerator\Font\Backend\File\TableDirectory;
 use PdfGenerator\Font\Backend\File\TableVisitor;
 use PdfGenerator\Font\Backend\File\Traits\BinaryTreeSearchableTrait;
+use PdfGenerator\Font\Frontend\StreamReader;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
@@ -495,8 +496,30 @@ class FileWriter
      */
     private function calculateCheckum(string $stream)
     {
-        // not supported; most likely never an issue
-        return 0;
+        $length = \strlen($stream);
+
+        $reader = new StreamReader($stream);
+        $upperSum = 0;
+        $lowerSum = 0;
+        while ($length >= 4) {
+            $upperSum += $reader->readUInt16();
+            $lowerSum += $reader->readUInt16();
+
+            $length -= 4;
+        }
+
+        $restSum = 0;
+        while (!$reader->isEndOfFileReached()) {
+            $restSum += $restSum << 8 + $reader->readUInt8();
+        }
+
+        $lowerSum += $restSum & 0xFFFF;
+        $upperSum += ($restSum & 0xFFFF0000) >> 16;
+
+        $lowerOverflow = $lowerSum >> 16;
+        $upperSum += $lowerOverflow;
+
+        return $upperSum << 16 | ($lowerSum & 0xFFFF);
     }
 
     /**

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="fval.xsl"?>
-<FontValidatorReport RunDateTime="Thursday, December 26, 2019 3:00 PM" MachineName="ARCH-X1-7">
+<FontValidatorReport RunDateTime="Thursday, December 26, 2019 11:18 PM" MachineName="ARCH-X1-7">
 <FontFile FileName="subset.ttf" FileNameAndPath="/home/famoser/Repos/pdf-generator/subset.ttf">
 <Report ErrorType="I" ErrorCode="I0004" Message="The file begins with an Offset Table (file contains a single font)" />
 <Font FontIndex="0">
@@ -17,8 +17,7 @@
 <Report ErrorType="W" ErrorCode="W0022" Message="Recommended table is missing" Details="DSIG" />
 <Report ErrorType="P" ErrorCode="P0022" Message="No unnecessary tables are present" />
 <Report ErrorType="W" ErrorCode="W0020" Message="Tables are not in optimal order" Details="table 'OS/2' precedes table 'head'" />
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'OS/2', calc: 0x76705a38, font: 0x00000000" />
-<TableEntry Tag="OS/2" Offset="0x000000ec" Length="0x00000064" Checksum="0x00000000" CodeFriendlyTag="OS_2">
+<TableEntry Tag="OS/2" Offset="0x000000ec" Length="0x00000064" Checksum="0x76705a38" CodeFriendlyTag="OS_2">
 <Report ErrorType="P" ErrorCode="P2117" Message="The version number is valid and is the current version number" Details="5" TestName="OS_2_Version" />
 <Report ErrorType="P" ErrorCode="P2112" Message="The table length matches the expected length for this version" TestName="OS_2_TableLength" />
 <Report ErrorType="P" ErrorCode="P2120" Message="The xAvgCharWidth field equals the calculated value" TestName="OS_2_xAvgCharWidth" />
@@ -40,8 +39,7 @@
 <Report ErrorType="E" ErrorCode="E2128" Message="The usBreakChar is not mapped to a glyf" Details="0x0020" TestName="OS_2_usBreakChar" />
 <Report ErrorType="E" ErrorCode="E2148" Message="The usMaxContext field doesn't match the calculated value" Details="calc = 0, actual = 3" TestName="OS_2_usMaxContext" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'cmap', calc: 0x003400b4, font: 0x00000000" />
-<TableEntry Tag="cmap" Offset="0x00000150" Length="0x0000003c" Checksum="0x00000000" CodeFriendlyTag="cmap">
+<TableEntry Tag="cmap" Offset="0x00000150" Length="0x0000003c" Checksum="0x003400b4" CodeFriendlyTag="cmap">
 <Report ErrorType="P" ErrorCode="P0312" Message="The table version number is 0" TestName="cmap_Version" />
 <Report ErrorType="P" ErrorCode="P0307" Message="Each subtable offset is within the table" TestName="cmap_SubtableOffset" />
 <Report ErrorType="P" ErrorCode="P0306" Message="Each subtable length is within the table" TestName="cmap_SubtableLength" />
@@ -54,28 +52,24 @@
 <Report ErrorType="W" ErrorCode="W0301" Message="Apple logo mapping test not performed, cmap 1,0 not present" TestName="cmap_AppleLogo" />
 <Report ErrorType="P" ErrorCode="P0314" Message="All non mac subtables have a language field of zero" TestName="cmap_SubtableLanguage" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'cvt ', calc: 0x0f4d18a4, font: 0x00000000" />
-<TableEntry Tag="cvt " Offset="0x0000018c" Length="0x000000a2" Checksum="0x00000000" CodeFriendlyTag="cvt_">
+<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'cvt ', calc: 0x0f4d18a4, font: 0x0ec318a4" />
+<TableEntry Tag="cvt " Offset="0x0000018c" Length="0x000000a2" Checksum="0x0ec318a4" CodeFriendlyTag="cvt_">
 <Report ErrorType="P" ErrorCode="P0400" Message="The length of the cvt table is an even number of bytes" TestName="cvt_length" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'fpgm', calc: 0x7e61b611, font: 0x00000000" />
-<TableEntry Tag="fpgm" Offset="0x00000230" Length="0x000007b4" Checksum="0x00000000" CodeFriendlyTag="fpgm">
+<TableEntry Tag="fpgm" Offset="0x00000230" Length="0x000007b4" Checksum="0x7e61b611" CodeFriendlyTag="fpgm">
 <Report ErrorType="I" ErrorCode="I0900" Message="Validation for the fpgm table is not directly implemented, but rasterization testing will validate any executed hinting instructions" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'gasp', calc: 0x00150023, font: 0x00000000" />
-<TableEntry Tag="gasp" Offset="0x000009e4" Length="0x00000010" Checksum="0x00000000" CodeFriendlyTag="gasp">
+<TableEntry Tag="gasp" Offset="0x000009e4" Length="0x00000010" Checksum="0x00150023" CodeFriendlyTag="gasp">
 <Report ErrorType="P" ErrorCode="P1003" Message="The version number is valid" Details="version = 1" TestName="gasp_Version" />
 <Report ErrorType="P" ErrorCode="P1000" Message="All of the rangeGaspBehavior fields contain valid flags" TestName="gasp_rangeGaspBehavior" />
 <Report ErrorType="P" ErrorCode="P1002" Message="The gaspRange array is in sorted order" TestName="gasp_SortOrder" />
 <Report ErrorType="P" ErrorCode="P1001" Message="The gaspRange array has a 0xFFFF sentinel" TestName="gasp_Sentinel" />
 <Report ErrorType="P" ErrorCode="P1004" Message="No adjacent ranges have identical flags" TestName="gasp_AdjRangeIdenticalFlags" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'glyf', calc: 0x3bb32ca9, font: 0x00000000" />
-<TableEntry Tag="glyf" Offset="0x000009f4" Length="0x000001a4" Checksum="0x00000000" CodeFriendlyTag="glyf">
+<TableEntry Tag="glyf" Offset="0x000009f4" Length="0x000001a4" Checksum="0x3bb32ca9" CodeFriendlyTag="glyf">
 <Report ErrorType="P" ErrorCode="P1700" Message="Correct format of loca (0 or 1)" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'head', calc: 0x01d66103, font: 0x00000000" />
-<TableEntry Tag="head" Offset="0x00000b98" Length="0x00000036" Checksum="0x00000000" CodeFriendlyTag="head">
+<TableEntry Tag="head" Offset="0x00000b98" Length="0x00000036" Checksum="0x01d66103" CodeFriendlyTag="head">
 <Report ErrorType="P" ErrorCode="P1323" Message="Table length is 54 bytes" TestName="head_TableLength" />
 <Report ErrorType="P" ErrorCode="P1324" Message="The table version number is 0x00010000" TestName="head_TableVersion" />
 <Report ErrorType="W" ErrorCode="W1314" Message="fontRevision is not consistent with the font's version string" Details="revision: 1.101, version: 1.10" TestName="head_fontRevision" />
@@ -103,8 +97,7 @@
 <Report ErrorType="P" ErrorCode="P1311" Message="The indexToLocFormat value matches the loca table" Details="0" TestName="head_IndexToLocFormat" />
 <Report ErrorType="P" ErrorCode="P1309" Message="The glyphDataFormat value is 0" TestName="head_GlyphDataFormat" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'hhea', calc: 0x0ce702ab, font: 0x00000000" />
-<TableEntry Tag="hhea" Offset="0x00000bd0" Length="0x00000024" Checksum="0x00000000" CodeFriendlyTag="hhea">
+<TableEntry Tag="hhea" Offset="0x00000bd0" Length="0x00000024" Checksum="0x0ce702ab" CodeFriendlyTag="hhea">
 <Report ErrorType="P" ErrorCode="P1406" Message="The table version number is 0x00010000" TestName="hhea_version" />
 <Report ErrorType="P" ErrorCode="P1409" Message="The Ascender value is greater than zero" TestName="hhea_AscenderPositive" />
 <Report ErrorType="P" ErrorCode="P1411" Message="The Descender is less than zero" TestName="hhea_DescenderNegative" />
@@ -123,13 +116,12 @@
 <Report ErrorType="P" ErrorCode="P1404" Message="The numberOfHMetrics value is consistent with the length of the hmtx table" TestName="hhea_numberOfHMetrics" />
 <Report ErrorType="P" ErrorCode="P1408" Message="The caretSlope angle matches the post.italicAngle" TestName="hhea_caretSlope" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'hmtx', calc: 0x101001a9, font: 0x00000000" />
-<TableEntry Tag="hmtx" Offset="0x00000bf4" Length="0x00000010" Checksum="0x00000000" CodeFriendlyTag="hmtx">
+<TableEntry Tag="hmtx" Offset="0x00000bf4" Length="0x00000010" Checksum="0x101001a9" CodeFriendlyTag="hmtx">
 <Report ErrorType="P" ErrorCode="P1501" Message="The size of the table matches the calculated size" TestName="hmtx_TableSize" />
 <Report ErrorType="P" ErrorCode="P1500" Message="The horizontal metrics are all within an allowable range of values" TestName="hmtx_CheckMetrics" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'loca', calc: 0x0110005d, font: 0x00000000" />
-<TableEntry Tag="loca" Offset="0x00000c04" Length="0x0000000a" Checksum="0x00000000" CodeFriendlyTag="loca">
+<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'loca', calc: 0x0110005d, font: 0x003e005d" />
+<TableEntry Tag="loca" Offset="0x00000c04" Length="0x0000000a" Checksum="0x003e005d" CodeFriendlyTag="loca">
 <Report ErrorType="P" ErrorCode="P1700" Message="Correct format of loca (0 or 1)" />
 <Report ErrorType="P" ErrorCode="P1704" Message="The number of entries is equal to (maxp.numGlyphs + 1)" />
 <Report ErrorType="P" ErrorCode="P1705" Message="The entries are sorted in ascending order" />
@@ -138,8 +130,7 @@
 <Report ErrorType="I" ErrorCode="I1700" Message="Loca references a zero-length entry in the glyf table" Details="Number of glyphs that are empty = 1" />
 <Report ErrorType="P" ErrorCode="P1703" Message="All glyphs in the glyf table are referenced by the loca table" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'maxp', calc: 0x018a020a, font: 0x00000000" />
-<TableEntry Tag="maxp" Offset="0x00000c10" Length="0x00000020" Checksum="0x00000000" CodeFriendlyTag="maxp">
+<TableEntry Tag="maxp" Offset="0x00000c10" Length="0x00000020" Checksum="0x018a020a" CodeFriendlyTag="maxp">
 <Report ErrorType="P" ErrorCode="P1905" Message="Table version is 1.0 and a glyf table is present and no CFF table is present" TestName="maxp_TableVersion" />
 <Report ErrorType="P" ErrorCode="P1902" Message="Table version is 1.0 and the table is 32 bytes long" TestName="maxp_TableLength" />
 <Report ErrorType="P" ErrorCode="P1903" Message="The numGlyphs value equals the number of entries in the loca array plus one" Details="numGlyphs = 4" TestName="maxp_NumGlyphsMatchLoca" />
@@ -150,8 +141,8 @@
 <Report ErrorType="E" ErrorCode="E1900" Message="The value doesn't match the calculated value" Details="maxComponentElements = 3, calculated = 0" TestName="maxp_GlyphStats" />
 <Report ErrorType="E" ErrorCode="E1900" Message="The value doesn't match the calculated value" Details="maxComponentDepth = 1, calculated = 0" TestName="maxp_GlyphStats" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'name', calc: 0x263a41d6, font: 0x00000000" />
-<TableEntry Tag="name" Offset="0x00000c30" Length="0x000001da" Checksum="0x00000000" CodeFriendlyTag="name">
+<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'name', calc: 0x263a41d6, font: 0x260a41d6" />
+<TableEntry Tag="name" Offset="0x00000c30" Length="0x000001da" Checksum="0x260a41d6" CodeFriendlyTag="name">
 <Report ErrorType="P" ErrorCode="P2001" Message="The format selector field is 0" TestName="name_FormatSelector" />
 <Report ErrorType="P" ErrorCode="P2007" Message="No strings extended past the end of the table" TestName="name_StringsWithinTable" />
 <Report ErrorType="P" ErrorCode="P2003" Message="The NameRecords array is in sorted order" TestName="name_NameRecordsSorted" />
@@ -170,8 +161,8 @@
 <Report ErrorType="P" ErrorCode="P2014" Message="No inconsistencies were found for Trademark strings" TestName="name_TrademarkConsistent" />
 <Report ErrorType="P" ErrorCode="P2013" Message="No inconsistencies were found for Description strings" TestName="name_DescriptionConsistent" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'post', calc: 0x72376a40, font: 0x00000000" />
-<TableEntry Tag="post" Offset="0x00000e0c" Length="0x00000032" Checksum="0x00000000" CodeFriendlyTag="post">
+<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'post', calc: 0x72376a40, font: 0x70d06a40" />
+<TableEntry Tag="post" Offset="0x00000e0c" Length="0x00000032" Checksum="0x70d06a40" CodeFriendlyTag="post">
 <Report ErrorType="P" ErrorCode="P2304" Message="The table length is valid" TestName="post_TableLength" />
 <Report ErrorType="P" ErrorCode="P2308" Message="The version number is valid" TestName="post_Version" />
 <Report ErrorType="P" ErrorCode="P2302" Message="The italicAngle value is reasonable and consistent with other tables" TestName="post_italicAngle" />
@@ -182,8 +173,8 @@
 <Report ErrorType="P" ErrorCode="P2300" Message="The glyphNameIndex array contains valid indexes" TestName="post_v2_glyphNameIndex" />
 <Report ErrorType="P" ErrorCode="P2303" Message="The names in the post table are consistent with the Adobe Glyph List names" TestName="post_v2_names" />
 </TableEntry>
-<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'prep', calc: 0x43b796a4, font: 0x00000000" />
-<TableEntry Tag="prep" Offset="0x00000e40" Length="0x00000109" Checksum="0x00000000" CodeFriendlyTag="prep">
+<Report ErrorType="E" ErrorCode="E0030" Message="Directory Entry checksum error" Details="table 'prep', calc: 0x43b796a4, font: 0xe5b796a4" />
+<TableEntry Tag="prep" Offset="0x00000e40" Length="0x00000109" Checksum="0xe5b796a4" CodeFriendlyTag="prep">
 <Report ErrorType="I" ErrorCode="I2400" Message="Validation for the prep table is not directly implemented, but rasterization testing will validate any executed hinting instructions" />
 </TableEntry>
 <RasterizationTest_BW>
