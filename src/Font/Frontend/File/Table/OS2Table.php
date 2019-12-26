@@ -434,4 +434,372 @@ class OS2Table
      * @var int
      */
     private $usUpperOptimalPointSize;
+
+    public function getVersion(): int
+    {
+        return $this->version;
+    }
+
+    public function setVersion(int $version): void
+    {
+        $this->version = $version;
+    }
+
+    public function getXAvgCharWidth(): int
+    {
+        return $this->xAvgCharWidth;
+    }
+
+    public function setXAvgCharWidth(int $xAvgCharWidth): void
+    {
+        $this->xAvgCharWidth = $xAvgCharWidth;
+    }
+
+    public function getUsWeightClass(): int
+    {
+        return $this->usWeightClass;
+    }
+
+    public function setUsWeightClass(int $usWeightClass): void
+    {
+        $this->usWeightClass = $usWeightClass;
+    }
+
+    public function getUsWidthClass(): int
+    {
+        return $this->usWidthClass;
+    }
+
+    public function setUsWidthClass(int $usWidthClass): void
+    {
+        $this->usWidthClass = $usWidthClass;
+    }
+
+    public function getFsType(): int
+    {
+        return $this->fsType;
+    }
+
+    public function setFsType(int $fsType): void
+    {
+        $this->fsType = $fsType;
+    }
+
+    public function getYSubscriptXSize(): int
+    {
+        return $this->ySubscriptXSize;
+    }
+
+    public function setYSubscriptXSize(int $ySubscriptXSize): void
+    {
+        $this->ySubscriptXSize = $ySubscriptXSize;
+    }
+
+    public function getYSubscriptYSize(): int
+    {
+        return $this->ySubscriptYSize;
+    }
+
+    public function setYSubscriptYSize(int $ySubscriptYSize): void
+    {
+        $this->ySubscriptYSize = $ySubscriptYSize;
+    }
+
+    public function getYSubscriptXOffset(): int
+    {
+        return $this->ySubscriptXOffset;
+    }
+
+    public function setYSubscriptXOffset(int $ySubscriptXOffset): void
+    {
+        $this->ySubscriptXOffset = $ySubscriptXOffset;
+    }
+
+    public function getYSubscriptYOffset(): int
+    {
+        return $this->ySubscriptYOffset;
+    }
+
+    public function setYSubscriptYOffset(int $ySubscriptYOffset): void
+    {
+        $this->ySubscriptYOffset = $ySubscriptYOffset;
+    }
+
+    public function getYSuperscriptXSize(): int
+    {
+        return $this->ySuperscriptXSize;
+    }
+
+    public function setYSuperscriptXSize(int $ySuperscriptXSize): void
+    {
+        $this->ySuperscriptXSize = $ySuperscriptXSize;
+    }
+
+    public function getYSuperscriptYSize(): int
+    {
+        return $this->ySuperscriptYSize;
+    }
+
+    public function setYSuperscriptYSize(int $ySuperscriptYSize): void
+    {
+        $this->ySuperscriptYSize = $ySuperscriptYSize;
+    }
+
+    public function getYSuperscriptXOffset(): int
+    {
+        return $this->ySuperscriptXOffset;
+    }
+
+    public function setYSuperscriptXOffset(int $ySuperscriptXOffset): void
+    {
+        $this->ySuperscriptXOffset = $ySuperscriptXOffset;
+    }
+
+    public function getYSuperscriptYOffset(): int
+    {
+        return $this->ySuperscriptYOffset;
+    }
+
+    public function setYSuperscriptYOffset(int $ySuperscriptYOffset): void
+    {
+        $this->ySuperscriptYOffset = $ySuperscriptYOffset;
+    }
+
+    public function getYStrikeoutSize(): int
+    {
+        return $this->yStrikeoutSize;
+    }
+
+    public function setYStrikeoutSize(int $yStrikeoutSize): void
+    {
+        $this->yStrikeoutSize = $yStrikeoutSize;
+    }
+
+    public function getYStrikeoutPosition(): int
+    {
+        return $this->yStrikeoutPosition;
+    }
+
+    public function setYStrikeoutPosition(int $yStrikeoutPosition): void
+    {
+        $this->yStrikeoutPosition = $yStrikeoutPosition;
+    }
+
+    public function getSFamilyClass(): int
+    {
+        return $this->sFamilyClass;
+    }
+
+    public function setSFamilyClass(int $sFamilyClass): void
+    {
+        $this->sFamilyClass = $sFamilyClass;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getPanose(): array
+    {
+        return $this->panose;
+    }
+
+    /**
+     * @param int[] $panose
+     */
+    public function setPanose(array $panose): void
+    {
+        $this->panose = $panose;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getUlUnicodeRanges(): array
+    {
+        return $this->ulUnicodeRanges;
+    }
+
+    /**
+     * @param int[] $ulUnicodeRanges
+     */
+    public function setUlUnicodeRanges(array $ulUnicodeRanges): void
+    {
+        $this->ulUnicodeRanges = $ulUnicodeRanges;
+    }
+
+    public function getAchVendID(): string
+    {
+        return $this->achVendID;
+    }
+
+    public function setAchVendID(string $achVendID): void
+    {
+        $this->achVendID = $achVendID;
+    }
+
+    public function getFsSelection(): int
+    {
+        return $this->fsSelection;
+    }
+
+    public function setFsSelection(int $fsSelection): void
+    {
+        $this->fsSelection = $fsSelection;
+    }
+
+    public function getUsFirstCharIndex(): int
+    {
+        return $this->usFirstCharIndex;
+    }
+
+    public function setUsFirstCharIndex(int $usFirstCharIndex): void
+    {
+        $this->usFirstCharIndex = $usFirstCharIndex;
+    }
+
+    public function getUsLastCharIndex(): int
+    {
+        return $this->usLastCharIndex;
+    }
+
+    public function setUsLastCharIndex(int $usLastCharIndex): void
+    {
+        $this->usLastCharIndex = $usLastCharIndex;
+    }
+
+    public function getSTypoAscender(): int
+    {
+        return $this->sTypoAscender;
+    }
+
+    public function setSTypoAscender(int $sTypoAscender): void
+    {
+        $this->sTypoAscender = $sTypoAscender;
+    }
+
+    public function getSTypoDecenter(): int
+    {
+        return $this->sTypoDecenter;
+    }
+
+    public function setSTypoDecenter(int $sTypoDecenter): void
+    {
+        $this->sTypoDecenter = $sTypoDecenter;
+    }
+
+    public function getSTypoLineGap(): int
+    {
+        return $this->sTypoLineGap;
+    }
+
+    public function setSTypoLineGap(int $sTypoLineGap): void
+    {
+        $this->sTypoLineGap = $sTypoLineGap;
+    }
+
+    public function getUsWinAscent(): int
+    {
+        return $this->usWinAscent;
+    }
+
+    public function setUsWinAscent(int $usWinAscent): void
+    {
+        $this->usWinAscent = $usWinAscent;
+    }
+
+    public function getUsWinDecent(): int
+    {
+        return $this->usWinDecent;
+    }
+
+    public function setUsWinDecent(int $usWinDecent): void
+    {
+        $this->usWinDecent = $usWinDecent;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getUlCodePageRanges(): array
+    {
+        return $this->ulCodePageRanges;
+    }
+
+    /**
+     * @param int[] $ulCodePageRanges
+     */
+    public function setUlCodePageRanges(array $ulCodePageRanges): void
+    {
+        $this->ulCodePageRanges = $ulCodePageRanges;
+    }
+
+    public function getSxHeight(): int
+    {
+        return $this->sxHeight;
+    }
+
+    public function setSxHeight(int $sxHeight): void
+    {
+        $this->sxHeight = $sxHeight;
+    }
+
+    public function getSCapHeight(): int
+    {
+        return $this->sCapHeight;
+    }
+
+    public function setSCapHeight(int $sCapHeight): void
+    {
+        $this->sCapHeight = $sCapHeight;
+    }
+
+    public function getUsDefaultChar(): int
+    {
+        return $this->usDefaultChar;
+    }
+
+    public function setUsDefaultChar(int $usDefaultChar): void
+    {
+        $this->usDefaultChar = $usDefaultChar;
+    }
+
+    public function getUsBreakChar(): int
+    {
+        return $this->usBreakChar;
+    }
+
+    public function setUsBreakChar(int $usBreakChar): void
+    {
+        $this->usBreakChar = $usBreakChar;
+    }
+
+    public function getUsMaxContext(): int
+    {
+        return $this->usMaxContext;
+    }
+
+    public function setUsMaxContext(int $usMaxContext): void
+    {
+        $this->usMaxContext = $usMaxContext;
+    }
+
+    public function getUsLowerOptimalPointSize(): int
+    {
+        return $this->usLowerOptimalPointSize;
+    }
+
+    public function setUsLowerOptimalPointSize(int $usLowerOptimalPointSize): void
+    {
+        $this->usLowerOptimalPointSize = $usLowerOptimalPointSize;
+    }
+
+    public function getUsUpperOptimalPointSize(): int
+    {
+        return $this->usUpperOptimalPointSize;
+    }
+
+    public function setUsUpperOptimalPointSize(int $usUpperOptimalPointSize): void
+    {
+        $this->usUpperOptimalPointSize = $usUpperOptimalPointSize;
+    }
 }
