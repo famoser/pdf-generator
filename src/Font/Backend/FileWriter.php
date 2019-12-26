@@ -433,15 +433,19 @@ class FileWriter
 
         $tableStreamWriter = new StreamWriter();
 
-        $offsetByTag = [];
-        $lengthByTag = [];
+        /** @var TableDirectoryEntry[] $tableDirectoryEntries */
+        $tableDirectoryEntries = [];
 
         foreach ($tables as $tag => $table) {
             if ($table === null) {
                 continue;
             }
 
-            $offsetByTag[$tag] = $tableStreamWriter->getLength();
+            $tableDirectoryEntry = new TableDirectoryEntry();
+            $tableDirectoryEntry->setTag($tag);
+            $tableDirectoryEntry->setOffset($tableStreamWriter->getLength());
+
+            $stream = '';
             if (\is_array($table)) {
                 foreach ($table as $item) {
                     // glyph tables can be null if they have no content
@@ -450,18 +454,28 @@ class FileWriter
                     }
 
                     /* @var BaseTable $item */
-                    $tableStreamWriter->writeStream($item->accept($this->tableVisitor));
+                    $stream .= $item->accept($this->tableVisitor);
                 }
             } else {
-                $tableStreamWriter->writeStream($table->accept($this->tableVisitor));
+                $stream .= $table->accept($this->tableVisitor);
             }
 
-            $lengthByTag[$tag] = $tableStreamWriter->getLength() - $offsetByTag[$tag];
+            $tableDirectoryEntry->setCheckSum($this->calculateCheckum($stream));
 
+            $tableStreamWriter->writeStream($stream);
+            $tableDirectoryEntry->setLength($tableStreamWriter->getLength() - $tableDirectoryEntry->getOffset());
             $tableStreamWriter->byteAlign(4);
+
+            $tableDirectoryEntries[] = $tableDirectoryEntry;
         }
 
-        $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $lengthByTag);
+        // adjust offset
+        $numTables = \count($tableDirectoryEntries);
+        $prefixOverhead = $numTables * 16 + 12;
+        foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
+            $tableDirectoryEntry->setOffset($tableDirectoryEntry->getOffset() + $prefixOverhead);
+        }
+
         $offsetTable = $this->generateOffsetTable(\count($tableDirectoryEntries));
 
         $streamWriter = new StreamWriter();
@@ -474,6 +488,15 @@ class FileWriter
         $streamWriter->writeStream($tableStreamWriter->getStream());
 
         return $streamWriter->getStream();
+    }
+
+    /**
+     * @return int
+     */
+    private function calculateCheckum(string $stream)
+    {
+        // not supported; most likely never an issue
+        return 0;
     }
 
     /**
