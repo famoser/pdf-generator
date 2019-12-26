@@ -68,7 +68,7 @@ class TableDirectory
     /**
      * @var OS2Table
      */
-    private $os2Table;
+    private $oS2Table;
 
     /**
      * @var PostTable
@@ -182,14 +182,14 @@ class TableDirectory
         $this->rawTables = $rawTables;
     }
 
-    public function getOs2Table(): OS2Table
+    public function getOS2Table(): OS2Table
     {
-        return $this->os2Table;
+        return $this->oS2Table;
     }
 
-    public function setOs2Table(OS2Table $os2Table): void
+    public function setOS2Table(OS2Table $oS2Table): void
     {
-        $this->os2Table = $os2Table;
+        $this->oS2Table = $oS2Table;
     }
 
     public function getNameTable(): NameTable

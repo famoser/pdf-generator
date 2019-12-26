@@ -400,6 +400,7 @@ class FileWriter
             'maxp' => $fontFile->getMaxPTable(),
             'name' => $fontFile->getNameTable(),
             'post' => $fontFile->getPostTable(),
+            'OS/2' => $fontFile->getOS2Table(),
             'glyf' => $fontFile->getGlyphTables(),
         ];
 

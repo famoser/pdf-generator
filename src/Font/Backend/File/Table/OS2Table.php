@@ -11,6 +11,9 @@
 
 namespace PdfGenerator\Font\Backend\File\Table;
 
+use PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
+use PdfGenerator\Font\Backend\File\TableVisitor;
+
 /**
  * the IS/2 table defines spacing & some more details for windows platform
  * its meant as a summary of the font; so after building subsets it needs to be rebuilt.
@@ -18,7 +21,7 @@ namespace PdfGenerator\Font\Backend\File\Table;
  * @see https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6os2.html
  * @see https://docs.microsoft.com/en-us/typography/opentype/spec/os2
  */
-class OS2Table
+class OS2Table extends BaseTable
 {
     /**
      * version of table.
@@ -801,5 +804,10 @@ class OS2Table
     public function setUsUpperOptimalPointSize(int $usUpperOptimalPointSize): void
     {
         $this->usUpperOptimalPointSize = $usUpperOptimalPointSize;
+    }
+
+    public function accept(TableVisitor $visitor): string
+    {
+        return $visitor->visitOS2Table($this);
     }
 }
