@@ -25,6 +25,7 @@ use PdfGenerator\Font\Backend\File\Table\MaxPTable;
 use PdfGenerator\Font\Backend\File\Table\Name\NameRecord;
 use PdfGenerator\Font\Backend\File\Table\NameTable;
 use PdfGenerator\Font\Backend\File\Table\OffsetTable;
+use PdfGenerator\Font\Backend\File\Table\OS2Table;
 use PdfGenerator\Font\Backend\File\Table\Post\Format\Format2;
 use PdfGenerator\Font\Backend\File\Table\PostTable;
 use PdfGenerator\Font\Backend\File\Table\RawTable;
@@ -653,7 +654,6 @@ class FileWriter
             $tableDirectory->getGDEFTable(),
             $tableDirectory->getGPOSTable(),
             $tableDirectory->getGSUBTable(),
-            $tableDirectory->getOS2Table(),
             $tableDirectory->getPrepTable(),
         ], $tableDirectory->getRawTables());
 
@@ -678,6 +678,7 @@ class FileWriter
         $tableDirectory->setPostTable($this->generatePostTable($font->getTableDirectory()->getPostTable(), $characters));
         $tableDirectory->setMaxPTable($this->generateMaxPTable($font->getTableDirectory()->getMaxPTable(), $characters));
         $tableDirectory->setNameTable($this->generateNameTable($font->getTableDirectory()->getNameTable()));
+        $tableDirectory->setOS2Table($this->generateOS2Table($font->getTableDirectory()->getOS2Table(), $characters));
 
         $tableDirectory->setGlyphTables($this->generateGlyfTables($characters));
         $tableDirectory->setLocaTable($this->generateLocaTable($tableDirectory->getGlyphTables()));
@@ -702,5 +703,62 @@ class FileWriter
         $glyfTable->setContent($source->getContent());
 
         return $glyfTable;
+    }
+
+    private function generateOS2Table(\PdfGenerator\Font\Frontend\File\Table\OS2Table $source, array $characters)
+    {
+        $os2Table = new OS2Table();
+
+        $os2Table->setVersion($source->getVersion());
+        $os2Table->setXAvgCharWidth($source->getXAvgCharWidth());
+        $os2Table->setUsWeightClass($source->getUsWeightClass());
+        $os2Table->setUsWidthClass($source->getUsWidthClass());
+
+        $os2Table->setFsType($source->getFsType());
+        $os2Table->setYSubscriptXSize($source->getYSubscriptXSize());
+        $os2Table->setYSubscriptYSize($source->getYSubscriptYSize());
+        $os2Table->setYSubscriptXOffset($source->getYSubscriptXOffset());
+        $os2Table->setYSubscriptYOffset($source->getYSubscriptYOffset());
+
+        $os2Table->setFsType($source->getFsType());
+        $os2Table->setYSuperscriptXSize($source->getYSuperscriptXSize());
+        $os2Table->setYSuperscriptYSize($source->getYSuperscriptYSize());
+        $os2Table->setYSuperscriptXOffset($source->getYSuperscriptXOffset());
+        $os2Table->setYSuperscriptYOffset($source->getYSuperscriptYOffset());
+
+        $os2Table->setYStrikeoutSize($source->getYStrikeoutSize());
+        $os2Table->setYStrikeoutPosition($source->getYStrikeoutPosition());
+
+        $os2Table->setSFamilyClass($source->getSFamilyClass());
+        $os2Table->setPanose($source->getPanose());
+
+        $os2Table->setUlUnicodeRanges($source->getUlUnicodeRanges());
+
+        $os2Table->setAchVendID($source->getAchVendID());
+        $os2Table->setFsSelection($source->getFsSelection());
+
+        $os2Table->setUsFirstCharIndex($source->getUsFirstCharIndex());
+        $os2Table->setUsLastCharIndex($source->getUsLastCharIndex());
+
+        $os2Table->setSTypoAscender($source->getSTypoAscender());
+        $os2Table->setSTypoDecender($source->getSTypoDecender());
+        $os2Table->setSTypoLineGap($source->getSTypoLineGap());
+
+        $os2Table->setUsWinAscent($source->getUsWinAscent());
+        $os2Table->setUsWinDecent($source->getUsWinDecent());
+
+        $os2Table->setUlCodePageRanges($source->getUlCodePageRanges());
+
+        $os2Table->setSxHeight($source->getSxHeight());
+        $os2Table->setSCapHeight($source->getSCapHeight());
+
+        $os2Table->setUsDefaultChar($source->getUsDefaultChar());
+        $os2Table->setUsBreakChar($source->getUsBreakChar());
+        $os2Table->setUsMaxContext($source->getUsMaxContext());
+
+        $os2Table->setUsLowerOptimalPointSize($source->getUsLowerOptimalPointSize());
+        $os2Table->setUsUpperOptimalPointSize($source->getUsUpperOptimalPointSize());
+
+        return $os2Table;
     }
 }

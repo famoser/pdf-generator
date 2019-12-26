@@ -15,6 +15,7 @@ use PdfGenerator\Font\Frontend\File\Table\HeadTable;
 use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
 use PdfGenerator\Font\Frontend\File\Table\NameTable;
+use PdfGenerator\Font\Frontend\File\Table\OS2Table;
 use PdfGenerator\Font\Frontend\File\Table\PostTable;
 use PdfGenerator\Font\Frontend\File\Table\RawTable;
 
@@ -71,7 +72,7 @@ class TableDirectory
     private $nameTable;
 
     /**
-     * @var RawTable|null
+     * @var OS2Table
      */
     private $oS2Table;
 
@@ -190,12 +191,12 @@ class TableDirectory
         $this->nameTable = $nameTable;
     }
 
-    public function getOS2Table(): ?RawTable
+    public function getOS2Table(): OS2Table
     {
         return $this->oS2Table;
     }
 
-    public function setOS2Table(?RawTable $oS2Table): void
+    public function setOS2Table(OS2Table $oS2Table): void
     {
         $this->oS2Table = $oS2Table;
     }

@@ -107,7 +107,7 @@ class FileReader
                     $font->setHeadTable($table);
                     break;
                 case 'OS/2': // sizing infos used only by windows
-                    $table = $this->readRawTable($fileReader, $tableDirectoryEntry);
+                    $table = $this->readOS2Table($fileReader);
                     $font->setOS2Table($table);
                     break;
                 case 'name':
@@ -565,7 +565,7 @@ class FileReader
         $os2Table->setUsLastCharIndex($streamReader->readUInt16());
 
         $os2Table->setSTypoAscender($streamReader->readInt16());
-        $os2Table->setSTypoDecenter($streamReader->readInt16());
+        $os2Table->setSTypoDecender($streamReader->readInt16());
         $os2Table->setSTypoLineGap($streamReader->readInt16());
 
         $os2Table->setUsWinAscent($streamReader->readUInt16());
