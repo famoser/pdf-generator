@@ -107,7 +107,7 @@ class CIDFont extends BaseStructure
     }
 
     /**
-     * @return int[]
+     * @return int[]|int[][]
      */
     public function getW(): array
     {

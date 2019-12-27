@@ -461,10 +461,6 @@ class FileWriter
                 $stream .= $table->accept($this->tableVisitor);
             }
 
-            if ($tag === 'name') {
-                $tableDirectoryEntry->setCheckSum($this->calculateCheckum($stream));
-            }
-
             $tableDirectoryEntry->setCheckSum($this->calculateCheckum($stream));
 
             $tableStreamWriter->writeStream($stream);

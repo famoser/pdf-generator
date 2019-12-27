@@ -142,10 +142,13 @@ class DocumentVisitor
         $writer = FileWriter::create();
         $content = $writer->writeFont($fontSubset);
 
-        $widths = [];
+        // todo: why one character too much? guess that .notdef encoded additionally
+        // todo: why sizing messed up? why do I need to divide by 2
+        $characterWidths = [];
         foreach ($fontSubset->getCharacters() as $character) {
-            $widths[] = $character->getLongHorMetric()->getAdvanceWidth();
+            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() / 2);
         }
+        $widths[0] = array_merge([$characterWidths[0]], $characterWidths);
 
         $fontName = $font->getFontInformation()->getFullName() ?? 'invalidFontName';
 
@@ -162,7 +165,7 @@ class DocumentVisitor
 
         $cidFont = new CIDFont();
         $cidFont->setSubType(CIDFont::SUBTYPE_CID_FONT_TYPE_2);
-        $cidFont->setDW(1000);
+        $cidFont->setDW(500);
         $cidFont->setCIDSystemInfo($cIDSystemInfo);
         $cidFont->setFontDescriptor($fontDescriptor);
         $cidFont->setBaseFont($fontName);

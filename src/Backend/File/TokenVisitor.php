@@ -22,7 +22,12 @@ class TokenVisitor
 {
     public function visitArrayToken(ArrayToken $token): string
     {
-        return '[' . implode(' ', $this->evaluateTokenArray($token->getValues())) . ']';
+        $prefix = '';
+        if ($token->getKey() !== null) {
+            $prefix = $token->getKey()->accept($this) . ' ';
+        }
+
+        return $prefix . '[' . implode(' ', $this->evaluateTokenArray($token->getValues())) . ']';
     }
 
     public function visitNumberToken(NumberToken $token): string
