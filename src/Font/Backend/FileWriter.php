@@ -33,6 +33,7 @@ use PdfGenerator\Font\Backend\File\Table\TableDirectoryEntry;
 use PdfGenerator\Font\Backend\File\TableDirectory;
 use PdfGenerator\Font\Backend\File\TableVisitor;
 use PdfGenerator\Font\Backend\File\Traits\BinaryTreeSearchableTrait;
+use PdfGenerator\Font\Frontend\StreamReader;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
@@ -109,12 +110,12 @@ class FileWriter
         $headTable->setCreated($source->getCreated());
         $headTable->setModified($source->getModified());
 
-        $xMin = 0;
-        $yMin = 0;
-        $xMax = PHP_INT_MAX;
-        $yMax = PHP_INT_MAX;
+        $xMin = PHP_INT_MAX;
+        $yMin = PHP_INT_MAX;
+        $xMax = 0;
+        $yMax = 0;
         foreach ($characters as $character) {
-            if ($character->getGlyfTable() === null) {
+            if ($character->getGlyfTable() === null || $character->getGlyfTable()->getNumberOfContours() === 0) {
                 continue;
             }
 
@@ -158,13 +159,18 @@ class FileWriter
         $xMaxExtent = 0;
         foreach ($characters as $character) {
             $advanceWidth = $character->getLongHorMetric()->getAdvanceWidth();
-            $leftSideBearing = $character->getLongHorMetric()->getLeftSideBearing();
-
             $advanceWidthMax = max($advanceWidthMax, $advanceWidth);
+
+            // minRightSidebearing, minLeftSideBearing and xMaxExtent should be computed using only glyphs that have contours
+            if ($character->getGlyfTable() === null || $character->getGlyfTable()->getNumberOfContours() === 0) {
+                continue;
+            }
+
+            $leftSideBearing = $character->getLongHorMetric()->getLeftSideBearing();
             $minLeftSideBearing = min($minLeftSideBearing, $leftSideBearing);
 
-            if ($character->getBoundingBox() !== null) {
-                $width = $character->getBoundingBox()->getWidth();
+            if ($character->getGlyfTable() !== null) {
+                $width = $character->getGlyfTable()->getXMax() - $character->getGlyfTable()->getXMin();
                 $rightSideBearing = $advanceWidth - $leftSideBearing - $width;
                 $minRightSideBearing = min($minRightSideBearing, $rightSideBearing);
 
@@ -217,10 +223,26 @@ class FileWriter
     {
         $maxPTable = new MaxPTable();
 
+        /*
+         * some of the values here are wrong because we do not analyse the content of the glyphs
+         * we leave the value same than they were with the input font; assuming the font gets less complex
+         * we riks using too much memory for parses that trust these numbers, but they should not crash (because not enough memory allocated)
+         */
+
         $maxPTable->setVersion(1.0);
         $maxPTable->setNumGlyphs(\count($characters));
         $maxPTable->setMaxPoints($source->getMaxPoints());
-        $maxPTable->setMaxContours($source->getMaxContours());
+
+        $maxContours = 0;
+        foreach ($characters as $character) {
+            if ($character->getGlyfTable() === null || $character->getGlyfTable()->getNumberOfContours() === 0) {
+                continue;
+            }
+
+            $maxContours = max($maxContours, $character->getGlyfTable()->getNumberOfContours());
+        }
+
+        $maxPTable->setMaxContours($maxContours);
         $maxPTable->setMaxCompositePoints($source->getMaxCompositePoints());
         $maxPTable->setMaxCompositeContours($source->getMaxCompositeContours());
         $maxPTable->setMaxZones($source->getMaxZones());
@@ -240,7 +262,7 @@ class FileWriter
     {
         $subtable = new Subtable();
 
-        $subtable->setPlatformID(3);
+        $subtable->setPlatformID(0);
         $subtable->setPlatformSpecificID(4);
 
         $subtable->setFormat($this->generateCMapFormat4($characters));
@@ -408,19 +430,23 @@ class FileWriter
             $tables[$table->getTag()] = $table;
         }
 
-        ksort($tables, SORT_NATURAL | SORT_FLAG_CASE);
+        ksort($tables);
 
         $tableStreamWriter = new StreamWriter();
 
-        $offsetByTag = [];
-        $lengthByTag = [];
+        /** @var TableDirectoryEntry[] $tableDirectoryEntries */
+        $tableDirectoryEntries = [];
 
         foreach ($tables as $tag => $table) {
             if ($table === null) {
                 continue;
             }
 
-            $offsetByTag[$tag] = $tableStreamWriter->getLength();
+            $tableDirectoryEntry = new TableDirectoryEntry();
+            $tableDirectoryEntry->setTag($tag);
+            $tableDirectoryEntry->setOffset($tableStreamWriter->getLength());
+
+            $stream = '';
             if (\is_array($table)) {
                 foreach ($table as $item) {
                     // glyph tables can be null if they have no content
@@ -429,19 +455,32 @@ class FileWriter
                     }
 
                     /* @var BaseTable $item */
-                    $tableStreamWriter->writeStream($item->accept($this->tableVisitor));
+                    $stream .= $item->accept($this->tableVisitor);
                 }
             } else {
-                $tableStreamWriter->writeStream($table->accept($this->tableVisitor));
+                $stream .= $table->accept($this->tableVisitor);
             }
 
-            $lengthByTag[$tag] = $tableStreamWriter->getLength() - $offsetByTag[$tag];
+            if ($tag === 'name') {
+                $tableDirectoryEntry->setCheckSum($this->calculateCheckum($stream));
+            }
 
+            $tableDirectoryEntry->setCheckSum($this->calculateCheckum($stream));
+
+            $tableStreamWriter->writeStream($stream);
+            $tableDirectoryEntry->setLength($tableStreamWriter->getLength() - $tableDirectoryEntry->getOffset());
             $tableStreamWriter->byteAlign(4);
+
+            $tableDirectoryEntries[] = $tableDirectoryEntry;
         }
 
-        // why length of HEAD table wrong if byte align turned on?
-        $tableDirectoryEntries = $this->generateTableDirectoryEntries($offsetByTag, $lengthByTag);
+        // adjust offset
+        $numTables = \count($tableDirectoryEntries);
+        $prefixOverhead = $numTables * 16 + 12;
+        foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
+            $tableDirectoryEntry->setOffset($tableDirectoryEntry->getOffset() + $prefixOverhead);
+        }
+
         $offsetTable = $this->generateOffsetTable(\count($tableDirectoryEntries));
 
         $streamWriter = new StreamWriter();
@@ -454,6 +493,43 @@ class FileWriter
         $streamWriter->writeStream($tableStreamWriter->getStream());
 
         return $streamWriter->getStream();
+    }
+
+    /**
+     * @return int
+     */
+    private function calculateCheckum(string $stream)
+    {
+        $length = \strlen($stream);
+
+        $reader = new StreamReader($stream);
+        $upperSum = 0;
+        $lowerSum = 0;
+        while ($length >= 4) {
+            $upperSum += $reader->readUInt16();
+            $lowerSum += $reader->readUInt16();
+
+            $length -= 4;
+        }
+
+        if (!$reader->isEndOfFileReached()) {
+            $upperSum += $reader->readUInt8() << 8;
+        }
+
+        if (!$reader->isEndOfFileReached()) {
+            $upperSum += $reader->readUInt8();
+        }
+
+        if (!$reader->isEndOfFileReached()) {
+            $lowerSum += $reader->readUInt8() << 8;
+        }
+
+        $upperSum += $lowerSum >> 16;
+
+        $upperNumber = ($upperSum << 16) & 0xFFFF0000;
+        $lowerNumber = $lowerSum & 0xFFFF;
+
+        return $upperNumber | $lowerNumber;
     }
 
     /**
@@ -622,13 +698,14 @@ class FileWriter
      */
     private static function generatePascalString(array $names): string
     {
-        $nameString = '';
+        $writer = new StreamWriter();
+
         foreach ($names as $name) {
-            $nameString .= \strlen($name);
-            $nameString .= $name;
+            $writer->writeUInt8(\strlen($name));
+            $writer->writeStream($name);
         }
 
-        return $nameString;
+        return $writer->getStream();
     }
 
     /**
@@ -706,12 +783,31 @@ class FileWriter
         return $glyfTable;
     }
 
+    /**
+     * @param Character[] $characters
+     *
+     * @return OS2Table
+     */
     private function generateOS2Table(\PdfGenerator\Font\Frontend\File\Table\OS2Table $source, array $characters)
     {
         $os2Table = new OS2Table();
 
-        $os2Table->setVersion($source->getVersion());
-        $os2Table->setXAvgCharWidth($source->getXAvgCharWidth());
+        $os2Table->setVersion(5);
+
+        $totalWidth = 0;
+        $minUnicode = 0xFFFF;
+        $maxUnicode = 0;
+        foreach ($characters as $character) {
+            $totalWidth += $character->getLongHorMetric()->getAdvanceWidth();
+
+            if ($character->getUnicodePoint() > 0) {
+                $minUnicode = min($minUnicode, $character->getUnicodePoint());
+                $maxUnicode = max($maxUnicode, $character->getUnicodePoint());
+            }
+        }
+        $maxUnicode = min($maxUnicode, 0xFFFF);
+        $os2Table->setXAvgCharWidth($totalWidth / \count($characters));
+
         $os2Table->setUsWeightClass($source->getUsWeightClass());
         $os2Table->setUsWidthClass($source->getUsWidthClass());
 
@@ -734,12 +830,13 @@ class FileWriter
         $os2Table->setPanose($source->getPanose());
 
         $os2Table->setUlUnicodeRanges($source->getUlUnicodeRanges());
+        $os2Table->setUlUnicodeRanges([0, 0, 0, 0]);
 
         $os2Table->setAchVendID($source->getAchVendID());
         $os2Table->setFsSelection($source->getFsSelection());
 
-        $os2Table->setUsFirstCharIndex($source->getUsFirstCharIndex());
-        $os2Table->setUsLastCharIndex($source->getUsLastCharIndex());
+        $os2Table->setUsFirstCharIndex($minUnicode);
+        $os2Table->setUsLastCharIndex($maxUnicode);
 
         $os2Table->setSTypoAscender($source->getSTypoAscender());
         $os2Table->setSTypoDecender($source->getSTypoDecender());
@@ -748,17 +845,36 @@ class FileWriter
         $os2Table->setUsWinAscent($source->getUsWinAscent());
         $os2Table->setUsWinDecent($source->getUsWinDecent());
 
-        $os2Table->setUlCodePageRanges($source->getUlCodePageRanges());
+        if ($source->getVersion() > 0) {
+            $os2Table->setUlCodePageRanges($source->getUlCodePageRanges());
+        } else {
+            $os2Table->setUlCodePageRanges([0, 0]);
+        }
+        $os2Table->setUlCodePageRanges([0, 0]);
 
-        $os2Table->setSxHeight($source->getSxHeight());
-        $os2Table->setSCapHeight($source->getSCapHeight());
+        if ($source->getVersion() > 3) {
+            $os2Table->setSxHeight($source->getSxHeight());
+            $os2Table->setSCapHeight($source->getSCapHeight());
 
-        $os2Table->setUsDefaultChar($source->getUsDefaultChar());
-        $os2Table->setUsBreakChar($source->getUsBreakChar());
-        $os2Table->setUsMaxContext($source->getUsMaxContext());
+            $os2Table->setUsDefaultChar($source->getUsDefaultChar());
+            $os2Table->setUsBreakChar($source->getUsBreakChar());
+            $os2Table->setUsMaxContext($source->getUsMaxContext());
+        } else {
+            $os2Table->setSxHeight(0); // should be height of lowercase x character
+            $os2Table->setSCapHeight(0); // should be equal the height of uppercase H character
 
-        $os2Table->setUsLowerOptimalPointSize($source->getUsLowerOptimalPointSize());
-        $os2Table->setUsUpperOptimalPointSize($source->getUsUpperOptimalPointSize());
+            $os2Table->setUsDefaultChar(0); // use glyph 0
+            $os2Table->setUsBreakChar(32); // use space, unicode code point 32
+            $os2Table->setUsMaxContext(3); // would need to check for ligatures & the like; now we just assume 3 which should be enough
+        }
+
+        if ($source->getVersion() > 4) {
+            $os2Table->setUsLowerOptimalPointSize($source->getUsLowerOptimalPointSize());
+            $os2Table->setUsUpperOptimalPointSize($source->getUsUpperOptimalPointSize());
+        } else {
+            $os2Table->setUsLowerOptimalPointSize(0);
+            $os2Table->setUsUpperOptimalPointSize(0xFFFF);
+        }
 
         return $os2Table;
     }

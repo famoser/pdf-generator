@@ -336,7 +336,7 @@ class StreamReader
      */
     public function isEndOfFileReached(): bool
     {
-        return $this->offset >= $this->byteCount - 1;
+        return $this->offset >= $this->byteCount;
     }
 
     /**
