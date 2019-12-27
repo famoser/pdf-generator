@@ -262,7 +262,7 @@ class FileWriter
     {
         $subtable = new Subtable();
 
-        $subtable->setPlatformID(3);
+        $subtable->setPlatformID(0);
         $subtable->setPlatformSpecificID(4);
 
         $subtable->setFormat($this->generateCMapFormat4($characters));
@@ -864,7 +864,7 @@ class FileWriter
             $os2Table->setSCapHeight(0); // should be equal the height of uppercase H character
 
             $os2Table->setUsDefaultChar(0); // use glyph 0
-            $os2Table->setUsBreakChar(32); // use space, glyph 2
+            $os2Table->setUsBreakChar(32); // use space, unicode code point 32
             $os2Table->setUsMaxContext(3); // would need to check for ligatures & the like; now we just assume 3 which should be enough
         }
 

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="fval.xsl"?>
-<FontValidatorReport RunDateTime="Friday, December 27, 2019 10:44 AM" MachineName="ARCH-X1-7">
+<FontValidatorReport RunDateTime="Friday, December 27, 2019 11:07 AM" MachineName="ARCH-X1-7">
 <FontFile FileName="subset.ttf" FileNameAndPath="/home/famoser/Repos/pdf-generator/subset.ttf">
 <Report ErrorType="I" ErrorCode="I0004" Message="The file begins with an Offset Table (file contains a single font)" />
 <Font FontIndex="0">
@@ -39,7 +39,7 @@
 <Report ErrorType="E" ErrorCode="E2128" Message="The usBreakChar is not mapped to a glyf" Details="0x0020" TestName="OS_2_usBreakChar" />
 <Report ErrorType="E" ErrorCode="E2148" Message="The usMaxContext field doesn't match the calculated value" Details="calc = 0, actual = 3" TestName="OS_2_usMaxContext" />
 </TableEntry>
-<TableEntry Tag="cmap" Offset="0x00000150" Length="0x0000003c" Checksum="0x003400b4" CodeFriendlyTag="cmap">
+<TableEntry Tag="cmap" Offset="0x00000150" Length="0x0000003c" Checksum="0x003100b4" CodeFriendlyTag="cmap">
 <Report ErrorType="P" ErrorCode="P0312" Message="The table version number is 0" TestName="cmap_Version" />
 <Report ErrorType="P" ErrorCode="P0307" Message="Each subtable offset is within the table" TestName="cmap_SubtableOffset" />
 <Report ErrorType="P" ErrorCode="P0306" Message="Each subtable length is within the table" TestName="cmap_SubtableLength" />
@@ -47,7 +47,7 @@
 <Report ErrorType="P" ErrorCode="P0302" Message="There are no duplicate subtables" TestName="cmap_DuplicateSubtables" />
 <Report ErrorType="P" ErrorCode="P0308" Message="No overlapping subtables were found" TestName="cmap_SubtableOverlap" />
 <Report ErrorType="P" ErrorCode="P0310" Message="Each subtable's format number is valid" TestName="cmap_ValidFormat" />
-<Report ErrorType="P" ErrorCode="P0305" Message="The subtable internal format appears valid" Details="PlatID = 3, EncID = 4, Fmt = 4" TestName="cmap_SubtableInternalFormat" />
+<Report ErrorType="P" ErrorCode="P0305" Message="The subtable internal format appears valid" Details="PlatID = 0, EncID = 4, Fmt = 4" TestName="cmap_SubtableInternalFormat" />
 <Report ErrorType="W" ErrorCode="W0302" Message="The table does not contain any Apple subtables" TestName="cmap_AppleMSSupport" />
 <Report ErrorType="W" ErrorCode="W0301" Message="Apple logo mapping test not performed, cmap 1,0 not present" TestName="cmap_AppleLogo" />
 <Report ErrorType="P" ErrorCode="P0314" Message="All non mac subtables have a language field of zero" TestName="cmap_SubtableLanguage" />
