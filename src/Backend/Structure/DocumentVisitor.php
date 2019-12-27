@@ -142,13 +142,12 @@ class DocumentVisitor
         $writer = FileWriter::create();
         $content = $writer->writeFont($fontSubset);
 
-        // todo: why one character too much? guess that .notdef encoded additionally
-        // todo: why sizing messed up? why do I need to divide by 2
         $characterWidths = [];
+        $sizeNormalizer = 1024 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm(); // this could be a hack; but else the pdf character widths look messed up
         foreach ($fontSubset->getCharacters() as $character) {
-            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() / 2);
+            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
         }
-        $widths[0] = array_merge([$characterWidths[0]], $characterWidths);
+        $widths[0] = array_merge([$characterWidths[0]], $characterWidths); // the initial character is mapped twice; to .notdef and U+0000. need to have both widths therefore
 
         $fontName = $font->getFontInformation()->getFullName() ?? 'invalidFontName';
 
@@ -161,7 +160,7 @@ class DocumentVisitor
         $cIDSystemInfo->setOrdering('custom-1');
         $cIDSystemInfo->setSupplement(1);
 
-        $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream);
+        $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream, $sizeNormalizer);
 
         $cidFont = new CIDFont();
         $cidFont->setSubType(CIDFont::SUBTYPE_CID_FONT_TYPE_2);
@@ -183,17 +182,42 @@ class DocumentVisitor
         return $type0Font;
     }
 
-    private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream): FontDescriptor
+    private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream, $sizeNormalizer): FontDescriptor
     {
+        $HHeaTable = $font->getTableDirectory()->getHHeaTable();
+        $OS2Table = $font->getTableDirectory()->getOS2Table();
+
         $fontDescriptor = new FontDescriptor();
         $fontDescriptor->setFontName($fontName);
-        $HHeaTable = $font->getTableDirectory()->getHHeaTable();
-        $fontDescriptor->setFlags(0); // TODO calculate from
-        $fontDescriptor->setFontBBox([0, 0]); // TODO calculate from characters
-        $fontDescriptor->setItalicAngle(0); // TODO  get from postscript table
-        $fontDescriptor->setAscent($HHeaTable->getAscent());
-        $fontDescriptor->setDecent($HHeaTable->getDecent());
-        $fontDescriptor->setCapHeight(0); // TODO get from OS/2 table
+        $fontDescriptor->setFlags(0); // could calculate from OS/2 IBM font family
+
+        $xMin = 0;
+        $xMax = 0;
+        $yMin = 0;
+        $yMax = 0;
+        foreach ($font->getCharacters() as $character) {
+            if ($character->getGlyfTable() === null) {
+                continue;
+            }
+
+            $xMin = max($xMin, $character->getGlyfTable()->getXMin());
+            $xMax = max($xMax, $character->getGlyfTable()->getXMax());
+            $yMin = max($yMin, $character->getGlyfTable()->getYMin());
+            $yMax = max($yMax, $character->getGlyfTable()->getYMax());
+        }
+
+        $fontDescriptor->setFontBBox([(int)($xMin * $sizeNormalizer), ((int)($yMin * $sizeNormalizer)), ((int)($xMax * $sizeNormalizer)), (int)($yMax * $sizeNormalizer)]);
+
+        if ($HHeaTable->getCaretSlopeRun() !== 0) {
+            $angle = tanh($HHeaTable->getCaretSlopeRise() / $HHeaTable->getCaretSlopeRun()) - 90;
+        } else {
+            $angle = 0;
+        }
+
+        $fontDescriptor->setItalicAngle($angle);
+        $fontDescriptor->setAscent($HHeaTable->getAscent() * $sizeNormalizer);
+        $fontDescriptor->setDecent($HHeaTable->getDecent() * $sizeNormalizer);
+        $fontDescriptor->setCapHeight((int)($OS2Table->getSCapHeight() * $sizeNormalizer));
         $fontDescriptor->setStemV(0); // TODO find out where to get this from
         $fontDescriptor->setFontFile3($fontStream);
 

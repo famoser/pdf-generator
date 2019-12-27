@@ -202,14 +202,15 @@ class PrinterTest extends TestCase
         // arrange
         $document = new Document();
         $printer = new Printer($document);
-        $printer->setCursor(new Cursor(20, 20, 1));
+        $printer->setCursor(new Cursor(50, 50, 1));
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
         $textStyle = new TextStyle($font, 12);
 
         // act
         $printer->setTextStyle($textStyle);
-        $printer->printText("hallo welt\nhallo weltऄescape");
+        $printer->printText("hallo welt\nhallo welt\ninvalid char: ऄ");
         $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertNotEmpty($result);
