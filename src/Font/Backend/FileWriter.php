@@ -461,6 +461,10 @@ class FileWriter
                 $stream .= $table->accept($this->tableVisitor);
             }
 
+            if ($tag === 'name') {
+                $tableDirectoryEntry->setCheckSum($this->calculateCheckum($stream));
+            }
+
             $tableDirectoryEntry->setCheckSum($this->calculateCheckum($stream));
 
             $tableStreamWriter->writeStream($stream);
@@ -508,18 +512,24 @@ class FileWriter
             $length -= 4;
         }
 
-        $restSum = 0;
-        while (!$reader->isEndOfFileReached()) {
-            $restSum += $restSum << 8 + $reader->readUInt8();
+        if (!$reader->isEndOfFileReached()) {
+            $upperSum += $reader->readUInt8() << 8;
         }
 
-        $lowerSum += $restSum & 0xFFFF;
-        $upperSum += ($restSum & 0xFFFF0000) >> 16;
+        if (!$reader->isEndOfFileReached()) {
+            $upperSum += $reader->readUInt8();
+        }
 
-        $lowerOverflow = $lowerSum >> 16;
-        $upperSum += $lowerOverflow;
+        if (!$reader->isEndOfFileReached()) {
+            $lowerSum += $reader->readUInt8() << 8;
+        }
 
-        return $upperSum << 16 | ($lowerSum & 0xFFFF);
+        $upperSum += $lowerSum >> 16;
+
+        $upperNumber = ($upperSum << 16) & 0xFFFF0000;
+        $lowerNumber = $lowerSum & 0xFFFF;
+
+        return $upperNumber | $lowerNumber;
     }
 
     /**
