@@ -218,7 +218,7 @@ class Parser
             if ($glyfTable !== null) {
                 $character->setGlyfTable($glyfTable);
 
-                $boundingBox = $this->calculateBoundingBox($glyfTable, $fontFile->getHeadTable()->getUnitsPerEm());
+                $boundingBox = $this->calculateBoundingBox($glyfTable);
                 $character->setBoundingBox($boundingBox);
             }
 
@@ -251,12 +251,12 @@ class Parser
      *
      * @return BoundingBox
      */
-    private function calculateBoundingBox($boundingBoxTrait, int $divisor)
+    private function calculateBoundingBox($boundingBoxTrait)
     {
         $boundingBox = new BoundingBox();
 
-        $boundingBox->setHeight((float)($boundingBoxTrait->getYMax() - $boundingBoxTrait->getYMin()) / $divisor);
-        $boundingBox->setWidth(((float)$boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()) / $divisor);
+        $boundingBox->setHeight((float)($boundingBoxTrait->getYMax() - $boundingBoxTrait->getYMin()));
+        $boundingBox->setWidth((float)($boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()));
 
         return $boundingBox;
     }

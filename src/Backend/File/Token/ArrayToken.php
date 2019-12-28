@@ -17,6 +17,11 @@ use PdfGenerator\Backend\File\TokenVisitor;
 class ArrayToken extends BaseToken
 {
     /**
+     * @var BaseToken|null
+     */
+    private $key;
+
+    /**
      * @var BaseToken[]
      */
     private $values;
@@ -26,14 +31,20 @@ class ArrayToken extends BaseToken
      *
      * @param BaseToken[] $values
      */
-    public function __construct(array $values)
+    public function __construct(array $values, ?BaseToken $key = null)
     {
+        $this->key = $key;
         $this->values = $values;
     }
 
     public function accept(TokenVisitor $visitor): string
     {
         return $visitor->visitArrayToken($this);
+    }
+
+    public function getKey(): ?BaseToken
+    {
+        return $this->key;
     }
 
     /**

@@ -461,10 +461,6 @@ class FileWriter
                 $stream .= $table->accept($this->tableVisitor);
             }
 
-            if ($tag === 'name') {
-                $tableDirectoryEntry->setCheckSum($this->calculateCheckum($stream));
-            }
-
             $tableDirectoryEntry->setCheckSum($this->calculateCheckum($stream));
 
             $tableStreamWriter->writeStream($stream);
@@ -544,33 +540,6 @@ class FileWriter
         self::setBinaryTreeSearchableProperties($offsetTable, $numTables);
 
         return $offsetTable;
-    }
-
-    /**
-     * @return TableDirectoryEntry[]
-     */
-    private function generateTableDirectoryEntries(array $offsetByTag, array $lengthByTag): array
-    {
-        /** @var TableDirectoryEntry[] $tableDirectoryEntries */
-        $tableDirectoryEntries = [];
-        foreach ($offsetByTag as $tag => $offset) {
-            $tableDirectoryEntry = new TableDirectoryEntry();
-            $tableDirectoryEntry->setTag($tag);
-            $tableDirectoryEntry->setOffset($offset);
-            $tableDirectoryEntry->setLength($lengthByTag[$tag]);
-            $tableDirectoryEntry->setCheckSum(0);
-
-            $tableDirectoryEntries[] = $tableDirectoryEntry;
-        }
-
-        // adjust offset
-        $numTables = \count($offsetByTag);
-        $prefixOverhead = $numTables * 16 + 12;
-        foreach ($tableDirectoryEntries as $tableDirectoryEntry) {
-            $tableDirectoryEntry->setOffset($tableDirectoryEntry->getOffset() + $prefixOverhead);
-        }
-
-        return $tableDirectoryEntries;
     }
 
     /**

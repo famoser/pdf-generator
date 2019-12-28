@@ -73,6 +73,28 @@ class DictionaryObject extends BaseObject
     /**
      * @param int[] $numbers
      */
+    public function addNumberOfNumbersArrayEntry(string $key, array $numberOfNumbers)
+    {
+        $tokens = [];
+        foreach ($numberOfNumbers as $index => $numbers) {
+            if (\is_array($numbers)) {
+                $numberTokens = [];
+                foreach ($numbers as $number) {
+                    $numberTokens[] = new NumberToken($number);
+                }
+
+                $tokens[] = new ArrayToken($numberTokens, new NumberToken($index));
+            } else {
+                $tokens[] = new NumberToken($numbers);
+            }
+        }
+
+        $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));
+    }
+
+    /**
+     * @param int[] $numbers
+     */
     public function addTextArrayEntry(string $key, array $numbers, string $prefix = '')
     {
         $tokens = [];

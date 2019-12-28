@@ -261,7 +261,7 @@ class CatalogVisitor
         $dictionary->addReferenceEntry('FontDescriptor', $reference);
 
         $dictionary->addNumberEntry('DW', $structure->getDW());
-        $dictionary->addNumberArrayEntry('W', $structure->getW());
+        $dictionary->addNumberOfNumbersArrayEntry('W', $structure->getW());
 
         return $dictionary;
     }

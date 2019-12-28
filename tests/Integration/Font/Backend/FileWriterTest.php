@@ -77,7 +77,6 @@ class FileWriterTest extends TestCase
 
         // act
         $output = $writer->writeFont($subset);
-        file_put_contents('subset.ttf', $output);
 
         // assert
         $font = $parser->parse($output);
