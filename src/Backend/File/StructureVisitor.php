@@ -77,13 +77,15 @@ class StructureVisitor
      */
     public function visitCrossReferenceTable(CrossReferenceTable $param)
     {
+        $entries = $param->getEntries();
+
         $lines = [];
         $lines[] = 'xref';
-        $lines[] = '0 ' . (\count($param->getEntries()) + 1);
+        $lines[] = '0 ' . (\count($entries) + 1);
         $lines[] = '0000000000 65535 f';
 
-        foreach ($param->getEntries() as $entry) {
-            $lines[] = str_pad($entry, 10, '' . STR_PAD_LEFT) . ' 00000 n';
+        foreach ($entries as $entry) {
+            $lines[] = str_pad($entry, 10, '0', STR_PAD_LEFT) . ' 00000 n';
         }
 
         return implode("\n", $lines);
