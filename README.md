@@ -102,6 +102,9 @@ First, the backend will be created following closely the standard of adobe.
     - [x] read, modify & write TTF
     - [x] add CID font capability
 - [x] print UTF-8 text
+- [ ] stabilize
+    - [ ] clarify token types (especiall text vs reference tokens)
+    - [ ] ensure validators accept the pdf
 
 ### Minimal IR Base
 To be able to print to the pdf sensible some initial works needs to be done to see whats doable and what is not.
