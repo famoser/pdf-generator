@@ -95,26 +95,18 @@ The project will be developed in multiple phases.
 ### Render PDF Milestone
 First, the backend will be created following closely the standard of adobe.
 
-- [x] print text
+- [x] print & style text
 - [x] print images
-- [x] style text
-- [x] draw lines
-- [x] draw rectangles
-- [x] style lines 
+- [x] print & style drawings (lines & rectangles)
 - [x] use TTF fonts
-    - [x] parse TTF
-    - [x] create IR which supplies pdf compiler with character space information
-    - [x] create TTF subsets
-    - [x] include CID font capability into PDF
+    - [x] read, modify & write TTF
+    - [x] add CID font capability
 - [x] print UTF-8 text
 
 ### Minimal IR Base
 To be able to print to the pdf sensible some initial works needs to be done to see whats doable and what is not.
 
-- [ ] calculate dimensions of text
-    - [ ] create TTF checksums
-    - [ ] create cmap from CID encoding to utf-8
-    - [ ] investigate weather width array is needed 
+- [ ] calculate dimensions of tex
 - [ ] place text on pages with automatic breaks
 
 ### Public API Milestone

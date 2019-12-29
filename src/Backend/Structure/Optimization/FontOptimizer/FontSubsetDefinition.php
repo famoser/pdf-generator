@@ -23,25 +23,25 @@ class FontSubsetDefinition
     /**
      * @var int[]
      */
-    private $codePoints;
+    private $characterIndexToCodePointMapping;
 
     /**
      * @var int[]
      */
-    private $missingCodePoints;
+    private $codePointsWithoutCharacter;
 
     /**
      * FontOptimizerPayload constructor.
      *
      * @param Character[] $characters
-     * @param int[] $codePoints
-     * @param int[] $missingCodePoints
+     * @param int[] $characterIndexToCodePointMapping
+     * @param int[] $codePointsWithoutCharacter
      */
-    public function __construct(array $characters, array $codePoints, array $missingCodePoints)
+    public function __construct(array $characters, array $characterIndexToCodePointMapping, array $codePointsWithoutCharacter)
     {
         $this->characters = $characters;
-        $this->codePoints = $codePoints;
-        $this->missingCodePoints = $missingCodePoints;
+        $this->characterIndexToCodePointMapping = $characterIndexToCodePointMapping;
+        $this->codePointsWithoutCharacter = $codePointsWithoutCharacter;
     }
 
     /**
@@ -55,16 +55,16 @@ class FontSubsetDefinition
     /**
      * @return int[]
      */
-    public function getCodePoints(): array
+    public function getCharacterIndexToCodePointMapping(): array
     {
-        return $this->codePoints;
+        return $this->characterIndexToCodePointMapping;
     }
 
     /**
      * @return int[]
      */
-    public function getMissingCodePoints(): array
+    public function getCodePointsWithoutCharacter(): array
     {
-        return $this->missingCodePoints;
+        return $this->codePointsWithoutCharacter;
     }
 }

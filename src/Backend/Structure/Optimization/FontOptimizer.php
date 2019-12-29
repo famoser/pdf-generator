@@ -17,31 +17,28 @@ use PdfGenerator\Font\IR\Structure\Font;
 
 class FontOptimizer
 {
-    /**
-     * @return FontSubsetDefinition
-     */
-    public function generateFontSubset(Font $font, string $usedText)
+    public function generateFontSubset(Font $font, string $usedText): FontSubsetDefinition
     {
-        $orderedCodePoints = $this->getOrderedCodepoints($usedText);
+        $characterIndexToCodePointMapping = $this->getOrderedCodepoints($usedText);
 
         $characterRepository = new CharacterRepository($font);
 
         // extract needed characters
         $characters = [$font->getMissingGlyphCharacter()];
-        $missingCodePoints = [];
-        foreach ($orderedCodePoints as $index => $codePoint) {
+        $codePointsWithoutCharacter = [];
+        foreach ($characterIndexToCodePointMapping as $index => $codePoint) {
             $character = $characterRepository->findByCodePoint($codePoint);
             if ($character !== null) {
                 $characters[] = $character;
             } else {
-                $missingCodePoints[$index] = $codePoint;
+                $codePointsWithoutCharacter[$index] = $codePoint;
             }
         }
 
         // remove missing characters from all code points
         $notEncodedCharIndexes = [];
-        foreach ($missingCodePoints as $index => $value) {
-            unset($orderedCodePoints[$index]);
+        foreach ($codePointsWithoutCharacter as $index => $value) {
+            unset($characterIndexToCodePointMapping[$index]);
 
             // 10 is space character and does not need to be encoded
             if ($value === 10) {
@@ -51,14 +48,15 @@ class FontOptimizer
 
         // remove missing characters that do not need to be encoded
         foreach ($notEncodedCharIndexes as $notEncodedCharIndex) {
-            unset($missingCodePoints[$notEncodedCharIndex]);
+            unset($codePointsWithoutCharacter[$notEncodedCharIndex]);
         }
 
         // normalize arrays
-        $orderedCodePoints = array_values($orderedCodePoints);
-        $missingCodePoints = array_values($missingCodePoints);
+        $characterIndexToCodePointMapping = array_values($characterIndexToCodePointMapping);
+        $codePointsWithoutCharacter = array_values($codePointsWithoutCharacter);
+        sort($codePointsWithoutCharacter);
 
-        return new FontSubsetDefinition($characters, $orderedCodePoints, $missingCodePoints);
+        return new FontSubsetDefinition($characters, $characterIndexToCodePointMapping, $codePointsWithoutCharacter);
     }
 
     /**

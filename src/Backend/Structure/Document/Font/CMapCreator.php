@@ -13,25 +13,34 @@ namespace PdfGenerator\Backend\Structure\Document\Font;
 
 use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
+use PdfGenerator\Backend\Structure\Optimization\FontOptimizer\FontSubsetDefinition;
 
 class CMapCreator
 {
-    /**
-     * @param int[] $orderedCodePoints
-     *
-     * @return CMap
-     */
-    public function createCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $orderedCodePoints, array $missingCodePoints)
+    public function createTextToCharacterIndexCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, FontSubsetDefinition $fontSubsetDefinition): CMap
+    {
+        $byteMappings = $this->getTextToCharacterIndexMappings($fontSubsetDefinition->getCharacterIndexToCodePointMapping(), $fontSubsetDefinition->getCodePointsWithoutCharacter());
+
+        return $this->createCMap($cIDSystemInfo, $cMapName, $byteMappings);
+    }
+
+    public function createCharacterIndexToUnicodeCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, FontSubsetDefinition $fontSubsetDefinition): CMap
+    {
+        $byteMappings = $this->getCharacterIndexToUnicodeMappings($fontSubsetDefinition->getCharacterIndexToCodePointMapping());
+
+        return $this->createCMap($cIDSystemInfo, $cMapName, $byteMappings);
+    }
+
+    private function createCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, string $mappings): CMap
     {
         $cmap = new CMap();
         $cmap->setCIDSystemInfo($cIDSystemInfo);
         $cmap->setCMapName($cMapName);
 
         $header = $this->getCMapHeader($cIDSystemInfo, $cMapName);
-        $byteMappings = $this->getCMapByteMappings($orderedCodePoints, $missingCodePoints);
         $trailer = $this->getCMapTrailer();
 
-        $cMapData = $header . "\n" . $byteMappings . "\n" . $trailer;
+        $cMapData = $header . "\n" . $mappings . "\n" . $trailer;
         $cmap->setCMapData($cMapData);
 
         return $cmap;
@@ -83,43 +92,84 @@ class CMapCreator
     }
 
     /**
-     * @param int[] $codePoints
+     * @param int[] $characterIndexToCodePointMapping
+     * @param array $missingCodePoints
      *
      * @return string
      */
-    private function getCMapByteMappings(array $codePoints, array $missingCodePoints)
+    private function getCharacterIndexToUnicodeMappings(array $characterIndexToCodePointMapping)
     {
-        $hexCodePointsByLength = $this->getAsHexByLength($codePoints);
+        $characterIndexToUnicodeMappingInHexByLength = $this->getCharacterIndexToUnicodeMappingInHexByLength($characterIndexToCodePointMapping);
 
-        $codeSpaces = [];
-        foreach ($hexCodePointsByLength as $length => $hexPoints) {
-            ksort($hexPoints);
+        $codeSpaceDictionaries = $this->getCodeSpaceRange($characterIndexToUnicodeMappingInHexByLength);
+        $codeMappingDictionaries = $this->getBfRange($characterIndexToUnicodeMappingInHexByLength);
 
-            $codeSpaces = array_merge($codeSpaces, $this->getCodeSpaces($hexPoints));
-        }
+        return
+            implode("\n\n", $codeSpaceDictionaries) . "\n\n" .
+            implode("\n\n", $codeMappingDictionaries);
+    }
 
-        $codeSpaceDictionaries = $this->toDictionary($codeSpaces, 'codespacerange');
+    /**
+     * @param int[] $characterIndexToCodePointMapping
+     *
+     * @return string
+     */
+    private function getTextToCharacterIndexMappings(array $characterIndexToCodePointMapping, array $codePointsWithoutCharacterIndex)
+    {
+        $textInHexToCharacterIndexMappingByLength = $this->getTextInHexToCharacterIndexMappingByLength($characterIndexToCodePointMapping);
 
-        $codeMappings = [];
-        foreach ($hexCodePointsByLength as $length => $hexPoints) {
-            ksort($hexPoints);
+        $codeSpaceDictionaries = $this->getCodeSpaceRange($textInHexToCharacterIndexMappingByLength);
+        $codeMappingDictionaries = $this->getCidRange($textInHexToCharacterIndexMappingByLength);
+        $notDefRangeDictionaries = $this->getNotDefRange($codePointsWithoutCharacterIndex);
 
-            $codeMappings = array_merge($codeMappings, $this->getCodeMappings($hexPoints));
-        }
+        return
+            implode("\n\n", $codeSpaceDictionaries) . "\n\n" .
+            implode("\n\n", $codeMappingDictionaries) . "\n\n" .
+            implode("\n\n", $notDefRangeDictionaries);
+    }
 
-        $codeMappingDictionaries = $this->toDictionary($codeMappings, 'cidrange');
-
-        $validMappings = implode("\n\n", $codeSpaceDictionaries) . "\n\n" . implode("\n\n", $codeMappingDictionaries);
-
-        sort($missingCodePoints);
+    private function getNotDefRange(array $codePointsWithoutCharacterIndex)
+    {
         // must always map 0 character
-        if (\count($missingCodePoints) === 0 || $missingCodePoints[0] !== 0) {
-            $missingCodePoints = array_merge([0], $missingCodePoints);
+        if (\count($codePointsWithoutCharacterIndex) === 0 || $codePointsWithoutCharacterIndex[0] !== 0) {
+            $codePointsWithoutCharacterIndex = array_merge([0], $codePointsWithoutCharacterIndex);
         }
-        $notDefRanges = $this->getNotDefRanges($missingCodePoints, 0);
-        $notDefRangeDictionaries = $this->toDictionary($notDefRanges, 'notdefrange');
 
-        return $validMappings . "\n\n" . implode("\n\n", $notDefRangeDictionaries);
+        $notDefRanges = $this->getNotDefRanges($codePointsWithoutCharacterIndex, 0);
+
+        return $this->toDictionary($notDefRanges, 'notdefrange');
+    }
+
+    private function getCidRange($textInHexToCharacterIndexMappingByLength)
+    {
+        $codeMappings = [];
+        foreach ($textInHexToCharacterIndexMappingByLength as $length => $textInHexToCharacterIndexMapping) {
+            $codeMappings = array_merge($codeMappings, $this->getSameLengthCidRanges($textInHexToCharacterIndexMapping));
+        }
+
+        return $this->toDictionary($codeMappings, 'cidrange');
+    }
+
+    private function getBfRange($characterIndexToUnicodeMappingInHexByLength)
+    {
+        $bfRanges = [];
+        foreach ($characterIndexToUnicodeMappingInHexByLength as $length => $characterIndexToUnicodeMappingInHex) {
+            $bfRanges = array_merge($bfRanges, $this->getSameLengthBfRanges($characterIndexToUnicodeMappingInHex));
+        }
+
+        return $this->toDictionary($bfRanges, 'bfrange');
+    }
+
+    private function getCodeSpaceRange(array $hexKeysByLength)
+    {
+        $codeSpaces = [];
+        foreach ($hexKeysByLength as $length => $textInHexToCharacterIndexMapping) {
+            ksort($textInHexToCharacterIndexMapping);
+
+            $codeSpaces = array_merge($codeSpaces, $this->getSameLengthCodeSpaceRanges(array_keys($textInHexToCharacterIndexMapping)));
+        }
+
+        return $this->toDictionary($codeSpaces, 'codespacerange');
     }
 
     /**
@@ -141,43 +191,75 @@ class CMapCreator
         return $dictionaries;
     }
 
-    private function getAsHexByLength(array $codePoints): array
+    private function getCharacterIndexToUnicodeMappingInHexByLength(array $codePoints): array
     {
         $hexPointsByLength = [];
-        $characterIndex = 2;
+        $characterIndex = 2; // first two characters are reserved for .notdef characters
         foreach ($codePoints as $codePoint) {
-            $byte = dechex($codePoint);
-            $length = \strlen($byte);
-            if ($length % 2 !== 0) {
-                $byte = '0' . $byte;
-                ++$length;
+            $utf16BEChar = mb_chr($codePoint, 'UTF-16BE');
+            $byte = unpack('H*', ($utf16BEChar))[1];
+            $normalizedByte = $this->ensureLengthMultipleOf2($byte);
+
+            $characterByte = dechex($characterIndex++);
+            $normalizedCharacterByte = $this->ensureLengthMultipleOf2($characterByte);
+            $length = \strlen($normalizedCharacterByte);
+            if (!isset($hexPointsByLength[$length])) {
+                $hexPointsByLength[$length] = [];
             }
+
+            $hexPointsByLength[$length][$normalizedCharacterByte] = $normalizedByte;
+        }
+
+        ksort($hexPointsByLength);
+
+        return $hexPointsByLength;
+    }
+
+    private function getTextInHexToCharacterIndexMappingByLength(array $codePoints): array
+    {
+        $hexPointsByLength = [];
+        $characterIndex = 2; // first two characters are reserved for .notdef characters
+        foreach ($codePoints as $codePoint) {
+            $utf8Char = mb_chr($codePoint, 'UTF-8');
+            $byte = unpack('H*', ($utf8Char))[1];
+            $normalizedByte = $this->ensureLengthMultipleOf2($byte);
+            $length = \strlen($normalizedByte);
 
             if (!isset($hexPointsByLength[$length])) {
                 $hexPointsByLength[$length] = [];
             }
 
-            $hexPointsByLength[$length][$byte] = $characterIndex++;
+            $hexPointsByLength[$length][$normalizedByte] = $characterIndex++;
         }
 
-        sort($hexPointsByLength);
+        ksort($hexPointsByLength);
 
         return $hexPointsByLength;
     }
 
+    private function ensureLengthMultipleOf2(string $byte): string
+    {
+        $length = \strlen($byte);
+        if ($length % 2 !== 0) {
+            return '0' . $byte;
+        }
+
+        return $byte;
+    }
+
     /**
-     * @param string[] $codePoints
+     * @param string[] $sameLengthHexPoints
      *
      * @return string[]
      */
-    private function getCodeSpaces(array $codePoints): array
+    private function getSameLengthCodeSpaceRanges(array $sameLengthHexPoints): array
     {
         $codeSpaces = [];
 
         $lastValue = null;
         $firstHexPoint = null;
         $lastHexPoint = null;
-        foreach ($codePoints as $hexPoint => $characterIndex) {
+        foreach ($sameLengthHexPoints as $hexPoint) {
             $currentValue = hexdec($hexPoint);
 
             if ($currentValue - 1 !== $lastValue) {
@@ -197,11 +279,11 @@ class CMapCreator
     }
 
     /**
-     * @param string[] $hexPoints
+     * @param string[] $hexValueToCharacterIndexMapping
      *
      * @return string[]
      */
-    private function getCodeMappings(array $hexPoints): array
+    private function getSameLengthCidRanges(array $hexValueToCharacterIndexMapping): array
     {
         $codeMappings = [];
 
@@ -210,7 +292,7 @@ class CMapCreator
         $firstHexPoint = null;
         $firstCharacterIndex = null;
         $lastHexPoint = null;
-        foreach ($hexPoints as $hexPoint => $characterIndex) {
+        foreach ($hexValueToCharacterIndexMapping as $hexPoint => $characterIndex) {
             $currentValue = hexdec($hexPoint);
 
             if ($currentValue - 1 !== $lastValue || $characterIndex - 1 !== $lastCharacterIndex) {
@@ -227,6 +309,42 @@ class CMapCreator
         }
 
         $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $firstCharacterIndex;
+
+        return $codeMappings;
+    }
+
+    /**
+     * @param string[] $hexValueToCharacterIndexMapping
+     *
+     * @return string[]
+     */
+    private function getSameLengthBfRanges(array $characterIndexToUnicodeMappingInHex): array
+    {
+        $codeMappings = [];
+
+        $lastCharacterIndex = null;
+        $lastUnicodeValue = null;
+        $firstHexPoint = null;
+        $firstUnicodeHex = null;
+        $lastHexPoint = null;
+        foreach ($characterIndexToUnicodeMappingInHex as $characterIndexHex => $unicodeHex) {
+            $characterIndex = hexdec($characterIndexHex);
+            $unicodeValue = hexdec($unicodeHex);
+
+            if ($characterIndex - 1 !== $lastCharacterIndex || $unicodeValue - 1 !== $lastUnicodeValue) {
+                if ($firstHexPoint !== null) {
+                    $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> <' . $firstUnicodeHex . '>';
+                }
+                $firstHexPoint = $characterIndexHex;
+                $firstUnicodeHex = $unicodeHex;
+            }
+
+            $lastHexPoint = $characterIndexHex;
+            $lastCharacterIndex = $characterIndex;
+            $lastUnicodeValue = $unicodeValue;
+        }
+
+        $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> <' . $firstUnicodeHex . '>';
 
         return $codeMappings;
     }

@@ -175,9 +175,11 @@ class DocumentVisitor
         $type0Font->setDescendantFont($cidFont);
         $type0Font->setBaseFont($fontName);
 
-        $cMap = $this->cMapCreator->createCMap($cIDSystemInfo, 'someName', $fontSubsetDefinition->getCodePoints(), $fontSubsetDefinition->getMissingCodePoints());
-        $type0Font->setEncoding($cMap);
-        $type0Font->setToUnicode($cMap); // TODO: unicode CMap not implemented yet
+        $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, 'someName', $fontSubsetDefinition);
+        $type0Font->setEncoding($characterIndexCMap);
+
+        $unicodeCMap = $this->cMapCreator->createCharacterIndexToUnicodeCMap($cIDSystemInfo, 'someNameInverted', $fontSubsetDefinition);
+        $type0Font->setToUnicode($unicodeCMap);
 
         return $type0Font;
     }
