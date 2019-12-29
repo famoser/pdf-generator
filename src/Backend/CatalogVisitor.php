@@ -51,6 +51,11 @@ class CatalogVisitor
         $reference = $structure->getPages()->accept($this);
         $dictionary->addReferenceEntry('Pages', $reference);
 
+        $dictionary = $this->file->addInfoDictionaryObject();
+        // TODO: make text vs identifier tokens more clearly separated
+        $dictionary->addTextEntry('Creator', '(famoser/pdf-generator)');
+        $dictionary->addDateEntry('CreationDate', new \DateTime());
+
         return $dictionary;
     }
 

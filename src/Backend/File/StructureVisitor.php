@@ -61,6 +61,7 @@ class StructureVisitor
         $trailerDictionary = new DictionaryToken();
         $trailerDictionary->setEntry('Size', new NumberToken($param->getSize() + 1));
         $trailerDictionary->setEntry('Root', new ReferenceToken($param->getRoot()));
+        $trailerDictionary->setEntry('Info', new ReferenceToken($param->getInfo()));
 
         $lines = [];
         $lines[] = 'trailer';

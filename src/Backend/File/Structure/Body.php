@@ -22,9 +22,20 @@ class Body extends BaseStructure
      */
     private $entries = [];
 
+    /**
+     * @var BaseObject
+     */
+    private $infoObject;
+
     public function addObject(BaseObject $baseObject)
     {
         $this->entries[] = $baseObject;
+    }
+
+    public function addInfoObject(BaseObject $baseObject)
+    {
+        $this->addObject($baseObject);
+        $this->infoObject = $baseObject;
     }
 
     /**
@@ -33,6 +44,16 @@ class Body extends BaseStructure
     public function getEntries(): array
     {
         return $this->entries;
+    }
+
+    public function getRootEntry(): BaseObject
+    {
+        return $this->entries[0];
+    }
+
+    public function getInfoObject(): BaseObject
+    {
+        return $this->infoObject;
     }
 
     public function accept(StructureVisitor $visitor): string

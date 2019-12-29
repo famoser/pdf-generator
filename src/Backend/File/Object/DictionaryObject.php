@@ -129,4 +129,13 @@ class DictionaryObject extends BaseObject
     {
         return $this->dictionaryToken;
     }
+
+    public function addDateEntry(string $key, \DateTime $dateTime)
+    {
+        // target: (D:20191225080419-00'00)
+        // target: (D:2019 12 25 08 04 19-00'00)
+        $text = $dateTime->format('YmdHisP');
+        $text = str_replace(':', "'", $text);
+        $this->addTextEntry($key, '(D:' . $text . ')');
+    }
 }

@@ -33,13 +33,19 @@ class FileTrailer extends BaseStructure
     private $root;
 
     /**
+     * @var BaseObject
+     */
+    private $info;
+
+    /**
      * FileTrailer constructor.
      */
-    public function __construct(int $size, int $startOfCrossReferenceTable, BaseObject $root)
+    public function __construct(int $size, int $startOfCrossReferenceTable, BaseObject $root, BaseObject $info)
     {
         $this->size = $size;
         $this->startOfCrossReferenceTable = $startOfCrossReferenceTable;
         $this->root = $root;
+        $this->info = $info;
     }
 
     public function accept(StructureVisitor $visitor): string
@@ -60,5 +66,10 @@ class FileTrailer extends BaseStructure
     public function getRoot(): BaseObject
     {
         return $this->root;
+    }
+
+    public function getInfo(): BaseObject
+    {
+        return $this->info;
     }
 }
