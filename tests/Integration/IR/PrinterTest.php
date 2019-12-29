@@ -53,6 +53,7 @@ class PrinterTest extends TestCase
         $printer->printText($text . '1');
         $printer->printText($text . '2');
         $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertStringContainsString($text . '1', $result);
@@ -210,7 +211,6 @@ class PrinterTest extends TestCase
         $printer->setTextStyle($textStyle);
         $printer->printText("hallo welt\nhallo welt\ninvalid ä char: ऄ");
         $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertNotEmpty($result);

@@ -93,7 +93,6 @@ class CMapCreator
 
     /**
      * @param int[] $characterIndexToCodePointMapping
-     * @param array $missingCodePoints
      *
      * @return string
      */
@@ -314,8 +313,6 @@ class CMapCreator
     }
 
     /**
-     * @param string[] $hexValueToCharacterIndexMapping
-     *
      * @return string[]
      */
     private function getSameLengthBfRanges(array $characterIndexToUnicodeMappingInHex): array
