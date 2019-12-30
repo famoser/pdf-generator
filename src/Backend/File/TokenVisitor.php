@@ -60,8 +60,13 @@ class TokenVisitor
 
     public function visitNameToken(Token\NameToken $param)
     {
-        // skipping escaping name because not decided by user
-        return $this->transformToName($param->getName());
+        /**
+         * would need to escape much more (with # followed by its number; for example "(" = #28):
+         * - all characters in $text must be between EXCLAMATION MARK(21h) (!) to TILDE (7Eh) (~).
+         */
+        $escapedText = strtr($param->getName(), [' ' => '#20']);
+
+        return $this->transformToName($escapedText);
     }
 
     private function transformToName(string $value)

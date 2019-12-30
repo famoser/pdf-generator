@@ -23,8 +23,6 @@ class NameToken extends BaseToken
 
     /**
      * TextToken constructor.
-     * all characters in $text must be between EXCLAMATION MARK(21h) (!) to TILDE (7Eh) (~)
-     * else need to be escaped with # followed by its number; for example ( = #28.
      */
     public function __construct(string $text)
     {

@@ -190,6 +190,7 @@ class PrinterTest extends TestCase
         $printer->setTextStyle($textStyle);
         $printer->printText('hallo');
         $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertNotEmpty($result);
@@ -198,7 +199,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_withEmbeddedFont_textAppearsWithNewlines()
+    public function testPrintText_withEmbeddedFont_specialCharactersAppear()
     {
         // arrange
         $document = new Document();
@@ -211,7 +212,6 @@ class PrinterTest extends TestCase
         $printer->setTextStyle($textStyle);
         $printer->printText("hallo welt\nhallo welt\ninvalid ä char: ऄ");
         $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertNotEmpty($result);

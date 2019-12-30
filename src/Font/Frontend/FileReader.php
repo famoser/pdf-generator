@@ -405,7 +405,7 @@ class FileReader
 
         $table->setVersion($fileReader->readFixed());
         $table->setAscent($fileReader->readFWORD());
-        $table->setDecent($fileReader->readFWORD());
+        $table->setDescent($fileReader->readFWORD());
         $table->setLineGap($fileReader->readFWORD());
         $table->setAdvanceWidthMax($fileReader->readUFWORD());
         $table->setMinLeftSideBearing($fileReader->readFWORD());

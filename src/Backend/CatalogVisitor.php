@@ -197,7 +197,7 @@ class CatalogVisitor
         $stream = $this->file->addStreamObject($structure->getFontData());
 
         $dictionary = $stream->getMetaData();
-        $dictionary->setTextEntry('Subtype', '/' . $structure->getSubtype());
+        $dictionary->setNameEntry('Subtype', $structure->getSubtype());
 
         return $stream;
     }
@@ -210,12 +210,12 @@ class CatalogVisitor
         $dictionary = $this->file->addDictionaryObject();
 
         $dictionary->addNameEntry('Type', 'FontDescriptor');
-        $dictionary->addTextEntry('FontName', $structure->getFontName());
+        $dictionary->addNameEntry('FontName', $structure->getFontName());
         $dictionary->addNumberEntry('Flags', $structure->getFlags());
         $dictionary->addNumberArrayEntry('FontBBox', $structure->getFontBBox());
         $dictionary->addNumberEntry('ItalicAngle', $structure->getItalicAngle());
         $dictionary->addNumberEntry('Ascent', $structure->getAscent());
-        $dictionary->addNumberEntry('Decent', $structure->getDecent());
+        $dictionary->addNumberEntry('Descent', $structure->getDescent());
         $dictionary->addNumberEntry('CapHeight', $structure->getCapHeight());
         $dictionary->addNumberEntry('StemV', $structure->getStemV());
 
@@ -256,6 +256,10 @@ class CatalogVisitor
     public function visitCIDFont(Catalog\Font\Structure\CIDFont $structure)
     {
         $dictionary = $this->file->addDictionaryObject();
+
+        $dictionary->addNameEntry('Type', 'Font');
+        $dictionary->addNameEntry('Subtype', 'CIDFontType2');
+        $dictionary->addNameEntry('BaseFont', $structure->getBaseFont());
 
         $cidDictionary = $structure->getCIDSystemInfo()->accept($this);
         $dictionary->addDictionaryEntry('CIDSystemInfo', $cidDictionary);

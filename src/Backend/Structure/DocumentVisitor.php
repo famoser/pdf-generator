@@ -26,7 +26,10 @@ use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
 use PdfGenerator\Font\Backend\FileWriter;
+use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
+use PdfGenerator\Font\Frontend\File\Table\OS2Table;
 use PdfGenerator\Font\IR\Optimizer;
+use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 
 class DocumentVisitor
@@ -191,13 +194,37 @@ class DocumentVisitor
 
         $fontDescriptor = new FontDescriptor();
         $fontDescriptor->setFontName($fontName);
-        $fontDescriptor->setFlags(0); // could calculate from OS/2 IBM font family
 
+        $BBox = $this->getFontBBox($font->getCharacters(), $sizeNormalizer);
+        $fontDescriptor->setFontBBox($BBox);
+
+        $angle = $this->getFontItalicAngle($HHeaTable);
+
+        $fontFlags = $this->calculateFontFlags($OS2Table, $angle > 0);
+        $fontDescriptor->setFlags($fontFlags);
+
+        $fontDescriptor->setItalicAngle($angle);
+        $fontDescriptor->setAscent($HHeaTable->getAscent() * $sizeNormalizer);
+        $fontDescriptor->setDescent($HHeaTable->getDescent() * $sizeNormalizer);
+        $fontDescriptor->setCapHeight((int)($OS2Table->getSCapHeight() * $sizeNormalizer));
+        $fontDescriptor->setStemV(0); // TODO find out where to get this from
+        $fontDescriptor->setFontFile3($fontStream);
+
+        return $fontDescriptor;
+    }
+
+    /**
+     * @param Character[] $characters
+     *
+     * @return int[]
+     */
+    private function getFontBBox(array $characters, float $sizeNormalizer): array
+    {
         $xMin = 0;
         $xMax = 0;
         $yMin = 0;
         $yMax = 0;
-        foreach ($font->getCharacters() as $character) {
+        foreach ($characters as $character) {
             if ($character->getGlyfTable() === null) {
                 continue;
             }
@@ -208,21 +235,47 @@ class DocumentVisitor
             $yMax = max($yMax, $character->getGlyfTable()->getYMax());
         }
 
-        $fontDescriptor->setFontBBox([(int)($xMin * $sizeNormalizer), ((int)($yMin * $sizeNormalizer)), ((int)($xMax * $sizeNormalizer)), (int)($yMax * $sizeNormalizer)]);
+        return [(int)($xMin * $sizeNormalizer), ((int)($yMin * $sizeNormalizer)), ((int)($xMax * $sizeNormalizer)), (int)($yMax * $sizeNormalizer)];
+    }
 
-        if ($HHeaTable->getCaretSlopeRun() !== 0) {
-            $angle = tanh($HHeaTable->getCaretSlopeRise() / $HHeaTable->getCaretSlopeRun()) - 90;
-        } else {
-            $angle = 0;
+    private function getFontItalicAngle(HHeaTable $HHeaTable): float
+    {
+        if ($HHeaTable->getCaretSlopeRun() === 0) {
+            return 0;
         }
 
-        $fontDescriptor->setItalicAngle($angle);
-        $fontDescriptor->setAscent($HHeaTable->getAscent() * $sizeNormalizer);
-        $fontDescriptor->setDecent($HHeaTable->getDecent() * $sizeNormalizer);
-        $fontDescriptor->setCapHeight((int)($OS2Table->getSCapHeight() * $sizeNormalizer));
-        $fontDescriptor->setStemV(0); // TODO find out where to get this from
-        $fontDescriptor->setFontFile3($fontStream);
+        return tanh($HHeaTable->getCaretSlopeRise() / $HHeaTable->getCaretSlopeRun()) - 90;
+    }
 
-        return $fontDescriptor;
+    private function calculateFontFlags(OS2Table $OS2Table, bool $isItalic): int
+    {
+        $flags = 0;
+
+        $panose = $OS2Table->getPanose();
+
+        // fixed pitch
+        if ($panose[3] === 9) { // when proportion is monospaced
+            ++$flags;
+        }
+
+        // serif
+        if ($panose[1] >= 11 && $panose[1] <= 13) { // when serif style is normal sans, obtuse sans or perpendicular sans
+            $flags += 1 << 1;
+        }
+
+        // always symbolic (characters outside adobe standard set)
+        $flags += 1 << 2;
+
+        // script (cursive)
+        if ($panose[0] === 3) { // when family type is hand-written
+            $flags += 1 << 3;
+        }
+
+        // italic
+        if ($isItalic) {
+            $flags += 1 << 6;
+        }
+
+        return $flags;
     }
 }

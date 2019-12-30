@@ -103,7 +103,7 @@ class FontDescriptor extends BaseIdentifiableStructure
      *
      * @var int
      */
-    private $decent;
+    private $descent;
 
     /**
      * height of cap characters.
@@ -180,14 +180,14 @@ class FontDescriptor extends BaseIdentifiableStructure
         $this->ascent = $ascent;
     }
 
-    public function getDecent(): int
+    public function getDescent(): int
     {
-        return $this->decent;
+        return $this->descent;
     }
 
-    public function setDecent(int $decent): void
+    public function setDescent(int $descent): void
     {
-        $this->decent = $decent;
+        $this->descent = $descent;
     }
 
     public function getCapHeight(): int

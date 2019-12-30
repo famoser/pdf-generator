@@ -150,7 +150,7 @@ class FileWriter
 
         $hHeaTable->setVersion(1.0);
         $hHeaTable->setAscent($source->getAscent());
-        $hHeaTable->setDecent($source->getDecent());
+        $hHeaTable->setDescent($source->getDescent());
         $hHeaTable->setLineGap($source->getLineGap());
 
         $advanceWidthMax = 0;

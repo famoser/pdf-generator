@@ -292,6 +292,7 @@ class Parser
 
         foreach ($fontFile->getNameTable()->getNameRecords() as $nameRecord) {
             $value = $nameRecord->getValue();
+            $value = mb_convert_encoding($value, 'UTF-8', 'UTF-16BE');
 
             switch ($nameRecord->getNameID()) {
                 case 0:
