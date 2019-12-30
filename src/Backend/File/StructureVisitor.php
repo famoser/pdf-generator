@@ -14,8 +14,6 @@ namespace PdfGenerator\Backend\File;
 use PdfGenerator\Backend\File\Structure\CrossReferenceTable;
 use PdfGenerator\Backend\File\Structure\FileTrailer;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
-use PdfGenerator\Backend\File\Token\NumberToken;
-use PdfGenerator\Backend\File\Token\ReferenceToken;
 
 class StructureVisitor
 {
@@ -60,9 +58,9 @@ class StructureVisitor
     public function visitFileTrailer(Structure\FileTrailer $param)
     {
         $trailerDictionary = new DictionaryToken();
-        $trailerDictionary->setEntry('Size', new NumberToken($param->getSize() + 1));
-        $trailerDictionary->setEntry('Root', new ReferenceToken($param->getRoot()));
-        $trailerDictionary->setEntry('Info', new ReferenceToken($param->getInfo()));
+        $trailerDictionary->setNumberEntry('Size', $param->getSize() + 1);
+        $trailerDictionary->setReferenceEntry('Root', $param->getRoot());
+        $trailerDictionary->setReferenceEntry('Info', $param->getInfo());
 
         $lines = [];
         $lines[] = 'trailer';

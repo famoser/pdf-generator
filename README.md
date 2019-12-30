@@ -103,8 +103,7 @@ First, the backend will be created following closely the standard of adobe.
     - [x] add CID font capability
 - [x] print UTF-8 text
 - [ ] stabilize
-    - [ ] clarify token types (especiall text vs reference tokens)
-    - [ ] add binary data to header comment (E2E3CFD3)
+    - [ ] ensure font name is valid
     - [ ] ensure validators accept the pdf
 
 ### Minimal IR Base

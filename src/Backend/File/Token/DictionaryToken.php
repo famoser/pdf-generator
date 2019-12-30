@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Backend\File\Token;
 
+use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Token\Base\BaseToken;
 use PdfGenerator\Backend\File\TokenVisitor;
 
@@ -21,14 +22,32 @@ class DictionaryToken extends BaseToken
      */
     private $keyValue;
 
-    public function setEntry(string $key, BaseToken $token)
+    /**
+     * @param BaseToken[] $tokens
+     */
+    public function setArrayEntry(string $key, array $tokens)
     {
-        $this->keyValue[$key] = $token;
+        $this->setEntry($key, new ArrayToken($tokens));
     }
 
     public function setTextEntry(string $key, string $value)
     {
-        $this->keyValue[$key] = new TextToken($value);
+        $this->setEntry($key, new TextToken($value));
+    }
+
+    public function setNameEntry(string $key, string $value)
+    {
+        $this->setEntry($key, new NameToken($value));
+    }
+
+    public function setReferenceEntry(string $key, BaseObject $value)
+    {
+        $this->setEntry($key, new ReferenceToken($value));
+    }
+
+    public function setDictionaryEntry(string $key, self $token)
+    {
+        $this->setEntry($key, $token);
     }
 
     /**
@@ -36,7 +55,12 @@ class DictionaryToken extends BaseToken
      */
     public function setNumberEntry(string $key, $value)
     {
-        $this->keyValue[$key] = new NumberToken($value);
+        $this->setEntry($key, new NumberToken($value));
+    }
+
+    private function setEntry(string $key, BaseToken $token)
+    {
+        $this->keyValue[$key] = $token;
     }
 
     public function accept(TokenVisitor $visitor): string
