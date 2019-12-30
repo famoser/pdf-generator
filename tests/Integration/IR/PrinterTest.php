@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
+use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\Printer;
 use PdfGenerator\IR\Structure\Document;
@@ -188,8 +189,68 @@ class PrinterTest extends TestCase
 
         // act
         $printer->setTextStyle($textStyle);
-        $printer->printText('hallo');
+        $printer->printText('hallo ä');
         $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintText_withOptimizationEnabled_stuffHappens()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $textStyle = new TextStyle($font, 12);
+        $imageSrc = ResourcesProvider::getImage1Path();
+
+        // act
+        $printer->setTextStyle($textStyle);
+        $printer->printText('hallo');
+        $printer->printImage($imageSrc, 20, 20);
+        $backend = $document->render();
+
+        $documentConfiguration = new Configuration();
+        $documentConfiguration->setCreateFontSubsets(true);
+        $documentConfiguration->setAutoResizeImages(true);
+        $backend->setDocumentConfiguration($documentConfiguration);
+
+        $result = $backend->save();
+        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintText_withTTFEnabled_stuffHappens()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $textStyle = new TextStyle($font, 12);
+
+        // act
+        $printer->setTextStyle($textStyle);
+        $printer->printText('hallo');
+        $backend = $document->render();
+
+        $documentConfiguration = new Configuration();
+        $documentConfiguration->setCreateFontSubsets(false);
+        $documentConfiguration->setUseTTFFonts(true);
+        $backend->setDocumentConfiguration($documentConfiguration);
+
+        $result = $backend->save();
         file_put_contents('pdf.pdf', $result);
 
         // assert

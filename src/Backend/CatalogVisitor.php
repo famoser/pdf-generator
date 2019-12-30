@@ -172,6 +172,25 @@ class CatalogVisitor
         return $dictionary;
     }
 
+    public function visitTrueTypeFont(Catalog\Font\TrueType $structure): BaseObject
+    {
+        $dictionary = $this->file->addDictionaryObject();
+
+        $dictionary->addNameEntry('Type', 'Font');
+        $dictionary->addNameEntry('Subtype', 'TrueType');
+        $dictionary->addNameEntry('BaseFont', $structure->getBaseFont());
+
+        $dictionary->addNumberEntry('FirstChar', $structure->getFirstChar());
+        $dictionary->addNumberEntry('LastChar', $structure->getLastChar());
+
+        $dictionary->addNumberArrayEntry('Widths', $structure->getWidths());
+
+        $reference = $structure->getFontDescriptor()->accept($this);
+        $dictionary->addReferenceEntry('FontDescriptor', $reference);
+
+        return $dictionary;
+    }
+
     public function visitImage(Catalog\Image $structure): BaseObject
     {
         $stream = $this->file->addStreamObject($structure->getContent());
@@ -259,6 +278,7 @@ class CatalogVisitor
 
         $dictionary->addNameEntry('Type', 'Font');
         $dictionary->addNameEntry('Subtype', 'CIDFontType2');
+        $dictionary->addNameEntry('CIDToGIDMap', 'Identity');
         $dictionary->addNameEntry('BaseFont', $structure->getBaseFont());
 
         $cidDictionary = $structure->getCIDSystemInfo()->accept($this);

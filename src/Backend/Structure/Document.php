@@ -24,6 +24,11 @@ class Document
      */
     private $pages = [];
 
+    public function __construct()
+    {
+        $this->documentConfiguration = new Configuration();
+    }
+
     public function addPage(Page $page)
     {
         $this->pages[] = $page;
@@ -34,7 +39,7 @@ class Document
      */
     public function render()
     {
-        $documentVisitor = new DocumentVisitor(new Configuration());
+        $documentVisitor = new DocumentVisitor($this->documentConfiguration);
         $documentResources = new DocumentResources($documentVisitor);
 
         $pages = new Pages();
@@ -52,5 +57,10 @@ class Document
     public function save()
     {
         return $this->render()->save();
+    }
+
+    public function setDocumentConfiguration(Configuration $documentConfiguration): void
+    {
+        $this->documentConfiguration = $documentConfiguration;
     }
 }

@@ -24,23 +24,23 @@ class EmbeddedFont extends Font
     private $encoding;
 
     /**
-     * @var \PdfGenerator\Font\IR\Structure\Font
+     * @var string
      */
-    private $font;
+    private $fontPath;
 
     /**
      * @var string
      */
-    private $usedWithText;
+    private $charactersUsedInText;
 
     /**
      * EmbeddedFont constructor.
      */
-    public function __construct(string $encoding, \PdfGenerator\Font\IR\Structure\Font $font, string $usedWithText)
+    public function __construct(string $encoding, string $fontPath, string $charactersUsedInText)
     {
         $this->encoding = $encoding;
-        $this->font = $font;
-        $this->usedWithText = $usedWithText;
+        $this->fontPath = $fontPath;
+        $this->charactersUsedInText = $charactersUsedInText;
     }
 
     public function getEncoding(): string
@@ -48,14 +48,14 @@ class EmbeddedFont extends Font
         return $this->encoding;
     }
 
-    public function getFont(): \PdfGenerator\Font\IR\Structure\Font
+    public function getFontPath(): string
     {
-        return $this->font;
+        return $this->fontPath;
     }
 
-    public function getUsedWithText(): string
+    public function getCharactersUsedInText(): string
     {
-        return $this->usedWithText;
+        return $this->charactersUsedInText;
     }
 
     /**

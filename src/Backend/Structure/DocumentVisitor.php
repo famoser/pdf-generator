@@ -15,6 +15,7 @@ use PdfGenerator\Backend\Catalog\Font\Structure\CIDFont;
 use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontStream;
+use PdfGenerator\Backend\Catalog\Font\TrueType;
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Catalog\Font\Type1;
 use PdfGenerator\Backend\Catalog\Image as CatalogImage;
@@ -29,6 +30,7 @@ use PdfGenerator\Font\Backend\FileWriter;
 use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\File\Table\OS2Table;
 use PdfGenerator\Font\IR\Optimizer;
+use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 
@@ -130,53 +132,80 @@ class DocumentVisitor
     /**
      * @throws \Exception
      *
-     * @return Type0
+     * @return Type0|TrueType
      */
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
-        $font = $param->getFont();
+        $fontData = file_get_contents($param->getFontPath());
 
-        $fontSubsetDefinition = $this->fontOptimizer->generateFontSubset($font, $param->getUsedWithText());
+        $parser = Parser::create();
+        $font = $parser->parse($fontData);
 
-        // create subset
-        $optimizer = Optimizer::create();
-        $fontSubset = $optimizer->getFontSubset($font, $fontSubsetDefinition->getCharacters());
-
-        $writer = FileWriter::create();
-        $content = $writer->writeFont($fontSubset);
-
-        $characterWidths = [];
-        $sizeNormalizer = 1024 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm(); // this could be a hack; but else the pdf character widths look messed up
-        foreach ($fontSubset->getCharacters() as $character) {
-            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+        $createFontSubsets = $this->configuration->getCreateFontSubsets();
+        if ($createFontSubsets) {
+            list($font, $fontData, $fontSubsetDefinition) = $this->createFontSubset($font, $param->getCharactersUsedInText());
         }
-        $widths[0] = array_merge([$characterWidths[0]], $characterWidths); // the initial character is mapped twice; to .notdef and U+0000. need to have both widths therefore
 
         $fontName = $font->getFontInformation()->getFullName() ?? 'invalidFontName';
+        $fontName = strtr($fontName, [' ' => '']); // remove any spaces in name
 
         $fontStream = new FontStream();
-        $fontStream->setFontData($content);
+        $fontStream->setFontData($fontData);
         $fontStream->setSubtype(FontStream::SUBTYPE_OPEN_TYPE);
 
+        $sizeNormalizer = 1024 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm(); // this could be a hack; but else the pdf character widths look messed up
+        $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream, $sizeNormalizer);
+
+        $characterWidths = [];
+        foreach ($font->getCharacters() as $character) {
+            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+        }
+
+        if (!$this->configuration->getUseTTFFonts() && $createFontSubsets) {
+            // the initial character is mapped twice; to .notdef and U+0000. need to have both widths therefore
+            $widths[0] = array_merge([$characterWidths[0]], $characterWidths);
+
+            return $this->createType0Font($fontSubsetDefinition, $fontDescriptor, $widths);
+        }
+        $firstChar = $font->getCharacters()[0]->getUnicodePoint();
+        $lastChar = \count($font->getCharacters()) + $firstChar;
+
+        return $this->createTrueTypeFont($fontDescriptor, $characterWidths, $firstChar, $lastChar);
+    }
+
+    private function createTrueTypeFont(FontDescriptor $fontDescriptor, array $widths, int $firstChar, int $lastChar): TrueType
+    {
+        $identifier = $this->generateIdentifier('F');
+        $trueTypeFont = new TrueType($identifier);
+
+        $trueTypeFont->setBaseFont($fontDescriptor->getFontName());
+        $trueTypeFont->setFontDescriptor($fontDescriptor);
+        $trueTypeFont->setWidths($widths);
+        $trueTypeFont->setFirstChar($firstChar);
+        $trueTypeFont->setLastChar(655);
+
+        return $trueTypeFont;
+    }
+
+    private function createType0Font(FontOptimizer\FontSubsetDefinition $fontSubsetDefinition, FontDescriptor $fontDescriptor, array $widths)
+    {
         $cIDSystemInfo = new CIDSystemInfo();
         $cIDSystemInfo->setRegistry('famoser');
         $cIDSystemInfo->setOrdering('custom-1');
         $cIDSystemInfo->setSupplement(1);
-
-        $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream, $sizeNormalizer);
 
         $cidFont = new CIDFont();
         $cidFont->setSubType(CIDFont::SUBTYPE_CID_FONT_TYPE_2);
         $cidFont->setDW(500);
         $cidFont->setCIDSystemInfo($cIDSystemInfo);
         $cidFont->setFontDescriptor($fontDescriptor);
-        $cidFont->setBaseFont($fontName);
+        $cidFont->setBaseFont($fontDescriptor->getFontName());
         $cidFont->setW($widths);
 
         $identifier = $this->generateIdentifier('F');
         $type0Font = new Type0($identifier);
         $type0Font->setDescendantFont($cidFont);
-        $type0Font->setBaseFont($fontName);
+        $type0Font->setBaseFont($fontDescriptor->getFontName());
 
         $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, 'someName', $fontSubsetDefinition);
         $type0Font->setEncoding($characterIndexCMap);
@@ -255,27 +284,44 @@ class DocumentVisitor
 
         // fixed pitch
         if ($panose[3] === 9) { // when proportion is monospaced
-            ++$flags;
+            $flags = $flags | FontDescriptor::FLAG_FIXED_PITCH;
         }
 
         // serif
         if ($panose[1] >= 11 && $panose[1] <= 13) { // when serif style is normal sans, obtuse sans or perpendicular sans
-            $flags += 1 << 1;
+            $flags = $flags | FontDescriptor::FLAG_SERIF;
         }
 
         // always symbolic (characters outside adobe standard set)
-        $flags += 1 << 2;
+        $flags = $flags | FontDescriptor::FLAG_SYMBOLIC;
 
         // script (cursive)
         if ($panose[0] === 3) { // when family type is hand-written
-            $flags += 1 << 3;
+            $flags = $flags | FontDescriptor::FLAG_SCRIPT;
         }
 
         // italic
         if ($isItalic) {
-            $flags += 1 << 6;
+            $flags = $flags | FontDescriptor::FLAG_ITALIC;
         }
 
         return $flags;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function createFontSubset(Font $font, string $charactersUsedInText): array
+    {
+        $fontSubsetDefinition = $this->fontOptimizer->generateFontSubset($font, $charactersUsedInText);
+
+        // create subset
+        $optimizer = Optimizer::create();
+        $font = $optimizer->getFontSubset($font, $fontSubsetDefinition->getCharacters());
+
+        $writer = FileWriter::create();
+        $fontData = $writer->writeFont($font);
+
+        return [$font, $fontData, $fontSubsetDefinition];
     }
 }

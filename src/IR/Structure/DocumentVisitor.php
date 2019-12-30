@@ -86,7 +86,7 @@ class DocumentVisitor
     {
         $text = $this->analysisResult->getTextPerFont($param);
 
-        return new BackendEmbeddedFont(BackendEmbeddedFont::ENCODING_UTF_8, $param->getFont(), $text);
+        return new BackendEmbeddedFont(BackendEmbeddedFont::ENCODING_UTF_8, $param->getFontPath(), $text);
     }
 
     /**

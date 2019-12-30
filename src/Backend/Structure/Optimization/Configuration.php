@@ -23,6 +23,16 @@ class Configuration
      */
     private $autoResizeImagesDpi = 72;
 
+    /**
+     * @var bool
+     */
+    private $createFontSubsets = true;
+
+    /**
+     * @var bool
+     */
+    private $useTTFFonts = false;
+
     public function getAutoResizeImages(): bool
     {
         return $this->autoResizeImages;
@@ -41,5 +51,25 @@ class Configuration
     public function setAutoResizeImagesDpi(int $autoResizeImagesDpi): void
     {
         $this->autoResizeImagesDpi = $autoResizeImagesDpi;
+    }
+
+    public function getCreateFontSubsets(): bool
+    {
+        return $this->createFontSubsets;
+    }
+
+    public function setCreateFontSubsets(bool $createFontSubsets): void
+    {
+        $this->createFontSubsets = $createFontSubsets;
+    }
+
+    public function getUseTTFFonts(): bool
+    {
+        return $this->useTTFFonts;
+    }
+
+    public function setUseTTFFonts(bool $useTTFFonts): void
+    {
+        $this->useTTFFonts = $useTTFFonts;
     }
 }

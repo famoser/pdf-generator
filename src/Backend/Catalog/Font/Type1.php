@@ -17,7 +17,6 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class Type1 extends Font
 {
-    const SUBTYPE_TYPE1 = 'Type1';
     const BASE_FONT_TIMES__ROMAN = 'Times-Roman';
     const BASE_FONT_HELVETICA = 'Helvetica';
     const BASE_FONT_COURIER = 'Courier';
