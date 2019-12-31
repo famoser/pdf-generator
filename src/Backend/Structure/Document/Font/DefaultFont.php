@@ -22,32 +22,16 @@ class DefaultFont extends Font
     private $baseFont;
 
     /**
-     * equivalent to Windows-1252 according to comment https://www.php.net/manual/de/haru.builtin.encodings.php.
-     */
-    const ENCODING_WIN_ANSI_ENCODING = 'WinAnsiEncoding';
-
-    /**
-     * @var string
-     */
-    private $encoding;
-
-    /**
      * DefaultFont constructor.
      */
-    public function __construct(string $baseFont, string $encoding)
+    public function __construct(string $baseFont)
     {
         $this->baseFont = $baseFont;
-        $this->encoding = $encoding;
     }
 
     public function getBaseFont(): string
     {
         return $this->baseFont;
-    }
-
-    public function getEncoding(): string
-    {
-        return $this->encoding;
     }
 
     /**

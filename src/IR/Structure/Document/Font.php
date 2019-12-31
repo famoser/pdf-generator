@@ -15,8 +15,4 @@ use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
 
 abstract class Font extends BaseDocumentStructure
 {
-    /**
-     * sets the encoding used by the font.
-     */
-    abstract public function encode(string $escaped): string;
 }

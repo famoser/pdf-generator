@@ -99,12 +99,9 @@ First, the backend will be created following closely the standard of adobe.
 - [x] print images
 - [x] print & style drawings (lines & rectangles)
 - [x] use TTF fonts
-    - [x] read, modify & write TTF
-    - [x] add CID font capability
 - [x] print UTF-8 text
-- [ ] stabilize
-    - [ ] ensure font name is valid
-    - [ ] ensure validators accept the pdf
+    - [ ] move text encoding into backend
+    - [ ] make font dimensions available in the IR (to measure text)
 
 ### Minimal IR Base
 To be able to print to the pdf sensible some initial works needs to be done to see whats doable and what is not.

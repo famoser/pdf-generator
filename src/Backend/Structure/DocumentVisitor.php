@@ -126,7 +126,7 @@ class DocumentVisitor
     {
         $identifier = $this->generateIdentifier('F');
 
-        return new Type1($identifier, $param->getBaseFont(), $param->getEncoding());
+        return new Type1($identifier, $param->getBaseFont());
     }
 
     /**
@@ -156,39 +156,54 @@ class DocumentVisitor
         $sizeNormalizer = 1024 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm(); // this could be a hack; but else the pdf character widths look messed up
         $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream, $sizeNormalizer);
 
+        if ($createFontSubsets && !$this->configuration->getUseTTFFonts()) {
+            return $this->createType0Font($fontSubsetDefinition, $fontDescriptor, $font->getCharacters(), $sizeNormalizer);
+        }
+
+        return $this->createTrueTypeFont($fontDescriptor, $font->getCharacters(), $sizeNormalizer);
+    }
+
+    /**
+     * @param Character[] $characters
+     */
+    private function createTrueTypeFont(FontDescriptor $fontDescriptor, array $characters, float $sizeNormalizer): TrueType
+    {
+        $widths = [];
+
+        // default value is 0
+        for ($i = 0; $i < 255; ++$i) {
+            $widths[$i] = 0;
+        }
+
+        // add widths of windows code page
+        foreach ($characters as $character) {
+            // create windows character set
+            $mappingIndex = $this->getWindows1252Mapping($character->getUnicodePoint());
+            if ($mappingIndex !== null) {
+                $widths[$mappingIndex] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+            }
+        }
+
+        $identifier = $this->generateIdentifier('F');
+
+        return new TrueType($identifier, $fontDescriptor, $widths);
+    }
+
+    /**
+     * @param Character[] $characters
+     *
+     * @return Type0
+     */
+    private function createType0Font(FontOptimizer\FontSubsetDefinition $fontSubsetDefinition, FontDescriptor $fontDescriptor, array $characters, float $sizeNormalizer)
+    {
         $characterWidths = [];
-        foreach ($font->getCharacters() as $character) {
+        foreach ($characters as $character) {
             $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
         }
 
-        if (!$this->configuration->getUseTTFFonts() && $createFontSubsets) {
-            // the initial character is mapped twice; to .notdef and U+0000. need to have both widths therefore
-            $widths[0] = array_merge([$characterWidths[0]], $characterWidths);
+        // the initial character is mapped twice; to .notdef and U+0000. need to have both widths therefore
+        $widths[0] = array_merge([$characterWidths[0]], $characterWidths);
 
-            return $this->createType0Font($fontSubsetDefinition, $fontDescriptor, $widths);
-        }
-        $firstChar = $font->getCharacters()[0]->getUnicodePoint();
-        $lastChar = \count($font->getCharacters()) + $firstChar;
-
-        return $this->createTrueTypeFont($fontDescriptor, $characterWidths, $firstChar, $lastChar);
-    }
-
-    private function createTrueTypeFont(FontDescriptor $fontDescriptor, array $widths, int $firstChar, int $lastChar): TrueType
-    {
-        $identifier = $this->generateIdentifier('F');
-        $trueTypeFont = new TrueType($identifier);
-
-        $trueTypeFont->setBaseFont($fontDescriptor->getFontName());
-        $trueTypeFont->setFontDescriptor($fontDescriptor);
-        $trueTypeFont->setWidths($widths);
-        $trueTypeFont->setFirstChar($firstChar);
-        $trueTypeFont->setLastChar(655);
-
-        return $trueTypeFont;
-    }
-
-    private function createType0Font(FontOptimizer\FontSubsetDefinition $fontSubsetDefinition, FontDescriptor $fontDescriptor, array $widths)
-    {
         $cIDSystemInfo = new CIDSystemInfo();
         $cIDSystemInfo->setRegistry('famoser');
         $cIDSystemInfo->setOrdering('custom-1');
@@ -323,5 +338,79 @@ class DocumentVisitor
         $fontData = $writer->writeFont($font);
 
         return [$font, $fontData, $fontSubsetDefinition];
+    }
+
+    /**
+     * @param int $getUnicodePoint
+     */
+    private function getWindows1252Mapping(int $unicodePoint): ?int
+    {
+        if ($unicodePoint < 0x80) {
+            return $unicodePoint;
+        }
+
+        if ($unicodePoint >= 0xA0 && $unicodePoint <= 0xFF) {
+            return $unicodePoint;
+        }
+
+        switch ($unicodePoint) {
+            case 0x20AC:
+                return 0x80;
+            case 0x201A:
+                return 0x82;
+            case 0x0192:
+                return 0x83;
+            case 0x201E:
+                return 0x84;
+            case 0x2026:
+                return 0x85;
+            case 0x2020:
+                return 0x86;
+            case 0x2021:
+                return 0x87;
+            case 0x20C6:
+                return 0x88;
+            case 0x2030:
+                return 0x89;
+            case 0x0160:
+                return 0x8A;
+            case 0x2039:
+                return 0x8B;
+            case 0x0152:
+                return 0x8C;
+            case 0x017D:
+                return 0x8E;
+
+            case 0x2018:
+                return 0x91;
+            case 0x2019:
+                return 0x92;
+            case 0x201C:
+                return 0x93;
+            case 0x201D:
+                return 0x94;
+            case 0x2022:
+                return 0x95;
+            case 0x2013:
+                return 0x96;
+            case 0x2014:
+                return 0x97;
+            case 0x02DC:
+                return 0x98;
+            case 0x2122:
+                return 0x99;
+            case 0x0161:
+                return 0x9A;
+            case 0x203A:
+                return 0x9B;
+            case 0x0153:
+                return 0x9C;
+            case 0x017E:
+                return 0x9E;
+            case 0x0178:
+                return 0x9F;
+        }
+
+        return null;
     }
 }

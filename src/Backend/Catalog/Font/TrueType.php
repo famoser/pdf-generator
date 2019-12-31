@@ -15,23 +15,8 @@ use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
-class TrueType extends Font
+class TrueType extends Type1
 {
-    /**
-     * @var string
-     */
-    private $baseFont;
-
-    /**
-     * @var int
-     */
-    private $firstChar;
-
-    /**
-     * @var int
-     */
-    private $lastChar;
-
     /**
      * @var int[]
      */
@@ -42,34 +27,12 @@ class TrueType extends Font
      */
     private $fontDescriptor;
 
-    public function getBaseFont(): string
+    public function __construct(string $identifier, Font\Structure\FontDescriptor $fontDescriptor, array $widths)
     {
-        return $this->baseFont;
-    }
+        parent::__construct($identifier, $fontDescriptor->getFontName());
 
-    public function setBaseFont(string $baseFont): void
-    {
-        $this->baseFont = $baseFont;
-    }
-
-    public function getFirstChar(): int
-    {
-        return $this->firstChar;
-    }
-
-    public function setFirstChar(int $firstChar): void
-    {
-        $this->firstChar = $firstChar;
-    }
-
-    public function getLastChar(): int
-    {
-        return $this->lastChar;
-    }
-
-    public function setLastChar(int $lastChar): void
-    {
-        $this->lastChar = $lastChar;
+        $this->widths = $widths;
+        $this->fontDescriptor = $fontDescriptor;
     }
 
     /**
@@ -81,21 +44,10 @@ class TrueType extends Font
     }
 
     /**
-     * @param int[] $widths
-     */
-    public function setWidths(array $widths): void
-    {
-        $this->widths = $widths;
-    }
-
+     * @return Structure\FontDescriptor     */
     public function getFontDescriptor(): Structure\FontDescriptor
     {
         return $this->fontDescriptor;
-    }
-
-    public function setFontDescriptor(Structure\FontDescriptor $fontDescriptor): void
-    {
-        $this->fontDescriptor = $fontDescriptor;
     }
 
     /**
@@ -104,5 +56,10 @@ class TrueType extends Font
     public function accept(CatalogVisitor $visitor)
     {
         return $visitor->visitTrueTypeFont($this);
+    }
+
+    public function encode(string $escaped): string
+    {
+        return mb_convert_encoding($escaped, 'Windows-1252', 'UTF-8');
     }
 }

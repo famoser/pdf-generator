@@ -179,9 +179,10 @@ class CatalogVisitor
         $dictionary->addNameEntry('Type', 'Font');
         $dictionary->addNameEntry('Subtype', 'TrueType');
         $dictionary->addNameEntry('BaseFont', $structure->getBaseFont());
+        $dictionary->addNameEntry('Encoding', $structure->getEncoding());
 
-        $dictionary->addNumberEntry('FirstChar', $structure->getFirstChar());
-        $dictionary->addNumberEntry('LastChar', $structure->getLastChar());
+        $dictionary->addNumberEntry('FirstChar', 0);
+        $dictionary->addNumberEntry('LastChar', 255);
 
         $dictionary->addNumberArrayEntry('Widths', $structure->getWidths());
 

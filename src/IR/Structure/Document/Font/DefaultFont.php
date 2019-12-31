@@ -82,6 +82,5 @@ class DefaultFont extends Font
      */
     public function encode(string $escaped): string
     {
-        return mb_convert_encoding($escaped, 'Windows-1252', 'UTF-8');
     }
 }

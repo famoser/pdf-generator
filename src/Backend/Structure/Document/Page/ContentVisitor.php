@@ -99,15 +99,35 @@ class ContentVisitor
         $printOperators = [];
 
         // print first line
-        $printOperators[] = '(' . $lines[0] . ')Tj';
+        $printOperators[] = '(' . $this->prepareTextForPrint($lines[0]) . ')Tj';
 
         // use the ' operator to start a new line before printing
         $lineCount = \count($lines);
         for ($i = 1; $i < $lineCount; ++$i) {
-            $printOperators[] = '(' . $lines[$i] . ')\'';
+            $printOperators[] = '(' . $this->prepareTextForPrint($lines[$i]) . ')\'';
         }
 
         return $printOperators;
+    }
+
+    private function prepareTextForPrint(string $text): string
+    {
+        $font = $this->documentResources->getFont($this->state->getTextState()->getFont());
+
+        $encoded = $font->encode($text);
+
+        return $this->escapeReservedCharacters($encoded);
+    }
+
+    private function escapeReservedCharacters(string $text): string
+    {
+        $reserved = ['\\', '(', ')'];
+
+        foreach ($reserved as $entry) {
+            $text = str_replace($entry, '\\' . $entry, $text);
+        }
+
+        return $text;
     }
 
     private function getPaintingOperator(RectangleContent $rectangle): string
