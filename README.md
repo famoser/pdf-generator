@@ -100,7 +100,7 @@ First, the backend will be created following closely the standard of adobe.
 - [x] print & style drawings (lines & rectangles)
 - [x] use TTF fonts
 - [x] print UTF-8 text
-    - [ ] move text encoding into backend
+    - [ ] check if all characters correctly included in font (like ä)
     - [ ] make font dimensions available in the IR (to measure text)
 
 ### Minimal IR Base

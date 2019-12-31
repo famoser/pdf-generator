@@ -178,28 +178,6 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_withEmbeddedFont_textAppears()
-    {
-        // arrange
-        $document = new Document();
-        $printer = new Printer($document);
-        $printer->setCursor(new Cursor(20, 20, 1));
-        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
-        $textStyle = new TextStyle($font, 12);
-
-        // act
-        $printer->setTextStyle($textStyle);
-        $printer->printText('hallo ä');
-        $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
-
-        // assert
-        $this->assertNotEmpty($result);
-    }
-
-    /**
-     * @throws \Exception
-     */
     public function testPrintText_withOptimizationEnabled_stuffHappens()
     {
         // arrange
@@ -247,6 +225,59 @@ class PrinterTest extends TestCase
 
         $documentConfiguration = new Configuration();
         $documentConfiguration->setCreateFontSubsets(false);
+        $documentConfiguration->setUseTTFFonts(true);
+        $backend->setDocumentConfiguration($documentConfiguration);
+
+        $result = $backend->save();
+        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintText_withEmbeddedFont_textAppears()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $textStyle = new TextStyle($font, 12);
+
+        // act
+        $printer->setTextStyle($textStyle);
+        // TODO: why does ä not show up
+        $printer->printText('hallo ä');
+        $result = $printer->save();
+        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintText_withTTFSubSetsEnabled_stuffHappens()
+    {
+        // arrange
+        $document = new Document();
+        $printer = new Printer($document);
+        $printer->setCursor(new Cursor(20, 20, 1));
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $textStyle = new TextStyle($font, 12);
+
+        // act
+        $printer->setTextStyle($textStyle);
+        // TODO: why does ä not show up
+        $printer->printText('hallo ä');
+        $backend = $document->render();
+
+        $documentConfiguration = new Configuration();
+        $documentConfiguration->setCreateFontSubsets(true);
         $documentConfiguration->setUseTTFFonts(true);
         $backend->setDocumentConfiguration($documentConfiguration);
 
