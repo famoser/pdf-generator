@@ -15,9 +15,9 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\ObjectVisitor;
 use PdfGenerator\Backend\File\Token\ArrayToken;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
+use PdfGenerator\Backend\File\Token\NameToken;
 use PdfGenerator\Backend\File\Token\NumberToken;
 use PdfGenerator\Backend\File\Token\ReferenceToken;
-use PdfGenerator\Backend\File\Token\TextToken;
 
 class DictionaryObject extends BaseObject
 {
@@ -35,7 +35,7 @@ class DictionaryObject extends BaseObject
 
     public function addReferenceEntry(string $key, BaseObject $object)
     {
-        $this->dictionaryToken->setEntry($key, new ReferenceToken($object));
+        $this->dictionaryToken->setReferenceEntry($key, $object);
     }
 
     public function addTextEntry(string $key, string $text)
@@ -43,17 +43,22 @@ class DictionaryObject extends BaseObject
         $this->dictionaryToken->setTextEntry($key, $text);
     }
 
+    public function addNameEntry(string $key, string $name)
+    {
+        $this->dictionaryToken->setNameEntry($key, $name);
+    }
+
     /**
      * @param float|int $number
      */
     public function addNumberEntry(string $key, $number)
     {
-        $this->dictionaryToken->setEntry($key, new NumberToken($number));
+        $this->dictionaryToken->setNumberEntry($key, $number);
     }
 
     public function addDictionaryEntry(string $key, DictionaryToken $dictionaryToken)
     {
-        $this->dictionaryToken->setEntry($key, $dictionaryToken);
+        $this->dictionaryToken->setDictionaryEntry($key, $dictionaryToken);
     }
 
     /**
@@ -67,7 +72,7 @@ class DictionaryObject extends BaseObject
             $tokens[] = new NumberToken($number);
         }
 
-        $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));
+        $this->dictionaryToken->setArrayEntry($key, $tokens);
     }
 
     /**
@@ -89,21 +94,21 @@ class DictionaryObject extends BaseObject
             }
         }
 
-        $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));
+        $this->dictionaryToken->setArrayEntry($key, $tokens);
     }
 
     /**
-     * @param int[] $numbers
+     * @param int[] $values
      */
-    public function addTextArrayEntry(string $key, array $numbers, string $prefix = '')
+    public function addNameArrayEntry(string $key, array $values)
     {
         $tokens = [];
 
-        foreach ($numbers as $number) {
-            $tokens[] = new TextToken($prefix . $number);
+        foreach ($values as $value) {
+            $tokens[] = new NameToken($value);
         }
 
-        $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));
+        $this->dictionaryToken->setArrayEntry($key, $tokens);
     }
 
     /**
@@ -117,7 +122,7 @@ class DictionaryObject extends BaseObject
             $tokens[] = new ReferenceToken($reference);
         }
 
-        $this->dictionaryToken->setEntry($key, new ArrayToken($tokens));
+        $this->dictionaryToken->setArrayEntry($key, $tokens);
     }
 
     public function accept(ObjectVisitor $visitor): string
@@ -128,5 +133,13 @@ class DictionaryObject extends BaseObject
     public function getDictionaryToken(): DictionaryToken
     {
         return $this->dictionaryToken;
+    }
+
+    public function addDateEntry(string $key, \DateTime $dateTime)
+    {
+        // target: D:20191225080419-00'00
+        $text = $dateTime->format('YmdHisP');
+        $text = str_replace(':', "'", $text);
+        $this->addTextEntry($key, 'D:' . $text);
     }
 }

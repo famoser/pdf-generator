@@ -17,7 +17,6 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class Type1 extends Font
 {
-    const SUBTYPE_TYPE1 = 'Type1';
     const BASE_FONT_TIMES__ROMAN = 'Times-Roman';
     const BASE_FONT_HELVETICA = 'Helvetica';
     const BASE_FONT_COURIER = 'Courier';
@@ -33,25 +32,21 @@ class Type1 extends Font
     const BASE_FONT_HELVETICA__BOLDOBLIQUE = 'Helvetica-BoldOblique';
     const BASE_FONT_COURIER__BOLDOBLIQUE = 'Courier-BoldOblique';
 
+    const ENCODING_WIN_ANSI_ENCODING = 'WinAnsiEncoding';
+
     /**
      * @var string
      */
     private $baseFont;
 
     /**
-     * @var string
-     */
-    private $encoding;
-
-    /**
      * Type1 constructor.
      */
-    public function __construct(string $identifier, string $baseFont, string $encoding)
+    public function __construct(string $identifier, string $baseFont)
     {
         parent::__construct($identifier);
 
         $this->baseFont = $baseFont;
-        $this->encoding = $encoding;
     }
 
     public function getBaseFont(): string
@@ -61,7 +56,7 @@ class Type1 extends Font
 
     public function getEncoding(): string
     {
-        return $this->encoding;
+        return self::ENCODING_WIN_ANSI_ENCODING;
     }
 
     /**
@@ -70,5 +65,14 @@ class Type1 extends Font
     public function accept(CatalogVisitor $visitor)
     {
         return $visitor->visitType1Font($this);
+    }
+
+    /**
+     * sets the encoding used by the font.
+     */
+    public function encode(string $escaped): string
+    {
+        /* windows-1252 is equivalent WinAnsiEncoding according to comment https://www.php.net/manual/de/haru.builtin.encodings.php.*/
+        return mb_convert_encoding($escaped, 'Windows-1252', 'UTF-8');
     }
 }

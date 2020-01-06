@@ -24,12 +24,12 @@ class CrossReferenceTable extends BaseStructure
     /**
      * @var int[]
      */
-    private $entries = [];
+    private $registeredEntries = [];
 
     public function registerEntrySize(int $entrySize)
     {
         $this->lastEntry += $entrySize;
-        $this->entries[] = $this->lastEntry;
+        $this->registeredEntries[] = $this->lastEntry;
     }
 
     /**
@@ -52,11 +52,11 @@ class CrossReferenceTable extends BaseStructure
         return $this->lastEntry;
     }
 
-    /**
-     * @return int[]
-     */
     public function getEntries(): array
     {
-        return $this->entries;
+        $entries = $this->registeredEntries;
+        array_pop($entries);
+
+        return $entries;
     }
 }

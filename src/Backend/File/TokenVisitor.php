@@ -40,7 +40,7 @@ class TokenVisitor
         $entries = [];
         $evaluatedTokens = $this->evaluateTokenArray($token->getKeyValue());
         foreach ($evaluatedTokens as $key => $value) {
-            $entries[] = '/' . $key . ' ' . $value;
+            $entries[] = $this->transformToName($key) . ' ' . $value;
         }
 
         return '<<' . implode(' ', $entries) . '>>';
@@ -53,7 +53,25 @@ class TokenVisitor
 
     public function visitTextToken(TextToken $token): string
     {
-        return $token->getText();
+        $escapedText = strtr($token->getText(), ['\\' => '\\\\', ')' => '\\)', '(' => '\\(']);
+
+        return '(' . $escapedText . ')';
+    }
+
+    public function visitNameToken(Token\NameToken $param)
+    {
+        /**
+         * would need to escape much more (with # followed by its number; for example "(" = #28):
+         * - all characters in $text must be between EXCLAMATION MARK(21h) (!) to TILDE (7Eh) (~).
+         */
+        $escapedText = strtr($param->getName(), [' ' => '#20']);
+
+        return $this->transformToName($escapedText);
+    }
+
+    private function transformToName(string $value)
+    {
+        return '/' . $value;
     }
 
     /**

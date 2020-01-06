@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\IR\Structure;
 
-use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
@@ -78,12 +77,7 @@ class Document
     public function getOrCreateEmbeddedFont(string $fontPath): EmbeddedFont
     {
         if (!\array_key_exists($fontPath, $this->embeddedFonts)) {
-            $content = file_get_contents($fontPath);
-
-            $parser = Parser::create();
-            $font = $parser->parse($content);
-
-            $this->embeddedFonts[$fontPath] = new EmbeddedFont($fontPath, $font);
+            $this->embeddedFonts[$fontPath] = new EmbeddedFont($fontPath);
         }
 
         return $this->embeddedFonts[$fontPath];

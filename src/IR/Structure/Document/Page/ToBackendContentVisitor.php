@@ -63,29 +63,13 @@ class ToBackendContentVisitor extends ContentVisitor
 
     public function visitText(Text $param): TextContent
     {
-        $escaped = $this->escapeReservedCharacters($param->getText());
-        $encoded = $param->getStyle()->getFont()->encode($escaped);
-        $lines = $this->splitAtNewlines($encoded);
+        $lines = $this->splitAtNewlines($param->getText());
 
         $this->applyPosition($param->getPosition());
         $this->applyTextStyle($param->getStyle());
         $textLevel = $this->pageResources->getWritingState();
 
         return new TextContent($lines, $textLevel);
-    }
-
-    /**
-     * @return mixed|string
-     */
-    private function escapeReservedCharacters(string $text)
-    {
-        $reserved = ['\\', '(', ')'];
-
-        foreach ($reserved as $entry) {
-            $text = str_replace($entry, '\\' . $entry, $text);
-        }
-
-        return $text;
     }
 
     /**

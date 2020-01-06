@@ -128,7 +128,7 @@ class TableVisitor
 
         $writer->writeFixed($hHeaTable->getVersion());
         $writer->writeFWORD($hHeaTable->getAscent());
-        $writer->writeFWORD($hHeaTable->getDecent());
+        $writer->writeFWORD($hHeaTable->getDescent());
         $writer->writeFWORD($hHeaTable->getLineGap());
         $writer->writeUFWORD($hHeaTable->getAdvanceWidthMax());
         $writer->writeFWORD($hHeaTable->getMinLeftSideBearing());

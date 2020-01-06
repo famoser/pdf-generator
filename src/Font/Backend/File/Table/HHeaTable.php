@@ -52,7 +52,7 @@ class HHeaTable extends BaseTable
      *
      * @var int
      */
-    private $decent;
+    private $descent;
 
     /**
      * line gap (additional spacing to form the line height after summation of ascent + descend)
@@ -173,14 +173,14 @@ class HHeaTable extends BaseTable
         $this->ascent = $ascent;
     }
 
-    public function getDecent(): int
+    public function getDescent(): int
     {
-        return $this->decent;
+        return $this->descent;
     }
 
-    public function setDecent(int $decent): void
+    public function setDescent(int $descent): void
     {
-        $this->decent = $decent;
+        $this->descent = $descent;
     }
 
     public function getLineGap(): int

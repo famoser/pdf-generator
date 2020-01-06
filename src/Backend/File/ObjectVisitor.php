@@ -43,7 +43,7 @@ class ObjectVisitor
         $lines[] = $param->getContent();
         $lines[] = 'endstream';
 
-        return $this->visitObject($param, "\n" . implode("\n", $lines));
+        return $this->visitObject($param, implode("\n", $lines));
     }
 
     /**
@@ -51,6 +51,6 @@ class ObjectVisitor
      */
     private function visitObject(BaseObject $object, string $content)
     {
-        return $object->getNumber() . ' 0 obj' . $content . "\nendobj";
+        return $object->getNumber() . " 0 obj\n" . $content . "\nendobj";
     }
 }

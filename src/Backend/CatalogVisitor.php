@@ -21,7 +21,6 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
-use PdfGenerator\Backend\File\Token\ReferenceToken;
 
 class CatalogVisitor
 {
@@ -46,10 +45,14 @@ class CatalogVisitor
     public function visitCatalog(Catalog\Catalog $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
-        $dictionary->addTextEntry('Type', 'Catalog');
+        $dictionary->addNameEntry('Type', 'Catalog');
 
         $reference = $structure->getPages()->accept($this);
         $dictionary->addReferenceEntry('Pages', $reference);
+
+        $dictionary = $this->file->addInfoDictionaryObject();
+        $dictionary->addTextEntry('Creator', 'famoser/pdf-generator');
+        $dictionary->addDateEntry('CreationDate', new \DateTime());
 
         return $dictionary;
     }
@@ -57,7 +60,7 @@ class CatalogVisitor
     public function visitPages(Catalog\Pages $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
-        $dictionary->addTextEntry('Type', 'Pages');
+        $dictionary->addNameEntry('Type', 'Pages');
         $this->objectNodeLookup[spl_object_id($structure)] = $dictionary;
 
         /** @var Page[] $kids */
@@ -75,7 +78,7 @@ class CatalogVisitor
     public function visitPage(Page $structure): BaseObject
     {
         $dictionary = $this->file->addDictionaryObject();
-        $dictionary->addTextEntry('Type', 'Page');
+        $dictionary->addNameEntry('Type', 'Page');
 
         $parentReference = $this->objectNodeLookup[spl_object_id($structure->getParent())];
         $dictionary->addReferenceEntry('Parent', $parentReference);
@@ -110,13 +113,13 @@ class CatalogVisitor
             $procSet[] = 'ImageC';
         }
 
-        $dictionary->addTextArrayEntry('ProcSet', $procSet, '/');
+        $dictionary->addNameArrayEntry('ProcSet', $procSet);
 
         return $dictionary;
     }
 
     /**
-     * @var ReferenceToken[]
+     * @var BaseObject[]
      */
     private $referenceLookup = [];
 
@@ -133,11 +136,11 @@ class CatalogVisitor
 
             if (!\array_key_exists($identifier, $this->referenceLookup)) {
                 $reference = $structure->accept($this);
-                $this->referenceLookup[$identifier] = new ReferenceToken($reference);
+                $this->referenceLookup[$identifier] = $reference;
             }
 
             $referenceToken = $this->referenceLookup[$identifier];
-            $dictionary->setEntry($structure->getIdentifier(), $referenceToken);
+            $dictionary->setReferenceEntry($structure->getIdentifier(), $referenceToken);
         }
 
         return $dictionary;
@@ -161,10 +164,30 @@ class CatalogVisitor
     {
         $dictionary = $this->file->addDictionaryObject();
 
-        $dictionary->addTextEntry('Type', '/Font');
-        $dictionary->addTextEntry('Subtype', '/Type1');
-        $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
-        $dictionary->addTextEntry('Encoding', '/' . $structure->getEncoding());
+        $dictionary->addNameEntry('Type', 'Font');
+        $dictionary->addNameEntry('Subtype', 'Type1');
+        $dictionary->addNameEntry('BaseFont', $structure->getBaseFont());
+        $dictionary->addNameEntry('Encoding', $structure->getEncoding());
+
+        return $dictionary;
+    }
+
+    public function visitTrueTypeFont(Catalog\Font\TrueType $structure): BaseObject
+    {
+        $dictionary = $this->file->addDictionaryObject();
+
+        $dictionary->addNameEntry('Type', 'Font');
+        $dictionary->addNameEntry('Subtype', 'TrueType');
+        $dictionary->addNameEntry('BaseFont', $structure->getBaseFont());
+        $dictionary->addNameEntry('Encoding', $structure->getEncoding());
+
+        $dictionary->addNumberEntry('FirstChar', 0);
+        $dictionary->addNumberEntry('LastChar', 255);
+
+        $dictionary->addNumberArrayEntry('Widths', $structure->getWidths());
+
+        $reference = $structure->getFontDescriptor()->accept($this);
+        $dictionary->addReferenceEntry('FontDescriptor', $reference);
 
         return $dictionary;
     }
@@ -174,14 +197,14 @@ class CatalogVisitor
         $stream = $this->file->addStreamObject($structure->getContent());
 
         $dictionary = $stream->getMetaData();
-        $dictionary->setTextEntry('Type', '/XObject');
-        $dictionary->setTextEntry('Subtype', '/Image');
-        $dictionary->setTextEntry('Width', $structure->getWidth());
-        $dictionary->setTextEntry('Height', $structure->getHeight());
-        $dictionary->setTextEntry('Filter', $structure->getFilter());
-        $dictionary->setTextEntry('BitsPerComponent', 8);
-        $dictionary->setTextEntry('ColorSpace', '/DeviceRGB');
-        $dictionary->setTextEntry('Filter', '/DCTDecode');
+        $dictionary->setNameEntry('Type', 'XObject');
+        $dictionary->setNameEntry('Subtype', 'Image');
+        $dictionary->setNumberEntry('Width', $structure->getWidth());
+        $dictionary->setNumberEntry('Height', $structure->getHeight());
+        $dictionary->setNameEntry('Filter', $structure->getFilter());
+        $dictionary->setNumberEntry('BitsPerComponent', 8);
+        $dictionary->setNameEntry('ColorSpace', 'DeviceRGB');
+        $dictionary->setNameEntry('Filter', 'DCTDecode');
 
         return $stream;
     }
@@ -194,7 +217,7 @@ class CatalogVisitor
         $stream = $this->file->addStreamObject($structure->getFontData());
 
         $dictionary = $stream->getMetaData();
-        $dictionary->setTextEntry('Subtype', '/' . $structure->getSubtype());
+        $dictionary->setNameEntry('Subtype', $structure->getSubtype());
 
         return $stream;
     }
@@ -206,15 +229,15 @@ class CatalogVisitor
     {
         $dictionary = $this->file->addDictionaryObject();
 
-        $dictionary->addTextEntry('Type', '/FontDescriptor');
-        $dictionary->addTextEntry('FontName', $structure->getFontName());
-        $dictionary->addTextEntry('Flags', $structure->getFlags());
+        $dictionary->addNameEntry('Type', 'FontDescriptor');
+        $dictionary->addNameEntry('FontName', $structure->getFontName());
+        $dictionary->addNumberEntry('Flags', $structure->getFlags());
         $dictionary->addNumberArrayEntry('FontBBox', $structure->getFontBBox());
-        $dictionary->addTextEntry('ItalicAngle', $structure->getItalicAngle());
-        $dictionary->addTextEntry('Ascent', $structure->getAscent());
-        $dictionary->addTextEntry('Decent', $structure->getDecent());
-        $dictionary->addTextEntry('CapHeight', $structure->getCapHeight());
-        $dictionary->addTextEntry('StemV', $structure->getStemV());
+        $dictionary->addNumberEntry('ItalicAngle', $structure->getItalicAngle());
+        $dictionary->addNumberEntry('Ascent', $structure->getAscent());
+        $dictionary->addNumberEntry('Descent', $structure->getDescent());
+        $dictionary->addNumberEntry('CapHeight', $structure->getCapHeight());
+        $dictionary->addNumberEntry('StemV', $structure->getStemV());
 
         if ($structure->getFontFile3() !== null) {
             $reference = $structure->getFontFile3()->accept($this);
@@ -231,9 +254,9 @@ class CatalogVisitor
     {
         $dictionary = $this->file->addDictionaryObject();
 
-        $dictionary->addTextEntry('Type', '/Font');
-        $dictionary->addTextEntry('Subtype', '/Type0');
-        $dictionary->addTextEntry('BaseFont', '/' . $structure->getBaseFont());
+        $dictionary->addNameEntry('Type', 'Font');
+        $dictionary->addNameEntry('Subtype', 'Type0');
+        $dictionary->addNameEntry('BaseFont', $structure->getBaseFont());
 
         $encoding = $structure->getEncoding()->accept($this);
         $dictionary->addReferenceEntry('Encoding', $encoding);
@@ -253,6 +276,11 @@ class CatalogVisitor
     public function visitCIDFont(Catalog\Font\Structure\CIDFont $structure)
     {
         $dictionary = $this->file->addDictionaryObject();
+
+        $dictionary->addNameEntry('Type', 'Font');
+        $dictionary->addNameEntry('Subtype', 'CIDFontType2');
+        $dictionary->addNameEntry('CIDToGIDMap', 'Identity');
+        $dictionary->addNameEntry('BaseFont', $structure->getBaseFont());
 
         $cidDictionary = $structure->getCIDSystemInfo()->accept($this);
         $dictionary->addDictionaryEntry('CIDSystemInfo', $cidDictionary);
@@ -274,11 +302,11 @@ class CatalogVisitor
         $stream = $this->file->addStreamObject($structure->getCMapData());
 
         $dictionary = $stream->getMetaData();
-        $dictionary->setTextEntry('Type', '/CMap');
-        $dictionary->setTextEntry('CMapName', '/' . $structure->getCMapName());
+        $dictionary->setNameEntry('Type', 'CMap');
+        $dictionary->setNameEntry('CMapName', $structure->getCMapName());
 
         $cidDictionary = $structure->getCIDSystemInfo()->accept($this);
-        $dictionary->setEntry('CIDSystemInfo', $cidDictionary);
+        $dictionary->setDictionaryEntry('CIDSystemInfo', $cidDictionary);
 
         return $stream;
     }
@@ -290,8 +318,8 @@ class CatalogVisitor
     {
         $cidDictionary = new DictionaryToken();
 
-        $cidDictionary->setTextEntry('Registry', '(' . $structure->getRegistry() . ')');
-        $cidDictionary->setTextEntry('Ordering', '(' . $structure->getOrdering() . ')');
+        $cidDictionary->setTextEntry('Registry', $structure->getRegistry());
+        $cidDictionary->setTextEntry('Ordering', $structure->getOrdering());
         $cidDictionary->setNumberEntry('Supplement', $structure->getSupplement());
 
         return $cidDictionary;

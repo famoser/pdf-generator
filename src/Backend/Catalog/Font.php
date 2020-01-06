@@ -22,4 +22,6 @@ abstract class Font extends BaseIdentifiableStructure
     {
         $this->setIdentifier($identifier);
     }
+
+    abstract public function encode(string $int): string;
 }

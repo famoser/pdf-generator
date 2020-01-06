@@ -60,6 +60,17 @@ class File
         return $dictionaryObject;
     }
 
+    /**
+     * @return DictionaryObject
+     */
+    public function addInfoDictionaryObject()
+    {
+        $dictionaryObject = new DictionaryObject($this->bodyCounter++);
+        $this->body->addInfoObject($dictionaryObject);
+
+        return $dictionaryObject;
+    }
+
     public function render(): string
     {
         $structureVisitor = new StructureVisitor();
@@ -75,7 +86,7 @@ class File
         $crossReferenceTable->registerEntrySizes($structureVisitor->getBodyEntrySizes());
         $output .= $crossReferenceTable->accept($structureVisitor) . "\n";
 
-        $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $this->body->getEntries()[0]);
+        $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $this->body->getRootEntry(), $this->body->getInfoObject());
         $output .= $trailer->accept($structureVisitor);
 
         return $output;

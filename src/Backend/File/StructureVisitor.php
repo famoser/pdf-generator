@@ -14,8 +14,6 @@ namespace PdfGenerator\Backend\File;
 use PdfGenerator\Backend\File\Structure\CrossReferenceTable;
 use PdfGenerator\Backend\File\Structure\FileTrailer;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
-use PdfGenerator\Backend\File\Token\NumberToken;
-use PdfGenerator\Backend\File\Token\ReferenceToken;
 
 class StructureVisitor
 {
@@ -48,7 +46,8 @@ class StructureVisitor
      */
     public function visitFileHeader(Structure\FileHeader $param)
     {
-        return '%PDF-' . $param->getVersion();
+        return '%PDF-' . $param->getVersion() . "\n" .
+            '%' . hex2bin('E2E3CFD3');
     }
 
     /**
@@ -59,8 +58,9 @@ class StructureVisitor
     public function visitFileTrailer(Structure\FileTrailer $param)
     {
         $trailerDictionary = new DictionaryToken();
-        $trailerDictionary->setEntry('Size', new NumberToken($param->getSize() + 1));
-        $trailerDictionary->setEntry('Root', new ReferenceToken($param->getRoot()));
+        $trailerDictionary->setNumberEntry('Size', $param->getSize() + 1);
+        $trailerDictionary->setReferenceEntry('Root', $param->getRoot());
+        $trailerDictionary->setReferenceEntry('Info', $param->getInfo());
 
         $lines = [];
         $lines[] = 'trailer';
@@ -77,13 +77,15 @@ class StructureVisitor
      */
     public function visitCrossReferenceTable(CrossReferenceTable $param)
     {
+        $entries = $param->getEntries();
+
         $lines = [];
         $lines[] = 'xref';
-        $lines[] = '0 ' . (\count($param->getEntries()) + 1);
+        $lines[] = '0 ' . (\count($entries) + 1);
         $lines[] = '0000000000 65535 f';
 
-        foreach ($param->getEntries() as $entry) {
-            $lines[] = str_pad($entry, 10, '' . STR_PAD_LEFT) . ' 00000 n';
+        foreach ($entries as $entry) {
+            $lines[] = str_pad($entry, 10, '0', STR_PAD_LEFT) . ' 00000 n';
         }
 
         return implode("\n", $lines);

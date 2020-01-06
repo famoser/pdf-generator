@@ -55,9 +55,8 @@ class DocumentVisitor
     public function visitDefaultFont(DefaultFont $param)
     {
         $baseFont = $this->getDefaultFontBaseFont($param->getFont(), $param->getStyle());
-        $encoding = BackendDefaultFont::ENCODING_WIN_ANSI_ENCODING;
 
-        return new BackendDefaultFont($baseFont, $encoding);
+        return new BackendDefaultFont($baseFont);
     }
 
     /**
@@ -86,7 +85,7 @@ class DocumentVisitor
     {
         $text = $this->analysisResult->getTextPerFont($param);
 
-        return new BackendEmbeddedFont(BackendEmbeddedFont::ENCODING_UTF_8, $param->getFont(), $text);
+        return new BackendEmbeddedFont(BackendEmbeddedFont::ENCODING_UTF_8, $param->getFontPath(), $text);
     }
 
     /**

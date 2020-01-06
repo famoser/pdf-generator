@@ -15,6 +15,7 @@ use PdfGenerator\Backend\Catalog\Font\Structure\CIDFont;
 use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
 use PdfGenerator\Backend\Catalog\Font\Structure\FontStream;
+use PdfGenerator\Backend\Catalog\Font\TrueType;
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Catalog\Font\Type1;
 use PdfGenerator\Backend\Catalog\Image as CatalogImage;
@@ -26,7 +27,11 @@ use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
 use PdfGenerator\Font\Backend\FileWriter;
+use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
+use PdfGenerator\Font\Frontend\File\Table\OS2Table;
 use PdfGenerator\Font\IR\Optimizer;
+use PdfGenerator\Font\IR\Parser;
+use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 
 class DocumentVisitor
@@ -121,63 +126,107 @@ class DocumentVisitor
     {
         $identifier = $this->generateIdentifier('F');
 
-        return new Type1($identifier, $param->getBaseFont(), $param->getEncoding());
+        return new Type1($identifier, $param->getBaseFont());
     }
 
     /**
      * @throws \Exception
      *
-     * @return Type0
+     * @return Type0|TrueType
      */
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
-        $font = $param->getFont();
+        $fontData = file_get_contents($param->getFontPath());
 
-        $fontSubsetDefinition = $this->fontOptimizer->generateFontSubset($font, $param->getUsedWithText());
+        $parser = Parser::create();
+        $font = $parser->parse($fontData);
 
-        // create subset
-        $optimizer = Optimizer::create();
-        $fontSubset = $optimizer->getFontSubset($font, $fontSubsetDefinition->getCharacters());
-
-        $writer = FileWriter::create();
-        $content = $writer->writeFont($fontSubset);
-
-        $characterWidths = [];
-        $sizeNormalizer = 1024 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm(); // this could be a hack; but else the pdf character widths look messed up
-        foreach ($fontSubset->getCharacters() as $character) {
-            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+        $createFontSubsets = $this->configuration->getCreateFontSubsets();
+        if ($createFontSubsets) {
+            list($font, $fontData, $fontSubsetDefinition) = $this->createFontSubset($font, $param->getCharactersUsedInText());
         }
-        $widths[0] = array_merge([$characterWidths[0]], $characterWidths); // the initial character is mapped twice; to .notdef and U+0000. need to have both widths therefore
 
         $fontName = $font->getFontInformation()->getFullName() ?? 'invalidFontName';
+        $fontName = strtr($fontName, [' ' => '']); // remove any spaces in name
 
         $fontStream = new FontStream();
-        $fontStream->setFontData($content);
+        $fontStream->setFontData($fontData);
         $fontStream->setSubtype(FontStream::SUBTYPE_OPEN_TYPE);
+
+        $sizeNormalizer = 1024 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm(); // this could be a hack; but else the pdf character widths look messed up
+        $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream, $sizeNormalizer);
+
+        if ($createFontSubsets && !$this->configuration->getUseTTFFonts()) {
+            return $this->createType0Font($fontSubsetDefinition, $fontDescriptor, $font->getCharacters(), $sizeNormalizer);
+        }
+
+        return $this->createTrueTypeFont($fontDescriptor, $font->getCharacters(), $sizeNormalizer);
+    }
+
+    /**
+     * @param Character[] $characters
+     */
+    private function createTrueTypeFont(FontDescriptor $fontDescriptor, array $characters, float $sizeNormalizer): TrueType
+    {
+        $widths = [];
+
+        // default value is 0
+        for ($i = 0; $i < 255; ++$i) {
+            $widths[$i] = 0;
+        }
+
+        // add widths of windows code page
+        foreach ($characters as $character) {
+            // create windows character set
+            $mappingIndex = $this->getWindows1252Mapping($character->getUnicodePoint());
+            if ($mappingIndex !== null) {
+                $widths[$mappingIndex] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+            }
+        }
+
+        $identifier = $this->generateIdentifier('F');
+
+        return new TrueType($identifier, $fontDescriptor, $widths);
+    }
+
+    /**
+     * @param Character[] $characters
+     *
+     * @return Type0
+     */
+    private function createType0Font(FontOptimizer\FontSubsetDefinition $fontSubsetDefinition, FontDescriptor $fontDescriptor, array $characters, float $sizeNormalizer)
+    {
+        $characterWidths = [];
+        foreach ($characters as $character) {
+            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+        }
+
+        // the initial character is mapped twice; to .notdef and U+0000. need to have both widths therefore
+        $widths[0] = array_merge([$characterWidths[0]], $characterWidths);
 
         $cIDSystemInfo = new CIDSystemInfo();
         $cIDSystemInfo->setRegistry('famoser');
         $cIDSystemInfo->setOrdering('custom-1');
         $cIDSystemInfo->setSupplement(1);
 
-        $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream, $sizeNormalizer);
-
         $cidFont = new CIDFont();
         $cidFont->setSubType(CIDFont::SUBTYPE_CID_FONT_TYPE_2);
         $cidFont->setDW(500);
         $cidFont->setCIDSystemInfo($cIDSystemInfo);
         $cidFont->setFontDescriptor($fontDescriptor);
-        $cidFont->setBaseFont($fontName);
+        $cidFont->setBaseFont($fontDescriptor->getFontName());
         $cidFont->setW($widths);
 
         $identifier = $this->generateIdentifier('F');
         $type0Font = new Type0($identifier);
         $type0Font->setDescendantFont($cidFont);
-        $type0Font->setBaseFont($fontName);
+        $type0Font->setBaseFont($fontDescriptor->getFontName());
 
-        $cMap = $this->cMapCreator->createCMap($cIDSystemInfo, 'someName', $fontSubsetDefinition->getCodePoints(), $fontSubsetDefinition->getMissingCodePoints());
-        $type0Font->setEncoding($cMap);
-        $type0Font->setToUnicode($cMap); // TODO: unicode CMap not implemented yet
+        $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, 'someName', $fontSubsetDefinition);
+        $type0Font->setEncoding($characterIndexCMap);
+
+        $unicodeCMap = $this->cMapCreator->createCharacterIndexToUnicodeCMap($cIDSystemInfo, 'someNameInverted', $fontSubsetDefinition);
+        $type0Font->setToUnicode($unicodeCMap);
 
         return $type0Font;
     }
@@ -189,13 +238,37 @@ class DocumentVisitor
 
         $fontDescriptor = new FontDescriptor();
         $fontDescriptor->setFontName($fontName);
-        $fontDescriptor->setFlags(0); // could calculate from OS/2 IBM font family
 
+        $BBox = $this->getFontBBox($font->getCharacters(), $sizeNormalizer);
+        $fontDescriptor->setFontBBox($BBox);
+
+        $angle = $this->getFontItalicAngle($HHeaTable);
+
+        $fontFlags = $this->calculateFontFlags($OS2Table, $angle > 0);
+        $fontDescriptor->setFlags($fontFlags);
+
+        $fontDescriptor->setItalicAngle($angle);
+        $fontDescriptor->setAscent($HHeaTable->getAscent() * $sizeNormalizer);
+        $fontDescriptor->setDescent($HHeaTable->getDescent() * $sizeNormalizer);
+        $fontDescriptor->setCapHeight((int)($OS2Table->getSCapHeight() * $sizeNormalizer));
+        $fontDescriptor->setStemV(0); // TODO find out where to get this from
+        $fontDescriptor->setFontFile3($fontStream);
+
+        return $fontDescriptor;
+    }
+
+    /**
+     * @param Character[] $characters
+     *
+     * @return int[]
+     */
+    private function getFontBBox(array $characters, float $sizeNormalizer): array
+    {
         $xMin = 0;
         $xMax = 0;
         $yMin = 0;
         $yMax = 0;
-        foreach ($font->getCharacters() as $character) {
+        foreach ($characters as $character) {
             if ($character->getGlyfTable() === null) {
                 continue;
             }
@@ -206,21 +279,138 @@ class DocumentVisitor
             $yMax = max($yMax, $character->getGlyfTable()->getYMax());
         }
 
-        $fontDescriptor->setFontBBox([(int)($xMin * $sizeNormalizer), ((int)($yMin * $sizeNormalizer)), ((int)($xMax * $sizeNormalizer)), (int)($yMax * $sizeNormalizer)]);
+        return [(int)($xMin * $sizeNormalizer), ((int)($yMin * $sizeNormalizer)), ((int)($xMax * $sizeNormalizer)), (int)($yMax * $sizeNormalizer)];
+    }
 
-        if ($HHeaTable->getCaretSlopeRun() !== 0) {
-            $angle = tanh($HHeaTable->getCaretSlopeRise() / $HHeaTable->getCaretSlopeRun()) - 90;
-        } else {
-            $angle = 0;
+    private function getFontItalicAngle(HHeaTable $HHeaTable): float
+    {
+        if ($HHeaTable->getCaretSlopeRun() === 0) {
+            return 0;
         }
 
-        $fontDescriptor->setItalicAngle($angle);
-        $fontDescriptor->setAscent($HHeaTable->getAscent() * $sizeNormalizer);
-        $fontDescriptor->setDecent($HHeaTable->getDecent() * $sizeNormalizer);
-        $fontDescriptor->setCapHeight((int)($OS2Table->getSCapHeight() * $sizeNormalizer));
-        $fontDescriptor->setStemV(0); // TODO find out where to get this from
-        $fontDescriptor->setFontFile3($fontStream);
+        return tanh($HHeaTable->getCaretSlopeRise() / $HHeaTable->getCaretSlopeRun()) - 90;
+    }
 
-        return $fontDescriptor;
+    private function calculateFontFlags(OS2Table $OS2Table, bool $isItalic): int
+    {
+        $flags = 0;
+
+        $panose = $OS2Table->getPanose();
+
+        // fixed pitch
+        if ($panose[3] === 9) { // when proportion is monospaced
+            $flags = $flags | FontDescriptor::FLAG_FIXED_PITCH;
+        }
+
+        // serif
+        if ($panose[1] >= 11 && $panose[1] <= 13) { // when serif style is normal sans, obtuse sans or perpendicular sans
+            $flags = $flags | FontDescriptor::FLAG_SERIF;
+        }
+
+        // always symbolic (characters outside adobe standard set)
+        $flags = $flags | FontDescriptor::FLAG_SYMBOLIC;
+
+        // script (cursive)
+        if ($panose[0] === 3) { // when family type is hand-written
+            $flags = $flags | FontDescriptor::FLAG_SCRIPT;
+        }
+
+        // italic
+        if ($isItalic) {
+            $flags = $flags | FontDescriptor::FLAG_ITALIC;
+        }
+
+        return $flags;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private function createFontSubset(Font $font, string $charactersUsedInText): array
+    {
+        $fontSubsetDefinition = $this->fontOptimizer->generateFontSubset($font, $charactersUsedInText);
+
+        // create subset
+        $optimizer = Optimizer::create();
+        $font = $optimizer->getFontSubset($font, $fontSubsetDefinition->getCharacters());
+
+        $writer = FileWriter::create();
+        $fontData = $writer->writeFont($font);
+
+        return [$font, $fontData, $fontSubsetDefinition];
+    }
+
+    /**
+     * @param int $getUnicodePoint
+     */
+    private function getWindows1252Mapping(int $unicodePoint): ?int
+    {
+        if ($unicodePoint < 0x80) {
+            return $unicodePoint;
+        }
+
+        if ($unicodePoint >= 0xA0 && $unicodePoint <= 0xFF) {
+            return $unicodePoint;
+        }
+
+        switch ($unicodePoint) {
+            case 0x20AC:
+                return 0x80;
+            case 0x201A:
+                return 0x82;
+            case 0x0192:
+                return 0x83;
+            case 0x201E:
+                return 0x84;
+            case 0x2026:
+                return 0x85;
+            case 0x2020:
+                return 0x86;
+            case 0x2021:
+                return 0x87;
+            case 0x20C6:
+                return 0x88;
+            case 0x2030:
+                return 0x89;
+            case 0x0160:
+                return 0x8A;
+            case 0x2039:
+                return 0x8B;
+            case 0x0152:
+                return 0x8C;
+            case 0x017D:
+                return 0x8E;
+
+            case 0x2018:
+                return 0x91;
+            case 0x2019:
+                return 0x92;
+            case 0x201C:
+                return 0x93;
+            case 0x201D:
+                return 0x94;
+            case 0x2022:
+                return 0x95;
+            case 0x2013:
+                return 0x96;
+            case 0x2014:
+                return 0x97;
+            case 0x02DC:
+                return 0x98;
+            case 0x2122:
+                return 0x99;
+            case 0x0161:
+                return 0x9A;
+            case 0x203A:
+                return 0x9B;
+            case 0x0153:
+                return 0x9C;
+            case 0x017E:
+                return 0x9E;
+            case 0x0178:
+                return 0x9F;
+        }
+
+        return null;
     }
 }

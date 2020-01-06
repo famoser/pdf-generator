@@ -85,4 +85,9 @@ class Type0 extends Font
     {
         return $visitor->visitType0Font($this);
     }
+
+    public function encode(string $escaped): string
+    {
+        return mb_convert_encoding($escaped, 'UTF-8');
+    }
 }
