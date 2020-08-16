@@ -1,0 +1,7 @@
+{
+    "require": {
+        "tecnickcom/tcpdf": "^6.2",
+        "rospdf/pdf-php": "^0.12.49",
+        "phenx/php-font-lib": "^0.5.1"
+    }
+}

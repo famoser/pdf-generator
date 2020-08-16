@@ -1,0 +1,97 @@
+Font Validator is a tool for testing fonts prior to release.
+It was initially developed by Microsoft, to ensure that fonts meet Microsoft's
+high quality standards and perform exceptionally well on Microsoft's
+platform.
+
+In 2015 the source code was published under the MIT license ([see release
+discussion](http://typedrawers.com/discussion/1222/microsoft-font-validato
+r-lives))
+
+Most (only?) active development happens at
+http://github.com/HinTak/Font-Validator .
+
+
+FontVal 2.1.1 , Sep  1 2017
+=============
+
+- This is an update from FontVal 2.1 on the FreeType backend only,
+  to VER-2-8-100-g587264cfd .
+
+  We now also offer all-in-one command-line binaries for Ubuntu Linux x86_64
+  14.04 and 16.04, in addition to Mac OS X. ( Thanks to new functionality
+  in mono introduced in 4.6.0 and matured in 4.8.0 in the last 12 months. )
+  The Ubuntu 16.04 binary is preferred, as the 14.04 binary is limited
+  by older compiler as mentioned in FontVal 2.1.
+
+  - as rasterization tests now work on all major platforms, "+raster-tests"
+    will become the default in FontVal 2.2 .
+
+- The windows-only "accept non-ascii font names" fix proved to be troublesome
+  and is reverted. Other platforms are not affected and continue to accept
+  non-ascii font file names.
+
+Special thanks to Christian Demmer for multiple rounds of patient testing
+of the Mac OS X binaries!
+
+FontVal 2.1 , Jul 20 2017
+===========
+
+- Backend b70+10.5, based on FreeType 2.8+ (VER-2-8-73-g38bdf22bf)
+
+  - 16 Errors/Warnings in 1.0 which has no FreeType equivalent
+    are implemented. This includes incomplete conditionals (e.g.
+    IF without THEN) and maths overflows, etc.
+
+  - 15 FreeType-specific additions are added. This includes endless loops
+    and backward jumps, etc.
+
+  - C Python wrapper available ( https://github.com/HinTak/freetype-py
+    fontval-diag branch ). Perl wrapper in dev.
+
+- Robustness: still produce a report for some seriously buggy fonts
+
+- Speed/Resources improvements:
+
+  - avoid unnecessary repeated processing of identical EBDT/glyf tables
+    and rasterization for TTCs
+    (down from half-days to an hour or two in some cases)
+
+  - much smaller memory foot-prints for EBDT check
+    (down from 15 to 20+ GB RAM to 1 or 2 GB in some extreme cases)
+
+- Windows-only problem fixed: can now accept non-ascii font names
+  (2.0 did not, 1.0 did).
+
+- New opentype tables supported: meta (partial)
+
+- glyf table: cope with broken contours with hair pins, and extremely
+  tight loops etc and correctly warn those.
+
+- DSIG table: supports stronger cryptographic digest algorithms (Apparently
+  Adobe started signing with those). correct previous mis-diagnosis of very
+  old TTCs' signature.
+
+- A lot of misc documentation updates.
+
+- Known Caveats:
+  - E6053 (Value exceeds capacity of 2 byte number) also warns on
+    values exceeding Fixed 2.14 (FontVal 1.0 did not).
+  - W6028 (number of twilight points unreasonably large) too frequent/noisy.
+  - W6029 (Setting the loop variable to zero is an error) may be withdrawn
+          later as ttfauthint does it and there is no known problem, despite
+          some apple and macrosoft docs saying so.
+  - The check for maths overflows in hinting instructions requires gcc 5+ to
+    build, so it is not offered on the Mac OS X backend for the time being.
+
+FontVal 2.0 , Jul 17 2016
+===========
+
+- backend b54, based on FreeType 2.6.4
+
+FontVal 1.1 , Apr 07 2009
+===========
+- Microsoft released to Github on Nov 11 2015; incomplete
+
+FontVal 1.0 , Jul 10 2003
+===========
+- last known Microsoft's proprietary binary
