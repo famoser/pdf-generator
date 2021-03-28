@@ -42,7 +42,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testWriteSubset_multipleCharacters()
+    public function testWriteSubsetMultipleCharacters()
     {
         // arrange
         $parser = Parser::create();

@@ -25,6 +25,6 @@ abstract class BaseState
      */
     public function stateIdentifier()
     {
-        return \get_class($this);
+        return static::class;
     }
 }

@@ -26,7 +26,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_textInResultFile()
+    public function testPrintTextTextInResultFile()
     {
         // arrange
         $text = 'hi mom';
@@ -43,7 +43,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_multipleTexts_inResultFile()
+    public function testPrintTextMultipleTextsInResultFile()
     {
         // arrange
         $text = 'hi mom';
@@ -64,7 +64,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_cursorInResultFile()
+    public function testPrintTextCursorInResultFile()
     {
         // arrange
         $xPosition = 22;
@@ -83,7 +83,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintLine_cursorInResultFile()
+    public function testPrintLineCursorInResultFile()
     {
         // arrange
         $xPosition = 40;
@@ -112,7 +112,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_differentDefaultFont_textAppears()
+    public function testPrintTextDifferentDefaultFontTextAppears()
     {
         // arrange
         $document = new Document();
@@ -134,7 +134,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintRectangle_layersAsExpected()
+    public function testPrintRectangleLayersAsExpected()
     {
         // arrange
         $document = new Document();
@@ -156,7 +156,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintImage_imageAppears()
+    public function testPrintImageImageAppears()
     {
         // arrange
         $imageSrc = ResourcesProvider::getImage1Path();
@@ -178,7 +178,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_withOptimizationEnabled_stuffHappens()
+    public function testPrintTextWithOptimizationEnabledStuffHappens()
     {
         // arrange
         $document = new Document();
@@ -209,7 +209,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_withTTFEnabled_stuffHappens()
+    public function testPrintTextWithTTFEnabledStuffHappens()
     {
         // arrange
         $document = new Document();
@@ -238,7 +238,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_withEmbeddedFont_textAppears()
+    public function testPrintTextWithEmbeddedFontTextAppears()
     {
         // arrange
         $document = new Document();
@@ -261,7 +261,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_withTTFSubSetsEnabled_stuffHappens()
+    public function testPrintTextWithTTFSubSetsEnabledStuffHappens()
     {
         // arrange
         $document = new Document();
@@ -291,7 +291,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintText_withEmbeddedFont_specialCharactersAppear()
+    public function testPrintTextWithEmbeddedFontSpecialCharactersAppear()
     {
         // arrange
         $document = new Document();
