@@ -47,7 +47,7 @@ class StructureVisitor
     public function visitFileHeader(Structure\FileHeader $param)
     {
         return '%PDF-' . $param->getVersion() . "\n" .
-            '%' . hex2bin('E2E3CFD3');
+            '%' . hex2bin('E2E3CFD3'); // declares that PDF contains binary data
     }
 
     /**
