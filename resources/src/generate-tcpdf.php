@@ -8,7 +8,7 @@ $pdf = new Pdf();
 $pdf->AddPage();
 $pdf->SetXY(20, 10);
 
-$pdf->Text(10, 10, "a aa");
+$pdf->Text(10, 10, "hello world");
 
 $result = $pdf->Output("pdf.pdf", 'S');
 

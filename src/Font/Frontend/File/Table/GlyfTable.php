@@ -26,6 +26,11 @@ use PdfGenerator\Font\Frontend\File\Traits\RawContent;
  */
 class GlyfTable
 {
+    use BoundingBoxTrait;
+    /*
+     * the raw glyph data
+     */
+    use RawContent;
     /**
      * number of contours
      * if >=0 then simple glyph
@@ -36,13 +41,6 @@ class GlyfTable
      * @var int
      */
     private $numberOfContours;
-
-    use BoundingBoxTrait;
-
-    /*
-     * the raw glyph data
-     */
-    use RawContent;
 
     public function getNumberOfContours(): int
     {

@@ -110,8 +110,8 @@ class FileWriter
         $headTable->setCreated($source->getCreated());
         $headTable->setModified($source->getModified());
 
-        $xMin = PHP_INT_MAX;
-        $yMin = PHP_INT_MAX;
+        $xMin = \PHP_INT_MAX;
+        $yMin = \PHP_INT_MAX;
         $xMax = 0;
         $yMax = 0;
         foreach ($characters as $character) {
@@ -154,8 +154,8 @@ class FileWriter
         $hHeaTable->setLineGap($source->getLineGap());
 
         $advanceWidthMax = 0;
-        $minLeftSideBearing = PHP_INT_MAX;
-        $minRightSideBearing = PHP_INT_MAX;
+        $minLeftSideBearing = \PHP_INT_MAX;
+        $minRightSideBearing = \PHP_INT_MAX;
         $xMaxExtent = 0;
         foreach ($characters as $character) {
             $advanceWidth = $character->getLongHorMetric()->getAdvanceWidth();
@@ -684,7 +684,7 @@ class FileWriter
     {
         $powerOfTwo = (int)log($numberOfEntries, 2);
 
-        $binaryTreeSearchable->setSearchRange(pow(2, $powerOfTwo) * 16);
+        $binaryTreeSearchable->setSearchRange(2 ** $powerOfTwo * 16);
         $binaryTreeSearchable->setEntrySelector($powerOfTwo);
         $binaryTreeSearchable->setRangeShift($numberOfEntries * 16 - $binaryTreeSearchable->getSearchRange());
     }

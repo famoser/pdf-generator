@@ -4,7 +4,11 @@ include __DIR__ . "/../vendor/autoload.php";
 
 
 function saveContent($content) {
-    $targetFolder = realpath(__DIR__ . "/../generated");
+    $targetFolder = __DIR__ . "/../generated";
+    if (!is_dir($targetFolder)) {
+        mkdir($targetFolder, 0777, true);
+    }
+
     $fileName = "pdf";
     file_put_contents($targetFolder . "/" . $fileName . ".pdf", $content);
 

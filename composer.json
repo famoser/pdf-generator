@@ -10,15 +10,15 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "ext-bcmath": "^7.1",
+    "php": ">=7.4",
+    "ext-bcmath": "*",
     "ext-gd": "*"
   },
   "require-dev": {
     "codacy/coverage": "^1.4",
     "friendsofphp/php-cs-fixer": "^2.14",
     "mockery/mockery": "^1.2",
-    "phpunit/phpunit": "^7.5",
+    "phpunit/phpunit": "^9.5.4",
     "brainmaestro/composer-git-hooks": "^2.6"
   },
   "autoload": {

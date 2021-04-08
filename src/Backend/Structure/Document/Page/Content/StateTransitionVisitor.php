@@ -92,9 +92,9 @@ class StateTransitionVisitor
     public function getAppliedState(): FullState
     {
         return new FullState(
-            $this->appliedGeneralGraphicsState ? $this->appliedGeneralGraphicsState : $this->previousState->getGeneralGraphicsState(),
-            $this->appliedColorState ? $this->appliedColorState : $this->previousState->getColorState(),
-            $this->appliedTextState ? $this->appliedTextState : $this->previousState->getTextState()
+            $this->appliedGeneralGraphicsState ?: $this->previousState->getGeneralGraphicsState(),
+            $this->appliedColorState ?: $this->previousState->getColorState(),
+            $this->appliedTextState ?: $this->previousState->getTextState()
         );
     }
 

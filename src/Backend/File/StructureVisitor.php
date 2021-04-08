@@ -47,7 +47,7 @@ class StructureVisitor
     public function visitFileHeader(Structure\FileHeader $param)
     {
         return '%PDF-' . $param->getVersion() . "\n" .
-            '%' . hex2bin('E2E3CFD3');
+            '%' . hex2bin('E2E3CFD3'); // declares that PDF contains binary data
     }
 
     /**
@@ -85,7 +85,7 @@ class StructureVisitor
         $lines[] = '0000000000 65535 f';
 
         foreach ($entries as $entry) {
-            $lines[] = str_pad($entry, 10, '0', STR_PAD_LEFT) . ' 00000 n';
+            $lines[] = str_pad($entry, 10, '0', \STR_PAD_LEFT) . ' 00000 n';
         }
 
         return implode("\n", $lines);

@@ -32,7 +32,7 @@ class GlyphIndexFormatVisitorTest extends TestCase
     /**
      * format4 with idrangeoffset = 0.
      */
-    public function testFormat4_singleSegment()
+    public function testFormat4SingleSegment()
     {
         // arrange
         $format4 = new Format4();
@@ -54,7 +54,7 @@ class GlyphIndexFormatVisitorTest extends TestCase
     /**
      * format4 with idrangeoffset != 0.
      */
-    public function testFormat4_singleSegment_withIdRangeOffset()
+    public function testFormat4SingleSegmentWithIdRangeOffset()
     {
         // arrange
         $format4 = new Format4();
@@ -76,7 +76,7 @@ class GlyphIndexFormatVisitorTest extends TestCase
     /**
      * format4 with idrangeoffset = 0.
      */
-    public function testFormat4_multipleSegments()
+    public function testFormat4MultipleSegments()
     {
         // arrange
         $format4 = new Format4();

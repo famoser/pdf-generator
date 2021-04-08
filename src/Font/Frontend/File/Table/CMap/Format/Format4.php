@@ -19,6 +19,10 @@ use PdfGenerator\Font\Frontend\File\Traits\BinaryTreeSearchableTrait;
  */
 class Format4 extends Format
 {
+    /*
+     * for numberOfEntries = segCountX2
+     */
+    use BinaryTreeSearchableTrait;
     /**
      * how many continuous code ranges are provided (segCount) times two
      * calculated: 2 * segCount.
@@ -28,11 +32,6 @@ class Format4 extends Format
      * @var int
      */
     private $segCountX2;
-
-    /*
-     * for numberOfEntries = segCountX2
-     */
-    use BinaryTreeSearchableTrait;
 
     /**
      * end code per the continuous code range.
