@@ -12,10 +12,10 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: 7.2
+    - php: 7.4
       env:
         - SKIP_CODE_STYLE=true
-    - php: 7.3
+    - php: 8
       env:
         - COVERAGE=true
     - php: nightly
