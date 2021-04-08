@@ -15,7 +15,7 @@ matrix:
     - php: 7.4
       env:
         - SKIP_CODE_STYLE=true
-    - php: 8
+    - php: 8.0
       env:
         - COVERAGE=true
     - php: nightly

@@ -222,11 +222,11 @@ class DocumentVisitor
         $type0Font->setDescendantFont($cidFont);
         $type0Font->setBaseFont($fontDescriptor->getFontName());
 
-        $cMapName = $fontDescriptor->getFontName()."CMap";
+        $cMapName = $fontDescriptor->getFontName() . 'CMap';
         $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, $cMapName, $fontSubsetDefinition);
         $type0Font->setEncoding($characterIndexCMap);
 
-        $cMapInvertedName = $fontDescriptor->getFontName()."CMapInverted";
+        $cMapInvertedName = $fontDescriptor->getFontName() . 'CMapInverted';
         $unicodeCMap = $this->cMapCreator->createCharacterIndexToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $fontSubsetDefinition);
         $type0Font->setToUnicode($unicodeCMap);
 
