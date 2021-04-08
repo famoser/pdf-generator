@@ -1,0 +1,1 @@
+More specification under https://gitlab.com/famoser/pdf-generator-research (private access)
