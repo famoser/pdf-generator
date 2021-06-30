@@ -53,7 +53,7 @@ class FileWriterTest extends TestCase
         $character1 = $characterRepository->findByChar('o');
         $character2 = $characterRepository->findByChar('m');
         $optimizer = new Optimizer();
-        $subset = $optimizer->getFontSubset($font, [$characterRepository->getMissingCharacter(), $character, $character1, $character2]);
+        $subset = $optimizer->getFontSubset($font, [$character, $character1, $character2]);
 
         // act
         $output = $writer->writeFont($subset);
@@ -142,6 +142,6 @@ class FileWriterTest extends TestCase
 
         $optimizer = new Optimizer();
 
-        return $optimizer->getFontSubset($font, array_merge([$characterRepository->getMissingCharacter()], $resultingCharacters));
+        return $optimizer->getFontSubset($font, $resultingCharacters);
     }
 }

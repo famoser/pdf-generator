@@ -36,6 +36,7 @@ class Optimizer
     {
         $font = new Font();
 
+        $font->setReservedCharacters($source->getReservedCharacters());
         $font->setCharacters($characters);
         $font->setTableDirectory($this->getTableDirectoryAfterSubsetting($source->getTableDirectory()));
         $font->setFontInformation($source->getFontInformation());

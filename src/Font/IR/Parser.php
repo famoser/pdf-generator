@@ -94,18 +94,20 @@ class Parser
         $font->setTableDirectory($this->createTableDirectory($fontFile));
         $font->setFontInformation($this->createFontInformation($fontFile));
 
-        // some of the first characters might be strange, following one or the other convention
-        // https://github.com/fontforge/fontforge/issues/796
-        // we force preservation of first (.notdef) and second glyph (null), but not more
         $characters = $this->createCharacters($fontFile);
         $this->addGlyphInfo($characters, $fontFile);
 
-        $missingGlyphCharacter = array_shift($characters);
-        $font->setMissingGlyphCharacter($missingGlyphCharacter);
-
-        if ($characters[0]->getUnicodePoint() === null) {
-            $font->setCharacters($characters);
+        // some of the first glyphs might be strange, following one or the other convention
+        // https://github.com/fontforge/fontforge/issues/796
+        // like first glyphs must be .notdef, second null, third CR, ...
+        // we detect these chars by preserving als glyphs at the start without an assigned unicode
+        $reservedCharacters = [];
+        while (\count($characters) > 0 && $characters[0]->getUnicodePoint() === null) {
+            $reservedCharacters[] = array_shift($characters);
         }
+
+        $font->setReservedCharacters($reservedCharacters);
+        $font->setCharacters($characters);
 
         return $font;
     }
@@ -172,9 +174,7 @@ class Parser
 
             if (\array_key_exists($unicode, $aGLFMapping)) {
                 $aGLFInfo = $aGLFMapping[$unicode];
-                if ($aGLFInfo !== $character->getPostScriptInfo()->getName()) {
-                    continue;
-                }
+                $character->getPostScriptInfo()->setName($aGLFInfo);
             }
         }
     }

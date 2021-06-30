@@ -17,11 +17,6 @@ use PdfGenerator\Font\IR\Structure\Font;
 class CharacterRepository
 {
     /**
-     * @var Font
-     */
-    private $font;
-
-    /**
      * @var Character[]
      */
     private $charactersByCodePoint = [];
@@ -31,19 +26,9 @@ class CharacterRepository
      */
     public function __construct(Font $font)
     {
-        $this->font = $font;
-
         foreach ($font->getCharacters() as $character) {
             $this->charactersByCodePoint[$character->getUnicodePoint()] = $character;
         }
-    }
-
-    /**
-     * @return Character
-     */
-    public function getMissingCharacter()
-    {
-        return $this->font->getMissingGlyphCharacter();
     }
 
     /**

@@ -78,20 +78,6 @@ class FileWriter
     /**
      * @param Character[] $characters
      *
-     * @return Character[]
-     */
-    private function prepareCharacters(array $characters, Character $missingGlyphCharacter)
-    {
-        $orderedCharacters = $this->sortCharactersByCodePoint($characters);
-
-        array_unshift($orderedCharacters, $missingGlyphCharacter);
-
-        return $orderedCharacters;
-    }
-
-    /**
-     * @param Character[] $characters
-     *
      * @return HeadTable
      */
     private function generateHeadTable(\PdfGenerator\Font\Frontend\File\Table\HeadTable $source, array $characters)
@@ -716,7 +702,8 @@ class FileWriter
 
     private function createTableDirectory(Font $font): TableDirectory
     {
-        $characters = $this->prepareCharacters($font->getCharacters(), $font->getMissingGlyphCharacter());
+        $characters = $this->sortCharactersByCodePoint($font->getCharacters());
+        array_unshift($characters, ...$font->getReservedCharacters());
 
         $tableDirectory = new TableDirectory();
         $tableDirectory->setCMapTable($this->generateCMapTable($characters));
