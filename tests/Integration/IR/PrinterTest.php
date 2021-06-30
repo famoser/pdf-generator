@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
+use PdfGenerator\Backend\Catalog\Font\TrueType;
 use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\Printer;
@@ -220,16 +221,22 @@ class PrinterTest extends TestCase
 
         // act
         $printer->setTextStyle($textStyle);
-        $printer->printText('hallo ä');
+        $printer->printText('hallo ë');
         $backend = $document->render();
 
         $documentConfiguration = new Configuration();
-        $documentConfiguration->setCreateFontSubsets(false);
+        $documentConfiguration->setCreateFontSubsets(true);
         $documentConfiguration->setUseTTFFonts(true);
         $backend->setDocumentConfiguration($documentConfiguration);
 
-        $result = $backend->save();
+        $catalog = $backend->render();
+        $result = $catalog->save();
         file_put_contents('pdf.pdf', $result);
+
+        /** @var TrueType $font */
+        $font = $catalog->getPages()->getKids()[0]->getResources()->getFonts()[0];
+        $ttfFont = $font->getFontDescriptor()->getFontFile3()->getFontData();
+        file_put_contents('subset.ttf', $ttfFont);
 
         // assert
         $this->assertNotEmpty($result);
