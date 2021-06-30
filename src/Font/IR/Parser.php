@@ -94,17 +94,18 @@ class Parser
         $font->setTableDirectory($this->createTableDirectory($fontFile));
         $font->setFontInformation($this->createFontInformation($fontFile));
 
+        // some of the first characters might be strange, following one or the other convention
+        // https://github.com/fontforge/fontforge/issues/796
+        // we force preservation of first (.notdef) and second glyph (null), but not more
         $characters = $this->createCharacters($fontFile);
-        $mappedCharacters = $this->mapCharacters($characters, $fontFile);
+        $this->addGlyphInfo($characters, $fontFile);
 
-        // ensure first character is .notdef character with unicode point 0
-        if ($mappedCharacters[0]->getUnicodePoint() !== 0) {
-            $missingGlyphCharacter = $characters[0];
-            $missingGlyphCharacter->setUnicodePoint(0);
-            array_unshift($mappedCharacters, $missingGlyphCharacter);
+        $missingGlyphCharacter = array_shift($characters);
+        $font->setMissingGlyphCharacter($missingGlyphCharacter);
+
+        if ($characters[0]->getUnicodePoint() === null) {
+            $font->setCharacters($characters);
         }
-
-        $font->setCharacters($mappedCharacters);
 
         return $font;
     }
@@ -138,10 +139,8 @@ class Parser
      * @param Character[] $characters
      *
      * @throws \Exception
-     *
-     * @return Character[]
      */
-    private function mapCharacters(array $characters, FontFile $fontFile)
+    private function addGlyphInfo(array $characters, FontFile $fontFile)
     {
         $subtable = $this->chooseBestCMapSubtable($fontFile->getCMapTable());
 
@@ -149,22 +148,35 @@ class Parser
         $postMapping = $this->postGlyphIndexFormatVisitor->visitFormat($fontFile->getPostTable()->getFormat());
         $aGLFMapping = $this->glyphNameMappingFactory->getAGLFMapping();
 
-        $mappedCharacters = [];
-        foreach ($cMapMapping as $unicode => $characterIndex) {
-            $character = $characters[$characterIndex];
-            if ($character !== null) {
-                $character->setUnicodePoint($unicode);
-
-                $glyphInfo = \array_key_exists($characterIndex, $postMapping) ? $postMapping[$characterIndex] : null;
-                $aGLFInfo = \array_key_exists($unicode, $aGLFMapping) ? $aGLFMapping[$unicode] : null;
-                $postScriptInfo = $this->getPostScriptInfo($glyphInfo, $aGLFInfo);
-                $character->setPostScriptInfo($postScriptInfo);
-
-                $mappedCharacters[] = $character;
+        foreach ($characters as $characterIndex => $character) {
+            if (!\array_key_exists($characterIndex, $postMapping)) {
+                continue;
             }
+
+            $glyphInfo = $postMapping[$characterIndex];
+
+            $postScriptInfo = new PostScriptInfo();
+            $postScriptInfo->setMacintoshGlyphIndex($glyphInfo->getMacintoshIndex());
+            $postScriptInfo->setName($glyphInfo->getName());
+
+            $character->setPostScriptInfo($postScriptInfo);
         }
 
-        return $mappedCharacters;
+        foreach ($cMapMapping as $unicode => $characterIndex) {
+            if (!\array_key_exists($characterIndex, $characters)) {
+                continue;
+            }
+
+            $character = $characters[$characterIndex];
+            $character->setUnicodePoint($unicode);
+
+            if (\array_key_exists($unicode, $aGLFMapping)) {
+                $aGLFInfo = $aGLFMapping[$unicode];
+                if ($aGLFInfo !== $character->getPostScriptInfo()->getName()) {
+                    continue;
+                }
+            }
+        }
     }
 
     /**
@@ -206,13 +218,11 @@ class Parser
     {
         $characters = [];
 
-        $characterCount = \count($fontFile->getGlyfTables());
-        for ($i = 0; $i < $characterCount; ++$i) {
-            $glyfTable = $fontFile->getGlyfTables()[$i];
-
+        foreach ($fontFile->getGlyfTables() as $index => $glyfTable) {
             $character = new Character();
+            $character->setGlyfTable($glyfTable);
 
-            $longHorMetric = $this->getLongHorMetric($fontFile->getHMtxTable(), $i);
+            $longHorMetric = $this->getLongHorMetric($fontFile->getHMtxTable(), $index);
             $character->setLongHorMetric($longHorMetric);
 
             if ($glyfTable !== null) {

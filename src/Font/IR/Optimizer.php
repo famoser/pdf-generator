@@ -36,10 +36,6 @@ class Optimizer
     {
         $font = new Font();
 
-        if ($characters[0]->getUnicodePoint() !== 0) {
-            throw new \Exception('the first character must be the missing glyph character with unicode point 0');
-        }
-
         $font->setCharacters($characters);
         $font->setTableDirectory($this->getTableDirectoryAfterSubsetting($source->getTableDirectory()));
         $font->setFontInformation($source->getFontInformation());
