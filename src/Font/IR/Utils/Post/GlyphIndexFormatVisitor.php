@@ -71,7 +71,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
             if ($index < 258) {
                 $result[] = self::createGlyphInfo($macintoshMapping[$index], $index);
             } else {
-                $nameIndex = $index -= 258;
+                $nameIndex = $index - 258;
                 $name = $names[$nameIndex];
                 $result[] = self::createGlyphInfo($name);
             }

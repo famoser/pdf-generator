@@ -426,6 +426,17 @@ class StreamReader
     /**
      * @return string
      */
+    public function readUntilEnd()
+    {
+        $result = substr($this->content, $this->offset);
+        $this->offset += \strlen($result);
+
+        return $result;
+    }
+
+    /**
+     * @return string
+     */
     public function readFor(int $length)
     {
         $offset = $this->getOffset();

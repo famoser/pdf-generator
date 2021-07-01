@@ -27,7 +27,6 @@ use PdfGenerator\Font\IR\Structure\PostScriptInfo;
 use PdfGenerator\Font\IR\Structure\TableDirectory;
 use PdfGenerator\Font\IR\Structure\Tables\FontInformation;
 use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
-use PdfGenerator\Font\IR\Utils\Post\GlyphInfo;
 use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 class Parser
@@ -236,6 +235,8 @@ class Parser
             $characters[] = $character;
         }
 
+        // TODO: link composite glyphs so font subsetting aware of linked components
+
         return $characters;
     }
 
@@ -270,28 +271,6 @@ class Parser
         $boundingBox->setWidth((float)($boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()));
 
         return $boundingBox;
-    }
-
-    /**
-     * @return PostScriptInfo
-     */
-    private function getPostScriptInfo(?GlyphInfo $glyphInfo, ?string $aGLFName)
-    {
-        $postScriptInfo = new PostScriptInfo();
-
-        if ($glyphInfo === null && $aGLFName === null) {
-            $postScriptInfo->setName('.notdef');
-            $postScriptInfo->setMacintoshGlyphIndex(0);
-        } else {
-            if ($aGLFName !== null) {
-                $postScriptInfo->setName($aGLFName);
-            } else {
-                $postScriptInfo->setMacintoshGlyphIndex($glyphInfo->getMacintoshIndex());
-                $postScriptInfo->setName($glyphInfo->getName());
-            }
-        }
-
-        return $postScriptInfo;
     }
 
     /**

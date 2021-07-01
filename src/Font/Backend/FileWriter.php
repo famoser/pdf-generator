@@ -15,6 +15,7 @@ use PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
 use PdfGenerator\Font\Backend\File\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Backend\File\Table\CMap\Subtable;
 use PdfGenerator\Font\Backend\File\Table\CMapTable;
+use PdfGenerator\Font\Backend\File\Table\Glyf\ComponentGlyf;
 use PdfGenerator\Font\Backend\File\Table\GlyfTable;
 use PdfGenerator\Font\Backend\File\Table\HeadTable;
 use PdfGenerator\Font\Backend\File\Table\HHeaTable;
@@ -378,9 +379,22 @@ class FileWriter
         $currentOffset = 0;
 
         $locaTable->addOffset($currentOffset);
+
+        // TODO: refactor to calculate on level below? code here serves no benefit
         foreach ($glyfTables as $glyfTable) {
             if ($glyfTable !== null) {
-                $size = \strlen($glyfTable->getContent()) + 10;
+                $size = 2 + 8; // contours + bounding box
+                if ($glyfTable->getContent()) {
+                    $size += \strlen($glyfTable->getContent());
+                }
+
+                foreach ($glyfTable->getComponentGlyphs() as $componentGlyph) {
+                    $size += 4;
+                    if ($componentGlyph->getContent()) {
+                        $size += \strlen($componentGlyph->getContent());
+                    }
+                }
+
                 $currentOffset += $size / 2;
             }
 
@@ -735,6 +749,17 @@ class FileWriter
         $glyfTable->setXMax($source->getXMax());
         $glyfTable->setYMin($source->getYMin());
         $glyfTable->setYMax($source->getYMax());
+
+        foreach ($source->getComponentGlyphs() as $componentGlyph) {
+            $backendComponentGlyph = new ComponentGlyf();
+            $backendComponentGlyph->setFlags($componentGlyph->getFlags());
+            // TODO: convert component glyph references to component indexes
+            $backendComponentGlyph->setGlyphIndex($componentGlyph->getGlyphIndex());
+            $backendComponentGlyph->setContent($componentGlyph->getContent());
+
+            $glyfTable->addComponentGlyph($backendComponentGlyph);
+        }
+
         $glyfTable->setContent($source->getContent());
 
         return $glyfTable;

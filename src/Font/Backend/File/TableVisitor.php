@@ -92,7 +92,13 @@ class TableVisitor
         $writer->writeInt16($glyfTable->getNumberOfContours());
         Writer::writeBoundingBoxFWORD($glyfTable, $writer);
 
-        $writer->writeStream($glyfTable->getContent());
+        foreach ($glyfTable->getComponentGlyphs() as $componentGlyph) {
+            $writer->writeUInt16($componentGlyph->getFlags());
+            $writer->writeUInt16($componentGlyph->getGlyphIndex());
+            $writer->writeNullableStream($componentGlyph->getContent());
+        }
+
+        $writer->writeNullableStream($glyfTable->getContent());
 
         return $writer->getStream();
     }

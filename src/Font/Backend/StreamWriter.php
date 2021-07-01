@@ -111,6 +111,15 @@ class StreamWriter
         $this->stream .= $content;
     }
 
+    public function writeNullableStream(?string $content)
+    {
+        if ($content === null) {
+            return;
+        }
+
+        $this->stream .= $content;
+    }
+
     public function byteAlign(int $multiple)
     {
         $length = $this->getLength();
