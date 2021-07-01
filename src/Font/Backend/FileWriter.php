@@ -244,14 +244,14 @@ class FileWriter
         return $maxPTable;
     }
 
-    private function generateSubtable(array $characters): Subtable
+    private function generateSubtable(array $characters, int $reservedCharactersOffset): Subtable
     {
         $subtable = new Subtable();
 
         $subtable->setPlatformID(0);
         $subtable->setPlatformSpecificID(4);
 
-        $subtable->setFormat($this->generateCMapFormat4($characters));
+        $subtable->setFormat($this->generateCMapFormat4($characters, $reservedCharactersOffset));
 
         return $subtable;
     }
@@ -261,9 +261,9 @@ class FileWriter
      *
      * @return Format4
      */
-    private function generateCMapFormat4(array $characters)
+    private function generateCMapFormat4(array $characters, int $reservedCharactersOffset)
     {
-        $segments = $this->generateSegments($characters);
+        $segments = $this->generateSegments($characters, $reservedCharactersOffset);
         $segmentsCount = \count($segments);
 
         $format = new Format4();
@@ -290,7 +290,7 @@ class FileWriter
      *
      * @return Segment[]
      */
-    private function generateSegments(array $characters): array
+    private function generateSegments(array $characters, int $reservedCharactersOffset): array
     {
         /** @var Segment[] $segments */
         $segments = [];
@@ -301,7 +301,8 @@ class FileWriter
         $characterCount = \count($characters);
 
         // start with index 1 because 0 is the missing glyph character
-        for ($i = 1; $i < $characterCount; ++$i) {
+        // TODO: maps unicode to character index; hence somehow need offset of reserved characters
+        for ($i = 0; $i < $characterCount; ++$i) {
             $character = $characters[$i];
             if ($character->getUnicodePoint() + 1 === $lastUnicodePoint) {
                 $currentSegment->setEndCode($character->getUnicodePoint());
@@ -317,7 +318,7 @@ class FileWriter
             $currentSegment->setStartCode($character->getUnicodePoint());
             $currentSegment->setEndCode($character->getUnicodePoint());
             $currentSegment->setIdRangeOffset(0);
-            $currentSegment->setIdDelta($i - $character->getUnicodePoint());
+            $currentSegment->setIdDelta($reservedCharactersOffset + $i - $character->getUnicodePoint());
         }
 
         $segments[] = $currentSegment;
@@ -594,14 +595,14 @@ class FileWriter
     /**
      * @param Character[] $characters
      */
-    private function generateCMapTable(array $characters): CMapTable
+    private function generateCMapTable(array $characters, int $reservedCharactersOffset): CMapTable
     {
         $cMapTable = new CMapTable();
 
         $cMapTable->setVersion(0);
         $cMapTable->setNumberSubtables(1);
 
-        $cMapTable->addSubtable($this->generateSubtable($characters));
+        $cMapTable->addSubtable($this->generateSubtable($characters, $reservedCharactersOffset));
 
         return $cMapTable;
     }
@@ -703,10 +704,12 @@ class FileWriter
     private function createTableDirectory(Font $font): TableDirectory
     {
         $characters = $this->sortCharactersByCodePoint($font->getCharacters());
-        array_unshift($characters, ...$font->getReservedCharacters());
+        $reservedCharactersOffset = \count($font->getReservedCharacters());
 
         $tableDirectory = new TableDirectory();
-        $tableDirectory->setCMapTable($this->generateCMapTable($characters));
+        $tableDirectory->setCMapTable($this->generateCMapTable($characters, $reservedCharactersOffset));
+
+        array_unshift($characters, ...$font->getReservedCharacters());
         $tableDirectory->setHMtxTable($this->generateHMtxTable($characters));
         $tableDirectory->setHeadTable($this->generateHeadTable($font->getTableDirectory()->getHeadTable(), $characters));
         $tableDirectory->setPostTable($this->generatePostTable($font->getTableDirectory()->getPostTable(), $characters));

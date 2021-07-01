@@ -100,8 +100,9 @@ class Parser
         // some of the first glyphs might be strange, following one or the other convention
         // https://github.com/fontforge/fontforge/issues/796
         // like first glyphs must be .notdef, second null, third CR, ...
-        // we detect these chars by preserving als glyphs at the start without an assigned unicode
-        $reservedCharacters = [];
+        // the first char is always the .notdef, afterwards the conventions might diverge
+        // we detect the convention-specific chars by assuming they have no unicode assigned
+        $reservedCharacters = [array_shift($characters)];
         while (\count($characters) > 0 && $characters[0]->getUnicodePoint() === null) {
             $reservedCharacters[] = array_shift($characters);
         }

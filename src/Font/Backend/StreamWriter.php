@@ -16,7 +16,7 @@ class StreamWriter
     /**
      * @var string
      */
-    private $stream;
+    private $stream = '';
 
     public function getLength(): int
     {
