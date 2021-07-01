@@ -300,8 +300,6 @@ class FileWriter
         $currentSegment = null;
         $characterCount = \count($characters);
 
-        // start with index 1 because 0 is the missing glyph character
-        // TODO: maps unicode to character index; hence somehow need offset of reserved characters
         for ($i = 0; $i < $characterCount; ++$i) {
             $character = $characters[$i];
             if ($character->getUnicodePoint() + 1 === $lastUnicodePoint) {
@@ -756,8 +754,13 @@ class FileWriter
         $totalWidth = 0;
         $minUnicode = 0xFFFF;
         $maxUnicode = 0;
+        $characterWithNonZeroWidth = 0;
         foreach ($characters as $character) {
             $totalWidth += $character->getLongHorMetric()->getAdvanceWidth();
+
+            if ($character->getLongHorMetric()->getAdvanceWidth() > 0) {
+                ++$characterWithNonZeroWidth;
+            }
 
             if ($character->getUnicodePoint() > 0) {
                 $minUnicode = min($minUnicode, $character->getUnicodePoint());
@@ -765,7 +768,7 @@ class FileWriter
             }
         }
         $maxUnicode = min($maxUnicode, 0xFFFF);
-        $os2Table->setXAvgCharWidth($totalWidth / \count($characters));
+        $os2Table->setXAvgCharWidth($totalWidth / $characterWithNonZeroWidth);
 
         $os2Table->setUsWeightClass($source->getUsWeightClass());
         $os2Table->setUsWidthClass($source->getUsWidthClass());

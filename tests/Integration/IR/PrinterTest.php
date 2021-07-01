@@ -221,7 +221,8 @@ class PrinterTest extends TestCase
 
         // act
         $printer->setTextStyle($textStyle);
-        $printer->printText('hallo ë');
+        // $printer->printText('hallo welt und Ŝonderzéichèn');
+        $printer->printText('a Ä');
         $backend = $document->render();
 
         $documentConfiguration = new Configuration();

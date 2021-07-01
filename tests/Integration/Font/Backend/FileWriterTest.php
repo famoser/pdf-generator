@@ -132,6 +132,27 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
+    public function testSubsetTwoByteCharacters()
+    {
+        // arrange
+        $parser = Parser::create();
+        $font = $parser->parse(FileReaderTest::getDefaultFontContent());
+        $writer = FileWriter::create();
+        $subset = self::getFontSubset($font, 'Ä');
+
+        // act
+        $output = $writer->writeFont($subset);
+        $font = $parser->parse($output);
+        $output2 = $writer->writeFont($font);
+
+        // assert
+        $this->assertStringContainsString($subset->getCharacters()[0]->getGlyfTable()->getContent(), $output);
+        $this->assertEquals($output, $output2);
+    }
+
+    /**
+     * @throws \Exception
+     */
     private static function getFontSubset(Font $font, ...$characters): Font
     {
         $characterRepository = new CharacterRepository($font);

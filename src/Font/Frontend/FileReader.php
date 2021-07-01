@@ -288,18 +288,56 @@ class FileReader
             }
 
             $fileReader->setOffset($startGlyphOffset + $glyphTableOffset);
-
-            $glyfTable = new GlyfTable();
-            $glyfTable->setNumberOfContours($fileReader->readInt16());
-            Reader::readBoundingBoxFWORD($fileReader, $glyfTable);
-
-            $rawFontData = $fileReader->readUntil($endGlyphOfOffset + $glyphTableOffset);
-            $glyfTable->setContent($rawFontData);
-
-            $glyfTables[] = $glyfTable;
+            $glyfTables[] = $this->readGlyfTable($fileReader, $endGlyphOfOffset + $glyphTableOffset);
         }
 
         return $glyfTables;
+    }
+
+    private function readGlyfTable(StreamReader $fileReader, $endOffset)
+    {
+        $glyfTable = new GlyfTable();
+        $glyfTable->setNumberOfContours($fileReader->readInt16());
+        Reader::readBoundingBoxFWORD($fileReader, $glyfTable);
+
+        $rawFontData = $fileReader->readUntil($endOffset);
+        $glyfTable->setContent($rawFontData);
+
+        // simple glyf; enough for our purposes to store blob
+        if ($glyfTable->getNumberOfContours() >= 0) {
+            return $glyfTable;
+        }
+
+        $compositeGlyfReader = new StreamReader($glyfTable->getContent());
+        while (true) {
+            $flags = $compositeGlyfReader->readUInt16();
+            $glyphIndex = $compositeGlyfReader->readUInt16();
+            $glyfTable->addGlyphIndex($glyphIndex);
+
+            if (!($flags & GlyfTable::MORE_COMPONENTS)) {
+                break;
+            }
+
+            if ($flags & GlyfTable::ARG_1_AND_2_ARE_WORDS) {
+                $compositeGlyfReader->readInt32(); // two arguments each 16bits
+            } else {
+                $compositeGlyfReader->readInt16(); // two arguments each 8 bits
+            }
+
+            if ($flags & GlyfTable::WE_HAVE_A_SCALE) {
+                $compositeGlyfReader->readF2DOT14();
+            } elseif ($flags & GlyfTable::WE_HAVE_AN_X_AND_Y_SCALE) {
+                $compositeGlyfReader->readF2DOT14();
+                $compositeGlyfReader->readF2DOT14();
+            } elseif ($flags & GlyfTable::WE_HAVE_A_TWO_BY_TWO) {
+                $compositeGlyfReader->readF2DOT14();
+                $compositeGlyfReader->readF2DOT14();
+                $compositeGlyfReader->readF2DOT14();
+                $compositeGlyfReader->readF2DOT14();
+            }
+        }
+
+        return $glyfTable;
     }
 
     /**
