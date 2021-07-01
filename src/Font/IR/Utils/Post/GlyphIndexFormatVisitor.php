@@ -51,22 +51,10 @@ class GlyphIndexFormatVisitor implements VisitorInterface
 
         $result = [];
         foreach ($macintoshMapping as $glyphIndex => $name) {
-            $result[] = self::createGlyphInfo($glyphIndex, $name);
+            $result[] = self::createGlyphInfo($name, $glyphIndex);
         }
 
         return $result;
-    }
-
-    /**
-     * @return GlyphInfo
-     */
-    private static function createGlyphInfo(?int $glyphIndex, ?string $name)
-    {
-        $glyphInfo = new GlyphInfo();
-        $glyphInfo->setMacintoshIndex($glyphIndex);
-        $glyphInfo->setName($name);
-
-        return $glyphInfo;
     }
 
     /**
@@ -81,31 +69,12 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         for ($i = 0; $i < $format2->getNumGlyphs(); ++$i) {
             $index = $format2->getGlyphNameIndex()[$i];
             if ($index < 258) {
-                $result[] = self::createGlyphInfo($index, $macintoshMapping[$index]);
+                $result[] = self::createGlyphInfo($macintoshMapping[$index], $index);
             } else {
                 $nameIndex = $index -= 258;
                 $name = $names[$nameIndex];
-                $result[] = self::createGlyphInfo($index, $name);
+                $result[] = self::createGlyphInfo($name);
             }
-        }
-
-        return $result;
-    }
-
-    /**
-     * @return array
-     */
-    private function streamToPascalStrings(string $stream)
-    {
-        $length = \strlen($stream);
-        $activeIndex = 0;
-
-        $result = [];
-        while ($activeIndex < $length) {
-            $stringLength = (int)$stream[$activeIndex];
-            $result[] = substr($stream, $activeIndex + 1, $stringLength);
-
-            $activeIndex += $stringLength + 1;
         }
 
         return $result;
@@ -123,7 +92,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
             $offset = $format25->getOffsets()[$i];
 
             $macintoshOrdering = $i + $offset;
-            $result[] = self::createGlyphInfo($macintoshOrdering, $macintoshMapping[$macintoshOrdering]);
+            $result[] = self::createGlyphInfo($macintoshMapping[$macintoshOrdering], $macintoshOrdering);
         }
 
         return $result;
@@ -135,5 +104,36 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     public function visitFormat3(Format3 $format3)
     {
         return [];
+    }
+
+    /**
+     * @return GlyphInfo
+     */
+    private static function createGlyphInfo(string $name, ?int $macintoshSetIndex = null)
+    {
+        $glyphInfo = new GlyphInfo();
+        $glyphInfo->setName($name);
+        $glyphInfo->setMacintoshIndex($macintoshSetIndex);
+
+        return $glyphInfo;
+    }
+
+    /**
+     * @return array
+     */
+    private function streamToPascalStrings(string $stream)
+    {
+        $length = \strlen($stream);
+        $activeIndex = 0;
+
+        $result = [];
+        while ($activeIndex < $length) {
+            $stringLength = \ord($stream[$activeIndex]);
+            $result[] = substr($stream, $activeIndex + 1, $stringLength);
+
+            $activeIndex += $stringLength + 1;
+        }
+
+        return $result;
     }
 }

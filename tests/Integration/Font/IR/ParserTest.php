@@ -31,7 +31,7 @@ class ParserTest extends TestCase
         $font = $parser->parse(FileReaderTest::getDefaultFontContent());
 
         // assert
-        $this->assertCount(885, $font->getCharacters());
+        $this->assertCount(935, $font->getCharacters());
         $this->assertSanityChecks($font);
     }
 
