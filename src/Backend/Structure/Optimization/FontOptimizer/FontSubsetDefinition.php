@@ -11,15 +11,8 @@
 
 namespace PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 
-use PdfGenerator\Font\IR\Structure\Character;
-
 class FontSubsetDefinition
 {
-    /**
-     * @var Character[]
-     */
-    private $characters;
-
     /**
      * @var int[]
      */
@@ -33,23 +26,13 @@ class FontSubsetDefinition
     /**
      * FontOptimizerPayload constructor.
      *
-     * @param Character[] $characters
      * @param int[] $characterIndexToCodePointMapping
      * @param int[] $codePointsWithoutCharacter
      */
-    public function __construct(array $characters, array $characterIndexToCodePointMapping, array $codePointsWithoutCharacter)
+    public function __construct(array $characterIndexToCodePointMapping, array $codePointsWithoutCharacter)
     {
-        $this->characters = $characters;
         $this->characterIndexToCodePointMapping = $characterIndexToCodePointMapping;
         $this->codePointsWithoutCharacter = $codePointsWithoutCharacter;
-    }
-
-    /**
-     * @return Character[]
-     */
-    public function getCharacters(): array
-    {
-        return $this->characters;
     }
 
     /**

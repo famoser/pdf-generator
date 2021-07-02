@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
+use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\IR\Composer;
 use PdfGenerator\IR\Structure\Document;
@@ -162,13 +163,10 @@ class ComposerTest extends TestCase
         $composer = new Composer($document);
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
-        $imageSrc = ResourcesProvider::getImage1Path();
 
         // act
         $composer->getPrinter()->setTextStyle($textStyle);
-        $composer->printPhrase('Hallo Welt und Sonderzéíchèn');
-        $image = $document->getOrCreateImage($imageSrc);
-        $composer->printImage($image, 20, 20);
+        $composer->printPhrase('Hallo und Sonderzéíchèn');
         $backend = $document->render();
 
         $documentConfiguration = new Configuration();
@@ -176,8 +174,14 @@ class ComposerTest extends TestCase
         $documentConfiguration->setAutoResizeImages(true);
         $backend->setConfiguration($documentConfiguration);
 
-        $result = $backend->save();
+        $catalog = $backend->render();
+        $result = $catalog->save();
         file_put_contents('pdf.pdf', $result);
+
+        /** @var Type0 $font */
+        $font = $catalog->getPages()->getKids()[0]->getResources()->getFonts()[0];
+        $type0Font = $font->getDescendantFont()->getFontDescriptor()->getFontFile3()->getFontData();
+        file_put_contents('subset.ttf', $type0Font);
 
         // assert
         $this->assertNotEmpty($result);

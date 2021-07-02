@@ -12,51 +12,55 @@
 namespace PdfGenerator\Backend\Structure\Optimization;
 
 use PdfGenerator\Backend\Structure\Optimization\FontOptimizer\FontSubsetDefinition;
+use PdfGenerator\Font\Backend\FileWriter;
 use PdfGenerator\Font\IR\CharacterRepository;
+use PdfGenerator\Font\IR\Optimizer;
 use PdfGenerator\Font\IR\Structure\Font;
 
 class FontOptimizer
 {
-    public function generateFontSubset(Font $font, string $usedText): FontSubsetDefinition
+    /**
+     * @throws \Exception
+     */
+    public function createFontSubset(Font $font, string $charactersUsedInText): array
     {
-        $characterIndexToCodePointMapping = $this->getOrderedCodepoints($usedText);
-
+        $usedCodepoints = $this->getOrderedCodepoints($charactersUsedInText);
         $characterRepository = new CharacterRepository($font);
 
         // extract needed characters
         $characters = [];
-        $codePointsWithoutCharacter = [];
-        foreach ($characterIndexToCodePointMapping as $index => $codePoint) {
+        foreach ($usedCodepoints as $codePoint) {
             $character = $characterRepository->findByCodePoint($codePoint);
             if ($character !== null) {
                 $characters[] = $character;
-            } else {
-                $codePointsWithoutCharacter[$index] = $codePoint;
             }
         }
+
+        // create subset
+        $optimizer = Optimizer::create();
+        $font = $optimizer->getFontSubset($font, $characters);
+
+        $writer = FileWriter::create();
+        $fontData = $writer->writeFont($font);
+
+        return [$font, $fontData, $usedCodepoints];
+    }
+
+    public function generateFontSubset(Font $font, string $usedCodepoints): FontSubsetDefinition
+    {
+        $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());
 
         // remove missing characters from all code points
-        $notEncodedCharIndexes = [];
-        foreach ($codePointsWithoutCharacter as $index => $value) {
-            unset($characterIndexToCodePointMapping[$index]);
-
-            // 10 is space character and does not need to be encoded
-            if ($value === 10) {
-                $notEncodedCharIndexes[] = $index;
-            }
-        }
-
-        // remove missing characters that do not need to be encoded
-        foreach ($notEncodedCharIndexes as $notEncodedCharIndex) {
-            unset($codePointsWithoutCharacter[$notEncodedCharIndex]);
+        foreach ($codepointsWithoutCharacter as $index => $value) {
+            unset($usedCodepoints[$index]);
         }
 
         // normalize arrays
-        $characterIndexToCodePointMapping = array_values($characterIndexToCodePointMapping);
-        $codePointsWithoutCharacter = array_values($codePointsWithoutCharacter);
-        sort($codePointsWithoutCharacter);
+        $codepointsWithCharacter = array_values($usedCodepoints);
+        $codepointsWithoutCharacter = array_values($codepointsWithoutCharacter);
+        sort($codepointsWithoutCharacter);
 
-        return new FontSubsetDefinition($characters, $characterIndexToCodePointMapping, $codePointsWithoutCharacter);
+        return new FontSubsetDefinition($codepointsWithCharacter, $codepointsWithoutCharacter);
     }
 
     /**

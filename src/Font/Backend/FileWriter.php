@@ -335,40 +335,6 @@ class FileWriter
     }
 
     /**
-     * @return Character[]
-     */
-    private function ensureComponentCharactersIncluded(array &$characters, array $reservedCharacters): void
-    {
-        // characters may be composed out of others, which need also be included in the subset
-        /** @var Character[] $includedCharacters */
-        $includedCharacters = [...$reservedCharacters, ...$characters];
-        for ($i = 0; $i < \count($includedCharacters); ++$i) {
-            $includedCharacter = $includedCharacters[$i];
-            foreach ($includedCharacter->getComponentCharacters() as $componentCharacter) {
-                if (!\in_array($componentCharacter, $includedCharacters, true)) {
-                    $includedCharacters[] = $componentCharacter;
-                    $characters[] = $componentCharacter;
-                }
-            }
-        }
-    }
-
-    private function sortCharactersByCodePoint(array &$characters): void
-    {
-        $sortByCodePoint = function (Character $character1, Character $character2) {
-            $unicodePoint1 = $character1->getUnicodePoint();
-            $unicodePoint2 = $character2->getUnicodePoint();
-            if ($unicodePoint1 === $unicodePoint2) {
-                return 0;
-            }
-
-            return ($unicodePoint1 < $unicodePoint2) ? -1 : 1;
-        };
-
-        usort($characters, $sortByCodePoint);
-    }
-
-    /**
      * @param Character[] $characters
      *
      * @return GlyfTable[]
@@ -741,9 +707,6 @@ class FileWriter
     {
         $characters = $font->getCharacters();
         $reservedCharacters = $font->getReservedCharacters();
-
-        $this->ensureComponentCharactersIncluded($characters, $reservedCharacters);
-        $this->sortCharactersByCodePoint($characters);
 
         $tableDirectory = new TableDirectory();
         $tableDirectory->setCMapTable($this->generateCMapTable($characters, \count($reservedCharacters)));
