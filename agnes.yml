@@ -1,0 +1,15 @@
+agnes:
+  version: 4
+
+build:
+  path: .build
+
+github:
+  api_token: '%env(GITHUB_API_TOKEN)%'
+  repository: famoser/pdf-generator
+
+scripts:
+  build:
+    hook: build
+    script:
+      - composer install --verbose --prefer-dist --no-interaction --no-dev --optimize-autoloader --no-scripts

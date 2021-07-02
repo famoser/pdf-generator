@@ -1,4 +1,6 @@
 .idea
+.build
+.env.local
 vendor
 build
 node_modules

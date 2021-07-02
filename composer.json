@@ -12,7 +12,8 @@
   "require": {
     "php": ">=7.4",
     "ext-bcmath": "*",
-    "ext-gd": "*"
+    "ext-gd": "*",
+    "famoser/agnes": "^4.2"
   },
   "require-dev": {
     "codacy/coverage": "^1.4",
