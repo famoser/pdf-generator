@@ -213,7 +213,7 @@ class FileWriter
         /*
          * some of the values here are wrong because we do not analyse the content of the glyphs
          * we leave the value same than they were with the input font; assuming the font gets less complex
-         * we riks using too much memory for parses that trust these numbers, but they should not crash (because not enough memory allocated)
+         * we risk using too much memory for parses that trust these numbers, but the reverse could lead to crashes
          */
 
         $maxPTable->setVersion(1.0);
@@ -380,7 +380,6 @@ class FileWriter
 
         $locaTable->addOffset($currentOffset);
 
-        // TODO: refactor to calculate on level below? code here serves no benefit
         foreach ($glyfTables as $glyfTable) {
             if ($glyfTable !== null) {
                 $size = 2 + 8; // contours + bounding box

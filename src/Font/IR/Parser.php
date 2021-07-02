@@ -232,10 +232,19 @@ class Parser
                 $character->setBoundingBox($boundingBox);
             }
 
-            $characters[] = $character;
+            $characters[$index] = $character;
         }
 
-        // TODO: link composite glyphs so font subsetting aware of linked components
+        foreach ($characters as $character) {
+            if (!$character->getGlyfTable()) {
+                continue;
+            }
+
+            foreach ($character->getGlyfTable()->getComponentGlyphs() as $componentGlyph) {
+                $componentCharacter = \array_key_exists($componentGlyph->getGlyphIndex(), $characters) ? $characters[$componentGlyph->getGlyphIndex()] : null;
+                $character->addComponentCharacter($componentCharacter);
+            }
+        }
 
         return $characters;
     }

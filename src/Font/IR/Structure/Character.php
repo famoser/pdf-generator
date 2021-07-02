@@ -41,6 +41,11 @@ class Character
      */
     private $longHorMetric;
 
+    /**
+     * @var ?Character[]
+     */
+    private $componentCharacters = [];
+
     public function getUnicodePoint(): ?int
     {
         return $this->unicodePoint;
@@ -89,5 +94,18 @@ class Character
     public function setLongHorMetric(LongHorMetric $longHorMetric): void
     {
         $this->longHorMetric = $longHorMetric;
+    }
+
+    /**
+     * @return ?Character[]
+     */
+    public function getComponentCharacters(): array
+    {
+        return $this->componentCharacters;
+    }
+
+    public function addComponentCharacter(?self $character): void
+    {
+        $this->componentCharacters[] = $character;
     }
 }
