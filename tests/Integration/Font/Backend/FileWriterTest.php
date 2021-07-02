@@ -132,7 +132,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testSubsetTwoByteCharacters()
+    public function testSubsetComponentGlyphs()
     {
         // arrange
         $parser = Parser::create();
@@ -142,7 +142,6 @@ class FileWriterTest extends TestCase
 
         // act
         $output = $writer->writeFont($subset);
-        file_put_contents('expected.ttf', $output);
         $font = $parser->parse($output);
         $output2 = $writer->writeFont($font);
 

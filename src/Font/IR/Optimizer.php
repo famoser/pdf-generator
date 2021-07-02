@@ -38,6 +38,7 @@ class Optimizer
 
         $font->setReservedCharacters($source->getReservedCharacters());
         $font->setCharacters($characters);
+
         $font->setTableDirectory($this->getTableDirectoryAfterSubsetting($source->getTableDirectory()));
         $font->setFontInformation($source->getFontInformation());
 

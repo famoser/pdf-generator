@@ -38,6 +38,7 @@ use PdfGenerator\Font\Frontend\StreamReader;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
+use SplObjectStorage;
 
 class FileWriter
 {
@@ -333,16 +334,38 @@ class FileWriter
         return $segments;
     }
 
-    private function sortCharactersByCodePoint(array $characters): array
+    /**
+     * @return Character[]
+     */
+    private function ensureComponentCharactersIncluded(array &$characters, array $reservedCharacters): void
     {
-        $charactersByCodePoint = [];
-        foreach ($characters as $character) {
-            $charactersByCodePoint[$character->getUnicodePoint()] = $character;
+        // characters may be composed out of others, which need also be included in the subset
+        /** @var Character[] $includedCharacters */
+        $includedCharacters = [...$reservedCharacters, ...$characters];
+        for ($i = 0; $i < \count($includedCharacters); ++$i) {
+            $includedCharacter = $includedCharacters[$i];
+            foreach ($includedCharacter->getComponentCharacters() as $componentCharacter) {
+                if (!\in_array($componentCharacter, $includedCharacters, true)) {
+                    $includedCharacters[] = $componentCharacter;
+                    $characters[] = $componentCharacter;
+                }
+            }
         }
+    }
 
-        ksort($charactersByCodePoint);
+    private function sortCharactersByCodePoint(array &$characters): void
+    {
+        $sortByCodePoint = function (Character $character1, Character $character2) {
+            $unicodePoint1 = $character1->getUnicodePoint();
+            $unicodePoint2 = $character2->getUnicodePoint();
+            if ($unicodePoint1 === $unicodePoint2) {
+                return 0;
+            }
 
-        return array_values($charactersByCodePoint);
+            return ($unicodePoint1 < $unicodePoint2) ? -1 : 1;
+        };
+
+        usort($characters, $sortByCodePoint);
     }
 
     /**
@@ -354,6 +377,23 @@ class FileWriter
     {
         /** @var GlyfTable[] $glyfTables */
         $glyfTables = [];
+
+        // fix component character references
+        $characterLookup = new SplObjectStorage();
+        for ($i = 0; $i < \count($characters); ++$i) {
+            $characterLookup->attach($characters[$i], $i);
+        }
+        foreach ($characters as $character) {
+            $componentCharacters = $character->getComponentCharacters();
+            for ($i = 0; $i < \count($componentCharacters); ++$i) {
+                $componentCharacter = $componentCharacters[$i];
+                if ($componentCharacter !== null) {
+                    // guaranteed to return result as all component characters part of font by @ref ensureComponentCharactersIncluded
+                    $index = $characterLookup->offsetGet($componentCharacter);
+                    $character->getGlyfTable()->getComponentGlyphs()[$i]->setGlyphIndex($index);
+                }
+            }
+        }
 
         foreach ($characters as $character) {
             if ($character->getGlyfTable() === null) {
@@ -714,13 +754,16 @@ class FileWriter
 
     private function createTableDirectory(Font $font): TableDirectory
     {
-        $characters = $this->sortCharactersByCodePoint($font->getCharacters());
-        $reservedCharactersOffset = \count($font->getReservedCharacters());
+        $characters = $font->getCharacters();
+        $reservedCharacters = $font->getReservedCharacters();
+
+        $this->ensureComponentCharactersIncluded($characters, $reservedCharacters);
+        $this->sortCharactersByCodePoint($characters);
 
         $tableDirectory = new TableDirectory();
-        $tableDirectory->setCMapTable($this->generateCMapTable($characters, $reservedCharactersOffset));
+        $tableDirectory->setCMapTable($this->generateCMapTable($characters, \count($reservedCharacters)));
 
-        array_unshift($characters, ...$font->getReservedCharacters());
+        array_unshift($characters, ...$reservedCharacters);
         $tableDirectory->setHMtxTable($this->generateHMtxTable($characters));
         $tableDirectory->setHeadTable($this->generateHeadTable($font->getTableDirectory()->getHeadTable(), $characters));
         $tableDirectory->setPostTable($this->generatePostTable($font->getTableDirectory()->getPostTable(), $characters));
@@ -752,7 +795,6 @@ class FileWriter
         foreach ($source->getComponentGlyphs() as $componentGlyph) {
             $backendComponentGlyph = new ComponentGlyf();
             $backendComponentGlyph->setFlags($componentGlyph->getFlags());
-            // TODO: convert component glyph references to component indexes
             $backendComponentGlyph->setGlyphIndex($componentGlyph->getGlyphIndex());
             $backendComponentGlyph->setContent($componentGlyph->getContent());
 
