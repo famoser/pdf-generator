@@ -8,6 +8,7 @@ reference code:
 - [ITextSharp](https://www.mikesdotnetting.com/article/80/create-pdfs-in-asp-net-getting-started-with-itextsharp) (nice public API)
 
 ## pdf generation
+
 specification:
 - [Standard v1.7](https://www.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf) (page 570 long example)
 - [Standard v2.0](https://gitlab.com/famoser/pdf-generator-research/-/blob/master/PDF%202020-2.pdf)
@@ -29,10 +30,10 @@ specifications:
 - [Apple](https://developer.apple.com/fonts/TrueType-Reference-Manual/)
 
 reference code:
-- https://github.com/nicksagona/popphp-v1-legacy/blob/master/vendor/PopPHPFramework/src/Pop/Font/TrueType.php
+- [pop-pdf](https://github.com/popphp/pop-pdf/tree/master/src/Build/Font)
 
 tools:
-- [FontValidator](https://github.com/HinTak/Font-Validator/) support many different checks
+- [FontValidator](https://github.com/HinTak/Font-Validator/) supports many different checks
 - [FontForge](https://fontforge.org/en-US/) helps to see if characters are correct
 - [ttfdump](http://manpages.ubuntu.com/manpages/trusty/man1/ttfdump.1.html) can dump TTFs to ASCII tables
 
