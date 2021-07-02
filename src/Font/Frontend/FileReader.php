@@ -15,6 +15,7 @@ use PdfGenerator\Font\Frontend\File\FontFile;
 use PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
 use PdfGenerator\Font\Frontend\File\Table\CMapTable;
+use PdfGenerator\Font\Frontend\File\Table\Glyf\ComponentGlyf;
 use PdfGenerator\Font\Frontend\File\Table\GlyfTable;
 use PdfGenerator\Font\Frontend\File\Table\HeadTable;
 use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
@@ -288,18 +289,57 @@ class FileReader
             }
 
             $fileReader->setOffset($startGlyphOffset + $glyphTableOffset);
-
-            $glyfTable = new GlyfTable();
-            $glyfTable->setNumberOfContours($fileReader->readInt16());
-            Reader::readBoundingBoxFWORD($fileReader, $glyfTable);
-
-            $rawFontData = $fileReader->readUntil($endGlyphOfOffset + $glyphTableOffset);
-            $glyfTable->setContent($rawFontData);
-
-            $glyfTables[] = $glyfTable;
+            $glyfTables[] = $this->readGlyfTable($fileReader, $endGlyphOfOffset + $glyphTableOffset);
         }
 
         return $glyfTables;
+    }
+
+    private function readGlyfTable(StreamReader $fileReader, $endOffset)
+    {
+        $glyfTable = new GlyfTable();
+        $glyfTable->setNumberOfContours($fileReader->readInt16());
+        Reader::readBoundingBoxFWORD($fileReader, $glyfTable);
+
+        $rawFontData = $fileReader->readUntil($endOffset);
+
+        // simple glyph; enough for our purposes to store blob
+        if ($glyfTable->getNumberOfContours() >= 0) {
+            $glyfTable->setContent($rawFontData);
+
+            return $glyfTable;
+        }
+
+        $compositeGlyfReader = new StreamReader($rawFontData);
+        do {
+            $componentGlyph = new ComponentGlyf();
+
+            $componentGlyph->setFlags($compositeGlyfReader->readUInt16());
+            $componentGlyph->setGlyphIndex($compositeGlyfReader->readUInt16());
+
+            $glyfTable->addComponentGlyph($componentGlyph);
+
+            if ($componentGlyph->getFlags() & ComponentGlyf::ARG_1_AND_2_ARE_WORDS) {
+                $componentGlyphContent = $compositeGlyfReader->readFor(2 * 2); // two arguments each 16bits
+            } else {
+                $componentGlyphContent = $compositeGlyfReader->readFor(2 * 1); // two arguments each 8 bits
+            }
+
+            if ($componentGlyph->getFlags() & ComponentGlyf::WE_HAVE_A_SCALE) {
+                $componentGlyphContent .= $compositeGlyfReader->readFor(2); // one F2DOT14
+            } elseif ($componentGlyph->getFlags() & ComponentGlyf::WE_HAVE_AN_X_AND_Y_SCALE) {
+                $componentGlyphContent .= $compositeGlyfReader->readFor(2 * 2); // two F2DOT14
+            } elseif ($componentGlyph->getFlags() & ComponentGlyf::WE_HAVE_A_TWO_BY_TWO) {
+                $componentGlyphContent .= $compositeGlyfReader->readFor(4 * 2); // four F2DOT14
+            }
+
+            $componentGlyph->setContent($componentGlyphContent);
+        } while ($componentGlyph->getFlags() & ComponentGlyf::MORE_COMPONENTS);
+
+        $instructions = $compositeGlyfReader->readUntilEnd();
+        $glyfTable->setContent($instructions);
+
+        return $glyfTable;
     }
 
     /**

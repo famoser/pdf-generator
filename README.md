@@ -99,13 +99,13 @@ First, the backend will be created following closely the standard of adobe.
 - [x] print & style drawings (lines & rectangles)
 - [x] use TTF fonts
 - [x] print UTF-8 text
-    - [ ] check if all characters correctly included in font (like ä)
-    - [ ] make font dimensions available in the IR (to measure text)
+    - [x] check if all characters correctly included in font (like ä)
+    - [x] make font dimensions available in the IR (to measure text)
 
 ### Minimal IR Base
 To be able to print to the pdf sensible some initial works needs to be done to see whats doable and what is not.
 
-- [ ] calculate dimensions of tex
+- [ ] calculate dimensions of text
 - [ ] place text on pages with automatic breaks
 
 ### Public API Milestone

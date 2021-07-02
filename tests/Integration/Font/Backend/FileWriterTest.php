@@ -53,7 +53,7 @@ class FileWriterTest extends TestCase
         $character1 = $characterRepository->findByChar('o');
         $character2 = $characterRepository->findByChar('m');
         $optimizer = new Optimizer();
-        $subset = $optimizer->getFontSubset($font, [$characterRepository->getMissingCharacter(), $character, $character1, $character2]);
+        $subset = $optimizer->getFontSubset($font, [$character, $character1, $character2]);
 
         // act
         $output = $writer->writeFont($subset);
@@ -132,6 +132,27 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
+    public function testSubsetComponentGlyphs()
+    {
+        // arrange
+        $parser = Parser::create();
+        $font = $parser->parse(FileReaderTest::getDefaultFontContent());
+        $writer = FileWriter::create();
+        $subset = self::getFontSubset($font, 'Ä');
+
+        // act
+        $output = $writer->writeFont($subset);
+        $font = $parser->parse($output);
+        $output2 = $writer->writeFont($font);
+
+        // assert
+        $this->assertStringContainsString($subset->getCharacters()[0]->getGlyfTable()->getContent(), $output);
+        $this->assertEquals($output, $output2);
+    }
+
+    /**
+     * @throws \Exception
+     */
     private static function getFontSubset(Font $font, ...$characters): Font
     {
         $characterRepository = new CharacterRepository($font);
@@ -142,6 +163,6 @@ class FileWriterTest extends TestCase
 
         $optimizer = new Optimizer();
 
-        return $optimizer->getFontSubset($font, array_merge([$characterRepository->getMissingCharacter()], $resultingCharacters));
+        return $optimizer->getFontSubset($font, $resultingCharacters);
     }
 }

@@ -16,7 +16,7 @@ class StreamWriter
     /**
      * @var string
      */
-    private $stream;
+    private $stream = '';
 
     public function getLength(): int
     {
@@ -108,6 +108,15 @@ class StreamWriter
 
     public function writeStream(string $content)
     {
+        $this->stream .= $content;
+    }
+
+    public function writeNullableStream(?string $content)
+    {
+        if ($content === null) {
+            return;
+        }
+
         $this->stream .= $content;
     }
 

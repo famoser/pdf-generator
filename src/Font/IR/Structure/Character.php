@@ -17,9 +17,9 @@ use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 class Character
 {
     /**
-     * @var int
+     * @var int|null
      */
-    private $unicodePoint;
+    private $unicodePoint = null;
 
     /**
      * @var PostScriptInfo
@@ -41,7 +41,12 @@ class Character
      */
     private $longHorMetric;
 
-    public function getUnicodePoint(): int
+    /**
+     * @var ?Character[]
+     */
+    private $componentCharacters = [];
+
+    public function getUnicodePoint(): ?int
     {
         return $this->unicodePoint;
     }
@@ -89,5 +94,18 @@ class Character
     public function setLongHorMetric(LongHorMetric $longHorMetric): void
     {
         $this->longHorMetric = $longHorMetric;
+    }
+
+    /**
+     * @return ?Character[]
+     */
+    public function getComponentCharacters(): array
+    {
+        return $this->componentCharacters;
+    }
+
+    public function addComponentCharacter(?self $character): void
+    {
+        $this->componentCharacters[] = $character;
     }
 }

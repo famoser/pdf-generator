@@ -11,8 +11,9 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table;
 
+use PdfGenerator\Font\Frontend\File\Table\Glyf\ComponentGlyf;
 use PdfGenerator\Font\Frontend\File\Traits\BoundingBoxTrait;
-use PdfGenerator\Font\Frontend\File\Traits\RawContent;
+use PdfGenerator\Font\Frontend\File\Traits\NullableRawContent;
 
 /**
  * the glyph table specified the appearance of the glyphs
@@ -30,7 +31,7 @@ class GlyfTable
     /*
      * the raw glyph data
      */
-    use RawContent;
+    use NullableRawContent;
     /**
      * number of contours
      * if >=0 then simple glyph
@@ -42,6 +43,14 @@ class GlyfTable
      */
     private $numberOfContours;
 
+    /**
+     * other glyphs part of this glyph
+     * if non-empty, must include these glyphs into final font.
+     *
+     * @var ComponentGlyf[]
+     */
+    private $componentGlyphs = [];
+
     public function getNumberOfContours(): int
     {
         return $this->numberOfContours;
@@ -50,5 +59,18 @@ class GlyfTable
     public function setNumberOfContours(int $numberOfContours): void
     {
         $this->numberOfContours = $numberOfContours;
+    }
+
+    public function addComponentGlyph(ComponentGlyf $componentGlyf)
+    {
+        $this->componentGlyphs[] = $componentGlyf;
+    }
+
+    /**
+     * @return ComponentGlyf[]
+     */
+    public function getComponentGlyphs(): array
+    {
+        return $this->componentGlyphs;
     }
 }

@@ -27,7 +27,6 @@ use PdfGenerator\Font\IR\Structure\PostScriptInfo;
 use PdfGenerator\Font\IR\Structure\TableDirectory;
 use PdfGenerator\Font\IR\Structure\Tables\FontInformation;
 use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
-use PdfGenerator\Font\IR\Utils\Post\GlyphInfo;
 use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 class Parser
@@ -95,16 +94,20 @@ class Parser
         $font->setFontInformation($this->createFontInformation($fontFile));
 
         $characters = $this->createCharacters($fontFile);
-        $mappedCharacters = $this->mapCharacters($characters, $fontFile);
+        $this->addGlyphInfo($characters, $fontFile);
 
-        // ensure first character is .notdef character with unicode point 0
-        if ($mappedCharacters[0]->getUnicodePoint() !== 0) {
-            $missingGlyphCharacter = $characters[0];
-            $missingGlyphCharacter->setUnicodePoint(0);
-            array_unshift($mappedCharacters, $missingGlyphCharacter);
+        // some of the first glyphs might be strange, following one or the other convention
+        // https://github.com/fontforge/fontforge/issues/796
+        // like first glyphs must be .notdef, second null, third CR, ...
+        // the first char is always the .notdef, afterwards the conventions might diverge
+        // we detect the convention-specific chars by assuming they have no unicode assigned
+        $reservedCharacters = [array_shift($characters)];
+        while (\count($characters) > 0 && $characters[0]->getUnicodePoint() === null) {
+            $reservedCharacters[] = array_shift($characters);
         }
 
-        $font->setCharacters($mappedCharacters);
+        $font->setReservedCharacters($reservedCharacters);
+        $font->setCharacters($characters);
 
         return $font;
     }
@@ -138,10 +141,8 @@ class Parser
      * @param Character[] $characters
      *
      * @throws \Exception
-     *
-     * @return Character[]
      */
-    private function mapCharacters(array $characters, FontFile $fontFile)
+    private function addGlyphInfo(array $characters, FontFile $fontFile)
     {
         $subtable = $this->chooseBestCMapSubtable($fontFile->getCMapTable());
 
@@ -149,22 +150,33 @@ class Parser
         $postMapping = $this->postGlyphIndexFormatVisitor->visitFormat($fontFile->getPostTable()->getFormat());
         $aGLFMapping = $this->glyphNameMappingFactory->getAGLFMapping();
 
-        $mappedCharacters = [];
-        foreach ($cMapMapping as $unicode => $characterIndex) {
-            $character = $characters[$characterIndex];
-            if ($character !== null) {
-                $character->setUnicodePoint($unicode);
-
-                $glyphInfo = \array_key_exists($characterIndex, $postMapping) ? $postMapping[$characterIndex] : null;
-                $aGLFInfo = \array_key_exists($unicode, $aGLFMapping) ? $aGLFMapping[$unicode] : null;
-                $postScriptInfo = $this->getPostScriptInfo($glyphInfo, $aGLFInfo);
-                $character->setPostScriptInfo($postScriptInfo);
-
-                $mappedCharacters[] = $character;
+        foreach ($characters as $characterIndex => $character) {
+            if (!\array_key_exists($characterIndex, $postMapping)) {
+                continue;
             }
+
+            $glyphInfo = $postMapping[$characterIndex];
+
+            $postScriptInfo = new PostScriptInfo();
+            $postScriptInfo->setMacintoshGlyphIndex($glyphInfo->getMacintoshIndex());
+            $postScriptInfo->setName($glyphInfo->getName());
+
+            $character->setPostScriptInfo($postScriptInfo);
         }
 
-        return $mappedCharacters;
+        foreach ($cMapMapping as $unicode => $characterIndex) {
+            if (!\array_key_exists($characterIndex, $characters)) {
+                continue;
+            }
+
+            $character = $characters[$characterIndex];
+            $character->setUnicodePoint($unicode);
+
+            if (\array_key_exists($unicode, $aGLFMapping)) {
+                $aGLFInfo = $aGLFMapping[$unicode];
+                $character->getPostScriptInfo()->setName($aGLFInfo);
+            }
+        }
     }
 
     /**
@@ -206,13 +218,11 @@ class Parser
     {
         $characters = [];
 
-        $characterCount = \count($fontFile->getGlyfTables());
-        for ($i = 0; $i < $characterCount; ++$i) {
-            $glyfTable = $fontFile->getGlyfTables()[$i];
-
+        foreach ($fontFile->getGlyfTables() as $index => $glyfTable) {
             $character = new Character();
+            $character->setGlyfTable($glyfTable);
 
-            $longHorMetric = $this->getLongHorMetric($fontFile->getHMtxTable(), $i);
+            $longHorMetric = $this->getLongHorMetric($fontFile->getHMtxTable(), $index);
             $character->setLongHorMetric($longHorMetric);
 
             if ($glyfTable !== null) {
@@ -222,7 +232,18 @@ class Parser
                 $character->setBoundingBox($boundingBox);
             }
 
-            $characters[] = $character;
+            $characters[$index] = $character;
+        }
+
+        foreach ($characters as $character) {
+            if (!$character->getGlyfTable()) {
+                continue;
+            }
+
+            foreach ($character->getGlyfTable()->getComponentGlyphs() as $componentGlyph) {
+                $componentCharacter = \array_key_exists($componentGlyph->getGlyphIndex(), $characters) ? $characters[$componentGlyph->getGlyphIndex()] : null;
+                $character->addComponentCharacter($componentCharacter);
+            }
         }
 
         return $characters;
@@ -259,28 +280,6 @@ class Parser
         $boundingBox->setWidth((float)($boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()));
 
         return $boundingBox;
-    }
-
-    /**
-     * @return PostScriptInfo
-     */
-    private function getPostScriptInfo(?GlyphInfo $glyphInfo, ?string $aGLFName)
-    {
-        $postScriptInfo = new PostScriptInfo();
-
-        if ($glyphInfo === null && $aGLFName === null) {
-            $postScriptInfo->setName('.notdef');
-            $postScriptInfo->setMacintoshGlyphIndex(0);
-        } else {
-            if ($aGLFName !== null) {
-                $postScriptInfo->setName($aGLFName);
-            } else {
-                $postScriptInfo->setMacintoshGlyphIndex($glyphInfo->getMacintoshIndex());
-                $postScriptInfo->setName($glyphInfo->getName());
-            }
-        }
-
-        return $postScriptInfo;
     }
 
     /**

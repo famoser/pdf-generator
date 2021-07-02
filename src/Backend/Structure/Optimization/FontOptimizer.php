@@ -24,7 +24,7 @@ class FontOptimizer
         $characterRepository = new CharacterRepository($font);
 
         // extract needed characters
-        $characters = [$font->getMissingGlyphCharacter()];
+        $characters = [];
         $codePointsWithoutCharacter = [];
         foreach ($characterIndexToCodePointMapping as $index => $codePoint) {
             $character = $characterRepository->findByCodePoint($codePoint);

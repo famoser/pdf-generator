@@ -18,6 +18,11 @@ class Font
     /**
      * @var Character[]
      */
+    private $reservedCharacters;
+
+    /**
+     * @var Character[]
+     */
     private $characters = [];
 
     /**
@@ -30,9 +35,14 @@ class Font
      */
     private $tableDirectory;
 
-    public function getMissingGlyphCharacter(): Character
+    public function getReservedCharacters(): array
     {
-        return $this->characters[0];
+        return $this->reservedCharacters;
+    }
+
+    public function setReservedCharacters(array $reservedCharacters): void
+    {
+        $this->reservedCharacters = $reservedCharacters;
     }
 
     /**
