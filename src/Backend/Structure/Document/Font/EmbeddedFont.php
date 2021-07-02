@@ -16,17 +16,15 @@ use PdfGenerator\Backend\Structure\DocumentVisitor;
 
 class EmbeddedFont extends Font
 {
-    const ENCODING_UTF_8 = 'UTF-8';
+    /**
+     * @var \PdfGenerator\Font\IR\Structure\Font
+     */
+    private $font;
 
     /**
      * @var string
      */
-    private $encoding;
-
-    /**
-     * @var string
-     */
-    private $fontPath;
+    private $fontData;
 
     /**
      * @var string
@@ -36,21 +34,21 @@ class EmbeddedFont extends Font
     /**
      * EmbeddedFont constructor.
      */
-    public function __construct(string $encoding, string $fontPath, string $charactersUsedInText)
+    public function __construct(string $fontData, \PdfGenerator\Font\IR\Structure\Font $font, string $charactersUsedInText)
     {
-        $this->encoding = $encoding;
-        $this->fontPath = $fontPath;
+        $this->fontData = $fontData;
+        $this->font = $font;
         $this->charactersUsedInText = $charactersUsedInText;
     }
 
-    public function getEncoding(): string
+    public function getFontData(): string
     {
-        return $this->encoding;
+        return $this->fontData;
     }
 
-    public function getFontPath(): string
+    public function getFont(): \PdfGenerator\Font\IR\Structure\Font
     {
-        return $this->fontPath;
+        return $this->font;
     }
 
     public function getCharactersUsedInText(): string

@@ -30,7 +30,6 @@ use PdfGenerator\Font\Backend\FileWriter;
 use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\File\Table\OS2Table;
 use PdfGenerator\Font\IR\Optimizer;
-use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 
@@ -136,10 +135,8 @@ class DocumentVisitor
      */
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
-        $fontData = file_get_contents($param->getFontPath());
-
-        $parser = Parser::create();
-        $font = $parser->parse($fontData);
+        $font = $param->getFont();
+        $fontData = $param->getFontData();
 
         $createFontSubsets = $this->configuration->getCreateFontSubsets();
         if ($createFontSubsets) {
@@ -157,7 +154,9 @@ class DocumentVisitor
         $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream, $sizeNormalizer);
 
         if ($createFontSubsets && !$this->configuration->getUseTTFFonts()) {
-            return $this->createType0Font($fontSubsetDefinition, $fontDescriptor, $font->getCharacters(), $sizeNormalizer);
+            $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());
+
+            return $this->createType0Font($fontSubsetDefinition, $fontDescriptor, $characters, $sizeNormalizer);
         }
 
         return $this->createTrueTypeFont($fontDescriptor, $font->getCharacters(), $sizeNormalizer);
@@ -201,7 +200,6 @@ class DocumentVisitor
         foreach ($characters as $character) {
             $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
         }
-        array_unshift($characterWidths, $characterWidths[0]); // initial character mapped to both .notdef and U+0000 (null)
 
         // start at CID 0 with our widths
         $widths = [0 => $characterWidths];

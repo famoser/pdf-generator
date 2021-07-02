@@ -20,24 +20,24 @@ class Page extends BaseDocumentStructure
     /**
      * @var float[]
      */
-    private $size = [210, 297]; // A4
+    private $size = [210, 297]; // A4 (width x height)
 
     /**
-     * @var int
+     * @var string
      */
-    private $number;
+    private $pageNumber;
 
     /**
      * @var BaseContent[]
      */
-    private $content;
+    private $content = [];
 
     /**
      * Page constructor.
      */
-    public function __construct(int $pageNumber, array $size = null)
+    public function __construct(string $pageNumber, array $size = null)
     {
-        $this->number = $pageNumber;
+        $this->pageNumber = $pageNumber;
 
         if ($size) {
             $this->size = $size;
@@ -54,7 +54,7 @@ class Page extends BaseDocumentStructure
      */
     public function getIdentifier()
     {
-        return $this->number;
+        return $this->pageNumber;
     }
 
     /**

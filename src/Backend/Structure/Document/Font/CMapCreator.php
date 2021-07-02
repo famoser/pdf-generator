@@ -217,7 +217,8 @@ class CMapCreator
     private function getTextInHexToCharacterIndexMappingByLength(array $codePoints): array
     {
         $hexPointsByLength = [];
-        $characterIndex = 2; // first two characters are reserved for .notdef characters
+        // TODO: needs to correspond to reserved chars
+        $characterIndex = 2;
         foreach ($codePoints as $codePoint) {
             $utf8Char = mb_chr($codePoint, 'UTF-8');
             $byte = unpack('H*', ($utf8Char))[1];

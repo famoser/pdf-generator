@@ -53,12 +53,19 @@ class Cursor
         return $this->page;
     }
 
-    /**
-     * @return Cursor
-     */
-    public function setX(float $startX)
+    public function setX(float $xCoordinate)
     {
-        return new self($startX, $this->getYCoordinate(), $this->getPage());
+        $this->xCoordinate = $xCoordinate;
+    }
+
+    public function setY(float $yCoordinate)
+    {
+        $this->yCoordinate = $yCoordinate;
+    }
+
+    public function setPage(int $page): void
+    {
+        $this->page = $page;
     }
 
     /**
@@ -67,13 +74,5 @@ class Cursor
     public function isBiggerThan(self $other)
     {
         return $other->getPage() < $this->getPage() || ($other->getPage() === $this->getPage() && $other->getYCoordinate() < $this->getYCoordinate());
-    }
-
-    /**
-     * @return Cursor
-     */
-    public function setY(float $startY)
-    {
-        return new self($this->getXCoordinate(), $startY, $this->getPage());
     }
 }

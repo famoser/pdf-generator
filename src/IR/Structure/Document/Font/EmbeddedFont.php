@@ -22,11 +22,23 @@ class EmbeddedFont extends Font
     private $fontPath;
 
     /**
+     * @var string
+     */
+    private $fontData;
+
+    /**
+     * @var \PdfGenerator\Font\IR\Structure\Font
+     */
+    private $font;
+
+    /**
      * EmbeddedFont constructor.
      */
-    public function __construct(string $fontPath)
+    public function __construct(string $fontPath, string $fontData, \PdfGenerator\Font\IR\Structure\Font $font)
     {
         $this->fontPath = $fontPath;
+        $this->fontData = $fontData;
+        $this->font = $font;
     }
 
     /**
@@ -47,8 +59,16 @@ class EmbeddedFont extends Font
         return $this->fontPath;
     }
 
-    public function getFontPath(): string
+    /**
+     * @return mixed
+     */
+    public function getFontData()
     {
-        return $this->fontPath;
+        return $this->fontData;
+    }
+
+    public function getFont(): \PdfGenerator\Font\IR\Structure\Font
+    {
+        return $this->font;
     }
 }

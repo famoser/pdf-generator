@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\IR\Structure\Document\Page\Content\Common;
 
+use PdfGenerator\IR\Cursor;
+
 class Position
 {
     /**
@@ -30,6 +32,11 @@ class Position
     {
         $this->startX = $startX;
         $this->startY = $startY;
+    }
+
+    public static function fromCursor(Cursor $cursor)
+    {
+        return new self($cursor->getXCoordinate(), $cursor->getYCoordinate());
     }
 
     public function getStartX(): float

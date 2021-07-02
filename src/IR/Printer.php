@@ -29,22 +29,17 @@ class Printer
     /**
      * @var Document
      */
-    private $document;
+    protected $document;
 
     /**
      * @var TextStyle
      */
-    private $textStyle;
+    protected $textStyle;
 
     /**
      * @var RectangleStyle
      */
-    private $rectangleStyle;
-
-    /**
-     * @var Cursor
-     */
-    private $cursor;
+    protected $rectangleStyle;
 
     /**
      * Printer constructor.
@@ -58,56 +53,34 @@ class Printer
 
         $color = new Color(0, 0, 0);
         $this->rectangleStyle = new RectangleStyle(1, $color, null);
-
-        $this->cursor = new Cursor(10, 10, 1);
     }
 
-    public function printText(string $text)
+    public function printText(Page $page, Position $position, string $text)
     {
-        $position = $this->getPosition();
-
         $text = new Text($text, $position, $this->textStyle);
 
-        $page = $this->getPage();
         $page->addContent($text);
     }
 
-    public function printImage(Image $image, float $width, float $height)
+    public function printImage(Page $page, Position $position, Image $image, float $width, float $height)
     {
-        $position = $this->getPosition();
         $size = new Size($width, $height);
-
         $imagePlacement = new ImagePlacement($image, $position, $size);
 
-        $page = $this->getPage();
         $page->addContent($imagePlacement);
     }
 
-    public function printRectangle(float $width, float $height)
+    public function printRectangle(Page $page, Position $position, float $width, float $height)
     {
-        $position = $this->getPosition();
         $size = new Size($width, $height);
-
         $text = new Rectangle($position, $size, $this->rectangleStyle);
 
-        $page = $this->getPage();
         $page->addContent($text);
     }
 
-    /**
-     * @return Page
-     */
-    private function getPage()
+    public function getTextStyle(): TextStyle
     {
-        return $this->document->getOrCreatePage($this->cursor->getPage());
-    }
-
-    /**
-     * @return Position
-     */
-    private function getPosition()
-    {
-        return new Position($this->cursor->getXCoordinate(), $this->cursor->getYCoordinate());
+        return $this->textStyle;
     }
 
     public function setTextStyle(TextStyle $textStyle): void
@@ -115,21 +88,13 @@ class Printer
         $this->textStyle = $textStyle;
     }
 
+    public function getRectangleStyle(): RectangleStyle
+    {
+        return $this->rectangleStyle;
+    }
+
     public function setRectangleStyle(RectangleStyle $rectangleStyle): void
     {
         $this->rectangleStyle = $rectangleStyle;
-    }
-
-    public function setCursor(Cursor $cursor): void
-    {
-        $this->cursor = $cursor;
-    }
-
-    /**
-     * @return string
-     */
-    public function save()
-    {
-        return $this->document->save();
     }
 }
