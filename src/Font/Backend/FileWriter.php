@@ -378,23 +378,6 @@ class FileWriter
         /** @var GlyfTable[] $glyfTables */
         $glyfTables = [];
 
-        // fix component character references
-        $characterLookup = new SplObjectStorage();
-        for ($i = 0; $i < \count($characters); ++$i) {
-            $characterLookup->attach($characters[$i], $i);
-        }
-        foreach ($characters as $character) {
-            $componentCharacters = $character->getComponentCharacters();
-            for ($i = 0; $i < \count($componentCharacters); ++$i) {
-                $componentCharacter = $componentCharacters[$i];
-                if ($componentCharacter !== null) {
-                    // guaranteed to return result as all component characters part of font by @ref ensureComponentCharactersIncluded
-                    $index = $characterLookup->offsetGet($componentCharacter);
-                    $character->getGlyfTable()->getComponentGlyphs()[$i]->setGlyphIndex($index);
-                }
-            }
-        }
-
         foreach ($characters as $character) {
             if ($character->getGlyfTable() === null) {
                 $glyfTables[] = null;
@@ -420,6 +403,8 @@ class FileWriter
 
         $locaTable->addOffset($currentOffset);
 
+        // consider placing this in TableVisitor, as there glyf table sizes are known anyways
+        // reduces code complexity
         foreach ($glyfTables as $glyfTable) {
             if ($glyfTable !== null) {
                 $size = 2 + 8; // contours + bounding box
@@ -764,6 +749,8 @@ class FileWriter
         $tableDirectory->setCMapTable($this->generateCMapTable($characters, \count($reservedCharacters)));
 
         array_unshift($characters, ...$reservedCharacters);
+        $this->fixComponentCharacterReferences($characters);
+
         $tableDirectory->setHMtxTable($this->generateHMtxTable($characters));
         $tableDirectory->setHeadTable($this->generateHeadTable($font->getTableDirectory()->getHeadTable(), $characters));
         $tableDirectory->setPostTable($this->generatePostTable($font->getTableDirectory()->getPostTable(), $characters));
@@ -905,5 +892,29 @@ class FileWriter
         }
 
         return $os2Table;
+    }
+
+    /**
+     * @param Character[] $characters
+     */
+    private function fixComponentCharacterReferences(array $characters)
+    {
+        $characterLookup = new SplObjectStorage();
+        $characterCount = \count($characters);
+        for ($i = 0; $i < $characterCount; ++$i) {
+            $characterLookup->attach($characters[$i], $i);
+        }
+        foreach ($characters as $character) {
+            $componentCharacters = $character->getComponentCharacters();
+            $componentCharacterCount = \count($componentCharacters);
+            for ($i = 0; $i < $componentCharacterCount; ++$i) {
+                $componentCharacter = $componentCharacters[$i];
+                if ($componentCharacter !== null) {
+                    // guaranteed to return result as all component characters part of font by @ref ensureComponentCharactersIncluded
+                    $index = $characterLookup->offsetGet($componentCharacter);
+                    $character->getGlyfTable()->getComponentGlyphs()[$i]->setGlyphIndex($index);
+                }
+            }
+        }
     }
 }

@@ -178,7 +178,7 @@ class DocumentVisitor
         // add widths of windows code page
         foreach ($characters as $character) {
             // create windows character set
-            $mappingIndex = $this->getWindows1252Mapping($character->getUnicodePoint());
+            $mappingIndex = $character->getUnicodePoint() ? $this->getWindows1252Mapping($character->getUnicodePoint()) : null;
             if ($mappingIndex !== null) {
                 $widths[$mappingIndex] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
             }
@@ -196,13 +196,15 @@ class DocumentVisitor
      */
     private function createType0Font(FontOptimizer\FontSubsetDefinition $fontSubsetDefinition, FontDescriptor $fontDescriptor, array $characters, float $sizeNormalizer)
     {
+        /** @var int[] $characterWidths */
         $characterWidths = [];
         foreach ($characters as $character) {
             $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
         }
+        array_unshift($characterWidths, $characterWidths[0]); // initial character mapped to both .notdef and U+0000 (null)
 
-        // the initial character is mapped twice; to .notdef and U+0000. need to have both widths therefore
-        $widths[0] = array_merge([$characterWidths[0]], $characterWidths);
+        // start at CID 0 with our widths
+        $widths = [0 => $characterWidths];
 
         $cIDSystemInfo = new CIDSystemInfo();
         $cIDSystemInfo->setRegistry('famoser');
@@ -249,7 +251,7 @@ class DocumentVisitor
         $fontFlags = $this->calculateFontFlags($OS2Table, $angle > 0);
         $fontDescriptor->setFlags($fontFlags);
 
-        $fontDescriptor->setItalicAngle($angle);
+        $fontDescriptor->setItalicAngle((int)$angle);
         $fontDescriptor->setAscent($HHeaTable->getAscent() * $sizeNormalizer);
         $fontDescriptor->setDescent($HHeaTable->getDescent() * $sizeNormalizer);
         $fontDescriptor->setCapHeight((int)($OS2Table->getSCapHeight() * $sizeNormalizer));

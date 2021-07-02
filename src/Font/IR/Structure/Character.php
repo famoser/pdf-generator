@@ -42,7 +42,9 @@ class Character
     private $longHorMetric;
 
     /**
-     * @var ?Character[]
+     * carefull: entries in array could be null for invalid font files.
+     *
+     * @var Character[]
      */
     private $componentCharacters = [];
 
@@ -97,7 +99,7 @@ class Character
     }
 
     /**
-     * @return ?Character[]
+     * @return Character[]
      */
     public function getComponentCharacters(): array
     {

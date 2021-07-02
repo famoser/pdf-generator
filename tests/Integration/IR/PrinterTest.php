@@ -198,7 +198,7 @@ class PrinterTest extends TestCase
         $documentConfiguration = new Configuration();
         $documentConfiguration->setCreateFontSubsets(true);
         $documentConfiguration->setAutoResizeImages(true);
-        $backend->setDocumentConfiguration($documentConfiguration);
+        $backend->setConfiguration($documentConfiguration);
 
         $result = $backend->save();
         file_put_contents('pdf.pdf', $result);
@@ -227,7 +227,7 @@ class PrinterTest extends TestCase
         $documentConfiguration = new Configuration();
         $documentConfiguration->setCreateFontSubsets(true);
         $documentConfiguration->setUseTTFFonts(true);
-        $backend->setDocumentConfiguration($documentConfiguration);
+        $backend->setConfiguration($documentConfiguration);
 
         $catalog = $backend->render();
         $result = $catalog->save();
@@ -286,7 +286,7 @@ class PrinterTest extends TestCase
         $documentConfiguration = new Configuration();
         $documentConfiguration->setCreateFontSubsets(true);
         $documentConfiguration->setUseTTFFonts(true);
-        $backend->setDocumentConfiguration($documentConfiguration);
+        $backend->setConfiguration($documentConfiguration);
 
         $result = $backend->save();
         file_put_contents('pdf.pdf', $result);

@@ -76,11 +76,4 @@ class DefaultFont extends Font
     {
         return $this->style;
     }
-
-    /**
-     * sets the encoding used by the font.
-     */
-    public function encode(string $escaped): string
-    {
-    }
 }

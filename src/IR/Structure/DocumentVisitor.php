@@ -111,6 +111,7 @@ class DocumentVisitor
      */
     private static function getImageType(string $imagePath)
     {
+        /** @var string $extension */
         $extension = pathinfo($imagePath, \PATHINFO_EXTENSION);
         switch ($extension) {
             case 'jpg':
