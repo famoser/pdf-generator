@@ -169,7 +169,8 @@ class PrinterTest extends TestCase
 
         // act
         $printer->printRectangle(20, 20);
-        $printer->printImage($imageSrc, 20, 20);
+        $image = $document->getOrCreateImage($imageSrc);
+        $printer->printImage($image, 20, 20);
         $result = $printer->save();
 
         // assert
@@ -185,14 +186,15 @@ class PrinterTest extends TestCase
         $document = new Document();
         $printer = new Printer($document);
         $printer->setCursor(new Cursor(20, 20, 1));
-        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
         $imageSrc = ResourcesProvider::getImage1Path();
 
         // act
         $printer->setTextStyle($textStyle);
         $printer->printText('hallo');
-        $printer->printImage($imageSrc, 20, 20);
+        $image = $document->getOrCreateImage($imageSrc);
+        $printer->printImage($image, 20, 20);
         $backend = $document->render();
 
         $documentConfiguration = new Configuration();
@@ -216,7 +218,7 @@ class PrinterTest extends TestCase
         $document = new Document();
         $printer = new Printer($document);
         $printer->setCursor(new Cursor(20, 20, 1));
-        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
 
         // act
@@ -251,15 +253,13 @@ class PrinterTest extends TestCase
         $document = new Document();
         $printer = new Printer($document);
         $printer->setCursor(new Cursor(20, 20, 1));
-        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
 
         // act
         $printer->setTextStyle($textStyle);
-        // TODO: why does ä not show up
         $printer->printText('hallo ä');
         $result = $printer->save();
-        file_put_contents('pdf.pdf', $result);
 
         // assert
         $this->assertNotEmpty($result);
@@ -274,7 +274,7 @@ class PrinterTest extends TestCase
         $document = new Document();
         $printer = new Printer($document);
         $printer->setCursor(new Cursor(20, 20, 1));
-        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
 
         // act
@@ -304,7 +304,7 @@ class PrinterTest extends TestCase
         $document = new Document();
         $printer = new Printer($document);
         $printer->setCursor(new Cursor(50, 50, 1));
-        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFont1Path());
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
 
         // act

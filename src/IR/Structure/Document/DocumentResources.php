@@ -59,9 +59,9 @@ class DocumentResources
 
     /**
      * @param BaseDocumentStructure $structure
-     * @param BaseDocumentStructure[] $cache
+     * @param BackendFont[]|BackendImage[] $cache
      *
-     * @return BaseDocumentStructure|BackendFont|BackendImage
+     * @return BackendFont|BackendImage
      */
     private function getOrCreate($structure, array &$cache)
     {

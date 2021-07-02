@@ -132,7 +132,7 @@ class DocumentVisitor
      */
     public function visitPage(Page $param)
     {
-        $mediaBox = [0, 0, 210, 297];
+        $mediaBox = array_merge([0, 0], $param->getSize());
 
         $page = new BackendPage($mediaBox);
 

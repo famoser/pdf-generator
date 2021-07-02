@@ -72,12 +72,11 @@ class Printer
         $page->addContent($text);
     }
 
-    public function printImage(string $imagePath, float $width, float $height)
+    public function printImage(Image $image, float $width, float $height)
     {
         $position = $this->getPosition();
         $size = new Size($width, $height);
 
-        $image = new Image($imagePath);
         $imagePlacement = new ImagePlacement($image, $position, $size);
 
         $page = $this->getPage();

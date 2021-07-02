@@ -18,9 +18,14 @@ use PdfGenerator\IR\Structure\DocumentVisitor;
 class Page extends BaseDocumentStructure
 {
     /**
+     * @var float[]
+     */
+    private $size = [210, 297]; // A4
+
+    /**
      * @var int
      */
-    private $pageNumber;
+    private $number;
 
     /**
      * @var BaseContent[]
@@ -30,9 +35,13 @@ class Page extends BaseDocumentStructure
     /**
      * Page constructor.
      */
-    public function __construct(int $pageNumber)
+    public function __construct(int $pageNumber, array $size = null)
     {
-        $this->pageNumber = $pageNumber;
+        $this->number = $pageNumber;
+
+        if ($size) {
+            $this->size = $size;
+        }
     }
 
     public function addContent(BaseContent $baseContent)
@@ -45,7 +54,7 @@ class Page extends BaseDocumentStructure
      */
     public function getIdentifier()
     {
-        return $this->pageNumber;
+        return $this->number;
     }
 
     /**
@@ -62,5 +71,10 @@ class Page extends BaseDocumentStructure
     public function accept(DocumentVisitor $visitor)
     {
         return $visitor->visitPage($this);
+    }
+
+    public function getSize(): array
+    {
+        return $this->size;
     }
 }
