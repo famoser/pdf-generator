@@ -25,14 +25,53 @@ class LineBreaker
      */
     private $words;
 
+    /**
+     * the next to be included word.
+     *
+     * @var int
+     */
+    private $nextWordIndex;
+
     public function __construct(FontSizer $sizer, string $text)
     {
         $this->sizer = $sizer;
         $this->words = explode(' ', $text);
     }
 
-    public function getIterator(float $width, int $startWordPosition = 0): LineBreakerIterator
+    public function hasNextLine(): bool
     {
-        return new LineBreakerIterator($this->sizer, $width, $this->words, $startWordPosition);
+        return $this->nextWordIndex < $this->words;
+    }
+
+    public function nextLine(float $width): array
+    {
+        if (!$this->hasNextLine()) {
+            throw new \Exception('No next line');
+        }
+
+        $nextWord = $this->words[$this->nextWordIndex];
+        $currentWidth = $this->sizer->getWidth($nextWord);
+        $currentWords = $nextWord;
+
+        while (true) {
+            // check if next word exists
+            if (++$this->nextWordIndex >= \count($this->words)) {
+                break;
+            }
+
+            // check if next word fits
+            $nextWord = $this->words[$this->nextWordIndex];
+            $nextWidth = $this->sizer->getSpaceWidth() + $this->sizer->getWidth($nextWord);
+            if ($currentWidth + $nextWidth > $width) {
+                --$this->nextWordIndex;
+                break;
+            }
+
+            // add next word
+            $currentWords .= ' ' . $nextWord;
+            $currentWidth += $nextWidth;
+        }
+
+        return [$currentWords, $currentWidth];
     }
 }
