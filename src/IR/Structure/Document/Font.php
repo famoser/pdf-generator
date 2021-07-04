@@ -12,7 +12,12 @@
 namespace PdfGenerator\IR\Structure\Document;
 
 use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
+use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 
 abstract class Font extends BaseDocumentStructure
 {
+    /**
+     * @return mixed
+     */
+    abstract public function accept(FontVisitor $visitor);
 }

@@ -12,7 +12,6 @@
 namespace PdfGenerator\IR\Structure\Document\Font;
 
 use PdfGenerator\IR\Structure\Document\Font;
-use PdfGenerator\IR\Structure\DocumentVisitor;
 
 class EmbeddedFont extends Font
 {
@@ -46,7 +45,7 @@ class EmbeddedFont extends Font
      *
      * @return mixed
      */
-    public function accept(DocumentVisitor $visitor)
+    public function accept(FontVisitor $visitor)
     {
         return $visitor->visitEmbeddedFont($this);
     }

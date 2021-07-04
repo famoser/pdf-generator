@@ -46,6 +46,21 @@ class Document
         $this->pages[] = $page;
     }
 
+    public function getOrCreatePage(int $pageIndex): Page
+    {
+        $pageCount = \count($this->getPages());
+        $missingPages = $pageIndex - $pageCount + 1;
+        if ($missingPages > 0) {
+            // create pages with last page size
+            $size = $pageCount > 0 ? $this->getPages()[$pageCount - 1]->getSize() : null;
+            for ($i = 0; $i < $missingPages; ++$i) {
+                $this->addPage(new Page($pageCount + $i, $size));
+            }
+        }
+
+        return $this->getPages()[$pageIndex];
+    }
+
     /**
      * @return Page[]
      */

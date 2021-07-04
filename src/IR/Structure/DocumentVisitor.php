@@ -20,12 +20,13 @@ use PdfGenerator\IR\Structure\Document\DocumentResources;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFontMapping;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
+use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page;
 use PdfGenerator\IR\Structure\Document\Page\PageResources;
 use PdfGenerator\IR\Structure\Document\Page\ToBackendContentVisitor;
 
-class DocumentVisitor
+class DocumentVisitor implements FontVisitor
 {
     /**
      * @var DocumentResources

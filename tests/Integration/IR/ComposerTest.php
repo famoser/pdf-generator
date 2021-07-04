@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Integration\Frontend;
+namespace PdfGenerator\Tests\Integration\IR;
 
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Structure\Optimization\Configuration;
-use PdfGenerator\IR\Composer;
+use PdfGenerator\IR\FlowPrinter;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
@@ -31,10 +31,10 @@ class ComposerTest extends TestCase
         // arrange
         $text = 'hi mom';
         $document = new Document();
-        $composer = new Composer($document);
+        $composer = new FlowPrinter($document);
 
         // act
-        $composer->printPhrase($text);
+        $composer->printText($text);
         $result = $document->render()->save();
         file_put_contents('pdf.pdf', $result);
 
@@ -50,11 +50,11 @@ class ComposerTest extends TestCase
         // arrange
         $text = 'hi mom';
         $document = new Document();
-        $composer = new Composer($document);
+        $composer = new FlowPrinter($document);
 
         // act
-        $composer->printPhrase($text . '1');
-        $composer->printPhrase($text . '2');
+        $composer->printText($text . '1');
+        $composer->printText($text . '2');
         $result = $document->render()->save();
         file_put_contents('pdf.pdf', $result);
 
@@ -70,13 +70,13 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new Composer($document);
+        $composer = new FlowPrinter($document);
 
         // act
-        $composer->setPageMargin(20);
-        $composer->resetCursor();
-        $composer->moveCursor(10);
-        $composer->printPhrase('text');
+        $composer->getPrinter()->setLeft(20);
+        $composer->getPrinter()->setTop(20);
+        $composer->getPrinter()->moveDown(10);
+        $composer->printText('text');
         $result = $document->render()->save();
 
         // assert
@@ -93,14 +93,14 @@ class ComposerTest extends TestCase
         $width = 20;
         $height = 30;
         $document = new Document();
-        $composer = new Composer($document);
+        $composer = new FlowPrinter($document);
 
         $rectangleStyle = new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
-        $composer->getPrinter()->setRectangleStyle($rectangleStyle);
+        $composer->getPrinter()->getPrinter()->setRectangleStyle($rectangleStyle);
 
         // act
         $composer->printRectangle($width, $height);
-        $composer->moveCursor(0, $width);
+        $composer->getPrinter()->moveRight($width);
         $composer->printRectangle($width + $width, $height + $height);
         $result = $document->render()->save();
 
@@ -118,14 +118,14 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new Composer($document);
+        $composer = new FlowPrinter($document);
 
         $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 30);
-        $composer->getPrinter()->setTextStyle($textStyle);
+        $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
 
         // act
-        $composer->printPhrase('hi mom');
+        $composer->printText('hi mom');
         $result = $document->render()->save();
         file_put_contents('pdf.pdf', $result);
 
@@ -141,7 +141,7 @@ class ComposerTest extends TestCase
         // arrange
         $imageSrc = ResourcesProvider::getImage1Path();
         $document = new Document();
-        $printer = new Composer($document);
+        $printer = new FlowPrinter($document);
 
         // act
         $image = $document->getOrCreateImage($imageSrc);
@@ -160,13 +160,13 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new Composer($document);
+        $composer = new FlowPrinter($document);
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
 
         // act
-        $composer->getPrinter()->setTextStyle($textStyle);
-        $composer->printPhrase('Hallo und Sonderzéíchèn');
+        $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
+        $composer->printText('Hallo und Sonderzéíchèn');
         $backend = $document->render();
 
         $documentConfiguration = new Configuration();

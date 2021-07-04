@@ -53,19 +53,19 @@ class Cursor
         return $this->page;
     }
 
-    public function setX(float $xCoordinate)
+    public function withXCoordinate(float $newXCoodinate)
     {
-        $this->xCoordinate = $xCoordinate;
+        return new self($newXCoodinate, $this->yCoordinate, $this->page);
     }
 
-    public function setY(float $yCoordinate)
+    public function withYCoordinate(float $newYCoordinate)
     {
-        $this->yCoordinate = $yCoordinate;
+        return new self($this->xCoordinate, $newYCoordinate, $this->page);
     }
 
-    public function setPage(int $page): void
+    public function withPage(int $page)
     {
-        $this->page = $page;
+        return new self($this->xCoordinate, $this->yCoordinate, $page);
     }
 
     /**
