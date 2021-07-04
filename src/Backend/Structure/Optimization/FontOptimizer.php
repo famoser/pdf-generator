@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Backend\Structure\Optimization;
 
-use PdfGenerator\Backend\Structure\Optimization\FontOptimizer\FontSubsetDefinition;
 use PdfGenerator\Font\Backend\FileWriter;
 use PdfGenerator\Font\IR\CharacterRepository;
 use PdfGenerator\Font\IR\Optimizer;
@@ -44,23 +43,6 @@ class FontOptimizer
         $fontData = $writer->writeFont($font);
 
         return [$font, $fontData, $usedCodepoints];
-    }
-
-    public function generateFontSubset(Font $font, string $usedCodepoints): FontSubsetDefinition
-    {
-        $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());
-
-        // remove missing characters from all code points
-        foreach ($codepointsWithoutCharacter as $index => $value) {
-            unset($usedCodepoints[$index]);
-        }
-
-        // normalize arrays
-        $codepointsWithCharacter = array_values($usedCodepoints);
-        $codepointsWithoutCharacter = array_values($codepointsWithoutCharacter);
-        sort($codepointsWithoutCharacter);
-
-        return new FontSubsetDefinition($codepointsWithCharacter, $codepointsWithoutCharacter);
     }
 
     /**
