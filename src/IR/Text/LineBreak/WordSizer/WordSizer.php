@@ -28,11 +28,6 @@ class WordSizer
      */
     private $spaceCharacterWidth;
 
-    /**
-     * @var float
-     */
-    private $scale = 1;
-
     public function __construct(int $invalidCharacterWidth, array $characterAdvanceWidthLookup)
     {
         $this->invalidCharacterWidth = $invalidCharacterWidth;
@@ -51,9 +46,9 @@ class WordSizer
         foreach ($characters as $character) {
             $codepoint = mb_ord($character, 'UTF-8');
             if (\array_key_exists($codepoint, $this->characterAdvanceWidthLookup)) {
-                $width += $this->characterAdvanceWidthLookup[$codepoint] * $this->scale;
+                $width += $this->characterAdvanceWidthLookup[$codepoint];
             } else {
-                $width += $this->invalidCharacterWidth * $this->scale;
+                $width += $this->invalidCharacterWidth;
             }
         }
 
@@ -62,6 +57,6 @@ class WordSizer
 
     public function getSpaceWidth(): float
     {
-        return $this->spaceCharacterWidth * $this->scale;
+        return $this->spaceCharacterWidth;
     }
 }

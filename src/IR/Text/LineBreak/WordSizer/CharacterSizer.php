@@ -33,10 +33,15 @@ class CharacterSizer
         $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());
         $this->characterAdvanceWidthLookup = [];
         foreach ($characters as $character) {
-            $characterAdvanceWidthLookup[$character->getUnicodePoint()] = $character->getLongHorMetric()->getAdvanceWidth();
+            $this->characterAdvanceWidthLookup[$character->getUnicodePoint()] = $character->getLongHorMetric()->getAdvanceWidth();
         }
 
         $this->invalidCharacterWidth = $font->getReservedCharacters()[0]->getLongHorMetric()->getAdvanceWidth();
+    }
+
+    public function isMonospace(): bool
+    {
+        return \count(array_unique($this->characterAdvanceWidthLookup)) === 1;
     }
 
     /**

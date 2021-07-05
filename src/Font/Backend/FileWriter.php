@@ -72,6 +72,10 @@ class FileWriter
      */
     public function writeFont(Font $font)
     {
+        if (!$font->getIsTrueTypeFont()) {
+            throw new \Exception('Writing non-TrueType fonts is not supported at the moment.');
+        }
+
         $tableDirectory = $this->createTableDirectory($font);
 
         return $this->writeTableDirectory($tableDirectory);

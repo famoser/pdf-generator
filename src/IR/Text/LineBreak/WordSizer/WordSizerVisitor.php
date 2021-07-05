@@ -19,12 +19,24 @@ class WordSizerVisitor implements FontVisitor
 {
     public function visitDefaultFont(DefaultFont $param)
     {
-        throw new \Exception('Not implemented');
+        $filename = $param->getFont() . '_' . $param->getStyle() . '.json';
+        $path = __DIR__ . \DIRECTORY_SEPARATOR . 'DefaultFont' . \DIRECTORY_SEPARATOR . $filename;
+        $characterSizesJson = file_get_contents($path);
+        $characterSizes = json_decode($characterSizesJson, true);
+
+        if ($characterSizes['isMonospace']) {
+            return new MonospaceWordSizer($characterSizes['invalidCharacterWidth']);
+        }
+
+        return new WordSizer($characterSizes['invalidCharacterWidth'], $characterSizes['characterAdvanceWidthLookup']);
     }
 
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
         $characterSizer = new CharacterSizer($param->getFont());
+        if ($characterSizer->isMonospace()) {
+            return new MonospaceWordSizer($characterSizer->getInvalidCharacterWidth());
+        }
 
         return new WordSizer($characterSizer->getInvalidCharacterWidth(), $characterSizer->getCharacterAdvanceWidthLookup());
     }

@@ -19,7 +19,7 @@ $fontMapPath = '/usr/share/ghostscript/9.54.0/Resource/Init/Fontmap.GS';
 $fontDir = '/usr/share/fonts/gsfonts';
 
 $defaultFontSizeFilepath = '../src/IR/Structure/Document/Font/default_font_size.json';
-$defaultFontCharacterSizeFolder = '../src/IR/Structure/Document/Text/LineBreak/WordSizer/DefaultFont';
+$defaultFontCharacterSizeFolder = '../src/IR/Text/LineBreak/WordSizer/DefaultFont';
 $fontEnding = '.otf';
 
 $fontMap = file_get_contents($fontMapPath);
@@ -48,7 +48,7 @@ foreach ($fontFilenames as $fontName => $fontStyles) {
         $font = $document->getOrCreateEmbeddedFont($fontPath);
 
         $sizing[$fontName][$fontStyle] = [
-            'unitsInEm' => $font->getUnitsPerEm(),
+            'unitsPerEm' => $font->getUnitsPerEm(),
             'ascender' => $font->getAscender(),
             'descender' => $font->getDescender(),
             'lineGap' => $font->getLineGap(),
@@ -56,8 +56,9 @@ foreach ($fontFilenames as $fontName => $fontStyles) {
 
         $sizer = new CharacterSizer($font->getFont());
         $characterSizes = [
+            'isMonospace' => $sizer->isMonospace(),
             'invalidCharacterWidth' => $sizer->getInvalidCharacterWidth(),
-            'characterAdvanceWidthLookup' => $sizer->getCharacterAdvanceWidthLookup(),
+            'characterAdvanceWidthLookup' => $sizer->isMonospace() ? [] : $sizer->getCharacterAdvanceWidthLookup(),
         ];
 
         $characterSizesJson = json_encode($characterSizes, \JSON_PRETTY_PRINT);

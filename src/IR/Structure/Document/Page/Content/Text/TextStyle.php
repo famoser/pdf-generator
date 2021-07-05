@@ -33,7 +33,7 @@ class TextStyle
     /**
      * Style constructor.
      */
-    public function __construct(Font $font, float $fontSize, float $lineHeight)
+    public function __construct(Font $font, float $fontSize, float $lineHeight = 1)
     {
         $this->font = $font;
         $this->fontSize = $fontSize;

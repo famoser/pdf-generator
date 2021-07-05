@@ -34,7 +34,7 @@ class ComposerTest extends TestCase
         $composer = new FlowPrinter($document);
 
         // act
-        $composer->printText($text);
+        $composer->printParagraph($text);
         $result = $document->render()->save();
         file_put_contents('pdf.pdf', $result);
 
@@ -53,8 +53,8 @@ class ComposerTest extends TestCase
         $composer = new FlowPrinter($document);
 
         // act
-        $composer->printText($text . '1');
-        $composer->printText($text . '2');
+        $composer->printParagraph($text . '1');
+        $composer->printParagraph($text . '2');
         $result = $document->render()->save();
         file_put_contents('pdf.pdf', $result);
 
@@ -76,7 +76,7 @@ class ComposerTest extends TestCase
         $composer->getPrinter()->setLeft(20);
         $composer->getPrinter()->setTop(20);
         $composer->getPrinter()->moveDown(10);
-        $composer->printText('text');
+        $composer->printParagraph('text');
         $result = $document->render()->save();
 
         // assert
@@ -125,7 +125,7 @@ class ComposerTest extends TestCase
         $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
 
         // act
-        $composer->printText('hi mom');
+        $composer->printParagraph('hi mom');
         $result = $document->render()->save();
         file_put_contents('pdf.pdf', $result);
 

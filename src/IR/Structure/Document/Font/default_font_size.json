@@ -1,25 +1,25 @@
 {
     "Helvetica": {
         "ROMAN": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 729,
             "descender": -271,
             "lineGap": 200
         },
         "OBLIQUE": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 900,
             "descender": -250,
             "lineGap": 200
         },
         "BOLD": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 729,
             "descender": -271,
             "lineGap": 200
         },
         "BOLD_OBLIQUE": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 900,
             "descender": -250,
             "lineGap": 200
@@ -27,25 +27,25 @@
     },
     "Courier": {
         "ROMAN": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 603,
             "descender": -397,
             "lineGap": 200
         },
         "OBLIQUE": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 603,
             "descender": -397,
             "lineGap": 200
         },
         "BOLD": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 603,
             "descender": -397,
             "lineGap": 200
         },
         "BOLD_OBLIQUE": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 603,
             "descender": -397,
             "lineGap": 200
@@ -53,25 +53,25 @@
     },
     "Times": {
         "ROMAN": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 683,
             "descender": -317,
             "lineGap": 200
         },
         "ITALIC": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 683,
             "descender": -317,
             "lineGap": 200
         },
         "BOLD": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 676,
             "descender": -324,
             "lineGap": 200
         },
         "BOLD_ITALIC": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 699,
             "descender": -301,
             "lineGap": 200
@@ -79,7 +79,7 @@
     },
     "ZapfDingbats": {
         "ROMAN": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 857,
             "descender": -143,
             "lineGap": 150
@@ -87,7 +87,7 @@
     },
     "Symbol": {
         "ROMAN": {
-            "unitsInEm": 1000,
+            "unitsPerEm": 1000,
             "ascender": 778,
             "descender": -222,
             "lineGap": 0

@@ -90,6 +90,7 @@ class Parser
     private function createFont(FontFile $fontFile): Font
     {
         $font = new Font();
+        $font->setIsTrueTypeFont($fontFile->getIsTrueTypeFile());
         $font->setTableDirectory($this->createTableDirectory($fontFile));
         $font->setFontInformation($this->createFontInformation($fontFile));
 
@@ -172,7 +173,7 @@ class Parser
             $character = $characters[$characterIndex];
             $character->setUnicodePoint($unicode);
 
-            if (\array_key_exists($unicode, $aGLFMapping)) {
+            if (\array_key_exists($unicode, $aGLFMapping) && $character->getPostScriptInfo()) {
                 $aGLFInfo = $aGLFMapping[$unicode];
                 $character->getPostScriptInfo()->setName($aGLFInfo);
             }
@@ -218,21 +219,24 @@ class Parser
     {
         $characters = [];
 
-        foreach ($fontFile->getGlyfTables() as $index => $glyfTable) {
+        $glyphCount = $fontFile->getMaxPTable()->getNumGlyphs();
+        $glyphTableCount = \count($fontFile->getGlyfTables());
+        for ($i = 0; $i < $glyphCount; ++$i) {
             $character = new Character();
-            $character->setGlyfTable($glyfTable);
 
-            $longHorMetric = $this->getLongHorMetric($fontFile->getHMtxTable(), $index);
-            $character->setLongHorMetric($longHorMetric);
+            if ($i < $glyphTableCount) {
+                $character->setGlyfTable($fontFile->getGlyfTables()[$i]);
 
-            if ($glyfTable !== null) {
-                $character->setGlyfTable($glyfTable);
-
-                $boundingBox = $this->calculateBoundingBox($glyfTable);
-                $character->setBoundingBox($boundingBox);
+                if ($character->getGlyfTable()) {
+                    $boundingBox = $this->calculateBoundingBox($character->getGlyfTable());
+                    $character->setBoundingBox($boundingBox);
+                }
             }
 
-            $characters[$index] = $character;
+            $longHorMetric = $this->getLongHorMetric($fontFile->getHMtxTable(), $i);
+            $character->setLongHorMetric($longHorMetric);
+
+            $characters[] = $character;
         }
 
         foreach ($characters as $character) {

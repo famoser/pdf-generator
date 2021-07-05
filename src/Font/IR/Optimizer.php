@@ -35,6 +35,7 @@ class Optimizer
     public function getFontSubset(Font $source, array $characters)
     {
         $font = new Font();
+        $font->setIsTrueTypeFont($source->getIsTrueTypeFont());
 
         $reservedCharacters = $source->getReservedCharacters();
         $characters = array_merge([], $characters);

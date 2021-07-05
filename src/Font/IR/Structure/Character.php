@@ -58,7 +58,7 @@ class Character
         $this->unicodePoint = $unicodePoint;
     }
 
-    public function getPostScriptInfo(): PostScriptInfo
+    public function getPostScriptInfo(): ?PostScriptInfo
     {
         return $this->postScriptInfo;
     }

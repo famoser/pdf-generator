@@ -63,16 +63,12 @@ class FileReader
     {
         $offsetTable = $this->readOffsetTable($fileReader);
 
-        if (!$offsetTable->isTrueTypeFont()) {
-            throw new \Exception('This font type is not supported: ' . $offsetTable->getScalerType());
-        }
-
         $tableDirectoryEntries = [];
         for ($i = 0; $i < $offsetTable->getNumTables(); ++$i) {
             $tableDirectoryEntries[] = $this->readTableDirectoryEntry($fileReader);
         }
 
-        return $this->readFontFile($fileReader, $tableDirectoryEntries);
+        return $this->readFontFile($fileReader, $tableDirectoryEntries, $offsetTable->isTrueTypeFont());
     }
 
     /**
@@ -80,9 +76,10 @@ class FileReader
      *
      * @throws \Exception
      */
-    private function readFontFile(StreamReader $fileReader, array $tableDirectoryEntries): FontFile
+    private function readFontFile(StreamReader $fileReader, array $tableDirectoryEntries, bool $isTrueTypeFile): FontFile
     {
         $font = new FontFile();
+        $font->setIsTrueTypeFile($isTrueTypeFile);
 
         /** @var TableDirectoryEntry $locaEntry */
         $locaEntry = null;

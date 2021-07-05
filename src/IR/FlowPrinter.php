@@ -117,7 +117,9 @@ class FlowPrinter
         $descender = $textStyle->getFont()->getDescender() / $scaling;
         $this->getPrinter()->moveDown($height - $descender);
 
-        $this->getPrinter()->printRectangle(170, $ascender + $height - $descender);
+        $maxWidth = max($lineWidths);
+
+        $this->getPrinter()->printRectangle($maxWidth / $scaling, $ascender + $height - $descender);
     }
 
     public function printImage(Image $image, float $width, float $height)

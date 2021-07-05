@@ -26,6 +26,11 @@ use PdfGenerator\Font\Frontend\File\Table\RawTable;
 class FontFile
 {
     /**
+     * @var bool
+     */
+    private $isTrueTypeFile;
+
+    /**
      * @var CMapTable|null
      */
     private $cMapTable;
@@ -130,6 +135,16 @@ class FontFile
      * @var RawTable[]
      */
     private $rawTables = [];
+
+    public function getIsTrueTypeFile(): bool
+    {
+        return $this->isTrueTypeFile;
+    }
+
+    public function setIsTrueTypeFile(bool $isTrueTypeFile): void
+    {
+        $this->isTrueTypeFile = $isTrueTypeFile;
+    }
 
     public function getCMapTable(): ?CMapTable
     {
