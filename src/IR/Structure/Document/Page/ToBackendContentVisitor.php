@@ -125,8 +125,14 @@ class ToBackendContentVisitor extends ContentVisitor
 
     private function applyTextStyle(Text\TextStyle $style)
     {
-        $font = $this->pageResources->getFont($style->getFont());
-        $this->pageResources->getTextStateRepository()->setFont($font);
-        $this->pageResources->getTextStateRepository()->setFontSize($style->getFontSize());
+        $font = $style->getFont();
+        $textStateRepository = $this->pageResources->getTextStateRepository();
+
+        $textStateRepository->setFontSize($style->getFontSize());
+        $textStateRepository->setFont($this->pageResources->getFont($font));
+
+        $scale = $style->getFontSize() / $font->getUnitsPerEm();
+        $leadingUnit = $font->getBaselineToBaselineDistance() * $scale;
+        $textStateRepository->setLeading($style->getLineHeight() * $leadingUnit);
     }
 }

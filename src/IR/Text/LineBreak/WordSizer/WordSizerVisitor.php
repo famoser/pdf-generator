@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\LineBreak\FontSizer;
+namespace PdfGenerator\IR\Text\LineBreak\WordSizer;
 
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
 use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 
-class FontSizerVisitor implements FontVisitor
+class WordSizerVisitor implements FontVisitor
 {
     public function visitDefaultFont(DefaultFont $param)
     {

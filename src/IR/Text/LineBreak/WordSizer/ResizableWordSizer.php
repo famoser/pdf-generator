@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\LineBreak\FontSizer;
+namespace PdfGenerator\IR\Text\LineBreak\WordSizer;
 
-interface ResizableFontSizer extends FontSizer
+interface ResizableWordSizer extends WordSizer
 {
     public function setFontSize(float $fontSize);
 }

@@ -49,7 +49,7 @@ class Printer
         $this->document = $document;
 
         $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
-        $this->textStyle = new TextStyle($font, 12);
+        $this->textStyle = new TextStyle($font, 12, 12);
 
         $color = new Color(0, 0, 0);
         $this->rectangleStyle = new RectangleStyle(1, $color, null);

@@ -11,12 +11,12 @@
 
 namespace PdfGenerator\IR\Text\LineBreak;
 
-use PdfGenerator\IR\Text\LineBreak\FontSizer\FontSizer;
+use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizer;
 
 class LineBreaker
 {
     /**
-     * @var FontSizer
+     * @var WordSizer
      */
     private $sizer;
 
@@ -30,9 +30,9 @@ class LineBreaker
      *
      * @var int
      */
-    private $nextWordIndex;
+    private $nextWordIndex = 0;
 
-    public function __construct(FontSizer $sizer, string $text)
+    public function __construct(WordSizer $sizer, string $text)
     {
         $this->sizer = $sizer;
         $this->words = explode(' ', $text);
@@ -40,29 +40,24 @@ class LineBreaker
 
     public function hasNextLine(): bool
     {
-        return $this->nextWordIndex < $this->words;
+        return $this->nextWordIndex < \count($this->words);
     }
 
-    public function nextLine(float $width): array
+    public function nextLine(float $targetWidth): array
     {
         if (!$this->hasNextLine()) {
             throw new \Exception('No next line');
         }
 
-        $nextWord = $this->words[$this->nextWordIndex];
+        $nextWord = $this->words[$this->nextWordIndex++];
         $currentWidth = $this->sizer->getWidth($nextWord);
         $currentWords = $nextWord;
 
-        while (true) {
-            // check if next word exists
-            if (++$this->nextWordIndex >= \count($this->words)) {
-                break;
-            }
-
+        while ($this->nextWordIndex < \count($this->words)) {
             // check if next word fits
-            $nextWord = $this->words[$this->nextWordIndex];
+            $nextWord = $this->words[$this->nextWordIndex++];
             $nextWidth = $this->sizer->getSpaceWidth() + $this->sizer->getWidth($nextWord);
-            if ($currentWidth + $nextWidth > $width) {
+            if ($currentWidth + $nextWidth > $targetWidth) {
                 --$this->nextWordIndex;
                 break;
             }

@@ -32,9 +32,6 @@ class RectangleStyle
 
     /**
      * Style constructor.
-     *
-     * @param Color $borderColor
-     * @param Color $fillColor
      */
     public function __construct(float $lineWidth, ?Color $borderColor, ?Color $fillColor)
     {

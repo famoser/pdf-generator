@@ -9,19 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\LineBreak\FontSizer;
+namespace PdfGenerator\IR\Text\LineBreak\WordSizer;
 
-interface FontSizer
+interface WordSizer
 {
     public function getWidth(string $word): float;
 
     public function getSpaceWidth(): float;
-
-    public function getAscender();
-
-    public function getDescender();
-
-    public function getLineGap();
-
-    public function getBaselineToBaselineDistance();
 }

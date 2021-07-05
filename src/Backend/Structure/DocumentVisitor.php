@@ -148,7 +148,9 @@ class DocumentVisitor
         $fontStream->setFontData($fontData);
         $fontStream->setSubtype(FontStream::SUBTYPE_OPEN_TYPE);
 
-        $sizeNormalizer = 1024 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm(); // this could be a hack; but else the pdf character widths look messed up
+        // glyph space -> text space (=em) is in units of 1000 for PDF
+        // the font defines its own sizing in the head table, hence we need to normalize the units
+        $sizeNormalizer = 1000 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm();
         $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream, $sizeNormalizer);
 
         if ($createFontSubsets && !$this->configuration->getUseTTFFonts()) {
@@ -228,7 +230,7 @@ class DocumentVisitor
         return $type0Font;
     }
 
-    private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream, $sizeNormalizer): FontDescriptor
+    private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream, float $sizeNormalizer): FontDescriptor
     {
         $HHeaTable = $font->getTableDirectory()->getHHeaTable();
         $OS2Table = $font->getTableDirectory()->getOS2Table();

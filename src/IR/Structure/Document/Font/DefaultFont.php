@@ -75,4 +75,24 @@ class DefaultFont extends Font
     {
         return $this->style;
     }
+
+    public function getUnitsPerEm()
+    {
+        // TODO: Implement getUnitsPerEm() method.
+    }
+
+    public function getAscender()
+    {
+        // TODO: Implement getAscender() method.
+    }
+
+    public function getDescender()
+    {
+        // TODO: Implement getDescender() method.
+    }
+
+    public function getLineGap()
+    {
+        // TODO: Implement getLineGap() method.
+    }
 }

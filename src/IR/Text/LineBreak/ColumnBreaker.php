@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR\Text\LineBreak;
 
-use PdfGenerator\IR\Text\LineBreak\FontSizer\FontSizer;
+use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizer;
 
 class ColumnBreaker
 {
@@ -23,7 +23,7 @@ class ColumnBreaker
     /**
      * ColumnBreaker constructor.
      */
-    public function __construct(FontSizer $sizer, string $text)
+    public function __construct(WordSizer $sizer, string $text)
     {
         $this->lineBreaker = new LineBreaker($sizer, $text);
     }
@@ -33,12 +33,12 @@ class ColumnBreaker
         return $this->lineBreaker->hasNextLine();
     }
 
-    public function nextColumn(float $width, int $maxLines)
+    public function nextColumn(float $targetWidth, int $maxLines)
     {
         $lines = [];
-        $lineWidths = 0;
+        $lineWidths = [];
         do {
-            [$words, $width] = $this->lineBreaker->nextLine($width);
+            [$words, $width] = $this->lineBreaker->nextLine($targetWidth);
             $lines[] = $words;
             $lineWidths[] = $width;
         } while ($this->lineBreaker->hasNextLine() && \count($lines) < $maxLines);

@@ -9,16 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Layout;
+namespace PdfGenerator\IR\Layout\ColumnGenerator;
 
-use PdfGenerator\IR\Cursor;
+use PdfGenerator\IR\Layout\Column;
 
-class ColumnGenerator
+interface ColumnGenerator
 {
-    public function getNextColumn()
-    {
-        $cursor = new Cursor(10, 200, 1);
-
-        return [$cursor, 150];
-    }
+    public function getNextColumn(): Column;
 }

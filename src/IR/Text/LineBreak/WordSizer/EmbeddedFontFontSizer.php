@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\LineBreak\FontSizer;
+namespace PdfGenerator\IR\Text\LineBreak\WordSizer;
 
 use PdfGenerator\IR\Structure\Document\Font;
 
-class EmbeddedFontFontSizer implements ResizableFontSizer
+class EmbeddedFontFontSizer implements WordSizer
 {
     /**
      * @var Font
@@ -53,11 +53,6 @@ class EmbeddedFontFontSizer implements ResizableFontSizer
         $this->spaceCharacterWidth = $this->getWidth(' ');
     }
 
-    public function setFontSize(float $fontSize)
-    {
-        $this->scale = 1024 / $this->font->getTableDirectory()->getHeadTable()->getUnitsPerEm() * $fontSize;
-    }
-
     public function getWidth(string $word): float
     {
         if ($word === '') {
@@ -81,35 +76,5 @@ class EmbeddedFontFontSizer implements ResizableFontSizer
     public function getSpaceWidth(): float
     {
         return $this->spaceCharacterWidth * $this->scale;
-    }
-
-    /**
-     * top of text area until baseline.
-     */
-    public function getAscender()
-    {
-        return $this->font->getTableDirectory()->getOS2Table()->getSTypoAscender();
-    }
-
-    /**
-     * bottom of text area until baseline
-     * negative, as measured "the other way around".
-     */
-    public function getDescender()
-    {
-        return $this->font->getTableDirectory()->getOS2Table()->getSTypoDecender();
-    }
-
-    /**
-     * Gap between two text areas below each others.
-     */
-    public function getLineGap()
-    {
-        return $this->font->getTableDirectory()->getOS2Table()->getSTypoLineGap();
-    }
-
-    public function getBaselineToBaselineDistance()
-    {
-        return $this->getAscender() - $this->getDescender() + $this->getLineGap();
     }
 }

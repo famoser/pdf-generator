@@ -166,7 +166,43 @@ class ComposerTest extends TestCase
 
         // act
         $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
-        $composer->printText('Hallo und Sonderzéíchèn');
+        $composer->printParagraph('Hallo und Sonderzéíchèn');
+        $backend = $document->render();
+
+        $documentConfiguration = new Configuration();
+        $documentConfiguration->setCreateFontSubsets(true);
+        $documentConfiguration->setAutoResizeImages(true);
+        $backend->setConfiguration($documentConfiguration);
+
+        $catalog = $backend->render();
+        $result = $catalog->save();
+        file_put_contents('pdf.pdf', $result);
+
+        /** @var Type0 $font */
+        $font = $catalog->getPages()->getKids()[0]->getResources()->getFonts()[0];
+        $type0Font = $font->getDescendantFont()->getFontDescriptor()->getFontFile3()->getFontData();
+        file_put_contents('subset.ttf', $type0Font);
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintTextSizing()
+    {
+        // arrange
+        $document = new Document();
+        $composer = new FlowPrinter($document);
+        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
+        $textStyle = new TextStyle($font, 5, 1.2);
+
+        // act
+        $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
+        $composer->getPrinter()->setLeft(20);
+        $composer->getPrinter()->setTop(20);
+        $composer->printParagraph('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et'); // ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
         $backend = $document->render();
 
         $documentConfiguration = new Configuration();

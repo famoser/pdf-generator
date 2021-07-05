@@ -51,7 +51,7 @@ class EmbeddedFont extends Font
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIdentifier()
     {
@@ -59,7 +59,7 @@ class EmbeddedFont extends Font
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFontData()
     {
@@ -69,5 +69,38 @@ class EmbeddedFont extends Font
     public function getFont(): \PdfGenerator\Font\IR\Structure\Font
     {
         return $this->font;
+    }
+
+    /**
+     * top of text area until baseline.
+     */
+    public function getAscender()
+    {
+        return $this->font->getTableDirectory()->getOS2Table()->getSTypoAscender();
+    }
+
+    /**
+     * bottom of text area until baseline
+     * negative, as measured "the other way around".
+     */
+    public function getDescender()
+    {
+        return $this->font->getTableDirectory()->getOS2Table()->getSTypoDecender();
+    }
+
+    /**
+     * Gap between two text areas below each others.
+     */
+    public function getLineGap()
+    {
+        return $this->font->getTableDirectory()->getOS2Table()->getSTypoLineGap();
+    }
+
+    /**
+     * Scale the character coordinates are in.
+     */
+    public function getUnitsPerEm()
+    {
+        return $this->font->getTableDirectory()->getHeadTable()->getUnitsPerEm();
     }
 }

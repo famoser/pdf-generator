@@ -9,40 +9,37 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\LineBreak\FontSizer;
+namespace PdfGenerator\IR\Text\LineBreak\WordSizer;
 
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
 class FontSizerRepository
 {
     /**
-     * @var FontSizerVisitor
+     * @var WordSizerVisitor
      */
     private $wordSizerVisitor;
 
     /**
-     * @var ResizableFontSizer[]
+     * @var WordSizer[]
      */
     private $wordSizerByFont = [];
 
     public function __construct()
     {
-        $this->wordSizerVisitor = new FontSizerVisitor();
+        $this->wordSizerVisitor = new WordSizerVisitor();
     }
 
-    public function getFontSizer(TextStyle $textStyle): FontSizer
+    public function getWordSizer(TextStyle $textStyle): WordSizer
     {
         $font = $textStyle->getFont();
 
         if (!\array_key_exists($font->getIdentifier(), $this->wordSizerByFont)) {
-            /** @var ResizableFontSizer $wordSizer */
+            /** @var WordSizer $wordSizer */
             $wordSizer = $font->accept($this->wordSizerVisitor);
             $this->wordSizerByFont[$font->getIdentifier()] = $wordSizer;
         }
 
-        $wordSizer = $this->wordSizerByFont[$font->getIdentifier()];
-        $wordSizer->setFontSize($textStyle->getFontSize());
-
-        return $wordSizer;
+        return $this->wordSizerByFont[$font->getIdentifier()];
     }
 }
