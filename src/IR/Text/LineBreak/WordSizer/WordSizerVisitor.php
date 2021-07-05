@@ -24,6 +24,8 @@ class WordSizerVisitor implements FontVisitor
 
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
-        return new EmbeddedFontFontSizer($param);
+        $characterSizer = new CharacterSizer($param->getFont());
+
+        return new WordSizer($characterSizer->getInvalidCharacterWidth(), $characterSizer->getCharacterAdvanceWidthLookup());
     }
 }

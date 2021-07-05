@@ -63,6 +63,10 @@ class FileReader
     {
         $offsetTable = $this->readOffsetTable($fileReader);
 
+        if (!$offsetTable->isTrueTypeFont()) {
+            throw new \Exception('This font type is not supported: ' . $offsetTable->getScalerType());
+        }
+
         $tableDirectoryEntries = [];
         for ($i = 0; $i < $offsetTable->getNumTables(); ++$i) {
             $tableDirectoryEntries[] = $this->readTableDirectoryEntry($fileReader);
