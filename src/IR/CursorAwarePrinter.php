@@ -39,31 +39,19 @@ class CursorAwarePrinter
         $this->cursor = new Cursor(0, 0, 0);
     }
 
-    public function getCursor(): Cursor
-    {
-        return $this->cursor;
-    }
-
     public function getPrinter(): Printer
     {
         return $this->printer;
     }
 
-    public function setTop(float $top)
+    public function getCursor(): Cursor
     {
-        $page = $this->document->getOrCreatePage($this->cursor->getPage());
-        $yCoordinate = $page->getSize()[1] - $top;
-        $this->cursor = $this->cursor->withYCoordinate($yCoordinate);
+        return $this->cursor;
     }
 
-    public function setLeft(float $left)
+    public function setCursor(Cursor $cursor)
     {
-        $this->cursor = $this->cursor->withXCoordinate($left);
-    }
-
-    public function setPage(int $page)
-    {
-        $this->cursor = $this->cursor->withPage($page);
+        $this->cursor = $cursor;
     }
 
     public function moveRight(float $right)
@@ -78,30 +66,24 @@ class CursorAwarePrinter
         $this->cursor = $this->cursor->withYCoordinate($newYCoordinate);
     }
 
-    public function advancePage(int $nextPage = 1)
-    {
-        $newPage = $this->cursor->getPage() + $nextPage;
-        $this->cursor = $this->cursor->withPage($newPage);
-    }
-
     public function printText(string $text)
     {
         $position = Position::fromCursor($this->cursor);
-        $page = $this->document->getOrCreatePage($this->cursor->getPage());
+        $page = $this->document->getPage($this->cursor->getPageIndex());
         $this->printer->printText($page, $position, $text);
     }
 
     public function printImage(Image $image, float $width, float $height)
     {
         $position = Position::fromCursor($this->cursor);
-        $page = $this->document->getOrCreatePage($this->cursor->getPage());
+        $page = $this->document->getPage($this->cursor->getPageIndex());
         $this->printer->printImage($page, $position, $image, $width, $height);
     }
 
     public function printRectangle(float $width, float $height)
     {
         $position = Position::fromCursor($this->cursor);
-        $page = $this->document->getOrCreatePage($this->cursor->getPage());
+        $page = $this->document->getPage($this->cursor->getPageIndex());
         $this->printer->printRectangle($page, $position, $width, $height);
     }
 }

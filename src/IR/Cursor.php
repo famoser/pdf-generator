@@ -26,7 +26,7 @@ class Cursor
     /**
      * @var int
      */
-    private $page;
+    private $pageIndex;
 
     /**
      * Cursor constructor.
@@ -35,7 +35,7 @@ class Cursor
     {
         $this->xCoordinate = $xCoordinate;
         $this->yCoordinate = $yCoordinate;
-        $this->page = $page;
+        $this->pageIndex = $page;
     }
 
     public function getXCoordinate(): float
@@ -48,19 +48,19 @@ class Cursor
         return $this->yCoordinate;
     }
 
-    public function getPage(): int
+    public function getPageIndex(): int
     {
-        return $this->page;
+        return $this->pageIndex;
     }
 
     public function withXCoordinate(float $newXCoodinate)
     {
-        return new self($newXCoodinate, $this->yCoordinate, $this->page);
+        return new self($newXCoodinate, $this->yCoordinate, $this->pageIndex);
     }
 
     public function withYCoordinate(float $newYCoordinate)
     {
-        return new self($this->xCoordinate, $newYCoordinate, $this->page);
+        return new self($this->xCoordinate, $newYCoordinate, $this->pageIndex);
     }
 
     public function withPage(int $page)
@@ -73,6 +73,6 @@ class Cursor
      */
     public function isBiggerThan(self $other)
     {
-        return $other->getPage() < $this->getPage() || ($other->getPage() === $this->getPage() && $other->getYCoordinate() < $this->getYCoordinate());
+        return $other->getPageIndex() < $this->getPageIndex() || ($other->getPageIndex() === $this->getPageIndex() && $other->getYCoordinate() < $this->getYCoordinate());
     }
 }

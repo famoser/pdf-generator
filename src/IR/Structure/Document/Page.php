@@ -20,7 +20,7 @@ class Page extends BaseDocumentStructure
     /**
      * @var float[]
      */
-    private $size = [210, 297]; // A4 (width x height)
+    private $size;
 
     /**
      * @var string
@@ -35,13 +35,10 @@ class Page extends BaseDocumentStructure
     /**
      * Page constructor.
      */
-    public function __construct(string $pageNumber, array $size = null)
+    public function __construct(string $pageNumber, array $size)
     {
         $this->pageNumber = $pageNumber;
-
-        if ($size) {
-            $this->size = $size;
-        }
+        $this->size = $size;
     }
 
     public function addContent(BaseContent $baseContent)

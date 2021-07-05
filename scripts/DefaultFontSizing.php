@@ -9,6 +9,10 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * Creates the sizing information of the default fonts based on fonts found on the host OS
+ */
+
 include '../vendor/autoload.php';
 
 use PdfGenerator\IR\Structure\Document;

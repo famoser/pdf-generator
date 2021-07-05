@@ -20,10 +20,6 @@ class SingleColumnGenerator implements ColumnGenerator
      */
     private $page;
 
-    private $pageSize;
-
-    private $margin;
-
     public function getNextColumn(): Column
     {
         // TODO: Implement getNextColumn() method.

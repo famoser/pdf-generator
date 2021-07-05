@@ -14,6 +14,7 @@ namespace PdfGenerator\Tests\Integration\IR;
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\IR\FlowPrinter;
+use PdfGenerator\IR\Layout\SingleColumnLayout;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
@@ -31,7 +32,7 @@ class ComposerTest extends TestCase
         // arrange
         $text = 'hi mom';
         $document = new Document();
-        $composer = new FlowPrinter($document);
+        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         // act
         $composer->printParagraph($text);
@@ -50,7 +51,7 @@ class ComposerTest extends TestCase
         // arrange
         $text = 'hi mom';
         $document = new Document();
-        $composer = new FlowPrinter($document);
+        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         // act
         $composer->printParagraph($text . '1');
@@ -70,18 +71,16 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document);
+        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         // act
-        $composer->getPrinter()->setLeft(20);
-        $composer->getPrinter()->setTop(20);
         $composer->getPrinter()->moveDown(10);
         $composer->printParagraph('text');
         $result = $document->render()->save();
 
         // assert
-        $this->assertStringContainsString((string)(258.252), $result); // 297 - 30 - ascender
-        $this->assertStringContainsString((string)(20), $result);
+        $this->assertStringContainsString((string)(243.252), $result); // 297 - 30 - ascender
+        $this->assertStringContainsString((string)(25), $result);
     }
 
     /**
@@ -93,7 +92,7 @@ class ComposerTest extends TestCase
         $width = 20;
         $height = 30;
         $document = new Document();
-        $composer = new FlowPrinter($document);
+        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         $rectangleStyle = new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
         $composer->getPrinter()->getPrinter()->setRectangleStyle($rectangleStyle);
@@ -118,7 +117,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document);
+        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 30);
@@ -141,7 +140,7 @@ class ComposerTest extends TestCase
         // arrange
         $imageSrc = ResourcesProvider::getImage1Path();
         $document = new Document();
-        $printer = new FlowPrinter($document);
+        $printer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         // act
         $image = $document->getOrCreateImage($imageSrc);
@@ -160,7 +159,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document);
+        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
 
@@ -194,14 +193,12 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document);
+        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 5, 1.2);
 
         // act
         $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
-        $composer->getPrinter()->setLeft(20);
-        $composer->getPrinter()->setTop(20);
         $composer->printParagraph('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
         $backend = $document->render();
 
