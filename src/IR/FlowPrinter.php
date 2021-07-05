@@ -102,19 +102,18 @@ class FlowPrinter
 
         $paragraphWidth = $this->margin[1] - $this->margin[3];
 
-        $scaling = $textStyle->getFont()->getUnitsPerEm() * $textStyle->getFontSize();
+        $scaling = $textStyle->getFont()->getUnitsPerEm() / $textStyle->getFontSize();
         $columnBreaker = new ColumnBreaker($fontSizer, $text);
-        [$lines, $lineWidths] = $columnBreaker->nextColumn(5 * $scaling, 2);
+        [$lines, $lineWidths] = $columnBreaker->nextColumn(170 * $scaling, 10);
 
         $ascender = $textStyle->getFont()->getAscender() / $scaling;
         $this->getPrinter()->moveDown($ascender);
 
-        $this->getPrinter()->printRectangle(170, $ascender);
-
         $text = implode("\n", $lines);
         $this->printer->printText($text);
 
-        $height = (\count($lines) - 1) * $textStyle->getFont()->getBaselineToBaselineDistance() / $scaling;
+        $leading = $textStyle->getFont()->getBaselineToBaselineDistance() / $scaling * $textStyle->getLineHeight();
+        $height = (\count($lines) - 1) * $leading;
         $descender = $textStyle->getFont()->getDescender() / $scaling;
         $this->getPrinter()->moveDown($height - $descender);
 

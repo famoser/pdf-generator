@@ -40,12 +40,19 @@ class DefaultFont extends Font
     private $style;
 
     /**
+     * @var int[]
+     */
+    private $size;
+
+    /**
      * DefaultFont constructor.
      */
     public function __construct(string $font, string $style)
     {
         $this->font = $font;
         $this->style = $style;
+
+        $this->size = DefaultFontSize::getSize($this->font, $this->style);
     }
 
     /**
@@ -78,21 +85,21 @@ class DefaultFont extends Font
 
     public function getUnitsPerEm()
     {
-        // TODO: Implement getUnitsPerEm() method.
+        return $this->size['unitsPerEm'];
     }
 
     public function getAscender()
     {
-        // TODO: Implement getAscender() method.
+        return $this->size['ascender'];
     }
 
     public function getDescender()
     {
-        // TODO: Implement getDescender() method.
+        return $this->size['descender'];
     }
 
     public function getLineGap()
     {
-        // TODO: Implement getLineGap() method.
+        return $this->size['lineGap'];
     }
 }

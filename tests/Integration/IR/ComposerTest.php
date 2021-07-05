@@ -202,13 +202,8 @@ class ComposerTest extends TestCase
         $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
         $composer->getPrinter()->setLeft(20);
         $composer->getPrinter()->setTop(20);
-        $composer->printParagraph('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et'); // ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
+        $composer->printParagraph('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
         $backend = $document->render();
-
-        $documentConfiguration = new Configuration();
-        $documentConfiguration->setCreateFontSubsets(true);
-        $documentConfiguration->setAutoResizeImages(true);
-        $backend->setConfiguration($documentConfiguration);
 
         $catalog = $backend->render();
         $result = $catalog->save();

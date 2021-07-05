@@ -18,7 +18,7 @@ use PdfGenerator\Backend\Structure\Document\Page as BackendPage;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Document\DocumentResources;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
-use PdfGenerator\IR\Structure\Document\Font\DefaultFontMapping;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFontType1Mapping;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
 use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 use PdfGenerator\IR\Structure\Document\Image;
@@ -65,11 +65,11 @@ class DocumentVisitor implements FontVisitor
      */
     private function getDefaultFontBaseFont(string $font, string $style): string
     {
-        if (!\array_key_exists($font, DefaultFontMapping::$type1BaseFontMapping)) {
+        if (!\array_key_exists($font, DefaultFontType1Mapping::$mapping)) {
             throw new \Exception('The font ' . $font . ' is not part of the default set.');
         }
 
-        $styles = DefaultFontMapping::$type1BaseFontMapping[$font];
+        $styles = DefaultFontType1Mapping::$mapping[$font];
         if (!\array_key_exists($style, $styles)) {
             throw new \Exception('This font style ' . $style . ' is not part of the default set.');
         }

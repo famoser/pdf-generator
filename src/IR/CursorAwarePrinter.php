@@ -52,7 +52,7 @@ class CursorAwarePrinter
     public function setTop(float $top)
     {
         $page = $this->document->getOrCreatePage($this->cursor->getPage());
-        $yCoordinate = $page->getSize()[0] - $top;
+        $yCoordinate = $page->getSize()[1] - $top;
         $this->cursor = $this->cursor->withYCoordinate($yCoordinate);
     }
 
