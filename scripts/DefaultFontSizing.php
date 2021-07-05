@@ -22,6 +22,8 @@ $defaultFontSizeFilepath = '../src/IR/Structure/Document/Font/default_font_size.
 $defaultFontCharacterSizeFolder = '../src/IR/Text/LineBreak/WordSizer/DefaultFont';
 $fontEnding = '.otf';
 
+$jsonFlags = 0; // \JSON_PRETTY_PRINT
+
 $fontMap = file_get_contents($fontMapPath);
 $fontToFontFilename = [];
 foreach (explode("\n", $fontMap) as $line) {
@@ -61,11 +63,11 @@ foreach ($fontFilenames as $fontName => $fontStyles) {
             'characterAdvanceWidthLookup' => $sizer->isMonospace() ? [] : $sizer->getCharacterAdvanceWidthLookup(),
         ];
 
-        $characterSizesJson = json_encode($characterSizes, \JSON_PRETTY_PRINT);
+        $characterSizesJson = json_encode($characterSizes, $jsonFlags);
         $characterSizesFilepath = $defaultFontCharacterSizeFolder . '/' . $fontName . '_' . $fontStyle . '.json';
         file_put_contents($characterSizesFilepath, $characterSizesJson);
     }
 }
 
-$sizingJson = json_encode($sizing, \JSON_PRETTY_PRINT);
+$sizingJson = json_encode($sizing, $jsonFlags);
 file_put_contents($defaultFontSizeFilepath, $sizingJson);

@@ -80,7 +80,7 @@ class ComposerTest extends TestCase
         $result = $document->render()->save();
 
         // assert
-        $this->assertStringContainsString((string)(297 - 30), $result);
+        $this->assertStringContainsString((string)(258.252), $result); // 297 - 30 - ascender
         $this->assertStringContainsString((string)(20), $result);
     }
 
