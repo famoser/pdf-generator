@@ -11,9 +11,9 @@
 
 namespace PdfGenerator\IR\Text\LineBreak\WordSizer;
 
-use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Structure\Document\Font;
 
-class FontSizerRepository
+class WordSizerRepository
 {
     /**
      * @var WordSizerVisitor
@@ -30,10 +30,8 @@ class FontSizerRepository
         $this->wordSizerVisitor = new WordSizerVisitor();
     }
 
-    public function getWordSizer(TextStyle $textStyle): WordSizer
+    public function getWordSizer(Font $font): WordSizer
     {
-        $font = $textStyle->getFont();
-
         if (!\array_key_exists($font->getIdentifier(), $this->wordSizerByFont)) {
             /** @var WordSizer $wordSizer */
             $wordSizer = $font->accept($this->wordSizerVisitor);

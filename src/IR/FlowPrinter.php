@@ -15,8 +15,8 @@ use PdfGenerator\IR\Layout\Column;
 use PdfGenerator\IR\Layout\Layout;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Image;
-use PdfGenerator\IR\Text\LineBreak\ColumnBreaker;
-use PdfGenerator\IR\Text\LineBreak\WordSizer\FontSizerRepository;
+use PdfGenerator\IR\Text\LineBreak\ScaledColumnBreaker;
+use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
 
 class FlowPrinter
 {
@@ -45,7 +45,7 @@ class FlowPrinter
         $this->document = $document;
         $this->printer = new CursorAwarePrinter($document);
         $this->layout = $layout;
-        $this->fontSizerRepository = new FontSizerRepository();
+        $this->wordSizerRepository = new WordSizerRepository();
 
         $this->nextColumn();
     }
@@ -83,9 +83,9 @@ class FlowPrinter
     }
 
     /**
-     * @var FontSizerRepository
+     * @var WordSizerRepository
      */
-    private $fontSizerRepository;
+    private $wordSizerRepository;
 
     public function printPhrase(string $text)
     {
@@ -95,23 +95,19 @@ class FlowPrinter
         $availableWidth = $this->activeColumn->getAvailableWidth($cursor);
 
         $textStyle = $this->getPrinter()->getPrinter()->getTextStyle();
-        $fontSizer = $this->fontSizerRepository->getWordSizer($textStyle);
-        $scaling = $textStyle->getFont()->getUnitsPerEm() / $textStyle->getFontSize();
-        $leading = $textStyle->getFont()->getBaselineToBaselineDistance() / $scaling * $textStyle->getLineHeight();
-        $ascender = $textStyle->getFont()->getAscender() / $scaling;
-        $descender = $textStyle->getFont()->getDescender() / $scaling;
+        $wordSizer = $this->wordSizerRepository->getWordSizer($textStyle->getFont());
+        $columnBreaker = new ScaledColumnBreaker($textStyle, $wordSizer, $text);
 
-        $columnBreaker = new ColumnBreaker($fontSizer, $text);
+        $leading = $textStyle->getLeading();
+        $ascender = $textStyle->getAscender();
 
         // finish started line
         if ($availableWidth < $width) {
-            [$line, $lineWidth] = $columnBreaker->nextLine($availableWidth * $scaling);
+            [$line, $lineWidth] = $columnBreaker->nextLine($availableWidth);
             $this->printer->printText($line);
 
             if (!$columnBreaker->hasMoreLines()) {
-                $cursor = $cursor->moveRight($lineWidth / $scaling)
-                    ->moveDown(-$descender);
-                $this->getPrinter()->setCursor($cursor);
+                $this->moveRight($lineWidth);
 
                 return;
             }
@@ -124,28 +120,25 @@ class FlowPrinter
 
         // finish started column
         $maxLines = (int)$this->activeColumn->countSpaceFor($cursor, $leading) + 1;
-        [$lines, $lineWidths] = $columnBreaker->nextColumn($width * $scaling, $maxLines);
+        [$lines, $lineWidths] = $columnBreaker->nextColumn($width, $maxLines);
         $text = implode("\n", $lines);
         $this->printer->printText($text);
 
         $lastLineWidth = $lineWidths[\count($lineWidths) - 1];
-        $cursor = $cursor->moveRight($lastLineWidth / $scaling)
-            ->moveDown((\count($lines) - 1) * $leading);
-        $this->getPrinter()->setCursor($cursor);
+        $this->moveRightDown($lastLineWidth, (\count($lines) - 1) * $leading);
 
         // print remaining text
         while ($columnBreaker->hasMoreLines()) {
             $cursor = $this->nextColumn();
+            $this->reserveHeight($ascender);
 
             $maxLines = (int)$this->activeColumn->countSpaceFor($cursor, $leading) + 1;
-            [$lines, $lineWidths] = $columnBreaker->nextColumn($width * $scaling, $maxLines);
+            [$lines, $lineWidths] = $columnBreaker->nextColumn($width, $maxLines);
             $text = implode("\n", $lines);
             $this->printer->printText($text);
 
             $lastLineWidth = $lineWidths[\count($lineWidths) - 1];
-            $cursor = $cursor->moveRight($lastLineWidth / $scaling)
-                ->moveDown((\count($lines) - 1) * $leading);
-            $this->getPrinter()->setCursor($cursor);
+            $this->moveRightDown($lastLineWidth, (\count($lines) - 1) * $leading);
         }
     }
 
@@ -174,6 +167,13 @@ class FlowPrinter
     {
         $cursor = $this->getPrinter()->getCursor();
         $cursor = $cursor->moveDown($height);
+        $this->getPrinter()->setCursor($cursor);
+    }
+
+    public function moveRightDown(float $width, float $height)
+    {
+        $cursor = $this->getPrinter()->getCursor();
+        $cursor = $cursor->moveRightDown($width, $height);
         $this->getPrinter()->setCursor($cursor);
     }
 }

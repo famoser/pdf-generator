@@ -82,6 +82,14 @@ class Cursor
         return $this->withYCoordinate($newYCoordinate);
     }
 
+    public function moveRightDown(float $right, float $down): self
+    {
+        $newXCoordinate = $this->getXCoordinate() + $right;
+        $newYCoordinate = $this->getYCoordinate() - $down;
+
+        return new self($newXCoordinate, $newYCoordinate, $this->getPageIndex());
+    }
+
     /**
      * @return bool
      */
