@@ -46,8 +46,7 @@ class SingleColumnLayout implements Layout
     public function getNextColumn(): Column
     {
         $nextPageIndex = $this->lastCursor ? $this->lastCursor->getPageIndex() + 1 : 0;
-        $pageNumber = $nextPageIndex + 1;
-        $page = new Document\Page($pageNumber, $this->pageSize);
+        $page = new Document\Page($nextPageIndex, $this->pageSize);
         $this->document->addPage($page);
 
         $xCoordinate = $this->margin[3];

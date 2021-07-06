@@ -13,7 +13,7 @@ namespace PdfGenerator\Tests\Integration\IR;
 
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Structure\Optimization\Configuration;
-use PdfGenerator\IR\FlowPrinter;
+use PdfGenerator\IR\BlockPrinter;
 use PdfGenerator\IR\Layout\SingleColumnLayout;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
@@ -32,7 +32,7 @@ class ComposerTest extends TestCase
         // arrange
         $text = 'hi mom';
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $composer = new BlockPrinter($document, new SingleColumnLayout($document));
 
         // act
         $composer->printPhrase($text);
@@ -51,7 +51,7 @@ class ComposerTest extends TestCase
         // arrange
         $text = 'hi mom';
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $composer = new BlockPrinter($document, new SingleColumnLayout($document));
 
         // act
         $composer->printPhrase($text . '1');
@@ -71,7 +71,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $composer = new BlockPrinter($document, new SingleColumnLayout($document));
 
         // act
         $composer->moveDown(10);
@@ -92,7 +92,7 @@ class ComposerTest extends TestCase
         $width = 20;
         $height = 30;
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $composer = new BlockPrinter($document, new SingleColumnLayout($document));
 
         $rectangleStyle = new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
         $composer->getPrinter()->getPrinter()->setRectangleStyle($rectangleStyle);
@@ -117,7 +117,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $composer = new BlockPrinter($document, new SingleColumnLayout($document));
 
         $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 30);
@@ -140,7 +140,7 @@ class ComposerTest extends TestCase
         // arrange
         $imageSrc = ResourcesProvider::getImage1Path();
         $document = new Document();
-        $printer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $printer = new BlockPrinter($document, new SingleColumnLayout($document));
 
         // act
         $image = $document->getOrCreateImage($imageSrc);
@@ -159,7 +159,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $composer = new BlockPrinter($document, new SingleColumnLayout($document));
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
 
@@ -193,9 +193,9 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $composer = new BlockPrinter($document, new SingleColumnLayout($document));
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
-        $textStyle = new TextStyle($font, 5, 1.2);
+        $textStyle = new TextStyle($font, 4, 1.2);
 
         // act
         $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);

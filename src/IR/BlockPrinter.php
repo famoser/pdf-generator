@@ -18,7 +18,7 @@ use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Text\LineBreak\ScaledColumnBreaker;
 use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
 
-class FlowPrinter
+class BlockPrinter
 {
     /**
      * @var Document
@@ -55,22 +55,18 @@ class FlowPrinter
         return $this->printer;
     }
 
-    /**
-     * ensures a block of specified height has space within column.
-     * goes to next column if it does not fit (only once; the block is placed on the next column no matter its size).
-     */
-    public function reserveHeight(float $height, float $nextColumnHeight = null)
+    public function nextLine(float $height, float $nextColumnHeight = null)
     {
         $cursor = $this->getPrinter()->getCursor();
+        $cursor = $cursor->withXCoordinate($this->activeColumn->getStart()->getXCoordinate());
 
-        if ($this->activeColumn !== null && $this->activeColumn->withinColumnHeight($cursor, $height)) {
-            $cursor = $cursor->moveDown($height);
+        if (!$this->activeColumn->hasVerticalSpaceFor($cursor, $height)) {
+            $this->nextColumn();
+            $this->nextLine($nextColumnHeight ?? $height);
         } else {
-            $cursor = $this->nextColumn();
-            $cursor = $cursor->moveDown($nextColumnHeight);
+            $cursor = $cursor->moveDown($height);
+            $this->getPrinter()->setCursor($cursor);
         }
-
-        $this->getPrinter()->setCursor($cursor);
     }
 
     public function nextColumn()
@@ -86,6 +82,22 @@ class FlowPrinter
      * @var WordSizerRepository
      */
     private $wordSizerRepository;
+
+    public function startParagraph(string $text)
+    {
+        $textStyle = $this->getPrinter()->getPrinter()->getTextStyle();
+        $ascender = $textStyle->getAscender();
+        $this->nextLine($ascender);
+
+        $this->printPhrase($text);
+    }
+
+    public function endParagraph()
+    {
+        $textStyle = $this->getPrinter()->getPrinter()->getTextStyle();
+        $descender = $textStyle->getDescender();
+        $this->nextLine(-$descender, 0);
+    }
 
     public function printPhrase(string $text)
     {
@@ -112,7 +124,7 @@ class FlowPrinter
                 return;
             }
 
-            $this->reserveHeight($leading, $ascender);
+            $this->nextLine($leading, $ascender);
 
             $cursor = $this->getPrinter()->getCursor()->withXCoordinate($this->activeColumn->getStart()->getXCoordinate());
             $this->getPrinter()->setCursor($cursor);
@@ -130,7 +142,7 @@ class FlowPrinter
         // print remaining text
         while ($columnBreaker->hasMoreLines()) {
             $cursor = $this->nextColumn();
-            $this->reserveHeight($ascender);
+            $this->nextLine($ascender);
 
             $maxLines = (int)$this->activeColumn->countSpaceFor($cursor, $leading) + 1;
             [$lines, $lineWidths] = $columnBreaker->nextColumn($width, $maxLines);
@@ -144,15 +156,29 @@ class FlowPrinter
 
     public function printImage(Image $image, float $width, float $height)
     {
-        $this->reserveHeight($height);
-        $this->printer->printImage($image, $width, $height);
-        $this->moveRight($width);
+        $printImage = function () use ($image, $width, $height) {
+            $this->printer->printImage($image, $width, $height);
+        };
+        $this->printFixedSizeBlock($printImage, $width, $height);
     }
 
     public function printRectangle(float $width, float $height)
     {
-        $this->reserveHeight($height);
-        $this->printer->printRectangle($width, $height);
+        $printImage = function () use ($width, $height) {
+            $this->printer->printRectangle($width, $height);
+        };
+        $this->printFixedSizeBlock($printImage, $width, $height);
+    }
+
+    private function printFixedSizeBlock(callable $print, float $width, float $height)
+    {
+        $cursor = $this->getPrinter()->getCursor();
+        if (!$this->activeColumn->hasHorizontalSpaceFor($cursor, $width)) {
+            $this->nextLine($height);
+        }
+
+        $print();
+
         $this->moveRight($width);
     }
 

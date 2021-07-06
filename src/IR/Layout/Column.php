@@ -70,23 +70,27 @@ class Column
         return $this->getMaxLeft() - $cursor->getXCoordinate();
     }
 
-    public function withinColumnWidth(Cursor $cursor, float $right): bool
+    public function hasHorizontalSpaceFor(Cursor $cursor, float $width)
     {
-        $afterLeft = $cursor->getXCoordinate() + $right;
-        $maxLeft = $this->getMaxLeft();
-        if ($afterLeft > $maxLeft) {
-            return false;
+        if ($cursor->getXCoordinate() !== $this->start->getXCoordinate()) {
+            $afterLeft = $cursor->getXCoordinate() + $width;
+            $maxLeft = $this->getMaxLeft();
+            if ($afterLeft > $maxLeft) {
+                return false;
+            }
         }
 
         return true;
     }
 
-    public function withinColumnHeight(Cursor $cursor, float $height): bool
+    public function hasVerticalSpaceFor(Cursor $cursor, float $height)
     {
-        $afterTop = $cursor->getYCoordinate() - $height;
-        $minTop = $this->getMinTop();
-        if ($afterTop < $minTop) {
-            return false;
+        if ($cursor->getYCoordinate() !== $this->start->getYCoordinate()) {
+            $afterTop = $cursor->getYCoordinate() - $height;
+            $minTop = $this->getMinTop();
+            if ($afterTop < $minTop) {
+                return false;
+            }
         }
 
         return true;
