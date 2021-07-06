@@ -28,9 +28,14 @@ class ColumnBreaker
         $this->lineBreaker = new LineBreaker($sizer, $text);
     }
 
-    public function hasNextColumn(): bool
+    public function hasMoreLines(): bool
     {
         return $this->lineBreaker->hasNextLine();
+    }
+
+    public function nextLine(float $targetWidth)
+    {
+        return $this->lineBreaker->nextLine($targetWidth);
     }
 
     public function nextColumn(float $targetWidth, int $maxLines)

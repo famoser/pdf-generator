@@ -54,18 +54,6 @@ class CursorAwarePrinter
         $this->cursor = $cursor;
     }
 
-    public function moveRight(float $right)
-    {
-        $newXCoordinate = $this->cursor->getXCoordinate() + $right;
-        $this->cursor = $this->cursor->withXCoordinate($newXCoordinate);
-    }
-
-    public function moveDown(float $down)
-    {
-        $newYCoordinate = $this->cursor->getYCoordinate() - $down;
-        $this->cursor = $this->cursor->withYCoordinate($newYCoordinate);
-    }
-
     public function printText(string $text)
     {
         $position = Position::fromCursor($this->cursor);

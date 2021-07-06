@@ -21,6 +21,11 @@ use PdfGenerator\IR\Text\LineBreak\WordSizer\FontSizerRepository;
 class FlowPrinter
 {
     /**
+     * @var Document
+     */
+    private $document;
+
+    /**
      * @var CursorAwarePrinter
      */
     private $printer;
@@ -37,9 +42,12 @@ class FlowPrinter
 
     public function __construct(Document $document, Layout $layout)
     {
+        $this->document = $document;
         $this->printer = new CursorAwarePrinter($document);
         $this->layout = $layout;
         $this->fontSizerRepository = new FontSizerRepository();
+
+        $this->nextColumn();
     }
 
     public function getPrinter(): CursorAwarePrinter
@@ -47,40 +55,31 @@ class FlowPrinter
         return $this->printer;
     }
 
-    private function isBlockWithinActiveColumn(float $height, float $right)
-    {
-        if ($this->activeColumn === null) {
-            return false;
-        }
-
-        $afterLeft = $this->getPrinter()->getCursor()->getXCoordinate() + $right;
-        $maxLeft = $this->activeColumn->getWidth() + $this->activeColumn->getStart()->getXCoordinate();
-        if ($afterLeft > $maxLeft) {
-            return false;
-        }
-
-        $afterTop = $this->getPrinter()->getCursor()->getYCoordinate() - $height;
-        $minTop = $this->activeColumn->getStart()->getYCoordinate() - $this->activeColumn->getHeight();
-        if ($afterTop < $minTop) {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * ensures a block of specified height has space within column.
      * goes to next column if it does not fit (only once; the block is placed on the next column no matter its size).
      */
-    private function placeBlock(float $height, float $nextColumnHeight = null)
+    public function reserveHeight(float $height, float $nextColumnHeight = null)
     {
-        if ($this->isBlockWithinActiveColumn($height, 0)) {
-            $this->getPrinter()->moveDown($height);
+        $cursor = $this->getPrinter()->getCursor();
+
+        if ($this->activeColumn !== null && $this->activeColumn->withinColumnHeight($cursor, $height)) {
+            $cursor = $cursor->moveDown($height);
         } else {
-            $this->activeColumn = $this->layout->getNextColumn();
-            $this->getPrinter()->setCursor($this->activeColumn->getStart());
-            $this->getPrinter()->moveDown($nextColumnHeight ?? $height);
+            $cursor = $this->nextColumn();
+            $cursor = $cursor->moveDown($nextColumnHeight);
         }
+
+        $this->getPrinter()->setCursor($cursor);
+    }
+
+    public function nextColumn()
+    {
+        $this->activeColumn = $this->layout->getNextColumn();
+        $cursor = $this->activeColumn->getStart();
+        $this->getPrinter()->setCursor($cursor);
+
+        return $cursor;
     }
 
     /**
@@ -88,52 +87,93 @@ class FlowPrinter
      */
     private $fontSizerRepository;
 
-    public function printParagraph(string $text)
+    public function printPhrase(string $text)
     {
-        $this->placeBlock(20);
-        // TODO: improve height / width dealing -> images & rectangles deal with width, text does not
+        $cursor = $this->getPrinter()->getCursor();
 
-        // TODO: improve coordinate inversion owning
-        //       a) place only in lower printer, but then needs to know about pages (better not)
-        //       b) directly in layout, but then layouts more complex to implement
-
-        $rectangleStyle = new Document\Page\Content\Rectangle\RectangleStyle(0.2, new Document\Page\Content\Common\Color(0, 255, 255), null);
-        $this->getPrinter()->getPrinter()->setRectangleStyle($rectangleStyle);
+        $width = $this->activeColumn->getWidth();
+        $availableWidth = $this->activeColumn->getAvailableWidth($cursor);
 
         $textStyle = $this->getPrinter()->getPrinter()->getTextStyle();
         $fontSizer = $this->fontSizerRepository->getWordSizer($textStyle);
-
         $scaling = $textStyle->getFont()->getUnitsPerEm() / $textStyle->getFontSize();
-        $columnBreaker = new ColumnBreaker($fontSizer, $text);
-        [$lines, $lineWidths] = $columnBreaker->nextColumn(170 * $scaling, 10);
-
+        $leading = $textStyle->getFont()->getBaselineToBaselineDistance() / $scaling * $textStyle->getLineHeight();
         $ascender = $textStyle->getFont()->getAscender() / $scaling;
-        $this->getPrinter()->moveDown($ascender);
+        $descender = $textStyle->getFont()->getDescender() / $scaling;
 
+        $columnBreaker = new ColumnBreaker($fontSizer, $text);
+
+        // finish started line
+        if ($availableWidth < $width) {
+            [$line, $lineWidth] = $columnBreaker->nextLine($availableWidth * $scaling);
+            $this->printer->printText($line);
+
+            if (!$columnBreaker->hasMoreLines()) {
+                $cursor = $cursor->moveRight($lineWidth / $scaling)
+                    ->moveDown(-$descender);
+                $this->getPrinter()->setCursor($cursor);
+
+                return;
+            }
+
+            $this->reserveHeight($leading, $ascender);
+
+            $cursor = $this->getPrinter()->getCursor()->withXCoordinate($this->activeColumn->getStart()->getXCoordinate());
+            $this->getPrinter()->setCursor($cursor);
+        }
+
+        // finish started column
+        $maxLines = (int)$this->activeColumn->countSpaceFor($cursor, $leading) + 1;
+        [$lines, $lineWidths] = $columnBreaker->nextColumn($width * $scaling, $maxLines);
         $text = implode("\n", $lines);
         $this->printer->printText($text);
 
-        $leading = $textStyle->getFont()->getBaselineToBaselineDistance() / $scaling * $textStyle->getLineHeight();
-        $height = (\count($lines) - 1) * $leading;
-        $descender = $textStyle->getFont()->getDescender() / $scaling;
-        $this->getPrinter()->moveDown($height - $descender);
+        $lastLineWidth = $lineWidths[\count($lineWidths) - 1];
+        $cursor = $cursor->moveRight($lastLineWidth / $scaling)
+            ->moveDown((\count($lines) - 1) * $leading);
+        $this->getPrinter()->setCursor($cursor);
 
-        $maxWidth = max($lineWidths);
+        // print remaining text
+        while ($columnBreaker->hasMoreLines()) {
+            $cursor = $this->nextColumn();
 
-        $this->getPrinter()->printRectangle($maxWidth / $scaling, $ascender + $height - $descender);
+            $maxLines = (int)$this->activeColumn->countSpaceFor($cursor, $leading) + 1;
+            [$lines, $lineWidths] = $columnBreaker->nextColumn($width * $scaling, $maxLines);
+            $text = implode("\n", $lines);
+            $this->printer->printText($text);
+
+            $lastLineWidth = $lineWidths[\count($lineWidths) - 1];
+            $cursor = $cursor->moveRight($lastLineWidth / $scaling)
+                ->moveDown((\count($lines) - 1) * $leading);
+            $this->getPrinter()->setCursor($cursor);
+        }
     }
 
     public function printImage(Image $image, float $width, float $height)
     {
-        $this->placeBlock($height);
+        $this->reserveHeight($height);
         $this->printer->printImage($image, $width, $height);
-        $this->printer->moveRight($width);
+        $this->moveRight($width);
     }
 
     public function printRectangle(float $width, float $height)
     {
-        $this->placeBlock($height);
+        $this->reserveHeight($height);
         $this->printer->printRectangle($width, $height);
-        $this->printer->moveRight($width);
+        $this->moveRight($width);
+    }
+
+    public function moveRight(float $width)
+    {
+        $cursor = $this->getPrinter()->getCursor();
+        $cursor = $cursor->moveRight($width);
+        $this->getPrinter()->setCursor($cursor);
+    }
+
+    public function moveDown(float $height)
+    {
+        $cursor = $this->getPrinter()->getCursor();
+        $cursor = $cursor->moveDown($height);
+        $this->getPrinter()->setCursor($cursor);
     }
 }

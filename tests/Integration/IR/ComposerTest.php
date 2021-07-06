@@ -35,7 +35,7 @@ class ComposerTest extends TestCase
         $composer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         // act
-        $composer->printParagraph($text);
+        $composer->printPhrase($text);
         $result = $document->render()->save();
         file_put_contents('pdf.pdf', $result);
 
@@ -54,8 +54,8 @@ class ComposerTest extends TestCase
         $composer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         // act
-        $composer->printParagraph($text . '1');
-        $composer->printParagraph($text . '2');
+        $composer->printPhrase($text . '1');
+        $composer->printPhrase($text . '2');
         $result = $document->render()->save();
         file_put_contents('pdf.pdf', $result);
 
@@ -74,8 +74,8 @@ class ComposerTest extends TestCase
         $composer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         // act
-        $composer->getPrinter()->moveDown(10);
-        $composer->printParagraph('text');
+        $composer->moveDown(10);
+        $composer->printPhrase('text');
         $result = $document->render()->save();
 
         // assert
@@ -99,7 +99,7 @@ class ComposerTest extends TestCase
 
         // act
         $composer->printRectangle($width, $height);
-        $composer->getPrinter()->moveRight($width);
+        $composer->moveRight($width);
         $composer->printRectangle($width + $width, $height + $height);
         $result = $document->render()->save();
 
@@ -124,7 +124,7 @@ class ComposerTest extends TestCase
         $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
 
         // act
-        $composer->printParagraph('hi mom');
+        $composer->printPhrase('hi mom');
         $result = $document->render()->save();
         file_put_contents('pdf.pdf', $result);
 
@@ -165,7 +165,7 @@ class ComposerTest extends TestCase
 
         // act
         $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
-        $composer->printParagraph('Hallo und Sonderzéíchèn');
+        $composer->printPhrase('Hallo und Sonderzéíchèn');
         $backend = $document->render();
 
         $documentConfiguration = new Configuration();
@@ -199,7 +199,9 @@ class ComposerTest extends TestCase
 
         // act
         $composer->getPrinter()->getPrinter()->setTextStyle($textStyle);
-        $composer->printParagraph('Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.');
+        $loremIpsum = 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom Kontoauszug; diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben. Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator. Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten. Auch beim Text müssen so Umbrüche in einem Paragraph oder der Abstand zwischen den Buchstaben im Blocksatz explizit definiert werden. Wirklich toll wirds aber erst mit Schriftarten. Das PDF hat ganze 14 Standardschriftarten; es sind die allseits beliebten Times Roman, Courier und Helvetica, und ZapfDingbats und Symbol (Emojis bevors Emojis gab). Dazu gibts diverse Standard Ein-Byte Encodings; das brauchbarste für Europäer ist das WinAnsiEncoding. Für anspruchslose Kunden und deutsche, französische oder italienische Korrespondez mag man damit wegkommen. Ab dem ersten Smørrebrød ist aber Schluss: Dann muss man mit eigenen "Embedded Fonts" arbeiten.';
+        $composer->printPhrase($loremIpsum);
+        $composer->printPhrase($loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum);
         $backend = $document->render();
 
         $catalog = $backend->render();

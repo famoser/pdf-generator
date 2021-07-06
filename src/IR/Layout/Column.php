@@ -54,4 +54,48 @@ class Column
     {
         return $this->height;
     }
+
+    public function getMaxLeft(): float
+    {
+        return $this->getWidth() + $this->getStart()->getXCoordinate();
+    }
+
+    public function getMinTop(): float
+    {
+        return $this->getStart()->getYCoordinate() - $this->getHeight();
+    }
+
+    public function getAvailableWidth(Cursor $cursor): float
+    {
+        return $this->getMaxLeft() - $cursor->getXCoordinate();
+    }
+
+    public function withinColumnWidth(Cursor $cursor, float $right): bool
+    {
+        $afterLeft = $cursor->getXCoordinate() + $right;
+        $maxLeft = $this->getMaxLeft();
+        if ($afterLeft > $maxLeft) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function withinColumnHeight(Cursor $cursor, float $height): bool
+    {
+        $afterTop = $cursor->getYCoordinate() - $height;
+        $minTop = $this->getMinTop();
+        if ($afterTop < $minTop) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function countSpaceFor(Cursor $cursor, float $height): float
+    {
+        $space = $cursor->getYCoordinate() - $this->getMinTop();
+
+        return $space / $height;
+    }
 }

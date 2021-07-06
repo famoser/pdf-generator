@@ -68,11 +68,32 @@ class Cursor
         return new self($this->xCoordinate, $this->yCoordinate, $page);
     }
 
+    public function moveRight(float $right): self
+    {
+        $newXCoordinate = $this->getXCoordinate() + $right;
+
+        return $this->withXCoordinate($newXCoordinate);
+    }
+
+    public function moveDown(float $down): self
+    {
+        $newYCoordinate = $this->getYCoordinate() - $down;
+
+        return $this->withYCoordinate($newYCoordinate);
+    }
+
     /**
      * @return bool
      */
     public function isBiggerThan(self $other)
     {
         return $other->getPageIndex() < $this->getPageIndex() || ($other->getPageIndex() === $this->getPageIndex() && $other->getYCoordinate() < $this->getYCoordinate());
+    }
+
+    public function equals(self $start): bool
+    {
+        return $this->getPageIndex() === $start->getPageIndex() &&
+            $this->getYCoordinate() === $start->getYCoordinate() &&
+            $this->getXCoordinate() === $start->getXCoordinate();
     }
 }

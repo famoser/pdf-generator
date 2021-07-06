@@ -56,7 +56,7 @@ class AnalyzeContentVisitor extends ContentVisitor
     public function visitText(Text $param)
     {
         $identifier = $param->getStyle()->getFont()->getIdentifier();
-        if (!\in_array($identifier, $this->textPerFont, true)) {
+        if (!\array_key_exists($identifier, $this->textPerFont)) {
             $this->textPerFont[$identifier] = '';
         }
 
