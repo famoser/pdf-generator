@@ -45,10 +45,10 @@ class ScaledColumnBreaker
         return $this->textStyle->getFontScaling();
     }
 
-    public function nextLine(float $targetWidth)
+    public function nextLine(float $targetWidth, bool $allowEmpty)
     {
         $scale = $this->getScale();
-        [$line, $lineWidth] = $this->columnBreaker->nextLine($targetWidth * $scale);
+        [$line, $lineWidth] = $this->columnBreaker->nextLine($targetWidth * $scale, $allowEmpty);
 
         $scaledWidth = $lineWidth / $scale;
 

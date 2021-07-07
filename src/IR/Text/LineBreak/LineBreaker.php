@@ -43,15 +43,21 @@ class LineBreaker
         return $this->nextWordIndex < \count($this->words);
     }
 
-    public function nextLine(float $targetWidth): array
+    public function nextLine(float $targetWidth, bool $allowEmpty): array
     {
         if (!$this->hasNextLine()) {
-            throw new \Exception('No next line');
+            return ['', 0];
         }
 
         $nextWord = $this->words[$this->nextWordIndex++];
         $currentWidth = $this->sizer->getWidth($nextWord);
         $currentWords = $nextWord;
+
+        if ($allowEmpty && $currentWidth > $targetWidth) {
+            --$this->nextWordIndex;
+
+            return ['', 0];
+        }
 
         while ($this->nextWordIndex < \count($this->words)) {
             // check if next word fits

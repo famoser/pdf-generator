@@ -11,12 +11,15 @@
 
 namespace PdfGenerator\IR;
 
+use PdfGenerator\IR\Printer\StyleGetSetTrait;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
 
 class CursorAwarePrinter
 {
+    use StyleGetSetTrait;
+
     /**
      * @var Cursor
      */
@@ -52,6 +55,27 @@ class CursorAwarePrinter
     public function setCursor(Cursor $cursor)
     {
         $this->cursor = $cursor;
+    }
+
+    public function moveRight(float $width)
+    {
+        $this->cursor = $this->getCursor()->moveRight($width);
+
+        return $this->cursor;
+    }
+
+    public function moveDown(float $height)
+    {
+        $this->cursor = $this->getCursor()->moveDown($height);
+
+        return $this->cursor;
+    }
+
+    public function moveRightDown(float $width, float $height)
+    {
+        $this->cursor = $this->cursor->moveRightDown($width, $height);
+
+        return $this->cursor;
     }
 
     public function printText(string $text)

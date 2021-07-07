@@ -60,6 +60,11 @@ class TextStyle
         return $this->getFont()->getAscender() / $this->getFontScaling();
     }
 
+    public function getLineGap()
+    {
+        return $this->getLeading() - $this->getAscender() + $this->getDescender();
+    }
+
     public function getDescender()
     {
         return $this->getFont()->getDescender() / $this->getFontScaling();

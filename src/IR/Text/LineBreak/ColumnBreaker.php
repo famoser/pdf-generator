@@ -33,9 +33,9 @@ class ColumnBreaker
         return $this->lineBreaker->hasNextLine();
     }
 
-    public function nextLine(float $targetWidth)
+    public function nextLine(float $targetWidth, bool $allowEmpty)
     {
-        return $this->lineBreaker->nextLine($targetWidth);
+        return $this->lineBreaker->nextLine($targetWidth, $allowEmpty);
     }
 
     public function nextColumn(float $targetWidth, int $maxLines)
@@ -43,7 +43,7 @@ class ColumnBreaker
         $lines = [];
         $lineWidths = [];
         do {
-            [$words, $width] = $this->lineBreaker->nextLine($targetWidth);
+            [$words, $width] = $this->lineBreaker->nextLine($targetWidth, false);
             $lines[] = $words;
             $lineWidths[] = $width;
         } while ($this->lineBreaker->hasNextLine() && \count($lines) < $maxLines);
