@@ -102,7 +102,7 @@ class DocumentVisitor implements FontVisitor
 
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
-        return new BackendImage($imageData, $type, $width, $height, (int)round($maxSize->getWidth(), 0), (int)round($maxSize->getHeight(), 0));
+        return new BackendImage($imageData, $type, $width, $height, (int)round($maxSize->getWidth()), (int)round($maxSize->getHeight()));
     }
 
     /**

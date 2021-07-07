@@ -281,8 +281,17 @@ class ComposerTest extends TestCase
         $image = $document->getOrCreateImage($imageSrc);
 
         // act
+        $composer->printImage($image, 20, 40);
         $composer->printImage($image, 40, 40);
-        $composer->printImage($image, 40, 40);
+        $composer->printImage($image, 10, 20);
+        $composer->printImage($image, 80, 40);
+        $composer->printImage($image, 80, 40);
+        $composer->printImage($image, 80, 40);
+        $composer->printImage($image, 0, 40);
+        $composer->printImage($image, 50, 40);
+        for ($i = 0; $i < 100; ++$i) {
+            $composer->printImage($image, ($i * 50) % 70, 40);
+        }
         $catalog = $document->render();
         $result = $catalog->save();
         file_put_contents('pdf.pdf', $result);

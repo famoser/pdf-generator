@@ -43,9 +43,9 @@ class ToBackendContentVisitor extends ContentVisitor
         $image = $this->pageResources->getImage($placement->getImage());
 
         $this->applyImagePlacementPositionAndSize($placement);
-        $pageLevel = $this->pageResources->getDrawingState();
+        $drawingState = $this->pageResources->getDrawingState();
 
-        return new ImageContent($image, $pageLevel);
+        return new ImageContent($image, $drawingState);
     }
 
     public function visitRectangle(Rectangle $rectangle): RectangleContent
@@ -56,9 +56,9 @@ class ToBackendContentVisitor extends ContentVisitor
 
         $this->applyPosition($rectangle->getPosition());
         $this->applyRectangleStyle($rectangle->getStyle());
-        $pageLevel = $this->pageResources->getDrawingState();
+        $drawingState = $this->pageResources->getDrawingState();
 
-        return new RectangleContent($width, $height, $paintingMode, $pageLevel);
+        return new RectangleContent($width, $height, $paintingMode, $drawingState);
     }
 
     public function visitText(Text $param): TextContent
@@ -67,9 +67,9 @@ class ToBackendContentVisitor extends ContentVisitor
 
         $this->applyPosition($param->getPosition());
         $this->applyTextStyle($param->getStyle());
-        $textLevel = $this->pageResources->getWritingState();
+        $writingState = $this->pageResources->getWritingState();
 
-        return new TextContent($lines, $textLevel);
+        return new TextContent($lines, $writingState);
     }
 
     /**
@@ -105,10 +105,7 @@ class ToBackendContentVisitor extends ContentVisitor
         $this->pageResources->getGeneralGraphicStateRepository()->setLineWidth($style->getLineWidth());
     }
 
-    /**
-     * @return bool|int
-     */
-    private function getPaintingMode(Rectangle $rectangle)
+    private function getPaintingMode(Rectangle $rectangle): int
     {
         if ($rectangle->getStyle()->getFillColor() !== null) {
             if ($rectangle->getStyle()->getBorderColor() !== null) {

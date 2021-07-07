@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Backend\Structure\Document\Page\Content;
 
+use PdfGenerator\Backend\File\Token\NumberToken;
 use PdfGenerator\Backend\Structure\Document\DocumentResources;
 use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
 use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
@@ -152,10 +153,12 @@ class StateTransitionVisitor
         }
 
         $operators = [];
+        /*
         if ($previousState->getCurrentTransformationMatrix() !== $targetState->getCurrentTransformationMatrix()) {
             $transformationMatrix = $this->transformToCurrentTransformationMatrix($previousState->getCurrentTransformationMatrix(), $targetState->getCurrentTransformationMatrix());
             $operators[] = implode(' ', $transformationMatrix) . ' cm';
         }
+        */
 
         if ($previousState->getLineWidth() !== $targetState->getLineWidth()) {
             $operators[] = $targetState->getLineWidth() . ' w';
@@ -199,7 +202,7 @@ class StateTransitionVisitor
          * formula from wolfram alpha
          * {{a, b, 0}, {c, d, 0}, {e, f, 1}} * {{a_2, b_2, 0},{c_2, d_2, 0},{e_2, f_2, 1}}
          */
-        return [
+        $matrix = [
             $a * $a2 + $b * $c2,
             $a * $b2 + $b * $d2,
             $c * $a2 + $d * $c2,
@@ -207,6 +210,8 @@ class StateTransitionVisitor
             $e * $a2 + $f * $c2 + $e2,
             $e * $b2 + $f * $d2 + $f2,
         ];
+
+        return array_map(function ($value) { return NumberToken::format($value); }, $matrix);
     }
 
     /**

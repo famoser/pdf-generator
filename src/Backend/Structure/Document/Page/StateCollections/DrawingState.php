@@ -37,6 +37,11 @@ class DrawingState extends BaseStateCollection
         $this->colorState = $colorState;
     }
 
+    public function getGeneralGraphicsState(): GeneralGraphicState
+    {
+        return $this->generalGraphicsState;
+    }
+
     /**
      * @return BaseState[]
      */

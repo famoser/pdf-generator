@@ -28,12 +28,12 @@ class ImageContent extends BaseContent
     /**
      * @var DrawingState
      */
-    private $color;
+    private $drawingState;
 
-    public function __construct(Image $image, DrawingState $color)
+    public function __construct(Image $image, DrawingState $drawingState)
     {
         $this->image = $image;
-        $this->color = $color;
+        $this->drawingState = $drawingState;
     }
 
     public function getImage(): Image
@@ -41,9 +41,9 @@ class ImageContent extends BaseContent
         return $this->image;
     }
 
-    public function getColor(): DrawingState
+    public function getCurrentTransformationMatrix(): array
     {
-        return $this->color;
+        return $this->drawingState->getGeneralGraphicsState()->getCurrentTransformationMatrix();
     }
 
     /**
@@ -51,7 +51,7 @@ class ImageContent extends BaseContent
      */
     public function getInfluentialStates(): array
     {
-        return $this->color->getState();
+        return $this->drawingState->getState();
     }
 
     public function accept(ContentVisitor $visitor): Content

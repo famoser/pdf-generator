@@ -23,4 +23,6 @@ abstract class BaseContent
      * @return BaseState[]
      */
     abstract public function getInfluentialStates(): array;
+
+    abstract public function getCurrentTransformationMatrix(): array;
 }
