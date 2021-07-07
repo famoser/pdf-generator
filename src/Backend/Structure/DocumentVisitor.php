@@ -81,7 +81,7 @@ class DocumentVisitor
             return $prefix;
         }
 
-        return $prefix . (string)($this->resourceCounters[$prefix]++);
+        return $prefix . $this->resourceCounters[$prefix]++;
     }
 
     /**
@@ -322,9 +322,6 @@ class DocumentVisitor
         return $flags;
     }
 
-    /**
-     * @param int $getUnicodePoint
-     */
     private function getWindows1252Mapping(int $unicodePoint): ?int
     {
         if ($unicodePoint < 0x80) {

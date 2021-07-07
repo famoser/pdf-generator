@@ -31,6 +31,11 @@ class NumberToken extends BaseToken
         $this->number = $number;
     }
 
+    public static function format($number)
+    {
+        return round($number, 6);
+    }
+
     public function accept(TokenVisitor $visitor): string
     {
         return $visitor->visitNumberToken($this);

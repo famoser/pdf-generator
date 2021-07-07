@@ -42,14 +42,14 @@ class RectangleContent extends BaseContent
     /**
      * @var DrawingState
      */
-    private $color;
+    private $drawingState;
 
-    public function __construct(float $width, float $height, int $paintingMode, DrawingState $color)
+    public function __construct(float $width, float $height, int $paintingMode, DrawingState $drawingState)
     {
         $this->width = $width;
         $this->height = $height;
         $this->paintingMode = $paintingMode;
-        $this->color = $color;
+        $this->drawingState = $drawingState;
     }
 
     public function getWidth(): float
@@ -67,21 +67,21 @@ class RectangleContent extends BaseContent
         return $this->paintingMode;
     }
 
-    public function getColor(): DrawingState
-    {
-        return $this->color;
-    }
-
     /**
      * @return BaseState[]
      */
     public function getInfluentialStates(): array
     {
-        return $this->color->getState();
+        return $this->drawingState->getState();
     }
 
     public function accept(ContentVisitor $visitor): Content
     {
         return $visitor->visitRectangleContent($this);
+    }
+
+    public function getCurrentTransformationMatrix(): array
+    {
+        return $this->drawingState->getGeneralGraphicsState()->getCurrentTransformationMatrix();
     }
 }

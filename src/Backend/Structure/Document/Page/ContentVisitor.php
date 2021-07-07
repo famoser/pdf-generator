@@ -13,6 +13,7 @@ namespace PdfGenerator\Backend\Structure\Document\Page;
 
 use PdfGenerator\Backend\Catalog\Content;
 use PdfGenerator\Backend\Structure\Document\DocumentResources;
+use PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
@@ -30,7 +31,7 @@ class ContentVisitor
     /**
      * @var FullState
      */
-    private $state;
+    private $lastAppliedState;
 
     /**
      * ContentVisitor constructor.
@@ -39,51 +40,47 @@ class ContentVisitor
     {
         $this->documentResources = $documentResources;
 
-        $this->state = FullState::createInitial();
+        $this->lastAppliedState = FullState::createInitial();
     }
 
     public function visitTextContent(TextContent $textContent): Content
     {
-        // gather operators to change to desired state
-        $stateTransitionOperators = $this->applyState($textContent);
+        $textOperators = $this->getTextOperators($textContent->getLines(), $textContent->getTextState()->getFont());
 
-        // gather operators to print the content
-        $textOperators = $this->getTextOperators($textContent->getLines());
-
-        // create stream object; BT before text and ET after all text
-        $operators = array_merge(['BT'], $stateTransitionOperators, $textOperators, ['ET']);
+        $operators = $this->wrapPrintingOperators($textContent, $textOperators);
+        // need to add BT before & ET after so text state change operators are valid
+        $operators = array_merge(['BT'], $operators, ['ET']);
 
         return $this->createStreamObject($operators);
     }
 
     public function visitImageContent(ImageContent $imageContent): Content
     {
-        // gather operators to change to desired state
-        $stateTransitionOperators = $this->applyState($imageContent);
         $image = $this->documentResources->getImage($imageContent->getImage());
-
-        // gather operators to print the content
         $imageOperator = '/' . $image->getIdentifier() . ' Do';
 
-        // create stream object
-        $operators = array_merge($stateTransitionOperators, [$imageOperator]);
+        $operators = $this->wrapPrintingOperators($imageContent, [$imageOperator]);
 
         return $this->createStreamObject($operators);
     }
 
     public function visitRectangleContent(RectangleContent $rectangle): Content
     {
-        // gather operators to change to desired state
-        $stateTransitionOperators = $this->applyState($rectangle);
-
-        // gather operators to print the content
         $paintingOperator = $this->getPaintingOperator($rectangle);
-        $imageOperator = '0 0 ' . $rectangle->getWidth() . ' ' . $rectangle->getHeight() . ' re ' . $paintingOperator;
+        $rectangleOperator = '0 0 ' . $rectangle->getWidth() . ' ' . $rectangle->getHeight() . ' re ' . $paintingOperator;
 
-        // create stream object
-        $operators = array_merge($stateTransitionOperators, [$imageOperator]);
+        $operators = $this->wrapPrintingOperators($rectangle, [$rectangleOperator]);
 
         return $this->createStreamObject($operators);
+    }
+
+    private function wrapPrintingOperators(BaseContent $baseContent, array $printingOperators)
+    {
+        $stateTransitionOperators = $this->applyState($baseContent);
+        $translationMatrix = $baseContent->getCurrentTransformationMatrix();
+        $translationOperator = implode(' ', $translationMatrix) . ' cm';
+
+        return array_merge($stateTransitionOperators, ['q', $translationOperator], $printingOperators, ['Q']);
     }
 
     private function createStreamObject(array $operators): Content
@@ -94,25 +91,25 @@ class ContentVisitor
     /**
      * @return string[]
      */
-    private function getTextOperators(array $lines): array
+    private function getTextOperators(array $lines, Font $font): array
     {
         $printOperators = [];
 
         // print first line
-        $printOperators[] = '(' . $this->prepareTextForPrint($lines[0]) . ')Tj';
+        $printOperators[] = '(' . $this->prepareTextForPrint($lines[0], $font) . ')Tj';
 
         // use the ' operator to start a new line before printing
         $lineCount = \count($lines);
         for ($i = 1; $i < $lineCount; ++$i) {
-            $printOperators[] = '(' . $this->prepareTextForPrint($lines[$i]) . ')\'';
+            $printOperators[] = '(' . $this->prepareTextForPrint($lines[$i], $font) . ')\'';
         }
 
         return $printOperators;
     }
 
-    private function prepareTextForPrint(string $text): string
+    private function prepareTextForPrint(string $text, Font $font): string
     {
-        $font = $this->documentResources->getFont($this->state->getTextState()->getFont());
+        $font = $this->documentResources->getFont($font);
 
         $encoded = $font->encode($text);
 
@@ -150,7 +147,7 @@ class ContentVisitor
      */
     private function applyState(BaseContent $baseContent): array
     {
-        $stateTransitionVisitor = new StateTransitionVisitor($this->state, $this->documentResources);
+        $stateTransitionVisitor = new StateTransitionVisitor($this->lastAppliedState, $this->documentResources);
 
         /** @var string[] $operators */
         $operators = [];
@@ -158,7 +155,7 @@ class ContentVisitor
             $operators = array_merge($operators, $influentialState->accept($stateTransitionVisitor));
         }
 
-        $this->state = $stateTransitionVisitor->getAppliedState();
+        $this->lastAppliedState = $stateTransitionVisitor->getAppliedState();
 
         return $operators;
     }

@@ -15,6 +15,7 @@ use PdfGenerator\Backend\Catalog\Content;
 use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
 
 class TextContent extends BaseContent
@@ -27,15 +28,15 @@ class TextContent extends BaseContent
     /**
      * @var WritingState
      */
-    private $text;
+    private $writingState;
 
     /**
      * TextSymbol constructor.
      */
-    public function __construct(array $lines, WritingState $text)
+    public function __construct(array $lines, WritingState $writingState)
     {
         $this->lines = $lines;
-        $this->text = $text;
+        $this->writingState = $writingState;
     }
 
     /**
@@ -51,11 +52,21 @@ class TextContent extends BaseContent
      */
     public function getInfluentialStates(): array
     {
-        return $this->text->getState();
+        return $this->writingState->getState();
     }
 
     public function accept(ContentVisitor $visitor): Content
     {
         return $visitor->visitTextContent($this);
+    }
+
+    public function getCurrentTransformationMatrix(): array
+    {
+        return $this->writingState->getGeneralGraphicsState()->getCurrentTransformationMatrix();
+    }
+
+    public function getTextState(): TextState
+    {
+        return $this->writingState->getTextState();
     }
 }

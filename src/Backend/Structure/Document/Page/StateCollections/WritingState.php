@@ -51,4 +51,14 @@ class WritingState extends BaseStateCollection
     {
         return [$this->generalGraphicsState, $this->colorState, $this->textState];
     }
+
+    public function getGeneralGraphicsState(): GeneralGraphicState
+    {
+        return $this->generalGraphicsState;
+    }
+
+    public function getTextState(): TextState
+    {
+        return $this->textState;
+    }
 }
