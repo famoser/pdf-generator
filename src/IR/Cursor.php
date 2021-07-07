@@ -26,7 +26,7 @@ class Cursor
     /**
      * @var int
      */
-    private $page;
+    private $pageIndex;
 
     /**
      * Cursor constructor.
@@ -35,7 +35,7 @@ class Cursor
     {
         $this->xCoordinate = $xCoordinate;
         $this->yCoordinate = $yCoordinate;
-        $this->page = $page;
+        $this->pageIndex = $page;
     }
 
     public function getXCoordinate(): float
@@ -48,17 +48,46 @@ class Cursor
         return $this->yCoordinate;
     }
 
-    public function getPage(): int
+    public function getPageIndex(): int
     {
-        return $this->page;
+        return $this->pageIndex;
     }
 
-    /**
-     * @return Cursor
-     */
-    public function setX(float $startX)
+    public function withXCoordinate(float $newXCoodinate)
     {
-        return new self($startX, $this->getYCoordinate(), $this->getPage());
+        return new self($newXCoodinate, $this->yCoordinate, $this->pageIndex);
+    }
+
+    public function withYCoordinate(float $newYCoordinate)
+    {
+        return new self($this->xCoordinate, $newYCoordinate, $this->pageIndex);
+    }
+
+    public function withPage(int $page)
+    {
+        return new self($this->xCoordinate, $this->yCoordinate, $page);
+    }
+
+    public function moveRight(float $right): self
+    {
+        $newXCoordinate = $this->getXCoordinate() + $right;
+
+        return $this->withXCoordinate($newXCoordinate);
+    }
+
+    public function moveDown(float $down): self
+    {
+        $newYCoordinate = $this->getYCoordinate() - $down;
+
+        return $this->withYCoordinate($newYCoordinate);
+    }
+
+    public function moveRightDown(float $right, float $down): self
+    {
+        $newXCoordinate = $this->getXCoordinate() + $right;
+        $newYCoordinate = $this->getYCoordinate() - $down;
+
+        return new self($newXCoordinate, $newYCoordinate, $this->getPageIndex());
     }
 
     /**
@@ -66,14 +95,13 @@ class Cursor
      */
     public function isBiggerThan(self $other)
     {
-        return $other->getPage() < $this->getPage() || ($other->getPage() === $this->getPage() && $other->getYCoordinate() < $this->getYCoordinate());
+        return $other->getPageIndex() < $this->getPageIndex() || ($other->getPageIndex() === $this->getPageIndex() && $other->getYCoordinate() < $this->getYCoordinate());
     }
 
-    /**
-     * @return Cursor
-     */
-    public function setY(float $startY)
+    public function equals(self $start): bool
     {
-        return new self($this->getXCoordinate(), $startY, $this->getPage());
+        return $this->getPageIndex() === $start->getPageIndex() &&
+            $this->getYCoordinate() === $start->getYCoordinate() &&
+            $this->getXCoordinate() === $start->getXCoordinate();
     }
 }

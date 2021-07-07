@@ -16,6 +16,11 @@ use PdfGenerator\Font\IR\Structure\Tables\FontInformation;
 class Font
 {
     /**
+     * @var bool
+     */
+    private $isTrueTypeFont;
+
+    /**
      * @var Character[]
      */
     private $reservedCharacters;
@@ -34,6 +39,16 @@ class Font
      * @var TableDirectory
      */
     private $tableDirectory;
+
+    public function getIsTrueTypeFont(): bool
+    {
+        return $this->isTrueTypeFont;
+    }
+
+    public function setIsTrueTypeFont(bool $isTrueTypeFont): void
+    {
+        $this->isTrueTypeFont = $isTrueTypeFont;
+    }
 
     public function getReservedCharacters(): array
     {

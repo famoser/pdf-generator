@@ -32,16 +32,19 @@ class GeneralGraphicStateRepository
 
     public function setPosition(float $xStart, float $yStart, float $scaleX = 1, float $scaleY = 1)
     {
-        $this->position = [$scaleX, $scaleY, $xStart, $yStart];
-
-        $this->generalGraphicState = null;
+        $newPosition = [$scaleX, $scaleY, $xStart, $yStart];
+        if ($this->position !== $newPosition) {
+            $this->position = $newPosition;
+            $this->generalGraphicState = null;
+        }
     }
 
     public function setLineWidth(float $lineWidth)
     {
-        $this->lineWidth = $lineWidth;
-
-        $this->generalGraphicState = null;
+        if ($this->lineWidth !== $lineWidth) {
+            $this->lineWidth = $lineWidth;
+            $this->generalGraphicState = null;
+        }
     }
 
     /**

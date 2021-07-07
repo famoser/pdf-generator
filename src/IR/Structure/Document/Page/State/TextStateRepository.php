@@ -29,26 +29,56 @@ class TextStateRepository
     /**
      * @var float
      */
-    private $leading = 9.6;
+    private $leading = 8;
+
+    /**
+     * spacing between characters in unscaled text space.
+     *
+     * @var float
+     */
+    private $charSpace = 0;
+
+    /**
+     * spacing between words in unscaled text space.
+     *
+     * @var float
+     */
+    private $wordSpace = 0;
+
+    /**
+     * horizontal scaling in percentage.
+     *
+     * @var float
+     */
+    private $scale = 100;
 
     /**
      * @var TextState
      */
     private $activeTextState;
 
-    public function setFontSize(float $fontSize, float $lineHeight = 1.2)
+    public function setFontSize(float $fontSize)
     {
-        $this->fontSize = $fontSize;
-        $this->leading = $this->fontSize * $lineHeight;
+        if ($this->fontSize !== $fontSize) {
+            $this->fontSize = $fontSize;
+            $this->activeTextState = null;
+        }
+    }
 
-        $this->activeTextState = null;
+    public function setLeading(float $leading)
+    {
+        if ($this->leading !== $leading) {
+            $this->leading = $leading;
+            $this->activeTextState = null;
+        }
     }
 
     public function setFont(Font $font): void
     {
-        $this->font = $font;
-
-        $this->activeTextState = null;
+        if ($this->font !== $font) {
+            $this->font = $font;
+            $this->activeTextState = null;
+        }
     }
 
     /**
@@ -64,6 +94,9 @@ class TextStateRepository
         $this->activeTextState->setFontSize($this->fontSize);
         $this->activeTextState->setLeading($this->leading);
         $this->activeTextState->setFont($this->font);
+        $this->activeTextState->setCharSpace($this->charSpace);
+        $this->activeTextState->setWordSpace($this->wordSpace);
+        $this->activeTextState->setScale($this->scale);
 
         return $this->activeTextState;
     }

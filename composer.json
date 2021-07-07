@@ -13,6 +13,7 @@
     "php": ">=7.4",
     "ext-bcmath": "*",
     "ext-gd": "*",
+    "ext-json": "*",
     "famoser/agnes": "^4.2"
   },
   "require-dev": {
@@ -34,6 +35,9 @@
     }
   },
   "config": {
+    "platform": {
+      "php": "7.4"
+    },
     "sort-packages": true
   },
   "scripts": {

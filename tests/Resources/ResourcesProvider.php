@@ -24,7 +24,7 @@ class ResourcesProvider
     /**
      * @return bool|string
      */
-    public static function getFont1Path()
+    public static function getFontOpenSansPath()
     {
         return realpath(__DIR__ . \DIRECTORY_SEPARATOR . 'fonts' . \DIRECTORY_SEPARATOR . 'OpenSans.ttf');
     }

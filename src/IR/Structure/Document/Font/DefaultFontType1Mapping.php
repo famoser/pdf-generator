@@ -13,12 +13,12 @@ namespace PdfGenerator\IR\Structure\Document\Font;
 
 use PdfGenerator\Backend\Catalog\Font\Type1;
 
-class DefaultFontMapping
+class DefaultFontType1Mapping
 {
     /**
      * @var string[][]
      */
-    public static $type1BaseFontMapping = [
+    public static $mapping = [
         DefaultFont::FONT_HELVETICA => [
             DefaultFont::STYLE_DEFAULT => Type1::BASE_FONT_HELVETICA,
             DefaultFont::STYLE_OBLIQUE => Type1::BASE_FONT_HELVETICA__OBLIQUE,

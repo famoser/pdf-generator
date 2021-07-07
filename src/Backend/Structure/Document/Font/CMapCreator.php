@@ -13,20 +13,27 @@ namespace PdfGenerator\Backend\Structure\Document\Font;
 
 use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
-use PdfGenerator\Backend\Structure\Optimization\FontOptimizer\FontSubsetDefinition;
+use PdfGenerator\Font\IR\Structure\Character;
 
 class CMapCreator
 {
-    public function createTextToCharacterIndexCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, FontSubsetDefinition $fontSubsetDefinition): CMap
+    /**
+     * @param Character[] $characters
+     * @param int[] $usedCodepoints
+     */
+    public function createTextToCharacterIndexCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $characters, array $usedCodepoints): CMap
     {
-        $byteMappings = $this->getTextToCharacterIndexMappings($fontSubsetDefinition->getCharacterIndexToCodePointMapping(), $fontSubsetDefinition->getCodePointsWithoutCharacter());
+        $byteMappings = $this->getTextToCharacterIndexMappings($characters, $usedCodepoints);
 
         return $this->createCMap($cIDSystemInfo, $cMapName, $byteMappings);
     }
 
-    public function createCharacterIndexToUnicodeCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, FontSubsetDefinition $fontSubsetDefinition): CMap
+    /**
+     * @param Character[] $characters
+     */
+    public function createCharacterIndexToUnicodeCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $characters): CMap
     {
-        $byteMappings = $this->getCharacterIndexToUnicodeMappings($fontSubsetDefinition->getCharacterIndexToCodePointMapping());
+        $byteMappings = $this->getCharacterIndexToUnicodeMappings($characters);
 
         return $this->createCMap($cIDSystemInfo, $cMapName, $byteMappings);
     }
@@ -92,13 +99,13 @@ class CMapCreator
     }
 
     /**
-     * @param int[] $characterIndexToCodePointMapping
+     * @param Character[] $characters
      *
      * @return string
      */
-    private function getCharacterIndexToUnicodeMappings(array $characterIndexToCodePointMapping)
+    private function getCharacterIndexToUnicodeMappings(array $characters)
     {
-        $characterIndexToUnicodeMappingInHexByLength = $this->getCharacterIndexToUnicodeMappingInHexByLength($characterIndexToCodePointMapping);
+        $characterIndexToUnicodeMappingInHexByLength = $this->getCharacterIndexToUnicodeMappingInHexByLength($characters);
 
         $codeSpaceDictionaries = $this->getCodeSpaceRange($characterIndexToUnicodeMappingInHexByLength);
         $codeMappingDictionaries = $this->getBfRange($characterIndexToUnicodeMappingInHexByLength);
@@ -109,17 +116,27 @@ class CMapCreator
     }
 
     /**
-     * @param int[] $characterIndexToCodePointMapping
+     * @param Character[] $characters
+     * @param int[] $usedCodepoints
      *
      * @return string
      */
-    private function getTextToCharacterIndexMappings(array $characterIndexToCodePointMapping, array $codePointsWithoutCharacterIndex)
+    private function getTextToCharacterIndexMappings(array $characters, array $usedCodepoints)
     {
-        $textInHexToCharacterIndexMappingByLength = $this->getTextInHexToCharacterIndexMappingByLength($characterIndexToCodePointMapping);
+        $textInHexToCharacterIndexMappingByLength = $this->getTextInHexToCharacterIndexMappingByLength($characters);
 
         $codeSpaceDictionaries = $this->getCodeSpaceRange($textInHexToCharacterIndexMappingByLength);
         $codeMappingDictionaries = $this->getCidRange($textInHexToCharacterIndexMappingByLength);
-        $notDefRangeDictionaries = $this->getNotDefRange($codePointsWithoutCharacterIndex);
+
+        $existingCodepoint = [];
+        foreach ($characters as $character) {
+            if ($character->getUnicodePoint()) {
+                $existingCodepoint[] = $character->getUnicodePoint();
+            }
+        }
+
+        $notDefinedCodepoints = array_diff($usedCodepoints, $existingCodepoint);
+        $notDefRangeDictionaries = $this->getNotDefRange($notDefinedCodepoints);
 
         return
             implode("\n\n", $codeSpaceDictionaries) . "\n\n" .
@@ -190,16 +207,24 @@ class CMapCreator
         return $dictionaries;
     }
 
-    private function getCharacterIndexToUnicodeMappingInHexByLength(array $codePoints): array
+    /**
+     * @param Character[] $characters
+     */
+    private function getCharacterIndexToUnicodeMappingInHexByLength(array $characters): array
     {
         $hexPointsByLength = [];
-        $characterIndex = 2; // first two characters are reserved for .notdef characters
-        foreach ($codePoints as $codePoint) {
-            $utf16BEChar = mb_chr($codePoint, 'UTF-16BE');
+        $characterCount = \count($characters);
+        for ($i = 0; $i < $characterCount; ++$i) {
+            $character = $characters[$i];
+            if (!$character->getUnicodePoint()) {
+                continue;
+            }
+
+            $utf16BEChar = mb_chr($character->getUnicodePoint(), 'UTF-16BE');
             $byte = unpack('H*', ($utf16BEChar))[1];
             $normalizedByte = $this->ensureLengthMultipleOf2($byte);
 
-            $characterByte = dechex($characterIndex++);
+            $characterByte = dechex($i);
             $normalizedCharacterByte = $this->ensureLengthMultipleOf2($characterByte);
             $length = \strlen($normalizedCharacterByte);
             if (!isset($hexPointsByLength[$length])) {
@@ -214,12 +239,19 @@ class CMapCreator
         return $hexPointsByLength;
     }
 
-    private function getTextInHexToCharacterIndexMappingByLength(array $codePoints): array
+    /**
+     * @param Character[] $characters
+     */
+    private function getTextInHexToCharacterIndexMappingByLength(array $characters): array
     {
-        $hexPointsByLength = [];
-        $characterIndex = 2; // first two characters are reserved for .notdef characters
-        foreach ($codePoints as $codePoint) {
-            $utf8Char = mb_chr($codePoint, 'UTF-8');
+        $characterCount = \count($characters);
+        for ($i = 0; $i < $characterCount; ++$i) {
+            $character = $characters[$i];
+            if (!$character->getUnicodePoint()) {
+                continue;
+            }
+
+            $utf8Char = mb_chr($character->getUnicodePoint(), 'UTF-8');
             $byte = unpack('H*', ($utf8Char))[1];
             $normalizedByte = $this->ensureLengthMultipleOf2($byte);
             $length = \strlen($normalizedByte);
@@ -228,7 +260,7 @@ class CMapCreator
                 $hexPointsByLength[$length] = [];
             }
 
-            $hexPointsByLength[$length][$normalizedByte] = $characterIndex++;
+            $hexPointsByLength[$length][$normalizedByte] = $i;
         }
 
         ksort($hexPointsByLength);

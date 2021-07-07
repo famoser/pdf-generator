@@ -24,9 +24,14 @@ class Document
      */
     private $pages = [];
 
+    /**
+     * @var Configuration
+     */
+    private $configuration;
+
     public function __construct()
     {
-        $this->documentConfiguration = new Configuration();
+        $this->configuration = new Configuration();
     }
 
     public function addPage(Page $page)
@@ -39,7 +44,7 @@ class Document
      */
     public function render()
     {
-        $documentVisitor = new DocumentVisitor($this->documentConfiguration);
+        $documentVisitor = new DocumentVisitor($this->configuration);
         $documentResources = new DocumentResources($documentVisitor);
 
         $pages = new Pages();
@@ -59,8 +64,8 @@ class Document
         return $this->render()->save();
     }
 
-    public function setDocumentConfiguration(Configuration $documentConfiguration): void
+    public function setConfiguration(Configuration $configuration): void
     {
-        $this->documentConfiguration = $documentConfiguration;
+        $this->configuration = $configuration;
     }
 }

@@ -26,11 +26,8 @@ use PdfGenerator\Backend\Structure\Document\Image;
 use PdfGenerator\Backend\Structure\Optimization\Configuration;
 use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
-use PdfGenerator\Font\Backend\FileWriter;
 use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
 use PdfGenerator\Font\Frontend\File\Table\OS2Table;
-use PdfGenerator\Font\IR\Optimizer;
-use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 
@@ -136,14 +133,12 @@ class DocumentVisitor
      */
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
-        $fontData = file_get_contents($param->getFontPath());
-
-        $parser = Parser::create();
-        $font = $parser->parse($fontData);
+        $font = $param->getFont();
+        $fontData = $param->getFontData();
 
         $createFontSubsets = $this->configuration->getCreateFontSubsets();
         if ($createFontSubsets) {
-            list($font, $fontData, $fontSubsetDefinition) = $this->createFontSubset($font, $param->getCharactersUsedInText());
+            list($font, $fontData, $usedCodepoints) = $this->fontOptimizer->createFontSubset($font, $param->getCharactersUsedInText());
         }
 
         $fontName = $font->getFontInformation()->getFullName() ?? 'invalidFontName';
@@ -153,11 +148,13 @@ class DocumentVisitor
         $fontStream->setFontData($fontData);
         $fontStream->setSubtype(FontStream::SUBTYPE_OPEN_TYPE);
 
-        $sizeNormalizer = 1024 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm(); // this could be a hack; but else the pdf character widths look messed up
+        // glyph space -> text space (=em) is in units of 1000 for PDF
+        // the font defines its own sizing in the head table, hence we need to normalize the units
+        $sizeNormalizer = 1000 / $font->getTableDirectory()->getHeadTable()->getUnitsPerEm();
         $fontDescriptor = $this->getFontDescriptor($fontName, $font, $fontStream, $sizeNormalizer);
 
         if ($createFontSubsets && !$this->configuration->getUseTTFFonts()) {
-            return $this->createType0Font($fontSubsetDefinition, $fontDescriptor, $font->getCharacters(), $sizeNormalizer);
+            return $this->createType0Font($fontDescriptor, $font, $sizeNormalizer, $usedCodepoints);
         }
 
         return $this->createTrueTypeFont($fontDescriptor, $font->getCharacters(), $sizeNormalizer);
@@ -178,7 +175,7 @@ class DocumentVisitor
         // add widths of windows code page
         foreach ($characters as $character) {
             // create windows character set
-            $mappingIndex = $this->getWindows1252Mapping($character->getUnicodePoint());
+            $mappingIndex = $character->getUnicodePoint() ? $this->getWindows1252Mapping($character->getUnicodePoint()) : null;
             if ($mappingIndex !== null) {
                 $widths[$mappingIndex] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
             }
@@ -190,19 +187,19 @@ class DocumentVisitor
     }
 
     /**
-     * @param Character[] $characters
-     *
      * @return Type0
      */
-    private function createType0Font(FontOptimizer\FontSubsetDefinition $fontSubsetDefinition, FontDescriptor $fontDescriptor, array $characters, float $sizeNormalizer)
+    private function createType0Font(FontDescriptor $fontDescriptor, Font $font, float $sizeNormalizer, array $usedCodepoints)
     {
+        /** @var int[] $characterWidths */
         $characterWidths = [];
+        $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());
         foreach ($characters as $character) {
             $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
         }
 
-        // the initial character is mapped twice; to .notdef and U+0000. need to have both widths therefore
-        $widths[0] = array_merge([$characterWidths[0]], $characterWidths);
+        // start at CID 0 with our widths
+        $widths = [0 => $characterWidths];
 
         $cIDSystemInfo = new CIDSystemInfo();
         $cIDSystemInfo->setRegistry('famoser');
@@ -223,17 +220,17 @@ class DocumentVisitor
         $type0Font->setBaseFont($fontDescriptor->getFontName());
 
         $cMapName = $fontDescriptor->getFontName() . 'CMap';
-        $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, $cMapName, $fontSubsetDefinition);
+        $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, $cMapName, $characters, $usedCodepoints);
         $type0Font->setEncoding($characterIndexCMap);
 
         $cMapInvertedName = $fontDescriptor->getFontName() . 'CMapInverted';
-        $unicodeCMap = $this->cMapCreator->createCharacterIndexToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $fontSubsetDefinition);
+        $unicodeCMap = $this->cMapCreator->createCharacterIndexToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $characters);
         $type0Font->setToUnicode($unicodeCMap);
 
         return $type0Font;
     }
 
-    private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream, $sizeNormalizer): FontDescriptor
+    private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream, float $sizeNormalizer): FontDescriptor
     {
         $HHeaTable = $font->getTableDirectory()->getHHeaTable();
         $OS2Table = $font->getTableDirectory()->getOS2Table();
@@ -249,7 +246,7 @@ class DocumentVisitor
         $fontFlags = $this->calculateFontFlags($OS2Table, $angle > 0);
         $fontDescriptor->setFlags($fontFlags);
 
-        $fontDescriptor->setItalicAngle($angle);
+        $fontDescriptor->setItalicAngle((int)$angle);
         $fontDescriptor->setAscent($HHeaTable->getAscent() * $sizeNormalizer);
         $fontDescriptor->setDescent($HHeaTable->getDescent() * $sizeNormalizer);
         $fontDescriptor->setCapHeight((int)($OS2Table->getSCapHeight() * $sizeNormalizer));
@@ -323,23 +320,6 @@ class DocumentVisitor
         }
 
         return $flags;
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private function createFontSubset(Font $font, string $charactersUsedInText): array
-    {
-        $fontSubsetDefinition = $this->fontOptimizer->generateFontSubset($font, $charactersUsedInText);
-
-        // create subset
-        $optimizer = Optimizer::create();
-        $font = $optimizer->getFontSubset($font, $fontSubsetDefinition->getCharacters());
-
-        $writer = FileWriter::create();
-        $fontData = $writer->writeFont($font);
-
-        return [$font, $fontData, $fontSubsetDefinition];
     }
 
     /**

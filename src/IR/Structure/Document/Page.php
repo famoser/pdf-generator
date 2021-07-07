@@ -18,21 +18,27 @@ use PdfGenerator\IR\Structure\DocumentVisitor;
 class Page extends BaseDocumentStructure
 {
     /**
-     * @var int
+     * @var float[]
+     */
+    private $size;
+
+    /**
+     * @var string
      */
     private $pageNumber;
 
     /**
      * @var BaseContent[]
      */
-    private $content;
+    private $content = [];
 
     /**
      * Page constructor.
      */
-    public function __construct(int $pageNumber)
+    public function __construct(string $pageNumber, array $size)
     {
         $this->pageNumber = $pageNumber;
+        $this->size = $size;
     }
 
     public function addContent(BaseContent $baseContent)
@@ -62,5 +68,10 @@ class Page extends BaseDocumentStructure
     public function accept(DocumentVisitor $visitor)
     {
         return $visitor->visitPage($this);
+    }
+
+    public function getSize(): array
+    {
+        return $this->size;
     }
 }

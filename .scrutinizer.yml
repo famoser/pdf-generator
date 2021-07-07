@@ -19,4 +19,4 @@ checks:
         duplication: true
 
 filter:
-    paths: ["src/*", "tests/*"]
+    paths: ["src/*"]

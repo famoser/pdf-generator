@@ -26,12 +26,18 @@ class TextStyle
     private $fontSize;
 
     /**
+     * @var float
+     */
+    private $lineHeight;
+
+    /**
      * Style constructor.
      */
-    public function __construct(Font $font, float $fontSize)
+    public function __construct(Font $font, float $fontSize, float $lineHeight = 1)
     {
         $this->font = $font;
         $this->fontSize = $fontSize;
+        $this->lineHeight = $lineHeight;
     }
 
     public function getFont(): Font
@@ -42,5 +48,35 @@ class TextStyle
     public function getFontSize(): float
     {
         return $this->fontSize;
+    }
+
+    public function getLineHeight(): float
+    {
+        return $this->lineHeight;
+    }
+
+    public function getAscender()
+    {
+        return $this->getFont()->getAscender() / $this->getFontScaling();
+    }
+
+    public function getLineGap()
+    {
+        return $this->getLeading() - $this->getAscender() + $this->getDescender();
+    }
+
+    public function getDescender()
+    {
+        return $this->getFont()->getDescender() / $this->getFontScaling();
+    }
+
+    public function getLeading()
+    {
+        return $this->getFont()->getBaselineToBaselineDistance() / $this->getFontScaling() * $this->getLineHeight();
+    }
+
+    public function getFontScaling()
+    {
+        return $this->getFont()->getUnitsPerEm() / $this->getFontSize();
     }
 }

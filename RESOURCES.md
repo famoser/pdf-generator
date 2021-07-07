@@ -36,6 +36,7 @@ tools:
 - [FontValidator](https://github.com/HinTak/Font-Validator/) supports many different checks
 - [FontForge](https://fontforge.org/en-US/) helps to see if characters are correct
 - [ttfdump](http://manpages.ubuntu.com/manpages/trusty/man1/ttfdump.1.html) can dump TTFs to ASCII tables
+- [fontdrop](https://fontdrop.info/) displays characters and widths
 
 not implemented yet:
 - ligatures

@@ -12,7 +12,6 @@
 namespace PdfGenerator\IR\Structure\Document\Font;
 
 use PdfGenerator\IR\Structure\Document\Font;
-use PdfGenerator\IR\Structure\DocumentVisitor;
 
 class EmbeddedFont extends Font
 {
@@ -22,11 +21,23 @@ class EmbeddedFont extends Font
     private $fontPath;
 
     /**
+     * @var string
+     */
+    private $fontData;
+
+    /**
+     * @var \PdfGenerator\Font\IR\Structure\Font
+     */
+    private $font;
+
+    /**
      * EmbeddedFont constructor.
      */
-    public function __construct(string $fontPath)
+    public function __construct(string $fontPath, string $fontData, \PdfGenerator\Font\IR\Structure\Font $font)
     {
         $this->fontPath = $fontPath;
+        $this->fontData = $fontData;
+        $this->font = $font;
     }
 
     /**
@@ -34,21 +45,62 @@ class EmbeddedFont extends Font
      *
      * @return mixed
      */
-    public function accept(DocumentVisitor $visitor)
+    public function accept(FontVisitor $visitor)
     {
         return $visitor->visitEmbeddedFont($this);
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getIdentifier()
     {
         return $this->fontPath;
     }
 
-    public function getFontPath(): string
+    /**
+     * @return string
+     */
+    public function getFontData()
     {
-        return $this->fontPath;
+        return $this->fontData;
+    }
+
+    public function getFont(): \PdfGenerator\Font\IR\Structure\Font
+    {
+        return $this->font;
+    }
+
+    /**
+     * top of text area until baseline.
+     */
+    public function getAscender()
+    {
+        return $this->font->getTableDirectory()->getOS2Table()->getSTypoAscender();
+    }
+
+    /**
+     * bottom of text area until baseline
+     * negative, as measured "the other way around".
+     */
+    public function getDescender()
+    {
+        return $this->font->getTableDirectory()->getOS2Table()->getSTypoDecender();
+    }
+
+    /**
+     * Gap between two text areas below each others.
+     */
+    public function getLineGap()
+    {
+        return $this->font->getTableDirectory()->getOS2Table()->getSTypoLineGap();
+    }
+
+    /**
+     * Scale the character coordinates are in.
+     */
+    public function getUnitsPerEm()
+    {
+        return $this->font->getTableDirectory()->getHeadTable()->getUnitsPerEm();
     }
 }

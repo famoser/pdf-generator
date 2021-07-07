@@ -72,6 +72,10 @@ class FileWriter
      */
     public function writeFont(Font $font)
     {
+        if (!$font->getIsTrueTypeFont()) {
+            throw new \Exception('Writing non-TrueType fonts is not supported at the moment.');
+        }
+
         $tableDirectory = $this->createTableDirectory($font);
 
         return $this->writeTableDirectory($tableDirectory);
@@ -335,40 +339,6 @@ class FileWriter
     }
 
     /**
-     * @return Character[]
-     */
-    private function ensureComponentCharactersIncluded(array &$characters, array $reservedCharacters): void
-    {
-        // characters may be composed out of others, which need also be included in the subset
-        /** @var Character[] $includedCharacters */
-        $includedCharacters = [...$reservedCharacters, ...$characters];
-        for ($i = 0; $i < \count($includedCharacters); ++$i) {
-            $includedCharacter = $includedCharacters[$i];
-            foreach ($includedCharacter->getComponentCharacters() as $componentCharacter) {
-                if (!\in_array($componentCharacter, $includedCharacters, true)) {
-                    $includedCharacters[] = $componentCharacter;
-                    $characters[] = $componentCharacter;
-                }
-            }
-        }
-    }
-
-    private function sortCharactersByCodePoint(array &$characters): void
-    {
-        $sortByCodePoint = function (Character $character1, Character $character2) {
-            $unicodePoint1 = $character1->getUnicodePoint();
-            $unicodePoint2 = $character2->getUnicodePoint();
-            if ($unicodePoint1 === $unicodePoint2) {
-                return 0;
-            }
-
-            return ($unicodePoint1 < $unicodePoint2) ? -1 : 1;
-        };
-
-        usort($characters, $sortByCodePoint);
-    }
-
-    /**
      * @param Character[] $characters
      *
      * @return GlyfTable[]
@@ -377,23 +347,6 @@ class FileWriter
     {
         /** @var GlyfTable[] $glyfTables */
         $glyfTables = [];
-
-        // fix component character references
-        $characterLookup = new SplObjectStorage();
-        for ($i = 0; $i < \count($characters); ++$i) {
-            $characterLookup->attach($characters[$i], $i);
-        }
-        foreach ($characters as $character) {
-            $componentCharacters = $character->getComponentCharacters();
-            for ($i = 0; $i < \count($componentCharacters); ++$i) {
-                $componentCharacter = $componentCharacters[$i];
-                if ($componentCharacter !== null) {
-                    // guaranteed to return result as all component characters part of font by @ref ensureComponentCharactersIncluded
-                    $index = $characterLookup->offsetGet($componentCharacter);
-                    $character->getGlyfTable()->getComponentGlyphs()[$i]->setGlyphIndex($index);
-                }
-            }
-        }
 
         foreach ($characters as $character) {
             if ($character->getGlyfTable() === null) {
@@ -420,6 +373,8 @@ class FileWriter
 
         $locaTable->addOffset($currentOffset);
 
+        // consider placing this in TableVisitor, as there glyf table sizes are known anyways
+        // reduces code complexity
         foreach ($glyfTables as $glyfTable) {
             if ($glyfTable !== null) {
                 $size = 2 + 8; // contours + bounding box
@@ -757,13 +712,12 @@ class FileWriter
         $characters = $font->getCharacters();
         $reservedCharacters = $font->getReservedCharacters();
 
-        $this->ensureComponentCharactersIncluded($characters, $reservedCharacters);
-        $this->sortCharactersByCodePoint($characters);
-
         $tableDirectory = new TableDirectory();
         $tableDirectory->setCMapTable($this->generateCMapTable($characters, \count($reservedCharacters)));
 
         array_unshift($characters, ...$reservedCharacters);
+        $this->fixComponentCharacterReferences($characters);
+
         $tableDirectory->setHMtxTable($this->generateHMtxTable($characters));
         $tableDirectory->setHeadTable($this->generateHeadTable($font->getTableDirectory()->getHeadTable(), $characters));
         $tableDirectory->setPostTable($this->generatePostTable($font->getTableDirectory()->getPostTable(), $characters));
@@ -905,5 +859,29 @@ class FileWriter
         }
 
         return $os2Table;
+    }
+
+    /**
+     * @param Character[] $characters
+     */
+    private function fixComponentCharacterReferences(array $characters)
+    {
+        $characterLookup = new SplObjectStorage();
+        $characterCount = \count($characters);
+        for ($i = 0; $i < $characterCount; ++$i) {
+            $characterLookup->attach($characters[$i], $i);
+        }
+        foreach ($characters as $character) {
+            $componentCharacters = $character->getComponentCharacters();
+            $componentCharacterCount = \count($componentCharacters);
+            for ($i = 0; $i < $componentCharacterCount; ++$i) {
+                $componentCharacter = $componentCharacters[$i];
+                if ($componentCharacter !== null) {
+                    // guaranteed to return result as all component characters part of font by @ref ensureComponentCharactersIncluded
+                    $index = $characterLookup->offsetGet($componentCharacter);
+                    $character->getGlyfTable()->getComponentGlyphs()[$i]->setGlyphIndex($index);
+                }
+            }
+        }
     }
 }

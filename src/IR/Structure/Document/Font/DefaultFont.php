@@ -12,7 +12,6 @@
 namespace PdfGenerator\IR\Structure\Document\Font;
 
 use PdfGenerator\IR\Structure\Document\Font;
-use PdfGenerator\IR\Structure\DocumentVisitor;
 
 class DefaultFont extends Font
 {
@@ -41,12 +40,19 @@ class DefaultFont extends Font
     private $style;
 
     /**
+     * @var int[]
+     */
+    private $size;
+
+    /**
      * DefaultFont constructor.
      */
     public function __construct(string $font, string $style)
     {
         $this->font = $font;
         $this->style = $style;
+
+        $this->size = DefaultFontSize::getSize($this->font, $this->style);
     }
 
     /**
@@ -54,7 +60,7 @@ class DefaultFont extends Font
      *
      * @return mixed
      */
-    public function accept(DocumentVisitor $visitor)
+    public function accept(FontVisitor $visitor)
     {
         return $visitor->visitDefaultFont($this);
     }
@@ -77,10 +83,23 @@ class DefaultFont extends Font
         return $this->style;
     }
 
-    /**
-     * sets the encoding used by the font.
-     */
-    public function encode(string $escaped): string
+    public function getUnitsPerEm()
     {
+        return $this->size['unitsPerEm'];
+    }
+
+    public function getAscender()
+    {
+        return $this->size['ascender'];
+    }
+
+    public function getDescender()
+    {
+        return $this->size['descender'];
+    }
+
+    public function getLineGap()
+    {
+        return $this->size['lineGap'];
     }
 }

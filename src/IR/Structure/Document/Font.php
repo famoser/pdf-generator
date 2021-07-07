@@ -12,7 +12,25 @@
 namespace PdfGenerator\IR\Structure\Document;
 
 use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
+use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 
 abstract class Font extends BaseDocumentStructure
 {
+    /**
+     * @return mixed
+     */
+    abstract public function accept(FontVisitor $visitor);
+
+    abstract public function getUnitsPerEm();
+
+    abstract public function getAscender();
+
+    abstract public function getDescender();
+
+    abstract public function getLineGap();
+
+    public function getBaselineToBaselineDistance()
+    {
+        return $this->getAscender() - $this->getDescender() + $this->getLineGap();
+    }
 }

@@ -147,7 +147,7 @@ abstract class BaseColumnedLayout
                 }
             }
 
-            $pdfDocument->setCursor($lowestCursor->setX($columnedLayout->columnCursors[0]->getXCoordinate()));
+            $pdfDocument->setCursor($lowestCursor->withXCoordinate($columnedLayout->columnCursors[0]->getXCoordinate()));
         });
 
         return new PrintTransaction($pdfDocumentTransaction, $width, $printBuffer->flushBufferClosure());

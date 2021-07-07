@@ -34,7 +34,7 @@ class OffsetTable extends BaseTable
      * identifies what kind of font this is
      * 0x74727565 or 0x00010000 for TrueType fonts
      * 0x74797031 for PostScript font
-     * 0x4F54544F for OpenType font with PostScript outlines (CFF instead of gylph table).
+     * 0x4F54544F for OpenType font with PostScript outlines (CFF instead of glyph table).
      *
      * @ttf-type uint32
      *

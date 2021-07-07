@@ -18,14 +18,15 @@ use PdfGenerator\Backend\Structure\Document\Page as BackendPage;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Document\DocumentResources;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
-use PdfGenerator\IR\Structure\Document\Font\DefaultFontMapping;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFontType1Mapping;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
+use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page;
 use PdfGenerator\IR\Structure\Document\Page\PageResources;
 use PdfGenerator\IR\Structure\Document\Page\ToBackendContentVisitor;
 
-class DocumentVisitor
+class DocumentVisitor implements FontVisitor
 {
     /**
      * @var DocumentResources
@@ -64,11 +65,11 @@ class DocumentVisitor
      */
     private function getDefaultFontBaseFont(string $font, string $style): string
     {
-        if (!\array_key_exists($font, DefaultFontMapping::$type1BaseFontMapping)) {
+        if (!\array_key_exists($font, DefaultFontType1Mapping::$mapping)) {
             throw new \Exception('The font ' . $font . ' is not part of the default set.');
         }
 
-        $styles = DefaultFontMapping::$type1BaseFontMapping[$font];
+        $styles = DefaultFontType1Mapping::$mapping[$font];
         if (!\array_key_exists($style, $styles)) {
             throw new \Exception('This font style ' . $style . ' is not part of the default set.');
         }
@@ -85,7 +86,7 @@ class DocumentVisitor
     {
         $text = $this->analysisResult->getTextPerFont($param);
 
-        return new BackendEmbeddedFont(BackendEmbeddedFont::ENCODING_UTF_8, $param->getFontPath(), $text);
+        return new BackendEmbeddedFont($param->getFontData(), $param->getFont(), $text);
     }
 
     /**
@@ -111,6 +112,7 @@ class DocumentVisitor
      */
     private static function getImageType(string $imagePath)
     {
+        /** @var string $extension */
         $extension = pathinfo($imagePath, \PATHINFO_EXTENSION);
         switch ($extension) {
             case 'jpg':
@@ -131,7 +133,7 @@ class DocumentVisitor
      */
     public function visitPage(Page $param)
     {
-        $mediaBox = [0, 0, 210, 297];
+        $mediaBox = array_merge([0, 0], $param->getSize());
 
         $page = new BackendPage($mediaBox);
 

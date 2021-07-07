@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\IR\Structure;
 
+use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
@@ -40,16 +41,22 @@ class Document
      */
     private $embeddedFonts = [];
 
-    public function getOrCreatePage(int $pageNumber): Page
+    public function addPage(Page $page)
     {
-        $maxPageNumber = \count($this->pages);
+        $this->pages[] = $page;
+    }
 
-        while ($pageNumber > $maxPageNumber) {
-            $this->pages[] = new Page($maxPageNumber);
-            ++$maxPageNumber;
-        }
+    public function getPage(int $pageIndex): Page
+    {
+        return $this->getPages()[$pageIndex];
+    }
 
-        return $this->pages[$pageNumber - 1];
+    /**
+     * @return Page[]
+     */
+    public function getPages(): array
+    {
+        return $this->pages;
     }
 
     public function getOrCreateImage(string $imagePath): Image
@@ -77,7 +84,12 @@ class Document
     public function getOrCreateEmbeddedFont(string $fontPath): EmbeddedFont
     {
         if (!\array_key_exists($fontPath, $this->embeddedFonts)) {
-            $this->embeddedFonts[$fontPath] = new EmbeddedFont($fontPath);
+            $fontData = file_get_contents($fontPath);
+
+            $parser = Parser::create();
+            $font = $parser->parse($fontData);
+
+            $this->embeddedFonts[$fontPath] = new EmbeddedFont($fontPath, $fontData, $font);
         }
 
         return $this->embeddedFonts[$fontPath];

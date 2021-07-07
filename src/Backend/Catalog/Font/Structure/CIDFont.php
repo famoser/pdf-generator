@@ -115,7 +115,7 @@ class CIDFont extends BaseStructure
     }
 
     /**
-     * @param int[] $w
+     * @param int[][] $w
      */
     public function setW(array $w): void
     {
