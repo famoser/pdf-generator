@@ -177,7 +177,9 @@ class FlowPrinter
     private function printFixedSizeBlock(callable $print, float $width, float $height)
     {
         $cursor = $this->getCursor();
-        if (!$this->activeColumn->hasHorizontalSpaceFor($cursor, $width)) {
+        // start newline if:
+        if ($this->activeColumn->getStart()->equals($cursor) || // totally new column
+            !$this->activeColumn->hasHorizontalSpaceFor($cursor, $width)) { // not enough horizontal space
             $this->nextLine($height);
         }
 

@@ -242,6 +242,58 @@ class ComposerTest extends TestCase
     /**
      * @throws \Exception
      */
+    public function testRectangleFlowPrint()
+    {
+        // arrange
+        $document = new Document();
+        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+
+        $rectangleStyle = new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
+        $composer->setRectangleStyle($rectangleStyle);
+
+        // act
+        $composer->printRectangle(20, 40);
+        $composer->printRectangle(40, 40);
+        $composer->printRectangle(10, 20);
+        $composer->printRectangle(80, 40);
+        $composer->printRectangle(80, 40);
+        $composer->printRectangle(80, 40);
+        for ($i = 0; $i < 100; ++$i) {
+            $composer->printRectangle(($i * 50) % 70, 40);
+        }
+        $catalog = $document->render();
+        $result = $catalog->save();
+        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testImageFlowPrint()
+    {
+        // arrange
+        $imageSrc = ResourcesProvider::getImage1Path();
+        $document = new Document();
+        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $image = $document->getOrCreateImage($imageSrc);
+
+        // act
+        $composer->printImage($image, 40, 40);
+        $composer->printImage($image, 40, 40);
+        $catalog = $document->render();
+        $result = $catalog->save();
+        file_put_contents('pdf.pdf', $result);
+
+        // assert
+        $this->assertNotEmpty($result);
+    }
+
+    /**
+     * @throws \Exception
+     */
     public function testPrintLongTextSizing()
     {
         // arrange

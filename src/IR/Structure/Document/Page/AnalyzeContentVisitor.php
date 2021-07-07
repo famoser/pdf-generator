@@ -33,7 +33,7 @@ class AnalyzeContentVisitor extends ContentVisitor
     {
         $identifier = $placement->getImage()->getIdentifier();
 
-        if (!\in_array($identifier, $this->maxSizePerImage, true)) {
+        if (!\array_key_exists($identifier, $this->maxSizePerImage)) {
             $this->maxSizePerImage[$identifier] = $placement->getSize();
 
             return;
