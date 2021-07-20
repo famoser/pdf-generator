@@ -38,15 +38,18 @@ class ColumnBreaker
         return $this->lineBreaker->nextLine($targetWidth, $allowEmpty);
     }
 
-    public function nextColumn(float $targetWidth, int $maxLines)
+    public function nextColumn(float $targetWidth, int $maxLines, float $indent, bool $newParagraph)
     {
-        $lines = [];
-        $lineWidths = [];
-        do {
-            [$words, $width] = $this->lineBreaker->nextLine($targetWidth, false);
-            $lines[] = $words;
+        $allowEmpty = !$newParagraph; // if new paragraph force content on first line, else do not
+        [$line, $width] = $this->lineBreaker->nextLine($targetWidth - $indent, $allowEmpty);
+        $lines = [$line];
+        $lineWidths = [$width];
+
+        while ($this->lineBreaker->hasNextLine() && \count($lines) < $maxLines) {
+            [$line, $width] = $this->lineBreaker->nextLine($targetWidth, false);
+            $lines[] = $line;
             $lineWidths[] = $width;
-        } while ($this->lineBreaker->hasNextLine() && \count($lines) < $maxLines);
+        }
 
         return [$lines, $lineWidths];
     }

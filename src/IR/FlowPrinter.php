@@ -17,7 +17,7 @@ use PdfGenerator\IR\Printer\CursorGetSetTrait;
 use PdfGenerator\IR\Printer\StyleGetSetTrait;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Image;
-use PdfGenerator\IR\Text\LineBreak\ScaledColumnBreaker;
+use PdfGenerator\IR\Text\LineBreak\PhraseColumnBreaker;
 use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
 
 class FlowPrinter
@@ -88,7 +88,7 @@ class FlowPrinter
     {
         $textStyle = $this->getTextStyle();
         $wordSizer = $this->wordSizerRepository->getWordSizer($textStyle->getFont());
-        $columnBreaker = new ScaledColumnBreaker($textStyle, $wordSizer, $text);
+        $columnBreaker = new PhraseColumnBreaker($textStyle, $wordSizer, $text);
 
         $this->printTextBlock($columnBreaker);
     }
@@ -97,7 +97,7 @@ class FlowPrinter
     {
         $textStyle = $this->getTextStyle();
         $wordSizer = $this->wordSizerRepository->getWordSizer($textStyle->getFont());
-        $columnBreaker = new ScaledColumnBreaker($textStyle, $wordSizer, $text);
+        $columnBreaker = new PhraseColumnBreaker($textStyle, $wordSizer, $text);
 
         // if not just at column break, remove descender
         if (!$this->activeColumn->getStart()->equals($this->getCursor())) {
@@ -112,7 +112,7 @@ class FlowPrinter
         $this->printTextBlock($columnBreaker);
     }
 
-    private function printTextLine(ScaledColumnBreaker $columnBreaker)
+    private function printTextLine(PhraseColumnBreaker $columnBreaker)
     {
         $cursor = $this->getCursor();
         $availableWidth = $this->activeColumn->getAvailableWidth($cursor);
@@ -126,7 +126,7 @@ class FlowPrinter
         $this->moveRightDown($lineWidth, -$descender);
     }
 
-    private function printTextBlock(ScaledColumnBreaker $columnBreaker)
+    private function printTextBlock(PhraseColumnBreaker $columnBreaker)
     {
         $width = $this->activeColumn->getWidth();
 
