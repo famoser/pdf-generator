@@ -18,21 +18,21 @@ trait StyleGetSetTrait
 {
     public function getTextStyle(): TextStyle
     {
-        return $this->getPrinter()->getTextStyle();
+        return $this->printer->getTextStyle();
     }
 
     public function setTextStyle(TextStyle $textStyle)
     {
-        $this->getPrinter()->setTextStyle($textStyle);
+        $this->printer->setTextStyle($textStyle);
     }
 
     public function getRectangleStyle(): RectangleStyle
     {
-        return $this->getPrinter()->getRectangleStyle();
+        return $this->printer->getRectangleStyle();
     }
 
     public function setRectangleStyle(RectangleStyle $rectangleStyle): void
     {
-        $this->getPrinter()->setRectangleStyle($rectangleStyle);
+        $this->printer->setRectangleStyle($rectangleStyle);
     }
 }

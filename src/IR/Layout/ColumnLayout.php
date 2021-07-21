@@ -105,7 +105,7 @@ class ColumnLayout
             $cursor = $cursor->withXCoordinate($this->activeColumn->getStart()->getXCoordinate());
             $this->printer->printText($cursor, $text);
 
-            $lastLineWidth = $measuredPhrase->getLineWidths()[\count($lines)];
+            $lastLineWidth = $measuredPhrase->getLineWidths()[\count($lines) - 1];
             $height = (\count($lines) - 1) * $measuredPhrase->getTextStyle()->getLeading();
             $cursor = $cursor->moveRightDown($lastLineWidth, $height);
         }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Layout;
+namespace PdfGenerator\Examples;
 
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Text\TextWriter;

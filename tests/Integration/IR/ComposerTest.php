@@ -13,8 +13,9 @@ namespace PdfGenerator\Tests\Integration\IR;
 
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Structure\Optimization\Configuration;
-use PdfGenerator\IR\FlowPrinter;
-use PdfGenerator\IR\Layout\Column\Column\Column\SingleColumnColumnGenerator;
+use PdfGenerator\IR\CursorPrinter;
+use PdfGenerator\IR\Layout\Column\SingleColumnGenerator;
+use PdfGenerator\IR\Layout\ColumnLayout;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
@@ -34,14 +35,20 @@ class ComposerTest extends TestCase
         // arrange
         $text = 'hi mom';
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $wordSizerRepository = new WordSizerRepository();
+        $printer = new CursorPrinter($document);
+        $layout = new ColumnLayout($printer, new SingleColumnGenerator($document));
 
         // act
-        $composer->printParagraph($text);
-        $result = $document->render()->save();
-        file_put_contents('pdf.pdf', $result);
+        $textWriter = new TextWriter($wordSizerRepository);
+        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_HELVETICA, Document\Font\DefaultFont::STYLE_DEFAULT);
+        $textStyle = new TextStyle($font, 8);
+        $textWriter->writeText($textStyle, $text);
+        $layout->addParagraph($textWriter);
 
         // assert
+        $result = $document->render()->save();
+        file_put_contents('pdf.pdf', $result);
         $this->assertStringContainsString($text, $result);
     }
 
@@ -53,7 +60,7 @@ class ComposerTest extends TestCase
         // arrange
         $text = 'hi mom';
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $composer = new FlowPrinter($document, new SingleColumnGenerator($document));
 
         // act
         $composer->printParagraph($text . '1');
@@ -73,7 +80,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $composer = new FlowPrinter($document, new SingleColumnGenerator($document));
 
         // act
         $composer->moveDown(10);
@@ -94,7 +101,7 @@ class ComposerTest extends TestCase
         $width = 20;
         $height = 30;
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $composer = new FlowPrinter($document, new SingleColumnGenerator($document));
 
         $rectangleStyle = new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
         $composer->setRectangleStyle($rectangleStyle);
@@ -119,7 +126,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $composer = new FlowPrinter($document, new SingleColumnGenerator($document));
 
         $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 30);
@@ -142,7 +149,7 @@ class ComposerTest extends TestCase
         // arrange
         $imageSrc = ResourcesProvider::getImage1Path();
         $document = new Document();
-        $printer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $printer = new FlowPrinter($document, new SingleColumnGenerator($document));
 
         // act
         $image = $document->getOrCreateImage($imageSrc);
@@ -161,7 +168,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $composer = new FlowPrinter($document, new SingleColumnGenerator($document));
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 12);
 
@@ -195,7 +202,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $composer = new FlowPrinter($document, new SingleColumnGenerator($document));
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 4, 1.2);
 
@@ -248,7 +255,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $composer = new FlowPrinter($document, new SingleColumnGenerator($document));
 
         $rectangleStyle = new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
         $composer->setRectangleStyle($rectangleStyle);
@@ -279,7 +286,7 @@ class ComposerTest extends TestCase
         // arrange
         $imageSrc = ResourcesProvider::getImage1Path();
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $composer = new FlowPrinter($document, new SingleColumnGenerator($document));
         $image = $document->getOrCreateImage($imageSrc);
 
         // act
@@ -309,7 +316,7 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnColumnGenerator($document));
+        $composer = new FlowPrinter($document, new SingleColumnGenerator($document));
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 4, 1.2);
         $textWriter = new TextWriter(new WordSizerRepository());

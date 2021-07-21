@@ -66,6 +66,8 @@ class TextWriter
     private function advancePhraseColumnBreaker()
     {
         if (\count($this->phrases) === 0) {
+            $this->phraseColumnBreaker = null;
+
             return false;
         }
 
