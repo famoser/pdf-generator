@@ -70,6 +70,11 @@ class Column
         return $this->getMaxLeft() - $cursor->getXCoordinate();
     }
 
+    public function getAvailableHeight(Cursor $cursor): float
+    {
+        return $cursor->getYCoordinate() - $this->getMinTop();
+    }
+
     public function hasHorizontalSpaceFor(Cursor $cursor, float $width)
     {
         if ($cursor->getXCoordinate() !== $this->start->getXCoordinate()) {

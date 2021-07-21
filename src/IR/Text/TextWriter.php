@@ -54,6 +54,15 @@ class TextWriter
         return $this->phraseColumnBreaker === null && \count($this->phrases) === 0;
     }
 
+    public function getNextLineGap()
+    {
+        if ($this->phraseColumnBreaker === null && !$this->advancePhraseColumnBreaker()) {
+            return 0;
+        }
+
+        return $this->phraseColumnBreaker->getTextStyle()->getLineGap();
+    }
+
     private function advancePhraseColumnBreaker()
     {
         if (\count($this->phrases) === 0) {
@@ -66,20 +75,24 @@ class TextWriter
         return true;
     }
 
-    public function getTextBlock(float $maxWidth, int $maxLineCount, float $indent = 0): ?TextBlock
+    public function getTextBlock(float $maxWidth, float $maxHeight, float $indent = 0): ?TextBlock
     {
         if ($this->phraseColumnBreaker === null && !$this->advancePhraseColumnBreaker()) {
             return null;
         }
 
-        $remainingLineCount = $maxLineCount;
+        $remainingHeight = $maxHeight;
         $textBlock = new TextBlock();
+        $textBlock->setIndent($indent);
 
         $newParagraph = true;
 
         while (true) {
+            $leading = $this->phraseColumnBreaker->getTextStyle()->getLeading();
+            $remainingLineCount = floor($remainingHeight / $leading);
+
             [$lines, $lineWidths] = $this->phraseColumnBreaker->nextColumn($maxWidth, $remainingLineCount, $indent, $newParagraph);
-            $measuredPhrase = MeasuredPhrase::create($this->phraseColumnBreaker->getTextStyle(), $lines, $lineWidths, $indent);
+            $measuredPhrase = MeasuredPhrase::create($this->phraseColumnBreaker->getTextStyle(), $lines, $lineWidths);
             $textBlock->addMeasuredPhrase($measuredPhrase);
 
             if ($this->phraseColumnBreaker->hasMoreLines()) {
@@ -95,7 +108,7 @@ class TextWriter
             }
 
             $newParagraph = false;
-            $remainingLineCount -= (\count($lines) - 1);
+            $remainingHeight -= (\count($lines) - 1) * $leading;
 
             if (\count($lines) === 1) {
                 // line adds to existing indent

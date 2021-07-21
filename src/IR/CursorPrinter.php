@@ -16,14 +16,14 @@ use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
 
-class CursorAwarePrinter
+class CursorPrinter
 {
     use StyleGetSetTrait;
 
     /**
      * @var Cursor
      */
-    protected $cursor;
+    private $cursor;
 
     /**
      * @var Document
@@ -42,29 +42,40 @@ class CursorAwarePrinter
         $this->cursor = new Cursor(0, 0, 0);
     }
 
-    public function getPrinter(): Printer
+    public function getCursor(): Cursor
     {
-        return $this->printer;
+        return $this->cursor;
     }
 
-    public function printText(string $text)
+    public function setCursor(Cursor $cursor): void
     {
-        $position = Position::fromCursor($this->cursor);
-        $page = $this->document->getPage($this->cursor->getPageIndex());
+        $this->cursor = $cursor;
+    }
+
+    public function printText(Cursor $cursor, string $text)
+    {
+        $position = Position::fromCursor($cursor);
+        $page = $this->document->getPage($cursor->getPageIndex());
         $this->printer->printText($page, $position, $text);
+
+        $this->cursor = $cursor;
     }
 
-    public function printImage(Image $image, float $width, float $height)
+    public function printImage(Cursor $cursor, Image $image, float $width, float $height)
     {
-        $position = Position::fromCursor($this->cursor);
-        $page = $this->document->getPage($this->cursor->getPageIndex());
+        $position = Position::fromCursor($cursor);
+        $page = $this->document->getPage($cursor->getPageIndex());
         $this->printer->printImage($page, $position, $image, $width, $height);
+
+        $this->cursor = $cursor;
     }
 
-    public function printRectangle(float $width, float $height)
+    public function printRectangle(Cursor $cursor, float $width, float $height)
     {
-        $position = Position::fromCursor($this->cursor);
-        $page = $this->document->getPage($this->cursor->getPageIndex());
+        $position = Position::fromCursor($cursor);
+        $page = $this->document->getPage($cursor->getPageIndex());
         $this->printer->printRectangle($page, $position, $width, $height);
+
+        $this->cursor = $cursor;
     }
 }

@@ -26,11 +26,6 @@ class MeasuredPhrase
     private $lines;
 
     /**
-     * @var float
-     */
-    private $indent = 0;
-
-    /**
      * @var float[]
      */
     private $lineWidths;
@@ -49,14 +44,6 @@ class MeasuredPhrase
     }
 
     /**
-     * @return float
-     */
-    public function getIndent()
-    {
-        return $this->indent;
-    }
-
-    /**
      * @return float[]
      */
     public function getLineWidths(): array
@@ -64,13 +51,12 @@ class MeasuredPhrase
         return $this->lineWidths;
     }
 
-    public static function create(TextStyle $textStyle, array $lines, array $lineWidths, float $indent)
+    public static function create(TextStyle $textStyle, array $lines, array $lineWidths)
     {
         $self = new self();
 
         $self->textStyle = $textStyle;
         $self->lines = $lines;
-        $self->indent = $indent;
         $self->lineWidths = $lineWidths;
 
         return $self;

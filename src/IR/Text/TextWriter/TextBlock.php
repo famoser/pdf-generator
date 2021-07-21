@@ -23,6 +23,11 @@ class TextBlock
     private $alignment = self::ALIGNMENT_LEFT;
 
     /**
+     * @var float
+     */
+    private $indent = 0;
+
+    /**
      * @var MeasuredPhrase[]
      */
     private $measuredPhrases;
@@ -37,6 +42,16 @@ class TextBlock
         $this->alignment = $alignment;
     }
 
+    public function getIndent(): float
+    {
+        return $this->indent;
+    }
+
+    public function setIndent(float $indent): void
+    {
+        $this->indent = $indent;
+    }
+
     public function addMeasuredPhrase(MeasuredPhrase $measuredPhrase)
     {
         $this->measuredPhrases[] = $measuredPhrase;
@@ -48,5 +63,29 @@ class TextBlock
     public function getMeasuredPhrases(): array
     {
         return $this->measuredPhrases;
+    }
+
+    public function getAscender()
+    {
+        $measuredPhraseCount = \count($this->measuredPhrases);
+        if ($measuredPhraseCount === 0) {
+            return 0;
+        }
+
+        $firstPhrase = $this->measuredPhrases[0];
+
+        return $firstPhrase->getTextStyle()->getAscender();
+    }
+
+    public function getDescender()
+    {
+        $measuredPhraseCount = \count($this->measuredPhrases);
+        if ($measuredPhraseCount === 0) {
+            return 0;
+        }
+
+        $firstPhrase = $this->measuredPhrases[$measuredPhraseCount - 1];
+
+        return $firstPhrase->getTextStyle()->getDescender();
     }
 }
