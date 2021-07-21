@@ -47,37 +47,6 @@ class CursorAwarePrinter
         return $this->printer;
     }
 
-    public function getCursor(): Cursor
-    {
-        return $this->cursor;
-    }
-
-    public function setCursor(Cursor $cursor)
-    {
-        $this->cursor = $cursor;
-    }
-
-    public function moveRight(float $width)
-    {
-        $this->cursor = $this->getCursor()->moveRight($width);
-
-        return $this->cursor;
-    }
-
-    public function moveDown(float $height)
-    {
-        $this->cursor = $this->getCursor()->moveDown($height);
-
-        return $this->cursor;
-    }
-
-    public function moveRightDown(float $width, float $height)
-    {
-        $this->cursor = $this->cursor->moveRightDown($width, $height);
-
-        return $this->cursor;
-    }
-
     public function printText(string $text)
     {
         $position = Position::fromCursor($this->cursor);

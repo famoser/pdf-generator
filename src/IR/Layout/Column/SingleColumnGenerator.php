@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Layout;
+namespace PdfGenerator\IR\Layout\Column;
 
 use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\Structure\Document;
 
-class SingleColumnLayout implements Layout
+class SingleColumnGenerator implements ColumnGenerator
 {
     /**
      * @var Document

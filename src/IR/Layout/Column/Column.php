@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Layout;
+namespace PdfGenerator\IR\Layout\Column;
 
 use PdfGenerator\IR\Cursor;
 

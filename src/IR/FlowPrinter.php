@@ -11,14 +11,15 @@
 
 namespace PdfGenerator\IR;
 
-use PdfGenerator\IR\Layout\Column;
-use PdfGenerator\IR\Layout\Layout;
+use PdfGenerator\IR\Layout\Column\Column\Column\Column;
+use PdfGenerator\IR\Layout\Column\Column\Column\ColumnGenerator;
 use PdfGenerator\IR\Printer\CursorGetSetTrait;
 use PdfGenerator\IR\Printer\StyleGetSetTrait;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Text\LineBreak\PhraseColumnBreaker;
 use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
+use PdfGenerator\IR\Text\TextWriter\TextBlock;
 
 class FlowPrinter
 {
@@ -31,7 +32,7 @@ class FlowPrinter
     private $printer;
 
     /**
-     * @var Layout
+     * @var ColumnGenerator
      */
     private $layout;
 
@@ -45,7 +46,7 @@ class FlowPrinter
      */
     private $wordSizerRepository;
 
-    public function __construct(Document $document, Layout $layout)
+    public function __construct(Document $document, ColumnGenerator $layout)
     {
         $this->printer = new CursorAwarePrinter($document);
         $this->layout = $layout;
@@ -126,8 +127,23 @@ class FlowPrinter
         $this->moveRightDown($lineWidth, -$descender);
     }
 
-    private function printTextBlock(PhraseColumnBreaker $columnBreaker)
+    public function printTextBlock(TextBlock $textBlock)
     {
+        foreach ($textBlock->getMeasuredPhrases() as $measuredPhrase) {
+            $this->setTextStyle($measuredPhrase->getTextStyle());
+
+            $lines = $measuredPhrase->getLines();
+
+            if ($measuredPhrase->getIndent() > 0) {
+                $this->moveRight($measuredPhrase->getIndent());
+                $line = array_shift($lines);
+                $this->printer->printText($line);
+            }
+
+            $text = implode("\n", $lines);
+            $this->printer->printText($text);
+        }
+
         $width = $this->activeColumn->getWidth();
 
         $textStyle = $this->getTextStyle();
@@ -141,7 +157,6 @@ class FlowPrinter
             $maxLines = (int)$this->activeColumn->countSpaceFor($cursor, $leading) + 1;
             [$lines, $lineWidths] = $columnBreaker->nextColumn($width, $maxLines);
             $text = implode("\n", $lines);
-            $this->printer->printText($text);
 
             $lastLineWidth = $lineWidths[array_key_last($lineWidths)];
             $height = (\count($lines) - 1) * $leading;

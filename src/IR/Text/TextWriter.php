@@ -21,11 +21,6 @@ use PdfGenerator\IR\Text\TextWriter\TextBlock;
 class TextWriter
 {
     /**
-     * @var Document\Page\Content\Text\TextStyle
-     */
-    private $textStyle;
-
-    /**
      * @var Phrase[]
      */
     private $phrases = [];
@@ -40,21 +35,16 @@ class TextWriter
      */
     private $wordSizerRepository;
 
-    public function __construct()
+    public function __construct(WordSizerRepository $wordSizerRepository)
     {
-        $this->wordSizerRepository = new WordSizerRepository();
+        $this->wordSizerRepository = $wordSizerRepository;
     }
 
-    public function setTextStyle(Document\Page\Content\Text\TextStyle $textStyle)
-    {
-        $this->textStyle = $textStyle;
-    }
-
-    public function writeText(string $text)
+    public function writeText(Document\Page\Content\Text\TextStyle $textStyle, string $text)
     {
         $phrase = new Phrase();
         $phrase->setText($text);
-        $phrase->setTextStyle($this->textStyle);
+        $phrase->setTextStyle($textStyle);
 
         $this->phrases[] = $phrase;
     }
@@ -62,15 +52,6 @@ class TextWriter
     public function isEmpty()
     {
         return $this->phraseColumnBreaker === null && \count($this->phrases) === 0;
-    }
-
-    private function ensurePhraseColumnBreakerInitialized()
-    {
-        if ($this->phraseColumnBreaker === null) {
-            return $this->advancePhraseColumnBreaker();
-        }
-
-        return true;
     }
 
     private function advancePhraseColumnBreaker()
@@ -87,7 +68,7 @@ class TextWriter
 
     public function getTextBlock(float $maxWidth, int $maxLineCount, float $indent = 0): ?TextBlock
     {
-        if (!$this->ensurePhraseColumnBreakerInitialized()) {
+        if ($this->phraseColumnBreaker === null && !$this->advancePhraseColumnBreaker()) {
             return null;
         }
 

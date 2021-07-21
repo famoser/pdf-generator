@@ -13,8 +13,18 @@ namespace PdfGenerator\IR\Text\TextWriter;
 
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
-class MeasuredPhrase extends Phrase
+class MeasuredPhrase
 {
+    /**
+     * @var TextStyle
+     */
+    private $textStyle;
+
+    /**
+     * @var string[]
+     */
+    private $lines;
+
     /**
      * @var float
      */
@@ -25,20 +35,25 @@ class MeasuredPhrase extends Phrase
      */
     private $lineWidths;
 
+    public function getTextStyle(): TextStyle
+    {
+        return $this->textStyle;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getLines(): array
+    {
+        return $this->lines;
+    }
+
     /**
      * @return float
      */
     public function getIndent()
     {
         return $this->indent;
-    }
-
-    /**
-     * @param float $indent
-     */
-    public function setIndent($indent): void
-    {
-        $this->indent = $indent;
     }
 
     /**
@@ -49,22 +64,14 @@ class MeasuredPhrase extends Phrase
         return $this->lineWidths;
     }
 
-    /**
-     * @param float[] $lineWidths
-     */
-    public function setLineWidths(array $lineWidths): void
-    {
-        $this->lineWidths = $lineWidths;
-    }
-
     public static function create(TextStyle $textStyle, array $lines, array $lineWidths, float $indent)
     {
         $self = new self();
 
-        $self->setTextStyle($textStyle);
-        $self->setText(implode("\n", $lines));
-        $self->setLineWidths($lineWidths);
-        $self->setIndent($indent);
+        $self->textStyle = $textStyle;
+        $self->lines = $lines;
+        $self->indent = $indent;
+        $self->lineWidths = $lineWidths;
 
         return $self;
     }
