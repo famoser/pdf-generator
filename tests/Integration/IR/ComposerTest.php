@@ -182,6 +182,7 @@ class ComposerTest extends TestCase
         $textWriter = $this->createTextWriter();
         $headerTextStyle = $this->createHeaderTextStyle($document);
         $bodyTextStyle = $this->createBodyTextStyle($document);
+        $bodyBoldTextStyle = $this->createBodyBoldTextStyle($document);
 
         // act
         $textWriter->writeText($headerTextStyle, 'PDF');
@@ -189,7 +190,10 @@ class ComposerTest extends TestCase
         $layout->addSpace(5);
 
         $textWriter->writeText($bodyTextStyle, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
-        $textWriter->writeText($bodyTextStyle, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom Kontoauszug; diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
+        $textWriter->writeText($bodyTextStyle, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ');
+        $textWriter->writeText($bodyTextStyle, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ');
+        $textWriter->writeText($bodyBoldTextStyle, 'Kontoauszug');
+        $textWriter->writeText($bodyTextStyle, ', diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
         $layout->addParagraph($textWriter);
         $layout->addSpace(3);
 
