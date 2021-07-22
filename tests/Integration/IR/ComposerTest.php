@@ -12,13 +12,15 @@
 namespace PdfGenerator\Tests\Integration\IR;
 
 use PdfGenerator\Backend\Catalog\Font\Type0;
-use PdfGenerator\Backend\Structure\Optimization\Configuration;
-use PdfGenerator\IR\FlowPrinter;
-use PdfGenerator\IR\Layout\SingleColumnLayout;
+use PdfGenerator\IR\CursorPrinter;
+use PdfGenerator\IR\Layout\Column\SingleColumnGenerator;
+use PdfGenerator\IR\Layout\ColumnLayout;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
+use PdfGenerator\IR\Text\TextWriter;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -30,125 +32,120 @@ class ComposerTest extends TestCase
     public function testPrintTextTextInResultFile()
     {
         // arrange
-        $text = 'hi mom';
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $layout = $this->createSingleColumnLayout($document);
+        $textWriter = $this->createTextWriter();
+        $textStyle = $this->createBodyTextStyle($document);
 
         // act
-        $composer->printParagraph($text);
-        $result = $document->render()->save();
-        file_put_contents('pdf.pdf', $result);
+        $textWriter->writeText($textStyle, 'hi mom');
+        $layout->addParagraph($textWriter);
 
         // assert
-        $this->assertStringContainsString($text, $result);
+        $result = $this->render($document);
+        $this->assertStringContainsString('hi mom', $result);
     }
 
     /**
      * @throws \Exception
      */
-    public function testPrintTextMultipleTextsInResultFile()
+    public function testPrintMultipleTextMultipleTextsInResultFile()
     {
         // arrange
-        $text = 'hi mom';
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $layout = $this->createSingleColumnLayout($document);
+        $textWriter = $this->createTextWriter();
+        $textStyle = $this->createBodyTextStyle($document);
 
         // act
-        $composer->printParagraph($text . '1');
-        $composer->printParagraph($text . '2');
-        $result = $document->render()->save();
-        file_put_contents('pdf.pdf', $result);
+        $textWriter->writeText($textStyle, 'hi mom1' . "\n");
+        $textWriter->writeText($textStyle, 'hi mom2');
+        $layout->addParagraph($textWriter);
 
         // assert
-        $this->assertStringContainsString($text . '1', $result);
-        $this->assertStringContainsString($text . '2', $result);
+        $result = $this->render($document);
+        $this->assertStringContainsString('hi mom1', $result);
+        $this->assertStringContainsString('hi mom2', $result);
     }
 
     /**
      * @throws \Exception
      */
-    public function testPrintTextCursorInResultFile()
+    public function testPrintRectangleRectangleInResultFile()
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $layout = $this->createSingleColumnLayout($document);
+        $rectangleStyle = $this->createRectangleStyle();
 
         // act
-        $composer->moveDown(10);
-        $composer->printParagraph('text');
-        $result = $document->render()->save();
+        $layout->addRectangle($rectangleStyle, 20, 30);
+        $layout->addRectangle($rectangleStyle, 40, 30);
+        $layout->addRectangle($rectangleStyle, 100, 20);
+        $layout->addRectangle($rectangleStyle, 10, 50);
+        for ($i = 0; $i < 100; ++$i) {
+            $layout->addRectangle($rectangleStyle, ($i * 50) % 70, 40);
+        }
 
         // assert
-        $this->assertStringContainsString((string)(253.252), $result); // 297 - 30 - ascender
-        $this->assertStringContainsString((string)(25), $result);
+        $result = $this->render($document);
+        $this->assertStringContainsString('20', $result);
+        $this->assertStringContainsString('30', $result);
+        $this->assertStringContainsString('40', $result);
     }
 
     /**
      * @throws \Exception
      */
-    public function testPrintLineCursorInResultFile()
+    public function testPrintMultipleTextStylesTextInResultFile()
     {
         // arrange
-        $width = 20;
-        $height = 30;
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
-
-        $rectangleStyle = new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
-        $composer->setRectangleStyle($rectangleStyle);
+        $layout = $this->createSingleColumnLayout($document);
+        $textWriter = $this->createTextWriter();
+        $headerTextStyle = $this->createHeaderTextStyle($document);
+        $bodyTextStyle = $this->createBodyTextStyle($document);
+        $bodyBoldTextStyle = $this->createBodyBoldTextStyle($document);
 
         // act
-        $composer->printRectangle($width, $height);
-        $composer->moveRight($width);
-        $composer->printRectangle($width + $width, $height + $height);
-        $result = $document->render()->save();
+        $textWriter->writeText($headerTextStyle, 'Integration of UTF-8' . "\n");
+        $layout->addParagraph($textWriter);
+        $textWriter->writeText($bodyTextStyle, 'When you want to integrate all kinds of characters, there is little way around ');
+        $textWriter->writeText($bodyBoldTextStyle, 'so-called UTF-8');
+        $textWriter->writeText($bodyTextStyle, '. Even if used only in Europe, special characters ensure this is a capability in dire need.');
+        $layout->addParagraph($textWriter, 20);
+        $textWriter->writeText($bodyTextStyle, ' Even if used only in Europe, special characters ensure this is a capability in dire need.');
+        $layout->addParagraph($textWriter, 10, true);
 
         // assert
-        $this->assertStringContainsString((string)($width + $width), $result);
-        $this->assertStringContainsString((string)($height + $height), $result);
-        $this->assertStringContainsString((string)$width, $result);
-        $this->assertStringContainsString((string)$height, $result);
+        $result = $this->render($document);
+        $this->assertStringContainsString('Integration', $result);
+        $this->assertStringContainsString('integrate', $result);
+        $this->assertStringContainsString('so-called', $result);
+        $this->assertStringContainsString('Europe', $result);
     }
 
     /**
      * @throws \Exception
      */
-    public function testPrintTextDifferentDefaultFontTextAppears()
+    public function testPrintImagesImagesAppear()
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
-
-        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_DEFAULT);
-        $textStyle = new TextStyle($font, 30);
-        $composer->setTextStyle($textStyle);
-
-        // act
-        $composer->printParagraph('hi mom');
-        $result = $document->render()->save();
-        file_put_contents('pdf.pdf', $result);
-
-        // assert
-        $this->assertNotEmpty($result);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function testPrintImageImageAppears()
-    {
-        // arrange
+        $layout = $this->createSingleColumnLayout($document);
         $imageSrc = ResourcesProvider::getImage1Path();
-        $document = new Document();
-        $printer = new FlowPrinter($document, new SingleColumnLayout($document));
 
         // act
         $image = $document->getOrCreateImage($imageSrc);
-        $printer->printImage($image, 20, 20);
-        $result = $document->render()->save();
-        file_put_contents('pdf.pdf', $result);
+        $layout->addImage($image, 30, 30);
+        $layout->addImage($image, 100, 20);
+        $layout->addImage($image, 40, 40);
+        for ($i = 0; $i < 100; ++$i) {
+            $layout->addImage($image, ($i * 50) % 70, 40);
+        }
 
         // assert
+        $result = $this->render($document);
         $this->assertNotEmpty($result);
     }
 
@@ -159,170 +156,147 @@ class ComposerTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
+        $layout = $this->createSingleColumnLayout($document);
+        $textWriter = $this->createTextWriter();
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
-        $textStyle = new TextStyle($font, 12);
+        $textStyle = new TextStyle($font, 5, 1.2);
 
         // act
-        $composer->setTextStyle($textStyle);
-        $composer->printParagraph('Hallo und Sonderzéíchèn');
-        $backend = $document->render();
-
-        $documentConfiguration = new Configuration();
-        $documentConfiguration->setCreateFontSubsets(true);
-        $documentConfiguration->setAutoResizeImages(true);
-        $backend->setConfiguration($documentConfiguration);
-
-        $catalog = $backend->render();
-        $result = $catalog->save();
-        file_put_contents('pdf.pdf', $result);
-
-        /** @var Type0 $font */
-        $font = $catalog->getPages()->getKids()[0]->getResources()->getFonts()[0];
-        $type0Font = $font->getDescendantFont()->getFontDescriptor()->getFontFile3()->getFontData();
-        file_put_contents('subset.ttf', $type0Font);
+        $textWriter->writeText($textStyle, 'When you want to integrate all kinds of characters, there is little way around UTF-8. Custom font require you to specify an encoding anyways; why not just make it UTF-8?');
+        $layout->addParagraph($textWriter, 20);
 
         // assert
-        $this->assertNotEmpty($result);
+        $result = $this->render($document);
+        $this->assertStringContainsString('integrate', $result);
+        $this->assertStringContainsString('make', $result);
     }
 
     /**
      * @throws \Exception
      */
-    public function testPrintTextParagraphs()
+    public function testPrintMultipleTextParagraphs()
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
-        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
-        $textStyle = new TextStyle($font, 4, 1.2);
+        $layout = $this->createSingleColumnLayout($document);
+        $textWriter = $this->createTextWriter();
+        $headerTextStyle = $this->createHeaderTextStyle($document);
+        $bodyTextStyle = $this->createBodyTextStyle($document);
 
         // act
-        $composer->setTextStyle($textStyle);
-        $phrase11 = 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ';
-        $phrase12 = 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom Kontoauszug; diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.';
+        $textWriter->writeText($headerTextStyle, 'PDF');
+        $layout->addParagraph($textWriter);
+        $layout->addSpace(5);
 
-        $phrase21 = 'Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. ';
-        $phrase22 = 'Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. ';
-        $phrase23 = 'Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. ';
-        $phrase24 = 'Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator.';
+        $textWriter->writeText($bodyTextStyle, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
+        $textWriter->writeText($bodyTextStyle, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom Kontoauszug; diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
+        $layout->addParagraph($textWriter);
+        $layout->addSpace(3);
 
-        $phrase31 = 'Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). ';
-        $phrase32 = 'Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. ';
-        $phrase33 = 'Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. ';
-        $phrase34 = 'Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. ';
-        $phrase35 = 'Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. ';
-        $phrase36 = 'Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten.';
-        $composer->printParagraph($phrase11);
-        $composer->continueParagraph($phrase12);
-        $composer->moveDown(4);
+        $textWriter->writeText($bodyTextStyle, 'Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. ');
+        $textWriter->writeText($bodyTextStyle, 'Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. ');
+        $textWriter->writeText($bodyTextStyle, 'Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. ');
+        $textWriter->writeText($bodyTextStyle, 'Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator.');
+        $layout->addParagraph($textWriter);
+        $layout->addSpace(3);
 
-        $composer->printParagraph($phrase21);
-        $composer->continueParagraph($phrase22);
-        $composer->continueParagraph($phrase23);
-        $composer->continueParagraph($phrase24);
-        $composer->moveDown(4);
-
-        $composer->printParagraph($phrase31);
-        $composer->continueParagraph($phrase32);
-        $composer->continueParagraph($phrase33);
-        $composer->continueParagraph($phrase34);
-        $composer->continueParagraph($phrase35);
-        $composer->continueParagraph($phrase36);
-        $backend = $document->render();
-
-        $catalog = $backend->render();
-        $result = $catalog->save();
-        file_put_contents('pdf.pdf', $result);
+        $textWriter->writeText($bodyTextStyle, 'Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). ');
+        $textWriter->writeText($bodyTextStyle, 'Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. ');
+        $textWriter->writeText($bodyTextStyle, 'Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. ');
+        $textWriter->writeText($bodyTextStyle, 'Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. ');
+        $textWriter->writeText($bodyTextStyle, 'Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. ');
+        $textWriter->writeText($bodyTextStyle, 'Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten.');
+        $layout->addParagraph($textWriter);
+        $layout->addSpace(3);
 
         // assert
-        $this->assertNotEmpty($result);
+        $result = $this->render($document);
+        $this->assertStringContainsString('Texteditor', $result);
+        $this->assertStringContainsString('Parser', $result);
+        $this->assertStringContainsString('Abstraktionsebene', $result);
+        $this->assertStringContainsString('magic', $result);
     }
 
     /**
      * @throws \Exception
      */
-    public function testRectangleFlowPrint()
+    public function testPrintTextOverMultiplePages()
     {
         // arrange
         $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
-
-        $rectangleStyle = new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
-        $composer->setRectangleStyle($rectangleStyle);
-
-        // act
-        $composer->printRectangle(20, 40);
-        $composer->printRectangle(40, 40);
-        $composer->printRectangle(10, 20);
-        $composer->printRectangle(80, 40);
-        $composer->printRectangle(80, 40);
-        $composer->printRectangle(80, 40);
-        for ($i = 0; $i < 100; ++$i) {
-            $composer->printRectangle(($i * 50) % 70, 40);
-        }
-        $catalog = $document->render();
-        $result = $catalog->save();
-        file_put_contents('pdf.pdf', $result);
-
-        // assert
-        $this->assertNotEmpty($result);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function testImageFlowPrint()
-    {
-        // arrange
-        $imageSrc = ResourcesProvider::getImage1Path();
-        $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
-        $image = $document->getOrCreateImage($imageSrc);
+        $layout = $this->createSingleColumnLayout($document);
+        $textWriter = $this->createTextWriter();
+        $textStyle = $this->createBodyTextStyle($document);
 
         // act
-        $composer->printImage($image, 20, 40);
-        $composer->printImage($image, 40, 40);
-        $composer->printImage($image, 10, 20);
-        $composer->printImage($image, 80, 40);
-        $composer->printImage($image, 80, 40);
-        $composer->printImage($image, 80, 40);
-        $composer->printImage($image, 0, 40);
-        $composer->printImage($image, 50, 40);
-        for ($i = 0; $i < 100; ++$i) {
-            $composer->printImage($image, ($i * 50) % 70, 40);
-        }
-        $catalog = $document->render();
-        $result = $catalog->save();
-        file_put_contents('pdf.pdf', $result);
-
-        // assert
-        $this->assertNotEmpty($result);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function testPrintLongTextSizing()
-    {
-        // arrange
-        $document = new Document();
-        $composer = new FlowPrinter($document, new SingleColumnLayout($document));
-        $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
-        $textStyle = new TextStyle($font, 4, 1.2);
-
-        // act
-        $composer->setTextStyle($textStyle);
         $loremIpsum = 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom Kontoauszug; diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben. Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator. Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten. Auch beim Text müssen so Umbrüche in einem Paragraph oder der Abstand zwischen den Buchstaben im Blocksatz explizit definiert werden. Wirklich toll wirds aber erst mit Schriftarten. Das PDF hat ganze 14 Standardschriftarten; es sind die allseits beliebten Times Roman, Courier und Helvetica, und ZapfDingbats und Symbol (Emojis bevors Emojis gab). Dazu gibts diverse Standard Ein-Byte Encodings; das brauchbarste für Europäer ist das WinAnsiEncoding. Für anspruchslose Kunden und deutsche, französische oder italienische Korrespondez mag man damit wegkommen. Ab dem ersten Smørrebrød ist aber Schluss: Dann muss man mit eigenen "Embedded Fonts" arbeiten.';
-        $composer->printParagraph($loremIpsum);
-        $composer->printParagraph($loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum);
-        $backend = $document->render();
+        $loremIpsum6 = $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum;
+        $textWriter->writeText($textStyle, $loremIpsum);
+        $textWriter->writeText($textStyle, ' ' . $loremIpsum6);
+        $layout->addParagraph($textWriter);
+        $layout->addSpace(5);
 
-        $catalog = $backend->render();
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('Kontoauszug', $result);
+    }
+
+    private function createTextWriter(): TextWriter
+    {
+        $wordSizerRepository = new WordSizerRepository();
+
+        return new TextWriter($wordSizerRepository);
+    }
+
+    private function createSingleColumnLayout(Document $document): ColumnLayout
+    {
+        $printer = new CursorPrinter($document);
+        $columnGenerator = new SingleColumnGenerator($document);
+
+        return new ColumnLayout($printer, $columnGenerator);
+    }
+
+    private function createBodyTextStyle(Document $document): TextStyle
+    {
+        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_DEFAULT);
+
+        return new TextStyle($font, 5);
+    }
+
+    private function createBodyBoldTextStyle(Document $document): TextStyle
+    {
+        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_BOLD);
+
+        return new TextStyle($font, 5);
+    }
+
+    private function createHeaderTextStyle(Document $document): TextStyle
+    {
+        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_HELVETICA, Document\Font\DefaultFont::STYLE_DEFAULT);
+
+        return new TextStyle($font, 8);
+    }
+
+    private function render(Document $document): string
+    {
+        $catalog = $document->render()->render();
+        $fonts = $catalog->getPages()->getKids()[0]->getResources()->getFonts();
+        for ($i = 0; $i < \count($fonts); ++$i) {
+            $font = $fonts[$i];
+            if ($font instanceof Type0) {
+                $type0Font = $fonts[$i]->getDescendantFont()->getFontDescriptor()->getFontFile3()->getFontData();
+                file_put_contents('subset' . $i . '.ttf', $type0Font);
+            }
+        }
+
         $result = $catalog->save();
         file_put_contents('pdf.pdf', $result);
 
-        // assert
-        $this->assertNotEmpty($result);
+        return $result;
+    }
+
+    private function createRectangleStyle(): RectangleStyle
+    {
+        return new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
     }
 }

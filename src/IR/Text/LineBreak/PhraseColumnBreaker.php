@@ -12,9 +12,10 @@
 namespace PdfGenerator\IR\Text\LineBreak;
 
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
-use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizer;
+use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
+use PdfGenerator\IR\Text\TextWriter\Phrase;
 
-class ScaledColumnBreaker
+class PhraseColumnBreaker
 {
     /**
      * @var ColumnBreaker
@@ -29,10 +30,12 @@ class ScaledColumnBreaker
     /**
      * ColumnBreaker constructor.
      */
-    public function __construct(TextStyle $textStyle, WordSizer $sizer, string $text)
+    public function __construct(Phrase $phrase, WordSizerRepository $wordSizerRepository)
     {
-        $this->columnBreaker = new ColumnBreaker($sizer, $text);
-        $this->textStyle = $textStyle;
+        $this->textStyle = $phrase->getTextStyle();
+
+        $wordSizer = $wordSizerRepository->getWordSizer($this->textStyle->getFont());
+        $this->columnBreaker = new ColumnBreaker($wordSizer, $phrase->getText());
     }
 
     public function hasMoreLines(): bool
@@ -55,13 +58,18 @@ class ScaledColumnBreaker
         return [$line, $scaledWidth];
     }
 
-    public function nextColumn(float $targetWidth, int $maxLines)
+    public function nextColumn(float $targetWidth, int $maxLines, float $indent, bool $newParagraph)
     {
         $scale = $this->getScale();
-        [$lines, $lineWidths] = $this->columnBreaker->nextColumn($targetWidth * $scale, $maxLines);
+        [$lines, $lineWidths] = $this->columnBreaker->nextColumn($targetWidth * $scale, $maxLines, $indent * $scale, $newParagraph);
 
         $scaledLineWidths = array_map(function ($entry) use ($scale) { return $entry / $scale; }, $lineWidths);
 
         return [$lines, $scaledLineWidths];
+    }
+
+    public function getTextStyle(): TextStyle
+    {
+        return $this->textStyle;
     }
 }

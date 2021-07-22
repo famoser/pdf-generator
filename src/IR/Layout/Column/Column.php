@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Layout;
+namespace PdfGenerator\IR\Layout\Column;
 
 use PdfGenerator\IR\Cursor;
 
@@ -68,6 +68,11 @@ class Column
     public function getAvailableWidth(Cursor $cursor): float
     {
         return $this->getMaxLeft() - $cursor->getXCoordinate();
+    }
+
+    public function getAvailableHeight(Cursor $cursor): float
+    {
+        return $cursor->getYCoordinate() - $this->getMinTop();
     }
 
     public function hasHorizontalSpaceFor(Cursor $cursor, float $width)
