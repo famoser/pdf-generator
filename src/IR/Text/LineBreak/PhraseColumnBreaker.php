@@ -13,7 +13,7 @@ namespace PdfGenerator\IR\Text\LineBreak;
 
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
-use PdfGenerator\IR\Text\TextWriter\Phrase;
+use PdfGenerator\IR\Text\TextSizer\Phrase;
 
 class PhraseColumnBreaker
 {

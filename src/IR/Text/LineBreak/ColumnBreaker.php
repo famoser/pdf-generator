@@ -16,36 +16,68 @@ use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizer;
 class ColumnBreaker
 {
     /**
+     * @var string[]
+     */
+    private $remainingLines;
+
+    /**
      * @var LineBreaker
      */
     private $lineBreaker;
+
+    /**
+     * @var WordSizer
+     */
+    private $sizer;
 
     /**
      * ColumnBreaker constructor.
      */
     public function __construct(WordSizer $sizer, string $text)
     {
-        $this->lineBreaker = new LineBreaker($sizer, $text);
+        $this->sizer = $sizer;
+        $this->remainingLines = explode("\n", $text);
+        $this->advanceLineBreaker();
+    }
+
+    private function advanceLineBreaker()
+    {
+        if (\count($this->remainingLines) === 0) {
+            return false;
+        }
+
+        $line = array_shift($this->remainingLines);
+        $this->lineBreaker = new LineBreaker($this->sizer, $line);
+
+        return true;
     }
 
     public function hasMoreLines(): bool
     {
-        return $this->lineBreaker->hasNextLine();
+        return $this->lineBreaker->hasNextLine() || \count($this->remainingLines) > 0;
     }
 
     public function nextLine(float $targetWidth, bool $allowEmpty)
     {
+        if (!$this->lineBreaker->hasNextLine()) {
+            $this->advanceLineBreaker();
+        }
+
         return $this->lineBreaker->nextLine($targetWidth, $allowEmpty);
     }
 
     public function nextColumn(float $targetWidth, int $maxLines, float $indent, bool $newParagraph)
     {
         $allowEmpty = !$newParagraph; // if new paragraph force content on first line, else do not
-        [$line, $width] = $this->lineBreaker->nextLine($targetWidth - $indent, $allowEmpty);
+        [$line, $width] = $this->nextLine($targetWidth - $indent, $allowEmpty);
         $lines = [$line];
         $lineWidths = [$width];
 
-        while ($this->lineBreaker->hasNextLine() && \count($lines) < $maxLines) {
+        while (\count($lines) < $maxLines) {
+            if (!$this->lineBreaker->hasNextLine() && !$this->advanceLineBreaker()) {
+                break;
+            }
+
             [$line, $width] = $this->lineBreaker->nextLine($targetWidth, false);
             $lines[] = $line;
             $lineWidths[] = $width;

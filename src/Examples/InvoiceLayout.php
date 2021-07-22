@@ -12,7 +12,7 @@
 namespace PdfGenerator\Examples;
 
 use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Text\TextWriter;
+use PdfGenerator\IR\Text\TextSizer;
 
 class InvoiceLayout
 {
@@ -61,7 +61,7 @@ class InvoiceLayout
     {
     }
 
-    public function printTextWriter(TextWriter $textWriter)
+    public function printTextWriter(TextSizer $textWriter)
     {
     }
 }

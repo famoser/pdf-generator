@@ -53,9 +53,9 @@ class Cursor
         return $this->pageIndex;
     }
 
-    public function withXCoordinate(float $newXCoodinate)
+    public function withXCoordinate(float $newXCoordinate)
     {
-        return new self($newXCoodinate, $this->yCoordinate, $this->pageIndex);
+        return new self($newXCoordinate, $this->yCoordinate, $this->pageIndex);
     }
 
     public function withYCoordinate(float $newYCoordinate)

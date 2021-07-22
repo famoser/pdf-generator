@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\TextWriter;
+namespace PdfGenerator\IR\Text\TextSizer;
 
 class TextBlock
 {
