@@ -20,7 +20,7 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
-use PdfGenerator\IR\Text\TextSizer;
+use PdfGenerator\IR\Text\TextWriter;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +34,7 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextSizer();
+        $textWriter = $this->createTextWriter();
         $textStyle = $this->createBodyTextStyle($document);
 
         // act
@@ -54,7 +54,7 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextSizer();
+        $textWriter = $this->createTextWriter();
         $textStyle = $this->createBodyTextStyle($document);
 
         // act
@@ -102,7 +102,7 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextSizer();
+        $textWriter = $this->createTextWriter();
         $headerTextStyle = $this->createHeaderTextStyle($document);
         $bodyTextStyle = $this->createBodyTextStyle($document);
         $bodyBoldTextStyle = $this->createBodyBoldTextStyle($document);
@@ -157,7 +157,7 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextSizer();
+        $textWriter = $this->createTextWriter();
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 5, 1.2);
 
@@ -179,7 +179,7 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextSizer();
+        $textWriter = $this->createTextWriter();
         $headerTextStyle = $this->createHeaderTextStyle($document);
         $bodyTextStyle = $this->createBodyTextStyle($document);
 
@@ -225,7 +225,7 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextSizer();
+        $textWriter = $this->createTextWriter();
         $textStyle = $this->createBodyTextStyle($document);
 
         // act
@@ -241,11 +241,11 @@ class ComposerTest extends TestCase
         $this->assertStringContainsString('Kontoauszug', $result);
     }
 
-    private function createTextSizer(): TextSizer
+    private function createTextWriter(): TextWriter
     {
         $wordSizerRepository = new WordSizerRepository();
 
-        return new TextSizer($wordSizerRepository);
+        return new TextWriter($wordSizerRepository);
     }
 
     private function createSingleColumnLayout(Document $document): ColumnLayout

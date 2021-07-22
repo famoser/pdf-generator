@@ -12,7 +12,7 @@
 namespace PdfGenerator\Examples;
 
 use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Text\TextSizer;
+use PdfGenerator\IR\Text\TextWriter;
 
 class LetterLayout
 {
@@ -54,7 +54,7 @@ class LetterLayout
     {
     }
 
-    public function withBody(TextSizer $textWriter)
+    public function withBody(TextWriter $textWriter)
     {
     }
 

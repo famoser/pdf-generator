@@ -14,11 +14,11 @@ namespace PdfGenerator\IR\Text;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Text\LineBreak\PhraseColumnBreaker;
 use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
-use PdfGenerator\IR\Text\TextSizer\MeasuredPhrase;
-use PdfGenerator\IR\Text\TextSizer\Phrase;
-use PdfGenerator\IR\Text\TextSizer\TextBlock;
+use PdfGenerator\IR\Text\TextWriter\MeasuredPhrase;
+use PdfGenerator\IR\Text\TextWriter\Phrase;
+use PdfGenerator\IR\Text\TextWriter\TextBlock;
 
-class TextSizer
+class TextWriter
 {
     /**
      * @var Phrase[]

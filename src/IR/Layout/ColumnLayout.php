@@ -17,8 +17,7 @@ use PdfGenerator\IR\Layout\Column\Column;
 use PdfGenerator\IR\Layout\Column\ColumnGenerator;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Text\TextSizer;
-use PdfGenerator\IR\Text\TextSizer\TextBlock;
+use PdfGenerator\IR\Text\TextWriter;
 
 class ColumnLayout
 {
@@ -49,9 +48,10 @@ class ColumnLayout
         $this->printer->setCursor($this->activeColumn->getStart());
     }
 
-    public function addParagraph(TextSizer $textWriter, float $indent = 0, bool $continueParagraph = false)
+    public function addParagraph(TextWriter $textWriter, float $indent = 0, bool $continueParagraph = false)
     {
         $cursor = $this->printer->getCursor();
+        $lineStart = $this->activeColumn->getStart()->getXCoordinate();
 
         if ($continueParagraph) {
             // early-out if no text to be written; should not modify cursor at all
@@ -60,14 +60,14 @@ class ColumnLayout
             }
 
             // reposition cursor to previous baseline
-            $currentIndent = $cursor->getXCoordinate() - $this->activeColumn->getStart()->getXCoordinate();
+            $currentIndent = $cursor->getXCoordinate() - $lineStart;
             $nextTextStyle = $textWriter->getNextTextStyle();
             $up = $nextTextStyle->getAscender() - $nextTextStyle->getDescender();
             $cursor = $cursor->moveRightDown(-$currentIndent, -$up);
 
             $indent += $currentIndent;
         } else {
-            $cursor = $cursor->withXCoordinate($this->activeColumn->getStart()->getXCoordinate());
+            $cursor = $cursor->withXCoordinate($lineStart);
         }
 
         $continueColumn = true;
@@ -79,53 +79,9 @@ class ColumnLayout
             $height = $this->activeColumn->getAvailableHeight($cursor);
 
             $textBlock = $textWriter->getTextBlock($width, $height, $indent);
-            $cursor = $this->printTextBlock($cursor, $textBlock, $continueParagraph);
+            $cursor = $this->printer->printTextBlock($cursor, $textBlock, $lineStart, $continueParagraph);
             $continueColumn = false;
         }
-
-        $this->printer->setCursor($cursor);
-    }
-
-    private function printTextBlock(Cursor $cursor, TextBlock $textBlock, bool $continueParagraph = false)
-    {
-        $cursor = $cursor->moveRightDown($textBlock->getIndent(), $textBlock->getAscender());
-
-        // baseline aligned
-        foreach ($textBlock->getMeasuredPhrases() as $measuredPhrase) {
-            $this->printer->setTextStyle($measuredPhrase->getTextStyle());
-
-            $lines = $measuredPhrase->getLines();
-            $lineWidths = $measuredPhrase->getLineWidths();
-            $leading = $measuredPhrase->getTextStyle()->getLeading();
-
-            if ($continueParagraph || $textBlock->getIndent() > 0) {
-                // continue the current line
-                $line = array_shift($lines);
-                $lineWidth = array_shift($lineWidths);
-
-                $this->printer->printText($cursor, $line);
-                $cursor = $cursor->moveRight($lineWidth);
-
-                if (\count($lines) > 0) {
-                    $cursor = $cursor->moveDown($leading);
-                    $cursor = $cursor->withXCoordinate($this->activeColumn->getStart()->getXCoordinate());
-                }
-            }
-
-            if (\count($lines) === 0) {
-                continue;
-            }
-
-            $text = implode("\n", $lines);
-            $this->printer->printText($cursor, $text);
-
-            $lastLineWidth = $lineWidths[\count($lines) - 1];
-            $height = (\count($lines) - 1) * $leading;
-            $cursor = $cursor->moveRightDown($lastLineWidth, $height);
-            $continueParagraph = true;
-        }
-
-        return $cursor->moveDown(-$textBlock->getDescender());
     }
 
     public function addImage(Image $image, float $width, float $height)
@@ -155,9 +111,6 @@ class ColumnLayout
         }
 
         $print($cursor);
-
-        $cursor = $cursor->moveRight($width);
-        $this->printer->setCursor($cursor);
     }
 
     private function nextLine(Cursor $cursor, float $height, float $nextColumnHeight = null)
