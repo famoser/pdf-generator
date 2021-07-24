@@ -17,7 +17,7 @@ use PdfGenerator\IR\Layout\Column\Column;
 use PdfGenerator\IR\Layout\Column\ColumnGenerator;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Text\TextWriter;
+use PdfGenerator\IR\Text\TextBuffer;
 
 class ColumnLayout
 {
@@ -48,7 +48,7 @@ class ColumnLayout
         $this->printer->setCursor($this->activeColumn->getStart());
     }
 
-    public function addParagraph(TextWriter $textWriter, float $indent = 0, bool $continueParagraph = false)
+    public function addParagraph(TextBuffer $textWriter, float $indent = 0, bool $continueParagraph = false)
     {
         $cursor = $this->printer->getCursor();
         $lineStart = $this->activeColumn->getStart()->getXCoordinate();

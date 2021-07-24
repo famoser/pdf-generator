@@ -14,11 +14,11 @@ namespace PdfGenerator\IR\Text;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Text\LineBreak\PhraseColumnBreaker;
 use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
-use PdfGenerator\IR\Text\TextWriter\MeasuredPhrase;
-use PdfGenerator\IR\Text\TextWriter\Phrase;
-use PdfGenerator\IR\Text\TextWriter\TextBlock;
+use PdfGenerator\IR\Text\TextBuffer\MeasuredPhrase;
+use PdfGenerator\IR\Text\TextBuffer\Phrase;
+use PdfGenerator\IR\Text\TextBuffer\TextBlock;
 
-class TextWriter
+class TextBuffer
 {
     /**
      * @var Phrase[]
@@ -35,12 +35,12 @@ class TextWriter
      */
     private $wordSizerRepository;
 
-    public function __construct(WordSizerRepository $wordSizerRepository)
+    public function __construct()
     {
-        $this->wordSizerRepository = $wordSizerRepository;
+        $this->wordSizerRepository = new WordSizerRepository();
     }
 
-    public function writeText(Document\Page\Content\Text\TextStyle $textStyle, string $text)
+    public function write(Document\Page\Content\Text\TextStyle $textStyle, string $text)
     {
         $phrase = new Phrase();
         $phrase->setText($text);

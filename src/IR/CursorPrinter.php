@@ -15,7 +15,7 @@ use PdfGenerator\IR\Printer\StyleGetSetTrait;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
-use PdfGenerator\IR\Text\TextWriter\TextBlock;
+use PdfGenerator\IR\Text\TextBuffer\TextBlock;
 
 class CursorPrinter
 {
