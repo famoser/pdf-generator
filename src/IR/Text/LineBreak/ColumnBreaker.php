@@ -69,18 +69,22 @@ class ColumnBreaker
     public function nextColumn(float $targetWidth, int $maxLines, float $indent, bool $newParagraph)
     {
         $allowEmpty = !$newParagraph; // if new paragraph force content on first line, else do not
-        [$line, $width] = $this->nextLine($targetWidth - $indent, $allowEmpty);
-        $lines = [$line];
-        $lineWidths = [$width];
+        $requestedWidth = $targetWidth - $indent;
 
+        $lines = [];
+        $lineWidths = [];
         while (\count($lines) < $maxLines) {
             if (!$this->lineBreaker->hasNextLine() && !$this->advanceLineBreaker()) {
                 break;
             }
 
-            [$line, $width] = $this->lineBreaker->nextLine($targetWidth, false);
+            [$line, $width] = $this->lineBreaker->nextLine($requestedWidth, $allowEmpty);
             $lines[] = $line;
             $lineWidths[] = $width;
+
+            // while first line may have indent, further lines do not
+            $allowEmpty = false;
+            $requestedWidth = $targetWidth;
         }
 
         return [$lines, $lineWidths];

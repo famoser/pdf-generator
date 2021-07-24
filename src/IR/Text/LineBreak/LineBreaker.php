@@ -53,12 +53,18 @@ class LineBreaker
         $currentWidth = $this->sizer->getWidth($nextWord);
         $currentWords = $nextWord;
 
-        if ($allowEmpty && $currentWidth > $targetWidth) {
-            --$this->nextWordIndex;
+        // early-out for long words
+        if ($currentWidth > $targetWidth) {
+            if ($allowEmpty) {
+                --$this->nextWordIndex;
 
-            return ['', 0];
+                return ['', 0];
+            }
+
+            return [$currentWords, $currentWidth];
         }
 
+        // keep adding words until line is full
         while ($this->nextWordIndex < \count($this->words)) {
             // check if next word fits
             $nextWord = $this->words[$this->nextWordIndex++];

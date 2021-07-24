@@ -48,16 +48,6 @@ class PhraseColumnBreaker
         return $this->textStyle->getFontScaling();
     }
 
-    public function nextLine(float $targetWidth, bool $allowEmpty)
-    {
-        $scale = $this->getScale();
-        [$line, $lineWidth] = $this->columnBreaker->nextLine($targetWidth * $scale, $allowEmpty);
-
-        $scaledWidth = $lineWidth / $scale;
-
-        return [$line, $scaledWidth];
-    }
-
     public function nextColumn(float $targetWidth, int $maxLines, float $indent, bool $newParagraph)
     {
         $scale = $this->getScale();
