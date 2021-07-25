@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Breaker\LineBreak;
+namespace PdfGenerator\IR\Text\GreedyLineBreaker;
 
-use PdfGenerator\IR\Breaker\TextBreaker\Fragment;
 use PdfGenerator\IR\Buffer\TextBuffer\MeasuredPhrase;
+use PdfGenerator\IR\Printer\Fragment;
 
 class PhraseBreaker
 {

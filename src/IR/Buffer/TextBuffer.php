@@ -16,8 +16,8 @@ use PdfGenerator\IR\Buffer\TextBuffer\MeasuredParagraph;
 use PdfGenerator\IR\Buffer\TextBuffer\MeasuredPhrase;
 use PdfGenerator\IR\Buffer\TextBuffer\Phrase;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
-use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizer;
-use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
+use PdfGenerator\IR\Text\WordSizer\WordSizer;
+use PdfGenerator\IR\Text\WordSizer\WordSizerRepository;
 
 class TextBuffer
 {

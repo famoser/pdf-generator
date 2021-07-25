@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\IR\Layout;
 
-use PdfGenerator\IR\Breaker\LineBreak\ParagraphBreaker;
 use PdfGenerator\IR\Buffer\TextBuffer;
 use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\CursorPrinter;
@@ -19,6 +18,7 @@ use PdfGenerator\IR\Layout\Column\Column;
 use PdfGenerator\IR\Layout\Column\ColumnGenerator;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Text\GreedyLineBreaker\ParagraphBreaker;
 
 class ColumnLayout
 {

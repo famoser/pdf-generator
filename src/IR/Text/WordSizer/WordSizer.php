@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\LineBreak\WordSizer;
+namespace PdfGenerator\IR\Text\WordSizer;
 
 class WordSizer
 {

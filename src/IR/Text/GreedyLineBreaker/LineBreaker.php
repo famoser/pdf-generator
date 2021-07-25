@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Breaker\LineBreak;
+namespace PdfGenerator\IR\Text\GreedyLineBreaker;
 
 use PdfGenerator\IR\Buffer\TextBuffer\MeasuredLine;
 

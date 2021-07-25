@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Breaker\TextBreaker;
+namespace PdfGenerator\IR\Printer;
 
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 

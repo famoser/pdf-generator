@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR;
 
-use PdfGenerator\IR\Breaker\TextBreaker\Line;
+use PdfGenerator\IR\Printer\Line;
 use PdfGenerator\IR\Printer\StyleGetSetTrait;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Image;
@@ -53,7 +53,7 @@ class CursorPrinter
         $this->cursor = $cursor;
     }
 
-    public function printLine(Cursor $cursor, Breaker\TextBreaker\Line $line): Cursor
+    public function printLine(Cursor $cursor, Line $line): Cursor
     {
         foreach ($line->getFragments() as $fragment) {
             $this->setTextStyle($fragment->getTextStyle());
