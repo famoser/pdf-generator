@@ -16,7 +16,7 @@ use PdfGenerator\IR\Buffer\RowBuffer\MeasuredRow;
 class TableBuffer
 {
     /**
-     * @var MeasuredRow
+     * @var MeasuredRow[]
      */
     private $rows;
 

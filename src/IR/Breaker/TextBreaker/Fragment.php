@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Buffer\TextBuffer;
+namespace PdfGenerator\IR\Breaker\TextBreaker;
 
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
-class MeasuredPhrase
+class Fragment
 {
     /**
-     * @var MeasuredLine[]
+     * @var string
      */
-    private $measuredLines;
+    private $text;
 
     /**
      * @var TextStyle
@@ -26,26 +26,32 @@ class MeasuredPhrase
     private $textStyle;
 
     /**
-     * MeasuredPhrase constructor.
-     *
-     * @param MeasuredLine[] $measuredLines
+     * @var float
      */
-    public function __construct(array $measuredLines, TextStyle $textStyle)
-    {
-        $this->measuredLines = $measuredLines;
-        $this->textStyle = $textStyle;
-    }
+    private $width;
 
     /**
-     * @return MeasuredLine[]
+     * Fragment constructor.
      */
-    public function getMeasuredLines(): array
+    public function __construct(string $text, TextStyle $textStyle, float $width)
     {
-        return $this->measuredLines;
+        $this->text = $text;
+        $this->textStyle = $textStyle;
+        $this->width = $width;
+    }
+
+    public function getText(): string
+    {
+        return $this->text;
     }
 
     public function getTextStyle(): TextStyle
     {
         return $this->textStyle;
+    }
+
+    public function getWidth(): float
+    {
+        return $this->width;
     }
 }

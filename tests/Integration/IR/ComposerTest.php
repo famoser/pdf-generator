@@ -12,6 +12,7 @@
 namespace PdfGenerator\Tests\Integration\IR;
 
 use PdfGenerator\Backend\Catalog\Font\Type0;
+use PdfGenerator\IR\Buffer\TextBuffer;
 use PdfGenerator\IR\CursorPrinter;
 use PdfGenerator\IR\Layout\Column\SingleColumnGenerator;
 use PdfGenerator\IR\Layout\ColumnLayout;
@@ -19,7 +20,6 @@ use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
-use PdfGenerator\IR\Text\TextBuffer;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -101,20 +101,24 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = new TextBuffer();
         $headerTextStyle = $this->createHeaderTextStyle($document);
         $bodyTextStyle = $this->createBodyTextStyle($document);
         $bodyBoldTextStyle = $this->createBodyBoldTextStyle($document);
 
         // act
+        $textWriter = new TextBuffer();
         $textWriter->write($headerTextStyle, 'Integration of UTF-8' . "\n");
         $layout->addParagraph($textWriter);
+
+        $textWriter = new TextBuffer();
         $textWriter->write($bodyTextStyle, 'When you want to integrate all kinds of characters, there is little way around ');
         $textWriter->write($bodyBoldTextStyle, 'so-called UTF-8');
         $textWriter->write($bodyTextStyle, '. Even if used only in Europe, special characters ensure this is a capability in dire need.');
         $layout->addParagraph($textWriter, 20);
-        $textWriter->write($bodyTextStyle, ' Even if used only in Europe, special characters ensure this is a capability in dire need.');
-        $layout->addParagraph($textWriter, 10, true);
+
+        $textWriter = new TextBuffer();
+        $textWriter->write($bodyTextStyle, ' However, integrating UTF-8 also requires embedding TrueType fonts, and now things start to get complicated.');
+        $layout->continueParagraph($textWriter, 10);
 
         // assert
         $result = $this->render($document);
@@ -178,16 +182,17 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = new TextBuffer();
         $headerTextStyle = $this->createHeaderTextStyle($document);
         $bodyTextStyle = $this->createBodyTextStyle($document);
         $bodyBoldTextStyle = $this->createBodyBoldTextStyle($document);
 
         // act
+        $textWriter = new TextBuffer();
         $textWriter->write($headerTextStyle, 'PDF');
         $layout->addParagraph($textWriter);
         $layout->addSpace(5);
 
+        $textWriter = new TextBuffer();
         $textWriter->write($bodyTextStyle, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
         $textWriter->write($bodyTextStyle, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ');
         $textWriter->write($bodyBoldTextStyle, 'Kontoauszug');
@@ -195,6 +200,7 @@ class ComposerTest extends TestCase
         $layout->addParagraph($textWriter);
         $layout->addSpace(3);
 
+        $textWriter = new TextBuffer();
         $textWriter->write($bodyTextStyle, 'Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. ');
         $textWriter->write($bodyTextStyle, 'Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. ');
         $textWriter->write($bodyTextStyle, 'Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. ');
@@ -202,6 +208,7 @@ class ComposerTest extends TestCase
         $layout->addParagraph($textWriter);
         $layout->addSpace(3);
 
+        $textWriter = new TextBuffer();
         $textWriter->write($bodyTextStyle, 'Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). ');
         $textWriter->write($bodyTextStyle, 'Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. ');
         $textWriter->write($bodyTextStyle, 'Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. ');
@@ -227,12 +234,12 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = new TextBuffer();
         $textStyle = $this->createBodyTextStyle($document);
 
         // act
         $loremIpsum = 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom Kontoauszug; diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben. Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator. Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten. Auch beim Text müssen so Umbrüche in einem Paragraph oder der Abstand zwischen den Buchstaben im Blocksatz explizit definiert werden. Wirklich toll wirds aber erst mit Schriftarten. Das PDF hat ganze 14 Standardschriftarten; es sind die allseits beliebten Times Roman, Courier und Helvetica, und ZapfDingbats und Symbol (Emojis bevors Emojis gab). Dazu gibts diverse Standard Ein-Byte Encodings; das brauchbarste für Europäer ist das WinAnsiEncoding. Für anspruchslose Kunden und deutsche, französische oder italienische Korrespondez mag man damit wegkommen. Ab dem ersten Smørrebrød ist aber Schluss: Dann muss man mit eigenen "Embedded Fonts" arbeiten.';
         $loremIpsum6 = $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum;
+        $textWriter = new TextBuffer();
         $textWriter->write($textStyle, $loremIpsum);
         $textWriter->write($textStyle, ' ' . $loremIpsum6);
         $layout->addParagraph($textWriter);

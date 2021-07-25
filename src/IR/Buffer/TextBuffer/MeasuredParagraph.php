@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\IR\Buffer\TextBuffer;
 
+use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
+
 class MeasuredParagraph
 {
     /**
@@ -29,5 +31,15 @@ class MeasuredParagraph
     public function getMeasuredPhrases(): array
     {
         return $this->measuredPhrases;
+    }
+
+    public function isEmpty(): bool
+    {
+        return \count($this->measuredPhrases) > 0;
+    }
+
+    public function getFirstTextStyle(): TextStyle
+    {
+        return $this->measuredPhrases[0]->getTextStyle();
     }
 }

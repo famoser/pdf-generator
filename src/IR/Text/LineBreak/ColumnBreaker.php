@@ -54,12 +54,12 @@ class ColumnBreaker
 
     public function hasMoreLines(): bool
     {
-        return $this->lineBreaker->hasNextLine() || \count($this->remainingLines) > 0;
+        return $this->lineBreaker->isEmpty() || \count($this->remainingLines) > 0;
     }
 
     public function nextLine(float $targetWidth, bool $allowEmpty)
     {
-        if (!$this->lineBreaker->hasNextLine()) {
+        if (!$this->lineBreaker->isEmpty()) {
             $this->advanceLineBreaker();
         }
 
@@ -74,7 +74,7 @@ class ColumnBreaker
         $lines = [];
         $lineWidths = [];
         while (\count($lines) < $maxLines) {
-            if (!$this->lineBreaker->hasNextLine() && !$this->advanceLineBreaker()) {
+            if (!$this->lineBreaker->isEmpty() && !$this->advanceLineBreaker()) {
                 break;
             }
 
