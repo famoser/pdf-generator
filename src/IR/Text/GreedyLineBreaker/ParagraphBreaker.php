@@ -62,7 +62,7 @@ class ParagraphBreaker
 
     public function nextLine(float $targetWidth, bool $allowEmpty): Line
     {
-        \assert($this->isEmpty());
+        \assert(!$this->isEmpty());
 
         $currentWidth = 0;
         $line = new Line($this->nextTextStyle());
