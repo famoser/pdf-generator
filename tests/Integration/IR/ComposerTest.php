@@ -330,6 +330,6 @@ class ComposerTest extends TestCase
 
     private function createRectangleStyle(): RectangleStyle
     {
-        return new RectangleStyle(0.5, Color::createFromHex('#aefaef'), Color::createFromHex('#abccba'));
+        return new RectangleStyle(0.5, new Color(200, 120, 0), new Color(220, 100, 0));
     }
 }
