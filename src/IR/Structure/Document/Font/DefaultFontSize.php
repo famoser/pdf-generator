@@ -14,7 +14,7 @@ namespace PdfGenerator\IR\Structure\Document\Font;
 class DefaultFontSize
 {
     /**
-     * @var int[][][]
+     * @var int[][][]|null
      */
     private static $sizeLookup = null;
 
@@ -23,11 +23,11 @@ class DefaultFontSize
      */
     public static function getSize(string $font, string $style)
     {
-        if (static::$sizeLookup === null) {
+        if (self::$sizeLookup === null) {
             $json = file_get_contents(__DIR__ . \DIRECTORY_SEPARATOR . 'default_font_size.json');
-            static::$sizeLookup = json_decode($json, true);
+            self::$sizeLookup = json_decode($json, true);
         }
 
-        return static::$sizeLookup[$font][$style];
+        return self::$sizeLookup[$font][$style];
     }
 }

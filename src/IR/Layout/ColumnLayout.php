@@ -11,13 +11,14 @@
 
 namespace PdfGenerator\IR\Layout;
 
+use PdfGenerator\IR\Buffer\TextBuffer;
 use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\CursorPrinter;
 use PdfGenerator\IR\Layout\Column\Column;
 use PdfGenerator\IR\Layout\Column\ColumnGenerator;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Text\TextWriter;
+use PdfGenerator\IR\Text\GreedyLineBreaker\ParagraphBreaker;
 
 class ColumnLayout
 {
@@ -48,39 +49,64 @@ class ColumnLayout
         $this->printer->setCursor($this->activeColumn->getStart());
     }
 
-    public function addParagraph(TextWriter $textWriter, float $indent = 0, bool $continueParagraph = false)
+    public function addParagraph(TextBuffer $buffer, float $indent = 0)
     {
-        $cursor = $this->printer->getCursor();
-        $lineStart = $this->activeColumn->getStart()->getXCoordinate();
+        $measuredParagraph = $buffer->getMeasuredParagraph();
+        $paragraphBreaker = new ParagraphBreaker($measuredParagraph);
 
-        if ($continueParagraph) {
-            // early-out if no text to be written; should not modify cursor at all
-            if ($textWriter->isEmpty()) {
-                return;
-            }
-
-            // reposition cursor to previous baseline
-            $currentIndent = $cursor->getXCoordinate() - $lineStart;
-            $nextTextStyle = $textWriter->getNextTextStyle();
-            $up = $nextTextStyle->getAscender() - $nextTextStyle->getDescender();
-            $cursor = $cursor->moveRightDown(-$currentIndent, -$up);
-
-            $indent += $currentIndent;
-        } else {
-            $cursor = $cursor->withXCoordinate($lineStart);
+        if ($paragraphBreaker->isEmpty()) {
+            return;
         }
 
-        $continueColumn = true;
-        while (!$textWriter->isEmpty()) {
-            if (!$continueColumn) {
-                $cursor = $this->nextColumn();
-            }
+        $this->printTextBlock($paragraphBreaker, $indent);
+    }
+
+    public function continueParagraph(TextBuffer $buffer, float $indent)
+    {
+        $measuredParagraph = $buffer->getMeasuredParagraph();
+        $paragraphBreaker = new ParagraphBreaker($measuredParagraph);
+
+        if ($paragraphBreaker->isEmpty()) {
+            return;
+        }
+
+        $cursor = $this->printer->getCursor();
+        $nextTextStyle = $measuredParagraph->getFirstTextStyle();
+
+        $width = $this->activeColumn->getAvailableWidth($cursor) - $indent;
+        $line = $paragraphBreaker->nextLine($width, true);
+
+        $cursor = $cursor->moveRightDown($indent, $nextTextStyle->getDescender()); // descender is negative, so actually moves up
+        $this->printer->printLine($cursor, $line);
+        $this->addSpace(-$nextTextStyle->getDescender());
+
+        if (!$paragraphBreaker->isEmpty()) {
+            $this->addSpace($nextTextStyle->getLineGap());
+            $this->printTextBlock($paragraphBreaker);
+        }
+    }
+
+    private function printTextBlock(ParagraphBreaker $paragraphBreaker, float $indent = 0)
+    {
+        $cursor = $this->printer->getCursor();
+        $cursor = $this->resetLine($cursor);
+
+        $currentIndent = $indent;
+        while (!$paragraphBreaker->isEmpty()) {
             $width = $this->activeColumn->getAvailableWidth($cursor);
             $height = $this->activeColumn->getAvailableHeight($cursor);
 
-            $textBlock = $textWriter->getTextBlock($width, $height, $indent);
-            $cursor = $this->printer->printTextBlock($cursor, $textBlock, $lineStart, $continueParagraph);
-            $continueColumn = false;
+            $lines = $paragraphBreaker->nextLines($width, $height, $currentIndent, true);
+            $this->printer->printLines($cursor, $lines, $this->activeColumn->getStart()->getXCoordinate(), $indent);
+
+            if ($paragraphBreaker->isEmpty()) {
+                // no more content
+                break;
+            }
+
+            // more content, hence need to advance column
+            $cursor = $this->nextColumn();
+            $currentIndent = 0; // apply indent only once
         }
     }
 
@@ -113,15 +139,21 @@ class ColumnLayout
         $print($cursor);
     }
 
-    private function nextLine(Cursor $cursor, float $height, float $nextColumnHeight = null)
+    private function resetLine(Cursor $cursor): Cursor
+    {
+        $newXCoordinate = $this->activeColumn->getStart()->getXCoordinate();
+
+        return $cursor->withXCoordinate($newXCoordinate);
+    }
+
+    private function nextLine(Cursor $cursor, float $height, float $nextColumnHeight = null): Cursor
     {
         if (!$this->activeColumn->hasVerticalSpaceFor($cursor, $height)) {
             $cursor = $this->nextColumn();
             $cursor = $this->nextLine($cursor, $nextColumnHeight ?? $height);
         } else {
             $cursor = $cursor->moveDown($height);
-            $newXCoordinate = $this->activeColumn->getStart()->getXCoordinate();
-            $cursor = $cursor->withXCoordinate($newXCoordinate);
+            $cursor = $this->resetLine($cursor);
         }
 
         return $cursor;

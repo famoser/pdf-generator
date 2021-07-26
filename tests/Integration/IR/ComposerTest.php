@@ -12,6 +12,9 @@
 namespace PdfGenerator\Tests\Integration\IR;
 
 use PdfGenerator\Backend\Catalog\Font\Type0;
+use PdfGenerator\IR\Buffer\RowBuffer;
+use PdfGenerator\IR\Buffer\TableBuffer;
+use PdfGenerator\IR\Buffer\TextBuffer;
 use PdfGenerator\IR\CursorPrinter;
 use PdfGenerator\IR\Layout\Column\SingleColumnGenerator;
 use PdfGenerator\IR\Layout\ColumnLayout;
@@ -19,8 +22,6 @@ use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
-use PdfGenerator\IR\Text\LineBreak\WordSizer\WordSizerRepository;
-use PdfGenerator\IR\Text\TextWriter;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -34,11 +35,11 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextWriter();
+        $textWriter = new TextBuffer();
         $textStyle = $this->createBodyTextStyle($document);
 
         // act
-        $textWriter->writeText($textStyle, 'hi mom');
+        $textWriter->add($textStyle, 'hi mom');
         $layout->addParagraph($textWriter);
 
         // assert
@@ -54,12 +55,12 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextWriter();
+        $textWriter = new TextBuffer();
         $textStyle = $this->createBodyTextStyle($document);
 
         // act
-        $textWriter->writeText($textStyle, 'hi mom1' . "\n");
-        $textWriter->writeText($textStyle, 'hi mom2');
+        $textWriter->add($textStyle, 'hi mom1' . "\n");
+        $textWriter->add($textStyle, 'hi mom2');
         $layout->addParagraph($textWriter);
 
         // assert
@@ -102,20 +103,24 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextWriter();
         $headerTextStyle = $this->createHeaderTextStyle($document);
         $bodyTextStyle = $this->createBodyTextStyle($document);
         $bodyBoldTextStyle = $this->createBodyBoldTextStyle($document);
 
         // act
-        $textWriter->writeText($headerTextStyle, 'Integration of UTF-8' . "\n");
+        $textWriter = new TextBuffer();
+        $textWriter->add($headerTextStyle, 'Integration of UTF-8' . "\n");
         $layout->addParagraph($textWriter);
-        $textWriter->writeText($bodyTextStyle, 'When you want to integrate all kinds of characters, there is little way around ');
-        $textWriter->writeText($bodyBoldTextStyle, 'so-called UTF-8');
-        $textWriter->writeText($bodyTextStyle, '. Even if used only in Europe, special characters ensure this is a capability in dire need.');
+
+        $textWriter = new TextBuffer();
+        $textWriter->add($bodyTextStyle, 'When you want to integrate all kinds of characters, there is little way around ');
+        $textWriter->add($bodyBoldTextStyle, 'so-called UTF-8');
+        $textWriter->add($bodyTextStyle, '. Even if used only in Europe, special characters ensure this is a capability in dire need.');
         $layout->addParagraph($textWriter, 20);
-        $textWriter->writeText($bodyTextStyle, ' Even if used only in Europe, special characters ensure this is a capability in dire need.');
-        $layout->addParagraph($textWriter, 10, true);
+
+        $textWriter = new TextBuffer();
+        $textWriter->add($bodyTextStyle, ' However, integrating UTF-8 also requires embedding TrueType fonts, and now things start to get complicated.');
+        $layout->continueParagraph($textWriter, 10);
 
         // assert
         $result = $this->render($document);
@@ -157,12 +162,12 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextWriter();
+        $textWriter = new TextBuffer();
         $font = $document->getOrCreateEmbeddedFont(ResourcesProvider::getFontOpenSansPath());
         $textStyle = new TextStyle($font, 5, 1.2);
 
         // act
-        $textWriter->writeText($textStyle, 'When you want to integrate all kinds of characters, there is little way around UTF-8. Custom font require you to specify an encoding anyways; why not just make it UTF-8?');
+        $textWriter->add($textStyle, 'When you want to integrate all kinds of characters, there is little way around UTF-8. Custom font require you to specify an encoding anyways; why not just make it UTF-8?');
         $layout->addParagraph($textWriter, 20);
 
         // assert
@@ -179,36 +184,39 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextWriter();
         $headerTextStyle = $this->createHeaderTextStyle($document);
         $bodyTextStyle = $this->createBodyTextStyle($document);
         $bodyBoldTextStyle = $this->createBodyBoldTextStyle($document);
 
         // act
-        $textWriter->writeText($headerTextStyle, 'PDF');
+        $textWriter = new TextBuffer();
+        $textWriter->add($headerTextStyle, 'PDF');
         $layout->addParagraph($textWriter);
         $layout->addSpace(5);
 
-        $textWriter->writeText($bodyTextStyle, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
-        $textWriter->writeText($bodyTextStyle, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ');
-        $textWriter->writeText($bodyBoldTextStyle, 'Kontoauszug');
-        $textWriter->writeText($bodyTextStyle, ', diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
+        $textWriter = new TextBuffer();
+        $textWriter->add($bodyTextStyle, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
+        $textWriter->add($bodyTextStyle, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ');
+        $textWriter->add($bodyBoldTextStyle, 'Kontoauszug');
+        $textWriter->add($bodyTextStyle, ', diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
         $layout->addParagraph($textWriter);
         $layout->addSpace(3);
 
-        $textWriter->writeText($bodyTextStyle, 'Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. ');
-        $textWriter->writeText($bodyTextStyle, 'Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. ');
-        $textWriter->writeText($bodyTextStyle, 'Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. ');
-        $textWriter->writeText($bodyTextStyle, 'Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator.');
+        $textWriter = new TextBuffer();
+        $textWriter->add($bodyTextStyle, 'Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. ');
+        $textWriter->add($bodyTextStyle, 'Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. ');
+        $textWriter->add($bodyTextStyle, 'Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. ');
+        $textWriter->add($bodyTextStyle, 'Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator.');
         $layout->addParagraph($textWriter);
         $layout->addSpace(3);
 
-        $textWriter->writeText($bodyTextStyle, 'Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). ');
-        $textWriter->writeText($bodyTextStyle, 'Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. ');
-        $textWriter->writeText($bodyTextStyle, 'Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. ');
-        $textWriter->writeText($bodyTextStyle, 'Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. ');
-        $textWriter->writeText($bodyTextStyle, 'Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. ');
-        $textWriter->writeText($bodyTextStyle, 'Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten.');
+        $textWriter = new TextBuffer();
+        $textWriter->add($bodyTextStyle, 'Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). ');
+        $textWriter->add($bodyTextStyle, 'Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. ');
+        $textWriter->add($bodyTextStyle, 'Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. ');
+        $textWriter->add($bodyTextStyle, 'Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. ');
+        $textWriter->add($bodyTextStyle, 'Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. ');
+        $textWriter->add($bodyTextStyle, 'Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten.');
         $layout->addParagraph($textWriter);
         $layout->addSpace(3);
 
@@ -228,14 +236,14 @@ class ComposerTest extends TestCase
         // arrange
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
-        $textWriter = $this->createTextWriter();
         $textStyle = $this->createBodyTextStyle($document);
 
         // act
         $loremIpsum = 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom Kontoauszug; diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben. Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator. Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten. Auch beim Text müssen so Umbrüche in einem Paragraph oder der Abstand zwischen den Buchstaben im Blocksatz explizit definiert werden. Wirklich toll wirds aber erst mit Schriftarten. Das PDF hat ganze 14 Standardschriftarten; es sind die allseits beliebten Times Roman, Courier und Helvetica, und ZapfDingbats und Symbol (Emojis bevors Emojis gab). Dazu gibts diverse Standard Ein-Byte Encodings; das brauchbarste für Europäer ist das WinAnsiEncoding. Für anspruchslose Kunden und deutsche, französische oder italienische Korrespondez mag man damit wegkommen. Ab dem ersten Smørrebrød ist aber Schluss: Dann muss man mit eigenen "Embedded Fonts" arbeiten.';
         $loremIpsum6 = $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum . ' ' . $loremIpsum;
-        $textWriter->writeText($textStyle, $loremIpsum);
-        $textWriter->writeText($textStyle, ' ' . $loremIpsum6);
+        $textWriter = new TextBuffer();
+        $textWriter->add($textStyle, $loremIpsum);
+        $textWriter->add($textStyle, ' ' . $loremIpsum6);
         $layout->addParagraph($textWriter);
         $layout->addSpace(5);
 
@@ -244,11 +252,33 @@ class ComposerTest extends TestCase
         $this->assertStringContainsString('Kontoauszug', $result);
     }
 
-    private function createTextWriter(): TextWriter
+    /**
+     * @throws \Exception
+     */
+    public function ignoredTestPrintRows()
     {
-        $wordSizerRepository = new WordSizerRepository();
+        // arrange
+        $document = new Document();
+        $layout = $this->createSingleColumnLayout($document);
+        $textStyle = $this->createBodyTextStyle($document);
 
-        return new TextWriter($wordSizerRepository);
+        // act
+        $tableBuffer = new TableBuffer();
+        $rowBuffer = new RowBuffer();
+        $textBuffer = new TextBuffer();
+        $textBuffer->add($textStyle, 'Hallo Welt');
+        $rowBuffer->add(0, $textBuffer);
+        $rowBuffer->add(1, $textBuffer);
+        $tableBuffer->add($rowBuffer);
+        $tableBuffer->add($rowBuffer);
+        $tableBuffer->add($rowBuffer);
+
+        $layout->addTable($tableBuffer);
+        $layout->addSpace(5);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('Hallo Welt', $result);
     }
 
     private function createSingleColumnLayout(Document $document): ColumnLayout

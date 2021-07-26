@@ -51,8 +51,10 @@ class CIDFont extends BaseStructure
 
     /**
      * width per character.
+     * for int[][], the first dimensions defines the character code the widths start at
+     * so [32 => [120, 271]] defines that space (code 32) has width 120, the following character width 271.
      *
-     * @var int[]
+     * @var int[]|int[][]
      */
     private $w = [];
 
@@ -115,7 +117,7 @@ class CIDFont extends BaseStructure
     }
 
     /**
-     * @param int[][] $w
+     * @param int[]|int[][] $w
      */
     public function setW(array $w): void
     {

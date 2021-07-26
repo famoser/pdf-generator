@@ -247,8 +247,8 @@ class DocumentVisitor
         $fontDescriptor->setFlags($fontFlags);
 
         $fontDescriptor->setItalicAngle((int)$angle);
-        $fontDescriptor->setAscent($HHeaTable->getAscent() * $sizeNormalizer);
-        $fontDescriptor->setDescent($HHeaTable->getDescent() * $sizeNormalizer);
+        $fontDescriptor->setAscent((int)($HHeaTable->getAscent() * $sizeNormalizer));
+        $fontDescriptor->setDescent((int)($HHeaTable->getDescent() * $sizeNormalizer));
         $fontDescriptor->setCapHeight((int)($OS2Table->getSCapHeight() * $sizeNormalizer));
         $fontDescriptor->setStemV(0); // TODO find out where to get this from
         $fontDescriptor->setFontFile3($fontStream);

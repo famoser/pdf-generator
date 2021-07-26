@@ -12,7 +12,6 @@
 namespace PdfGenerator\Examples;
 
 use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Text\TextWriter;
 
 class InvoiceLayout
 {
@@ -58,10 +57,6 @@ class InvoiceLayout
     }
 
     public function withReceiver(array $receiverLines)
-    {
-    }
-
-    public function printTextWriter(TextWriter $textWriter)
     {
     }
 }

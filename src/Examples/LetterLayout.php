@@ -12,7 +12,6 @@
 namespace PdfGenerator\Examples;
 
 use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Text\TextWriter;
 
 class LetterLayout
 {
@@ -51,10 +50,6 @@ class LetterLayout
     }
 
     public function withSubject(string $subject)
-    {
-    }
-
-    public function withBody(TextWriter $textWriter)
     {
     }
 

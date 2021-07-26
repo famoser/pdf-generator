@@ -108,21 +108,50 @@ To be able to print to the pdf sensible some initial works needs to be done to s
 - [x] calculate dimensions of text
 - [x] place text on pages with automatic breaks
 
-### Public API Milestone
+### Text API Milestone
 Then, the public API will be defined.
 
-- [ ] public api definition
-- [ ] layout definition
-- [ ] implement sample report
+text printing:
+- [x] paragraphs
+- [x] different styles in same paragraphs
+- [x] measurement
+- [x] automatic line-breaking
+- [ ] alignment (center, right-align, justify)
 
-### Final Milestone
-Lastly, the final API spec will be implemented using the IR.
+layouts:
+- [x] fixed-position printing (printer)
+- [ ] columns
+- [ ] rows
+- [ ] grid
+- [ ] table
 
-- [ ] define sensible way to print to layouted part
-- [ ] implement layouts
+styling:
+- [ ] margin
+- [ ] padding
+- [ ] border (color, thickness, stroke style)
+- [ ] background (color)
+
+### Multimedia API Milestone
+
+extend functionality to more use-cases.
+
+content types:
+- [ ] svg, esp, ...
+- [ ] video, audio, ... (?)
+
+drawing:
+- [ ] circles
+- [ ] polynomials
+
+PDF features:
+- [ ] forms
 
 ### Fun Milestone
 What does not need to be done, but could.
 
+text:
+- [ ] better line breaking (knuth & plass line-breaking instead of greedy)
+
+file:
 - [ ] compress string streams
 - [ ] optimize rectangle position (do not modify transform matrix)

@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\IR;
 
+use PdfGenerator\IR\Printer\Line;
 use PdfGenerator\IR\Printer\StyleGetSetTrait;
 use PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
-use PdfGenerator\IR\Text\TextWriter\TextBlock;
 
 class CursorPrinter
 {
@@ -53,46 +53,14 @@ class CursorPrinter
         $this->cursor = $cursor;
     }
 
-    public function printTextBlock(Cursor $cursor, TextBlock $textBlock, float $lineStart, bool $continueParagraph = false): Cursor
+    public function printLine(Cursor $cursor, Line $line): Cursor
     {
-        $cursor = $cursor->moveRightDown($textBlock->getIndent(), $textBlock->getAscender());
-
-        // baseline aligned
-        foreach ($textBlock->getMeasuredPhrases() as $measuredPhrase) {
-            $this->printer->setTextStyle($measuredPhrase->getTextStyle());
-
-            $lines = $measuredPhrase->getLines();
-            $lineWidths = $measuredPhrase->getLineWidths();
-            $leading = $measuredPhrase->getTextStyle()->getLeading();
-
-            if ($textBlock->getIndent() > 0 || $continueParagraph) {
-                // as PDF does not know indent concept, whenever there is one need to print it as single line
-                // happens the first time when the textblock has an indent, or when we are continuing a paragraph
-                $line = array_shift($lines);
-                $lineWidth = array_shift($lineWidths);
-
-                $cursor = $this->printText($cursor, $line, $lineWidth);
-
-                // if we have more lines, position the cursor on the next line
-                if (\count($lines) > 0) {
-                    $cursor = $cursor->moveDown($leading);
-                    $cursor = $cursor->withXCoordinate($lineStart);
-                } else {
-                    continue;
-                }
-            }
-
-            $text = implode("\n", $lines);
-            $lastLineWidth = $lineWidths[\count($lines) - 1];
-            $height = (\count($lines) - 1) * $leading;
-            $cursor = $this->printText($cursor, $text, $lastLineWidth, $height);
-
-            $continueParagraph = true;
+        foreach ($line->getFragments() as $fragment) {
+            $this->setTextStyle($fragment->getTextStyle());
+            $cursor = $this->printText($cursor, $fragment->getText(), $fragment->getWidth());
         }
 
-        $this->cursor = $cursor->moveDown(-$textBlock->getDescender());
-
-        return $this->cursor;
+        return $cursor;
     }
 
     public function printText(Cursor $cursor, string $text, float $right, float $down = 0): Cursor
@@ -129,5 +97,35 @@ class CursorPrinter
         $this->cursor = $cursor;
 
         return $this->cursor;
+    }
+
+    /**
+     * @param Line[] $lines
+     */
+    public function printLines(Cursor $cursor, array $lines, float $columnStartXCoordinate, float $firstLineIndent): Cursor
+    {
+        $lineCount = \count($lines);
+        for ($i = 0; $i < $lineCount; ++$i) {
+            $line = $lines[$i];
+
+            // place cursor
+            if ($i === 0) {
+                $cursor = $cursor->moveDown($line->getAscender());
+                $cursor = $cursor->withXCoordinate($columnStartXCoordinate + $firstLineIndent);
+            } else {
+                $cursor = $cursor->moveDown($line->getLeading());
+                $cursor = $cursor->withXCoordinate($columnStartXCoordinate);
+            }
+
+            $cursor = $this->printLine($cursor, $line);
+
+            if ($i + 1 === $lineCount) {
+                $cursor = $cursor->moveDown(-$line->getDescender());
+            }
+        }
+
+        $this->cursor = $cursor;
+
+        return $cursor;
     }
 }

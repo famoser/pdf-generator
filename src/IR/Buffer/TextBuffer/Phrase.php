@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\TextWriter;
+namespace PdfGenerator\IR\Buffer\TextBuffer;
 
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
