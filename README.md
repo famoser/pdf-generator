@@ -131,6 +131,21 @@ styling:
 - [ ] border (color, thickness, stroke style)
 - [ ] background (color)
 
+### Multimedia API Milestone
+
+extend functionality to more use-cases.
+
+content types:
+- [ ] svg, esp, ...
+- [ ] video, audio, ... (?)
+
+drawing:
+- [ ] circles
+- [ ] polynomials
+
+PDF features:
+- [ ] forms
+
 ### Fun Milestone
 What does not need to be done, but could.
 
