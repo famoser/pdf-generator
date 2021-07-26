@@ -19,9 +19,9 @@ class RowBuffer
     /**
      * @var MeasuredColumn[]
      */
-    private $columns;
+    private $columns = [];
 
-    public function write(int $columnIndex, TextBuffer $buffer)
+    public function add(int $columnIndex, TextBuffer $buffer)
     {
         $paragraph = $buffer->getMeasuredParagraph();
 
@@ -42,7 +42,7 @@ class RowBuffer
 
     private function getColumn(int $columnIndex): MeasuredColumn
     {
-        while (\count($this->columns) < $columnIndex) {
+        while (\count($this->columns) <= $columnIndex) {
             $this->columns[] = new MeasuredColumn();
         }
 

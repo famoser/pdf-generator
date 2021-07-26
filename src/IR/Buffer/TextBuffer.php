@@ -36,7 +36,7 @@ class TextBuffer
         $this->wordSizerRepository = new WordSizerRepository();
     }
 
-    public function write(TextStyle $textStyle, string $text)
+    public function add(TextStyle $textStyle, string $text)
     {
         $phrase = new Phrase();
         $phrase->setText($text);

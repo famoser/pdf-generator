@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\IR\Layout;
 
+use PdfGenerator\IR\Buffer\TableBuffer;
 use PdfGenerator\IR\Buffer\TextBuffer;
 use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\CursorPrinter;
@@ -108,6 +109,11 @@ class ColumnLayout
             $cursor = $this->nextColumn();
             $currentIndent = 0; // apply indent only once
         }
+    }
+
+    public function addTable(TableBuffer $tableBuffer)
+    {
+        throw new \Exception('Not implemented yet');
     }
 
     public function addImage(Image $image, float $width, float $height)
