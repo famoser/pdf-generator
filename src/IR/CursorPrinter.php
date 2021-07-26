@@ -104,7 +104,8 @@ class CursorPrinter
      */
     public function printLines(Cursor $cursor, array $lines, float $columnStartXCoordinate, float $firstLineIndent): Cursor
     {
-        for ($i = 0; $i < \count($lines); ++$i) {
+        $lineCount = \count($lines);
+        for ($i = 0; $i < $lineCount; ++$i) {
             $line = $lines[$i];
 
             // place cursor
@@ -118,7 +119,7 @@ class CursorPrinter
 
             $cursor = $this->printLine($cursor, $line);
 
-            if ($i + 1 === \count($lines)) {
+            if ($i + 1 === $lineCount) {
                 $cursor = $cursor->moveDown(-$line->getDescender());
             }
         }

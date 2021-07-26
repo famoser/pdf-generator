@@ -130,7 +130,7 @@ class CMapCreator
 
         $existingCodepoint = [];
         foreach ($characters as $character) {
-            if ($character->getUnicodePoint()) {
+            if ($character->getUnicodePoint() !== null) {
                 $existingCodepoint[] = $character->getUnicodePoint();
             }
         }
@@ -216,7 +216,7 @@ class CMapCreator
         $characterCount = \count($characters);
         for ($i = 0; $i < $characterCount; ++$i) {
             $character = $characters[$i];
-            if (!$character->getUnicodePoint()) {
+            if ($character->getUnicodePoint() === null) {
                 continue;
             }
 
@@ -247,7 +247,7 @@ class CMapCreator
         $characterCount = \count($characters);
         for ($i = 0; $i < $characterCount; ++$i) {
             $character = $characters[$i];
-            if (!$character->getUnicodePoint()) {
+            if ($character->getUnicodePoint() === null) {
                 continue;
             }
 

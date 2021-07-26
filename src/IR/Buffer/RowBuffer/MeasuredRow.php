@@ -20,7 +20,7 @@ class MeasuredRow
 
     public function addMeasuredColumn(MeasuredColumn $column)
     {
-        $this->measuredColumns = $column;
+        $this->measuredColumns[] = $column;
     }
 
     /**

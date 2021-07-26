@@ -308,8 +308,10 @@ class FileWriter
 
         for ($i = 0; $i < $characterCount; ++$i) {
             $character = $characters[$i];
-            if ($character->getUnicodePoint() + 1 === $lastUnicodePoint) {
-                $currentSegment->setEndCode($character->getUnicodePoint());
+            $characterUnicodePoint = $character->getUnicodePoint() ?? 0; // we do not expect a character here without a code point. but better to be clear about what happens then.
+
+            if ($characterUnicodePoint + 1 === $lastUnicodePoint) {
+                $currentSegment->setEndCode($characterUnicodePoint);
                 // reuse current segment
                 continue;
             }
@@ -319,10 +321,10 @@ class FileWriter
             }
 
             $currentSegment = new Segment();
-            $currentSegment->setStartCode($character->getUnicodePoint());
-            $currentSegment->setEndCode($character->getUnicodePoint());
+            $currentSegment->setStartCode($characterUnicodePoint);
+            $currentSegment->setEndCode($characterUnicodePoint);
             $currentSegment->setIdRangeOffset(0);
-            $currentSegment->setIdDelta($reservedCharactersOffset + $i - $character->getUnicodePoint());
+            $currentSegment->setIdDelta($reservedCharactersOffset + $i - $characterUnicodePoint);
         }
 
         $segments[] = $currentSegment;
