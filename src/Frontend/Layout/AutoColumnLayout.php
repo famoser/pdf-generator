@@ -36,46 +36,4 @@ class AutoColumnLayout extends BaseColumnedLayout implements AutoColumnLayoutInt
 
         parent::__construct($pdfDocument, $columnGutter, $totalWidth, $columnWidths);
     }
-
-    /**
-     * register a callable which prints to the pdf document
-     * The position of the cursor at the time the callable is invoked is decided by the layout
-     * ensure the cursor is below the printed content after the callable is finished to not mess up the layout.
-     *
-     * @param callable $callable takes a PdfDocument as first argument and the width as second
-     *
-     * @throws \Exception
-     */
-    public function registerPrintable(callable $callable)
-    {
-        // set active cursor to highest cursor
-        $prepareArguments = function () {
-            // prepare variables
-            $columnCursors = $this->getColumnCursors();
-            $highestColumn = 0;
-            $highestCursor = $columnCursors[0];
-            $columnCount = $this->getColumnCount();
-
-            // get highest cursor
-            for ($i = 1; $i < $columnCount; ++$i) {
-                $currentCursor = $columnCursors[$i];
-
-                if ($highestCursor->isBiggerThan($currentCursor)) {
-                    $highestColumn = $i;
-                    $highestCursor = $currentCursor;
-                }
-            }
-
-            if ($this->activeColumn !== $highestColumn) {
-                $this->switchColumns($this->activeColumn, $highestColumn);
-                $this->activeColumn = $highestColumn;
-            }
-
-            return [$this->getColumnWidths()[$this->activeColumn]];
-        };
-        $this->getPrintBuffer()->addPrintable($callable, $prepareArguments);
-        $this->getPrintBuffer()->addPrintable(function () {
-            $this->setColumnCursorFromDocument($this->activeColumn);
-        });
-    }
 }

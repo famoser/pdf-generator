@@ -11,11 +11,48 @@
 
 namespace PdfGenerator\Frontend\Style;
 
-use PdfGenerator\Frontend\Style\Base\CellStyle;
+use PdfGenerator\Frontend\Style\Part\Color;
+use PdfGenerator\Frontend\Style\Part\Font;
 
-class TextStyle extends CellStyle
+class TextStyle
 {
-    private $color = null;
-    private $fontSize = null;
-    private $font = null;
+    /**
+     * @var Font
+     */
+    private $font;
+
+    /**
+     * @var float
+     */
+    private $fontSize;
+
+    /**
+     * @var Color
+     */
+    private $color;
+
+    public function __construct(Font $font, float $fontSize = 12, Color $color = null)
+    {
+        $this->font = $font;
+        $this->fontSize = $fontSize;
+        $this->color = $color ?? Color::black();
+    }
+
+    public function getFont(): Font
+    {
+        return $this->font;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFontSize()
+    {
+        return $this->fontSize;
+    }
+
+    public function getColor(): Color
+    {
+        return $this->color;
+    }
 }

@@ -49,6 +49,11 @@ class Color
         return new self($rgbArray[0], $rgbArray[1], $rgbArray[2]);
     }
 
+    public static function black()
+    {
+        return self::createFromHex('#000000');
+    }
+
     public function getRed(): int
     {
         return $this->red;

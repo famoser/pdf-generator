@@ -13,30 +13,27 @@ namespace PdfGenerator\Frontend\Style;
 
 use PdfGenerator\Frontend\Style\Base\BlockStyle;
 
-class RowStyle extends BlockStyle
+class ParagraphStyle extends BlockStyle
 {
-    /**
-     * @var float[]|null
-     */
-    private $columnWidths;
+    public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
 
     /**
-     * RowStyle constructor.
-     *
-     * @param float[]|null $columnWidths
+     * @var string
      */
-    public function __construct(array $columnWidths = null)
+    private $alignment;
+
+    /**
+     * ParagraphStyle constructor.
+     */
+    public function __construct(string $alignment = self::ALIGNMENT_LEFT)
     {
         parent::__construct();
 
-        $this->columnWidths = $columnWidths;
+        $this->alignment = $alignment;
     }
 
-    /**
-     * @return float[]|null
-     */
-    public function getColumnWidths(): ?array
+    public function getAlignment(): string
     {
-        return $this->columnWidths;
+        return $this->alignment;
     }
 }
