@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Style;
+namespace PdfGenerator\Frontend\Block\Style;
 
-use PdfGenerator\Frontend\Style\Part\Color;
+use PdfGenerator\Frontend\Block\Style\Part\Color;
 
 class TableStyle extends RowStyle
 {

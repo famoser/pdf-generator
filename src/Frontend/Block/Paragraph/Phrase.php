@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Frontend\Block\Paragraph;
 
+use PdfGenerator\Frontend\Content\Style\TextStyle;
+
 class Phrase
 {
     /**

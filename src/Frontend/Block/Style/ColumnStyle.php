@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Style;
+namespace PdfGenerator\Frontend\Block\Style;
 
-use PdfGenerator\Frontend\Style\Base\BlockStyle;
+use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 
 class ColumnStyle extends BlockStyle
 {

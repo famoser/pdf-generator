@@ -9,9 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator;
+namespace PdfGenerator\Frontend\Content\Base;
 
-interface DocumentInterface
+class Content
 {
-    public function save(): string;
 }

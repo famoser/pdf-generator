@@ -11,9 +11,10 @@
 
 namespace PdfGenerator\Frontend\Block;
 
-use PdfGenerator\Frontend\Style\TableStyle;
+use PdfGenerator\Frontend\Block\Base\Block;
+use PdfGenerator\Frontend\Block\Style\TableStyle;
 
-class Table
+class Table extends Block
 {
     /**
      * @var TableStyle
@@ -31,11 +32,13 @@ class Table
     private $rows = [];
 
     /**
-     * Table constructor.
+     * @param float[]|null $dimensions
      */
-    public function __construct(TableStyle $style)
+    public function __construct(TableStyle $style = null, array $dimensions = null)
     {
-        $this->style = $style;
+        parent::__construct($dimensions);
+
+        $this->style = $style ?? new TableStyle();
     }
 
     public function addRow(Row $row)

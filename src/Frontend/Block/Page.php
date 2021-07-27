@@ -13,45 +13,29 @@ namespace PdfGenerator\Frontend\Block;
 
 use PdfGenerator\Frontend\Block\Base\Block;
 use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
-use PdfGenerator\Frontend\Block\Style\ColumnStyle;
+use PdfGenerator\Frontend\Block\Style\PageStyle;
 
-class Column extends Block
+class Page extends Block
 {
     /**
-     * @var Block[]
-     */
-    private $cells = [];
-
-    /**
-     * @var ColumnStyle
+     * @var PageStyle
      */
     private $style;
 
     /**
-     * @param float[]|null $dimensions
+     * Page constructor.
+     *
+     * @param float[] $dimensions
      */
-    public function __construct(ColumnStyle $style = null, array $dimensions = null)
+    public function __construct(PageStyle $style = null, array $dimensions = [210, 297])
     {
         parent::__construct($dimensions);
 
-        $this->style = $style ?? new ColumnStyle();
-    }
-
-    public function addBlock(Block $cell)
-    {
-        $this->cells[] = $cell;
+        $this->style = $style ?? new PageStyle();
     }
 
     public function getStyle(): BlockStyle
     {
         return $this->style;
-    }
-
-    /**
-     * @return Block[]
-     */
-    public function getCells(): array
-    {
-        return $this->cells;
     }
 }
