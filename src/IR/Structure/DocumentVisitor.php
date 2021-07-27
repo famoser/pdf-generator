@@ -96,13 +96,11 @@ class DocumentVisitor implements FontVisitor
      */
     public function visitImage(Image $param)
     {
-        $imageData = file_get_contents($param->getImagePath());
-        list($width, $height) = getimagesizefromstring($imageData);
-        $type = self::getImageType($param->getImagePath());
+        $type = self::getImageType($param->getType());
 
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
-        return new BackendImage($imageData, $type, $width, $height, (int) round($maxSize->getWidth()), (int) round($maxSize->getHeight()));
+        return new BackendImage($param->getData(), $type, $param->getWidth(), $param->getHeight(), (int)round($maxSize->getWidth()), (int)round($maxSize->getHeight()));
     }
 
     /**

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Style\Part;
+namespace PdfGenerator\Frontend\Block\Style\Part;
 
 class Color
 {

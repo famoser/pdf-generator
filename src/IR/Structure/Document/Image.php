@@ -19,14 +19,43 @@ class Image extends BaseDocumentStructure
     /**
      * @var string
      */
-    private $imagePath;
+    private $src;
+
+    /**
+     * @var string
+     */
+    private $data;
+
+    const TYPE_JPG = 'jpg';
+    const TYPE_JPEG = 'jpeg';
+    const TYPE_PNG = 'png';
+    const TYPE_GIF = 'gif';
+
+    /**
+     * @var string
+     */
+    private $type;
+
+    /**
+     * @var int
+     */
+    private $width;
+
+    /**
+     * @var int
+     */
+    private $height;
 
     /**
      * Image constructor.
      */
-    public function __construct(string $imagePath)
+    public function __construct(string $src, string $data, string $type, int $width, int $height)
     {
-        $this->imagePath = $imagePath;
+        $this->src = $src;
+        $this->data = $data;
+        $this->type = $type;
+        $this->width = $width;
+        $this->height = $height;
     }
 
     /**
@@ -42,11 +71,31 @@ class Image extends BaseDocumentStructure
      */
     public function getIdentifier()
     {
-        return $this->imagePath;
+        return $this->src;
     }
 
-    public function getImagePath(): string
+    public function getSrc(): string
     {
-        return $this->imagePath;
+        return $this->src;
+    }
+
+    public function getData(): string
+    {
+        return $this->data;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getWidth(): int
+    {
+        return $this->width;
+    }
+
+    public function getHeight(): int
+    {
+        return $this->height;
     }
 }

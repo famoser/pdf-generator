@@ -96,6 +96,7 @@ class DocumentVisitor
         $width = $param->getWidth();
         $height = $param->getHeight();
 
+        // TODO: move to IR, not PDF specific
         if ($this->configuration->getAutoResizeImages()) {
             list($targetWidth, $targetHeight) = $this->imageOptimizer->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight(), $this->configuration->getAutoResizeImagesDpi());
 

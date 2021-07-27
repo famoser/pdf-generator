@@ -62,10 +62,35 @@ class Document
     public function getOrCreateImage(string $imagePath): Image
     {
         if (!\array_key_exists($imagePath, $this->images)) {
-            $this->images[$imagePath] = new Image($imagePath);
+            $data = file_get_contents($imagePath);
+            list($width, $height) = getimagesizefromstring($data);
+            $type = self::getImageType($imagePath);
+
+            $this->images[$imagePath] = new Image($imagePath, $data, $type, $width, $height);
         }
 
         return $this->images[$imagePath];
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private static function getImageType(string $imagePath): string
+    {
+        /** @var string $extension */
+        $extension = pathinfo($imagePath, \PATHINFO_EXTENSION);
+        switch ($extension) {
+            case 'jpg':
+                return Image::TYPE_JPG;
+            case 'jpeg':
+                return Image::TYPE_JPEG;
+            case 'png':
+                return Image::TYPE_PNG;
+            case 'gif':
+                return Image::TYPE_GIF;
+            default:
+                throw new \Exception('Image type not supported: ' . $extension . '. Use jpg, jpeg, png or gif');
+        }
     }
 
     public function getOrCreateDefaultFont(string $font, string $style): DefaultFont

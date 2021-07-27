@@ -9,8 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block\Paragraph;
+namespace PdfGenerator\Frontend;
 
-class TextStyle
+use PdfGenerator\Frontend\Block\Base\Block;
+
+class MeasuredBlock
 {
+    private $measurement;
+
+    /**
+     * @var Block
+     */
+    private $block;
 }

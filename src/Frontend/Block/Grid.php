@@ -13,7 +13,7 @@ namespace PdfGenerator\Frontend\Block;
 
 use PdfGenerator\Frontend\Block\Base\Block;
 use PdfGenerator\Frontend\Block\Grid\GridEntry;
-use PdfGenerator\Frontend\Style\GridStyle;
+use PdfGenerator\Frontend\Block\Style\GridStyle;
 
 class Grid extends Block
 {
@@ -27,11 +27,14 @@ class Grid extends Block
      */
     private $gridEntries = [];
 
-    public function __construct(GridStyle $style, array $dimensions = null)
+    /**
+     * @param float[]|null $dimensions
+     */
+    public function __construct(GridStyle $style = null, array $dimensions = null)
     {
         parent::__construct($dimensions);
 
-        $this->style = $style;
+        $this->style = $style ?? new GridStyle();
     }
 
     public function addBlock(int $columnIndex, int $rowIndex, Block $block, int $columnSpan = 1, int $rowSpan = 1)

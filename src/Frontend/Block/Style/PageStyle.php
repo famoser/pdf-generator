@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator;
+namespace PdfGenerator\Frontend\Block\Style;
 
-interface DocumentInterface
+use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
+
+class PageStyle extends BlockStyle
 {
-    public function save(): string;
 }

@@ -12,8 +12,8 @@
 namespace PdfGenerator\Frontend\Block;
 
 use PdfGenerator\Frontend\Block\Base\Block;
-use PdfGenerator\Frontend\Style\Base\BlockStyle;
-use PdfGenerator\Frontend\Style\RowStyle;
+use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
+use PdfGenerator\Frontend\Block\Style\RowStyle;
 
 class Row extends Block
 {
@@ -32,11 +32,14 @@ class Row extends Block
      */
     private $columnSpans = [];
 
-    public function __construct(RowStyle $style, array $dimensions = null)
+    /**
+     * @param float[]|null $dimensions
+     */
+    public function __construct(RowStyle $style = null, array $dimensions = null)
     {
         parent::__construct($dimensions);
 
-        $this->style = $style;
+        $this->style = $style ?? new RowStyle();
     }
 
     public function addColumn(Column $column, int $columnSpan = 1)

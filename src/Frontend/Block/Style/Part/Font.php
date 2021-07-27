@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Style\Part;
+namespace PdfGenerator\Frontend\Block\Style\Part;
 
 class Font
 {
@@ -20,6 +20,7 @@ class Font
      */
     private $name;
 
+    public const STYLE_NORMAL = 'STYLE_NORMAL';
     public const STYLE_ITALIC = 'STYLE_ITALIC';
 
     /**
@@ -44,7 +45,7 @@ class Font
     {
     }
 
-    public static function createFromDefault(string $name = self::NAME_HELVETICA, string $style = self::STYLE_ITALIC, string $weight = self::WEIGHT_NORMAL)
+    public static function createFromDefault(string $name = self::NAME_HELVETICA, string $style = self::STYLE_NORMAL, string $weight = self::WEIGHT_NORMAL)
     {
         $font = new self();
 

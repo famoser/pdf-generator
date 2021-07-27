@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Style;
+namespace PdfGenerator\Frontend\Content\Style;
 
-use PdfGenerator\Frontend\Style\Part\Color;
-use PdfGenerator\Frontend\Style\Part\Font;
+use PdfGenerator\Frontend\Block\Style\Part\Color;
+use PdfGenerator\Frontend\Block\Style\Part\Font;
 
 class TextStyle
 {
@@ -27,14 +27,20 @@ class TextStyle
     private $fontSize;
 
     /**
+     * @var float
+     */
+    private $lineHeight;
+
+    /**
      * @var Color
      */
     private $color;
 
-    public function __construct(Font $font, float $fontSize = 12, Color $color = null)
+    public function __construct(Font $font, float $fontSize = 12, float $lineHeight = 1.2, Color $color = null)
     {
         $this->font = $font;
         $this->fontSize = $fontSize;
+        $this->lineHeight = $lineHeight;
         $this->color = $color ?? Color::black();
     }
 
@@ -49,6 +55,11 @@ class TextStyle
     public function getFontSize()
     {
         return $this->fontSize;
+    }
+
+    public function getLineHeight(): float
+    {
+        return $this->lineHeight;
     }
 
     public function getColor(): Color
