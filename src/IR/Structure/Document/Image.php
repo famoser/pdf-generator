@@ -26,10 +26,10 @@ class Image extends BaseDocumentStructure
      */
     private $data;
 
-    const TYPE_JPG = 'jpg';
-    const TYPE_JPEG = 'jpeg';
-    const TYPE_PNG = 'png';
-    const TYPE_GIF = 'gif';
+    const TYPE_JPG = 'TYPE_JPG';
+    const TYPE_JPEG = 'TYPE_JPEG';
+    const TYPE_PNG = 'TYPE_PNG';
+    const TYPE_GIF = 'TYPE_GIF';
 
     /**
      * @var string
