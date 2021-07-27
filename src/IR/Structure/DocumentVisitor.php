@@ -108,21 +108,19 @@ class DocumentVisitor implements FontVisitor
      *
      * @throws \Exception
      */
-    private static function getImageType(string $imagePath)
+    private static function getImageType(string $type)
     {
-        /** @var string $extension */
-        $extension = pathinfo($imagePath, \PATHINFO_EXTENSION);
-        switch ($extension) {
-            case 'jpg':
+        switch ($type) {
+            case Image::TYPE_JPG:
                 return BackendImage::TYPE_JPG;
-            case 'jpeg':
+            case Image::TYPE_JPEG:
                 return BackendImage::TYPE_JPEG;
-            case 'png':
+            case Image::TYPE_PNG:
                 return BackendImage::TYPE_PNG;
-            case 'gif':
+            case Image::TYPE_GIF:
                 return BackendImage::TYPE_GIF;
             default:
-                throw new \Exception('Image type not supported: '.$extension.'. Use jpg, jpeg, png or gif');
+                throw new \Exception('Image type not supported: ' . $type . '. Use jpg, jpeg, png or gif');
         }
     }
 
