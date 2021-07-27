@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block;
+namespace PdfGenerator\Frontend\Block\Paragraph;
 
-class Text
+class TextStyle
 {
 }

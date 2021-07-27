@@ -13,30 +13,25 @@ namespace PdfGenerator\Frontend\Style;
 
 use PdfGenerator\Frontend\Style\Base\BlockStyle;
 
-class RowStyle extends BlockStyle
+class ColumnStyle extends BlockStyle
 {
     /**
-     * @var float[]|null
+     * @var float
      */
-    private $columnWidths;
+    private $gutter;
 
-    /**
-     * RowStyle constructor.
-     *
-     * @param float[]|null $columnWidths
-     */
-    public function __construct(array $columnWidths = null)
+    public function __construct(float $gutter = 0)
     {
         parent::__construct();
 
-        $this->columnWidths = $columnWidths;
+        $this->gutter = $gutter;
     }
 
     /**
-     * @return float[]|null
+     * @return float
      */
-    public function getColumnWidths(): ?array
+    public function getGutter()
     {
-        return $this->columnWidths;
+        return $this->gutter;
     }
 }

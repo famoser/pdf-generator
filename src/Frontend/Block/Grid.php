@@ -11,6 +11,44 @@
 
 namespace PdfGenerator\Frontend\Block;
 
-class Grid
+use PdfGenerator\Frontend\Block\Base\Block;
+use PdfGenerator\Frontend\Block\Grid\GridEntry;
+use PdfGenerator\Frontend\Style\GridStyle;
+
+class Grid extends Block
 {
+    /**
+     * @var GridStyle
+     */
+    private $style;
+
+    /**
+     * @var GridEntry[][]
+     */
+    private $gridEntries = [];
+
+    public function __construct(GridStyle $style, array $dimensions = null)
+    {
+        parent::__construct($dimensions);
+
+        $this->style = $style;
+    }
+
+    public function addBlock(int $columnIndex, int $rowIndex, Block $block, int $columnSpan = 1, int $rowSpan = 1)
+    {
+        while (\count($this->gridEntries) <= $columnIndex) {
+            $this->gridEntries[] = [];
+        }
+        while (\count($this->gridEntries[$columnIndex]) <= $rowIndex) {
+            $this->gridEntries[$columnIndex] = [];
+        }
+
+        $gridEntry = new GridEntry($columnSpan, $rowSpan, $block);
+        $this->gridEntries[$columnIndex][$rowIndex] = $gridEntry;
+    }
+
+    public function getStyle(): GridStyle
+    {
+        return $this->style;
+    }
 }
