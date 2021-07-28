@@ -15,7 +15,7 @@ use PdfGenerator\Frontend\MeasuredContent\Image;
 use PdfGenerator\Frontend\MeasuredContent\Paragraph;
 use PdfGenerator\IR\Buffer\TextBuffer\MeasuredLine;
 use PdfGenerator\IR\Buffer\TextBuffer\MeasuredPhrase;
-use PdfGenerator\IR\Text\WordSizer\WordSizer;
+use PdfGenerator\IR\Text\WordSizer\WordSizerInterface;
 
 class ContentVisitor
 {
@@ -47,7 +47,7 @@ class ContentVisitor
         return $paragraph;
     }
 
-    private function measureLine(string $line, WordSizer $sizer)
+    private function measureLine(string $line, WordSizerInterface $sizer)
     {
         $words = explode(' ', $line);
 

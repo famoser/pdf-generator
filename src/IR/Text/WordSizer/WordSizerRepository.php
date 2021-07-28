@@ -21,7 +21,7 @@ class WordSizerRepository
     private $wordSizerVisitor;
 
     /**
-     * @var WordSizer[]
+     * @var WordSizerInterface[]
      */
     private $wordSizerByFont = [];
 
@@ -30,10 +30,10 @@ class WordSizerRepository
         $this->wordSizerVisitor = new WordSizerVisitor();
     }
 
-    public function getWordSizer(Font $font): WordSizer
+    public function getWordSizer(Font $font): WordSizerInterface
     {
         if (!\array_key_exists($font->getIdentifier(), $this->wordSizerByFont)) {
-            /** @var WordSizer $wordSizer */
+            /** @var WordSizerInterface $wordSizer */
             $wordSizer = $font->accept($this->wordSizerVisitor);
             $this->wordSizerByFont[$font->getIdentifier()] = $wordSizer;
         }

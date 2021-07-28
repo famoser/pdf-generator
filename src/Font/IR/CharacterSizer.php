@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\WordSizer;
+namespace PdfGenerator\Font\IR;
 
 use PdfGenerator\Font\IR\Structure\Font;
 

@@ -16,7 +16,7 @@ use PdfGenerator\IR\Buffer\TextBuffer\MeasuredParagraph;
 use PdfGenerator\IR\Buffer\TextBuffer\MeasuredPhrase;
 use PdfGenerator\IR\Buffer\TextBuffer\Phrase;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
-use PdfGenerator\IR\Text\WordSizer\WordSizer;
+use PdfGenerator\IR\Text\WordSizer\WordSizerInterface;
 use PdfGenerator\IR\Text\WordSizer\WordSizerRepository;
 
 class TextBuffer
@@ -66,7 +66,7 @@ class TextBuffer
         return $measuredParagraph;
     }
 
-    private function measureLine(string $line, WordSizer $sizer)
+    private function measureLine(string $line, WordSizerInterface $sizer)
     {
         $words = explode(' ', $line);
 
