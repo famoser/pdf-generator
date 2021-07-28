@@ -16,12 +16,12 @@ class Cursor
     /**
      * @var float
      */
-    private $xCoordinate;
+    private $top;
 
     /**
      * @var float
      */
-    private $yCoordinate;
+    private $left;
 
     /**
      * @var int
@@ -31,25 +31,30 @@ class Cursor
     /**
      * Cursor constructor.
      */
-    public function __construct(float $xCoordinate, float $yCoordinate, int $pageIndex)
+    public function __construct(float $left, float $top, int $pageIndex)
     {
-        $this->xCoordinate = $xCoordinate;
-        $this->yCoordinate = $yCoordinate;
+        $this->left = $left;
+        $this->top = $top;
         $this->pageIndex = $pageIndex;
     }
 
-    public function getXCoordinate(): float
+    public function getLeft(): float
     {
-        return $this->xCoordinate;
+        return $this->left;
     }
 
-    public function getYCoordinate(): float
+    public function getTop(): float
     {
-        return $this->yCoordinate;
+        return $this->top;
     }
 
     public function getPageIndex(): int
     {
         return $this->pageIndex;
+    }
+
+    public static function moveRightDown(self $cursor, float $right, float $down)
+    {
+        return new self($cursor->left + $right, $cursor->top + $down, $cursor->pageIndex);
     }
 }

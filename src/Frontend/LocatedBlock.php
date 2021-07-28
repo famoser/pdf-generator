@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Frontend;
 
+use PdfGenerator\Frontend\Block\Base\Block;
+
 class LocatedBlock
 {
     /**
@@ -19,14 +21,14 @@ class LocatedBlock
     private $cursor;
 
     /**
-     * @var MeasuredBlock
+     * @var Block
      */
     private $block;
 
     /**
      * LocatedBlock constructor.
      */
-    public function __construct(Cursor $cursor, MeasuredBlock $block)
+    public function __construct(Cursor $cursor, Block $block)
     {
         $this->cursor = $cursor;
         $this->block = $block;
@@ -37,7 +39,7 @@ class LocatedBlock
         return $this->cursor;
     }
 
-    public function getBlock(): MeasuredBlock
+    public function getBlock(): Block
     {
         return $this->block;
     }
