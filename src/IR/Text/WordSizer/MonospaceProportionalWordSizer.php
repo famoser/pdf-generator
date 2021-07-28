@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR\Text\WordSizer;
 
-class MonospaceWordSizer
+class MonospaceProportionalWordSizer implements WordSizerInterface
 {
     /**
      * @var int

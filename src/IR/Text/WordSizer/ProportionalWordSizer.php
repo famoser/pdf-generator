@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR\Text\WordSizer;
 
-class WordSizer
+class ProportionalWordSizer implements WordSizerInterface
 {
     /**
      * @var int
