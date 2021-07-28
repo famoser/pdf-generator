@@ -59,6 +59,7 @@ class Document implements DocumentInterface
     public function __construct(PageGenerator $pageGenerator = null, Cursor $cursor = null)
     {
         $this->pageGenerator = $pageGenerator ?? new PageGenerator();
+        $this->cursor = $cursor;
 
         $this->fontRepository = new FontRepository();
         $this->imageRepository = new ImageRepository();
@@ -69,30 +70,31 @@ class Document implements DocumentInterface
 
     public function addContent(Content $content)
     {
-        $measuredContent = $this->measure($content);
+        $measuredContent = $this->measureContent($content);
+
         $contentBlock = new \PdfGenerator\Frontend\Block\Content($measuredContent);
         $this->add($contentBlock);
     }
 
     public function add(Block $block)
     {
-        $locatedBlocks = $this->locate($measuredBlock);
+        $locatedBlocks = $this->locate($block);
 
         foreach ($locatedBlocks as $locatedBlock) {
             $this->print($locatedBlock);
         }
     }
 
-    public function measure(Content $content): MeasuredContent
+    public function measureContent(Content $content): MeasuredContent
     {
         return $content->accept($this->contentVisitor);
     }
 
-    public function locate(MeasuredBlock $measuredBlock): array
+    public function locate(Block $block, Cursor $startCursor = null): array
     {
-        $cursor = $cursor ?? $this->cursor;
+        $startCursor = $startCursor ?? $this->cursor;
 
-        return [new LocatedBlock($cursor, $measuredBlock)];
+        return [new LocatedBlock($startCursor, $block)];
     }
 
     public function print(LocatedBlock $block)

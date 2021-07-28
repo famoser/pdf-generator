@@ -23,6 +23,11 @@ class ParagraphStyle
     /**
      * @var float
      */
+    private $indent;
+
+    /**
+     * @var float
+     */
     private $marginTop;
 
     /**
@@ -33,9 +38,10 @@ class ParagraphStyle
     /**
      * ParagraphStyle constructor.
      */
-    public function __construct(string $alignment = self::ALIGNMENT_LEFT, float $marginTop = 0, float $marginBottom = 0)
+    public function __construct(string $alignment = self::ALIGNMENT_LEFT, float $indent = 0, float $marginTop = 0, float $marginBottom = 0)
     {
         $this->alignment = $alignment;
+        $this->indent = $indent;
         $this->marginTop = $marginTop;
         $this->marginBottom = $marginBottom;
     }
@@ -45,18 +51,17 @@ class ParagraphStyle
         return $this->alignment;
     }
 
-    /**
-     * @return float
-     */
-    public function getMarginTop()
+    public function getIndent(): float
+    {
+        return $this->indent;
+    }
+
+    public function getMarginTop(): float
     {
         return $this->marginTop;
     }
 
-    /**
-     * @return float
-     */
-    public function getMarginBottom()
+    public function getMarginBottom(): float
     {
         return $this->marginBottom;
     }

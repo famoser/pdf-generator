@@ -9,13 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend;
+namespace PdfGenerator\Frontend\Allocator;
 
-interface LayoutFactoryConfigurationInterface
+class ContentAllocator
 {
-    public function getContentXSize(): float;
-
-    public function getColumnGutter(): float;
-
-    public function getTableColumnGutter(): float;
 }

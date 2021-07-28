@@ -9,13 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block;
+namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Block\Base\Block;
 use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 
-class Page extends Block
+class Page
 {
+    /**
+     * @var ContentArea[]
+     */
+    private $contentAreas;
+
     /**
      * Page constructor.
      *
