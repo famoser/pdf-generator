@@ -59,6 +59,39 @@ class Image extends BaseDocumentStructure
     }
 
     /**
+     * @throws \Exception
+     */
+    public static function create(string $imagePath): self
+    {
+        $data = file_get_contents($imagePath);
+        list($width, $height) = getimagesizefromstring($data);
+        $type = self::getImageType($imagePath);
+
+        return new self($imagePath, $data, $type, $width, $height);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    private static function getImageType(string $imagePath): string
+    {
+        /** @var string $extension */
+        $extension = pathinfo($imagePath, \PATHINFO_EXTENSION);
+        switch ($extension) {
+            case 'jpg':
+                return self::TYPE_JPG;
+            case 'jpeg':
+                return self::TYPE_JPEG;
+            case 'png':
+                return self::TYPE_PNG;
+            case 'gif':
+                return self::TYPE_GIF;
+            default:
+                throw new \Exception('Image type not supported: ' . $extension . '. Use jpg, jpeg, png or gif');
+        }
+    }
+
+    /**
      * @return mixed
      */
     public function accept(DocumentVisitor $visitor)

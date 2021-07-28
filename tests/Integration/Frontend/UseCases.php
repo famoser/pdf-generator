@@ -25,7 +25,7 @@ class UseCases extends TestCase
         $document = new Document();
 
         // act
-        $headerFont = Font::createFromDefault(Font::NAME_HELVETICA, Font::STYLE_NORMAL, Font::WEIGHT_BOLD);
+        $headerFont = Font::createFromDefault(Font::NAME_HELVETICA, Font::STYLE_ROMAN, Font::WEIGHT_BOLD);
         $headerTextStyle = new TextStyle($headerFont, 8);
         $paragraph = new Paragraph();
         $paragraph->add($headerTextStyle, 'Veröffentlichung PDF-writer');

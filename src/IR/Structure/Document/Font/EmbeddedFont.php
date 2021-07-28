@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\IR\Structure\Document\Font;
 
+use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\IR\Structure\Document\Font;
 
 class EmbeddedFont extends Font
@@ -41,6 +42,21 @@ class EmbeddedFont extends Font
     }
 
     /**
+     * @throws \Exception
+     */
+    public static function create(string $fontPath): self
+    {
+        $fontData = file_get_contents($fontPath);
+
+        $parser = Parser::create();
+        $font = $parser->parse($fontData);
+
+        return new self($fontPath, $fontData, $font);
+    }
+
+    /**
+     * @throws \Exception
+     *
      * @return mixed
      *
      * @throws \Exception

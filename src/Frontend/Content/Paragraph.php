@@ -11,11 +11,12 @@
 
 namespace PdfGenerator\Frontend\Content;
 
-use PdfGenerator\Frontend\Block\Paragraph\Phrase;
-use PdfGenerator\Frontend\Block\Style\ParagraphStyle;
-use PdfGenerator\Frontend\BlockVisitor;
 use PdfGenerator\Frontend\Content\Base\Content;
+use PdfGenerator\Frontend\Content\Paragraph\Phrase;
+use PdfGenerator\Frontend\Content\Style\ParagraphStyle;
 use PdfGenerator\Frontend\Content\Style\TextStyle;
+use PdfGenerator\Frontend\ContentVisitor;
+use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Paragraph extends Content
 {
@@ -56,8 +57,8 @@ class Paragraph extends Content
         return $this->style;
     }
 
-    public function accept(BlockVisitor $blockVisitor)
+    public function accept(ContentVisitor $contentVisitor): MeasuredContent
     {
-        $blockVisitor->visitParagraph($this);
+        return $contentVisitor->visitParagraph($this);
     }
 }
