@@ -13,8 +13,11 @@ namespace PdfGenerator\Frontend;
 
 use DocumentGenerator\DocumentInterface;
 use PdfGenerator\Frontend\Block\Base\Block;
-use PdfGenerator\Frontend\Block\Column;
 use PdfGenerator\Frontend\Content\Base\Content;
+use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
+use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
+use PdfGenerator\Frontend\MeasuredContent\Utils\ImageRepository;
+use PdfGenerator\IR\Text\WordSizer\WordSizerRepository;
 
 class Document implements DocumentInterface
 {
@@ -33,21 +36,46 @@ class Document implements DocumentInterface
      */
     private $pageGenerator;
 
+    /**
+     * @var FontRepository
+     */
+    private $fontRepository;
+
+    /**
+     * @var ImageRepository
+     */
+    private $imageRepository;
+
+    /**
+     * @var WordSizerRepository
+     */
+    private $wordSizerRepository;
+
+    /**
+     * @var ContentVisitor
+     */
+    private $contentVisitor;
+
     public function __construct(PageGenerator $pageGenerator = null, Cursor $cursor = null)
     {
         $this->pageGenerator = $pageGenerator ?? new PageGenerator();
+
+        $this->fontRepository = new FontRepository();
+        $this->imageRepository = new ImageRepository();
+        $this->wordSizerRepository = new WordSizerRepository();
+
+        $this->contentVisitor = new ContentVisitor($this->imageRepository, $this->fontRepository, $this->wordSizerRepository);
     }
 
     public function addContent(Content $content)
     {
         $measuredContent = $this->measure($content);
-        $column = new Column();
-        $column->addBlock($measuredContent);
+        $contentBlock = new \PdfGenerator\Frontend\Block\Content($measuredContent);
+        $this->add($contentBlock);
     }
 
     public function add(Block $block)
     {
-        $measuredBlock = $this->measure($block);
         $locatedBlocks = $this->locate($measuredBlock);
 
         foreach ($locatedBlocks as $locatedBlock) {
@@ -55,11 +83,9 @@ class Document implements DocumentInterface
         }
     }
 
-    public function measure(Content $content): MeasuredBlock
+    public function measure(Content $content): MeasuredContent
     {
-        $measuredBlock = new MeasuredBlock();
-
-        return $measuredBlock;
+        return $content->accept($this->contentVisitor);
     }
 
     public function locate(MeasuredBlock $measuredBlock): array

@@ -13,6 +13,8 @@ namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\Content\Base\Content;
 use PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\ContentVisitor;
+use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Rectangle extends Content
 {
@@ -54,5 +56,10 @@ class Rectangle extends Content
     public function getHeight(): float
     {
         return $this->height;
+    }
+
+    public function accept(ContentVisitor $contentVisitor): MeasuredContent
+    {
+        return $contentVisitor->visitRectangle($this);
     }
 }

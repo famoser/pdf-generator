@@ -13,15 +13,42 @@ namespace PdfGenerator\Frontend;
 
 use PdfGenerator\Frontend\MeasuredContent\Image;
 use PdfGenerator\Frontend\MeasuredContent\Paragraph;
-use PdfGenerator\IR\Buffer\TextBuffer\MeasuredLine;
-use PdfGenerator\IR\Buffer\TextBuffer\MeasuredPhrase;
+use PdfGenerator\Frontend\MeasuredContent\Rectangle;
+use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
+use PdfGenerator\Frontend\MeasuredContent\Utils\ImageRepository;
 use PdfGenerator\IR\Text\WordSizer\WordSizerInterface;
+use PdfGenerator\IR\Text\WordSizer\WordSizerRepository;
 
 class ContentVisitor
 {
+    /**
+     * @var ImageRepository
+     */
+    private $imageRespository;
+
+    /**
+     * @var FontRepository
+     */
+    private $fontRepository;
+
+    /**
+     * @var WordSizerRepository
+     */
+    private $wordSizerRepository;
+
+    /**
+     * ContentVisitor constructor.
+     */
+    public function __construct(ImageRepository $imageRespository, FontRepository $fontRepository, WordSizerRepository $wordSizerRepository)
+    {
+        $this->wordSizerRepository = $wordSizerRepository;
+        $this->imageRespository = $imageRespository;
+        $this->fontRepository = $fontRepository;
+    }
+
     public function visitImage(Content\Image $param): Image
     {
-        $image = \PdfGenerator\IR\Structure\Document\Image::create($param->getSrc());
+        $image = $this->imageRespository->getImage($param);
 
         return new Image($image);
     }
@@ -35,19 +62,25 @@ class ContentVisitor
 
             $measuredLines = [];
             $lines = $this->splitAtNewlines($phrase->getText());
-            $sizer = $this->wordSizerRepository->getWordSizer($textStyle->getFont());
+            $font = $this->fontRepository->getFont($phrase->getTextStyle()->getFont());
+            $sizer = $this->wordSizerRepository->getWordSizer($font);
             foreach ($lines as $line) {
                 $measuredLines[] = $this->measureLine($line, $sizer);
             }
 
-            $measuredPhrase = new MeasuredPhrase($measuredLines, $textStyle);
+            $measuredPhrase = new Paragraph\Phrase($measuredLines, $textStyle);
             $paragraph->addPhrase($measuredPhrase);
         }
 
         return $paragraph;
     }
 
-    private function measureLine(string $line, WordSizerInterface $sizer)
+    public function visitRectangle(Content\Rectangle $param): Rectangle
+    {
+        return new Rectangle($param->getStyle(), $param);
+    }
+
+    private function measureLine(string $line, WordSizerInterface $sizer): Paragraph\Line
     {
         $words = explode(' ', $line);
 
@@ -56,13 +89,13 @@ class ContentVisitor
             $wordWidths[] = $sizer->getWidth($word);
         }
 
-        return new MeasuredLine($words, $wordWidths, $sizer->getSpaceWidth());
+        return new Paragraph\Line($words, $wordWidths, $sizer->getSpaceWidth());
     }
 
     /**
      * @return string[]
      */
-    private function splitAtNewlines(string $text)
+    private function splitAtNewlines(string $text): array
     {
         $textWithNormalizedNewlines = str_replace(["\r\n", "\n\r", "\r"], "\n", $text);
 
