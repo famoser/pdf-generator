@@ -12,6 +12,8 @@
 namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\Content\Base\Content;
+use PdfGenerator\Frontend\ContentVisitor;
+use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Image extends Content
 {
@@ -28,5 +30,10 @@ class Image extends Content
     public function getSrc(): string
     {
         return $this->src;
+    }
+
+    public function accept(ContentVisitor $contentVisitor): MeasuredContent
+    {
+        return $contentVisitor->visitImage($this);
     }
 }

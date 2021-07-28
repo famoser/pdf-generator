@@ -9,10 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block\Style;
+namespace PdfGenerator\Frontend\MeasuredContent\Base;
 
-use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
-
-class PageStyle extends BlockStyle
+abstract class MeasuredContent
 {
+    abstract public function getWidth(): float;
 }

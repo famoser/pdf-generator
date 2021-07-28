@@ -13,15 +13,9 @@ namespace PdfGenerator\Frontend\Block;
 
 use PdfGenerator\Frontend\Block\Base\Block;
 use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
-use PdfGenerator\Frontend\Block\Style\PageStyle;
 
 class Page extends Block
 {
-    /**
-     * @var PageStyle
-     */
-    private $style;
-
     /**
      * Page constructor.
      *

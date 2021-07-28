@@ -9,39 +9,43 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block\Paragraph;
+namespace PdfGenerator\Frontend\MeasuredContent\Paragraph;
 
 use PdfGenerator\Frontend\Content\Style\TextStyle;
 
 class Phrase
 {
     /**
-     * @var string
+     * @var Line[]
      */
-    private $text;
+    private $measuredLines;
 
     /**
      * @var TextStyle
      */
     private $textStyle;
 
-    public function getText(): string
+    /**
+     * MeasuredPhrase constructor.
+     *
+     * @param Line[] $measuredLines
+     */
+    public function __construct(array $measuredLines, TextStyle $textStyle)
     {
-        return $this->text;
+        $this->measuredLines = $measuredLines;
+        $this->textStyle = $textStyle;
     }
 
-    public function setText(string $text): void
+    /**
+     * @return Line[]
+     */
+    public function getMeasuredLines(): array
     {
-        $this->text = $text;
+        return $this->measuredLines;
     }
 
     public function getTextStyle(): TextStyle
     {
         return $this->textStyle;
-    }
-
-    public function setTextStyle(TextStyle $textStyle): void
-    {
-        $this->textStyle = $textStyle;
     }
 }

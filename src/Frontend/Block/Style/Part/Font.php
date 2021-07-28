@@ -20,8 +20,9 @@ class Font
      */
     private $name;
 
-    public const STYLE_NORMAL = 'STYLE_NORMAL';
+    public const STYLE_ROMAN = 'STYLE_ROMAN';
     public const STYLE_ITALIC = 'STYLE_ITALIC';
+    public const STYLE_OBLIQUE = 'STYLE_OBLIQUE'; // like auto-generated italic
 
     /**
      * @var string|null
@@ -45,7 +46,7 @@ class Font
     {
     }
 
-    public static function createFromDefault(string $name = self::NAME_HELVETICA, string $style = self::STYLE_NORMAL, string $weight = self::WEIGHT_NORMAL)
+    public static function createFromDefault(string $name = self::NAME_HELVETICA, string $style = self::STYLE_ROMAN, string $weight = self::WEIGHT_NORMAL)
     {
         $font = new self();
 
