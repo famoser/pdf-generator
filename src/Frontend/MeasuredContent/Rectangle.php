@@ -22,14 +22,14 @@ class Rectangle extends MeasuredContent
     private $style;
 
     /**
-     * @var \PdfGenerator\IR\Structure\Document\Page\Content\Rectangle
+     * @var \PdfGenerator\Frontend\Content\Rectangle
      */
     private $rectangle;
 
     /**
      * Rectangle constructor.
      */
-    public function __construct(DrawingStyle $style, \PdfGenerator\IR\Structure\Document\Page\Content\Rectangle $rectangle)
+    public function __construct(DrawingStyle $style, \PdfGenerator\Frontend\Content\Rectangle $rectangle)
     {
         $this->style = $style;
         $this->rectangle = $rectangle;
@@ -40,13 +40,13 @@ class Rectangle extends MeasuredContent
         return $this->style;
     }
 
-    public function getRectangle(): \PdfGenerator\IR\Structure\Document\Page\Content\Rectangle
+    public function getRectangle(): \PdfGenerator\Frontend\Content\Rectangle
     {
         return $this->rectangle;
     }
 
     public function getWidth(): float
     {
-        return $this->rectangle->getSize()->getWidth() + $this->style->getLineWidth();
+        return $this->rectangle->getWidth() + $this->style->getLineWidth();
     }
 }

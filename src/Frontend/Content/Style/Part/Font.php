@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block\Style\Part;
+namespace PdfGenerator\Frontend\Content\Style\Part;
 
 class Font
 {
@@ -20,6 +20,14 @@ class Font
      */
     private $name;
 
+    public const WEIGHT_NORMAL = 'WEIGHT_NORMAL';
+    public const WEIGHT_BOLD = 'WEIGHT_BOLD';
+
+    /**
+     * @var string|null
+     */
+    private $weight;
+
     public const STYLE_ROMAN = 'STYLE_ROMAN';
     public const STYLE_ITALIC = 'STYLE_ITALIC';
     public const STYLE_OBLIQUE = 'STYLE_OBLIQUE'; // like auto-generated italic
@@ -28,14 +36,6 @@ class Font
      * @var string|null
      */
     private $style;
-
-    public const WEIGHT_NORMAL = 'WEIGHT_NORMAL';
-    public const WEIGHT_BOLD = 'WEIGHT_BOLD';
-
-    /**
-     * @var string|null
-     */
-    private $weight;
 
     /**
      * @var string|null
@@ -46,13 +46,13 @@ class Font
     {
     }
 
-    public static function createFromDefault(string $name = self::NAME_HELVETICA, string $style = self::STYLE_ROMAN, string $weight = self::WEIGHT_NORMAL)
+    public static function createFromDefault(string $name = self::NAME_HELVETICA, string $weight = self::WEIGHT_NORMAL, string $style = self::STYLE_ROMAN)
     {
         $font = new self();
 
         $font->name = $name;
-        $font->style = $style;
         $font->weight = $weight;
+        $font->style = $style;
 
         return $font;
     }
@@ -71,14 +71,14 @@ class Font
         return $this->name;
     }
 
-    public function getStyle(): ?string
-    {
-        return $this->style;
-    }
-
     public function getWeight(): ?string
     {
         return $this->weight;
+    }
+
+    public function getStyle(): ?string
+    {
+        return $this->style;
     }
 
     public function getSrc(): ?string

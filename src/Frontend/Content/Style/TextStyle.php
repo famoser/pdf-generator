@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Frontend\Content\Style;
 
-use PdfGenerator\Frontend\Block\Style\Part\Color;
-use PdfGenerator\Frontend\Block\Style\Part\Font;
+use PdfGenerator\Frontend\Content\Style\Part\Color;
+use PdfGenerator\Frontend\Content\Style\Part\Font;
 
 class TextStyle
 {
