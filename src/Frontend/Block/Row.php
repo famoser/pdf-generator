@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Frontend\Block;
 
+use PdfGenerator\Frontend\Allocator\RowAllocator;
 use PdfGenerator\Frontend\Block\Base\Block;
-use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 use PdfGenerator\Frontend\Block\Style\RowStyle;
 
 class Row extends Block
@@ -28,11 +28,6 @@ class Row extends Block
     private $columns = [];
 
     /**
-     * @var int[]
-     */
-    private $columnSpans = [];
-
-    /**
      * @param float[]|null $dimensions
      */
     public function __construct(RowStyle $style = null, array $dimensions = null)
@@ -42,24 +37,21 @@ class Row extends Block
         $this->style = $style ?? new RowStyle();
     }
 
-    public function addColumn(Column $column, int $columnSpan = 1)
+    public function addColumn(Column $column)
     {
         $this->columns[] = $column;
-        $this->columnSpans[] = $columnSpan;
     }
 
-    public function setColumn(int $columnIndex, Column $column, int $columnSpan = 1)
+    public function setColumn(int $columnIndex, Column $column)
     {
         while (\count($this->columns) <= $columnIndex) {
             $this->columns[] = null;
-            $this->columnSpans[] = null;
         }
 
         $this->columns[$columnIndex] = $column;
-        $this->columnSpans[$columnIndex] = $columnSpan;
     }
 
-    public function getStyle(): BlockStyle
+    public function getStyle(): RowStyle
     {
         return $this->style;
     }
@@ -72,11 +64,8 @@ class Row extends Block
         return $this->columns;
     }
 
-    /**
-     * @return int[]
-     */
-    public function getColumnSpans(): array
+    public function createAllocator(): RowAllocator
     {
-        return $this->columnSpans;
+        return new RowAllocator($this);
     }
 }

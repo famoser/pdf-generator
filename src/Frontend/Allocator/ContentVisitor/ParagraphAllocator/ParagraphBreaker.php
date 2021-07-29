@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator;
+namespace PdfGenerator\Frontend\Allocator\ContentVisitor\ParagraphAllocator;
 
 use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\LocatedContent\Paragraph\Line;
@@ -96,9 +96,6 @@ class ParagraphBreaker
         }
     }
 
-    /**
-     * @return mixed[]
-     */
     public function nextLines(float $targetWidth, float $targetHeight, float $indent, bool $newParagraph): array
     {
         $allowEmpty = !$newParagraph; // if new paragraph force content on first line, else do not

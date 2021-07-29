@@ -32,9 +32,4 @@ class Image extends MeasuredContent
     {
         return $this->image;
     }
-
-    public function getWidth(): float
-    {
-        return $this->image->getWidth();
-    }
 }

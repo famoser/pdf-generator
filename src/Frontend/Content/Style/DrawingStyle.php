@@ -12,8 +12,9 @@
 namespace PdfGenerator\Frontend\Content\Style;
 
 use PdfGenerator\Frontend\Block\Style\Part\Color;
+use PdfGenerator\Frontend\Content\Style\Base\Style;
 
-class DrawingStyle
+class DrawingStyle extends Style
 {
     /**
      * @var float

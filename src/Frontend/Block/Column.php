@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Frontend\Block;
 
+use PdfGenerator\Frontend\Allocator\ColumnAllocator;
 use PdfGenerator\Frontend\Block\Base\Block;
-use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 use PdfGenerator\Frontend\Block\Style\ColumnStyle;
 
 class Column extends Block
@@ -20,7 +20,7 @@ class Column extends Block
     /**
      * @var Block[]
      */
-    private $cells = [];
+    private $blocks = [];
 
     /**
      * @var ColumnStyle
@@ -39,10 +39,10 @@ class Column extends Block
 
     public function addBlock(Block $cell)
     {
-        $this->cells[] = $cell;
+        $this->blocks[] = $cell;
     }
 
-    public function getStyle(): BlockStyle
+    public function getStyle(): ColumnStyle
     {
         return $this->style;
     }
@@ -50,8 +50,13 @@ class Column extends Block
     /**
      * @return Block[]
      */
-    public function getCells(): array
+    public function getBlocks(): array
     {
-        return $this->cells;
+        return $this->blocks;
+    }
+
+    public function createAllocator(): ColumnAllocator
+    {
+        return new ColumnAllocator($this);
     }
 }

@@ -11,7 +11,9 @@
 
 namespace PdfGenerator\Frontend\Content\Style;
 
-class ParagraphStyle
+use PdfGenerator\Frontend\Content\Style\Base\Style;
+
+class ParagraphStyle extends Style
 {
     public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
 
@@ -26,24 +28,12 @@ class ParagraphStyle
     private $indent;
 
     /**
-     * @var float
-     */
-    private $marginTop;
-
-    /**
-     * @var float
-     */
-    private $marginBottom;
-
-    /**
      * ParagraphStyle constructor.
      */
-    public function __construct(string $alignment = self::ALIGNMENT_LEFT, float $indent = 0, float $marginTop = 0, float $marginBottom = 0)
+    public function __construct(string $alignment = self::ALIGNMENT_LEFT, float $indent = 0)
     {
         $this->alignment = $alignment;
         $this->indent = $indent;
-        $this->marginTop = $marginTop;
-        $this->marginBottom = $marginBottom;
     }
 
     public function getAlignment(): string
@@ -54,15 +44,5 @@ class ParagraphStyle
     public function getIndent(): float
     {
         return $this->indent;
-    }
-
-    public function getMarginTop(): float
-    {
-        return $this->marginTop;
-    }
-
-    public function getMarginBottom(): float
-    {
-        return $this->marginBottom;
     }
 }

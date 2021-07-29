@@ -49,10 +49,7 @@ class TextStyle
         return $this->font;
     }
 
-    /**
-     * @return float
-     */
-    public function getFontSize()
+    public function getFontSize(): float
     {
         return $this->fontSize;
     }

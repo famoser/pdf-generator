@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Allocator\ContentAllocator;
+namespace PdfGenerator\Frontend\Allocator\ContentVisitor;
 
-use PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator\ParagraphBreaker;
+use PdfGenerator\Frontend\Allocator\ContentVisitor\ParagraphAllocator\ParagraphBreaker;
 use PdfGenerator\Frontend\Content\Style\ParagraphStyle;
 use PdfGenerator\Frontend\MeasuredContent\Paragraph;
 use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
-use PdfGenerator\Frontend\Position;
 use PdfGenerator\Frontend\Size;
 
 class ParagraphAllocator
@@ -51,23 +50,14 @@ class ParagraphAllocator
         $this->paragraphBreaker = new ParagraphBreaker($paragraph, $fontRepository);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function allocate(string $maxWidth, string $maxHeight): array
     {
         $indent = $this->firstTime ? $this->style->getIndent() : 0;
-        $margins = $this->style->getMarginTop() + $this->style->getMarginBottom();
-        $targetHeight = $maxHeight - $margins;
-        [$lines, $width, $height] = $this->paragraphBreaker->nextLines($maxWidth, $targetHeight, $indent, $this->firstTime);
+        [$lines, $width, $height] = $this->paragraphBreaker->nextLines($maxWidth, $maxHeight, $indent, $this->firstTime);
 
-        $position = new Position(0, $this->style->getMarginTop());
         $size = new Size($width, $height);
-        $paragraph = new \PdfGenerator\Frontend\LocatedContent\Paragraph($position, $size, $lines);
 
-        $totalHeight = $height + $margins;
-
-        return [$paragraph, $width, $totalHeight];
+        return [$lines, $size];
     }
 
     public function isEmpty()
