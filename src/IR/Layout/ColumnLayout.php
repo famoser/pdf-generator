@@ -11,14 +11,12 @@
 
 namespace PdfGenerator\IR\Layout;
 
-use PdfGenerator\IR\Buffer\TextBuffer;
 use PdfGenerator\IR\Cursor;
 use PdfGenerator\IR\CursorPrinter;
 use PdfGenerator\IR\Layout\Column\Column;
 use PdfGenerator\IR\Layout\Column\ColumnGenerator;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Text\GreedyLineBreaker\ParagraphBreaker;
 
 class ColumnLayout
 {
@@ -47,67 +45,6 @@ class ColumnLayout
         $this->columnGenerator = $columnGenerator;
         $this->activeColumn = $columnGenerator->getNextColumn();
         $this->printer->setCursor($this->activeColumn->getStart());
-    }
-
-    public function addParagraph(TextBuffer $buffer, float $indent = 0)
-    {
-        $measuredParagraph = $buffer->getMeasuredParagraph();
-        $paragraphBreaker = new ParagraphBreaker($measuredParagraph);
-
-        if ($paragraphBreaker->isEmpty()) {
-            return;
-        }
-
-        $this->printTextBlock($paragraphBreaker, $indent);
-    }
-
-    public function continueParagraph(TextBuffer $buffer, float $indent)
-    {
-        $measuredParagraph = $buffer->getMeasuredParagraph();
-        $paragraphBreaker = new ParagraphBreaker($measuredParagraph);
-
-        if ($paragraphBreaker->isEmpty()) {
-            return;
-        }
-
-        $cursor = $this->printer->getCursor();
-        $nextTextStyle = $measuredParagraph->getFirstTextStyle();
-
-        $width = $this->activeColumn->getAvailableWidth($cursor) - $indent;
-        $line = $paragraphBreaker->nextLine($width, true);
-
-        $cursor = $cursor->moveRightDown($indent, $nextTextStyle->getDescender()); // descender is negative, so actually moves up
-        $this->printer->printLine($cursor, $line);
-        $this->addSpace(-$nextTextStyle->getDescender());
-
-        if (!$paragraphBreaker->isEmpty()) {
-            $this->addSpace($nextTextStyle->getLineGap());
-            $this->printTextBlock($paragraphBreaker);
-        }
-    }
-
-    private function printTextBlock(ParagraphBreaker $paragraphBreaker, float $indent = 0)
-    {
-        $cursor = $this->printer->getCursor();
-        $cursor = $this->resetLine($cursor);
-
-        $currentIndent = $indent;
-        while (!$paragraphBreaker->isEmpty()) {
-            $width = $this->activeColumn->getAvailableWidth($cursor);
-            $height = $this->activeColumn->getAvailableHeight($cursor);
-
-            $lines = $paragraphBreaker->nextLines($width, $height, $currentIndent, true);
-            $this->printer->printLines($cursor, $lines, $this->activeColumn->getStart()->getXCoordinate(), $indent);
-
-            if ($paragraphBreaker->isEmpty()) {
-                // no more content
-                break;
-            }
-
-            // more content, hence need to advance column
-            $cursor = $this->nextColumn();
-            $currentIndent = 0; // apply indent only once
-        }
     }
 
     public function addImage(Image $image, float $width, float $height)

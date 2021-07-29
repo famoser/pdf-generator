@@ -12,6 +12,7 @@
 namespace PdfGenerator\Frontend\MeasuredContent\Utils;
 
 use PdfGenerator\Frontend\Content\Style\Part\Font;
+use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
 
@@ -42,6 +43,13 @@ class FontRepository
             Font::STYLE_ITALIC => DefaultFont::STYLE_BOLD_ITALIC,
         ],
     ];
+
+    public function getFontMeasurement(TextStyle $style): FontMeasurement
+    {
+        $font = $this->getFont($style->getFont());
+
+        return new FontMeasurement($font, $style->getFontSize(), $style->getLineHeight());
+    }
 
     public function getFont(Font $font)
     {

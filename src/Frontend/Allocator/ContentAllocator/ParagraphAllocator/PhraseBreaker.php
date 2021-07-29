@@ -9,17 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\GreedyLineBreaker;
+namespace PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator;
 
-use PdfGenerator\IR\Buffer\TextBuffer\MeasuredPhrase;
-use PdfGenerator\IR\Printer\Fragment;
+use PdfGenerator\Frontend\LocatedContent\Paragraph\Fragment;
+use PdfGenerator\Frontend\MeasuredContent\Paragraph\Phrase;
+use PdfGenerator\Frontend\MeasuredContent\Utils\FontMeasurement;
 
 class PhraseBreaker
 {
     /**
-     * @var MeasuredPhrase
+     * @var Phrase
      */
     private $phrase;
+
+    /**
+     * @var FontMeasurement
+     */
+    private $fontMeasurement;
 
     /**
      * the next to be included word.
@@ -33,14 +39,20 @@ class PhraseBreaker
      */
     private $lineBreaker;
 
-    public function __construct(MeasuredPhrase $phrase)
+    public function __construct(Phrase $phrase, FontMeasurement $fontMeasurement)
     {
         $this->phrase = $phrase;
+        $this->fontMeasurement = $fontMeasurement;
     }
 
-    public function getPhrase(): MeasuredPhrase
+    public function getPhrase(): Phrase
     {
         return $this->phrase;
+    }
+
+    public function getFontMeasurement(): FontMeasurement
+    {
+        return $this->fontMeasurement;
     }
 
     public function isEmpty(): bool
@@ -58,7 +70,7 @@ class PhraseBreaker
             $this->lineBreaker = new LineBreaker($nextLine);
         }
 
-        $scale = $this->phrase->getTextStyle()->getFontScaling();
+        $scale = $this->fontMeasurement->getFontScaling();
         $scaledWidth = $targetWidth * $scale;
         [$line, $width] = $this->lineBreaker->nextLine($scaledWidth, $allowEmpty);
 

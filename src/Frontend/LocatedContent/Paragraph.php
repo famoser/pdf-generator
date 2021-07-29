@@ -11,6 +11,35 @@
 
 namespace PdfGenerator\Frontend\LocatedContent;
 
-class Paragraph
+use PdfGenerator\Frontend\LocatedContent\Base\LocatedContent;
+use PdfGenerator\Frontend\LocatedContent\Paragraph\Line;
+use PdfGenerator\Frontend\Position;
+use PdfGenerator\Frontend\Size;
+
+class Paragraph extends LocatedContent
 {
+    /**
+     * @var Line[]
+     */
+    private $lines;
+
+    /**
+     * Paragraph constructor.
+     *
+     * @param Line[] $lines
+     */
+    public function __construct(Position $position, Size $size, array $lines)
+    {
+        parent::__construct($position, $size);
+
+        $this->lines = $lines;
+    }
+
+    /**
+     * @return Line[]
+     */
+    public function getLines(): array
+    {
+        return $this->lines;
+    }
 }

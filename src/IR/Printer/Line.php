@@ -11,8 +11,6 @@
 
 namespace PdfGenerator\IR\Printer;
 
-use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
-
 class Line
 {
     /**
@@ -37,16 +35,12 @@ class Line
 
     /**
      * Line constructor.
-     *
-     * @param float $ascender
-     * @param float $descender
-     * @param float $leading
      */
-    public function __construct(TextStyle $style)
+    public function __construct(float $ascender, float $descender, float $leading)
     {
-        $this->ascender = $style->getAscender();
-        $this->descender = $style->getDescender();
-        $this->leading = $style->getLeading();
+        $this->ascender = $ascender;
+        $this->descender = $descender;
+        $this->leading = $leading;
     }
 
     public function addFragment(Fragment $fragment)

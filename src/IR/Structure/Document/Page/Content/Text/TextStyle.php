@@ -54,29 +54,4 @@ class TextStyle
     {
         return $this->lineHeight;
     }
-
-    public function getAscender()
-    {
-        return $this->getFont()->getAscender() / $this->getFontScaling();
-    }
-
-    public function getLineGap()
-    {
-        return $this->getLeading() - $this->getAscender() + $this->getDescender();
-    }
-
-    public function getDescender()
-    {
-        return $this->getFont()->getDescender() / $this->getFontScaling();
-    }
-
-    public function getLeading()
-    {
-        return $this->getFont()->getBaselineToBaselineDistance() / $this->getFontScaling() * $this->getLineHeight();
-    }
-
-    public function getFontScaling()
-    {
-        return $this->getFont()->getUnitsPerEm() / $this->getFontSize();
-    }
 }
