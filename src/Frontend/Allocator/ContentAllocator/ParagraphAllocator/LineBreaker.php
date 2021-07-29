@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\GreedyLineBreaker;
+namespace PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator;
 
-use PdfGenerator\IR\Buffer\TextBuffer\MeasuredLine;
+use PdfGenerator\Frontend\MeasuredContent\Paragraph\Line;
 
 class LineBreaker
 {
     /**
-     * @var MeasuredLine
+     * @var Line
      */
     private $line;
 
@@ -27,7 +27,7 @@ class LineBreaker
      */
     private $nextWordIndex = 0;
 
-    public function __construct(MeasuredLine $line)
+    public function __construct(Line $line)
     {
         $this->line = $line;
     }

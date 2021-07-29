@@ -9,18 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Text\GreedyLineBreaker;
+namespace PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator;
 
-use PdfGenerator\IR\Buffer\TextBuffer\MeasuredParagraph;
-use PdfGenerator\IR\Printer\Line;
-use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\Frontend\Content\Style\TextStyle;
+use PdfGenerator\Frontend\LocatedContent\Paragraph\Line;
+use PdfGenerator\Frontend\MeasuredContent\Paragraph;
+use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
 
 class ParagraphBreaker
 {
     /**
-     * @var MeasuredParagraph
+     * @var Paragraph
      */
     private $paragraph;
+
+    /**
+     * @var FontRepository
+     */
+    private $fontRepository;
 
     /**
      * the next to be included word.
@@ -34,22 +40,24 @@ class ParagraphBreaker
      */
     private $phraseBreaker;
 
-    public function __construct(MeasuredParagraph $paragraph)
+    public function __construct(Paragraph $paragraph, FontRepository $fontRepository)
     {
         $this->paragraph = $paragraph;
+        $this->fontRepository = $fontRepository;
     }
 
     public function isEmpty(): bool
     {
-        return (null === $this->phraseBreaker || $this->phraseBreaker->isEmpty()) &&
-            $this->nextPhraseIndex >= \count($this->paragraph->getMeasuredPhrases());
+        return ($this->phraseBreaker === null || $this->phraseBreaker->isEmpty()) &&
+            $this->nextPhraseIndex >= \count($this->paragraph->getPhrases());
     }
 
     private function advancePhraseBreakerIfRequired()
     {
-        if (null === $this->phraseBreaker || $this->phraseBreaker->isEmpty()) {
-            $nextPhrase = $this->paragraph->getMeasuredPhrases()[$this->nextPhraseIndex++];
-            $this->phraseBreaker = new PhraseBreaker($nextPhrase);
+        if ($this->phraseBreaker === null || $this->phraseBreaker->isEmpty()) {
+            $nextPhrase = $this->paragraph->getPhrases()[$this->nextPhraseIndex++];
+            $fontMeasurement = $this->fontRepository->getFontMeasurement($nextPhrase->getTextStyle());
+            $this->phraseBreaker = new PhraseBreaker($nextPhrase, $fontMeasurement);
         }
     }
 
@@ -60,12 +68,11 @@ class ParagraphBreaker
         return $this->phraseBreaker->getPhrase()->getTextStyle();
     }
 
-    public function nextLine(float $targetWidth, bool $allowEmpty): Line
+    private function addFragments(Line $line, float $targetWidth, bool $allowEmpty)
     {
         \assert(!$this->isEmpty());
 
         $currentWidth = 0;
-        $line = new Line($this->nextTextStyle());
         while ($currentWidth < $targetWidth) {
             $this->advancePhraseBreakerIfRequired();
 
@@ -87,12 +94,10 @@ class ParagraphBreaker
 
             $allowEmpty = true;
         }
-
-        return $line;
     }
 
     /**
-     * @return Line[]
+     * @return mixed[]
      */
     public function nextLines(float $targetWidth, float $targetHeight, float $indent, bool $newParagraph): array
     {
@@ -100,24 +105,31 @@ class ParagraphBreaker
         $requestedWidth = $targetWidth - $indent;
 
         $lines = [];
-        $availableHeight = $targetHeight;
+        $currentHeight = 0;
+        $maxWidth = 0;
         while (true) {
             if ($this->isEmpty()) {
                 break;
             }
 
-            $availableHeight -= $this->nextTextStyle()->getLeading();
-            if ($availableHeight < 0) {
+            $this->advancePhraseBreakerIfRequired();
+            $leading = $this->phraseBreaker->getFontMeasurement()->getLeading();
+
+            if ($currentHeight + $leading > $targetHeight) {
                 break;
             }
 
-            $lines[] = $this->nextLine($requestedWidth, $allowEmpty);
+            $line = new Line($leading);
+            $this->addFragments($line, $requestedWidth, $allowEmpty);
+            $lines[] = $line;
+            $currentHeight += $leading;
+            $maxWidth = max($maxWidth, $line->getWidth());
 
-            // while first line may have indent, further lines do not
+            // while first line may have indent, further lines do not and hence must not be empty
             $allowEmpty = false;
             $requestedWidth = $targetWidth;
         }
 
-        return $lines;
+        return [$lines, $maxWidth, $currentHeight];
     }
 }

@@ -13,13 +13,14 @@ namespace PdfGenerator\Frontend\Block;
 
 use PdfGenerator\Frontend\Block\Base\Block;
 use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
+use PdfGenerator\Frontend\Block\Style\ContentStyle;
 use PdfGenerator\Frontend\BlockVisitor;
 use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Content extends Block
 {
     /**
-     * @var BlockStyle
+     * @var ContentStyle
      */
     private $style;
 
@@ -31,7 +32,7 @@ class Content extends Block
     /**
      * Content constructor.
      */
-    public function __construct(MeasuredContent $measuredContent, BlockStyle $style = null, array $dimensions = null)
+    public function __construct(MeasuredContent $measuredContent, ContentStyle $style = null, array $dimensions = null)
     {
         parent::__construct($dimensions);
 
@@ -39,7 +40,7 @@ class Content extends Block
         $this->style = $style ?? new BlockStyle();
     }
 
-    public function getStyle(): BlockStyle
+    public function getStyle(): ContentStyle
     {
         return $this->style;
     }
