@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Allocator\ContentVisitor\ParagraphAllocator;
+namespace PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator;
 
 use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\LocatedContent\Paragraph\Line;

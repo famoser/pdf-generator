@@ -78,4 +78,9 @@ class BlockStyle
     {
         return $this->backgroundColor;
     }
+
+    public function getWhitespaceSide()
+    {
+        return $this->margin[1] + $this->margin[3] + $this->padding[1] + $this->padding[3];
+    }
 }

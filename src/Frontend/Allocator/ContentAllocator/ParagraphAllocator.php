@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Allocator\ContentVisitor;
+namespace PdfGenerator\Frontend\Allocator\ContentAllocator;
 
-use PdfGenerator\Frontend\Allocator\ContentVisitor\ParagraphAllocator\ParagraphBreaker;
+use PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator\ParagraphBreaker;
 use PdfGenerator\Frontend\Content\Style\ParagraphStyle;
 use PdfGenerator\Frontend\MeasuredContent\Paragraph;
 use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;

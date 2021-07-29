@@ -12,6 +12,7 @@
 namespace PdfGenerator\Frontend\Allocator;
 
 use PdfGenerator\Frontend\Allocator\Base\BaseAllocator;
+use PdfGenerator\Frontend\Allocator\RowAllocator\ColumnWidthEstimate;
 use PdfGenerator\Frontend\Block\Row;
 use PdfGenerator\Frontend\Block\Style\RowStyle;
 
@@ -61,7 +62,7 @@ class RowAllocator extends BaseAllocator
         $activeColumnWidth = 0;
         $widths = [];
         $presetColumnWidthCount = \count($this->rowStyle->getColumnWidths());
-        foreach ($this->columnAllocators as $columnAllocator) {
+        foreach ($this->getAllocators() as $columnAllocator) {
             // preset wins if exists
             $presetColumnWidth = $activeColumnWidth < $presetColumnWidthCount ? $this->rowStyle->getColumnWidths()[$activeColumnWidth++] : null;
             if ($presetColumnWidth !== null) {
@@ -79,7 +80,33 @@ class RowAllocator extends BaseAllocator
 
     public function contentWidthEstimate(): float
     {
-        // TODO: Implement contentWidthEstimate() method.
+        $activeColumnWidth = 0;
+        $widths = [];
+        $presetColumnWidthCount = \count($this->rowStyle->getColumnWidths());
+        foreach ($this->getAllocators() as $columnAllocator) {
+            // preset wins if exists
+            $presetColumnWidth = $activeColumnWidth < $presetColumnWidthCount ? $this->rowStyle->getColumnWidths()[$activeColumnWidth++] : 0;
+            $widthEstimate = $columnAllocator->contentWidthEstimate();
+            $widths[] = max($presetColumnWidth, $widthEstimate);
+        }
+
+        $sum = array_sum($widths);
+        $gutterWidth = max(0, \count($widths) - 1) * $this->rowStyle->getGutter();
+
+        return $sum + $gutterWidth;
+    }
+
+    /**
+     * @return ColumnWidthEstimate[]
+     */
+    public function getColumnWidthEstimates(): array
+    {
+        $columnWidthEstimate = [];
+        foreach ($this->getAllocators() as $allocator) {
+            $columnWidthEstimate[] = $allocator->columnWidthEstimate();
+        }
+
+        return $columnWidthEstimate;
     }
 
     public function place(float $maxWidth)

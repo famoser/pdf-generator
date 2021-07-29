@@ -60,17 +60,14 @@ class ColumnAllocator extends BaseAllocator
             return 0;
         }
 
-        if ($this->style->getSizing() !== ColumnStyle::SIZING_BY_CONTENT) {
-            throw new \Exception('Sizing ' . $this->style->getSizing() . ' not implemented');
-        }
+        \assert($this->style->getSizing() === ColumnStyle::SIZING_BY_CONTENT);
 
         $maxWidth = 0;
         foreach ($this->getAllocators() as $allocator) {
             $maxWidth = max($allocator->minimalWidth(), $maxWidth);
-            $maxContentWidthEstimate = max($allocator->contentWidthEstimate(), $maxContentWidthEstimate);
         }
 
-        return $maxWidth;
+        return $maxWidth + $this->style->getWhitespaceSide();
     }
 
     public function columnWidthEstimate(): ColumnWidthEstimate
@@ -86,11 +83,8 @@ class ColumnAllocator extends BaseAllocator
         }
         $widthEstimateRelevance = $totalContentWidth / $maxContentWidthEstimate;
 
-        return new ColumnWidthEstimate($maxWidth, $maxContentWidthEstimate, $widthEstimateRelevance);
-    }
+        $widthEstimate = $maxContentWidthEstimate + $this->style->getWhitespaceSide();
 
-    public function place(float $maxWidth, float $maxHeight): array
-    {
-        // TODO: Implement place() method.
+        return new ColumnWidthEstimate($maxWidth, $widthEstimate, $widthEstimateRelevance);
     }
 }

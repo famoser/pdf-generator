@@ -11,16 +11,9 @@
 
 namespace PdfGenerator\Frontend\Allocator;
 
-use PdfGenerator\Frontend\LocatedContent\Base\LocatedContent;
-
 interface AllocatorInterface
 {
     public function minimalWidth(): float;
 
     public function contentWidthEstimate(): float;
-
-    /**
-     * @return LocatedContent[]
-     */
-    public function place(float $maxWidth, float $maxHeight): array;
 }
