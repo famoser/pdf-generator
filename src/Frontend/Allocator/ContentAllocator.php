@@ -11,6 +11,18 @@
 
 namespace PdfGenerator\Frontend\Allocator;
 
+use PdfGenerator\Frontend\Cursor;
+use PdfGenerator\Frontend\MeasuredContent\Paragraph;
+
 class ContentAllocator
 {
+    private $content;
+
+    public function allocate(Cursor $start, float $width, float $height)
+    {
+    }
+
+    public function visitParagraph(Paragraph $paragraph): \PdfGenerator\Frontend\LocatedContent\Paragraph
+    {
+    }
 }

@@ -12,6 +12,7 @@
 namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\Content\Base\Content;
+use PdfGenerator\Frontend\Content\Style\ImageStyle;
 use PdfGenerator\Frontend\ContentVisitor;
 use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
@@ -22,9 +23,15 @@ class Image extends Content
      */
     private $src;
 
-    public function __construct(string $src)
+    /**
+     * @var ImageStyle
+     */
+    private $style;
+
+    public function __construct(string $src, ImageStyle $style = null)
     {
         $this->src = $src;
+        $this->style = $style ?? new ImageStyle();
     }
 
     public function getSrc(): string
@@ -35,5 +42,10 @@ class Image extends Content
     public function accept(ContentVisitor $contentVisitor): MeasuredContent
     {
         return $contentVisitor->visitImage($this);
+    }
+
+    public function getStyle(): ImageStyle
+    {
+        return $this->style;
     }
 }

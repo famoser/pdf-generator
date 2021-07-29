@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Frontend\Block\Base;
 
+use PdfGenerator\Frontend\Allocator\AllocatorInterface;
 use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
-use PdfGenerator\Frontend\BlockVisitor;
 
 abstract class Block
 {
@@ -28,7 +28,7 @@ abstract class Block
 
     abstract public function getStyle(): BlockStyle;
 
-    abstract public function accept(BlockVisitor $blockVisitor);
+    abstract public function createAllocator(): AllocatorInterface;
 
     /**
      * @return float[]|null

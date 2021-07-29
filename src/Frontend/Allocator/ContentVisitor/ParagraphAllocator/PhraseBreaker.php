@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator;
+namespace PdfGenerator\Frontend\Allocator\ContentVisitor\ParagraphAllocator;
 
 use PdfGenerator\Frontend\LocatedContent\Paragraph\Fragment;
 use PdfGenerator\Frontend\MeasuredContent\Paragraph\Phrase;

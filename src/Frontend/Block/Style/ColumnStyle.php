@@ -15,11 +15,6 @@ use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 
 class ColumnStyle extends BlockStyle
 {
-    /**
-     * @var float
-     */
-    private $gutter;
-
     public const SIZING_BY_CONTENT = 'SIZING_BY_CONTENT';
     public const SIZING_BY_WEIGHT = 'SIZING_BY_WEIGHT';
 

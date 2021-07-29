@@ -140,6 +140,12 @@ content types:
 - [ ] svg, esp, ...
 - [ ] video, audio, ... (?)
 
+sizing / positioning:
+- [ ] column span for columns
+- [ ] column/row span for grids  
+- [ ] auto, contain, cover for content types
+- [ ] float for blocks
+
 drawing:
 - [ ] circles
 - [ ] polynomials
