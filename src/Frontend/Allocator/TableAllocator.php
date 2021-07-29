@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\Frontend\Allocator;
 
-use PdfGenerator\Frontend\Block\Row;
+use PdfGenerator\Frontend\Allocator\Base\BaseAllocator;
 use PdfGenerator\Frontend\Block\Style\TableStyle;
 use PdfGenerator\Frontend\Block\Table;
 
-class TableAllocator
+class TableAllocator extends BaseAllocator
 {
     /**
      * @var Table
@@ -33,6 +33,11 @@ class TableAllocator
     private $firstTime = true;
 
     /**
+     * @var RowAllocator[]|null
+     */
+    private $rowAllocators;
+
+    /**
      * TableAllocator constructor.
      */
     public function __construct(Table $table, TableStyle $tableStyle)
@@ -41,18 +46,40 @@ class TableAllocator
         $this->tableStyle = $tableStyle;
     }
 
-    public function allocate(float $width, float $height)
+    /**
+     * @return RowAllocator[]
+     */
+    private function getAllocators(): array
     {
-        $locatedContent = [];
-        $currentHeight = $height;
-        if ($this->firstTime || $this->tableStyle->getRepeatHeader()) {
-            foreach ($this->table->getHeaderRows() as $headerRow) {
-                [$locatedContents, $currentWidth, $currentHeight] = $this->allocateRow($headerRow, $width);
+        if ($this->rowAllocators === null) {
+            $this->rowAllocators = [];
+            foreach ($this->table->getRows() as $item) {
+                $this->rowAllocators[] = $item->createAllocator();
             }
         }
+
+        return $this->rowAllocators;
     }
 
-    private function allocateRow(Row $row, float $width)
+    public function minimalWidth(): float
     {
+        $minimalWidth = 0;
+
+        foreach ($this->getAllocators() as $allocator) {
+            $minimalWidth += $allocator->minimalWidth();
+        }
+
+        return $minimalWidth;
+    }
+
+    public function contentWidthEstimate(): float
+    {
+        $widthEstimate = 0;
+
+        foreach ($this->getAllocators() as $allocator) {
+            $widthEstimate += $allocator->contentWidthEstimate();
+        }
+
+        return $widthEstimate;
     }
 }

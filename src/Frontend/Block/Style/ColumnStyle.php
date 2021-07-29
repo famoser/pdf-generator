@@ -37,14 +37,6 @@ class ColumnStyle extends BlockStyle
         $this->sizingWeight = $sizingWeight;
     }
 
-    /**
-     * @return float
-     */
-    public function getGutter()
-    {
-        return $this->gutter;
-    }
-
     public function getSizing(): string
     {
         return $this->sizing;

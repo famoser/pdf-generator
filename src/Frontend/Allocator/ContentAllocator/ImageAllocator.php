@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Allocator\ContentVisitor;
+namespace PdfGenerator\Frontend\Allocator\ContentAllocator;
 
 use PdfGenerator\Frontend\Content\Style\ImageStyle;
 use PdfGenerator\Frontend\MeasuredContent\Image;
