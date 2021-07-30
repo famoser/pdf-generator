@@ -11,29 +11,28 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
-
 class Page
 {
     /**
-     * @var ContentArea[]
+     * @var float[]
      */
-    private $contentAreas;
+    private $dimensions;
 
     /**
      * Page constructor.
      *
      * @param float[] $dimensions
      */
-    public function __construct(PageStyle $style = null, array $dimensions = [210, 297])
+    public function __construct(array $dimensions = [210, 297])
     {
-        parent::__construct($dimensions);
-
-        $this->style = $style ?? new PageStyle();
+        $this->dimensions = $dimensions;
     }
 
-    public function getStyle(): BlockStyle
+    /**
+     * @return float[]
+     */
+    public function getDimensions(): array
     {
-        return $this->style;
+        return $this->dimensions;
     }
 }

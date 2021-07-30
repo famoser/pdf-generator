@@ -11,47 +11,37 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Cursor;
+use PdfGenerator\Frontend\Position;
+use PdfGenerator\Frontend\Size;
 
 class ContentArea
 {
     /**
-     * @var Cursor
+     * @var Position
      */
     private $start;
 
     /**
-     * @var float
+     * @var Size
      */
-    private $width;
-
-    /**
-     * @var float
-     */
-    private $height;
+    private $size;
 
     /**
      * ContentArea constructor.
      */
-    public function __construct(Cursor $start, float $width, float $height)
+    public function __construct(Position $start, Size $size)
     {
         $this->start = $start;
-        $this->width = $width;
-        $this->height = $height;
+        $this->size = $size;
     }
 
-    public function getStart(): Cursor
+    public function getStart(): Position
     {
         return $this->start;
     }
 
-    public function getWidth(): float
+    public function getSize(): Size
     {
-        return $this->width;
-    }
-
-    public function getHeight(): float
-    {
-        return $this->height;
+        return $this->size;
     }
 }
