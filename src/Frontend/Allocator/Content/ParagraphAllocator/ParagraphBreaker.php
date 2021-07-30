@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator;
+namespace PdfGenerator\Frontend\Allocator\Content\ParagraphAllocator;
 
-use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\LocatedContent\Paragraph\Line;
 use PdfGenerator\Frontend\MeasuredContent\Paragraph;
-use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
+use PdfGenerator\Frontend\MeasuredContent\Utils\FontMeasurement;
 
 class ParagraphBreaker
 {
@@ -22,11 +21,6 @@ class ParagraphBreaker
      * @var Paragraph
      */
     private $paragraph;
-
-    /**
-     * @var FontRepository
-     */
-    private $fontRepository;
 
     /**
      * the next to be included word.
@@ -40,10 +34,9 @@ class ParagraphBreaker
      */
     private $phraseBreaker;
 
-    public function __construct(Paragraph $paragraph, FontRepository $fontRepository)
+    public function __construct(Paragraph $paragraph)
     {
         $this->paragraph = $paragraph;
-        $this->fontRepository = $fontRepository;
     }
 
     public function isEmpty(): bool
@@ -56,16 +49,10 @@ class ParagraphBreaker
     {
         if ($this->phraseBreaker === null || $this->phraseBreaker->isEmpty()) {
             $nextPhrase = $this->paragraph->getPhrases()[$this->nextPhraseIndex++];
-            $fontMeasurement = $this->fontRepository->getFontMeasurement($nextPhrase->getTextStyle());
+            $nextTextStyle = $nextPhrase->getTextStyle();
+            $fontMeasurement = new FontMeasurement($nextPhrase->getFont(), $nextTextStyle->getFontSize(), $nextTextStyle->getLineHeight());
             $this->phraseBreaker = new PhraseBreaker($nextPhrase, $fontMeasurement);
         }
-    }
-
-    private function nextTextStyle(): TextStyle
-    {
-        $this->advancePhraseBreakerIfRequired();
-
-        return $this->phraseBreaker->getPhrase()->getTextStyle();
     }
 
     private function addFragments(Line $line, float $targetWidth, bool $allowEmpty)
@@ -128,5 +115,17 @@ class ParagraphBreaker
         }
 
         return [$lines, $maxWidth, $currentHeight];
+    }
+
+    public function widthEstimate()
+    {
+        $maxWidth = 0;
+        foreach ($this->paragraph->getPhrases() as $phrase) {
+            foreach ($phrase->getMeasuredLines() as $measuredLine) {
+                $maxWidth = max($measuredLine->getWidth(), $maxWidth);
+            }
+        }
+
+        return $maxWidth;
     }
 }

@@ -9,15 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Allocator\ContentAllocator;
+namespace PdfGenerator\Frontend\Allocator\Content;
 
-use PdfGenerator\Frontend\Allocator\ContentAllocator\ParagraphAllocator\ParagraphBreaker;
+use PdfGenerator\Frontend\Allocator\Content\ParagraphAllocator\ParagraphBreaker;
 use PdfGenerator\Frontend\Content\Style\ParagraphStyle;
 use PdfGenerator\Frontend\MeasuredContent\Paragraph;
-use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
 use PdfGenerator\Frontend\Size;
 
-class ParagraphAllocator
+class ParagraphAllocator implements ContentAllocatorInterface
 {
     /**
      * @var Paragraph
@@ -42,12 +41,12 @@ class ParagraphAllocator
     /**
      * ParagraphAllocator constructor.
      */
-    public function __construct(Paragraph $paragraph, ParagraphStyle $style, FontRepository $fontRepository)
+    public function __construct(Paragraph $paragraph)
     {
         $this->paragraph = $paragraph;
-        $this->style = $style;
+        $this->style = $paragraph->getStyle();
 
-        $this->paragraphBreaker = new ParagraphBreaker($paragraph, $fontRepository);
+        $this->paragraphBreaker = new ParagraphBreaker($paragraph);
     }
 
     public function allocate(string $maxWidth, string $maxHeight): array
@@ -63,5 +62,15 @@ class ParagraphAllocator
     public function isEmpty()
     {
         return $this->paragraphBreaker->isEmpty();
+    }
+
+    public function minimalWidth(): float
+    {
+        return 0;
+    }
+
+    public function widthEstimate(): float
+    {
+        return $this->style->getIndent() + $this->paragraphBreaker->widthEstimate();
     }
 }

@@ -45,7 +45,7 @@ class Line
         $this->wordWidths = $wordWidths;
         $this->spaceWidth = $spaceWidth;
 
-        $this->width = array_sum($this->wordWidths) + \count($this->wordWidths) - 1 * $this->spaceWidth;
+        $this->width = array_sum($this->wordWidths) + (\count($this->wordWidths) - 1) * $this->spaceWidth;
     }
 
     /**

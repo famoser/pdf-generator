@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Allocator\ContentAllocator;
+namespace PdfGenerator\Frontend\Allocator\Content;
 
 use PdfGenerator\Frontend\Content\Style\ImageStyle;
 use PdfGenerator\Frontend\MeasuredContent\Image;
 use PdfGenerator\Frontend\Size;
 
-class ImageAllocator
+class ImageAllocator implements ContentAllocatorInterface
 {
     /**
      * @var Image
@@ -30,10 +30,10 @@ class ImageAllocator
     /**
      * ImageAllocator constructor.
      */
-    public function __construct(Image $image, ImageStyle $imageStyle)
+    public function __construct(Image $image)
     {
         $this->image = $image;
-        $this->imageStyle = $imageStyle;
+        $this->imageStyle = $image->getImage();
     }
 
     public function allocate(string $maxWidth, string $maxHeight)
@@ -49,5 +49,15 @@ class ImageAllocator
         }
 
         return new Size($maxWidth * $aspect, $maxHeight * $aspect);
+    }
+
+    public function minimalWidth(): float
+    {
+        return 0;
+    }
+
+    public function widthEstimate(): float
+    {
+        return $this->image->getImage()->getWidth();
     }
 }

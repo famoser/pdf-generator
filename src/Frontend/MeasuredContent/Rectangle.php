@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Frontend\MeasuredContent;
 
+use PdfGenerator\Frontend\Allocator\Content\ContentAllocatorInterface;
+use PdfGenerator\Frontend\Allocator\Content\RectangleAllocator;
 use PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
@@ -48,5 +50,10 @@ class Rectangle extends MeasuredContent
     public function getWidth(): float
     {
         return $this->rectangle->getWidth() + $this->style->getLineWidth();
+    }
+
+    public function createAllocator(): ContentAllocatorInterface
+    {
+        return new RectangleAllocator($this);
     }
 }

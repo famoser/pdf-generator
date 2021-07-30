@@ -11,6 +11,9 @@
 
 namespace PdfGenerator\Frontend\MeasuredContent;
 
+use PdfGenerator\Frontend\Allocator\Content\ContentAllocatorInterface;
+use PdfGenerator\Frontend\Allocator\Content\ParagraphAllocator;
+use PdfGenerator\Frontend\Content\Style\ParagraphStyle;
 use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 use PdfGenerator\Frontend\MeasuredContent\Paragraph\Phrase;
 
@@ -20,6 +23,21 @@ class Paragraph extends MeasuredContent
      * @var Phrase[]
      */
     private $phrases = [];
+
+    /**
+     * @var ParagraphStyle
+     */
+    private $style;
+
+    /**
+     * Paragraph constructor.
+     *
+     * @param Phrase[] $phrases
+     */
+    public function __construct(ParagraphStyle $style)
+    {
+        $this->style = $style;
+    }
 
     public function addPhrase(Phrase $phrase)
     {
@@ -44,5 +62,15 @@ class Paragraph extends MeasuredContent
         }
 
         return $maxWidth;
+    }
+
+    public function getStyle(): ParagraphStyle
+    {
+        return $this->style;
+    }
+
+    public function createAllocator(): ContentAllocatorInterface
+    {
+        return new ParagraphAllocator($this);
     }
 }

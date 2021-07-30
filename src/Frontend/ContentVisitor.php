@@ -50,7 +50,7 @@ class ContentVisitor
     {
         $image = $this->imageRespository->getImage($param);
 
-        return new Image($image);
+        return new Image($image, $param->getStyle());
     }
 
     public function visitParagraph(Content\Paragraph $param): Paragraph
@@ -68,7 +68,7 @@ class ContentVisitor
                 $measuredLines[] = $this->measureLine($line, $sizer);
             }
 
-            $measuredPhrase = new Paragraph\Phrase($measuredLines, $textStyle);
+            $measuredPhrase = new Paragraph\Phrase($measuredLines, $textStyle, $font);
             $paragraph->addPhrase($measuredPhrase);
         }
 

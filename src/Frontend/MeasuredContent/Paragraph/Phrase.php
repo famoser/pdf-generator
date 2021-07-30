@@ -12,6 +12,7 @@
 namespace PdfGenerator\Frontend\MeasuredContent\Paragraph;
 
 use PdfGenerator\Frontend\Content\Style\TextStyle;
+use PdfGenerator\IR\Structure\Document\Font;
 
 class Phrase
 {
@@ -26,14 +27,20 @@ class Phrase
     private $textStyle;
 
     /**
+     * @var Font
+     */
+    private $font;
+
+    /**
      * MeasuredPhrase constructor.
      *
      * @param Line[] $measuredLines
      */
-    public function __construct(array $measuredLines, TextStyle $textStyle)
+    public function __construct(array $measuredLines, TextStyle $textStyle, Font $font)
     {
         $this->measuredLines = $measuredLines;
         $this->textStyle = $textStyle;
+        $this->font = $font;
     }
 
     /**
@@ -47,5 +54,10 @@ class Phrase
     public function getTextStyle(): TextStyle
     {
         return $this->textStyle;
+    }
+
+    public function getFont(): Font
+    {
+        return $this->font;
     }
 }

@@ -11,18 +11,45 @@
 
 namespace PdfGenerator\Frontend\Allocator;
 
-use PdfGenerator\Frontend\Cursor;
-use PdfGenerator\Frontend\MeasuredContent\Paragraph;
+use PdfGenerator\Frontend\Allocator\Content\ContentAllocatorInterface;
+use PdfGenerator\Frontend\Block\Content;
+use PdfGenerator\Frontend\Block\Style\ContentStyle;
 
-class ContentAllocator
+class ContentAllocator implements AllocatorInterface
 {
+    /**
+     * @var Content
+     */
     private $content;
 
-    public function allocate(Cursor $start, float $width, float $height)
+    /**
+     * @var ContentStyle
+     */
+    private $style;
+
+    /**
+     * @var ContentAllocatorInterface
+     */
+    private $contentAllocator;
+
+    /**
+     * ContentAllocator constructor.
+     */
+    public function __construct(Content $content)
     {
+        $this->content = $content;
+        $this->style = $content->getStyle();
+
+        $this->contentAllocator = $content->getMeasuredContent()->createAllocator();
     }
 
-    public function visitParagraph(Paragraph $paragraph): \PdfGenerator\Frontend\LocatedContent\Paragraph
+    public function minimalWidth(): float
     {
+        return $this->style->getWhitespaceSide() + $this->contentAllocator->minimalWidth();
+    }
+
+    public function widthEstimate(): float
+    {
+        return $this->style->getWhitespaceSide() + $this->contentAllocator->widthEstimate();
     }
 }

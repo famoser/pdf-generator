@@ -72,12 +72,12 @@ class TableAllocator extends BaseAllocator
         return $minimalWidth;
     }
 
-    public function contentWidthEstimate(): float
+    public function widthEstimate(): float
     {
         $widthEstimate = 0;
 
         foreach ($this->getAllocators() as $allocator) {
-            $widthEstimate += $allocator->contentWidthEstimate();
+            $widthEstimate += $allocator->widthEstimate();
         }
 
         return $widthEstimate;
