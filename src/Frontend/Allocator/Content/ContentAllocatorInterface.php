@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\MeasuredContent\Base;
+namespace PdfGenerator\Frontend\Allocator\Content;
 
-use PdfGenerator\Frontend\Allocator\Content\ContentAllocatorInterface;
+use PdfGenerator\Frontend\Allocator\AllocatorInterface;
 
-abstract class MeasuredContent
+interface ContentAllocatorInterface extends AllocatorInterface
 {
-    abstract public function createAllocator(): ContentAllocatorInterface;
 }

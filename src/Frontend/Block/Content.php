@@ -11,10 +11,11 @@
 
 namespace PdfGenerator\Frontend\Block;
 
+use PdfGenerator\Frontend\Allocator\AllocatorInterface;
+use PdfGenerator\Frontend\Allocator\ContentAllocator;
 use PdfGenerator\Frontend\Block\Base\Block;
 use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 use PdfGenerator\Frontend\Block\Style\ContentStyle;
-use PdfGenerator\Frontend\BlockVisitor;
 use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Content extends Block
@@ -50,8 +51,8 @@ class Content extends Block
         return $this->measuredContent;
     }
 
-    public function accept(BlockVisitor $blockVisitor)
+    public function createAllocator(): AllocatorInterface
     {
-        // TODO: Implement accept() method.
+        return new ContentAllocator($this);
     }
 }

@@ -78,7 +78,7 @@ class RowAllocator extends BaseAllocator
         return $sum + $gutterWidth;
     }
 
-    public function contentWidthEstimate(): float
+    public function widthEstimate(): float
     {
         $activeColumnWidth = 0;
         $widths = [];
@@ -86,7 +86,7 @@ class RowAllocator extends BaseAllocator
         foreach ($this->getAllocators() as $columnAllocator) {
             // preset wins if exists
             $presetColumnWidth = $activeColumnWidth < $presetColumnWidthCount ? $this->rowStyle->getColumnWidths()[$activeColumnWidth++] : 0;
-            $widthEstimate = $columnAllocator->contentWidthEstimate();
+            $widthEstimate = $columnAllocator->widthEstimate();
             $widths[] = max($presetColumnWidth, $widthEstimate);
         }
 

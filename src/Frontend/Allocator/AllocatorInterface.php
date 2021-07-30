@@ -15,5 +15,5 @@ interface AllocatorInterface
 {
     public function minimalWidth(): float;
 
-    public function contentWidthEstimate(): float;
+    public function widthEstimate(): float;
 }

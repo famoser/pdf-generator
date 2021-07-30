@@ -77,7 +77,7 @@ class ColumnAllocator extends BaseAllocator
         $maxContentWidthEstimate = 0;
         $totalContentWidth = 0;
         foreach ($this->getAllocators() as $allocator) {
-            $contentWidthEstimate = $allocator->contentWidthEstimate();
+            $contentWidthEstimate = $allocator->widthEstimate();
             $totalContentWidth += $contentWidthEstimate;
             $maxContentWidthEstimate = max($contentWidthEstimate, $maxContentWidthEstimate);
         }
