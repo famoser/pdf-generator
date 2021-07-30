@@ -55,7 +55,7 @@ class ContentVisitor
 
     public function visitParagraph(Content\Paragraph $param): Paragraph
     {
-        $paragraph = new Paragraph();
+        $paragraph = new Paragraph($param->getStyle());
 
         foreach ($param->getPhrases() as $phrase) {
             $textStyle = $phrase->getTextStyle();

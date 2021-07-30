@@ -9,18 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend;
+namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Block\Page;
-use PdfGenerator\Frontend\Block\Style\PageStyle;
-
-class PageGenerator
+class PageGenerator implements PageGeneratorInterface
 {
-    /**
-     * @var PageStyle
-     */
-    private $pageStyle;
-
     /**
      * @var float[]
      */
@@ -31,14 +23,13 @@ class PageGenerator
      *
      * @param float[] $pageDimensions
      */
-    public function __construct(PageStyle $pageStyle = null, array $pageDimensions = null)
+    public function __construct(array $pageDimensions = null)
     {
-        $this->pageStyle = $pageStyle ?? new PageStyle();
         $this->pageDimensions = $pageDimensions ?? [210, 297]; // A4 is default
     }
 
-    public function getNextPage(): Page
+    public function getNextPageDimensions(int $pageIndex): array
     {
-        return new Page($this->pageStyle, $this->pageDimensions);
+        return $this->pageDimensions;
     }
 }

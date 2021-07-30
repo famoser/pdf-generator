@@ -92,6 +92,9 @@ class Document implements DocumentInterface
 
     public function locate(Block $block, Cursor $startCursor = null): array
     {
+        $allocator = $block->createAllocator();
+        $allocator->place()
+
         $startCursor = $startCursor ?? $this->cursor;
 
         return [new LocatedBlock($startCursor, $block)];
