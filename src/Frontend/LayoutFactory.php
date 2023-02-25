@@ -56,9 +56,9 @@ class LayoutFactory implements LayoutFactoryInterface
      *
      * @param ColumnConfiguration[] $tableColumns
      *
-     * @throws \Exception
-     *
      * @return TableLayoutInterface
+     *
+     * @throws \Exception
      */
     public function createTableLayout(array $tableColumns)
     {

@@ -86,7 +86,7 @@ class TextStateRepository
      */
     public function getTextState()
     {
-        if ($this->activeTextState !== null) {
+        if (null !== $this->activeTextState) {
             return $this->activeTextState;
         }
 

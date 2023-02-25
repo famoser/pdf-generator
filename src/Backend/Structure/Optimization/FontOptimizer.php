@@ -30,7 +30,7 @@ class FontOptimizer
         $characters = [];
         foreach ($usedCodepoints as $codePoint) {
             $character = $characterRepository->findByCodePoint($codePoint);
-            if ($character !== null) {
+            if (null !== $character) {
                 $characters[] = $character;
             }
         }

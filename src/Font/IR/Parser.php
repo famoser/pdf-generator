@@ -103,7 +103,7 @@ class Parser
         // the first char is always the .notdef, afterwards the conventions might diverge
         // we detect the convention-specific chars by assuming they have no unicode assigned
         $reservedCharacters = [array_shift($characters)];
-        while (\count($characters) > 0 && $characters[0]->getUnicodePoint() === null) {
+        while (\count($characters) > 0 && null === $characters[0]->getUnicodePoint()) {
             $reservedCharacters[] = array_shift($characters);
         }
 
@@ -191,7 +191,7 @@ class Parser
         $overflow = 20;
         foreach ($cMapTable->getSubtables() as $subtable) {
             // we prefer unicode over anything else
-            if ($subtable->getPlatformID() === 0) {
+            if (0 === $subtable->getPlatformID()) {
                 if ($subtable->getPlatformSpecificID() <= 4) {
                     // we prefer platform 4, then 3, then 2, then 1
                     $cMapSubtable[4 - $subtable->getPlatformSpecificID()] = $subtable;
@@ -199,7 +199,7 @@ class Parser
                 }
             }
 
-            if ($subtable->getPlatformID() === 3) {
+            if (3 === $subtable->getPlatformID()) {
                 $cMapSubtable[10 + 10 - $subtable->getPlatformSpecificID()] = $subtable;
                 continue;
             }
@@ -280,8 +280,8 @@ class Parser
     {
         $boundingBox = new BoundingBox();
 
-        $boundingBox->setHeight((float)($boundingBoxTrait->getYMax() - $boundingBoxTrait->getYMin()));
-        $boundingBox->setWidth((float)($boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()));
+        $boundingBox->setHeight((float) ($boundingBoxTrait->getYMax() - $boundingBoxTrait->getYMin()));
+        $boundingBox->setWidth((float) ($boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()));
 
         return $boundingBox;
     }

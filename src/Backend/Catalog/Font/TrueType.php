@@ -43,8 +43,6 @@ class TrueType extends Type1
         return $this->widths;
     }
 
-    /**
-     * @return Structure\FontDescriptor     */
     public function getFontDescriptor(): Structure\FontDescriptor
     {
         return $this->fontDescriptor;

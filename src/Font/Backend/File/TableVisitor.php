@@ -174,7 +174,7 @@ class TableVisitor
     {
         $writer = new StreamWriter();
 
-        if (self::$indexToLocFormat === 0) {
+        if (0 === self::$indexToLocFormat) {
             $writer->writeOffset16Array($locaTable->getOffsets());
         } else {
             $writer->writeOffset32Array($locaTable->getOffsets());
@@ -346,7 +346,7 @@ class TableVisitor
         $writer->writeUInt16($os2Table->getUsBreakChar());
         $writer->writeUInt16($os2Table->getUsMaxContext());
 
-        if ($os2Table->getVersion() === 4) {
+        if (4 === $os2Table->getVersion()) {
             return $writer->getStream();
         }
 

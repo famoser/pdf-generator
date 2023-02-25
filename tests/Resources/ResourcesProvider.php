@@ -18,7 +18,7 @@ class ResourcesProvider
      */
     public static function getImage1Path()
     {
-        return realpath(__DIR__ . \DIRECTORY_SEPARATOR . 'images' . \DIRECTORY_SEPARATOR . 'image1.jpg');
+        return realpath(__DIR__.\DIRECTORY_SEPARATOR.'images'.\DIRECTORY_SEPARATOR.'image1.jpg');
     }
 
     /**
@@ -26,6 +26,6 @@ class ResourcesProvider
      */
     public static function getFontOpenSansPath()
     {
-        return realpath(__DIR__ . \DIRECTORY_SEPARATOR . 'fonts' . \DIRECTORY_SEPARATOR . 'OpenSans.ttf');
+        return realpath(__DIR__.\DIRECTORY_SEPARATOR.'fonts'.\DIRECTORY_SEPARATOR.'OpenSans.ttf');
     }
 }

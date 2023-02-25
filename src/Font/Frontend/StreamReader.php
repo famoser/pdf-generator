@@ -52,8 +52,8 @@ class StreamReader
     {
         // append empty string if less than two bytes left because have to be able to unpack uInt16
         $offset = $this->offset - 1;
-        if ($offset === -1) {
-            $uInt16 = static::unpackUInt16(' ' . $this->content[0], 0);
+        if (-1 === $offset) {
+            $uInt16 = static::unpackUInt16(' '.$this->content[0], 0);
         } else {
             $uInt16 = static::unpackUInt16($this->content, $offset);
         }
@@ -63,9 +63,9 @@ class StreamReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return int[]
+     *
+     * @throws \Exception
      */
     public function readUInt8Array(int $size): array
     {
@@ -88,9 +88,9 @@ class StreamReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return int[]
+     *
+     * @throws \Exception
      */
     public function readInt8Array(int $size): array
     {
@@ -114,9 +114,9 @@ class StreamReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return int[]
+     *
+     * @throws \Exception
      */
     public function readUInt16Array(int $size): array
     {
@@ -139,9 +139,9 @@ class StreamReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return int[]
+     *
+     * @throws \Exception
      */
     public function readInt16Array(int $size): array
     {
@@ -176,9 +176,9 @@ class StreamReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return int[]
+     *
+     * @throws \Exception
      */
     public function readUInt32Array(int $size): array
     {
@@ -242,7 +242,7 @@ class StreamReader
         $val2 = $val1 >> 8;
         $val3 = $val2 >> 8;
 
-        return [$val3 & 0xff, $val2 & 0xff, $val1 & 0xff, $uInt32 & 0xff];
+        return [$val3 & 0xFF, $val2 & 0xFF, $val1 & 0xFF, $uInt32 & 0xFF];
     }
 
     /**
@@ -283,9 +283,9 @@ class StreamReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return int[]
+     *
+     * @throws \Exception
      */
     public function readOffset32Array(int $size): array
     {
@@ -293,9 +293,9 @@ class StreamReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return int
+     *
+     * @throws \Exception
      */
     public function readUFWORD()
     {
@@ -316,7 +316,7 @@ class StreamReader
         }
 
         // clear the top two entries as these are for the decimals
-        $numerator = $uInt16 & 0x3fff;
+        $numerator = $uInt16 & 0x3FFF;
         $fraction = sprintf('%.6f', $numerator / 16384);
 
         return $decimal + $fraction;
@@ -339,37 +339,25 @@ class StreamReader
         return $this->offset >= $this->byteCount;
     }
 
-    /**
-     * @param $content
-     */
     private static function unpackUInt16($content, int $offset): int
     {
         return unpack('nnumber', $content, $offset)['number'];
     }
 
-    /**
-     * @param $content
-     */
     private static function unpackUInt32($content, int $offset): int
     {
         return unpack('Nnumber', $content, $offset)['number'];
     }
 
-    /**
-     * @param $content
-     */
     private static function unpackUInt64($content, int $offset): int
     {
         return unpack('Jnumber', $content, $offset)['number'];
     }
 
-    /**
-     * @param $number
-     */
     private static function transformTo8Bit(int $number): int
     {
         // zero out all bits except the last 8
-        return $number & 0xff;
+        return $number & 0xFF;
     }
 
     private static function transformToSinged(int $number, int $bits): int

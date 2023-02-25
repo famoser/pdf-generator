@@ -1,8 +1,9 @@
 # pdf-generator
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE) 
-[![Build Status](https://travis-ci.com/famoser/pdf-generator.svg?branch=master)](https://travis-ci.com/famoser/pdf-generator)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![PHP Composer](https://github.com/famoser/pdf-generator/actions/workflows/php.yml/badge.svg)](https://github.com/famoser/pdf-generator/actions/workflows/php.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/famoser/pdf-generator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/famoser/pdf-generator/?branch=master)
-[![codecov](https://codecov.io/gh/famoser/pdf-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/famoser/pdf-generator) 
+[![Scrutinizer Coverage](https://scrutinizer-ci.com/g/famoser/pdf-generator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/famoser/pdf-generator/?branch=master)
+
 
 
 ## About

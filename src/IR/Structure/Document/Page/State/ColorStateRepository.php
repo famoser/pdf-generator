@@ -76,18 +76,18 @@ class ColorStateRepository
      */
     public function getColorState()
     {
-        if ($this->activeColorState !== null) {
+        if (null !== $this->activeColorState) {
             return $this->activeColorState;
         }
 
         $this->activeColorState = new ColorState();
 
-        if ($this->fillColor !== null) {
+        if (null !== $this->fillColor) {
             $rgbNonStrokingColour = $this->convertToPdfColourSpecification($this->fillColor);
             $this->activeColorState->setRgbNonStrokingColour($rgbNonStrokingColour);
         }
 
-        if ($this->borderColor !== null) {
+        if (null !== $this->borderColor) {
             $rgbStrokingColour = $this->convertToPdfColourSpecification($this->borderColor);
             $this->activeColorState->setRgbStrokingColour($rgbStrokingColour);
         }

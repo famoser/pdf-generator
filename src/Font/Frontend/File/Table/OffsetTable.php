@@ -61,7 +61,7 @@ class OffsetTable
 
     public function isTrueTypeFont(): bool
     {
-        return $this->scalerType === 0x74727565 || $this->scalerType === 0x00010000;
+        return 0x74727565 === $this->scalerType || 0x00010000 === $this->scalerType;
     }
 
     public function getScalerType(): int

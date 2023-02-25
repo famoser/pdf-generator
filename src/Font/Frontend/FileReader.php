@@ -55,9 +55,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return FontFile
+     *
+     * @throws \Exception
      */
     public function read(StreamReader $fileReader)
     {
@@ -164,19 +164,19 @@ class FileReader
             }
         }
 
-        if ($locaEntry !== null) {
+        if (null !== $locaEntry) {
             $fileReader->setOffset($locaEntry->getOffset());
             $table = $this->readLocaTable($fileReader, $font->getHeadTable(), $font->getMaxPTable());
             $font->setLocaTable($table);
         }
 
-        if ($hmtxEntry !== null) {
+        if (null !== $hmtxEntry) {
             $fileReader->setOffset($hmtxEntry->getOffset());
             $table = $this->readHMtxTable($fileReader, $font->getHHeaTable(), $font->getMaxPTable());
             $font->setHMtxTable($table);
         }
 
-        if ($glyfEntry !== null) {
+        if (null !== $glyfEntry) {
             $fileReader->setOffset($glyfEntry->getOffset());
             $tables = $this->readGlyfTables($fileReader, $font->getLocaTable(), $font->getHeadTable());
             $font->setGlyfTables($tables);
@@ -186,9 +186,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return OffsetTable
+     *
+     * @throws \Exception
      */
     private function readOffsetTable(StreamReader $fileReader)
     {
@@ -202,9 +202,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return TableDirectoryEntry
+     *
+     * @throws \Exception
      */
     private function readTableDirectoryEntry(StreamReader $fileReader)
     {
@@ -219,9 +219,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return CMapTable
+     *
+     * @throws \Exception
      */
     private function readCMapTable(StreamReader $fileReader)
     {
@@ -241,9 +241,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return Subtable
+     *
+     * @throws \Exception
      */
     private function readCMapSubtable(StreamReader $fileReader, int $cmapTableOffset)
     {
@@ -262,15 +262,15 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return GlyfTable[]
+     *
+     * @throws \Exception
      */
     private function readGlyfTables(StreamReader $fileReader, LocaTable $locaTable, HeadTable $headTable)
     {
         $glyphTableOffset = $fileReader->getOffset();
         // if short format the offsets are in words, else in bytes
-        $offsetMultiplier = $headTable->getIndexToLocFormat() === 0 ? 2 : 1;
+        $offsetMultiplier = 0 === $headTable->getIndexToLocFormat() ? 2 : 1;
 
         $glyfTables = [];
 
@@ -340,9 +340,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return LocaTable
+     *
+     * @throws \Exception
      */
     private function readLocaTable(StreamReader $fileReader, HeadTable $headTable, MaxPTable $maxPTable)
     {
@@ -350,7 +350,7 @@ class FileReader
 
         $numberOfGlyphs = $maxPTable->getNumGlyphs() + 1;
 
-        if ($headTable->getIndexToLocFormat() === 0) {
+        if (0 === $headTable->getIndexToLocFormat()) {
             $offsets = $fileReader->readOffset16Array($numberOfGlyphs);
         } else {
             $offsets = $fileReader->readOffset32Array($numberOfGlyphs);
@@ -362,9 +362,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return MaxPTable
+     *
+     * @throws \Exception
      */
     private function readMaxPTable(StreamReader $fileReader)
     {
@@ -390,9 +390,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return HeadTable
+     *
+     * @throws \Exception
      */
     private function readHeadTable(StreamReader $fileReader)
     {
@@ -432,9 +432,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return HHeaTable
+     *
+     * @throws \Exception
      */
     private function readHHeaTable(StreamReader $fileReader)
     {
@@ -463,9 +463,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return PostTable
+     *
+     * @throws \Exception
      */
     private function readPostTable(StreamReader $fileReader, int $length)
     {
@@ -489,9 +489,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return NameTable
+     *
+     * @throws \Exception
      */
     private function readNameTable(StreamReader $fileReader)
     {
@@ -507,7 +507,7 @@ class FileReader
             $table->addNameRecord($this->readNameRecord($fileReader));
         }
 
-        if ($table->getFormat() === 1) {
+        if (1 === $table->getFormat()) {
             $table->setLangTagCount($fileReader->readUInt16());
 
             for ($i = 0; $i < $table->getLangTagCount(); ++$i) {
@@ -540,9 +540,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return NameRecord
+     *
+     * @throws \Exception
      */
     private function readNameRecord(StreamReader $streamReader)
     {
@@ -559,9 +559,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return OS2Table
+     *
+     * @throws \Exception
      */
     private function readOS2Table(StreamReader $streamReader)
     {
@@ -624,7 +624,7 @@ class FileReader
         $os2Table->setUsBreakChar($streamReader->readUInt16());
         $os2Table->setUsMaxContext($streamReader->readUInt16());
 
-        if ($os2Table->getVersion() === 4) {
+        if (4 === $os2Table->getVersion()) {
             return $os2Table;
         }
 
@@ -635,9 +635,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return LangTagRecord
+     *
+     * @throws \Exception
      */
     private function readLangTagRecord(StreamReader $streamReader)
     {
@@ -650,9 +650,9 @@ class FileReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return HMtxTable
+     *
+     * @throws \Exception
      */
     private function readHMtxTable(StreamReader $fileReader, HHeaTable $hHeaTable, MaxPTable $maxPTable)
     {

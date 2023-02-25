@@ -7,8 +7,7 @@
 # PHP deps
 vendor
 .env.local
-.php_cs
-.php_cs.cache
+.php-cs-fixer.cache
 .phpunit.result.cache
 phpunit.xml
 

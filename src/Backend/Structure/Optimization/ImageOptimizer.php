@@ -43,14 +43,14 @@ class ImageOptimizer
 
         // if wider than needed, resize such that width = maxWidth
         if ($width > $maxWidth) {
-            $smallerBy = $maxWidth / (float)$width;
+            $smallerBy = $maxWidth / (float) $width;
             $width = $maxWidth;
             $height = $height * $smallerBy;
         }
 
         // if height is lower, resize such that height = maxHeight
         if ($height < $maxHeight) {
-            $biggerBy = $maxHeight / (float)$height;
+            $biggerBy = $maxHeight / (float) $height;
             $height = $maxHeight;
             $width = $width * $biggerBy;
         }

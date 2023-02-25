@@ -30,7 +30,7 @@ class AnalysisResult
     /**
      * AnalysisResult constructor.
      *
-     * @param Size[] $maxSizePerImage
+     * @param Size[]   $maxSizePerImage
      * @param string[] $textPerFont
      */
     public function __construct(array $maxSizePerImage, array $textPerFont)

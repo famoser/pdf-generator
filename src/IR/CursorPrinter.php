@@ -109,7 +109,7 @@ class CursorPrinter
             $line = $lines[$i];
 
             // place cursor
-            if ($i === 0) {
+            if (0 === $i) {
                 $cursor = $cursor->moveDown($line->getAscender());
                 $cursor = $cursor->withXCoordinate($columnStartXCoordinate + $firstLineIndent);
             } else {

@@ -25,7 +25,7 @@ class PostScriptInfo
 
     public function isInStandardMacintoshSet(): bool
     {
-        return $this->macintoshGlyphIndex !== null;
+        return null !== $this->macintoshGlyphIndex;
     }
 
     public function getMacintoshGlyphIndex(): ?int

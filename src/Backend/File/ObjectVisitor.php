@@ -51,6 +51,6 @@ class ObjectVisitor
      */
     private function visitObject(BaseObject $object, string $content)
     {
-        return $object->getNumber() . " 0 obj\n" . $content . "\nendobj";
+        return $object->getNumber()." 0 obj\n".$content."\nendobj";
     }
 }

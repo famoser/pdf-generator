@@ -19,7 +19,7 @@ class CMapCreator
 {
     /**
      * @param Character[] $characters
-     * @param int[] $usedCodepoints
+     * @param int[]       $usedCodepoints
      */
     public function createTextToCharacterIndexCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $characters, array $usedCodepoints): CMap
     {
@@ -47,7 +47,7 @@ class CMapCreator
         $header = $this->getCMapHeader($cIDSystemInfo, $cMapName);
         $trailer = $this->getCMapTrailer();
 
-        $cMapData = $header . "\n" . $mappings . "\n" . $trailer;
+        $cMapData = $header."\n".$mappings."\n".$trailer;
         $cmap->setCMapData($cMapData);
 
         return $cmap;
@@ -59,8 +59,8 @@ class CMapCreator
         $commentLines[] = '%!PS-Adobe-3.0 Resource-CMap';
         $commentLines[] = '%%DocumentNeededResources: procset CIDInit';
         $commentLines[] = '%%IncludeResource: procset CIDInit';
-        $commentLines[] = '%%BeginResource: CMap ' . $cMapName;
-        $commentLines[] = '%%Title: (' . $cMapName . ' ' . $cIDSystemInfo->getRegistry() . ' ' . $cIDSystemInfo->getOrdering() . ' ' . $cIDSystemInfo->getSupplement() . ')';
+        $commentLines[] = '%%BeginResource: CMap '.$cMapName;
+        $commentLines[] = '%%Title: ('.$cMapName.' '.$cIDSystemInfo->getRegistry().' '.$cIDSystemInfo->getOrdering().' '.$cIDSystemInfo->getSupplement().')';
         $commentLines[] = '%%Version: 1';
         $comments = implode("\n", $commentLines);
 
@@ -69,11 +69,11 @@ class CMapCreator
         $cMapHeaderLines[] = '9 dict begin'; // ensure dictionary with 4 entries can be created. +5 due to bug in old PS interpreters
         $cMapHeaderLines[] = 'begincmap';
         $cMapHeaderLines[] = '/CIDSystemInfo 3 dict dup begin';
-        $cMapHeaderLines[] = ' /Registry (' . $cIDSystemInfo->getRegistry() . ') def';
-        $cMapHeaderLines[] = ' /Ordering (' . $cIDSystemInfo->getOrdering() . ') def';
-        $cMapHeaderLines[] = ' /Supplement (' . $cIDSystemInfo->getSupplement() . ') def';
+        $cMapHeaderLines[] = ' /Registry ('.$cIDSystemInfo->getRegistry().') def';
+        $cMapHeaderLines[] = ' /Ordering ('.$cIDSystemInfo->getOrdering().') def';
+        $cMapHeaderLines[] = ' /Supplement ('.$cIDSystemInfo->getSupplement().') def';
         $cMapHeaderLines[] = 'end def';
-        $cMapHeaderLines[] = '/CMapName /' . $cMapName . ' def';
+        $cMapHeaderLines[] = '/CMapName /'.$cMapName.' def';
         $cMapHeaderLines[] = '/CMapType 0 def'; // implemented type of CMap (still current)
         /*
          * omit XUID & UIDOffset because no longer required
@@ -82,7 +82,7 @@ class CMapCreator
         $cMapHeaderLines[] = '/VMode 0 def'; // write horizontally
         $cMapHeader = implode("\n", $cMapHeaderLines);
 
-        return $comments . "\n" . $cMapHeader;
+        return $comments."\n".$cMapHeader;
     }
 
     private function getCMapTrailer(): string
@@ -111,13 +111,13 @@ class CMapCreator
         $codeMappingDictionaries = $this->getBfRange($characterIndexToUnicodeMappingInHexByLength);
 
         return
-            implode("\n\n", $codeSpaceDictionaries) . "\n\n" .
+            implode("\n\n", $codeSpaceDictionaries)."\n\n".
             implode("\n\n", $codeMappingDictionaries);
     }
 
     /**
      * @param Character[] $characters
-     * @param int[] $usedCodepoints
+     * @param int[]       $usedCodepoints
      *
      * @return string
      */
@@ -130,7 +130,7 @@ class CMapCreator
 
         $existingCodepoint = [];
         foreach ($characters as $character) {
-            if ($character->getUnicodePoint() !== null) {
+            if (null !== $character->getUnicodePoint()) {
                 $existingCodepoint[] = $character->getUnicodePoint();
             }
         }
@@ -139,15 +139,15 @@ class CMapCreator
         $notDefRangeDictionaries = $this->getNotDefRange($notDefinedCodepoints);
 
         return
-            implode("\n\n", $codeSpaceDictionaries) . "\n\n" .
-            implode("\n\n", $codeMappingDictionaries) . "\n\n" .
+            implode("\n\n", $codeSpaceDictionaries)."\n\n".
+            implode("\n\n", $codeMappingDictionaries)."\n\n".
             implode("\n\n", $notDefRangeDictionaries);
     }
 
     private function getNotDefRange(array $codePointsWithoutCharacterIndex)
     {
         // must always map 0 character
-        if (\count($codePointsWithoutCharacterIndex) === 0 || $codePointsWithoutCharacterIndex[0] !== 0) {
+        if (0 === \count($codePointsWithoutCharacterIndex) || 0 !== $codePointsWithoutCharacterIndex[0]) {
             $codePointsWithoutCharacterIndex = array_merge([0], $codePointsWithoutCharacterIndex);
         }
 
@@ -197,9 +197,9 @@ class CMapCreator
     {
         $dictionaries = [];
         foreach (array_chunk($entries, $maxEntries) as $currentEntries) {
-            $dictionary = \count($currentEntries) . ' begin' . $identifier . "\n";
-            $dictionary .= implode("\n", $currentEntries) . "\n";
-            $dictionary .= 'end' . $identifier;
+            $dictionary = \count($currentEntries).' begin'.$identifier."\n";
+            $dictionary .= implode("\n", $currentEntries)."\n";
+            $dictionary .= 'end'.$identifier;
 
             $dictionaries[] = $dictionary;
         }
@@ -216,12 +216,12 @@ class CMapCreator
         $characterCount = \count($characters);
         for ($i = 0; $i < $characterCount; ++$i) {
             $character = $characters[$i];
-            if ($character->getUnicodePoint() === null) {
+            if (null === $character->getUnicodePoint()) {
                 continue;
             }
 
             $utf16BEChar = mb_chr($character->getUnicodePoint(), 'UTF-16BE');
-            $byte = unpack('H*', ($utf16BEChar))[1];
+            $byte = unpack('H*', $utf16BEChar)[1];
             $normalizedByte = $this->ensureLengthMultipleOf2($byte);
 
             $characterByte = dechex($i);
@@ -247,12 +247,12 @@ class CMapCreator
         $characterCount = \count($characters);
         for ($i = 0; $i < $characterCount; ++$i) {
             $character = $characters[$i];
-            if ($character->getUnicodePoint() === null) {
+            if (null === $character->getUnicodePoint()) {
                 continue;
             }
 
             $utf8Char = mb_chr($character->getUnicodePoint(), 'UTF-8');
-            $byte = unpack('H*', ($utf8Char))[1];
+            $byte = unpack('H*', $utf8Char)[1];
             $normalizedByte = $this->ensureLengthMultipleOf2($byte);
             $length = \strlen($normalizedByte);
 
@@ -271,8 +271,8 @@ class CMapCreator
     private function ensureLengthMultipleOf2(string $byte): string
     {
         $length = \strlen($byte);
-        if ($length % 2 !== 0) {
-            return '0' . $byte;
+        if (0 !== $length % 2) {
+            return '0'.$byte;
         }
 
         return $byte;
@@ -294,8 +294,8 @@ class CMapCreator
             $currentValue = hexdec($hexPoint);
 
             if ($currentValue - 1 !== $lastValue) {
-                if ($firstHexPoint !== null) {
-                    $codeSpaces[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
+                if (null !== $firstHexPoint) {
+                    $codeSpaces[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'>';
                 }
                 $firstHexPoint = $hexPoint;
             }
@@ -304,7 +304,7 @@ class CMapCreator
             $lastValue = $currentValue;
         }
 
-        $codeSpaces[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
+        $codeSpaces[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'>';
 
         return $codeSpaces;
     }
@@ -327,8 +327,8 @@ class CMapCreator
             $currentValue = hexdec($hexPoint);
 
             if ($currentValue - 1 !== $lastValue || $characterIndex - 1 !== $lastCharacterIndex) {
-                if ($firstHexPoint !== null) {
-                    $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $firstCharacterIndex;
+                if (null !== $firstHexPoint) {
+                    $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> '.$firstCharacterIndex;
                 }
                 $firstHexPoint = $hexPoint;
                 $firstCharacterIndex = $characterIndex;
@@ -339,7 +339,7 @@ class CMapCreator
             $lastCharacterIndex = $characterIndex;
         }
 
-        $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $firstCharacterIndex;
+        $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> '.$firstCharacterIndex;
 
         return $codeMappings;
     }
@@ -361,8 +361,8 @@ class CMapCreator
             $unicodeValue = hexdec($unicodeHex);
 
             if ($characterIndex - 1 !== $lastCharacterIndex || $unicodeValue - 1 !== $lastUnicodeValue) {
-                if ($firstHexPoint !== null) {
-                    $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> <' . $firstUnicodeHex . '>';
+                if (null !== $firstHexPoint) {
+                    $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> <'.$firstUnicodeHex.'>';
                 }
                 $firstHexPoint = $characterIndexHex;
                 $firstUnicodeHex = $unicodeHex;
@@ -373,7 +373,7 @@ class CMapCreator
             $lastUnicodeValue = $unicodeValue;
         }
 
-        $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> <' . $firstUnicodeHex . '>';
+        $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> <'.$firstUnicodeHex.'>';
 
         return $codeMappings;
     }
@@ -394,8 +394,8 @@ class CMapCreator
             $currentValue = hexdec($hexPoint);
 
             if ($currentValue - 1 !== $lastValue) {
-                if ($firstHexPoint !== null) {
-                    $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $notDefCharacterIndex;
+                if (null !== $firstHexPoint) {
+                    $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> '.$notDefCharacterIndex;
                 }
                 $firstHexPoint = $hexPoint;
             }
@@ -404,7 +404,7 @@ class CMapCreator
             $lastValue = $currentValue;
         }
 
-        $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $notDefCharacterIndex;
+        $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> '.$notDefCharacterIndex;
 
         return $codeMappings;
     }

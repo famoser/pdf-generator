@@ -17,7 +17,7 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class Image extends BaseIdentifiableStructure
 {
-    const IMAGE_TYPE_JPEG = 0;
+    public const IMAGE_TYPE_JPEG = 0;
 
     /**
      * @var float
@@ -41,7 +41,7 @@ class Image extends BaseIdentifiableStructure
     {
         $this->setIdentifier($identifier);
 
-        \assert($type === self::IMAGE_TYPE_JPEG);
+        \assert(self::IMAGE_TYPE_JPEG === $type);
 
         $this->content = $content;
         $this->width = $width;

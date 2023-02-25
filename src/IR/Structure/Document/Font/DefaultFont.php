@@ -15,19 +15,19 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 class DefaultFont extends Font
 {
-    const FONT_HELVETICA = 'Helvetica';
-    const FONT_COURIER = 'Courier';
-    const FONT_TIMES = 'Times';
-    const FONT_SYMBOL = 'Symbol';
-    const FONT_ZAPFDINGBATS = 'ZapfDingbats';
+    public const FONT_HELVETICA = 'Helvetica';
+    public const FONT_COURIER = 'Courier';
+    public const FONT_TIMES = 'Times';
+    public const FONT_SYMBOL = 'Symbol';
+    public const FONT_ZAPFDINGBATS = 'ZapfDingbats';
 
-    const STYLE_DEFAULT = self::STYLE_ROMAN;
-    const STYLE_ROMAN = 'ROMAN';
-    const STYLE_ITALIC = 'ITALIC';
-    const STYLE_BOLD = 'BOLD';
-    const STYLE_OBLIQUE = 'OBLIQUE';
-    const STYLE_BOLD_OBLIQUE = 'BOLD_OBLIQUE';
-    const STYLE_BOLD_ITALIC = 'BOLD_ITALIC';
+    public const STYLE_DEFAULT = self::STYLE_ROMAN;
+    public const STYLE_ROMAN = 'ROMAN';
+    public const STYLE_ITALIC = 'ITALIC';
+    public const STYLE_BOLD = 'BOLD';
+    public const STYLE_OBLIQUE = 'OBLIQUE';
+    public const STYLE_BOLD_OBLIQUE = 'BOLD_OBLIQUE';
+    public const STYLE_BOLD_ITALIC = 'BOLD_ITALIC';
 
     /**
      * @var string
@@ -56,9 +56,9 @@ class DefaultFont extends Font
     }
 
     /**
-     * @throws \Exception
-     *
      * @return mixed
+     *
+     * @throws \Exception
      */
     public function accept(FontVisitor $visitor)
     {
@@ -70,7 +70,7 @@ class DefaultFont extends Font
      */
     public function getIdentifier()
     {
-        return $this->font . '_' . $this->style;
+        return $this->font.'_'.$this->style;
     }
 
     public function getFont(): string

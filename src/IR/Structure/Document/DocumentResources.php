@@ -58,7 +58,7 @@ class DocumentResources
     }
 
     /**
-     * @param BaseDocumentStructure $structure
+     * @param BaseDocumentStructure        $structure
      * @param BackendFont[]|BackendImage[] $cache
      *
      * @return BackendFont|BackendImage

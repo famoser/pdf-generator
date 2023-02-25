@@ -25,7 +25,7 @@ trait IdentifiableTrait
 
     public function getIdentifier(): int
     {
-        if ($this->identifier === null) {
+        if (null === $this->identifier) {
             $this->identifier = self::$nextIdentifier++;
         }
 

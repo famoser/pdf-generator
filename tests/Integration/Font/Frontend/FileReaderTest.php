@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
 
 class FileReaderTest extends TestCase
 {
-    private static $defaultFilePath = __DIR__ . \DIRECTORY_SEPARATOR . 'OpenSans-Regular.ttf';
+    private static $defaultFilePath = __DIR__.\DIRECTORY_SEPARATOR.'OpenSans-Regular.ttf';
 
     /**
      * @return string
@@ -105,7 +105,7 @@ class FileReaderTest extends TestCase
         $count = 0;
         for ($i = 0; $i < 99; ++$i) {
             $this->assertTrue($format4->getStartCodes()[$i] <= $format4->getEndCodes()[$i]);
-            if ($format4->getIdRangeOffsets()[$i] !== 0) {
+            if (0 !== $format4->getIdRangeOffsets()[$i]) {
                 $count += $format4->getEndCodes()[$i] - $format4->getStartCodes()[$i] + 1;
             }
         }
@@ -147,7 +147,7 @@ class FileReaderTest extends TestCase
         $this->assertCount(938, $glyfTables);
 
         foreach ($glyfTables as $glyfTable) {
-            if ($glyfTable === null) {
+            if (null === $glyfTable) {
                 continue;
             }
 

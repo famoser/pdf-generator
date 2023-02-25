@@ -45,7 +45,7 @@ class PhraseBreaker
 
     public function isEmpty(): bool
     {
-        return ($this->lineBreaker === null || $this->lineBreaker->isEmpty()) &&
+        return (null === $this->lineBreaker || $this->lineBreaker->isEmpty()) &&
             $this->nextLineIndex >= \count($this->phrase->getMeasuredLines());
     }
 
@@ -53,7 +53,7 @@ class PhraseBreaker
     {
         \assert(!$this->isEmpty());
 
-        if ($this->lineBreaker === null || $this->lineBreaker->isEmpty()) {
+        if (null === $this->lineBreaker || $this->lineBreaker->isEmpty()) {
             $nextLine = $this->phrase->getMeasuredLines()[$this->nextLineIndex++];
             $this->lineBreaker = new LineBreaker($nextLine);
         }

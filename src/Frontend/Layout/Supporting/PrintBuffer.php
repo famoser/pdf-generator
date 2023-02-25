@@ -89,7 +89,7 @@ class PrintBuffer
         return function () use ($pdfDocument, $prepareArguments, $callable, $printConfig) {
             $pdfDocument->setConfiguration($printConfig);
 
-            if ($prepareArguments !== null) {
+            if (null !== $prepareArguments) {
                 $arguments = $prepareArguments($pdfDocument);
             } else {
                 $arguments = [$this->width];
