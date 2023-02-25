@@ -1,17 +1,16 @@
 build:
-    environment:
-        php:
-            version: 8.2
     nodes:
         analysis:
+            environment:
+                php: 8.2
             project_setup:
                 override: true
             tests:
                 override:
                     - php-scrutinizer-run --enable-security-analysis
-    dependencies:
-        override:
-            - composer install --no-scripts
+
+tools:
+    external_code_coverage: true
 
 checks:
     php:
