@@ -38,7 +38,6 @@ use PdfGenerator\Font\Frontend\StreamReader;
 use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
-use SplObjectStorage;
 
 class FileWriter
 {
@@ -66,9 +65,9 @@ class FileWriter
     }
 
     /**
-     * @throws \Exception
-     *
      * @return string
+     *
+     * @throws \Exception
      */
     public function writeFont(Font $font)
     {
@@ -107,7 +106,7 @@ class FileWriter
         $xMax = 0;
         $yMax = 0;
         foreach ($characters as $character) {
-            if ($character->getGlyfTable() === null || $character->getGlyfTable()->getNumberOfContours() === 0) {
+            if (null === $character->getGlyfTable() || 0 === $character->getGlyfTable()->getNumberOfContours()) {
                 continue;
             }
 
@@ -154,14 +153,14 @@ class FileWriter
             $advanceWidthMax = max($advanceWidthMax, $advanceWidth);
 
             // minRightSidebearing, minLeftSideBearing and xMaxExtent should be computed using only glyphs that have contours
-            if ($character->getGlyfTable() === null || $character->getGlyfTable()->getNumberOfContours() === 0) {
+            if (null === $character->getGlyfTable() || 0 === $character->getGlyfTable()->getNumberOfContours()) {
                 continue;
             }
 
             $leftSideBearing = $character->getLongHorMetric()->getLeftSideBearing();
             $minLeftSideBearing = min($minLeftSideBearing, $leftSideBearing);
 
-            if ($character->getGlyfTable() !== null) {
+            if (null !== $character->getGlyfTable()) {
                 $width = $character->getGlyfTable()->getXMax() - $character->getGlyfTable()->getXMin();
                 $rightSideBearing = $advanceWidth - $leftSideBearing - $width;
                 $minRightSideBearing = min($minRightSideBearing, $rightSideBearing);
@@ -227,7 +226,7 @@ class FileWriter
 
         $maxContours = 0;
         foreach ($characters as $character) {
-            if ($character->getGlyfTable() === null || $character->getGlyfTable()->getNumberOfContours() === 0) {
+            if (null === $character->getGlyfTable() || 0 === $character->getGlyfTable()->getNumberOfContours()) {
                 continue;
             }
 
@@ -276,8 +275,8 @@ class FileWriter
         $format->setLength(8 * 2 + 4 * 2 * $segmentsCount); // 8 fields; 4 arrays of size 2 per entry
         $format->setLanguage(0);
         $format->setSegCountX2($segmentsCount * 2);
-        $format->setSearchRange(2 * (2 ** ((int)(log($segmentsCount, 2)))));
-        $format->setEntrySelector((int)log($format->getSearchRange() / 2, 2));
+        $format->setSearchRange(2 * (2 ** ((int) log($segmentsCount, 2))));
+        $format->setEntrySelector((int) log($format->getSearchRange() / 2, 2));
         $format->setRangeShift(2 * $segmentsCount - $format->getSearchRange());
         $format->setReservedPad(0);
 
@@ -316,7 +315,7 @@ class FileWriter
                 continue;
             }
 
-            if ($currentSegment !== null) {
+            if (null !== $currentSegment) {
                 $segments[] = $currentSegment;
             }
 
@@ -351,7 +350,7 @@ class FileWriter
         $glyfTables = [];
 
         foreach ($characters as $character) {
-            if ($character->getGlyfTable() === null) {
+            if (null === $character->getGlyfTable()) {
                 $glyfTables[] = null;
             } else {
                 $glyfTables[] = $this->generateGlyfTable($character->getGlyfTable());
@@ -378,7 +377,7 @@ class FileWriter
         // consider placing this in TableVisitor, as there glyf table sizes are known anyways
         // reduces code complexity
         foreach ($glyfTables as $glyfTable) {
-            if ($glyfTable !== null) {
+            if (null !== $glyfTable) {
                 $size = 2 + 8; // contours + bounding box
                 if ($glyfTable->getContent()) {
                     $size += \strlen($glyfTable->getContent());
@@ -401,9 +400,9 @@ class FileWriter
     }
 
     /**
-     * @throws \Exception
-     *
      * @return string
+     *
+     * @throws \Exception
      */
     private function writeTableDirectory(TableDirectory $fontFile)
     {
@@ -433,7 +432,7 @@ class FileWriter
         $tableDirectoryEntries = [];
 
         foreach ($tables as $tag => $table) {
-            if ($table === null) {
+            if (null === $table) {
                 continue;
             }
 
@@ -445,7 +444,7 @@ class FileWriter
             if (\is_array($table)) {
                 foreach ($table as $item) {
                     // glyph tables can be null if they have no content
-                    if ($item === null) {
+                    if (null === $item) {
                         continue;
                     }
 
@@ -677,7 +676,7 @@ class FileWriter
      */
     private static function setBinaryTreeSearchableProperties($binaryTreeSearchable, int $numberOfEntries)
     {
-        $powerOfTwo = (int)log($numberOfEntries, 2);
+        $powerOfTwo = (int) log($numberOfEntries, 2);
 
         $binaryTreeSearchable->setSearchRange(2 ** $powerOfTwo * 16);
         $binaryTreeSearchable->setEntrySelector($powerOfTwo);
@@ -701,7 +700,7 @@ class FileWriter
 
         $rawTables = [];
         foreach ($tables as $table) {
-            if ($table !== null) {
+            if (null !== $table) {
                 $rawTables[] = $this->generateRawTable($table);
             }
         }
@@ -868,7 +867,7 @@ class FileWriter
      */
     private function fixComponentCharacterReferences(array $characters)
     {
-        $characterLookup = new SplObjectStorage();
+        $characterLookup = new \SplObjectStorage();
         $characterCount = \count($characters);
         for ($i = 0; $i < $characterCount; ++$i) {
             $characterLookup->attach($characters[$i], $i);
@@ -878,7 +877,7 @@ class FileWriter
             $componentCharacterCount = \count($componentCharacters);
             for ($i = 0; $i < $componentCharacterCount; ++$i) {
                 $componentCharacter = $componentCharacters[$i];
-                if ($componentCharacter !== null) {
+                if (null !== $componentCharacter) {
                     // guaranteed to return result as all component characters part of font by @ref ensureComponentCharactersIncluded
                     $index = $characterLookup->offsetGet($componentCharacter);
                     $character->getGlyfTable()->getComponentGlyphs()[$i]->setGlyphIndex($index);

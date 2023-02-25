@@ -97,9 +97,6 @@ class StreamWriterTest extends TestCase
         $this->assertValueWritesUsingReader($values, 'Fixed');
     }
 
-    /**
-     * @param $type
-     */
     private function assertValueWritesUsingReader(array $values, $type)
     {
         foreach ($values as $value) {
@@ -107,19 +104,15 @@ class StreamWriterTest extends TestCase
         }
     }
 
-    /**
-     * @param $value
-     * @param $type
-     */
     private function assertValueWriteUsingReader($value, $type)
     {
-        $writeFunction = 'write' . $type;
+        $writeFunction = 'write'.$type;
         $streamWriter = new StreamWriter();
         $streamWriter->$writeFunction($value);
 
         $output = $streamWriter->getStream();
 
-        $readFunction = 'read' . $type;
+        $readFunction = 'read'.$type;
         $streamReader = new StreamReader($output);
         $actual = $streamReader->$readFunction();
 

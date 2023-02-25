@@ -52,7 +52,7 @@ class GeneralGraphicStateRepository
      */
     public function getGeneralGraphicState()
     {
-        if ($this->generalGraphicState !== null) {
+        if (null !== $this->generalGraphicState) {
             return $this->generalGraphicState;
         }
 

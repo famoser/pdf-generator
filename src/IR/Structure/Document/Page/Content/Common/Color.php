@@ -39,9 +39,9 @@ class Color
     }
 
     /**
-     * @throws \Exception
-     *
      * @return Color
+     *
+     * @throws \Exception
      */
     public static function createFromHex(string $color)
     {

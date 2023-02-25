@@ -95,9 +95,9 @@ class TableLayout implements TableLayoutInterface
     /**
      * @param ColumnConfiguration[] $columnConfiguration
      *
-     * @throws \Exception
-     *
      * @return float[]
+     *
+     * @throws \Exception
      */
     private static function calculateColumnWidths(Document $pdfDocument, array $columnConfiguration, float $width, float $columnGutter, int $columnCount)
     {
@@ -108,16 +108,16 @@ class TableLayout implements TableLayoutInterface
         $widths = [];
         for ($i = 0; $i < $columnCount; ++$i) {
             $column = $columnConfiguration[$i];
-            if ($column->getSizing() === ColumnConfiguration::SIZING_EXPAND) {
+            if (ColumnConfiguration::SIZING_EXPAND === $column->getSizing()) {
                 $expandColumns[] = $i;
-            } elseif ($column->getSizing() === ColumnConfiguration::SIZING_BY_TEXT) {
+            } elseif (ColumnConfiguration::SIZING_BY_TEXT === $column->getSizing()) {
                 $text = $column->getText();
                 $width = $pdfDocument->calculateWidthOfText($text);
 
                 $availableWidth -= $width;
                 $widths[$i] = $width;
             } else {
-                throw new \Exception('sizing mode ' . $column->getSizing() . ' not supported');
+                throw new \Exception('sizing mode '.$column->getSizing().' not supported');
             }
         }
 

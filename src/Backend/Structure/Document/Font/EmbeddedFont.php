@@ -57,9 +57,9 @@ class EmbeddedFont extends Font
     }
 
     /**
-     * @throws \Exception
-     *
      * @return mixed
+     *
+     * @throws \Exception
      */
     public function accept(DocumentVisitor $documentVisitor)
     {

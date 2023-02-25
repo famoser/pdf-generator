@@ -43,7 +43,7 @@ class ColorState extends BaseState
      */
     public function setRgbStrokingColour(array $rgbStrokingColour): void
     {
-        \assert(\count($rgbStrokingColour) === 3);
+        \assert(3 === \count($rgbStrokingColour));
 
         $this->rgbStrokingColour = $rgbStrokingColour;
     }
@@ -61,7 +61,7 @@ class ColorState extends BaseState
      */
     public function setRgbNonStrokingColour(array $rgbNonStrokingColour): void
     {
-        \assert(\count($rgbNonStrokingColour) === 3);
+        \assert(3 === \count($rgbNonStrokingColour));
 
         $this->rgbNonStrokingColour = $rgbNonStrokingColour;
     }

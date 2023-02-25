@@ -41,7 +41,7 @@ class CharacterSizer
 
     public function isMonospace(): bool
     {
-        return \count(array_unique($this->characterAdvanceWidthLookup)) === 1;
+        return 1 === \count(array_unique($this->characterAdvanceWidthLookup));
     }
 
     /**

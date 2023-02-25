@@ -28,9 +28,9 @@ class Optimizer
     /**
      * @param Character[] $characters
      *
-     * @throws \Exception
-     *
      * @return Font
+     *
+     * @throws \Exception
      */
     public function getFontSubset(Font $source, array $characters)
     {

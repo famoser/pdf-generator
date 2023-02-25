@@ -23,11 +23,11 @@ class TokenVisitor
     public function visitArrayToken(ArrayToken $token): string
     {
         $prefix = '';
-        if ($token->getKey() !== null) {
-            $prefix = $token->getKey()->accept($this) . ' ';
+        if (null !== $token->getKey()) {
+            $prefix = $token->getKey()->accept($this).' ';
         }
 
-        return $prefix . '[' . implode(' ', $this->evaluateTokenArray($token->getValues())) . ']';
+        return $prefix.'['.implode(' ', $this->evaluateTokenArray($token->getValues())).']';
     }
 
     public function visitNumberToken(NumberToken $token): string
@@ -40,22 +40,22 @@ class TokenVisitor
         $entries = [];
         $evaluatedTokens = $this->evaluateTokenArray($token->getKeyValue());
         foreach ($evaluatedTokens as $key => $value) {
-            $entries[] = $this->transformToName($key) . ' ' . $value;
+            $entries[] = $this->transformToName($key).' '.$value;
         }
 
-        return '<<' . implode(' ', $entries) . '>>';
+        return '<<'.implode(' ', $entries).'>>';
     }
 
     public function visitReferenceToken(ReferenceToken $token): string
     {
-        return $token->getTarget()->getNumber() . ' 0 R';
+        return $token->getTarget()->getNumber().' 0 R';
     }
 
     public function visitTextToken(TextToken $token): string
     {
         $escapedText = strtr($token->getText(), ['\\' => '\\\\', ')' => '\\)', '(' => '\\(']);
 
-        return '(' . $escapedText . ')';
+        return '('.$escapedText.')';
     }
 
     public function visitNameToken(Token\NameToken $param)
@@ -71,7 +71,7 @@ class TokenVisitor
 
     private function transformToName(string $value)
     {
-        return '/' . $value;
+        return '/'.$value;
     }
 
     /**

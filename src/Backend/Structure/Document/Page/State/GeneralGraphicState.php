@@ -16,13 +16,13 @@ use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
 class GeneralGraphicState extends BaseState
 {
-    const LINE_CAP_BUTT = 0;
-    const LINE_CAP_ROUND = 1;
-    const LINE_CAP_PROJECTING_SQUARE = 2;
+    public const LINE_CAP_BUTT = 0;
+    public const LINE_CAP_ROUND = 1;
+    public const LINE_CAP_PROJECTING_SQUARE = 2;
 
-    const LINE_JOIN_MITER = 0;
-    const LINE_JOIN_ROUND = 1;
-    const LINE_JOIN_BEVEL = 2;
+    public const LINE_JOIN_MITER = 0;
+    public const LINE_JOIN_ROUND = 1;
+    public const LINE_JOIN_BEVEL = 2;
 
     /**
      * transformation matrix
@@ -112,7 +112,7 @@ class GeneralGraphicState extends BaseState
      */
     public function setCurrentTransformationMatrix(array $currentTransformationMatrix): void
     {
-        \assert(\count($currentTransformationMatrix) === 6);
+        \assert(6 === \count($currentTransformationMatrix));
 
         $this->currentTransformationMatrix = $currentTransformationMatrix;
     }

@@ -49,9 +49,9 @@ class DocumentVisitor implements FontVisitor
     }
 
     /**
-     * @throws \Exception
-     *
      * @return BackendDefaultFont
+     *
+     * @throws \Exception
      */
     public function visitDefaultFont(DefaultFont $param)
     {
@@ -66,21 +66,21 @@ class DocumentVisitor implements FontVisitor
     private function getDefaultFontBaseFont(string $font, string $style): string
     {
         if (!\array_key_exists($font, DefaultFontType1Mapping::$mapping)) {
-            throw new \Exception('The font ' . $font . ' is not part of the default set.');
+            throw new \Exception('The font '.$font.' is not part of the default set.');
         }
 
         $styles = DefaultFontType1Mapping::$mapping[$font];
         if (!\array_key_exists($style, $styles)) {
-            throw new \Exception('This font style ' . $style . ' is not part of the default set.');
+            throw new \Exception('This font style '.$style.' is not part of the default set.');
         }
 
         return $styles[$style];
     }
 
     /**
-     * @throws \Exception
-     *
      * @return BackendEmbeddedFont
+     *
+     * @throws \Exception
      */
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
@@ -90,9 +90,9 @@ class DocumentVisitor implements FontVisitor
     }
 
     /**
-     * @throws \Exception
-     *
      * @return BackendImage
+     *
+     * @throws \Exception
      */
     public function visitImage(Image $param)
     {
@@ -102,13 +102,13 @@ class DocumentVisitor implements FontVisitor
 
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
-        return new BackendImage($imageData, $type, $width, $height, (int)round($maxSize->getWidth()), (int)round($maxSize->getHeight()));
+        return new BackendImage($imageData, $type, $width, $height, (int) round($maxSize->getWidth()), (int) round($maxSize->getHeight()));
     }
 
     /**
-     * @throws \Exception
-     *
      * @return string
+     *
+     * @throws \Exception
      */
     private static function getImageType(string $imagePath)
     {
@@ -124,7 +124,7 @@ class DocumentVisitor implements FontVisitor
             case 'gif':
                 return BackendImage::TYPE_GIF;
             default:
-                throw new \Exception('Image type not supported: ' . $extension . '. Use jpg, jpeg, png or gif');
+                throw new \Exception('Image type not supported: '.$extension.'. Use jpg, jpeg, png or gif');
         }
     }
 

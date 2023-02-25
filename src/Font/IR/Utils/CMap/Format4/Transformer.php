@@ -46,7 +46,7 @@ class Transformer
      */
     public static function segmentToGlyphIndex(Segment $segment, int $segmentIndex, int $segmentCount, array $glyphIndexAddresses): array
     {
-        if ($segment->getIdRangeOffset() === 0) {
+        if (0 === $segment->getIdRangeOffset()) {
             return self::rangeToGlyphIndex($segment->getStartCode(), $segment->getEndCode(), $segment->getIdDelta());
         }
 

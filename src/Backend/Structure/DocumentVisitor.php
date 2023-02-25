@@ -81,7 +81,7 @@ class DocumentVisitor
             return $prefix;
         }
 
-        return $prefix . $this->resourceCounters[$prefix]++;
+        return $prefix.$this->resourceCounters[$prefix]++;
     }
 
     /**
@@ -90,7 +90,7 @@ class DocumentVisitor
     public function visitImage(Image $param)
     {
         $identifier = $this->generateIdentifier('I');
-        $type = $param->getType() === Image::TYPE_JPG || $param->getType() === Image::TYPE_JPEG ? CatalogImage::IMAGE_TYPE_JPEG : null;
+        $type = Image::TYPE_JPG === $param->getType() || Image::TYPE_JPEG === $param->getType() ? CatalogImage::IMAGE_TYPE_JPEG : null;
 
         $content = $param->getImageContent();
         $width = $param->getWidth();
@@ -100,15 +100,15 @@ class DocumentVisitor
             list($targetWidth, $targetHeight) = $this->imageOptimizer->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight(), $this->configuration->getAutoResizeImagesDpi());
 
             if ($targetWidth < $width) {
-                $width = (int)$targetWidth;
-                $height = (int)$targetHeight;
+                $width = (int) $targetWidth;
+                $height = (int) $targetHeight;
 
                 $content = $this->imageOptimizer->transformToJpgAndResize($content, $width, $height);
                 $type = CatalogImage::IMAGE_TYPE_JPEG;
             }
         }
 
-        if ($type === null) {
+        if (null === $type) {
             $content = $this->imageOptimizer->transformToJpgAndResize($content, $width, $height);
             $type = CatalogImage::IMAGE_TYPE_JPEG;
         }
@@ -127,9 +127,9 @@ class DocumentVisitor
     }
 
     /**
-     * @throws \Exception
-     *
      * @return Type0|TrueType
+     *
+     * @throws \Exception
      */
     public function visitEmbeddedFont(EmbeddedFont $param)
     {
@@ -176,8 +176,8 @@ class DocumentVisitor
         foreach ($characters as $character) {
             // create windows character set
             $mappingIndex = $character->getUnicodePoint() ? $this->getWindows1252Mapping($character->getUnicodePoint()) : null;
-            if ($mappingIndex !== null) {
-                $widths[$mappingIndex] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+            if (null !== $mappingIndex) {
+                $widths[$mappingIndex] = (int) ($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
             }
         }
 
@@ -195,7 +195,7 @@ class DocumentVisitor
         $characterWidths = [];
         $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());
         foreach ($characters as $character) {
-            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+            $characterWidths[] = (int) ($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
         }
 
         // start at CID 0 with our widths
@@ -219,11 +219,11 @@ class DocumentVisitor
         $type0Font->setDescendantFont($cidFont);
         $type0Font->setBaseFont($fontDescriptor->getFontName());
 
-        $cMapName = $fontDescriptor->getFontName() . 'CMap';
+        $cMapName = $fontDescriptor->getFontName().'CMap';
         $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, $cMapName, $characters, $usedCodepoints);
         $type0Font->setEncoding($characterIndexCMap);
 
-        $cMapInvertedName = $fontDescriptor->getFontName() . 'CMapInverted';
+        $cMapInvertedName = $fontDescriptor->getFontName().'CMapInverted';
         $unicodeCMap = $this->cMapCreator->createCharacterIndexToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $characters);
         $type0Font->setToUnicode($unicodeCMap);
 
@@ -246,10 +246,10 @@ class DocumentVisitor
         $fontFlags = $this->calculateFontFlags($OS2Table, $angle > 0);
         $fontDescriptor->setFlags($fontFlags);
 
-        $fontDescriptor->setItalicAngle((int)$angle);
-        $fontDescriptor->setAscent((int)($HHeaTable->getAscent() * $sizeNormalizer));
-        $fontDescriptor->setDescent((int)($HHeaTable->getDescent() * $sizeNormalizer));
-        $fontDescriptor->setCapHeight((int)($OS2Table->getSCapHeight() * $sizeNormalizer));
+        $fontDescriptor->setItalicAngle((int) $angle);
+        $fontDescriptor->setAscent((int) ($HHeaTable->getAscent() * $sizeNormalizer));
+        $fontDescriptor->setDescent((int) ($HHeaTable->getDescent() * $sizeNormalizer));
+        $fontDescriptor->setCapHeight((int) ($OS2Table->getSCapHeight() * $sizeNormalizer));
         $fontDescriptor->setStemV(0); // TODO find out where to get this from
         $fontDescriptor->setFontFile3($fontStream);
 
@@ -268,7 +268,7 @@ class DocumentVisitor
         $yMin = 0;
         $yMax = 0;
         foreach ($characters as $character) {
-            if ($character->getGlyfTable() === null) {
+            if (null === $character->getGlyfTable()) {
                 continue;
             }
 
@@ -278,12 +278,12 @@ class DocumentVisitor
             $yMax = max($yMax, $character->getGlyfTable()->getYMax());
         }
 
-        return [(int)($xMin * $sizeNormalizer), ((int)($yMin * $sizeNormalizer)), ((int)($xMax * $sizeNormalizer)), (int)($yMax * $sizeNormalizer)];
+        return [(int) ($xMin * $sizeNormalizer), (int) ($yMin * $sizeNormalizer), (int) ($xMax * $sizeNormalizer), (int) ($yMax * $sizeNormalizer)];
     }
 
     private function getFontItalicAngle(HHeaTable $HHeaTable): float
     {
-        if ($HHeaTable->getCaretSlopeRun() === 0) {
+        if (0 === $HHeaTable->getCaretSlopeRun()) {
             return 0;
         }
 
@@ -297,7 +297,7 @@ class DocumentVisitor
         $panose = $OS2Table->getPanose();
 
         // fixed pitch
-        if ($panose[3] === 9) { // when proportion is monospaced
+        if (9 === $panose[3]) { // when proportion is monospaced
             $flags = $flags | FontDescriptor::FLAG_FIXED_PITCH;
         }
 
@@ -310,7 +310,7 @@ class DocumentVisitor
         $flags = $flags | FontDescriptor::FLAG_SYMBOLIC;
 
         // script (cursive)
-        if ($panose[0] === 3) { // when family type is hand-written
+        if (3 === $panose[0]) { // when family type is hand-written
             $flags = $flags | FontDescriptor::FLAG_SCRIPT;
         }
 

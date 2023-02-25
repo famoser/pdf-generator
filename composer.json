@@ -10,18 +10,18 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
+    "php": ">=8.2",
     "ext-bcmath": "*",
     "ext-gd": "*",
     "ext-json": "*",
     "famoser/agnes": "^4.2"
   },
   "require-dev": {
-    "codacy/coverage": "^1.4",
-    "friendsofphp/php-cs-fixer": "^2.14",
+    "friendsofphp/php-cs-fixer": "^3",
     "mockery/mockery": "^1.2",
     "phpunit/phpunit": "^9.5.4",
-    "brainmaestro/composer-git-hooks": "^2.6"
+    "brainmaestro/composer-git-hooks": "^2.6",
+    "scrutinizer/ocular": "^1.9"
   },
   "autoload": {
     "psr-4": {
@@ -36,28 +36,22 @@
   },
   "config": {
     "platform": {
-      "php": "7.4"
+      "php": "8.2"
     },
     "sort-packages": true
   },
   "scripts": {
-    "configure-environment": [
-      "cp -n .php_cs.dist .php_cs",
-      "cp -n phpunit.xml.dist phpunit.xml"
-    ],
     "prepare-environment": [
       "vendor/bin/cghooks update"
     ],
-    "pre-install-cmd": "@configure-environment",
     "post-install-cmd": "@prepare-environment",
-    "pre-update-cmd": "@configure-environment",
     "post-update-cmd": "@prepare-environment"
   },
   "extra": {
     "hooks": {
       "pre-commit": [
         "echo committing as $(git config user.name)",
-        "./vendor/bin/php-cs-fixer fix --config=.php_cs",
+        "./vendor/bin/php-cs-fixer fix",
         "git update-index --again"
       ],
       "post-merge": "composer install"

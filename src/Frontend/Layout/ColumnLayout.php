@@ -23,7 +23,7 @@ class ColumnLayout extends StatefulColumnedLayout implements ColumnLayoutInterfa
     public function __construct(Document $pdfDocument, int $columnCount, float $columnGutter, float $totalWidth)
     {
         $gutterSpace = ($columnCount - 1) * $columnGutter;
-        $columnWidth = (float)($totalWidth - $gutterSpace) / $columnCount;
+        $columnWidth = (float) ($totalWidth - $gutterSpace) / $columnCount;
         $columnWidths = [];
         for ($i = 0; $i < $columnCount; ++$i) {
             $columnWidths[] = $columnWidth;

@@ -21,9 +21,9 @@ use PdfGenerator\Font\Frontend\StreamReader;
 class FormatReader
 {
     /**
-     * @throws \Exception
-     *
      * @return Format
+     *
+     * @throws \Exception
      */
     public function readFormat(StreamReader $streamReader, float $format, int $length)
     {
@@ -37,14 +37,14 @@ class FormatReader
             case 3:
                 return new Format3();
             default:
-                throw new \Exception('unknown post format ' . $format);
+                throw new \Exception('unknown post format '.$format);
         }
     }
 
     /**
-     * @throws \Exception
-     *
      * @return Format2
+     *
+     * @throws \Exception
      */
     private function readFormat2(StreamReader $streamReader, int $length)
     {
@@ -61,9 +61,9 @@ class FormatReader
     }
 
     /**
-     * @throws \Exception
-     *
      * @return Format25
+     *
+     * @throws \Exception
      */
     private function readFormat25(StreamReader $streamReader)
     {

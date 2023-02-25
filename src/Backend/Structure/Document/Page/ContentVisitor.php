@@ -57,7 +57,7 @@ class ContentVisitor
     public function visitImageContent(ImageContent $imageContent): Content
     {
         $image = $this->documentResources->getImage($imageContent->getImage());
-        $imageOperator = '/' . $image->getIdentifier() . ' Do';
+        $imageOperator = '/'.$image->getIdentifier().' Do';
 
         $operators = $this->wrapPrintingOperators($imageContent, [$imageOperator]);
 
@@ -67,7 +67,7 @@ class ContentVisitor
     public function visitRectangleContent(RectangleContent $rectangle): Content
     {
         $paintingOperator = $this->getPaintingOperator($rectangle);
-        $rectangleOperator = '0 0 ' . $rectangle->getWidth() . ' ' . $rectangle->getHeight() . ' re ' . $paintingOperator;
+        $rectangleOperator = '0 0 '.$rectangle->getWidth().' '.$rectangle->getHeight().' re '.$paintingOperator;
 
         $operators = $this->wrapPrintingOperators($rectangle, [$rectangleOperator]);
 
@@ -78,7 +78,7 @@ class ContentVisitor
     {
         $stateTransitionOperators = $this->applyState($baseContent);
         $translationMatrix = $baseContent->getCurrentTransformationMatrix();
-        $translationOperator = implode(' ', $translationMatrix) . ' cm';
+        $translationOperator = implode(' ', $translationMatrix).' cm';
 
         return array_merge($stateTransitionOperators, ['q', $translationOperator], $printingOperators, ['Q']);
     }
@@ -96,12 +96,12 @@ class ContentVisitor
         $printOperators = [];
 
         // print first line
-        $printOperators[] = '(' . $this->prepareTextForPrint($lines[0], $font) . ')Tj';
+        $printOperators[] = '('.$this->prepareTextForPrint($lines[0], $font).')Tj';
 
         // use the ' operator to start a new line before printing
         $lineCount = \count($lines);
         for ($i = 1; $i < $lineCount; ++$i) {
-            $printOperators[] = '(' . $this->prepareTextForPrint($lines[$i], $font) . ')\'';
+            $printOperators[] = '('.$this->prepareTextForPrint($lines[$i], $font).')\'';
         }
 
         return $printOperators;
@@ -121,7 +121,7 @@ class ContentVisitor
         $reserved = ['\\', '(', ')'];
 
         foreach ($reserved as $entry) {
-            $text = str_replace($entry, '\\' . $entry, $text);
+            $text = str_replace($entry, '\\'.$entry, $text);
         }
 
         return $text;

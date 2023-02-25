@@ -54,15 +54,15 @@ class OS2Table
     /**
      * weight classes.
      */
-    const WEIGHT_CLASS_THIN = 100;
-    const WEIGHT_CLASS_EXTRALIGHT = 200;
-    const WEIGHT_CLASS_LIGHT = 300;
-    const WEIGHT_CLASS_NORMAL = 400;
-    const WEIGHT_CLASS_MEDIUM = 500;
-    const WEIGHT_CLASS_SEMIBOLD = 600;
-    const WEIGHT_CLASS_BOLD = 700;
-    const WEIGHT_CLASS_EXTRABOLD = 800;
-    const WEIGHT_CLASS_BLACK = 900;
+    public const WEIGHT_CLASS_THIN = 100;
+    public const WEIGHT_CLASS_EXTRALIGHT = 200;
+    public const WEIGHT_CLASS_LIGHT = 300;
+    public const WEIGHT_CLASS_NORMAL = 400;
+    public const WEIGHT_CLASS_MEDIUM = 500;
+    public const WEIGHT_CLASS_SEMIBOLD = 600;
+    public const WEIGHT_CLASS_BOLD = 700;
+    public const WEIGHT_CLASS_EXTRABOLD = 800;
+    public const WEIGHT_CLASS_BLACK = 900;
 
     /**
      * width class ("lengthness" of the font).
@@ -76,15 +76,15 @@ class OS2Table
     /**
      * width classes.
      */
-    const WIDTH_CLASS_ULTRA_CONDENSED = 1;
-    const WIDTH_CLASS_EXTRA_CONDENSED = 2;
-    const WIDTH_CLASS_CONDENSED = 3;
-    const WIDTH_CLASS_SEMI_CONDENSED = 4;
-    const WIDTH_CLASS_NORMAL = 5;
-    const WIDTH_CLASS_SEMI_EXPANDED = 6;
-    const WIDTH_CLASS_EXPANDED = 7;
-    const WIDTH_CLASS_EXTRA_EXPANDED = 8;
-    const WIDTH_CLASS_ULTRA_EXPANDED = 9;
+    public const WIDTH_CLASS_ULTRA_CONDENSED = 1;
+    public const WIDTH_CLASS_EXTRA_CONDENSED = 2;
+    public const WIDTH_CLASS_CONDENSED = 3;
+    public const WIDTH_CLASS_SEMI_CONDENSED = 4;
+    public const WIDTH_CLASS_NORMAL = 5;
+    public const WIDTH_CLASS_SEMI_EXPANDED = 6;
+    public const WIDTH_CLASS_EXPANDED = 7;
+    public const WIDTH_CLASS_EXTRA_EXPANDED = 8;
+    public const WIDTH_CLASS_ULTRA_EXPANDED = 9;
 
     /**
      * font embedding licensing rights
@@ -100,32 +100,32 @@ class OS2Table
     /**
      * embedding possible; enduser has to acquire license.
      */
-    const LICENSE_TYPE_EMBEDDING_INSTALLABLE = 0;
+    public const LICENSE_TYPE_EMBEDDING_INSTALLABLE = 0;
 
     /**
      * embedding only allowed if license to do so.
      */
-    const LICENSE_TYPE_EMBEDDING_RESTRICTED = 2;
+    public const LICENSE_TYPE_EMBEDDING_RESTRICTED = 2;
 
     /**
      * embedding only allowed for preview (resulting document must be read-only).
      */
-    const LICENSE_TYPE_EMBEDDING_PREVIEW_PRINT = 4;
+    public const LICENSE_TYPE_EMBEDDING_PREVIEW_PRINT = 4;
 
     /**
      * embedding possible.
      */
-    const LICENSE_TYPE_EMBEDDING_EDITABLE = 8;
+    public const LICENSE_TYPE_EMBEDDING_EDITABLE = 8;
 
     /**
      * must not subset font.
      */
-    const LICENSE_TYPE_SUBSETTING_DISALLOWED = 0x0100;
+    public const LICENSE_TYPE_SUBSETTING_DISALLOWED = 0x0100;
 
     /**
      * must only embedd bitmap (no outlines).
      */
-    const LICENSE_TYPE_BITMAP_ONLY = 0x200;
+    public const LICENSE_TYPE_BITMAP_ONLY = 0x200;
 
     /**
      * the recommended width of a subscript character.
@@ -247,22 +247,22 @@ class OS2Table
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0000-007F contained.
      */
-    const UNICODE_RANGE_BASIC_LATIN = 1;
+    public const UNICODE_RANGE_BASIC_LATIN = 1;
 
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0080-00FF contained.
      */
-    const UNICODE_RANGE_LATIN_SUPPLEMENT = 2;
+    public const UNICODE_RANGE_LATIN_SUPPLEMENT = 2;
 
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0100-017F contained.
      */
-    const UNICODE_RANGE_LATIN_EXTENDED_A = 4;
+    public const UNICODE_RANGE_LATIN_EXTENDED_A = 4;
 
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0180-024F contained.
      */
-    const UNICODE_RANGE_LATIN_EXTENDED_B = 8;
+    public const UNICODE_RANGE_LATIN_EXTENDED_B = 8;
 
     /**
      * panose classification number of the font.
@@ -282,16 +282,16 @@ class OS2Table
      */
     private $fsSelection;
 
-    const FONT_SELECTION_ITALIC = 0;
-    const FONT_SELECTION_UNDERSCORE = 2;
-    const FONT_SELECTION_NEGATIVE = 4;
-    const FONT_SELECTION_OUTLINED = 8;
-    const FONT_SELECTION_STRIKEOUT = 16;
-    const FONT_SELECTION_BOLD = 32;
-    const FONT_SELECTION_REGULAR = 64;
-    const FONT_SELECTION_USE_TYPO_METRICS = 128; // use metrics starting with sTypo instead of us
-    const FONT_SELECTION_WWS = 256; // implies name id 16/17 valid WWS names and name id 21/22 are not included
-    const FONT_SELECTION_OBLIQUE = 512;
+    public const FONT_SELECTION_ITALIC = 0;
+    public const FONT_SELECTION_UNDERSCORE = 2;
+    public const FONT_SELECTION_NEGATIVE = 4;
+    public const FONT_SELECTION_OUTLINED = 8;
+    public const FONT_SELECTION_STRIKEOUT = 16;
+    public const FONT_SELECTION_BOLD = 32;
+    public const FONT_SELECTION_REGULAR = 64;
+    public const FONT_SELECTION_USE_TYPO_METRICS = 128; // use metrics starting with sTypo instead of us
+    public const FONT_SELECTION_WWS = 256; // implies name id 16/17 valid WWS names and name id 21/22 are not included
+    public const FONT_SELECTION_OBLIQUE = 512;
 
     /**
      * min(minimum included unicode character, 0xFFFF).
@@ -368,7 +368,7 @@ class OS2Table
     /**
      * code page 1252.
      */
-    const CODE_PAGE_LATIN1 = 1;
+    public const CODE_PAGE_LATIN1 = 1;
 
     /**
      * height of non-ascending lower-case letter; for example the character x.

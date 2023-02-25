@@ -76,7 +76,7 @@ class File
         $structureVisitor = new StructureVisitor();
 
         $header = new FileHeader();
-        $output = $header->accept($structureVisitor) . "\n";
+        $output = $header->accept($structureVisitor)."\n";
         $headerLength = \strlen($output);
 
         $output .= $this->body->accept($structureVisitor);
@@ -84,7 +84,7 @@ class File
         $crossReferenceTable = new CrossReferenceTable();
         $crossReferenceTable->registerEntrySize($headerLength);
         $crossReferenceTable->registerEntrySizes($structureVisitor->getBodyEntrySizes());
-        $output .= $crossReferenceTable->accept($structureVisitor) . "\n";
+        $output .= $crossReferenceTable->accept($structureVisitor)."\n";
 
         $trailer = new FileTrailer(\count($crossReferenceTable->getEntries()), $crossReferenceTable->getLastEntry(), $this->body->getRootEntry(), $this->body->getInfoObject());
         $output .= $trailer->accept($structureVisitor);

@@ -111,31 +111,31 @@ class StateTransitionVisitor
         $operators = [];
         if ($previousState->getFont() !== $targetState->getFont() || $previousState->getFontSize() !== $targetState->getFontSize()) {
             $font = $this->documentResources->getFont($targetState->getFont());
-            $operators[] = '/' . $font->getIdentifier() . ' ' . $targetState->getFontSize() . ' Tf';
+            $operators[] = '/'.$font->getIdentifier().' '.$targetState->getFontSize().' Tf';
         }
 
         if ($previousState->getCharSpace() !== $targetState->getCharSpace()) {
-            $operators[] = $targetState->getCharSpace() . ' Tc';
+            $operators[] = $targetState->getCharSpace().' Tc';
         }
 
         if ($previousState->getWordSpace() !== $targetState->getWordSpace()) {
-            $operators[] = $targetState->getWordSpace() . ' Tw';
+            $operators[] = $targetState->getWordSpace().' Tw';
         }
 
         if ($previousState->getScale() !== $targetState->getScale()) {
-            $operators[] = $targetState->getScale() . ' Tz';
+            $operators[] = $targetState->getScale().' Tz';
         }
 
         if ($previousState->getLeading() !== $targetState->getLeading()) {
-            $operators[] = $targetState->getLeading() . ' TL';
+            $operators[] = $targetState->getLeading().' TL';
         }
 
         if ($previousState->getRenderMode() !== $targetState->getRenderMode()) {
-            $operators[] = $targetState->getRenderMode() . ' Tr';
+            $operators[] = $targetState->getRenderMode().' Tr';
         }
 
         if ($previousState->getRise() !== $targetState->getRise()) {
-            $operators[] = $targetState->getRise() . ' Ts';
+            $operators[] = $targetState->getRise().' Ts';
         }
 
         return $operators;
@@ -154,23 +154,23 @@ class StateTransitionVisitor
         $operators = [];
 
         if ($previousState->getLineWidth() !== $targetState->getLineWidth()) {
-            $operators[] = $targetState->getLineWidth() . ' w';
+            $operators[] = $targetState->getLineWidth().' w';
         }
 
         if ($previousState->getLineCap() !== $targetState->getLineCap()) {
-            $operators[] = $targetState->getLineCap() . ' J';
+            $operators[] = $targetState->getLineCap().' J';
         }
 
         if ($previousState->getLineJoin() !== $targetState->getLineJoin()) {
-            $operators[] = $targetState->getLineJoin() . ' j';
+            $operators[] = $targetState->getLineJoin().' j';
         }
 
         if ($previousState->getMiterLimit() !== $targetState->getMiterLimit()) {
-            $operators[] = $targetState->getMiterLimit() . ' M';
+            $operators[] = $targetState->getMiterLimit().' M';
         }
 
         if ($previousState->getDashArray() !== $targetState->getDashArray() || $previousState->getDashPhase() !== $targetState->getDashPhase()) {
-            $operators[] = '[' . implode(',', $targetState->getDashArray()) . '] ' . $targetState->getDashPhase() . ' d';
+            $operators[] = '['.implode(',', $targetState->getDashArray()).'] '.$targetState->getDashPhase().' d';
         }
 
         return $operators;
@@ -188,11 +188,11 @@ class StateTransitionVisitor
 
         $operators = [];
         if ($previousState->getRgbStrokingColour() !== $targetState->getRgbStrokingColour()) {
-            $operators[] = implode(' ', $targetState->getRgbStrokingColour()) . ' RG';
+            $operators[] = implode(' ', $targetState->getRgbStrokingColour()).' RG';
         }
 
         if ($previousState->getRgbNonStrokingColour() !== $targetState->getRgbNonStrokingColour()) {
-            $operators[] = implode(' ', $targetState->getRgbNonStrokingColour()) . ' rg';
+            $operators[] = implode(' ', $targetState->getRgbNonStrokingColour()).' rg';
         }
 
         return $operators;

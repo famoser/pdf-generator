@@ -17,7 +17,7 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class CIDFont extends BaseStructure
 {
-    const SUBTYPE_CID_FONT_TYPE_2 = 'CIDFontType2';
+    public const SUBTYPE_CID_FONT_TYPE_2 = 'CIDFontType2';
 
     /**
      * @var string

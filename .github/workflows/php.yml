@@ -1,0 +1,62 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 0 * * 0'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Fetch more than 1 commit so Scrutinizer can deduce where we are
+          fetch-depth: 2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: xdebug
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-scripts
+
+      - name: Lint
+        run: |
+          export PHP_CS_FIXER_IGNORE_ENV=1 && ./vendor/bin/php-cs-fixer fix --diff --dry-run -v
+
+      - name: Test
+        run: |
+          export XDEBUG_MODE=coverage && php vendor/bin/phpunit
+
+      - name: Check dependencies
+        run: |
+          wget -q -O local-php-security-checker https://github.com/fabpot/local-php-security-checker/releases/download/v2.0.6/local-php-security-checker_2.0.6_linux_amd64
+          chmod +x local-php-security-checker
+          ./local-php-security-checker
+
+      - name: Upload Scrutinizer coverage
+        run: |
+          ./vendor/bin/ocular code-coverage:upload --format=php-clover ./build/logs/clover.xml

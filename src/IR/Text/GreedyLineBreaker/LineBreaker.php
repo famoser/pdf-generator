@@ -75,7 +75,7 @@ class LineBreaker
             }
 
             // add next word
-            $currentWords .= ' ' . $nextWord;
+            $currentWords .= ' '.$nextWord;
             $currentWidth += $widthWithSpace;
         }
 

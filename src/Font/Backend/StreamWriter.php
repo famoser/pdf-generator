@@ -113,7 +113,7 @@ class StreamWriter
 
     public function writeNullableStream(?string $content)
     {
-        if ($content === null) {
+        if (null === $content) {
             return;
         }
 
@@ -139,7 +139,7 @@ class StreamWriter
             $rest -= 2;
         }
 
-        if ($rest === 1) {
+        if (1 === $rest) {
             $this->writeUInt8(0);
         }
     }
@@ -176,8 +176,8 @@ class StreamWriter
 
     public function writeFixed(float $value)
     {
-        $mantissa = (int)$value;
-        $fraction = (int)(($value - $mantissa) * 65536);
+        $mantissa = (int) $value;
+        $fraction = (int) (($value - $mantissa) * 65536);
 
         $this->writeInt16($mantissa);
         $this->writeUInt16($fraction);

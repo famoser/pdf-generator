@@ -37,7 +37,7 @@ class WordSizer
 
     public function getWidth(string $word): float
     {
-        if ($word === '') {
+        if ('' === $word) {
             return 0;
         }
 

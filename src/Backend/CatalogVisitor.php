@@ -239,7 +239,7 @@ class CatalogVisitor
         $dictionary->addNumberEntry('CapHeight', $structure->getCapHeight());
         $dictionary->addNumberEntry('StemV', $structure->getStemV());
 
-        if ($structure->getFontFile3() !== null) {
+        if (null !== $structure->getFontFile3()) {
             $reference = $structure->getFontFile3()->accept($this);
             $dictionary->addReferenceEntry('FontFile3', $reference);
         }

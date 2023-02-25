@@ -34,70 +34,70 @@ class HeadTable extends BaseTable
      * baseline for font at y=0
      * must be set for variable fonts.
      */
-    const FLAG_BASELINE_AT_0 = 1;
+    public const FLAG_BASELINE_AT_0 = 1;
 
     /**
      * left sidebearing point at x=0.
      */
-    const FLAG_LEFTBEARING_POINT_AT_0 = 2;
+    public const FLAG_LEFTBEARING_POINT_AT_0 = 2;
 
     /**
      * instructions may depend on font size.
      */
-    const FLAG_INSTRUCTION_DEPENDENT_ON_POINT_SIZE = 4;
+    public const FLAG_INSTRUCTION_DEPENDENT_ON_POINT_SIZE = 4;
 
     /**
      * must use integer values for scaler math (else could use fractional).
      */
-    const FLAG_FORCE_INTEGER_PPEM_VALUES = 8;
+    public const FLAG_FORCE_INTEGER_PPEM_VALUES = 8;
 
     /**
      * instructions may alter the advance width
      * must be set for variable fonts.
      */
-    const FLAG_INSTRUCTIONS_ALTER_WIDTH = 16;
+    public const FLAG_INSTRUCTIONS_ALTER_WIDTH = 16;
 
     /**
      * the binary layout of the file has changed but original functionality was retained.
      */
-    const FLAG_TRANSFORMED = 2048;
+    public const FLAG_TRANSFORMED = 2048;
 
     /**
      * the font has been converted.
      */
-    const FLAG_CONVERTED = 4056;
+    public const FLAG_CONVERTED = 4056;
 
     /**
      * optimized for clear type.
      */
-    const FLAG_CLEAR_TYPE_OPTIMIZED = 8092;
+    public const FLAG_CLEAR_TYPE_OPTIMIZED = 8092;
 
     /**
      * font is a last resort font
      * as a result, the cmap table behaves differently.
      */
-    const FLAG_LAST_RESORT_FONT = 14;
+    public const FLAG_LAST_RESORT_FONT = 14;
 
     /**
      * the styles of the font.
      */
-    const MAC_STYLE_BOLD = 1;
-    const MAC_STYLE_ITALIC = 2;
-    const MAC_STYLE_UNDERLINE = 4;
-    const MAC_STYLE_OUTLINE = 8;
-    const MAC_STYLE_SHADOW = 16;
-    const MAC_STYLE_CONDENSED = 32;
-    const MAC_STYLE_EXTENDED = 64;
+    public const MAC_STYLE_BOLD = 1;
+    public const MAC_STYLE_ITALIC = 2;
+    public const MAC_STYLE_UNDERLINE = 4;
+    public const MAC_STYLE_OUTLINE = 8;
+    public const MAC_STYLE_SHADOW = 16;
+    public const MAC_STYLE_CONDENSED = 32;
+    public const MAC_STYLE_EXTENDED = 64;
 
     /**
      * in which way the font should be read
      * for "normal" roman fonts the value is 2 because of punctuation/neutral characters.
      */
-    const FONT_DIRECTION_RIGHT_TO_LEFT_WITH_NEUTRALS = -2;
-    const FONT_DIRECTION_RIGHT_TO_LEFT = -1;
-    const FONT_DIRECTION_MIXED = 0;
-    const FONT_DIRECTION_LEFT_TO_RIGHT = 1;
-    const FONT_DIRECTION_LEFT_TO_RIGHT_WITH_NEUTRALS = 2;
+    public const FONT_DIRECTION_RIGHT_TO_LEFT_WITH_NEUTRALS = -2;
+    public const FONT_DIRECTION_RIGHT_TO_LEFT = -1;
+    public const FONT_DIRECTION_MIXED = 0;
+    public const FONT_DIRECTION_LEFT_TO_RIGHT = 1;
+    public const FONT_DIRECTION_LEFT_TO_RIGHT_WITH_NEUTRALS = 2;
 
     /**
      * major version of this font.

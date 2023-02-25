@@ -11,8 +11,6 @@
 
 namespace PdfGenerator\Font\Resources\GlyphNameMapping;
 
-use SplFileObject;
-
 class Factory
 {
     /**
@@ -25,7 +23,7 @@ class Factory
      */
     public function getAGLFMapping()
     {
-        if ($this->aGLFMappingCache === null) {
+        if (null === $this->aGLFMappingCache) {
             $this->aGLFMappingCache = $this->generateAGLFMapping();
         }
 
@@ -42,7 +40,7 @@ class Factory
      */
     public function getMacintoshMapping()
     {
-        if ($this->macintoshMappingCache === null) {
+        if (null === $this->macintoshMappingCache) {
             $this->macintoshMappingCache = $this->generateMacintoshMapping();
         }
 
@@ -54,21 +52,21 @@ class Factory
      */
     private function generateAGLFMapping(): array
     {
-        $path = __DIR__ . \DIRECTORY_SEPARATOR . 'aglfn.txt';
+        $path = __DIR__.\DIRECTORY_SEPARATOR.'aglfn.txt';
 
         $result = [];
 
-        $file = new SplFileObject($path);
+        $file = new \SplFileObject($path);
         while (!$file->eof()) {
             $line = $file->getCurrentLine();
 
             // ensure line could be read out
-            if ($line === false) {
+            if (false === $line) {
                 break;
             }
 
             // ignore comments or empty lines
-            if (substr($line, 0, 1) === '#' || \strlen($line) === 0) {
+            if ('#' === substr($line, 0, 1) || 0 === \strlen($line)) {
                 continue;
             }
 
@@ -89,22 +87,22 @@ class Factory
      */
     private function generateMacintoshMapping(): array
     {
-        $path = __DIR__ . \DIRECTORY_SEPARATOR . 'macintosh_standard_ordering.txt';
+        $path = __DIR__.\DIRECTORY_SEPARATOR.'macintosh_standard_ordering.txt';
 
         $result = [];
 
-        $file = new SplFileObject($path);
+        $file = new \SplFileObject($path);
         while (!$file->eof()) {
             $line = $file->getCurrentLine();
 
             // ensure line could be read out
-            if ($line === false) {
+            if (false === $line) {
                 break;
             }
 
             $content = explode("\t", $line);
 
-            $macintoshPoint = (int)trim($content[0]);
+            $macintoshPoint = (int) trim($content[0]);
             $result[$macintoshPoint] = trim($content[1]);
         }
 

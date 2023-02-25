@@ -107,13 +107,13 @@ class ToBackendContentVisitor extends ContentVisitor
 
     private function getPaintingMode(Rectangle $rectangle): int
     {
-        if ($rectangle->getStyle()->getFillColor() !== null) {
-            if ($rectangle->getStyle()->getBorderColor() !== null) {
+        if (null !== $rectangle->getStyle()->getFillColor()) {
+            if (null !== $rectangle->getStyle()->getBorderColor()) {
                 return RectangleContent::PAINTING_MODE_STROKE_FILL;
             }
 
             return RectangleContent::PAINTING_MODE_FILL;
-        } elseif ($rectangle->getStyle()->getBorderColor() !== null) {
+        } elseif (null !== $rectangle->getStyle()->getBorderColor()) {
             return RectangleContent::PAINTING_MODE_STROKE;
         }
 

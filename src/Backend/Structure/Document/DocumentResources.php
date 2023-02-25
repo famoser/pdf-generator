@@ -58,7 +58,7 @@ class DocumentResources
     }
 
     /**
-     * @param BaseDocumentStructure $structure
+     * @param BaseDocumentStructure   $structure
      * @param BaseDocumentStructure[] $cache
      *
      * @return BaseDocumentStructure|CatalogFont|CatalogImage

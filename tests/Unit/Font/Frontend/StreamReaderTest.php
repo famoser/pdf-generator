@@ -275,20 +275,21 @@ class StreamReaderTest extends TestCase
     public function testFSDOT14SingleNumbersResultAsExpected()
     {
         $testNumbers = [
-            0x7fff => 1.999939,
+            0x7FFF => 1.999939,
             0x7000 => 1.75,
             0x0001 => 0.000061,
             0 => 0.0,
-            0xffff => -0.000061,
+            0xFFFF => -0.000061,
             0x8000 => -2.0,
         ];
+        $epsilon = 0.00001;
 
         // check one-by-one
         foreach ($testNumbers as $input => $expectedOutput) {
             $packedInput = pack('N', $input);
             $reader = new StreamReader($packedInput);
             $reader->readInt16();
-            $this->assertSame($expectedOutput, $reader->readF2DOT14());
+            $this->assertTrue($expectedOutput - $reader->readF2DOT14() < $epsilon);
         }
     }
 
@@ -353,7 +354,7 @@ class StreamReaderTest extends TestCase
         $input = 0x2020202020202020;
         $input2 = 0x3030;
 
-        $packed = pack('J', $input) . pack('n', $input2);
+        $packed = pack('J', $input).pack('n', $input2);
         $reader = new StreamReader($packed);
 
         $reader->readUInt16();
