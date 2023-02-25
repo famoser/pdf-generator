@@ -15,19 +15,10 @@ interface DocumentInterface
 {
     /**
      * starts a region with columns.
-     *
-     * @param int $columnCount
      */
     public function createColumnLayout(int $columnCount);
 
-    /**
-     * @param string $title
-     * @param string $author
-     */
     public function setMeta(string $title, string $author);
 
-    /**
-     * @param string $filePath
-     */
     public function save(string $filePath);
 }

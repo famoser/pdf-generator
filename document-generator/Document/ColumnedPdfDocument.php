@@ -16,8 +16,6 @@ interface ColumnedPdfDocument
     /**
      * ensures the next printed elements are printed in the specified column
      * will throw an exception if the column does not exist.
-     *
-     * @param int $column
      */
     public function setColumn(int $column);
 

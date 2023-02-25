@@ -20,8 +20,6 @@ interface LayoutFactoryInterface
     /**
      * starts a region with columns and the column is chosen automatically.
      *
-     * @param int $columnCount
-     *
      * @return AutoColumnLayoutInterface
      */
     public function createAutoColumnLayout(int $columnCount);

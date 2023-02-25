@@ -13,8 +13,8 @@ namespace DocumentGenerator\Layout\Configuration;
 
 class ColumnConfiguration
 {
-    const SIZING_BY_TEXT = 'sizing_by_text';
-    const SIZING_EXPAND = 'sizing_expand';
+    public const SIZING_BY_TEXT = 'sizing_by_text';
+    public const SIZING_EXPAND = 'sizing_expand';
 
     /**
      * @var string
@@ -26,10 +26,6 @@ class ColumnConfiguration
      */
     private $text;
 
-    /**
-     * @param string $sizing
-     * @param string|null $text
-     */
     public function __construct(string $sizing = self::SIZING_EXPAND, string $text = null)
     {
         $this->sizing = $sizing;
@@ -44,9 +40,6 @@ class ColumnConfiguration
         return $this->sizing;
     }
 
-    /**
-     * @return string
-     */
     public function getText(): string
     {
         return $this->text;

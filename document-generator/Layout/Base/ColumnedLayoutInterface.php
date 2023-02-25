@@ -16,8 +16,6 @@ interface ColumnedLayoutInterface
     /**
      * ensures the next printed elements are printed in the specified column
      * will throw an exception if the column region does not exist.
-     *
-     * @param int $column
      */
     public function setColumn(int $column);
 }

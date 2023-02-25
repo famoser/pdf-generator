@@ -10,6 +10,7 @@ file that was distributed with this source code.
 COMMENT;
 
 $finder = PhpCsFixer\Finder::create()
+    ->in('document-generator')
     ->in('src')
     ->in('tests')
 ;
