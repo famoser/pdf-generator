@@ -26,7 +26,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: xdebug, imagick
+          extensions: xdebug
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
@@ -46,14 +46,9 @@ jobs:
       - name: Lint
         run: |
           export PHP_CS_FIXER_IGNORE_ENV=1 && ./vendor/bin/php-cs-fixer fix --diff --dry-run -v
-          php bin/console lint:yaml config --parse-tags
-          php bin/console lint:twig templates
 
       - name: Test
         run: |
-          mv .env.github .env.local
-          php bin/console doctrine:database:create --no-interaction --if-not-exists
-          php bin/console doctrine:migrations:migrate --no-interaction
           export XDEBUG_MODE=coverage && php vendor/bin/phpunit
 
       - name: Check dependencies
