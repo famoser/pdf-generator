@@ -38,7 +38,7 @@ class CharacterRepository
         return $this->findByCodePoint($codePoint);
     }
 
-    public function findByCodePoint(int $codePoint): Character
+    public function findByCodePoint(int $codePoint): ?Character
     {
         if (!\array_key_exists($codePoint, $this->charactersByCodePoint)) {
             return null;

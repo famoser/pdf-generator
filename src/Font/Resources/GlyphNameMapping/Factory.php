@@ -16,7 +16,7 @@ class Factory
     /**
      * @var string[]
      */
-    private array $aGLFMappingCache;
+    private ?array $aGLFMappingCache;
 
     /**
      * @return string[]
@@ -33,7 +33,7 @@ class Factory
     /**
      * @var string[]
      */
-    private array $macintoshMappingCache;
+    private ?array $macintoshMappingCache;
 
     /**
      * @return string[]
@@ -59,11 +59,6 @@ class Factory
         $file = new \SplFileObject($path);
         while (!$file->eof()) {
             $line = $file->getCurrentLine();
-
-            // ensure line could be read out
-            if (false === $line) {
-                break;
-            }
 
             // ignore comments or empty lines
             if (str_starts_with($line, '#') || 0 === \strlen($line)) {
@@ -94,11 +89,6 @@ class Factory
         $file = new \SplFileObject($path);
         while (!$file->eof()) {
             $line = $file->getCurrentLine();
-
-            // ensure line could be read out
-            if (false === $line) {
-                break;
-            }
 
             $content = explode("\t", $line);
 

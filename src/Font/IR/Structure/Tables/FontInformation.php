@@ -34,7 +34,7 @@ class FontInformation
     private ?string $identifier;
 
     /**
-     * human readable name of the font typically consisting of the family / subfamily.
+     * human-readable name of the font typically consisting of the family / subfamily.
      */
     private ?string $fullName;
 

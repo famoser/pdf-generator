@@ -17,31 +17,25 @@ class Format12Group
      * first character code in group.
      *
      * @ttf-type uint32
-     *
-     * @return int
      */
-    private $startCharCode;
+    private int $startCharCode;
 
     /**
      * last character code in group.
      *
      * @ttf-type uint32
-     *
-     * @return int
      */
-    private $endCharCode;
+    private int $endCharCode;
 
     /**
      * the index of the first character in the group
      * subsequent characters use a respectively incremented index.
      *
      * @ttf-type uint32
-     *
-     * @return int
      */
-    private $startGlyphCode;
+    private int $startGlyphCode;
 
-    public function getStartCharCode()
+    public function getStartCharCode(): int
     {
         return $this->startCharCode;
     }
@@ -51,7 +45,7 @@ class Format12Group
         $this->startCharCode = $startCharCode;
     }
 
-    public function getEndCharCode()
+    public function getEndCharCode(): int
     {
         return $this->endCharCode;
     }
@@ -61,7 +55,7 @@ class Format12Group
         $this->endCharCode = $endCharCode;
     }
 
-    public function getStartGlyphCode()
+    public function getStartGlyphCode(): int
     {
         return $this->startGlyphCode;
     }
