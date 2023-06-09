@@ -16,13 +16,13 @@ use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 
 class Character
 {
-    private ?int $unicodePoint;
+    private ?int $unicodePoint = null;
 
     private PostScriptInfo $postScriptInfo;
 
-    private ?BoundingBox $boundingBox;
+    private ?BoundingBox $boundingBox = null;
 
-    private ?GlyfTable $glyfTable;
+    private ?GlyfTable $glyfTable = null;
 
     private LongHorMetric $longHorMetric;
 

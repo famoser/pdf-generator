@@ -13,7 +13,7 @@ namespace PdfGenerator\Font\IR\Structure;
 
 class PostScriptInfo
 {
-    private ?int $macintoshGlyphIndex;
+    private ?int $macintoshGlyphIndex = null;
 
     private string $name;
 

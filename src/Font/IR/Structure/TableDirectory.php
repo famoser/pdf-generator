@@ -21,17 +21,17 @@ use PdfGenerator\Font\Frontend\File\Table\RawTable;
 
 class TableDirectory
 {
-    private ?RawTable $cvtTable;
+    private ?RawTable $cvtTable = null;
 
-    private ?RawTable $fpgmTable;
+    private ?RawTable $fpgmTable = null;
 
-    private ?RawTable $gaspTable;
+    private ?RawTable $gaspTable = null;
 
-    private ?RawTable $gDEFTable;
+    private ?RawTable $gDEFTable = null;
 
-    private ?RawTable $gPOSTable;
+    private ?RawTable $gPOSTable = null;
 
-    private ?RawTable $gSUBTable;
+    private ?RawTable $gSUBTable = null;
 
     private HeadTable $headTable;
 
@@ -45,7 +45,7 @@ class TableDirectory
 
     private PostTable $postTable;
 
-    private ?RawTable $prepTable;
+    private ?RawTable $prepTable = null;
 
     /**
      * @var RawTable[]
