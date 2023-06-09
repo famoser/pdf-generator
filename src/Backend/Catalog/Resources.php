@@ -15,26 +15,14 @@ use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
-class Resources extends BaseStructure
+readonly class Resources extends BaseStructure
 {
     /**
-     * @var Font[]
+     * @param Font[] $fonts
+     * @param Image[] $images
      */
-    private array $fonts = [];
-
-    /**
-     * @var Image[]
-     */
-    private array $images = [];
-
-    public function addFont(Font $font): void
+    public function __construct(private array $fonts, private array $images)
     {
-        $this->fonts[] = $font;
-    }
-
-    public function addImage(Image $image): void
-    {
-        $this->images[] = $image;
     }
 
     /**

@@ -314,7 +314,7 @@ class ComposerTest extends TestCase
     private function render(Document $document): string
     {
         $catalog = $document->render()->render();
-        $fonts = $catalog->getPages()->getKids()[0]->getResources()->getFonts();
+        $fonts = $catalog->getPages()->getPages()[0]->getResources()->getFonts();
         for ($i = 0; $i < \count($fonts); ++$i) {
             $font = $fonts[$i];
             if ($font instanceof Type0) {

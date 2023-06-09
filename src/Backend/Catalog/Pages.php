@@ -16,18 +16,15 @@ use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Utils\IdentifiableTrait;
 
-class Pages extends BaseStructure
+readonly class Pages extends BaseStructure
 {
     use IdentifiableTrait;
 
     /**
-     * @var Page[]
+     * @param Page[] $pages
      */
-    private array $kids = [];
-
-    public function addPage(Page $page): void
+    public function __construct(private array $pages)
     {
-        $this->kids[] = $page;
     }
 
     public function accept(CatalogVisitor $visitor): BaseObject
@@ -38,8 +35,8 @@ class Pages extends BaseStructure
     /**
      * @return Page[]
      */
-    public function getKids(): array
+    public function getPages(): array
     {
-        return $this->kids;
+        return $this->pages;
     }
 }

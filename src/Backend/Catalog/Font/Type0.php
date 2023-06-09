@@ -16,7 +16,7 @@ use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
 
-class Type0 extends Font
+readonly class Type0 extends Font
 {
     private string $baseFont;
 

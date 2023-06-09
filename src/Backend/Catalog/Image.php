@@ -14,17 +14,18 @@ namespace PdfGenerator\Backend\Catalog;
 use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use function RectorPrefix202306\Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
-class Image extends BaseIdentifiableStructure
+readonly class Image extends BaseIdentifiableStructure
 {
     final public const IMAGE_TYPE_JPEG = 0;
 
     /**
      * Image constructor.
      */
-    public function __construct(string $identifier, int $type, private readonly string $content, private readonly float $width, private readonly float $height)
+    public function __construct(string $identifier, int $type, private string $content, private float $width, private float $height)
     {
-        $this->setIdentifier($identifier);
+        parent::__construct($identifier);
 
         \assert(self::IMAGE_TYPE_JPEG === $type);
     }

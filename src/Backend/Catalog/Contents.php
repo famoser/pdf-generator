@@ -15,14 +15,12 @@ use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
-class Contents extends BaseStructure
+readonly class Contents extends BaseStructure
 {
-    /**
-     * Contents constructor.
-     *
+    /*
      * @param Content[] $content
      */
-    public function __construct(private readonly array $content)
+    public function __construct(private array $contents)
     {
     }
 
@@ -37,8 +35,8 @@ class Contents extends BaseStructure
     /**
      * @return Content[]
      */
-    public function getContent(): array
+    public function getContents(): array
     {
-        return $this->content;
+        return $this->contents;
     }
 }

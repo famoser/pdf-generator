@@ -13,14 +13,14 @@ namespace PdfGenerator\Backend\Catalog;
 
 use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 
-abstract class Font extends BaseIdentifiableStructure
+readonly abstract class Font extends BaseIdentifiableStructure
 {
     /**
      * File constructor.
      */
     public function __construct(string $identifier)
     {
-        $this->setIdentifier($identifier);
+        parent::__construct($identifier);
     }
 
     abstract public function encode(string $value): string;
