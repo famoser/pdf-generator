@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Backend\Structure\Document;
 
+use PdfGenerator\Backend\Catalog\Base\BaseStructure as CatalogBaseStructure;
 use PdfGenerator\Backend\Catalog\Font as CatalogFont;
 use PdfGenerator\Backend\Catalog\Image as CatalogImage;
 use PdfGenerator\Backend\Structure\Document\Base\BaseDocumentStructure;
@@ -49,9 +50,9 @@ class DocumentResources
     }
 
     /**
-     * @param BaseDocumentStructure[] $cache
+     * @param CatalogBaseStructure[] $cache
      */
-    private function getOrCreate(BaseDocumentStructure $structure, array &$cache): CatalogFont|BaseDocumentStructure|CatalogImage
+    private function getOrCreate(BaseDocumentStructure $structure, array &$cache): CatalogFont|CatalogImage|CatalogBaseStructure
     {
         $identifier = spl_object_id($structure);
 
