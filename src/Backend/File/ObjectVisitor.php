@@ -17,10 +17,7 @@ use PdfGenerator\Backend\File\Object\StreamObject;
 
 class ObjectVisitor
 {
-    /**
-     * @var TokenVisitor
-     */
-    private $tokenVisitor;
+    private TokenVisitor $tokenVisitor;
 
     /**
      * ObjectVisitor constructor.
@@ -46,10 +43,7 @@ class ObjectVisitor
         return $this->visitObject($param, implode("\n", $lines));
     }
 
-    /**
-     * @return string
-     */
-    private function visitObject(BaseObject $object, string $content)
+    private function visitObject(BaseObject $object, string $content): string
     {
         return $object->getNumber()." 0 obj\n".$content."\nendobj";
     }

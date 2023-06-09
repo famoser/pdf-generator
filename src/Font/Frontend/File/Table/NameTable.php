@@ -27,51 +27,43 @@ class NameTable
      * the format of the table.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $format;
+    private int $format;
 
     /**
      * number of records.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $count;
+    private int $count;
 
     /**
      * offset of start of string content from the beginning of the table.
      *
      * @ttf-type offset16
-     *
-     * @var int
      */
-    private $stringOffset;
+    private int $stringOffset;
 
     /**
      * name records.
      *
      * @var NameRecord[]
      */
-    private $nameRecords = [];
+    private array $nameRecords = [];
 
     /**
      * number of lang tags.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $langTagCount;
+    private int $langTagCount;
 
     /**
      * lang tags.
      *
      * @var LangTagRecord[]
      */
-    private $langTagRecords = [];
+    private array $langTagRecords = [];
 
     public function getFormat(): int
     {

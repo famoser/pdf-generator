@@ -21,19 +21,15 @@ class ComponentGlyf
      * flags as seen above.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $flags;
+    private int $flags;
 
     /**
      * glyph index of this component.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $glyphIndex;
+    private int $glyphIndex;
 
     public function getFlags(): int
     {

@@ -41,10 +41,7 @@ use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
 
 class FileWriter
 {
-    /**
-     * @var TableVisitor
-     */
-    private $tableVisitor;
+    private TableVisitor $tableVisitor;
 
     /**
      * FileWriter constructor.
@@ -54,10 +51,7 @@ class FileWriter
         $this->tableVisitor = $tableVisitor;
     }
 
-    /**
-     * @return FileWriter
-     */
-    public static function create()
+    public static function create(): FileWriter
     {
         $tableVisitor = TableVisitor::create();
 
@@ -65,11 +59,9 @@ class FileWriter
     }
 
     /**
-     * @return string
-     *
      * @throws \Exception
      */
-    public function writeFont(Font $font)
+    public function writeFont(Font $font): string
     {
         if (!$font->getIsTrueTypeFont()) {
             throw new \Exception('Writing non-TrueType fonts is not supported at the moment.');
@@ -82,10 +74,8 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return HeadTable
      */
-    private function generateHeadTable(\PdfGenerator\Font\Frontend\File\Table\HeadTable $source, array $characters)
+    private function generateHeadTable(\PdfGenerator\Font\Frontend\File\Table\HeadTable $source, array $characters): HeadTable
     {
         $headTable = new HeadTable();
 
@@ -132,10 +122,8 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return HHeaTable
      */
-    private function generateHHeaTable(\PdfGenerator\Font\Frontend\File\Table\HHeaTable $source, array $characters, int $longHorMetricCount)
+    private function generateHHeaTable(\PdfGenerator\Font\Frontend\File\Table\HHeaTable $source, array $characters, int $longHorMetricCount): HHeaTable
     {
         $hHeaTable = new HHeaTable();
 
@@ -187,10 +175,8 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return HMtxTable
      */
-    private function generateHMtxTable(array $characters)
+    private function generateHMtxTable(array $characters): HMtxTable
     {
         $hmtx = new HMtxTable();
 
@@ -207,10 +193,8 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return MaxPTable
      */
-    private function generateMaxPTable(\PdfGenerator\Font\Frontend\File\Table\MaxPTable $source, array $characters)
+    private function generateMaxPTable(\PdfGenerator\Font\Frontend\File\Table\MaxPTable $source, array $characters): MaxPTable
     {
         $maxPTable = new MaxPTable();
 
@@ -263,10 +247,8 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return Format4
      */
-    private function generateCMapFormat4(array $characters, int $reservedCharactersOffset)
+    private function generateCMapFormat4(array $characters, int $reservedCharactersOffset): Format4
     {
         $segments = $this->generateSegments($characters, $reservedCharactersOffset);
         $segmentsCount = \count($segments);
@@ -344,7 +326,7 @@ class FileWriter
      *
      * @return GlyfTable[]
      */
-    private function generateGlyfTables(array $characters)
+    private function generateGlyfTables(array $characters): array
     {
         /** @var GlyfTable[] $glyfTables */
         $glyfTables = [];
@@ -362,10 +344,8 @@ class FileWriter
 
     /**
      * @param GlyfTable[] $glyfTables
-     *
-     * @return LocaTable
      */
-    private function generateLocaTable(array $glyfTables)
+    private function generateLocaTable(array $glyfTables): LocaTable
     {
         $locaTable = new LocaTable();
 
@@ -400,11 +380,9 @@ class FileWriter
     }
 
     /**
-     * @return string
-     *
      * @throws \Exception
      */
-    private function writeTableDirectory(TableDirectory $fontFile)
+    private function writeTableDirectory(TableDirectory $fontFile): string
     {
         /** @var BaseTable[] $tables */
         $tables = [
@@ -485,10 +463,7 @@ class FileWriter
         return $streamWriter->getStream();
     }
 
-    /**
-     * @return int
-     */
-    private function calculateCheckum(string $stream)
+    private function calculateCheckum(string $stream): int
     {
         $length = \strlen($stream);
 
@@ -522,10 +497,7 @@ class FileWriter
         return $upperNumber | $lowerNumber;
     }
 
-    /**
-     * @return OffsetTable
-     */
-    private function generateOffsetTable(int $numTables)
+    private function generateOffsetTable(int $numTables): OffsetTable
     {
         $offsetTable = new OffsetTable();
 
@@ -538,10 +510,8 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return PostTable
      */
-    private function generatePostTable(\PdfGenerator\Font\Frontend\File\Table\PostTable $source, array $characters)
+    private function generatePostTable(\PdfGenerator\Font\Frontend\File\Table\PostTable $source, array $characters): PostTable
     {
         $postTable = new PostTable();
 
@@ -560,10 +530,7 @@ class FileWriter
         return $postTable;
     }
 
-    /**
-     * @return NameTable
-     */
-    private function generateNameTable(\PdfGenerator\Font\Frontend\File\Table\NameTable $source)
+    private function generateNameTable(\PdfGenerator\Font\Frontend\File\Table\NameTable $source): NameTable
     {
         $nameTable = new NameTable();
 
@@ -616,10 +583,8 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return Format2
      */
-    private function generatePostFormat2Table(array $characters)
+    private function generatePostFormat2Table(array $characters): Format2
     {
         $format2 = new Format2();
 
@@ -643,10 +608,7 @@ class FileWriter
         return $format2;
     }
 
-    /**
-     * @return RawTable
-     */
-    private function generateRawTable(\PdfGenerator\Font\Frontend\File\Table\RawTable $table)
+    private function generateRawTable(\PdfGenerator\Font\Frontend\File\Table\RawTable $table): RawTable
     {
         $rawTable = new RawTable();
 
@@ -671,10 +633,7 @@ class FileWriter
         return $writer->getStream();
     }
 
-    /**
-     * @param BinaryTreeSearchableTrait $binaryTreeSearchable
-     */
-    private static function setBinaryTreeSearchableProperties($binaryTreeSearchable, int $numberOfEntries)
+    private static function setBinaryTreeSearchableProperties(BinaryTreeSearchableTrait $binaryTreeSearchable, int $numberOfEntries)
     {
         $powerOfTwo = (int) log($numberOfEntries, 2);
 
@@ -763,10 +722,8 @@ class FileWriter
 
     /**
      * @param Character[] $characters
-     *
-     * @return OS2Table
      */
-    private function generateOS2Table(\PdfGenerator\Font\Frontend\File\Table\OS2Table $source, array $characters)
+    private function generateOS2Table(\PdfGenerator\Font\Frontend\File\Table\OS2Table $source, array $characters): OS2Table
     {
         $os2Table = new OS2Table();
 

@@ -18,7 +18,7 @@ class MeasuredParagraph
     /**
      * @var MeasuredPhrase[]
      */
-    private $measuredPhrases = [];
+    private array $measuredPhrases = [];
 
     public function addMeasuredPhrase(MeasuredPhrase $measuredPhrase)
     {

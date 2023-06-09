@@ -13,20 +13,14 @@ namespace PdfGenerator\Font\Backend;
 
 class StreamWriter
 {
-    /**
-     * @var string
-     */
-    private $stream = '';
+    private string $stream = '';
 
     public function getLength(): int
     {
         return \strlen($this->stream);
     }
 
-    /**
-     * @return string
-     */
-    public function getStream()
+    public function getStream(): string
     {
         return $this->stream;
     }

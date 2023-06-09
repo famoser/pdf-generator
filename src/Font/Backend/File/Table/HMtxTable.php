@@ -34,7 +34,7 @@ class HMtxTable extends BaseTable
      *
      * @var LongHorMetric[]
      */
-    private $longHorMetrics = [];
+    private array $longHorMetrics = [];
 
     /**
      * the left side bearing of the characters not specified using the longHorMetric.
@@ -44,7 +44,7 @@ class HMtxTable extends BaseTable
      *
      * @var int[]
      */
-    private $leftSideBearings = [];
+    private array $leftSideBearings = [];
 
     /**
      * @return LongHorMetric[]

@@ -15,15 +15,12 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 class WordSizerRepository
 {
-    /**
-     * @var WordSizerVisitor
-     */
-    private $wordSizerVisitor;
+    private WordSizerVisitor $wordSizerVisitor;
 
     /**
      * @var WordSizerInterface[]
      */
-    private $wordSizerByFont = [];
+    private array $wordSizerByFont = [];
 
     public function __construct()
     {

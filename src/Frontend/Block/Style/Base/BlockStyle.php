@@ -18,27 +18,18 @@ class BlockStyle
     /**
      * @var float[]
      */
-    private $margin = [0, 0, 0, 0];
+    private array $margin = [0, 0, 0, 0];
 
     /**
      * @var float[]
      */
-    private $padding = [0, 0, 0, 0];
+    private array $padding = [0, 0, 0, 0];
 
-    /**
-     * @var float
-     */
-    private $borderWidth = 0;
+    private float $borderWidth = 0;
 
-    /**
-     * @var Color
-     */
-    private $borderColor;
+    private Color $borderColor;
 
-    /**
-     * @var Color|null
-     */
-    private $backgroundColor;
+    private ?Color $backgroundColor;
 
     public function __construct()
     {
@@ -61,10 +52,7 @@ class BlockStyle
         return $this->padding;
     }
 
-    /**
-     * @return float
-     */
-    public function getBorderWidth()
+    public function getBorderWidth(): float
     {
         return $this->borderWidth;
     }

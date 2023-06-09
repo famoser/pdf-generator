@@ -20,25 +20,16 @@ class Page extends BaseStructure
 {
     use IdentifiableTrait;
 
-    /**
-     * @var Pages
-     */
-    private $parent;
+    private Pages $parent;
 
     /**
      * @var int[]
      */
-    private $mediaBox;
+    private array $mediaBox;
 
-    /**
-     * @var Contents
-     */
-    private $contents;
+    private Contents $contents;
 
-    /**
-     * @var Resources
-     */
-    private $resources;
+    private Resources $resources;
 
     /**
      * Page constructor.
@@ -51,10 +42,7 @@ class Page extends BaseStructure
         $this->resources = $resources;
     }
 
-    /**
-     * @return BaseObject
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): BaseObject
     {
         return $visitor->visitPage($this);
     }

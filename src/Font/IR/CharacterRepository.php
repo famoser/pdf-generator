@@ -19,7 +19,7 @@ class CharacterRepository
     /**
      * @var Character[]
      */
-    private $charactersByCodePoint = [];
+    private array $charactersByCodePoint = [];
 
     /**
      * FontRepository constructor.
@@ -31,20 +31,14 @@ class CharacterRepository
         }
     }
 
-    /**
-     * @return Character
-     */
-    public function findByChar(string $character)
+    public function findByChar(string $character): Character
     {
         $codePoint = mb_ord($character, 'UTF-8');
 
         return $this->findByCodePoint($codePoint);
     }
 
-    /**
-     * @return Character
-     */
-    public function findByCodePoint(int $codePoint)
+    public function findByCodePoint(int $codePoint): Character
     {
         if (!\array_key_exists($codePoint, $this->charactersByCodePoint)) {
             return null;

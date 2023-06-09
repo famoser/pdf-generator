@@ -20,10 +20,7 @@ abstract class BaseState
      */
     abstract public function accept(StateTransitionVisitor $visitor): array;
 
-    /**
-     * @return string
-     */
-    public function stateIdentifier()
+    public function stateIdentifier(): string
     {
         return static::class;
     }

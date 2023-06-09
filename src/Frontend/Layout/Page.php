@@ -16,7 +16,7 @@ class Page
     /**
      * @var float[]
      */
-    private $dimensions;
+    private array $dimensions;
 
     /**
      * Page constructor.

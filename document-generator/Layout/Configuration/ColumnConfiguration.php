@@ -16,15 +16,9 @@ class ColumnConfiguration
     public const SIZING_BY_TEXT = 'sizing_by_text';
     public const SIZING_EXPAND = 'sizing_expand';
 
-    /**
-     * @var string
-     */
-    private $sizing;
+    private string $sizing;
 
-    /**
-     * @var string
-     */
-    private $text;
+    private string $text;
 
     public function __construct(string $sizing = self::SIZING_EXPAND, string $text = null)
     {
@@ -32,10 +26,7 @@ class ColumnConfiguration
         $this->text = $text;
     }
 
-    /**
-     * @return string
-     */
-    public function getSizing()
+    public function getSizing(): string
     {
         return $this->sizing;
     }

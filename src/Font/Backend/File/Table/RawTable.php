@@ -19,15 +19,9 @@ use PdfGenerator\Font\Backend\File\TableVisitor;
  */
 class RawTable extends BaseTable
 {
-    /**
-     * @var string
-     */
-    private $tag;
+    private string $tag;
 
-    /**
-     * @var string
-     */
-    private $content;
+    private string $content;
 
     public function getTag(): string
     {

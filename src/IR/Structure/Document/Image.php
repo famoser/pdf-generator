@@ -16,35 +16,20 @@ use PdfGenerator\IR\Structure\DocumentVisitor;
 
 class Image extends BaseDocumentStructure
 {
-    /**
-     * @var string
-     */
-    private $src;
+    private string $src;
 
-    /**
-     * @var string
-     */
-    private $data;
+    private string $data;
 
     public const TYPE_JPG = 'TYPE_JPG';
     public const TYPE_JPEG = 'TYPE_JPEG';
     public const TYPE_PNG = 'TYPE_PNG';
     public const TYPE_GIF = 'TYPE_GIF';
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
-    /**
-     * @var int
-     */
-    private $width;
+    private int $width;
 
-    /**
-     * @var int
-     */
-    private $height;
+    private int $height;
 
     /**
      * Image constructor.
@@ -96,10 +81,7 @@ class Image extends BaseDocumentStructure
         return $visitor->visitImage($this);
     }
 
-    /**
-     * @return string
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->src;
     }

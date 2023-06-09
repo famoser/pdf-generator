@@ -13,168 +13,123 @@ namespace PdfGenerator\Font\IR\Structure\Tables;
 
 class FontInformation
 {
-    /**
-     * @var string|null
-     */
-    private $copyrightNotice;
+    private ?string $copyrightNotice;
 
     /**
      * the family of the font; used to group together fonts with different style/width.
      *
      * note that only four variations are allowed (regular, italic, bold, bold italic).
      * if you need more variations, use the typographicFamily & typographicSubfamilyName fields.
-     *
-     * @var string|null
      */
-    private $family;
+    private ?string $family;
 
     /**
      * the variation of the specific font family (one of regular, italic, bold or bold italic).
-     *
-     * @var string|null
      */
-    private $subfamily;
+    private ?string $subfamily;
 
     /**
      * unique font identifier.
-     *
-     * @var string|null
      */
-    private $identifier;
+    private ?string $identifier;
 
     /**
      * human readable name of the font typically consisting of the family / subfamily.
-     *
-     * @var string|null
      */
-    private $fullName;
+    private ?string $fullName;
 
     /**
      * to compare font versions.
      *
      * should be of the form "Version 1.1"
-     *
-     * @var string|null
      */
-    private $version;
+    private ?string $version;
 
     /**
      * the name of the font for PostScript when invoking `composefont`.
      *
      * at most 63 chars, ASCII subset, codes 33 through 126, except '[', ']', '(', ')', '{', '}', '<', '>', '/', '%'.
-     *
-     * @var string|null
      */
-    private $postScriptName;
+    private ?string $postScriptName;
 
     /**
      * trademark information for the font (should be based on legal advice).
-     *
-     * @var string|null
      */
-    private $trademarkNotice;
+    private ?string $trademarkNotice;
 
     /**
      * name of the manufacturer.
-     *
-     * @var string|null
      */
-    private $manufacturer;
+    private ?string $manufacturer;
 
     /**
      * name of the designer.
-     *
-     * @var string|null
      */
-    private $designer;
+    private ?string $designer;
 
     /**
      * description of the typeface (history, usage recommendations, ...).
-     *
-     * @var string|null
      */
-    private $description;
+    private ?string $description;
 
     /**
      * url of font vendor.
-     *
-     * @var string|null
      */
-    private $urlVendor;
+    private ?string $urlVendor;
 
     /**
      * url of font designer.
-     *
-     * @var string|null
      */
-    private $urlDesigner;
+    private ?string $urlDesigner;
 
     /**
      * plain english description of how the font may be used.
-     *
-     * @var string|null
      */
-    private $licenseDescription;
+    private ?string $licenseDescription;
 
     /**
      * url of the license.
-     *
-     * @var string|null
      */
-    private $licenseUrl;
+    private ?string $licenseUrl;
 
     /**
      * the family of the font; used to group together fonts with different style/width.
-     *
-     * @var string|null
      */
-    private $typographicFamily;
+    private ?string $typographicFamily;
 
     /**
      * the variation of the specific font family (one of regular, italic, bold or bold italic).
-     *
-     * @var string|null
      */
-    private $typographicSubfamily;
+    private ?string $typographicSubfamily;
 
     /**
      * how the font should be called on Macintosh.
-     *
-     * @var string|null
      */
-    private $compatibleFull;
+    private ?string $compatibleFull;
 
     /**
      * the text best to sample the font by.
-     *
-     * @var string|null
      */
-    private $sampleText;
+    private ?string $sampleText;
 
     /**
      * the name of the font for PostScript when invoking `findfont`.
      *
      * ASCII subset, codes 33 through 126, except '[', ']', '(', ')', '{', '}', '<', '>', '/', '%'.
-     *
-     * @var string|null
      */
-    private $postScriptCIDName;
+    private ?string $postScriptCIDName;
 
     /**
      * the family of the font conforming to WWS (width, weight, slope) if the typographic family includes additional specifiers (like "Display", "Body").
      *
      * if there are two fonts called "Calibri Body" and "Calibri Header" then their wws name would be for both "Calibri"
-     *
-     * @var string|null
      */
-    private $wwsFamilyName;
+    private ?string $wwsFamilyName;
 
     /**
      * the Subfamily of the font conforming to WWS (width, weight, slope) if the typographic subfamily includes additional specifiers (like "Display", "Body").
-     *
-     * @var string|null
      */
-    private $wwsSubfamilyName;
+    private ?string $wwsSubfamilyName;
 
     public function getCopyrightNotice(): ?string
     {

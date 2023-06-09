@@ -13,15 +13,9 @@ namespace PdfGenerator\Frontend\Content\Style\Base;
 
 class Style
 {
-    /**
-     * @var float
-     */
-    private $marginTop;
+    private float $marginTop;
 
-    /**
-     * @var float
-     */
-    private $marginBottom;
+    private float $marginBottom;
 
     public function getMarginTop(): float
     {

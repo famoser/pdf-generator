@@ -15,20 +15,11 @@ use PdfGenerator\Frontend\Block\Base\Block;
 
 class GridEntry
 {
-    /**
-     * @var int
-     */
-    private $columnSpan;
+    private int $columnSpan;
 
-    /**
-     * @var int
-     */
-    private $rowSpan;
+    private int $rowSpan;
 
-    /**
-     * @var Block
-     */
-    private $block;
+    private Block $block;
 
     /**
      * GridEntry constructor.

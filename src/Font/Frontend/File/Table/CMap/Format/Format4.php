@@ -28,10 +28,8 @@ class Format4 extends Format
      * calculated: 2 * segCount.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $segCountX2;
+    private int $segCountX2;
 
     /**
      * end code per the continuous code range.
@@ -40,16 +38,14 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $endCodes = [];
+    private array $endCodes = [];
 
     /**
      * padding set to 0.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $reservedPad;
+    private int $reservedPad;
 
     /**
      * start code per the continuous code range.
@@ -58,7 +54,7 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $startCodes = [];
+    private array $startCodes = [];
 
     /**
      * id delta per the continuous code range.
@@ -67,7 +63,7 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $idDeltas = [];
+    private array $idDeltas = [];
 
     /**
      * id range offset per the continuous code range.
@@ -76,7 +72,7 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $idRangeOffsets = [];
+    private array $idRangeOffsets = [];
 
     /**
      * entries referenced to for continuous code ranges where the idRangeOffset is not 0.
@@ -85,7 +81,7 @@ class Format4 extends Format
      *
      * @var int[]
      */
-    private $glyphIndexArray = [];
+    private array $glyphIndexArray = [];
 
     /**
      * the format of the encoding.
@@ -99,10 +95,8 @@ class Format4 extends Format
 
     /**
      * of which size the binary tree is constructed.
-     *
-     * @return int
      */
-    protected function getNumberOfEntries()
+    protected function getNumberOfEntries(): int
     {
         return $this->segCountX2;
     }

@@ -13,15 +13,9 @@ namespace PdfGenerator\Utils;
 
 trait IdentifiableTrait
 {
-    /**
-     * @var int
-     */
-    private static $nextIdentifier = 0;
+    private static int $nextIdentifier = 0;
 
-    /**
-     * @var int|null
-     */
-    private $identifier = null;
+    private ?int $identifier;
 
     public function getIdentifier(): int
     {

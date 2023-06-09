@@ -17,15 +17,9 @@ use PdfGenerator\Frontend\Size;
 
 class ImageAllocator implements ContentAllocatorInterface
 {
-    /**
-     * @var Image
-     */
-    private $image;
+    private Image $image;
 
-    /**
-     * @var ImageStyle
-     */
-    private $imageStyle;
+    private ImageStyle $imageStyle;
 
     /**
      * ImageAllocator constructor.

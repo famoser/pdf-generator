@@ -26,20 +26,11 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
 class Printer
 {
-    /**
-     * @var Document
-     */
-    protected $document;
+    protected Document $document;
 
-    /**
-     * @var TextStyle
-     */
-    protected $textStyle;
+    protected TextStyle $textStyle;
 
-    /**
-     * @var RectangleStyle
-     */
-    protected $rectangleStyle;
+    protected RectangleStyle $rectangleStyle;
 
     /**
      * Printer constructor.

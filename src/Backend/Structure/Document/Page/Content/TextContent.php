@@ -23,12 +23,9 @@ class TextContent extends BaseContent
     /**
      * @var string[]
      */
-    private $lines;
+    private array $lines;
 
-    /**
-     * @var WritingState
-     */
-    private $writingState;
+    private WritingState $writingState;
 
     /**
      * TextSymbol constructor.

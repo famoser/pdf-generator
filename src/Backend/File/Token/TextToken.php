@@ -16,10 +16,7 @@ use PdfGenerator\Backend\File\TokenVisitor;
 
 class TextToken extends BaseToken
 {
-    /**
-     * @var string
-     */
-    private $text;
+    private string $text;
 
     /**
      * TextToken constructor.

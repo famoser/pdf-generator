@@ -21,20 +21,11 @@ class CursorPrinter
 {
     use StyleGetSetTrait;
 
-    /**
-     * @var Cursor
-     */
-    private $cursor;
+    private Cursor $cursor;
 
-    /**
-     * @var Document
-     */
-    private $document;
+    private Document $document;
 
-    /**
-     * @var Printer
-     */
-    private $printer;
+    private Printer $printer;
 
     public function __construct(Document $document)
     {

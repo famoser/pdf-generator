@@ -16,25 +16,13 @@ use PdfGenerator\Frontend\Content\Style\Part\Font;
 
 class TextStyle
 {
-    /**
-     * @var Font
-     */
-    private $font;
+    private Font $font;
 
-    /**
-     * @var float
-     */
-    private $fontSize;
+    private float $fontSize;
 
-    /**
-     * @var float
-     */
-    private $lineHeight;
+    private float $lineHeight;
 
-    /**
-     * @var Color
-     */
-    private $color;
+    private Color $color;
 
     public function __construct(Font $font, float $fontSize = 12, float $lineHeight = 1.2, Color $color = null)
     {

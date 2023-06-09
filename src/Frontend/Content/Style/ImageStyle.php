@@ -17,10 +17,7 @@ class ImageStyle extends Style
 {
     public const SIZE_CONTAIN = 'SIZING_CONTAIN';
 
-    /**
-     * @var string
-     */
-    private $size;
+    private string $size;
 
     /**
      * ImageStyle constructor.

@@ -18,17 +18,11 @@ class GeneralGraphicStateRepository
     /**
      * @var float[]
      */
-    private $position = [1, 0, 0, 1, 0, 0];
+    private array $position = [1, 0, 0, 1, 0, 0];
 
-    /**
-     * @var float
-     */
-    private $lineWidth = 1;
+    private float $lineWidth = 1;
 
-    /**
-     * @var GeneralGraphicState
-     */
-    private $generalGraphicState;
+    private GeneralGraphicState $generalGraphicState;
 
     public function setPosition(float $xStart, float $yStart, float $scaleX = 1, float $scaleY = 1)
     {
@@ -47,10 +41,7 @@ class GeneralGraphicStateRepository
         }
     }
 
-    /**
-     * @return GeneralGraphicState
-     */
-    public function getGeneralGraphicState()
+    public function getGeneralGraphicState(): GeneralGraphicState
     {
         if (null !== $this->generalGraphicState) {
             return $this->generalGraphicState;

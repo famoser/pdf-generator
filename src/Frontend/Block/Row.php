@@ -17,15 +17,12 @@ use PdfGenerator\Frontend\Block\Style\RowStyle;
 
 class Row extends Block
 {
-    /**
-     * @var RowStyle
-     */
-    private $style;
+    private RowStyle $style;
 
     /**
      * @var Column[]
      */
-    private $columns = [];
+    private array $columns = [];
 
     /**
      * @param float[]|null $dimensions

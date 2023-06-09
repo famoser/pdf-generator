@@ -13,15 +13,9 @@ namespace PdfGenerator\IR\Structure\Document\Page\Content\Common;
 
 class Size
 {
-    /**
-     * @var float
-     */
-    private $width;
+    private float $width;
 
-    /**
-     * @var float
-     */
-    private $height;
+    private float $height;
 
     /**
      * Size constructor.

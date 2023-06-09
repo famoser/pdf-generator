@@ -16,15 +16,12 @@ use PdfGenerator\Backend\File\StructureVisitor;
 
 class CrossReferenceTable extends BaseStructure
 {
-    /**
-     * @var int
-     */
-    private $lastEntry = 0;
+    private int $lastEntry = 0;
 
     /**
      * @var int[]
      */
-    private $registeredEntries = [];
+    private array $registeredEntries = [];
 
     public function registerEntrySize(int $entrySize)
     {

@@ -33,30 +33,18 @@ use PdfGenerator\Font\IR\Structure\Font;
 
 class DocumentVisitor
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private Configuration $configuration;
 
     /**
      * @var int[]
      */
-    private $resourceCounters = [];
+    private array $resourceCounters = [];
 
-    /**
-     * @var FontOptimizer
-     */
-    private $fontOptimizer;
+    private FontOptimizer $fontOptimizer;
 
-    /**
-     * @var CMapCreator
-     */
-    private $cMapCreator;
+    private CMapCreator $cMapCreator;
 
-    /**
-     * @var ImageOptimizer
-     */
-    private $imageOptimizer;
+    private ImageOptimizer $imageOptimizer;
 
     /**
      * DocumentVisitor constructor.
@@ -70,10 +58,7 @@ class DocumentVisitor
         $this->imageOptimizer = new ImageOptimizer();
     }
 
-    /**
-     * @return string
-     */
-    private function generateIdentifier(string $prefix)
+    private function generateIdentifier(string $prefix): string
     {
         if (!\array_key_exists($prefix, $this->resourceCounters)) {
             $this->resourceCounters[$prefix] = 0;
@@ -84,10 +69,7 @@ class DocumentVisitor
         return $prefix.$this->resourceCounters[$prefix]++;
     }
 
-    /**
-     * @return CatalogImage
-     */
-    public function visitImage(Image $param)
+    public function visitImage(Image $param): CatalogImage
     {
         $identifier = $this->generateIdentifier('I');
         $type = Image::TYPE_JPG === $param->getType() || Image::TYPE_JPEG === $param->getType() ? CatalogImage::IMAGE_TYPE_JPEG : null;
@@ -117,10 +99,7 @@ class DocumentVisitor
         return new CatalogImage($identifier, $type, $content, $width, $height);
     }
 
-    /**
-     * @return Type1
-     */
-    public function visitDefaultFont(DefaultFont $param)
+    public function visitDefaultFont(DefaultFont $param): Type1
     {
         $identifier = $this->generateIdentifier('F');
 
@@ -187,10 +166,7 @@ class DocumentVisitor
         return new TrueType($identifier, $fontDescriptor, $widths);
     }
 
-    /**
-     * @return Type0
-     */
-    private function createType0Font(FontDescriptor $fontDescriptor, Font $font, float $sizeNormalizer, array $usedCodepoints)
+    private function createType0Font(FontDescriptor $fontDescriptor, Font $font, float $sizeNormalizer, array $usedCodepoints): Type0
     {
         /** @var int[] $characterWidths */
         $characterWidths = [];

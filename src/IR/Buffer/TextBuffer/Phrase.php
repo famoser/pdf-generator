@@ -15,15 +15,9 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
 class Phrase
 {
-    /**
-     * @var string
-     */
-    private $text;
+    private string $text;
 
-    /**
-     * @var TextStyle
-     */
-    private $textStyle;
+    private TextStyle $textStyle;
 
     public function getText(): string
     {

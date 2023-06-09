@@ -31,7 +31,7 @@ class LocaTable
      *
      * @var int[]
      */
-    private $offsets = [];
+    private array $offsets = [];
 
     /**
      * @return int[]

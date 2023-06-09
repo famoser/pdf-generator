@@ -13,20 +13,11 @@ namespace PdfGenerator\IR\Structure\Document\Page\Content\Common;
 
 class Color
 {
-    /**
-     * @var int
-     */
-    private $red;
+    private int $red;
 
-    /**
-     * @var int
-     */
-    private $green;
+    private int $green;
 
-    /**
-     * @var int
-     */
-    private $blue;
+    private int $blue;
 
     /**
      * Color constructor.
@@ -39,11 +30,9 @@ class Color
     }
 
     /**
-     * @return Color
-     *
      * @throws \Exception
      */
-    public static function createFromHex(string $color)
+    public static function createFromHex(string $color): Color
     {
         if (!preg_match('/^#([a-f0-9]){6}$/', $color)) {
             throw new \Exception('please pass the value in the form #000000');

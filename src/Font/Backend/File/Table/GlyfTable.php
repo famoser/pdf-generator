@@ -40,10 +40,8 @@ class GlyfTable extends BaseTable
      * else composite graph.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $numberOfContours;
+    private int $numberOfContours;
 
     /**
      * other glyphs part of this glyph
@@ -51,7 +49,7 @@ class GlyfTable extends BaseTable
      *
      * @var ComponentGlyf[]
      */
-    private $componentGlyphs = [];
+    private array $componentGlyphs = [];
 
     public function getNumberOfContours(): int
     {

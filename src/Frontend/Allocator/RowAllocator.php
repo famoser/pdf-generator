@@ -18,20 +18,14 @@ use PdfGenerator\Frontend\Block\Style\RowStyle;
 
 class RowAllocator extends BaseAllocator
 {
-    /**
-     * @var Row
-     */
-    private $row;
+    private Row $row;
 
-    /**
-     * @var RowStyle
-     */
-    private $rowStyle;
+    private RowStyle $rowStyle;
 
     /**
      * @var ColumnAllocator[]
      */
-    private $columnAllocators;
+    private array $columnAllocators;
 
     /**
      * RowAllocator constructor.

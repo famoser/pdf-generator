@@ -19,22 +19,13 @@ class ContentAreaGenerator implements ContentAreaGeneratorInterface
     /**
      * @var float[]
      */
-    private $margins;
+    private array $margins;
 
-    /**
-     * @var float
-     */
-    private $gutter;
+    private float $gutter;
 
-    /**
-     * @var int
-     */
-    private $columnCount;
+    private int $columnCount;
 
-    /**
-     * @var int
-     */
-    private $rowCount;
+    private int $rowCount;
 
     /**
      * @param float[] $margins

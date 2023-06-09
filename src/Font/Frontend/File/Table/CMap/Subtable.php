@@ -25,10 +25,8 @@ class Subtable
      * 3 for Microsoft.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $platformID;
+    private int $platformID;
 
     /**
      * encoding identifier supplement.
@@ -52,26 +50,20 @@ class Subtable
      * 10 for Unicode UCS-4
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $platformSpecificID;
+    private int $platformSpecificID;
 
     /**
      * the location of the encoding table.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $offset;
+    private int $offset;
 
     /**
      * the encoding table.
-     *
-     * @var Format
      */
-    private $format;
+    private Format $format;
 
     public function getPlatformID(): int
     {

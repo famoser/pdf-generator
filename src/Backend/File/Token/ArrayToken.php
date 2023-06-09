@@ -16,15 +16,12 @@ use PdfGenerator\Backend\File\TokenVisitor;
 
 class ArrayToken extends BaseToken
 {
-    /**
-     * @var BaseToken|null
-     */
-    private $key;
+    private ?BaseToken $key;
 
     /**
      * @var BaseToken[]
      */
-    private $values;
+    private array $values;
 
     /**
      * ArrayToken constructor.

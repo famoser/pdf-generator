@@ -22,30 +22,24 @@ trait BinaryTreeSearchableTrait
      * calculated: (maximum power of 2 <= numberOfEntries)*16.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $searchRange;
+    private int $searchRange;
 
     /**
      * how deep the binary search tree will be
      * calculated: log2(maximum power of 2 <= numberOfEntries).
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $entrySelector;
+    private int $entrySelector;
 
     /**
      * how many entries are missed if only binary search tree is looked at
      * calculated: numberOfEntries*16-searchRange; which is equivalent to (numberOfEntries-binaryTreeNodeCount)*16.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $rangeShift;
+    private int $rangeShift;
 
     public function getSearchRange(): int
     {
@@ -79,8 +73,6 @@ trait BinaryTreeSearchableTrait
 
     /**
      * of which size the binary tree is constructed.
-     *
-     * @return int
      */
-    abstract protected function getNumberOfEntries();
+    abstract protected function getNumberOfEntries(): int;
 }

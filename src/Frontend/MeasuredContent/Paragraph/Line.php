@@ -16,22 +16,16 @@ class Line
     /**
      * @var string[]
      */
-    private $words;
+    private array $words;
 
     /**
      * @var float[]
      */
-    private $wordWidths;
+    private array $wordWidths;
 
-    /**
-     * @var float
-     */
-    private $spaceWidth;
+    private float $spaceWidth;
 
-    /**
-     * @var float
-     */
-    private $width;
+    private float $width;
 
     /**
      * MeasuredPhrase constructor.

@@ -18,7 +18,7 @@ class DefaultFontType1Mapping
     /**
      * @var string[][]
      */
-    public static $mapping = [
+    public static array $mapping = [
         DefaultFont::FONT_HELVETICA => [
             DefaultFont::STYLE_DEFAULT => Type1::BASE_FONT_HELVETICA,
             DefaultFont::STYLE_OBLIQUE => Type1::BASE_FONT_HELVETICA__OBLIQUE,

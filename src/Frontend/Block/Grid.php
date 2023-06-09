@@ -17,15 +17,12 @@ use PdfGenerator\Frontend\Block\Style\GridStyle;
 
 class Grid extends Block
 {
-    /**
-     * @var GridStyle
-     */
-    private $style;
+    private GridStyle $style;
 
     /**
      * @var GridEntry[][]
      */
-    private $gridEntries = [];
+    private array $gridEntries = [];
 
     /**
      * @param float[]|null $dimensions

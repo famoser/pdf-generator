@@ -23,10 +23,8 @@ class Format25 extends Format
      * same number than the one in maxp profile.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $numGlyphs;
+    private int $numGlyphs;
 
     /**
      * the offset of the respective glyph to the standard ordering.
@@ -35,7 +33,7 @@ class Format25 extends Format
      *
      * @var int[]
      */
-    private $offsets;
+    private array $offsets;
 
     public function getNumGlyphs(): int
     {

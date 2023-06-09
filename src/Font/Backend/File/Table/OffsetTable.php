@@ -37,26 +37,20 @@ class OffsetTable extends BaseTable
      * 0x4F54544F for OpenType font with PostScript outlines (CFF instead of glyph table).
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $scalerType;
+    private int $scalerType;
 
     /**
      * number of tables contained.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $numTables;
+    private int $numTables;
 
     /**
      * of which size the binary tree is constructed.
-     *
-     * @return int
      */
-    protected function getNumberOfEntries()
+    protected function getNumberOfEntries(): int
     {
         return $this->numTables;
     }

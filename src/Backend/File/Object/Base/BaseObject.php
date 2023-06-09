@@ -15,10 +15,7 @@ use PdfGenerator\Backend\File\ObjectVisitor;
 
 abstract class BaseObject
 {
-    /**
-     * @var int
-     */
-    private $number;
+    private int $number;
 
     /**
      * BaseObject constructor.

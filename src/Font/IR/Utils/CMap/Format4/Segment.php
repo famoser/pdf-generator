@@ -13,25 +13,13 @@ namespace PdfGenerator\Font\IR\Utils\CMap\Format4;
 
 class Segment
 {
-    /**
-     * @var int
-     */
-    private $startCode;
+    private int $startCode;
 
-    /**
-     * @var int
-     */
-    private $endCode;
+    private int $endCode;
 
-    /**
-     * @var int
-     */
-    private $idDelta;
+    private int $idDelta;
 
-    /**
-     * @var int
-     */
-    private $idRangeOffset;
+    private int $idRangeOffset;
 
     public function getStartCode(): int
     {

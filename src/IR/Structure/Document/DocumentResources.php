@@ -21,17 +21,14 @@ class DocumentResources
     /**
      * @var BackendFont[]
      */
-    private $fontCache = [];
+    private array $fontCache = [];
 
     /**
      * @var BackendImage[]
      */
-    private $imageCache = [];
+    private array $imageCache = [];
 
-    /**
-     * @var DocumentVisitor
-     */
-    private $documentContentVisitor;
+    private DocumentVisitor $documentContentVisitor;
 
     /**
      * DocumentResources constructor.
@@ -41,29 +38,22 @@ class DocumentResources
         $this->documentContentVisitor = $documentContentVisitor;
     }
 
-    /**
-     * @return BackendFont
-     */
-    public function getFont(Font $structure)
+    public function getFont(Font $structure): BackendFont
     {
         return $this->getOrCreate($structure, $this->fontCache);
     }
 
-    /**
-     * @return BackendImage
-     */
-    public function getImage(Image $structure)
+    public function getImage(Image $structure): BackendImage
     {
         return $this->getOrCreate($structure, $this->imageCache);
     }
 
     /**
-     * @param BaseDocumentStructure        $structure
      * @param BackendFont[]|BackendImage[] $cache
      *
      * @return BackendFont|BackendImage
      */
-    private function getOrCreate($structure, array &$cache)
+    private function getOrCreate(BaseDocumentStructure $structure, array &$cache)
     {
         $identifier = $structure->getIdentifier();
 

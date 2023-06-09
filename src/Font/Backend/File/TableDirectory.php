@@ -25,60 +25,33 @@ use PdfGenerator\Font\Backend\File\Table\RawTable;
 
 class TableDirectory
 {
-    /**
-     * @var CMapTable
-     */
-    private $cMapTable;
+    private CMapTable $cMapTable;
 
     /**
      * @var GlyfTable[]
      */
-    private $glyphTables = [];
+    private array $glyphTables = [];
 
-    /**
-     * @var HeadTable
-     */
-    private $headTable;
+    private HeadTable $headTable;
 
-    /**
-     * @var HHeaTable
-     */
-    private $hHeaTable;
+    private HHeaTable $hHeaTable;
 
-    /**
-     * @var HMtxTable
-     */
-    private $hMtxTable;
+    private HMtxTable $hMtxTable;
 
-    /**
-     * @var LocaTable
-     */
-    private $locaTable;
+    private LocaTable $locaTable;
 
-    /**
-     * @var MaxPTable
-     */
-    private $maxPTable;
+    private MaxPTable $maxPTable;
 
-    /**
-     * @var NameTable
-     */
-    private $nameTable;
+    private NameTable $nameTable;
 
-    /**
-     * @var OS2Table
-     */
-    private $oS2Table;
+    private OS2Table $oS2Table;
 
-    /**
-     * @var PostTable
-     */
-    private $postTable;
+    private PostTable $postTable;
 
     /**
      * @var RawTable[]
      */
-    private $rawTables = [];
+    private array $rawTables = [];
 
     public function getCMapTable(): CMapTable
     {

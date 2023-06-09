@@ -25,7 +25,7 @@ class Format0 extends Format
      *
      * @var int[]
      */
-    private $glyphIndexArray;
+    private array $glyphIndexArray;
 
     /**
      * the format of the encoding.

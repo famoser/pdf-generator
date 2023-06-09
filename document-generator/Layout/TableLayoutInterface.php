@@ -15,8 +15,5 @@ use DocumentGenerator\Layout\Base\RootLayoutInterface;
 
 interface TableLayoutInterface extends RootLayoutInterface
 {
-    /**
-     * @return TableRowLayoutInterface
-     */
-    public function startNewRow();
+    public function startNewRow(): TableRowLayoutInterface;
 }

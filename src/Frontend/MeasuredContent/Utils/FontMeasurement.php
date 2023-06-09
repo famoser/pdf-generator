@@ -15,20 +15,11 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 class FontMeasurement
 {
-    /**
-     * @var Font
-     */
-    private $font;
+    private Font $font;
 
-    /**
-     * @var float
-     */
-    private $fontSize;
+    private float $fontSize;
 
-    /**
-     * @var float
-     */
-    private $lineHeight;
+    private float $lineHeight;
 
     /**
      * FontMeasurement constructor.

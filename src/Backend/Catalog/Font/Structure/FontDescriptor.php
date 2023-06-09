@@ -64,65 +64,48 @@ class FontDescriptor extends BaseIdentifiableStructure
 
     /**
      * same value than from the referencing entry.
-     *
-     * @var string
      */
-    private $fontName;
+    private string $fontName;
 
     /**
      * characteristics of the font.
-     *
-     * @var int
      */
-    private $flags;
+    private int $flags;
 
     /**
      * the max bounding box of all characters.
      *
      * @var int[]
      */
-    private $fontBBox = [];
+    private array $fontBBox = [];
 
     /**
      * angle of the font
      * negative for slope to the right.
-     *
-     * @var int
      */
-    private $italicAngle;
+    private int $italicAngle;
 
     /**
      * max height above baseline.
-     *
-     * @var int
      */
-    private $ascent;
+    private int $ascent;
 
     /**
      * max depth below baseline.
-     *
-     * @var int
      */
-    private $descent;
+    private int $descent;
 
     /**
      * height of cap characters.
-     *
-     * @var int
      */
-    private $capHeight;
+    private int $capHeight;
 
     /**
      * thickness of dominant stems (de: stängel) of characters.
-     *
-     * @var int
      */
-    private $stemV;
+    private int $stemV;
 
-    /**
-     * @var FontStream|null
-     */
-    private $fontFile3;
+    private ?FontStream $fontFile3;
 
     public function getFontName(): string
     {

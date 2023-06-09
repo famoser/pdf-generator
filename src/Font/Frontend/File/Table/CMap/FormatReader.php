@@ -23,11 +23,9 @@ use PdfGenerator\Font\Frontend\StreamReader;
 class FormatReader
 {
     /**
-     * @return Format|null
-     *
      *@throws \Exception
      */
-    public function readFormat(StreamReader $fileReader)
+    public function readFormat(StreamReader $fileReader): ?Format
     {
         $startOffset = $fileReader->getOffset();
         $format = $fileReader->readUInt16();
@@ -53,11 +51,9 @@ class FormatReader
     }
 
     /**
-     * @return Format0
-     *
      *@throws \Exception
      */
-    private function readFormat0(StreamReader $fileReader)
+    private function readFormat0(StreamReader $fileReader): Format0
     {
         $format = new Format0();
 
@@ -69,11 +65,9 @@ class FormatReader
     }
 
     /**
-     * @return Format4
-     *
      *@throws \Exception
      */
-    private function readFormat4(StreamReader $fileReader, int $startOffset)
+    private function readFormat4(StreamReader $fileReader, int $startOffset): Format4
     {
         $format = new Format4();
 
@@ -97,11 +91,9 @@ class FormatReader
     }
 
     /**
-     * @return Format6
-     *
      *@throws \Exception
      */
-    private function readFormat6(StreamReader $fileReader)
+    private function readFormat6(StreamReader $fileReader): Format6
     {
         $format = new Format6();
 
@@ -115,11 +107,9 @@ class FormatReader
     }
 
     /**
-     * @return Format12
-     *
      *@throws \Exception
      */
-    private function readFormat12(StreamReader $fileReader)
+    private function readFormat12(StreamReader $fileReader): Format12
     {
         $format = new Format12();
 

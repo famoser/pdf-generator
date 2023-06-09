@@ -16,20 +16,11 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 
 class ColorStateRepository
 {
-    /**
-     * @var Color|null
-     */
-    private $fillColor = null;
+    private ?Color $fillColor;
 
-    /**
-     * @var Color|null
-     */
-    private $borderColor = null;
+    private ?Color $borderColor;
 
-    /**
-     * @var ColorState
-     */
-    private $activeColorState;
+    private ColorState $activeColorState;
 
     public function setFillColor(?Color $fillColor)
     {
@@ -51,10 +42,7 @@ class ColorStateRepository
         $this->activeColorState = null;
     }
 
-    /**
-     * @return array
-     */
-    private function convertToPdfColourSpecification(Color $color)
+    private function convertToPdfColourSpecification(Color $color): array
     {
         return [
             $this->convertToPdfColourValue($color->getRed()),
@@ -63,18 +51,12 @@ class ColorStateRepository
         ];
     }
 
-    /**
-     * @return float
-     */
-    private function convertToPdfColourValue(int $number)
+    private function convertToPdfColourValue(int $number): float
     {
         return round($number / 255.0, 2);
     }
 
-    /**
-     * @return ColorState
-     */
-    public function getColorState()
+    public function getColorState(): ColorState
     {
         if (null !== $this->activeColorState) {
             return $this->activeColorState;

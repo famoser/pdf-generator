@@ -18,12 +18,9 @@ class MeasuredPhrase
     /**
      * @var MeasuredLine[]
      */
-    private $measuredLines;
+    private array $measuredLines;
 
-    /**
-     * @var TextStyle
-     */
-    private $textStyle;
+    private TextStyle $textStyle;
 
     /**
      * MeasuredPhrase constructor.

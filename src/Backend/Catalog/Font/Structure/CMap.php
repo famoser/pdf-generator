@@ -20,24 +20,18 @@ class CMap extends BaseStructure
     /**
      * the name of that CMap
      * must equal to the name specified in the stream from useCMan.
-     *
-     * @var string
      */
-    private $cMapName;
+    private string $cMapName;
 
     /**
      * the system info which must match with the one specified on the CIDFont.
-     *
-     * @var CIDSystemInfo
      */
-    private $cIDSystemInfo;
+    private CIDSystemInfo $cIDSystemInfo;
 
     /**
      * the actual encoding data.
-     *
-     * @var string
      */
-    private $cMapData;
+    private string $cMapData;
 
     public function getCMapName(): string
     {

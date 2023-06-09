@@ -25,116 +25,72 @@ use PdfGenerator\Font\Frontend\File\Table\RawTable;
 
 class FontFile
 {
-    /**
-     * @var bool
-     */
-    private $isTrueTypeFile;
+    private bool $isTrueTypeFile;
 
-    /**
-     * @var CMapTable|null
-     */
-    private $cMapTable;
+    private ?CMapTable $cMapTable;
 
     /**
      * lists values which can be referenced by instructions.
-     *
-     * @var RawTable|null
      */
-    private $cvtTable;
+    private ?RawTable $cvtTable;
 
     /**
      * lists instructions to be executed when first opening the font.
-     *
-     * @var RawTable|null
      */
-    private $fpgmTable;
+    private ?RawTable $fpgmTable;
 
     /**
      * defines rasterization techniques based on the ppem of the device.
-     *
-     * @var RawTable|null
      */
-    private $gaspTable;
+    private ?RawTable $gaspTable;
 
     /**
      * contains additional glyph properties such as ligatures.
-     *
-     * @var RawTable|null
      */
-    private $gDEFTable;
+    private ?RawTable $gDEFTable;
 
     /**
      * @var GlyfTable[]
      */
-    private $glyfTables = [];
+    private array $glyfTables = [];
 
     /**
      * defines the position of glyphs for complex usages.
-     *
-     * @var RawTable|null
      */
-    private $gPOSTable;
+    private ?RawTable $gPOSTable;
 
     /**
      * includes glyph substitutions.
-     *
-     * @var RawTable|null
      */
-    private $gSUBTable;
+    private ?RawTable $gSUBTable;
 
-    /**
-     * @var HeadTable|null
-     */
-    private $headTable;
+    private ?HeadTable $headTable;
 
-    /**
-     * @var HHeaTable|null
-     */
-    private $hHeaTable;
+    private ?HHeaTable $hHeaTable;
 
-    /**
-     * @var HMtxTable|null
-     */
-    private $hMtxTable;
+    private ?HMtxTable $hMtxTable;
 
-    /**
-     * @var LocaTable|null
-     */
-    private $locaTable;
+    private ?LocaTable $locaTable;
 
-    /**
-     * @var MaxPTable|null
-     */
-    private $maxPTable;
+    private ?MaxPTable $maxPTable;
 
-    /**
-     * @var NameTable
-     */
-    private $nameTable;
+    private NameTable $nameTable;
 
-    /**
-     * @var OS2Table
-     */
-    private $oS2Table;
+    private OS2Table $oS2Table;
 
     /**
      * lists instructions to be executed before each glyph is drawn.
-     *
-     * @var RawTable|null
      */
-    private $prepTable;
+    private ?RawTable $prepTable;
 
-    /**
-     * @var PostTable|null
-     */
-    private $postTable;
+    private ?PostTable $postTable;
 
     /**
      * any other table not recognised.
      *
      * @var RawTable[]
      */
-    private $rawTables = [];
+    private array $rawTables = [];
 
     public function getIsTrueTypeFile(): bool
     {

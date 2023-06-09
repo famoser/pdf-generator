@@ -20,12 +20,12 @@ class AnalysisResult
     /**
      * @var Size[]
      */
-    private $maxSizePerImage;
+    private array $maxSizePerImage;
 
     /**
      * @var string[]
      */
-    private $textPerFont;
+    private array $textPerFont;
 
     /**
      * AnalysisResult constructor.

@@ -18,7 +18,7 @@ class TableBuffer
     /**
      * @var MeasuredRow[]
      */
-    private $rows;
+    private array $rows;
 
     public function add(RowBuffer $buffer)
     {

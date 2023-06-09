@@ -27,19 +27,15 @@ class OS2Table extends BaseTable
      * version of table.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $version;
+    private int $version;
 
     /**
      * average char width.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $xAvgCharWidth;
+    private int $xAvgCharWidth;
 
     /**
      * weight classes.
@@ -49,10 +45,8 @@ class OS2Table extends BaseTable
      * weight class ("boldness" of the font).
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $usWeightClass;
+    private int $usWeightClass;
 
     /**
      * weight classes.
@@ -71,10 +65,8 @@ class OS2Table extends BaseTable
      * width class ("lengthness" of the font).
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $usWidthClass;
+    private int $usWidthClass;
 
     /**
      * width classes.
@@ -95,10 +87,8 @@ class OS2Table extends BaseTable
      * other restrictions may be combined freely.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $fsType;
+    private int $fsType;
 
     /**
      * embedding possible; enduser has to acquire license.
@@ -134,100 +124,78 @@ class OS2Table extends BaseTable
      * the recommended width of a subscript character.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $ySubscriptXSize;
+    private int $ySubscriptXSize;
 
     /**
      * the recommended height of a subscript character.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $ySubscriptYSize;
+    private int $ySubscriptYSize;
 
     /**
      * the recommended horizontal offset of a subscript character.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $ySubscriptXOffset;
+    private int $ySubscriptXOffset;
 
     /**
      * the recommended vertical offset from the baseline of a subscript character.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $ySubscriptYOffset;
+    private int $ySubscriptYOffset;
 
     /**
      * the recommended width of a superscript character.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $ySuperscriptXSize;
+    private int $ySuperscriptXSize;
 
     /**
      * the recommended height of a superscript character.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $ySuperscriptYSize;
+    private int $ySuperscriptYSize;
 
     /**
      * the recommended horizontal offset of a superscript character.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $ySuperscriptXOffset;
+    private int $ySuperscriptXOffset;
 
     /**
      * the recommended vertical offset from the baseline of a superscript character.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $ySuperscriptYOffset;
+    private int $ySuperscriptYOffset;
 
     /**
      * the strikeout line width.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $yStrikeoutSize;
+    private int $yStrikeoutSize;
 
     /**
      * the vertical offset from the baseline of the strikethrough line.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $yStrikeoutPosition;
+    private int $yStrikeoutPosition;
 
     /**
      * IBM classification of the font.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $sFamilyClass;
+    private int $sFamilyClass;
 
     /**
      * panose classification number of the font.
@@ -236,7 +204,7 @@ class OS2Table extends BaseTable
      *
      * @var int[]
      */
-    private $panose;
+    private array $panose;
 
     /**
      * contained unicode blocks with each bit representing one.
@@ -245,7 +213,7 @@ class OS2Table extends BaseTable
      *
      * @var int[]
      */
-    private $ulUnicodeRanges;
+    private array $ulUnicodeRanges;
 
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0000-007F contained.
@@ -271,19 +239,15 @@ class OS2Table extends BaseTable
      * panose classification number of the font.
      *
      * @ttf-type char[4]
-     *
-     * @var string
      */
-    private $achVendID;
+    private string $achVendID;
 
     /**
      * font patterns (italics and sorts).
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $fsSelection;
+    private int $fsSelection;
 
     public const FONT_SELECTION_ITALIC = 0;
     public const FONT_SELECTION_UNDERSCORE = 2;
@@ -300,64 +264,50 @@ class OS2Table extends BaseTable
      * min(minimum included unicode character, 0xFFFF).
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $usFirstCharIndex;
+    private int $usFirstCharIndex;
 
     /**
      * min(maximum included unicode character, 0xFFFF).
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $usLastCharIndex;
+    private int $usLastCharIndex;
 
     /**
      * max height of character from baseline.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $sTypoAscender;
+    private int $sTypoAscender;
 
     /**
      * max vertical extend of character below baseline.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $sTypoDecender;
+    private int $sTypoDecender;
 
     /**
      * the line gap (between max decender of line n down to max ascender of line n+1).
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $sTypoLineGap;
+    private int $sTypoLineGap;
 
     /**
      * height above baseline for clipping region.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $usWinAscent;
+    private int $usWinAscent;
 
     /**
      * vertical extend below baseline for clipping region.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $usWinDecent;
+    private int $usWinDecent;
 
     /**
      * contained code pages blocks with each bit representing one.
@@ -366,7 +316,7 @@ class OS2Table extends BaseTable
      *
      * @var int[]|null
      */
-    private $ulCodePageRanges;
+    private ?array $ulCodePageRanges;
 
     /**
      * code page 1252.
@@ -377,66 +327,52 @@ class OS2Table extends BaseTable
      * height of non-ascending lower-case letter; for example the character x.
      *
      * @ttf-type int16
-     *
-     * @var int|null
      */
-    private $sxHeight;
+    private ?int $sxHeight;
 
     /**
      * height of upper-case letter; for example the character X.
      *
      * @ttf-type int16
-     *
-     * @var int|null
      */
-    private $sCapHeight;
+    private ?int $sCapHeight;
 
     /**
      * unicode code point used as a placeholder for not available character
      * set to 0 to use glyph 0.
      *
      * @ttf-type uint16
-     *
-     * @var int|null
      */
-    private $usDefaultChar;
+    private ?int $usDefaultChar;
 
     /**
      * default break character; usually space (0x0020).
      *
      * @ttf-type uint16
-     *
-     * @var int|null
      */
-    private $usBreakChar;
+    private ?int $usBreakChar;
 
     /**
      * max count of characters needed to calculate their widths
      * if ligatures contained which use 3 characters, this number should be 3.
      *
      * @ttf-type uint16
-     *
-     * @var int|null
      */
-    private $usMaxContext;
+    private ?int $usMaxContext;
 
     /**
      * point size lower bound the font is expected to be used with.
      *
      * @ttf-type uint16
-     *
-     * @var int|null
      */
-    private $usLowerOptimalPointSize;
+    private ?int $usLowerOptimalPointSize;
 
     /**
      * point size upper bound the font is expected to be used with.
      *
      * @ttf-type uint16
-     *
-     * @var int|null
      */
-    private $usUpperOptimalPointSize;
+    private ?int $usUpperOptimalPointSize;
 
     public function getVersion(): int
     {

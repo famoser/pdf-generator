@@ -35,16 +35,14 @@ class GeneralGraphicState extends BaseState
      *
      * @var float[]
      */
-    private $currentTransformationMatrix = [1, 0, 0, 1, 0, 0];
+    private array $currentTransformationMatrix = [1, 0, 0, 1, 0, 0];
 
     /**
      * line width
      * if the value is 0, the thinnest line possible on the device will be rendered
      * pdf-operator: w.
-     *
-     * @var float
      */
-    private $lineWidth = 0;
+    private float $lineWidth = 0;
 
     /**
      * how the end of a line looks like
@@ -52,10 +50,8 @@ class GeneralGraphicState extends BaseState
      * round cap produces a semicircular arch with the diameter = @see lineWidth
      * projecting square cap stops squared at the end of the path + @see lineWidth/2
      * pdf-operator: J.
-     *
-     * @var int
      */
-    private $lineCap = self::LINE_CAP_BUTT;
+    private int $lineCap = self::LINE_CAP_BUTT;
 
     /**
      * how two meeting lines are brought together
@@ -63,19 +59,15 @@ class GeneralGraphicState extends BaseState
      * round join creates an arch around the edge with diameter = @see lineWidth
      * bevel join produces a flat edge, by adding a triangle into the free space produced by the two lines with butt caps meeting
      * pdf-operator: j.
-     *
-     * @var int
      */
-    private $lineJoin = self::LINE_JOIN_MITER;
+    private int $lineJoin = self::LINE_JOIN_MITER;
 
     /**
      * impose maximum height of the sharp edge produced by a miter join
      * when the threshold is reached, a bevel join is used
      * pdf-operator: M.
-     *
-     * @var float
      */
-    private $miterLimit = 2.0;
+    private float $miterLimit = 2.0;
 
     /**
      * the pattern of on / off parts, repeated indefinitely
@@ -84,15 +76,13 @@ class GeneralGraphicState extends BaseState
      *
      * @var float[]
      */
-    private $dashArray = [];
+    private array $dashArray = [];
 
     /**
      * the pattern shift at start
      * pdf-operator: d together with @see $dashArray.
-     *
-     * @var float
      */
-    private $dashPhase = 0;
+    private float $dashPhase = 0;
 
     public function setMinimalAngleOfMiterJoin(float $angle)
     {

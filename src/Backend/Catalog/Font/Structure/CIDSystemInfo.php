@@ -25,25 +25,19 @@ class CIDSystemInfo
     /**
      * the font vendor
      * can use "famoser" here.
-     *
-     * @var string
      */
-    private $registry;
+    private string $registry;
 
     /**
      * the specific character set (defined by cmap)
      * use unique ordering for each character subset.
-     *
-     * @var string
      */
-    private $ordering;
+    private string $ordering;
 
     /**
      * a version number which can be used when adding a new character to an existing set.
-     *
-     * @var int
      */
-    private $supplement = 0;
+    private int $supplement = 0;
 
     public function getRegistry(): string
     {
@@ -75,10 +69,7 @@ class CIDSystemInfo
         $this->supplement = $supplement;
     }
 
-    /**
-     * @return DictionaryToken
-     */
-    public function accept(CatalogVisitor $param)
+    public function accept(CatalogVisitor $param): DictionaryToken
     {
         return $param->visitCIDSystemInfo($this);
     }

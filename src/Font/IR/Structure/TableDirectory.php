@@ -21,75 +21,36 @@ use PdfGenerator\Font\Frontend\File\Table\RawTable;
 
 class TableDirectory
 {
-    /**
-     * @var RawTable|null
-     */
-    private $cvtTable;
+    private ?RawTable $cvtTable;
 
-    /**
-     * @var RawTable|null
-     */
-    private $fpgmTable;
+    private ?RawTable $fpgmTable;
 
-    /**
-     * @var RawTable|null
-     */
-    private $gaspTable;
+    private ?RawTable $gaspTable;
 
-    /**
-     * @var RawTable|null
-     */
-    private $gDEFTable;
+    private ?RawTable $gDEFTable;
 
-    /**
-     * @var RawTable|null
-     */
-    private $gPOSTable;
+    private ?RawTable $gPOSTable;
 
-    /**
-     * @var RawTable|null
-     */
-    private $gSUBTable;
+    private ?RawTable $gSUBTable;
 
-    /**
-     * @var HeadTable
-     */
-    private $headTable;
+    private HeadTable $headTable;
 
-    /**
-     * @var HHeaTable
-     */
-    private $hHeaTable;
+    private HHeaTable $hHeaTable;
 
-    /**
-     * @var MaxPTable
-     */
-    private $maxPTable;
+    private MaxPTable $maxPTable;
 
-    /**
-     * @var NameTable
-     */
-    private $nameTable;
+    private NameTable $nameTable;
 
-    /**
-     * @var OS2Table
-     */
-    private $oS2Table;
+    private OS2Table $oS2Table;
 
-    /**
-     * @var PostTable
-     */
-    private $postTable;
+    private PostTable $postTable;
 
-    /**
-     * @var RawTable|null
-     */
-    private $prepTable;
+    private ?RawTable $prepTable;
 
     /**
      * @var RawTable[]
      */
-    private $rawTables = [];
+    private array $rawTables = [];
 
     public function getCvtTable(): ?RawTable
     {

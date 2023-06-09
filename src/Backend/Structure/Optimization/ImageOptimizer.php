@@ -13,10 +13,7 @@ namespace PdfGenerator\Backend\Structure\Optimization;
 
 class ImageOptimizer
 {
-    /**
-     * @return string
-     */
-    public function transformToJpgAndResize(string $imageContent, int $targetWidth, int $targetHeight)
+    public function transformToJpgAndResize(string $imageContent, int $targetWidth, int $targetHeight): string
     {
         $originalImage = imagecreatefromstring($imageContent);
         $newImage = imagecreatetruecolor($targetWidth, $targetHeight);
@@ -58,10 +55,7 @@ class ImageOptimizer
         return [$width, $height];
     }
 
-    /**
-     * @return string
-     */
-    private function catchOutput(callable $func)
+    private function catchOutput(callable $func): string
     {
         ob_start();
         $func();

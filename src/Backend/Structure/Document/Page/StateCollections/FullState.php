@@ -17,20 +17,11 @@ use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 
 class FullState
 {
-    /**
-     * @var GeneralGraphicState
-     */
-    private $generalGraphicsState;
+    private GeneralGraphicState $generalGraphicsState;
 
-    /**
-     * @var ColorState
-     */
-    private $colorState;
+    private ColorState $colorState;
 
-    /**
-     * @var TextState
-     */
-    private $textState;
+    private TextState $textState;
 
     /**
      * TextLevel constructor.
@@ -42,10 +33,7 @@ class FullState
         $this->textState = $textState;
     }
 
-    /**
-     * @return FullState
-     */
-    public static function createInitial()
+    public static function createInitial(): FullState
     {
         return new self(new GeneralGraphicState(), new ColorState(), new TextState());
     }

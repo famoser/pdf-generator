@@ -22,19 +22,15 @@ abstract class Format
      * length of subtable in bytes.
      *
      * @ttf-type uint16|uint32
-     *
-     * @var int
      */
-    private $length;
+    private int $length;
 
     /**
      * language (only relevant if used macintosh encoding).
      *
      * @ttf-type uint16|uint32
-     *
-     * @var int
      */
-    private $language;
+    private int $language;
 
     /**
      * the format of the encoding.

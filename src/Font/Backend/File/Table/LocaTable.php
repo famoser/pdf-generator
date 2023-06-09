@@ -34,7 +34,7 @@ class LocaTable extends BaseTable
      *
      * @var int[]
      */
-    private $offsets = [];
+    private array $offsets = [];
 
     /**
      * @return int[]

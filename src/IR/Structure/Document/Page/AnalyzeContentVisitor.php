@@ -22,12 +22,12 @@ class AnalyzeContentVisitor extends ContentVisitor
     /**
      * @var Size[]
      */
-    private $maxSizePerImage = [];
+    private array $maxSizePerImage = [];
 
     /**
      * @var string[]
      */
-    private $textPerFont = [];
+    private array $textPerFont = [];
 
     public function visitImagePlacement(ImagePlacement $placement)
     {
@@ -63,10 +63,7 @@ class AnalyzeContentVisitor extends ContentVisitor
         $this->textPerFont[$identifier] .= $param->getText();
     }
 
-    /**
-     * @return AnalysisResult
-     */
-    public function getAnalysisResult()
+    public function getAnalysisResult(): AnalysisResult
     {
         return new AnalysisResult($this->maxSizePerImage, $this->textPerFont);
     }

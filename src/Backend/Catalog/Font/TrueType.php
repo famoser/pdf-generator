@@ -20,12 +20,9 @@ class TrueType extends Type1
     /**
      * @var int[]
      */
-    private $widths;
+    private array $widths;
 
-    /**
-     * @var Font\Structure\FontDescriptor
-     */
-    private $fontDescriptor;
+    private Font\Structure\FontDescriptor $fontDescriptor;
 
     public function __construct(string $identifier, Font\Structure\FontDescriptor $fontDescriptor, array $widths)
     {

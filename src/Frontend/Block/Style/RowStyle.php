@@ -15,15 +15,12 @@ use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 
 class RowStyle extends BlockStyle
 {
-    /**
-     * @var float
-     */
-    private $gutter;
+    private float $gutter;
 
     /**
      * @var float[]
      */
-    private $columnWidths;
+    private array $columnWidths;
 
     /**
      * RowStyle constructor.

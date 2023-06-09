@@ -20,17 +20,17 @@ class FontRepository
     /**
      * @var EmbeddedFont[]
      */
-    private $embeddedFonts;
+    private array $embeddedFonts;
 
     /**
      * @var DefaultFont[]
      */
-    private $defaultFonts;
+    private array $defaultFonts;
 
     /**
      * @var string[][]
      */
-    private static $weightStyleConverter = [
+    private static array $weightStyleConverter = [
         Font::WEIGHT_NORMAL => [
             Font::STYLE_ROMAN => DefaultFont::STYLE_ROMAN,
             Font::STYLE_OBLIQUE => DefaultFont::STYLE_OBLIQUE,

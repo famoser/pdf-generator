@@ -16,20 +16,17 @@ use PdfGenerator\Frontend\Block\Style\TableStyle;
 
 class Table extends Block
 {
-    /**
-     * @var TableStyle
-     */
-    private $style;
+    private TableStyle $style;
 
     /**
      * @var Row[]
      */
-    private $headerRows = [];
+    private array $headerRows = [];
 
     /**
      * @var Row[]
      */
-    private $rows = [];
+    private array $rows = [];
 
     /**
      * @param float[]|null $dimensions

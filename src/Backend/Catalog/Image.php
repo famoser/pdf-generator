@@ -19,20 +19,11 @@ class Image extends BaseIdentifiableStructure
 {
     public const IMAGE_TYPE_JPEG = 0;
 
-    /**
-     * @var float
-     */
-    private $width;
+    private float $width;
 
-    /**
-     * @var float
-     */
-    private $height;
+    private float $height;
 
-    /**
-     * @var string
-     */
-    private $content;
+    private string $content;
 
     /**
      * Image constructor.
@@ -48,10 +39,7 @@ class Image extends BaseIdentifiableStructure
         $this->height = $height;
     }
 
-    /**
-     * @return BaseObject
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): BaseObject
     {
         return $visitor->visitImage($this);
     }

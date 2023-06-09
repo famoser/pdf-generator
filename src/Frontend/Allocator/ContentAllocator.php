@@ -17,20 +17,11 @@ use PdfGenerator\Frontend\Block\Style\ContentStyle;
 
 class ContentAllocator implements AllocatorInterface
 {
-    /**
-     * @var Content
-     */
-    private $content;
+    private Content $content;
 
-    /**
-     * @var ContentStyle
-     */
-    private $style;
+    private ContentStyle $style;
 
-    /**
-     * @var ContentAllocatorInterface
-     */
-    private $contentAllocator;
+    private ContentAllocatorInterface $contentAllocator;
 
     /**
      * ContentAllocator constructor.

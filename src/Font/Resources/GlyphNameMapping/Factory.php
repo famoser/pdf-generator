@@ -16,12 +16,12 @@ class Factory
     /**
      * @var string[]
      */
-    private $aGLFMappingCache;
+    private array $aGLFMappingCache;
 
     /**
      * @return string[]
      */
-    public function getAGLFMapping()
+    public function getAGLFMapping(): array
     {
         if (null === $this->aGLFMappingCache) {
             $this->aGLFMappingCache = $this->generateAGLFMapping();
@@ -33,12 +33,12 @@ class Factory
     /**
      * @var string[]
      */
-    private $macintoshMappingCache;
+    private array $macintoshMappingCache;
 
     /**
      * @return string[]
      */
-    public function getMacintoshMapping()
+    public function getMacintoshMapping(): array
     {
         if (null === $this->macintoshMappingCache) {
             $this->macintoshMappingCache = $this->generateMacintoshMapping();

@@ -15,20 +15,11 @@ use PdfGenerator\IR\Structure\Document;
 
 class InvoiceLayout
 {
-    /**
-     * @var Document
-     */
-    private $document;
+    private Document $document;
 
-    /**
-     * @var Document\Page\Content\Text\TextStyle
-     */
-    private $headerStyle;
+    private Document\Page\Content\Text\TextStyle $headerStyle;
 
-    /**
-     * @var Document\Page\Content\Text\TextStyle
-     */
-    private $bodyStyle;
+    private Document\Page\Content\Text\TextStyle $bodyStyle;
 
     /**
      * InvoiceLayout constructor.

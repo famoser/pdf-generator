@@ -17,15 +17,9 @@ class ParagraphStyle extends Style
 {
     public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
 
-    /**
-     * @var string
-     */
-    private $alignment;
+    private string $alignment;
 
-    /**
-     * @var float
-     */
-    private $indent;
+    private float $indent;
 
     /**
      * ParagraphStyle constructor.

@@ -13,15 +13,9 @@ namespace PdfGenerator\Font\IR\Structure;
 
 class BoundingBox
 {
-    /**
-     * @var float
-     */
-    private $width;
+    private float $width;
 
-    /**
-     * @var float
-     */
-    private $height;
+    private float $height;
 
     public function getWidth(): float
     {

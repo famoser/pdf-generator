@@ -28,10 +28,8 @@ class PostTable extends BaseTable
      * the version of the PostScript information.
      *
      * @ttf-type fixed
-     *
-     * @var float
      */
-    private $version;
+    private float $version;
 
     /**
      * the italic angle of the characters in degrees.
@@ -39,28 +37,22 @@ class PostTable extends BaseTable
      * negative if leans to the right.
      *
      * @ttf-type fixed
-     *
-     * @var float
      */
-    private $italicAngle;
+    private float $italicAngle;
 
     /**
      * distance between top of underline until baseline.
      *
      * @ttf-type FWORD
-     *
-     * @var int
      */
-    private $underlinePosition;
+    private int $underlinePosition;
 
     /**
      * thickness of underline character.
      *
      * @ttf-type FWORD
-     *
-     * @var int
      */
-    private $underlineThickness;
+    private int $underlineThickness;
 
     /**
      * spacing information
@@ -68,51 +60,38 @@ class PostTable extends BaseTable
      * other value for monospaced.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $isFixedPitch;
+    private int $isFixedPitch;
 
     /**
      * minimum memory usage for download.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $minMemType42;
+    private int $minMemType42;
 
     /**
      * maximum memory usage for download.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $maxMemType42;
+    private int $maxMemType42;
 
     /**
      * minimum memory usage for download as type 1.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $minMemType1;
+    private int $minMemType1;
 
     /**
      * maximum memory usage for download as type 1.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $maxMemType1;
+    private int $maxMemType1;
 
-    /**
-     * @var Format
-     */
-    private $format;
+    private Format $format;
 
     public function getVersion(): float
     {

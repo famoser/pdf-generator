@@ -15,32 +15,20 @@ class Font
 {
     public const NAME_HELVETICA = 'NAME_HELVETICA';
 
-    /**
-     * @var string|null
-     */
-    private $name;
+    private ?string $name;
 
     public const WEIGHT_NORMAL = 'WEIGHT_NORMAL';
     public const WEIGHT_BOLD = 'WEIGHT_BOLD';
 
-    /**
-     * @var string|null
-     */
-    private $weight;
+    private ?string $weight;
 
     public const STYLE_ROMAN = 'STYLE_ROMAN';
     public const STYLE_ITALIC = 'STYLE_ITALIC';
     public const STYLE_OBLIQUE = 'STYLE_OBLIQUE'; // like auto-generated italic
 
-    /**
-     * @var string|null
-     */
-    private $style;
+    private ?string $style;
 
-    /**
-     * @var string|null
-     */
-    private $src;
+    private ?string $src;
 
     private function __construct()
     {

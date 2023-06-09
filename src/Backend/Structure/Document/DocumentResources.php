@@ -21,17 +21,14 @@ class DocumentResources
     /**
      * @var CatalogFont[]
      */
-    private $fontCache = [];
+    private array $fontCache = [];
 
     /**
      * @var CatalogImage[]
      */
-    private $imageCache = [];
+    private array $imageCache = [];
 
-    /**
-     * @var DocumentVisitor
-     */
-    private $documentContentVisitor;
+    private DocumentVisitor $documentContentVisitor;
 
     /**
      * DocumentResources constructor.
@@ -41,29 +38,22 @@ class DocumentResources
         $this->documentContentVisitor = $documentContentVisitor;
     }
 
-    /**
-     * @return CatalogFont
-     */
-    public function getFont(Font $structure)
+    public function getFont(Font $structure): CatalogFont
     {
         return $this->getOrCreate($structure, $this->fontCache);
     }
 
-    /**
-     * @return CatalogImage
-     */
-    public function getImage(Image $structure)
+    public function getImage(Image $structure): CatalogImage
     {
         return $this->getOrCreate($structure, $this->imageCache);
     }
 
     /**
-     * @param BaseDocumentStructure   $structure
      * @param BaseDocumentStructure[] $cache
      *
      * @return BaseDocumentStructure|CatalogFont|CatalogImage
      */
-    private function getOrCreate($structure, array &$cache)
+    private function getOrCreate(BaseDocumentStructure $structure, array &$cache)
     {
         $identifier = spl_object_id($structure);
 

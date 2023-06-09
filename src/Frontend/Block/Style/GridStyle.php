@@ -15,15 +15,9 @@ use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 
 class GridStyle extends BlockStyle
 {
-    /**
-     * @var float
-     */
-    private $gutterColumn;
+    private float $gutterColumn;
 
-    /**
-     * @var float
-     */
-    private $gutterRow;
+    private float $gutterRow;
 
     public function __construct(float $gutterColumn = 0, float $gutterRow = 0)
     {

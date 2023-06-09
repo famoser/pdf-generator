@@ -101,111 +101,87 @@ class HeadTable
      * major version of this font.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $majorVersion;
+    private int $majorVersion;
 
     /**
      * minor version of this font.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $minorVersion;
+    private int $minorVersion;
 
     /**
      * font revision set by producer
      * ignored by microsoft, instead uses the version from the name table.
      *
      * @ttf-type fixed
-     *
-     * @var float
      */
-    private $fontRevision;
+    private float $fontRevision;
 
     /**
      * check sum adjusted.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $checkSumAdjustment;
+    private int $checkSumAdjustment;
 
     /**
      * magic number set to 0x5F0F3CF5.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $magicNumber;
+    private int $magicNumber;
 
     /**
      * flags of this font.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $flags;
+    private int $flags;
 
     /**
      * how many units used per em
      * 16-16384 is allowed; recommended are powers of 2.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $unitsPerEm;
+    private int $unitsPerEm;
 
     /**
      * when the font was created.
      *
      * @ttf-type int
-     *
-     * @var int
      */
-    private $created;
+    private int $created;
 
     /**
      * when the font was last modified.
      *
      * @ttf-type int
-     *
-     * @var int
      */
-    private $modified;
+    private int $modified;
 
     /**
      * the style of the font.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $macStyle;
+    private int $macStyle;
 
     /**
      * smallest readable size in pixels.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $lowestRecPPEM;
+    private int $lowestRecPPEM;
 
     /**
      * in which way the characters should be read.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $fontDirectionHints;
+    private int $fontDirectionHints;
 
     /**
      * which format the Loca table is in
@@ -213,20 +189,16 @@ class HeadTable
      * 1 for long offset32[].
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $indexToLocFormat;
+    private int $indexToLocFormat;
 
     /**
      * which format the glyf table is in
      * 0 for current format.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $glyphDataFormat;
+    private int $glyphDataFormat;
 
     public function getMajorVersion(): int
     {
