@@ -31,7 +31,7 @@ class ArrayToken extends BaseToken
      *
      * @param BaseToken[] $values
      */
-    public function __construct(array $values, ?BaseToken $key = null)
+    public function __construct(array $values, BaseToken $key = null)
     {
         $this->key = $key;
         $this->values = $values;

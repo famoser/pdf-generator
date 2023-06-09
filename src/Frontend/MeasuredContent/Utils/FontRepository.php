@@ -55,7 +55,7 @@ class FontRepository
     private function getOrCreateDefaultFont(string $font, string $weight, string $style): DefaultFont
     {
         $weightStyle = self::$weightStyleConverter[$weight][$style];
-        $key = $font . '_' . $weightStyle;
+        $key = $font.'_'.$weightStyle;
         if (!\array_key_exists($key, $this->defaultFonts)) {
             $this->defaultFonts[$key] = new DefaultFont($font, $weightStyle);
         }

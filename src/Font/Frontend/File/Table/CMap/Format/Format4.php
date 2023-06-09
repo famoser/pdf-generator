@@ -207,9 +207,6 @@ class Format4 extends Format
         $this->glyphIndexArray = $glyphIndexArray;
     }
 
-    /**
-     * @return mixed
-     */
     public function accept(VisitorInterface $formatVisitor)
     {
         return $formatVisitor->visitFormat4($this);

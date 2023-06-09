@@ -47,7 +47,7 @@ class RowAllocator extends BaseAllocator
      */
     private function getAllocators(): array
     {
-        if ($this->columnAllocators === null) {
+        if (null === $this->columnAllocators) {
             $this->columnAllocators = [];
             foreach ($this->row->getColumns() as $item) {
                 $this->columnAllocators[] = $item->createAllocator();
@@ -65,7 +65,7 @@ class RowAllocator extends BaseAllocator
         foreach ($this->getAllocators() as $columnAllocator) {
             // preset wins if exists
             $presetColumnWidth = $activeColumnWidth < $presetColumnWidthCount ? $this->rowStyle->getColumnWidths()[$activeColumnWidth++] : null;
-            if ($presetColumnWidth !== null) {
+            if (null !== $presetColumnWidth) {
                 $widths[] = $presetColumnWidth;
             } else {
                 $widths[] = $columnAllocator->minimalWidth();

@@ -90,9 +90,6 @@ class Format2 extends Format
         $this->names = $names;
     }
 
-    /**
-     * @return mixed
-     */
     public function accept(VisitorInterface $visitor)
     {
         return $visitor->visitFormat2($this);

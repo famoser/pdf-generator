@@ -41,13 +41,13 @@ class ParagraphBreaker
 
     public function isEmpty(): bool
     {
-        return ($this->phraseBreaker === null || $this->phraseBreaker->isEmpty()) &&
-            $this->nextPhraseIndex >= \count($this->paragraph->getPhrases());
+        return (null === $this->phraseBreaker || $this->phraseBreaker->isEmpty())
+            && $this->nextPhraseIndex >= \count($this->paragraph->getPhrases());
     }
 
     private function advancePhraseBreakerIfRequired()
     {
-        if ($this->phraseBreaker === null || $this->phraseBreaker->isEmpty()) {
+        if (null === $this->phraseBreaker || $this->phraseBreaker->isEmpty()) {
             $nextPhrase = $this->paragraph->getPhrases()[$this->nextPhraseIndex++];
             $nextTextStyle = $nextPhrase->getTextStyle();
             $fontMeasurement = new FontMeasurement($nextPhrase->getFont(), $nextTextStyle->getFontSize(), $nextTextStyle->getLineHeight());

@@ -37,7 +37,7 @@ class Line
      * MeasuredPhrase constructor.
      *
      * @param string[] $words
-     * @param float[] $wordWidths
+     * @param float[]  $wordWidths
      */
     public function __construct(array $words, array $wordWidths, float $spaceWidth)
     {

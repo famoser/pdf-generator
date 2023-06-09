@@ -41,49 +41,31 @@ class Format12Group
      */
     private $startGlyphCode;
 
-    /**
-     * @return mixed
-     */
     public function getStartCharCode()
     {
         return $this->startCharCode;
     }
 
-    /**
-     * @param mixed $startCharCode
-     */
     public function setStartCharCode($startCharCode): void
     {
         $this->startCharCode = $startCharCode;
     }
 
-    /**
-     * @return mixed
-     */
     public function getEndCharCode()
     {
         return $this->endCharCode;
     }
 
-    /**
-     * @param mixed $endCharCode
-     */
     public function setEndCharCode($endCharCode): void
     {
         $this->endCharCode = $endCharCode;
     }
 
-    /**
-     * @return mixed
-     */
     public function getStartGlyphCode()
     {
         return $this->startGlyphCode;
     }
 
-    /**
-     * @param mixed $startGlyphCode
-     */
     public function setStartGlyphCode($startGlyphCode): void
     {
         $this->startGlyphCode = $startGlyphCode;

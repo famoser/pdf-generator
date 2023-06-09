@@ -35,7 +35,7 @@ class TableStyle extends RowStyle
      */
     private $repeatHeader;
 
-    public function __construct(array $columnWidths = null, float $rowDividerWidth = 0, ?Color $rowDividerColor = null, ?Color $alternatingBackgroundColor = null, bool $repeatHeader = false)
+    public function __construct(array $columnWidths = null, float $rowDividerWidth = 0, Color $rowDividerColor = null, Color $alternatingBackgroundColor = null, bool $repeatHeader = false)
     {
         parent::__construct($columnWidths);
 

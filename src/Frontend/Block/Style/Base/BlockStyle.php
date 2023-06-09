@@ -38,7 +38,7 @@ class BlockStyle
     /**
      * @var Color|null
      */
-    private $backgroundColor = null;
+    private $backgroundColor;
 
     public function __construct()
     {

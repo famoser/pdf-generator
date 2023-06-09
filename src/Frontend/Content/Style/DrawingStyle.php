@@ -34,7 +34,7 @@ class DrawingStyle extends Style
     /**
      * Style constructor.
      */
-    public function __construct(float $lineWidth, ?Color $borderColor = null, ?Color $fillColor = null)
+    public function __construct(float $lineWidth, Color $borderColor = null, Color $fillColor = null)
     {
         $this->borderColor = $borderColor ?? Color::black();
         $this->fillColor = $fillColor;

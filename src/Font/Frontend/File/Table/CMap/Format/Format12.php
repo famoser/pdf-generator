@@ -51,9 +51,6 @@ class Format12 extends Format
         return self::FORMAT_12;
     }
 
-    /**
-     * @return mixed
-     */
     public function accept(VisitorInterface $formatVisitor)
     {
         return $formatVisitor->visitFormat12($this);

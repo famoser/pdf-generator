@@ -71,7 +71,7 @@ class Document
 
     public function getOrCreateDefaultFont(string $font, string $style): DefaultFont
     {
-        $key = $font . '_' . $style;
+        $key = $font.'_'.$style;
         if (!\array_key_exists($key, $this->defaultFonts)) {
             $this->defaultFonts[$key] = new DefaultFont($font, $style);
         }
