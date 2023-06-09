@@ -13,7 +13,7 @@ namespace PdfGenerator\IR\Structure\Document;
 
 use PdfGenerator\Backend\Structure\Document\Font as BackendFont;
 use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
-use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
+use PdfGenerator\IR\Structure\Document\Base\BaseDocumentResource;
 use PdfGenerator\IR\Structure\DocumentVisitor;
 
 class DocumentResources
@@ -48,7 +48,7 @@ class DocumentResources
     /**
      * @param BackendFont[]|BackendImage[] $cache
      */
-    private function getOrCreate(BaseDocumentStructure $structure, array &$cache): BackendImage|BackendFont
+    private function getOrCreate(BaseDocumentResource $structure, array &$cache): BackendImage|BackendFont
     {
         $identifier = $structure->getIdentifier();
 

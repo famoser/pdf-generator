@@ -11,11 +11,12 @@
 
 namespace PdfGenerator\IR\Structure\Document;
 
-use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
+use PdfGenerator\Backend\Structure\Document\Page as BackendPage;
 use PdfGenerator\IR\Structure\Document\Page\Content\Base\BaseContent;
-use PdfGenerator\IR\Structure\DocumentVisitor;
+use PdfGenerator\IR\Structure\Document\Page\PageResources;
+use PdfGenerator\IR\Structure\Document\Page\ToBackendContentVisitor;
 
-class Page extends BaseDocumentStructure
+class Page
 {
     /**
      * @var BaseContent[]
@@ -48,13 +49,27 @@ class Page extends BaseDocumentStructure
         return $this->content;
     }
 
-    public function accept(DocumentVisitor $visitor): \PdfGenerator\Backend\Structure\Document\Page
-    {
-        return $visitor->visitPage($this);
-    }
-
     public function getSize(): array
     {
         return $this->size;
+    }
+
+    public function render(DocumentResources $documentResources): BackendPage
+    {
+        $mediaBox = array_merge([0, 0], $this->getSize());
+
+        $page = new BackendPage($mediaBox);
+
+        $pageResources = new PageResources($documentResources);
+        $contentVisitor = new ToBackendContentVisitor($pageResources);
+        foreach ($this->getContent() as $item) {
+            $content = $item->accept($contentVisitor);
+            $page->addContent($content);
+        }
+
+        $page->setFonts($pageResources->getFonts());
+        $page->setImages($pageResources->getImages());
+
+        return $page;
     }
 }

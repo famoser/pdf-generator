@@ -12,6 +12,7 @@
 namespace PdfGenerator\IR\Structure;
 
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
+use PdfGenerator\IR\Structure\Document\DocumentResources;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
 use PdfGenerator\IR\Structure\Document\Image;
@@ -96,8 +97,9 @@ class Document
 
         $document = new \PdfGenerator\Backend\Structure\Document();
         $documentVisitor = new DocumentVisitor($analysisResult);
+        $documentResources = new DocumentResources($documentVisitor);
         foreach ($this->pages as $page) {
-            $page = $page->accept($documentVisitor);
+            $page = $page->render($documentResources);
             $document->addPage($page);
         }
 
