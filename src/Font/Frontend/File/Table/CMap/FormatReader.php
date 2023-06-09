@@ -42,12 +42,10 @@ class FormatReader
         $fileReader->setOffset($startOffset);
         $formatFixed = $fileReader->readFixed();
 
-        switch ($formatFixed) {
-            case 12.0:
-                return $this->readFormat12($fileReader);
-        }
-
-        return null;
+        return match ($formatFixed) {
+            12.0 => $this->readFormat12($fileReader),
+            default => null,
+        };
     }
 
     /**
@@ -133,7 +131,7 @@ class FormatReader
     /**
      * @throws \Exception
      */
-    private function readUInt16SharedFormat(StreamReader $fileReader, Format $format)
+    private function readUInt16SharedFormat(StreamReader $fileReader, Format $format): void
     {
         $format->setLength($fileReader->readUInt16());
         $format->setLanguage($fileReader->readUInt16());

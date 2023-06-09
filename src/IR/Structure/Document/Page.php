@@ -38,12 +38,12 @@ class Page extends BaseDocumentStructure
         $this->size = $size;
     }
 
-    public function addContent(BaseContent $baseContent)
+    public function addContent(BaseContent $baseContent): void
     {
         $this->content[] = $baseContent;
     }
 
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->pageNumber;
     }
@@ -56,7 +56,7 @@ class Page extends BaseDocumentStructure
         return $this->content;
     }
 
-    public function accept(DocumentVisitor $visitor)
+    public function accept(DocumentVisitor $visitor): \PdfGenerator\Backend\Structure\Document\Page
     {
         return $visitor->visitPage($this);
     }

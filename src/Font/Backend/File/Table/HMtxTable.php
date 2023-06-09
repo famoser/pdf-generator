@@ -54,7 +54,7 @@ class HMtxTable extends BaseTable
         return $this->longHorMetrics;
     }
 
-    public function addLongHorMetric(LongHorMetric $longHorMetric)
+    public function addLongHorMetric(LongHorMetric $longHorMetric): void
     {
         $this->longHorMetrics[] = $longHorMetric;
     }

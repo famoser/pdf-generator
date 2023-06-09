@@ -34,7 +34,7 @@ class Format12 extends Format
      *
      * @return int
      */
-    private $nGroups;
+    private int $nGroups;
 
     /**
      * @var Format12Group[]

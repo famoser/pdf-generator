@@ -25,40 +25,37 @@ class DictionaryToken extends BaseToken
     /**
      * @param BaseToken[] $tokens
      */
-    public function setArrayEntry(string $key, array $tokens)
+    public function setArrayEntry(string $key, array $tokens): void
     {
         $this->setEntry($key, new ArrayToken($tokens));
     }
 
-    public function setTextEntry(string $key, string $value)
+    public function setTextEntry(string $key, string $value): void
     {
         $this->setEntry($key, new TextToken($value));
     }
 
-    public function setNameEntry(string $key, string $value)
+    public function setNameEntry(string $key, string $value): void
     {
         $this->setEntry($key, new NameToken($value));
     }
 
-    public function setReferenceEntry(string $key, BaseObject $value)
+    public function setReferenceEntry(string $key, BaseObject $value): void
     {
         $this->setEntry($key, new ReferenceToken($value));
     }
 
-    public function setDictionaryEntry(string $key, self $token)
+    public function setDictionaryEntry(string $key, self $token): void
     {
         $this->setEntry($key, $token);
     }
 
-    /**
-     * @param float|int $value
-     */
-    public function setNumberEntry(string $key, $value)
+    public function setNumberEntry(string $key, float|int $value): void
     {
         $this->setEntry($key, new NumberToken($value));
     }
 
-    private function setEntry(string $key, BaseToken $token)
+    private function setEntry(string $key, BaseToken $token): void
     {
         $this->keyValue[$key] = $token;
     }

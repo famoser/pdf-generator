@@ -24,12 +24,12 @@ class Body extends BaseStructure
 
     private BaseObject $infoObject;
 
-    public function addObject(BaseObject $baseObject)
+    public function addObject(BaseObject $baseObject): void
     {
         $this->entries[] = $baseObject;
     }
 
-    public function addInfoObject(BaseObject $baseObject)
+    public function addInfoObject(BaseObject $baseObject): void
     {
         $this->addObject($baseObject);
         $this->infoObject = $baseObject;

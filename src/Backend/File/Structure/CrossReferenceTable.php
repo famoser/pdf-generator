@@ -23,7 +23,7 @@ class CrossReferenceTable extends BaseStructure
      */
     private array $registeredEntries = [];
 
-    public function registerEntrySize(int $entrySize)
+    public function registerEntrySize(int $entrySize): void
     {
         $this->lastEntry += $entrySize;
         $this->registeredEntries[] = $this->lastEntry;
@@ -32,7 +32,7 @@ class CrossReferenceTable extends BaseStructure
     /**
      * @param int[] $entrySizes
      */
-    public function registerEntrySizes(array $entrySizes)
+    public function registerEntrySizes(array $entrySizes): void
     {
         foreach ($entrySizes as $entrySize) {
             $this->registerEntrySize($entrySize);

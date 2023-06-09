@@ -24,37 +24,37 @@ class Document implements DocumentInterface
     /**
      * @var \PdfGenerator\IR\Structure\Document
      */
-    private $document;
+    private \PdfGenerator\IR\Structure\Document $document;
 
     /**
      * @var Cursor
      */
-    private $cursor;
+    private ?Cursor $cursor;
 
     /**
      * @var PageGenerator
      */
-    private $pageGenerator;
+    private PageGenerator $pageGenerator;
 
     /**
      * @var FontRepository
      */
-    private $fontRepository;
+    private FontRepository $fontRepository;
 
     /**
      * @var ImageRepository
      */
-    private $imageRepository;
+    private ImageRepository $imageRepository;
 
     /**
      * @var WordSizerRepository
      */
-    private $wordSizerRepository;
+    private WordSizerRepository $wordSizerRepository;
 
     /**
      * @var ContentVisitor
      */
-    private $contentVisitor;
+    private ContentVisitor $contentVisitor;
 
     public function __construct(PageGenerator $pageGenerator = null, Cursor $cursor = null)
     {
@@ -68,7 +68,7 @@ class Document implements DocumentInterface
         $this->contentVisitor = new ContentVisitor($this->imageRepository, $this->fontRepository, $this->wordSizerRepository);
     }
 
-    public function addContent(Content $content)
+    public function addContent(Content $content): void
     {
         $measuredContent = $this->measureContent($content);
 
@@ -76,7 +76,7 @@ class Document implements DocumentInterface
         $this->add($contentBlock);
     }
 
-    public function add(Block $block)
+    public function add(Block $block): void
     {
         $locatedBlocks = $this->locate($block);
 

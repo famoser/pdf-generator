@@ -20,7 +20,7 @@ class ImageRepository
      */
     private array $imageCache;
 
-    public function getImage(Image $param)
+    public function getImage(Image $param): \PdfGenerator\IR\Structure\Document\Image
     {
         if (!\array_key_exists($param->getSrc(), $this->imageCache)) {
             $image = \PdfGenerator\IR\Structure\Document\Image::create($param->getSrc());

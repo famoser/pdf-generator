@@ -34,7 +34,7 @@ class Line
         $this->leading = $leading;
     }
 
-    public function addFragment(Fragment $fragment)
+    public function addFragment(Fragment $fragment): void
     {
         $this->fragments[] = $fragment;
     }

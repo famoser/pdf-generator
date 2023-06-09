@@ -43,7 +43,7 @@ class FontRepository
         ],
     ];
 
-    public function getFont(Font $font)
+    public function getFont(Font $font): DefaultFont|EmbeddedFont
     {
         if ($font->getSrc()) {
             return $this->getOrCreateEmbeddedFont($font->getSrc());

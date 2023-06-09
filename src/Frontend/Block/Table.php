@@ -38,12 +38,12 @@ class Table extends Block
         $this->style = $style ?? new TableStyle();
     }
 
-    public function addRow(Row $row)
+    public function addRow(Row $row): void
     {
         $this->rows[] = $row;
     }
 
-    public function addHeaderRow(Row $row)
+    public function addHeaderRow(Row $row): void
     {
         $this->headerRows[] = $row;
     }

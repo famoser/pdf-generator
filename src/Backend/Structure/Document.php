@@ -31,7 +31,7 @@ class Document
         $this->configuration = new Configuration();
     }
 
-    public function addPage(Page $page)
+    public function addPage(Page $page): void
     {
         $this->pages[] = $page;
     }

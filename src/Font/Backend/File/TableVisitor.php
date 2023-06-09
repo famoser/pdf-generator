@@ -270,7 +270,7 @@ class TableVisitor
         return $writer->getStream();
     }
 
-    public function visitOS2Table(Table\OS2Table $os2Table)
+    public function visitOS2Table(Table\OS2Table $os2Table): string
     {
         $writer = new StreamWriter();
 

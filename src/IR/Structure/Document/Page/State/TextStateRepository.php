@@ -39,7 +39,7 @@ class TextStateRepository
 
     private TextState $activeTextState;
 
-    public function setFontSize(float $fontSize)
+    public function setFontSize(float $fontSize): void
     {
         if ($this->fontSize !== $fontSize) {
             $this->fontSize = $fontSize;
@@ -47,7 +47,7 @@ class TextStateRepository
         }
     }
 
-    public function setLeading(float $leading)
+    public function setLeading(float $leading): void
     {
         if ($this->leading !== $leading) {
             $this->leading = $leading;

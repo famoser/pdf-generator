@@ -50,10 +50,8 @@ class DocumentResources
 
     /**
      * @param BackendFont[]|BackendImage[] $cache
-     *
-     * @return BackendFont|BackendImage
      */
-    private function getOrCreate(BaseDocumentStructure $structure, array &$cache)
+    private function getOrCreate(BaseDocumentStructure $structure, array &$cache): BackendImage|BackendFont
     {
         $identifier = $structure->getIdentifier();
 

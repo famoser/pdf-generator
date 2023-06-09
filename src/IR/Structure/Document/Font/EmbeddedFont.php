@@ -75,7 +75,7 @@ class EmbeddedFont extends Font
     /**
      * top of text area until baseline.
      */
-    public function getAscender()
+    public function getAscender(): int
     {
         return $this->font->getTableDirectory()->getOS2Table()->getSTypoAscender();
     }
@@ -84,7 +84,7 @@ class EmbeddedFont extends Font
      * bottom of text area until baseline
      * negative, as measured "the other way around".
      */
-    public function getDescender()
+    public function getDescender(): int
     {
         return $this->font->getTableDirectory()->getOS2Table()->getSTypoDecender();
     }
@@ -92,7 +92,7 @@ class EmbeddedFont extends Font
     /**
      * Gap between two text areas below each others.
      */
-    public function getLineGap()
+    public function getLineGap(): int
     {
         return $this->font->getTableDirectory()->getOS2Table()->getSTypoLineGap();
     }
@@ -100,7 +100,7 @@ class EmbeddedFont extends Font
     /**
      * Scale the character coordinates are in.
      */
-    public function getUnitsPerEm()
+    public function getUnitsPerEm(): int
     {
         return $this->font->getTableDirectory()->getHeadTable()->getUnitsPerEm();
     }

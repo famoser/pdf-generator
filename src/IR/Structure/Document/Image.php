@@ -62,21 +62,17 @@ class Image extends BaseDocumentStructure
     {
         /** @var string $extension */
         $extension = pathinfo($imagePath, \PATHINFO_EXTENSION);
-        switch ($extension) {
-            case 'jpg':
-                return self::TYPE_JPG;
-            case 'jpeg':
-                return self::TYPE_JPEG;
-            case 'png':
-                return self::TYPE_PNG;
-            case 'gif':
-                return self::TYPE_GIF;
-            default:
-                throw new \Exception('Image type not supported: '.$extension.'. Use jpg, jpeg, png or gif');
-        }
+
+        return match ($extension) {
+            'jpg' => self::TYPE_JPG,
+            'jpeg' => self::TYPE_JPEG,
+            'png' => self::TYPE_PNG,
+            'gif' => self::TYPE_GIF,
+            default => throw new \Exception('Image type not supported: '.$extension.'. Use jpg, jpeg, png or gif'),
+        };
     }
 
-    public function accept(DocumentVisitor $visitor)
+    public function accept(DocumentVisitor $visitor): \PdfGenerator\Backend\Structure\Document\Image
     {
         return $visitor->visitImage($this);
     }

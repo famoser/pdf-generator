@@ -68,7 +68,7 @@ class ContentVisitor
         return $this->createStreamObject($operators);
     }
 
-    private function wrapPrintingOperators(BaseContent $baseContent, array $printingOperators)
+    private function wrapPrintingOperators(BaseContent $baseContent, array $printingOperators): array
     {
         $stateTransitionOperators = $this->applyState($baseContent);
         $translationMatrix = $baseContent->getCurrentTransformationMatrix();
@@ -123,17 +123,12 @@ class ContentVisitor
 
     private function getPaintingOperator(RectangleContent $rectangle): string
     {
-        switch ($rectangle->getPaintingMode()) {
-            case RectangleContent::PAINTING_MODE_STROKE:
-                return 's';
-            case RectangleContent::PAINTING_MODE_FILL:
-                return 'f';
-            case RectangleContent::PAINTING_MODE_STROKE_FILL:
-                return 'b';
-            case RectangleContent::PAINTING_MODE_NONE:
-            default:
-                return 'n';
-        }
+        return match ($rectangle->getPaintingMode()) {
+            RectangleContent::PAINTING_MODE_STROKE => 's',
+            RectangleContent::PAINTING_MODE_FILL => 'f',
+            RectangleContent::PAINTING_MODE_STROKE_FILL => 'b',
+            default => 'n',
+        };
     }
 
     /**

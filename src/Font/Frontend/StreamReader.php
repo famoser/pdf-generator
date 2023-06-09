@@ -304,7 +304,7 @@ class StreamReader
 
         // clear the top two entries as these are for the decimals
         $numerator = $uInt16 & 0x3FFF;
-        $fraction = sprintf('%.6f', $numerator / 16384);
+        $fraction = (float) sprintf('%.6f', $numerator / 16384);
 
         return $decimal + $fraction;
     }
@@ -359,17 +359,17 @@ class StreamReader
         return $this->offset;
     }
 
-    public function setOffset(int $offset)
+    public function setOffset(int $offset): void
     {
         $this->offset = $offset;
     }
 
-    private $pushedOffsets = [];
+    private array $pushedOffsets = [];
 
     /**
      * remembers the current offset location and then sets the offset to the new value.
      */
-    public function pushOffset(int $offset)
+    public function pushOffset(int $offset): void
     {
         $this->pushedOffsets[] = $this->getOffset();
         $this->setOffset($offset);
@@ -378,7 +378,7 @@ class StreamReader
     /**
      * recovers the last remembered offset location.
      */
-    public function popOffset()
+    public function popOffset(): void
     {
         $offset = array_pop($this->pushedOffsets);
         $this->setOffset($offset);

@@ -34,7 +34,7 @@ class Grid extends Block
         $this->style = $style ?? new GridStyle();
     }
 
-    public function addBlock(int $columnIndex, int $rowIndex, Block $block, int $columnSpan = 1, int $rowSpan = 1)
+    public function addBlock(int $columnIndex, int $rowIndex, Block $block, int $columnSpan = 1, int $rowSpan = 1): void
     {
         while (\count($this->gridEntries) <= $columnIndex) {
             $this->gridEntries[] = [];

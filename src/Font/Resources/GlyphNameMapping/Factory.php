@@ -66,7 +66,7 @@ class Factory
             }
 
             // ignore comments or empty lines
-            if ('#' === substr($line, 0, 1) || 0 === \strlen($line)) {
+            if (str_starts_with($line, '#') || 0 === \strlen($line)) {
                 continue;
             }
 

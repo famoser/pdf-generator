@@ -39,7 +39,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return $format->accept($this);
     }
 
-    public function visitFormat1(Format1 $format1)
+    public function visitFormat1(Format1 $format1): array
     {
         $macintoshMapping = $this->factory->getMacintoshMapping();
 
@@ -74,7 +74,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return $result;
     }
 
-    public function visitFormat25(Format25 $format25)
+    public function visitFormat25(Format25 $format25): array
     {
         $macintoshMapping = $this->factory->getMacintoshMapping();
 
@@ -89,7 +89,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return $result;
     }
 
-    public function visitFormat3(Format3 $format3)
+    public function visitFormat3(Format3 $format3): array
     {
         return [];
     }

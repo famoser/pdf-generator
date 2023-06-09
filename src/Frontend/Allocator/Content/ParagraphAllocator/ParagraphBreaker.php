@@ -37,7 +37,7 @@ class ParagraphBreaker
             && $this->nextPhraseIndex >= \count($this->paragraph->getPhrases());
     }
 
-    private function advancePhraseBreakerIfRequired()
+    private function advancePhraseBreakerIfRequired(): void
     {
         if (null === $this->phraseBreaker || $this->phraseBreaker->isEmpty()) {
             $nextPhrase = $this->paragraph->getPhrases()[$this->nextPhraseIndex++];
@@ -47,7 +47,7 @@ class ParagraphBreaker
         }
     }
 
-    private function addFragments(Line $line, float $targetWidth, bool $allowEmpty)
+    private function addFragments(Line $line, float $targetWidth, bool $allowEmpty): void
     {
         \assert(!$this->isEmpty());
 

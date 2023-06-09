@@ -32,7 +32,7 @@ class Paragraph extends Content
         $this->style = $style ?? new ParagraphStyle();
     }
 
-    public function add(TextStyle $textStyle, string $text)
+    public function add(TextStyle $textStyle, string $text): void
     {
         $phrase = new Phrase();
         $phrase->setText($text);

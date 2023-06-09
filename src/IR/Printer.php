@@ -46,14 +46,14 @@ class Printer
         $this->rectangleStyle = new RectangleStyle(1, $color, null);
     }
 
-    public function printText(Page $page, Position $position, string $text)
+    public function printText(Page $page, Position $position, string $text): void
     {
         $text = new Text($text, $position, $this->textStyle);
 
         $page->addContent($text);
     }
 
-    public function printImage(Page $page, Position $position, Image $image, float $width, float $height)
+    public function printImage(Page $page, Position $position, Image $image, float $width, float $height): void
     {
         $size = new Size($width, $height);
         $imagePlacement = new ImagePlacement($image, $position, $size);
@@ -61,7 +61,7 @@ class Printer
         $page->addContent($imagePlacement);
     }
 
-    public function printRectangle(Page $page, Position $position, float $width, float $height)
+    public function printRectangle(Page $page, Position $position, float $width, float $height): void
     {
         $size = new Size($width, $height);
         $text = new Rectangle($position, $size, $this->rectangleStyle);

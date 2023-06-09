@@ -59,7 +59,7 @@ class GlyfTable
         $this->numberOfContours = $numberOfContours;
     }
 
-    public function addComponentGlyph(ComponentGlyf $componentGlyf)
+    public function addComponentGlyph(ComponentGlyf $componentGlyf): void
     {
         $this->componentGlyphs[] = $componentGlyf;
     }

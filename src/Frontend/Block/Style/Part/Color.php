@@ -40,7 +40,7 @@ class Color
         return new self($rgbArray[0], $rgbArray[1], $rgbArray[2]);
     }
 
-    public static function black()
+    public static function black(): Color
     {
         return self::createFromHex('#000000');
     }

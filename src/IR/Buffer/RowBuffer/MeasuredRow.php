@@ -18,7 +18,7 @@ class MeasuredRow
      */
     private array $measuredColumns = [];
 
-    public function addMeasuredColumn(MeasuredColumn $column)
+    public function addMeasuredColumn(MeasuredColumn $column): void
     {
         $this->measuredColumns[] = $column;
     }

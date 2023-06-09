@@ -34,7 +34,7 @@ class Font
     {
     }
 
-    public static function createFromDefault(string $name = self::NAME_HELVETICA, string $weight = self::WEIGHT_NORMAL, string $style = self::STYLE_ROMAN)
+    public static function createFromDefault(string $name = self::NAME_HELVETICA, string $weight = self::WEIGHT_NORMAL, string $style = self::STYLE_ROMAN): Font
     {
         $font = new self();
 
@@ -45,7 +45,7 @@ class Font
         return $font;
     }
 
-    public static function createFromFile(string $src)
+    public static function createFromFile(string $src): Font
     {
         $font = new self();
 

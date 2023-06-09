@@ -20,7 +20,7 @@ class MeasuredColumn
      */
     private array $measuredParagraphs = [];
 
-    public function addMeasuredParagraph(MeasuredParagraph $measuredParagraph)
+    public function addMeasuredParagraph(MeasuredParagraph $measuredParagraph): void
     {
         $this->measuredParagraphs[] = $measuredParagraph;
     }

@@ -38,7 +38,7 @@ class ColumnLayout
         $this->printer->setCursor($this->activeColumn->getStart());
     }
 
-    public function addImage(Image $image, float $width, float $height)
+    public function addImage(Image $image, float $width, float $height): void
     {
         $printImage = function (Cursor $cursor) use ($image, $width, $height) {
             $this->printer->printImage($cursor, $image, $width, $height);
@@ -46,7 +46,7 @@ class ColumnLayout
         $this->printFixedSizeBlock($printImage, $width, $height);
     }
 
-    public function addRectangle(RectangleStyle $style, float $width, float $height)
+    public function addRectangle(RectangleStyle $style, float $width, float $height): void
     {
         $printImage = function (Cursor $cursor) use ($style, $width, $height) {
             $this->printer->setRectangleStyle($style);
@@ -55,7 +55,7 @@ class ColumnLayout
         $this->printFixedSizeBlock($printImage, $width, $height);
     }
 
-    private function printFixedSizeBlock(callable $print, float $width, float $height)
+    private function printFixedSizeBlock(callable $print, float $width, float $height): void
     {
         $cursor = $this->printer->getCursor();
         // start newline if:
@@ -87,14 +87,14 @@ class ColumnLayout
         return $cursor;
     }
 
-    public function nextColumn()
+    public function nextColumn(): Cursor
     {
         $this->activeColumn = $this->columnGenerator->getNextColumn();
 
         return $this->activeColumn->getStart();
     }
 
-    public function addSpace(float $space)
+    public function addSpace(float $space): void
     {
         $cursor = $this->printer->getCursor();
         $cursor = $this->nextLine($cursor, $space);

@@ -107,11 +107,9 @@ class DocumentVisitor
     }
 
     /**
-     * @return Type0|TrueType
-     *
      * @throws \Exception
      */
-    public function visitEmbeddedFont(EmbeddedFont $param)
+    public function visitEmbeddedFont(EmbeddedFont $param): TrueType|Type0
     {
         $font = $param->getFont();
         $fontData = $param->getFontData();
@@ -309,64 +307,35 @@ class DocumentVisitor
             return $unicodePoint;
         }
 
-        switch ($unicodePoint) {
-            case 0x20AC:
-                return 0x80;
-            case 0x201A:
-                return 0x82;
-            case 0x0192:
-                return 0x83;
-            case 0x201E:
-                return 0x84;
-            case 0x2026:
-                return 0x85;
-            case 0x2020:
-                return 0x86;
-            case 0x2021:
-                return 0x87;
-            case 0x20C6:
-                return 0x88;
-            case 0x2030:
-                return 0x89;
-            case 0x0160:
-                return 0x8A;
-            case 0x2039:
-                return 0x8B;
-            case 0x0152:
-                return 0x8C;
-            case 0x017D:
-                return 0x8E;
-
-            case 0x2018:
-                return 0x91;
-            case 0x2019:
-                return 0x92;
-            case 0x201C:
-                return 0x93;
-            case 0x201D:
-                return 0x94;
-            case 0x2022:
-                return 0x95;
-            case 0x2013:
-                return 0x96;
-            case 0x2014:
-                return 0x97;
-            case 0x02DC:
-                return 0x98;
-            case 0x2122:
-                return 0x99;
-            case 0x0161:
-                return 0x9A;
-            case 0x203A:
-                return 0x9B;
-            case 0x0153:
-                return 0x9C;
-            case 0x017E:
-                return 0x9E;
-            case 0x0178:
-                return 0x9F;
-        }
-
-        return null;
+        return match ($unicodePoint) {
+            0x20AC => 0x80,
+            0x201A => 0x82,
+            0x0192 => 0x83,
+            0x201E => 0x84,
+            0x2026 => 0x85,
+            0x2020 => 0x86,
+            0x2021 => 0x87,
+            0x20C6 => 0x88,
+            0x2030 => 0x89,
+            0x0160 => 0x8A,
+            0x2039 => 0x8B,
+            0x0152 => 0x8C,
+            0x017D => 0x8E,
+            0x2018 => 0x91,
+            0x2019 => 0x92,
+            0x201C => 0x93,
+            0x201D => 0x94,
+            0x2022 => 0x95,
+            0x2013 => 0x96,
+            0x2014 => 0x97,
+            0x02DC => 0x98,
+            0x2122 => 0x99,
+            0x0161 => 0x9A,
+            0x203A => 0x9B,
+            0x0153 => 0x9C,
+            0x017E => 0x9E,
+            0x0178 => 0x9F,
+            default => null,
+        };
     }
 }

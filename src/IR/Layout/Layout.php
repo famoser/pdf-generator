@@ -22,26 +22,26 @@ class Layout
         return $this->cursor;
     }
 
-    public function setCursor(Cursor $cursor)
+    public function setCursor(Cursor $cursor): void
     {
         $this->cursor = $cursor;
     }
 
-    public function moveRight(float $width)
+    public function moveRight(float $width): Cursor
     {
         $this->cursor = $this->getCursor()->moveRight($width);
 
         return $this->cursor;
     }
 
-    public function moveDown(float $height)
+    public function moveDown(float $height): Cursor
     {
         $this->cursor = $this->getCursor()->moveDown($height);
 
         return $this->cursor;
     }
 
-    public function moveRightDown(float $width, float $height)
+    public function moveRightDown(float $width, float $height): Cursor
     {
         $this->cursor = $this->cursor->moveRightDown($width, $height);
 

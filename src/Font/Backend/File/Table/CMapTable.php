@@ -66,7 +66,7 @@ class CMapTable extends BaseTable
         $this->numberSubtables = $numberSubtables;
     }
 
-    public function addSubtable(Subtable $subtable)
+    public function addSubtable(Subtable $subtable): void
     {
         $this->subtables[] = $subtable;
     }

@@ -34,12 +34,12 @@ class Row extends Block
         $this->style = $style ?? new RowStyle();
     }
 
-    public function addColumn(Column $column)
+    public function addColumn(Column $column): void
     {
         $this->columns[] = $column;
     }
 
-    public function setColumn(int $columnIndex, Column $column)
+    public function setColumn(int $columnIndex, Column $column): void
     {
         while (\count($this->columns) <= $columnIndex) {
             $this->columns[] = null;

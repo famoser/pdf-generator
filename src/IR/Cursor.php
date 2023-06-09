@@ -44,17 +44,17 @@ class Cursor
         return $this->pageIndex;
     }
 
-    public function withXCoordinate(float $newXCoordinate)
+    public function withXCoordinate(float $newXCoordinate): Cursor
     {
         return new self($newXCoordinate, $this->yCoordinate, $this->pageIndex);
     }
 
-    public function withYCoordinate(float $newYCoordinate)
+    public function withYCoordinate(float $newYCoordinate): Cursor
     {
         return new self($this->xCoordinate, $newYCoordinate, $this->pageIndex);
     }
 
-    public function withPage(int $page)
+    public function withPage(int $page): Cursor
     {
         return new self($this->xCoordinate, $this->yCoordinate, $page);
     }

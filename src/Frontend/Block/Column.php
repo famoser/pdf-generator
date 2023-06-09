@@ -34,7 +34,7 @@ class Column extends Block
         $this->style = $style ?? new ColumnStyle();
     }
 
-    public function addBlock(Block $cell)
+    public function addBlock(Block $cell): void
     {
         $this->blocks[] = $cell;
     }

@@ -79,7 +79,7 @@ class ToBackendContentVisitor extends ContentVisitor
         return explode("\n", $textWithNormalizedNewlines);
     }
 
-    private function applyImagePlacementPositionAndSize(ImagePlacement $placement)
+    private function applyImagePlacementPositionAndSize(ImagePlacement $placement): void
     {
         $scaleX = $placement->getSize()->getWidth();
         $scaleY = $placement->getSize()->getHeight();
@@ -87,7 +87,7 @@ class ToBackendContentVisitor extends ContentVisitor
         $this->applyPosition($placement->getPosition(), $scaleX, $scaleY);
     }
 
-    private function applyPosition(Position $position, float $scaleX = 1, float $scaleY = 1)
+    private function applyPosition(Position $position, float $scaleX = 1, float $scaleY = 1): void
     {
         $startX = $position->getStartX();
         $startY = $position->getStartY();
@@ -95,7 +95,7 @@ class ToBackendContentVisitor extends ContentVisitor
         $this->pageResources->getGeneralGraphicStateRepository()->setPosition($startX, $startY, $scaleX, $scaleY);
     }
 
-    private function applyRectangleStyle(RectangleStyle $style)
+    private function applyRectangleStyle(RectangleStyle $style): void
     {
         $this->pageResources->getColorStateRepository()->setBorderColor($style->getBorderColor());
         $this->pageResources->getColorStateRepository()->setFillColor($style->getFillColor());
@@ -117,7 +117,7 @@ class ToBackendContentVisitor extends ContentVisitor
         return RectangleContent::PAINTING_MODE_NONE;
     }
 
-    private function applyTextStyle(Text\TextStyle $style)
+    private function applyTextStyle(Text\TextStyle $style): void
     {
         $font = $style->getFont();
         $textStateRepository = $this->pageResources->getTextStateRepository();

@@ -40,7 +40,7 @@ class Document
      */
     private array $embeddedFonts = [];
 
-    public function addPage(Page $page)
+    public function addPage(Page $page): void
     {
         $this->pages[] = $page;
     }

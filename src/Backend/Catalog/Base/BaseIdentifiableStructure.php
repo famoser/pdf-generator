@@ -18,7 +18,7 @@ abstract class BaseIdentifiableStructure extends BaseStructure
     /**
      * IdentifiableStructure constructor.
      */
-    protected function setIdentifier(string $identifier)
+    protected function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
     }

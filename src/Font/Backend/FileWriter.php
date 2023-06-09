@@ -633,7 +633,7 @@ class FileWriter
         return $writer->getStream();
     }
 
-    private static function setBinaryTreeSearchableProperties(BinaryTreeSearchableTrait $binaryTreeSearchable, int $numberOfEntries)
+    private static function setBinaryTreeSearchableProperties(BinaryTreeSearchableTrait $binaryTreeSearchable, int $numberOfEntries): void
     {
         $powerOfTwo = (int) log($numberOfEntries, 2);
 
@@ -822,7 +822,7 @@ class FileWriter
     /**
      * @param Character[] $characters
      */
-    private function fixComponentCharacterReferences(array $characters)
+    private function fixComponentCharacterReferences(array $characters): void
     {
         $characterLookup = new \SplObjectStorage();
         $characterCount = \count($characters);

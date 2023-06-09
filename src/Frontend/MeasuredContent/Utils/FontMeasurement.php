@@ -31,27 +31,27 @@ class FontMeasurement
         $this->lineHeight = $lineHeight;
     }
 
-    public function getAscender()
+    public function getAscender(): float|int
     {
         return $this->font->getAscender() / $this->getFontScaling();
     }
 
-    public function getLineGap()
+    public function getLineGap(): float|int
     {
         return $this->getLeading() - $this->getAscender() + $this->getDescender();
     }
 
-    public function getDescender()
+    public function getDescender(): float|int
     {
         return $this->font->getDescender() / $this->getFontScaling();
     }
 
-    public function getLeading()
+    public function getLeading(): float|int
     {
         return $this->font->getBaselineToBaselineDistance() / $this->getFontScaling() * $this->lineHeight;
     }
 
-    public function getFontScaling()
+    public function getFontScaling(): float|int
     {
         return $this->font->getUnitsPerEm() / $this->fontSize;
     }

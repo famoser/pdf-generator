@@ -58,7 +58,7 @@ class TokenVisitor
         return '('.$escapedText.')';
     }
 
-    public function visitNameToken(Token\NameToken $param)
+    public function visitNameToken(Token\NameToken $param): string
     {
         /**
          * would need to escape much more (with # followed by its number; for example "(" = #28):
@@ -69,7 +69,7 @@ class TokenVisitor
         return $this->transformToName($escapedText);
     }
 
-    private function transformToName(string $value)
+    private function transformToName(string $value): string
     {
         return '/'.$value;
     }

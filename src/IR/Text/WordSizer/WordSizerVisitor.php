@@ -18,7 +18,7 @@ use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 
 class WordSizerVisitor implements FontVisitor
 {
-    public function visitDefaultFont(DefaultFont $param)
+    public function visitDefaultFont(DefaultFont $param): MonospaceProportionalWordSizer|ProportionalWordSizer
     {
         $filename = $param->getFont().'_'.$param->getStyle().'.json';
         $path = __DIR__.\DIRECTORY_SEPARATOR.'DefaultFont'.\DIRECTORY_SEPARATOR.$filename;
@@ -32,7 +32,7 @@ class WordSizerVisitor implements FontVisitor
         return new ProportionalWordSizer($characterSizes['invalidCharacterWidth'], $characterSizes['characterAdvanceWidthLookup']);
     }
 
-    public function visitEmbeddedFont(EmbeddedFont $param)
+    public function visitEmbeddedFont(EmbeddedFont $param): MonospaceProportionalWordSizer|ProportionalWordSizer
     {
         $characterSizer = new CharacterSizer($param->getFont());
         if ($characterSizer->isMonospace()) {

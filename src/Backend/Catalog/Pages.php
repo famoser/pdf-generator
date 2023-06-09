@@ -25,7 +25,7 @@ class Pages extends BaseStructure
      */
     private array $kids = [];
 
-    public function addPage(Page $page)
+    public function addPage(Page $page): void
     {
         $this->kids[] = $page;
     }
