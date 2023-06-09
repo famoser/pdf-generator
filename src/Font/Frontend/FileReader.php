@@ -38,7 +38,7 @@ class FileReader
     /**
      * StructureReader constructor.
      */
-    public function __construct(private FormatReader $cMapFormatReader, private File\Table\Post\FormatReader $postFormatReader)
+    public function __construct(private readonly FormatReader $cMapFormatReader, private readonly File\Table\Post\FormatReader $postFormatReader)
     {
     }
 

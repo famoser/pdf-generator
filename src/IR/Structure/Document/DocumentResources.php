@@ -31,7 +31,7 @@ class DocumentResources
     /**
      * DocumentResources constructor.
      */
-    public function __construct(private DocumentVisitor $documentContentVisitor)
+    public function __construct(private readonly DocumentVisitor $documentContentVisitor)
     {
     }
 

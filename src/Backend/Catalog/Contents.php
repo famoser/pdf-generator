@@ -22,7 +22,7 @@ class Contents extends BaseStructure
      *
      * @param Content[] $content
      */
-    public function __construct(private array $content)
+    public function __construct(private readonly array $content)
     {
     }
 

@@ -20,7 +20,7 @@ use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Paragraph extends Content
 {
-    private ParagraphStyle $style;
+    private readonly ParagraphStyle $style;
 
     /**
      * @var Phrase[]

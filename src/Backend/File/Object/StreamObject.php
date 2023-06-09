@@ -17,12 +17,12 @@ use PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class StreamObject extends BaseObject
 {
-    private DictionaryToken $dictionary;
+    private readonly DictionaryToken $dictionary;
 
     /**
      * StreamObject constructor.
      */
-    public function __construct(int $number, private string $content)
+    public function __construct(int $number, private readonly string $content)
     {
         parent::__construct($number);
 

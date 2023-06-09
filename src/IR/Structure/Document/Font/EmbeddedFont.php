@@ -19,7 +19,7 @@ class EmbeddedFont extends Font
     /**
      * EmbeddedFont constructor.
      */
-    public function __construct(private string $fontPath, private string $fontData, private \PdfGenerator\Font\IR\Structure\Font $font)
+    public function __construct(private readonly string $fontPath, private readonly string $fontData, private readonly \PdfGenerator\Font\IR\Structure\Font $font)
     {
     }
 

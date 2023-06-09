@@ -18,7 +18,7 @@ class Fragment
     /**
      * Fragment constructor.
      */
-    public function __construct(private string $text, private TextStyle $textStyle, private float $width)
+    public function __construct(private readonly string $text, private readonly TextStyle $textStyle, private readonly float $width)
     {
     }
 

@@ -19,7 +19,7 @@ class MeasuredLine
      * @param string[] $words
      * @param float[]  $wordWidths
      */
-    public function __construct(private array $words, private array $wordWidths, private float $spaceWidth)
+    public function __construct(private readonly array $words, private readonly array $wordWidths, private readonly float $spaceWidth)
     {
     }
 

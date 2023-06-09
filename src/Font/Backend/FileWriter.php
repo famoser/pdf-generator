@@ -44,7 +44,7 @@ class FileWriter
     /**
      * FileWriter constructor.
      */
-    public function __construct(private TableVisitor $tableVisitor)
+    public function __construct(private readonly TableVisitor $tableVisitor)
     {
     }
 

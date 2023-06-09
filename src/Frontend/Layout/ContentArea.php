@@ -19,7 +19,7 @@ class ContentArea
     /**
      * ContentArea constructor.
      */
-    public function __construct(private Position $start, private Size $size)
+    public function __construct(private readonly Position $start, private readonly Size $size)
     {
     }
 

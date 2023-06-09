@@ -21,12 +21,12 @@ class StreamReader
 {
     private int $offset = 0;
 
-    private int $byteCount;
+    private readonly int $byteCount;
 
     /**
      * Reader constructor.
      */
-    public function __construct(private string $content)
+    public function __construct(private readonly string $content)
     {
         $this->byteCount = \strlen($content);
     }
@@ -257,17 +257,17 @@ class StreamReader
 
     private static function unpackUInt16($content, int $offset): int
     {
-        return unpack('nnumber', $content, $offset)['number'];
+        return unpack('nnumber', (string) $content, $offset)['number'];
     }
 
     private static function unpackUInt32($content, int $offset): int
     {
-        return unpack('Nnumber', $content, $offset)['number'];
+        return unpack('Nnumber', (string) $content, $offset)['number'];
     }
 
     private static function unpackUInt64($content, int $offset): int
     {
-        return unpack('Jnumber', $content, $offset)['number'];
+        return unpack('Jnumber', (string) $content, $offset)['number'];
     }
 
     private static function transformTo8Bit(int $number): int

@@ -16,18 +16,18 @@ use PdfGenerator\Font\Frontend\File\Traits\NullableRawContent;
 class ComponentGlyf
 {
     use NullableRawContent;
-    public const ARG_1_AND_2_ARE_WORDS = 0x1;
-    public const ARGS_ARE_XY_VALUES = 0x2;
-    public const ROUND_XY_TO_GRID = 0x4;
-    public const WE_HAVE_A_SCALE = 0x8;
-    public const MORE_COMPONENTS = 0x20;
-    public const WE_HAVE_AN_X_AND_Y_SCALE = 0x40;
-    public const WE_HAVE_A_TWO_BY_TWO = 0x80;
-    public const WE_HAVE_INSTRUCTIONS = 0x100;
-    public const USE_MY_METRICS = 0x200;
-    public const OVERLAP_COMPOUND = 0x400;
-    public const SCALED_COMPONENT_OFFSET = 0x800;
-    public const UNSCALED_COMPONENT_OFFSET = 0x1000;
+    final public const ARG_1_AND_2_ARE_WORDS = 0x1;
+    final public const ARGS_ARE_XY_VALUES = 0x2;
+    final public const ROUND_XY_TO_GRID = 0x4;
+    final public const WE_HAVE_A_SCALE = 0x8;
+    final public const MORE_COMPONENTS = 0x20;
+    final public const WE_HAVE_AN_X_AND_Y_SCALE = 0x40;
+    final public const WE_HAVE_A_TWO_BY_TWO = 0x80;
+    final public const WE_HAVE_INSTRUCTIONS = 0x100;
+    final public const USE_MY_METRICS = 0x200;
+    final public const OVERLAP_COMPOUND = 0x400;
+    final public const SCALED_COMPONENT_OFFSET = 0x800;
+    final public const UNSCALED_COMPONENT_OFFSET = 0x1000;
 
     /**
      * flags as seen above.

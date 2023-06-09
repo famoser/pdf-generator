@@ -38,16 +38,16 @@ class DocumentVisitor
      */
     private array $resourceCounters = [];
 
-    private FontOptimizer $fontOptimizer;
+    private readonly FontOptimizer $fontOptimizer;
 
-    private CMapCreator $cMapCreator;
+    private readonly CMapCreator $cMapCreator;
 
-    private ImageOptimizer $imageOptimizer;
+    private readonly ImageOptimizer $imageOptimizer;
 
     /**
      * DocumentVisitor constructor.
      */
-    public function __construct(private Configuration $configuration)
+    public function __construct(private readonly Configuration $configuration)
     {
         $this->fontOptimizer = new FontOptimizer();
         $this->cMapCreator = new CMapCreator();
@@ -76,7 +76,7 @@ class DocumentVisitor
 
         // TODO: move to IR, not PDF specific
         if ($this->configuration->getAutoResizeImages()) {
-            list($targetWidth, $targetHeight) = $this->imageOptimizer->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight(), $this->configuration->getAutoResizeImagesDpi());
+            [$targetWidth, $targetHeight] = $this->imageOptimizer->getTargetHeightWidth($width, $height, $param->getMaxUsedWidth(), $param->getMaxUsedHeight(), $this->configuration->getAutoResizeImagesDpi());
 
             if ($targetWidth < $width) {
                 $width = $targetWidth;
@@ -112,7 +112,7 @@ class DocumentVisitor
 
         $createFontSubsets = $this->configuration->getCreateFontSubsets();
         if ($createFontSubsets) {
-            list($font, $fontData, $usedCodepoints) = $this->fontOptimizer->createFontSubset($font, $param->getCharactersUsedInText());
+            [$font, $fontData, $usedCodepoints] = $this->fontOptimizer->createFontSubset($font, $param->getCharactersUsedInText());
         }
 
         $fontName = $font->getFontInformation()->getFullName() ?? 'invalidFontName';

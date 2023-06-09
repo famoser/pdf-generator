@@ -26,7 +26,7 @@ class TextBuffer
      */
     private array $phrases = [];
 
-    private WordSizerRepository $wordSizerRepository;
+    private readonly WordSizerRepository $wordSizerRepository;
 
     public function __construct()
     {

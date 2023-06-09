@@ -19,7 +19,7 @@ class NumberToken extends BaseToken
     /**
      * TextToken constructor.
      */
-    public function __construct(private float|int $number)
+    public function __construct(private readonly float|int $number)
     {
     }
 

@@ -15,11 +15,11 @@ use PdfGenerator\Font\Frontend\File\Table\CMap\VisitorInterface;
 
 abstract class Format
 {
-    public const FORMAT_0 = 0;
-    public const FORMAT_2 = 2;
-    public const FORMAT_4 = 4;
-    public const FORMAT_6 = 6;
-    public const FORMAT_12 = 12;
+    final public const FORMAT_0 = 0;
+    final public const FORMAT_2 = 2;
+    final public const FORMAT_4 = 4;
+    final public const FORMAT_6 = 6;
+    final public const FORMAT_12 = 12;
 
     /**
      * length of subtable in bytes.

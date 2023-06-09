@@ -18,7 +18,7 @@ class Column
     /**
      * Column constructor.
      */
-    public function __construct(private Cursor $start, private float $width, private float $height)
+    public function __construct(private readonly Cursor $start, private readonly float $width, private readonly float $height)
     {
     }
 

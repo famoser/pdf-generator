@@ -22,7 +22,7 @@ class TableVisitor
     /**
      * TableWriter constructor.
      */
-    public function __construct(private FormatVisitor $cMapFormatVisitor, private Table\Post\FormatVisitor $postFormatVisitor)
+    public function __construct(private readonly FormatVisitor $cMapFormatVisitor, private readonly Table\Post\FormatVisitor $postFormatVisitor)
     {
     }
 

@@ -15,12 +15,12 @@ use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 
 class ContentStyle extends BlockStyle
 {
-    public const FLOAT_TOP_LEFT = 'FLOAT_TOP_LEFT';
-    public const FLOAT_TOP_RIGHT = 'FLOAT_TOP_RIGHT';
-    public const FLOAT_BOTTOM_LEFT = 'FLOAT_BOTTOM_LEFT';
-    public const FLOAT_BOTTOM_RIGHT = 'FLOAT_BUTTOM_RIGHT';
+    final public const FLOAT_TOP_LEFT = 'FLOAT_TOP_LEFT';
+    final public const FLOAT_TOP_RIGHT = 'FLOAT_TOP_RIGHT';
+    final public const FLOAT_BOTTOM_LEFT = 'FLOAT_BOTTOM_LEFT';
+    final public const FLOAT_BOTTOM_RIGHT = 'FLOAT_BUTTOM_RIGHT';
 
-    public function __construct(private ?string $float = null)
+    public function __construct(private readonly ?string $float = null)
     {
         parent::__construct();
     }

@@ -16,7 +16,7 @@ class PageGenerator implements PageGeneratorInterface
     /**
      * @var float[]
      */
-    private array $pageDimensions;
+    private readonly array $pageDimensions;
 
     /**
      * PageGenerator constructor.

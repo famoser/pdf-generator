@@ -21,7 +21,7 @@ class Text extends BaseContent
     /**
      * TextPlacement constructor.
      */
-    public function __construct(private string $text, private Position $position, private TextStyle $style)
+    public function __construct(private readonly string $text, private readonly Position $position, private readonly TextStyle $style)
     {
     }
 

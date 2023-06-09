@@ -16,9 +16,9 @@ use PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class StructureVisitor
 {
-    private ObjectVisitor $objectVisitor;
+    private readonly ObjectVisitor $objectVisitor;
 
-    private TokenVisitor $tokenVisitor;
+    private readonly TokenVisitor $tokenVisitor;
 
     /**
      * @var string[]
@@ -67,7 +67,7 @@ class StructureVisitor
         $lines[] = '0000000000 65535 f';
 
         foreach ($entries as $entry) {
-            $lines[] = str_pad($entry, 10, '0', \STR_PAD_LEFT).' 00000 n';
+            $lines[] = str_pad((string) $entry, 10, '0', \STR_PAD_LEFT).' 00000 n';
         }
 
         return implode("\n", $lines);

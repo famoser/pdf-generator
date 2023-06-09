@@ -39,7 +39,7 @@ class Page
      *
      * @param int[] $mediaBox
      */
-    public function __construct(private array $mediaBox)
+    public function __construct(private readonly array $mediaBox)
     {
     }
 

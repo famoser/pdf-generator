@@ -240,6 +240,7 @@ class CMapCreator
      */
     private function getTextInHexToCharacterIndexMappingByLength(array $characters): array
     {
+        $hexPointsByLength = [];
         $characterCount = \count($characters);
         for ($i = 0; $i < $characterCount; ++$i) {
             $character = $characters[$i];
@@ -354,7 +355,7 @@ class CMapCreator
         $lastHexPoint = null;
         foreach ($characterIndexToUnicodeMappingInHex as $characterIndexHex => $unicodeHex) {
             $characterIndex = hexdec($characterIndexHex);
-            $unicodeValue = hexdec($unicodeHex);
+            $unicodeValue = hexdec((string) $unicodeHex);
 
             if ($characterIndex - 1 !== $lastCharacterIndex || $unicodeValue - 1 !== $lastUnicodeValue) {
                 if (null !== $firstHexPoint) {

@@ -51,15 +51,15 @@ class OS2Table extends BaseTable
     /**
      * weight classes.
      */
-    public const WEIGHT_CLASS_THIN = 100;
-    public const WEIGHT_CLASS_EXTRALIGHT = 200;
-    public const WEIGHT_CLASS_LIGHT = 300;
-    public const WEIGHT_CLASS_NORMAL = 400;
-    public const WEIGHT_CLASS_MEDIUM = 500;
-    public const WEIGHT_CLASS_SEMIBOLD = 600;
-    public const WEIGHT_CLASS_BOLD = 700;
-    public const WEIGHT_CLASS_EXTRABOLD = 800;
-    public const WEIGHT_CLASS_BLACK = 900;
+    final public const WEIGHT_CLASS_THIN = 100;
+    final public const WEIGHT_CLASS_EXTRALIGHT = 200;
+    final public const WEIGHT_CLASS_LIGHT = 300;
+    final public const WEIGHT_CLASS_NORMAL = 400;
+    final public const WEIGHT_CLASS_MEDIUM = 500;
+    final public const WEIGHT_CLASS_SEMIBOLD = 600;
+    final public const WEIGHT_CLASS_BOLD = 700;
+    final public const WEIGHT_CLASS_EXTRABOLD = 800;
+    final public const WEIGHT_CLASS_BLACK = 900;
 
     /**
      * width class ("lengthness" of the font).
@@ -71,15 +71,15 @@ class OS2Table extends BaseTable
     /**
      * width classes.
      */
-    public const WIDTH_CLASS_ULTRA_CONDENSED = 1;
-    public const WIDTH_CLASS_EXTRA_CONDENSED = 2;
-    public const WIDTH_CLASS_CONDENSED = 3;
-    public const WIDTH_CLASS_SEMI_CONDENSED = 4;
-    public const WIDTH_CLASS_NORMAL = 5;
-    public const WIDTH_CLASS_SEMI_EXPANDED = 6;
-    public const WIDTH_CLASS_EXPANDED = 7;
-    public const WIDTH_CLASS_EXTRA_EXPANDED = 8;
-    public const WIDTH_CLASS_ULTRA_EXPANDED = 9;
+    final public const WIDTH_CLASS_ULTRA_CONDENSED = 1;
+    final public const WIDTH_CLASS_EXTRA_CONDENSED = 2;
+    final public const WIDTH_CLASS_CONDENSED = 3;
+    final public const WIDTH_CLASS_SEMI_CONDENSED = 4;
+    final public const WIDTH_CLASS_NORMAL = 5;
+    final public const WIDTH_CLASS_SEMI_EXPANDED = 6;
+    final public const WIDTH_CLASS_EXPANDED = 7;
+    final public const WIDTH_CLASS_EXTRA_EXPANDED = 8;
+    final public const WIDTH_CLASS_ULTRA_EXPANDED = 9;
 
     /**
      * font embedding licensing rights
@@ -93,32 +93,32 @@ class OS2Table extends BaseTable
     /**
      * embedding possible; enduser has to acquire license.
      */
-    public const LICENSE_TYPE_EMBEDDING_INSTALLABLE = 0;
+    final public const LICENSE_TYPE_EMBEDDING_INSTALLABLE = 0;
 
     /**
      * embedding only allowed if license to do so.
      */
-    public const LICENSE_TYPE_EMBEDDING_RESTRICTED = 2;
+    final public const LICENSE_TYPE_EMBEDDING_RESTRICTED = 2;
 
     /**
      * embedding only allowed for preview (resulting document must be read-only).
      */
-    public const LICENSE_TYPE_EMBEDDING_PREVIEW_PRINT = 4;
+    final public const LICENSE_TYPE_EMBEDDING_PREVIEW_PRINT = 4;
 
     /**
      * embedding possible.
      */
-    public const LICENSE_TYPE_EMBEDDING_EDITABLE = 8;
+    final public const LICENSE_TYPE_EMBEDDING_EDITABLE = 8;
 
     /**
      * must not subset font.
      */
-    public const LICENSE_TYPE_SUBSETTING_DISALLOWED = 0x0100;
+    final public const LICENSE_TYPE_SUBSETTING_DISALLOWED = 0x0100;
 
     /**
      * must only embedd bitmap (no outlines).
      */
-    public const LICENSE_TYPE_BITMAP_ONLY = 0x200;
+    final public const LICENSE_TYPE_BITMAP_ONLY = 0x200;
 
     /**
      * the recommended width of a subscript character.
@@ -218,22 +218,22 @@ class OS2Table extends BaseTable
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0000-007F contained.
      */
-    public const UNICODE_RANGE_BASIC_LATIN = 1;
+    final public const UNICODE_RANGE_BASIC_LATIN = 1;
 
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0080-00FF contained.
      */
-    public const UNICODE_RANGE_LATIN_SUPPLEMENT = 2;
+    final public const UNICODE_RANGE_LATIN_SUPPLEMENT = 2;
 
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0100-017F contained.
      */
-    public const UNICODE_RANGE_LATIN_EXTENDED_A = 4;
+    final public const UNICODE_RANGE_LATIN_EXTENDED_A = 4;
 
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0180-024F contained.
      */
-    public const UNICODE_RANGE_LATIN_EXTENDED_B = 8;
+    final public const UNICODE_RANGE_LATIN_EXTENDED_B = 8;
 
     /**
      * panose classification number of the font.
@@ -249,16 +249,16 @@ class OS2Table extends BaseTable
      */
     private int $fsSelection;
 
-    public const FONT_SELECTION_ITALIC = 0;
-    public const FONT_SELECTION_UNDERSCORE = 2;
-    public const FONT_SELECTION_NEGATIVE = 4;
-    public const FONT_SELECTION_OUTLINED = 8;
-    public const FONT_SELECTION_STRIKEOUT = 16;
-    public const FONT_SELECTION_BOLD = 32;
-    public const FONT_SELECTION_REGULAR = 64;
-    public const FONT_SELECTION_USE_TYPO_METRICS = 128; // use metrics starting with sTypo instead of us
-    public const FONT_SELECTION_WWS = 256; // implies name id 16/17 valid WWS names and name id 21/22 are not included
-    public const FONT_SELECTION_OBLIQUE = 512;
+    final public const FONT_SELECTION_ITALIC = 0;
+    final public const FONT_SELECTION_UNDERSCORE = 2;
+    final public const FONT_SELECTION_NEGATIVE = 4;
+    final public const FONT_SELECTION_OUTLINED = 8;
+    final public const FONT_SELECTION_STRIKEOUT = 16;
+    final public const FONT_SELECTION_BOLD = 32;
+    final public const FONT_SELECTION_REGULAR = 64;
+    final public const FONT_SELECTION_USE_TYPO_METRICS = 128; // use metrics starting with sTypo instead of us
+    final public const FONT_SELECTION_WWS = 256; // implies name id 16/17 valid WWS names and name id 21/22 are not included
+    final public const FONT_SELECTION_OBLIQUE = 512;
 
     /**
      * min(minimum included unicode character, 0xFFFF).
@@ -321,21 +321,21 @@ class OS2Table extends BaseTable
     /**
      * code page 1252.
      */
-    public const CODE_PAGE_LATIN1 = 1;
+    final public const CODE_PAGE_LATIN1 = 1;
 
     /**
      * height of non-ascending lower-case letter; for example the character x.
      *
      * @ttf-type int16
      */
-    private ?int $sxHeight;
+    private ?int $sxHeight = null;
 
     /**
      * height of upper-case letter; for example the character X.
      *
      * @ttf-type int16
      */
-    private ?int $sCapHeight;
+    private ?int $sCapHeight = null;
 
     /**
      * unicode code point used as a placeholder for not available character
@@ -343,14 +343,14 @@ class OS2Table extends BaseTable
      *
      * @ttf-type uint16
      */
-    private ?int $usDefaultChar;
+    private ?int $usDefaultChar = null;
 
     /**
      * default break character; usually space (0x0020).
      *
      * @ttf-type uint16
      */
-    private ?int $usBreakChar;
+    private ?int $usBreakChar = null;
 
     /**
      * max count of characters needed to calculate their widths
@@ -358,21 +358,21 @@ class OS2Table extends BaseTable
      *
      * @ttf-type uint16
      */
-    private ?int $usMaxContext;
+    private ?int $usMaxContext = null;
 
     /**
      * point size lower bound the font is expected to be used with.
      *
      * @ttf-type uint16
      */
-    private ?int $usLowerOptimalPointSize;
+    private ?int $usLowerOptimalPointSize = null;
 
     /**
      * point size upper bound the font is expected to be used with.
      *
      * @ttf-type uint16
      */
-    private ?int $usUpperOptimalPointSize;
+    private ?int $usUpperOptimalPointSize = null;
 
     public function getVersion(): int
     {

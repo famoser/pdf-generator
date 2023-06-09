@@ -13,10 +13,10 @@ namespace DocumentGenerator\Layout\Configuration;
 
 class ColumnConfiguration
 {
-    public const SIZING_BY_TEXT = 'sizing_by_text';
-    public const SIZING_EXPAND = 'sizing_expand';
+    final public const SIZING_BY_TEXT = 'sizing_by_text';
+    final public const SIZING_EXPAND = 'sizing_expand';
 
-    public function __construct(private string $sizing = self::SIZING_EXPAND, private ?string $text = null)
+    public function __construct(private readonly string $sizing = self::SIZING_EXPAND, private readonly ?string $text = null)
     {
     }
 

@@ -27,9 +27,9 @@ class BlockStyle
 
     private float $borderWidth = 0;
 
-    private Color $borderColor;
+    private readonly Color $borderColor;
 
-    private ?Color $backgroundColor;
+    private readonly ?Color $backgroundColor;
 
     public function __construct()
     {

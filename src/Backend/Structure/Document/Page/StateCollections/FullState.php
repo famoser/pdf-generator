@@ -20,7 +20,7 @@ class FullState
     /**
      * TextLevel constructor.
      */
-    public function __construct(private GeneralGraphicState $generalGraphicsState, private ColorState $colorState, private TextState $textState)
+    public function __construct(private readonly GeneralGraphicState $generalGraphicsState, private readonly ColorState $colorState, private readonly TextState $textState)
     {
     }
 

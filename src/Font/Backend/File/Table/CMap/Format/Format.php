@@ -16,7 +16,7 @@ use PdfGenerator\Font\Backend\StreamWriter;
 
 abstract class Format
 {
-    public const FORMAT_4 = 4;
+    final public const FORMAT_4 = 4;
 
     /**
      * length of subtable in bytes.

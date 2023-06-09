@@ -16,7 +16,7 @@ use PdfGenerator\Frontend\Block\Style\TableStyle;
 
 class Table extends Block
 {
-    private TableStyle $style;
+    private readonly TableStyle $style;
 
     /**
      * @var Row[]

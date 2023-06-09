@@ -121,7 +121,7 @@ class StreamReaderTest extends TestCase
             0 => 0,
             1 => 1,
             32769 => 32769,
-            1073741951 => 127,
+            1_073_741_951 => 127,
         ];
 
         // check one-by-one
@@ -138,7 +138,7 @@ class StreamReaderTest extends TestCase
      */
     public function testInt16MultipleNumbersResultAsExpected()
     {
-        $input = 134250623;
+        $input = 134_250_623;
         $output = [2048, -32641];
 
         $packed = pack('N', $input);
@@ -177,9 +177,9 @@ class StreamReaderTest extends TestCase
             0 => 0,
             1 => 1,
             327760 => 327760,
-            8716368 => 8716368,
+            8_716_368 => 8_716_368,
             2128 => 2128,
-            67633152 => 524288,
+            67_633_152 => 524288,
         ];
 
         // check one-by-one
@@ -196,8 +196,8 @@ class StreamReaderTest extends TestCase
      */
     public function testUInt32MultipleNumbersResultAsExpected()
     {
-        $input = 576460754450916516;
-        $output = [134217728, 2147493028];
+        $input = 576_460_754_450_916_516;
+        $output = [134_217_728, 2_147_493_028];
 
         $packed = pack('J', $input);
         $reader = new StreamReader($packed);
@@ -215,8 +215,8 @@ class StreamReaderTest extends TestCase
             0 => 0,
             1 => 1,
             32769 => 32769,
-            138412032 => 138412032,
-            4294967295 => 4294967295,
+            138_412_032 => 138_412_032,
+            4_294_967_295 => 4_294_967_295,
         ];
 
         // check one-by-one
@@ -237,7 +237,7 @@ class StreamReaderTest extends TestCase
             0 => 0,
             1 => 1,
             32769 => 32769,
-            2147493888 => -2147473408,
+            2_147_493_888 => -2_147_473_408,
         ];
 
         // check one-by-one
@@ -255,8 +255,8 @@ class StreamReaderTest extends TestCase
     public function testFixedSingleNumbersResultAsExpected()
     {
         $testNumbers = [
-            1073741824 => 16384.0,
-            2147483648 => -32768.0,
+            1_073_741_824 => 16384.0,
+            2_147_483_648 => -32768.0,
             1280 => 0.01953125,
         ];
 
@@ -300,7 +300,7 @@ class StreamReaderTest extends TestCase
         $testNumbers = [
             0 => 0,
             1 => 1,
-            2147493888 => 2147493888,
+            2_147_493_888 => 2_147_493_888,
             0x1000000000000500 => 0x1000000000000500,
         ];
 

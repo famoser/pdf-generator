@@ -21,7 +21,7 @@ class Catalog extends BaseStructure
     /**
      * Catalog constructor.
      */
-    public function __construct(private Pages $pages)
+    public function __construct(private readonly Pages $pages)
     {
     }
 

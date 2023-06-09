@@ -15,12 +15,12 @@ use PdfGenerator\Frontend\Content\Style\Base\Style;
 
 class ImageStyle extends Style
 {
-    public const SIZE_CONTAIN = 'SIZING_CONTAIN';
+    final public const SIZE_CONTAIN = 'SIZING_CONTAIN';
 
     /**
      * ImageStyle constructor.
      */
-    public function __construct(private string $size = self::SIZE_CONTAIN)
+    public function __construct(private readonly string $size = self::SIZE_CONTAIN)
     {
     }
 

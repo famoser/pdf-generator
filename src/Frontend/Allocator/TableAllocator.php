@@ -27,7 +27,7 @@ class TableAllocator extends BaseAllocator
     /**
      * TableAllocator constructor.
      */
-    public function __construct(private Table $table, private TableStyle $tableStyle)
+    public function __construct(private readonly Table $table, private readonly TableStyle $tableStyle)
     {
     }
 

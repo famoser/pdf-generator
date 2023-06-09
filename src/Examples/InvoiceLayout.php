@@ -15,14 +15,14 @@ use PdfGenerator\IR\Structure\Document;
 
 class InvoiceLayout
 {
-    private Document\Page\Content\Text\TextStyle $headerStyle;
+    private readonly Document\Page\Content\Text\TextStyle $headerStyle;
 
-    private Document\Page\Content\Text\TextStyle $bodyStyle;
+    private readonly Document\Page\Content\Text\TextStyle $bodyStyle;
 
     /**
      * InvoiceLayout constructor.
      */
-    public function __construct(private Document $document, string $headerFontPath, string $bodyFontPath)
+    public function __construct(private readonly Document $document, string $headerFontPath, string $bodyFontPath)
     {
         $headerFont = $this->document->getOrCreateEmbeddedFont($headerFontPath);
         $this->headerStyle = new Document\Page\Content\Text\TextStyle($headerFont, 8);

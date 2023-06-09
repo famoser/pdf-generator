@@ -21,19 +21,19 @@ use PdfGenerator\IR\Text\WordSizer\WordSizerRepository;
 
 class Document implements DocumentInterface
 {
-    private \PdfGenerator\IR\Structure\Document $document;
+    private readonly \PdfGenerator\IR\Structure\Document $document;
 
-    private PageGenerator $pageGenerator;
+    private readonly PageGenerator $pageGenerator;
 
-    private FontRepository $fontRepository;
+    private readonly FontRepository $fontRepository;
 
-    private ImageRepository $imageRepository;
+    private readonly ImageRepository $imageRepository;
 
-    private WordSizerRepository $wordSizerRepository;
+    private readonly WordSizerRepository $wordSizerRepository;
 
-    private ContentVisitor $contentVisitor;
+    private readonly ContentVisitor $contentVisitor;
 
-    public function __construct(PageGenerator $pageGenerator = null, private ?\PdfGenerator\Frontend\Cursor $cursor = null)
+    public function __construct(PageGenerator $pageGenerator = null, private readonly ?\PdfGenerator\Frontend\Cursor $cursor = null)
     {
         $this->pageGenerator = $pageGenerator ?? new PageGenerator();
 
@@ -71,7 +71,7 @@ class Document implements DocumentInterface
         $allocator = $block->createAllocator();
         $allocator->place();
 
-        $startCursor = $startCursor ?? $this->cursor;
+        $startCursor ??= $this->cursor;
 
         return [new LocatedBlock($startCursor, $block)];
     }

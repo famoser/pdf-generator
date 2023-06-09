@@ -13,22 +13,22 @@ namespace PdfGenerator\Frontend\Content\Style\Part;
 
 class Font
 {
-    public const NAME_HELVETICA = 'NAME_HELVETICA';
+    final public const NAME_HELVETICA = 'NAME_HELVETICA';
 
-    private ?string $name;
+    private ?string $name = null;
 
-    public const WEIGHT_NORMAL = 'WEIGHT_NORMAL';
-    public const WEIGHT_BOLD = 'WEIGHT_BOLD';
+    final public const WEIGHT_NORMAL = 'WEIGHT_NORMAL';
+    final public const WEIGHT_BOLD = 'WEIGHT_BOLD';
 
-    private ?string $weight;
+    private ?string $weight = null;
 
-    public const STYLE_ROMAN = 'STYLE_ROMAN';
-    public const STYLE_ITALIC = 'STYLE_ITALIC';
-    public const STYLE_OBLIQUE = 'STYLE_OBLIQUE'; // like auto-generated italic
+    final public const STYLE_ROMAN = 'STYLE_ROMAN';
+    final public const STYLE_ITALIC = 'STYLE_ITALIC';
+    final public const STYLE_OBLIQUE = 'STYLE_OBLIQUE'; // like auto-generated italic
 
-    private ?string $style;
+    private ?string $style = null;
 
-    private ?string $src;
+    private ?string $src = null;
 
     private function __construct()
     {

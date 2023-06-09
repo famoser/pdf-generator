@@ -28,7 +28,7 @@ class ToBackendContentVisitor extends ContentVisitor
     /**
      * ContentVisitor constructor.
      */
-    public function __construct(private PageResources $pageResources)
+    public function __construct(private readonly PageResources $pageResources)
     {
     }
 

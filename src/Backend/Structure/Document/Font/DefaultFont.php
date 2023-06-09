@@ -19,7 +19,7 @@ class DefaultFont extends Font
     /**
      * DefaultFont constructor.
      */
-    public function __construct(private string $baseFont)
+    public function __construct(private readonly string $baseFont)
     {
     }
 

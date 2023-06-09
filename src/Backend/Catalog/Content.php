@@ -20,7 +20,7 @@ class Content extends BaseStructure
     /**
      * Content constructor.
      */
-    public function __construct(private string $content)
+    public function __construct(private readonly string $content)
     {
     }
 

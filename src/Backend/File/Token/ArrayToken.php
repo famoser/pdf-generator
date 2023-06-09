@@ -21,7 +21,7 @@ class ArrayToken extends BaseToken
      *
      * @param BaseToken[] $values
      */
-    public function __construct(private array $values, private ?\PdfGenerator\Backend\File\Token\Base\BaseToken $key = null)
+    public function __construct(private readonly array $values, private readonly ?\PdfGenerator\Backend\File\Token\Base\BaseToken $key = null)
     {
     }
 

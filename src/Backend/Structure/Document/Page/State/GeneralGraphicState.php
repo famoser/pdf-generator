@@ -16,13 +16,13 @@ use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
 class GeneralGraphicState extends BaseState
 {
-    public const LINE_CAP_BUTT = 0;
-    public const LINE_CAP_ROUND = 1;
-    public const LINE_CAP_PROJECTING_SQUARE = 2;
+    final public const LINE_CAP_BUTT = 0;
+    final public const LINE_CAP_ROUND = 1;
+    final public const LINE_CAP_PROJECTING_SQUARE = 2;
 
-    public const LINE_JOIN_MITER = 0;
-    public const LINE_JOIN_ROUND = 1;
-    public const LINE_JOIN_BEVEL = 2;
+    final public const LINE_JOIN_MITER = 0;
+    final public const LINE_JOIN_ROUND = 1;
+    final public const LINE_JOIN_BEVEL = 2;
 
     /**
      * transformation matrix

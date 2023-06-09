@@ -15,9 +15,9 @@ use PdfGenerator\IR\Structure\Document;
 
 class LetterLayout
 {
-    private Document\Page\Content\Text\TextStyle $headerStyle;
+    private readonly Document\Page\Content\Text\TextStyle $headerStyle;
 
-    private Document\Page\Content\Text\TextStyle $bodyStyle;
+    private readonly Document\Page\Content\Text\TextStyle $bodyStyle;
 
     public function withHeaderStyle(Document\Page\Content\Text\TextStyle $textStyle)
     {

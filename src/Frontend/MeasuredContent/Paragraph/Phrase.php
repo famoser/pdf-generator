@@ -21,7 +21,7 @@ class Phrase
      *
      * @param Line[] $measuredLines
      */
-    public function __construct(private array $measuredLines, private TextStyle $textStyle, private Font $font)
+    public function __construct(private readonly array $measuredLines, private readonly TextStyle $textStyle, private readonly Font $font)
     {
     }
 

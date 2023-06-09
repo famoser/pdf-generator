@@ -17,12 +17,12 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class Image extends BaseIdentifiableStructure
 {
-    public const IMAGE_TYPE_JPEG = 0;
+    final public const IMAGE_TYPE_JPEG = 0;
 
     /**
      * Image constructor.
      */
-    public function __construct(string $identifier, int $type, private string $content, private float $width, private float $height)
+    public function __construct(string $identifier, int $type, private readonly string $content, private readonly float $width, private readonly float $height)
     {
         $this->setIdentifier($identifier);
 

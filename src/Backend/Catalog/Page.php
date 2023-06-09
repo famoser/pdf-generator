@@ -24,7 +24,7 @@ class Page extends BaseStructure
      * Page constructor.
      * @param int[] $mediaBox
      */
-    public function __construct(private Pages $parent, private array $mediaBox, private Resources $resources, private Contents $contents)
+    public function __construct(private readonly Pages $parent, private readonly array $mediaBox, private readonly Resources $resources, private readonly Contents $contents)
     {
     }
 

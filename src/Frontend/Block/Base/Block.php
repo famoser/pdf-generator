@@ -19,7 +19,7 @@ abstract class Block
     /**
      * @param float[]|null $dimensions
      */
-    public function __construct(private ?array $dimensions = null)
+    public function __construct(private readonly ?array $dimensions = null)
     {
     }
 

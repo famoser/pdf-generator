@@ -19,7 +19,7 @@ class ContentAreaGenerator implements ContentAreaGeneratorInterface
     /**
      * @param float[] $margins
      */
-    public function __construct(private array $margins = [25, 25, 25, 25], private float $gutter = 5, private int $columnCount = 1, private int $rowCount = 1)
+    public function __construct(private readonly array $margins = [25, 25, 25, 25], private readonly float $gutter = 5, private readonly int $columnCount = 1, private readonly int $rowCount = 1)
     {
     }
 

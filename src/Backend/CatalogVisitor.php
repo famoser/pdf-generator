@@ -32,7 +32,7 @@ class CatalogVisitor
     /**
      * StructureVisitor constructor.
      */
-    public function __construct(private File $file)
+    public function __construct(private readonly File $file)
     {
     }
 

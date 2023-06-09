@@ -23,7 +23,7 @@ class Paragraph extends LocatedContent
      *
      * @param Line[] $lines
      */
-    public function __construct(Position $position, Size $size, private array $lines)
+    public function __construct(Position $position, Size $size, private readonly array $lines)
     {
         parent::__construct($position, $size);
     }

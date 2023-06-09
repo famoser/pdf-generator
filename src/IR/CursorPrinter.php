@@ -23,9 +23,9 @@ class CursorPrinter
 
     private Cursor $cursor;
 
-    private Printer $printer;
+    private readonly Printer $printer;
 
-    public function __construct(private Document $document)
+    public function __construct(private readonly Document $document)
     {
         $this->printer = new Printer($document);
         $this->cursor = new Cursor(0, 0, 0);

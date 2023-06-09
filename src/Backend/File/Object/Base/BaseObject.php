@@ -18,7 +18,7 @@ abstract class BaseObject
     /**
      * BaseObject constructor.
      */
-    public function __construct(private int $number)
+    public function __construct(private readonly int $number)
     {
     }
 

@@ -20,47 +20,47 @@ class FontDescriptor extends BaseIdentifiableStructure
     /**
      * all characters have same with.
      */
-    public const FLAG_FIXED_PITCH = 1;
+    final public const FLAG_FIXED_PITCH = 1;
 
     /**
      * contains serif (used in books).
      */
-    public const FLAG_SERIF = 2;
+    final public const FLAG_SERIF = 2;
 
     /**
      * contains characters outside the Adobe standard latin range.
      */
-    public const FLAG_SYMBOLIC = 4;
+    final public const FLAG_SYMBOLIC = 4;
 
     /**
      * glyphs resemble cursive handwriting.
      */
-    public const FLAG_SCRIPT = 8;
+    final public const FLAG_SCRIPT = 8;
 
     /**
      * no characters outside the Adobe standard latin range.
      */
-    public const FLAG_NON_SYMBOLIC = 16;
+    final public const FLAG_NON_SYMBOLIC = 16;
 
     /**
      * glyphs have slanted vertical strokes.
      */
-    public const FLAG_ITALIC = 32;
+    final public const FLAG_ITALIC = 32;
 
     /**
      * no lowercase letters contained.
      */
-    public const FLAG_ALL_CAP = 131072; // 2^17
+    final public const FLAG_ALL_CAP = 131072; // 2^17
 
     /**
      * lowercase glyphs are like the uppercase glyphs but smaller.
      */
-    public const FLAG_SMALL_CAP = 262144; // 2^18
+    final public const FLAG_SMALL_CAP = 262144; // 2^18
 
     /**
      * will advice readers to print extra pixels for lower text sizes.
      */
-    public const FLAG_FORCE_BOLD = 524288; // 2^19
+    final public const FLAG_FORCE_BOLD = 524288; // 2^19
 
     /**
      * same value than from the referencing entry.
@@ -105,7 +105,7 @@ class FontDescriptor extends BaseIdentifiableStructure
      */
     private int $stemV;
 
-    private ?FontStream $fontFile3;
+    private ?FontStream $fontFile3 = null;
 
     public function getFontName(): string
     {

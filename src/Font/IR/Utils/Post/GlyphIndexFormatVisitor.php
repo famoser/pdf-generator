@@ -24,7 +24,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     /**
      * GlyphIndexFormatVisitor constructor.
      */
-    public function __construct(private Factory $factory)
+    public function __construct(private readonly Factory $factory)
     {
     }
 

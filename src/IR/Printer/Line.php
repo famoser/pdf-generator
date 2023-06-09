@@ -21,7 +21,7 @@ class Line
     /**
      * Line constructor.
      */
-    public function __construct(private float $ascender, private float $descender, private float $leading)
+    public function __construct(private readonly float $ascender, private readonly float $descender, private readonly float $leading)
     {
     }
 

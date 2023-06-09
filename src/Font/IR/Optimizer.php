@@ -68,11 +68,7 @@ class Optimizer
         $sortByCodePoint = function (Character $character1, Character $character2) {
             $unicodePoint1 = $character1->getUnicodePoint();
             $unicodePoint2 = $character2->getUnicodePoint();
-            if ($unicodePoint1 === $unicodePoint2) {
-                return 0;
-            }
-
-            return ($unicodePoint1 < $unicodePoint2) ? -1 : 1;
+            return $unicodePoint1 <=> $unicodePoint2;
         };
 
         usort($characters, $sortByCodePoint);

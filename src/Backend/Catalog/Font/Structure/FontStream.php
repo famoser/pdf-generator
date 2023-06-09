@@ -17,7 +17,7 @@ use PdfGenerator\Backend\File\Object\StreamObject;
 
 class FontStream extends BaseIdentifiableStructure
 {
-    public const SUBTYPE_OPEN_TYPE = 'OpenType';
+    final public const SUBTYPE_OPEN_TYPE = 'OpenType';
 
     /**
      * should be set to OpenType.

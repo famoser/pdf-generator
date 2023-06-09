@@ -37,7 +37,7 @@ class Type1 extends Font
     /**
      * Type1 constructor.
      */
-    public function __construct(string $identifier, private string $baseFont)
+    public function __construct(string $identifier, private readonly string $baseFont)
     {
         parent::__construct($identifier);
     }

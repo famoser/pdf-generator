@@ -20,12 +20,12 @@ use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Content extends Block
 {
-    private ContentStyle $style;
+    private readonly ContentStyle $style;
 
     /**
      * Content constructor.
      */
-    public function __construct(private MeasuredContent $measuredContent, ContentStyle $style = null, array $dimensions = null)
+    public function __construct(private readonly MeasuredContent $measuredContent, ContentStyle $style = null, array $dimensions = null)
     {
         parent::__construct($dimensions);
         $this->style = $style ?? new BlockStyle();

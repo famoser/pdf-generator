@@ -15,10 +15,10 @@ use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 
 class ColumnStyle extends BlockStyle
 {
-    public const SIZING_BY_CONTENT = 'SIZING_BY_CONTENT';
-    public const SIZING_BY_WEIGHT = 'SIZING_BY_WEIGHT';
+    final public const SIZING_BY_CONTENT = 'SIZING_BY_CONTENT';
+    final public const SIZING_BY_WEIGHT = 'SIZING_BY_WEIGHT';
 
-    public function __construct(float $gutter = 0, private string $sizing = self::SIZING_BY_WEIGHT, private int $sizingWeight = 1)
+    public function __construct(float $gutter = 0, private readonly string $sizing = self::SIZING_BY_WEIGHT, private readonly int $sizingWeight = 1)
     {
         parent::__construct();
 

@@ -15,29 +15,29 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 class DefaultFont extends Font
 {
-    public const FONT_HELVETICA = 'Helvetica';
-    public const FONT_COURIER = 'Courier';
-    public const FONT_TIMES = 'Times';
-    public const FONT_SYMBOL = 'Symbol';
-    public const FONT_ZAPFDINGBATS = 'ZapfDingbats';
+    final public const FONT_HELVETICA = 'Helvetica';
+    final public const FONT_COURIER = 'Courier';
+    final public const FONT_TIMES = 'Times';
+    final public const FONT_SYMBOL = 'Symbol';
+    final public const FONT_ZAPFDINGBATS = 'ZapfDingbats';
 
-    public const STYLE_DEFAULT = self::STYLE_ROMAN;
-    public const STYLE_ROMAN = 'ROMAN';
-    public const STYLE_ITALIC = 'ITALIC';
-    public const STYLE_BOLD = 'BOLD';
-    public const STYLE_OBLIQUE = 'OBLIQUE';
-    public const STYLE_BOLD_OBLIQUE = 'BOLD_OBLIQUE';
-    public const STYLE_BOLD_ITALIC = 'BOLD_ITALIC';
+    final public const STYLE_DEFAULT = self::STYLE_ROMAN;
+    final public const STYLE_ROMAN = 'ROMAN';
+    final public const STYLE_ITALIC = 'ITALIC';
+    final public const STYLE_BOLD = 'BOLD';
+    final public const STYLE_OBLIQUE = 'OBLIQUE';
+    final public const STYLE_BOLD_OBLIQUE = 'BOLD_OBLIQUE';
+    final public const STYLE_BOLD_ITALIC = 'BOLD_ITALIC';
 
     /**
      * @var int[]
      */
-    private array $size;
+    private readonly array $size;
 
     /**
      * DefaultFont constructor.
      */
-    public function __construct(private string $font, private string $style)
+    public function __construct(private readonly string $font, private readonly string $style)
     {
         $this->size = DefaultFontSize::getSize($this->font, $this->style);
     }

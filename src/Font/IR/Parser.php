@@ -34,7 +34,7 @@ class Parser
     /**
      * Parser constructor.
      */
-    public function __construct(private GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, private Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, private Factory $glyphNameMappingFactory)
+    public function __construct(private readonly GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, private readonly Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, private readonly Factory $glyphNameMappingFactory)
     {
     }
 
