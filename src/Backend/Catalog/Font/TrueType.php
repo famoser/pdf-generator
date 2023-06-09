@@ -15,9 +15,9 @@ use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
 
-class TrueType extends Type1
+readonly class TrueType extends Type1
 {
-    private readonly Font\Structure\FontDescriptor $fontDescriptor;
+    private Font\Structure\FontDescriptor $fontDescriptor;
 
     /**
      * @param int[] $widths

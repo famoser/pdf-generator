@@ -15,12 +15,9 @@ use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
-class Content extends BaseStructure
+readonly class Content extends BaseStructure
 {
-    /**
-     * Content constructor.
-     */
-    public function __construct(private readonly string $content)
+    public function __construct(private string $content)
     {
     }
 

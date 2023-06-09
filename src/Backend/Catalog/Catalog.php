@@ -16,12 +16,9 @@ use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\File;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
-class Catalog extends BaseStructure
+readonly class Catalog extends BaseStructure
 {
-    /**
-     * Catalog constructor.
-     */
-    public function __construct(private readonly Pages $pages)
+    public function __construct(private Pages $pages)
     {
     }
 

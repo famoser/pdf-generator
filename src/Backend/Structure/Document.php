@@ -12,6 +12,7 @@
 namespace PdfGenerator\Backend\Structure;
 
 use PdfGenerator\Backend\Catalog\Catalog;
+use PdfGenerator\Backend\Catalog\Page as CatalogPage;
 use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\Structure\Document\DocumentResources;
 use PdfGenerator\Backend\Structure\Document\Page;
@@ -41,11 +42,13 @@ class Document
         $documentVisitor = new DocumentVisitor($this->configuration);
         $documentResources = new DocumentResources($documentVisitor);
 
-        $pages = new Pages();
+        /** @var CatalogPage[] $pageEntries */
+        $pageEntries = [];
         foreach ($this->pages as $page) {
-            $renderedPage = $page->render($pages, $documentResources);
-            $pages->addPage($renderedPage);
+            $pageEntries[] = $page->render($documentResources);
         }
+
+        $pages = new Pages($pageEntries);
 
         return new Catalog($pages);
     }

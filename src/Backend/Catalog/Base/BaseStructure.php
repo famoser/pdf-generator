@@ -14,7 +14,7 @@ namespace PdfGenerator\Backend\Catalog\Base;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
-abstract class BaseStructure
+readonly abstract class BaseStructure
 {
     /**
      * @return BaseObject|BaseObject[]

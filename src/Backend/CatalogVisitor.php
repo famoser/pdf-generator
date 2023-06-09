@@ -24,14 +24,8 @@ use PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class CatalogVisitor
 {
-    /**
-     * @var BaseObject[]
-     */
-    private array $objectNodeLookup = [];
+    private ?DictionaryObject $currentPages = null;
 
-    /**
-     * StructureVisitor constructor.
-     */
     public function __construct(private readonly File $file)
     {
     }
@@ -55,11 +49,11 @@ class CatalogVisitor
     {
         $dictionary = $this->file->addDictionaryObject();
         $dictionary->addNameEntry('Type', 'Pages');
-        $this->objectNodeLookup[spl_object_id($structure)] = $dictionary;
+        $this->currentPages = $dictionary;
 
         /** @var BaseObject[] $kids */
         $kids = [];
-        foreach ($structure->getKids() as $kid) {
+        foreach ($structure->getPages() as $kid) {
             $kids[] = $kid->accept($this);
         }
 
@@ -74,8 +68,7 @@ class CatalogVisitor
         $dictionary = $this->file->addDictionaryObject();
         $dictionary->addNameEntry('Type', 'Page');
 
-        $parentReference = $this->objectNodeLookup[spl_object_id($structure->getParent())];
-        $dictionary->addReferenceEntry('Parent', $parentReference);
+        $dictionary->addReferenceEntry('Parent', $this->currentPages);
 
         $resources = $structure->getResources()->accept($this);
         $dictionary->addReferenceEntry('Resources', $resources);
@@ -145,7 +138,7 @@ class CatalogVisitor
     {
         /** @var BaseObject[] $baseObjects */
         $baseObjects = [];
-        foreach ($structure->getContent() as $baseContent) {
+        foreach ($structure->getContents() as $baseContent) {
             $baseObjects[] = $baseContent->accept($this);
         }
 

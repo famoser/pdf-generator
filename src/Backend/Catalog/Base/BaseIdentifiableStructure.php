@@ -11,14 +11,14 @@
 
 namespace PdfGenerator\Backend\Catalog\Base;
 
-abstract class BaseIdentifiableStructure extends BaseStructure
+readonly abstract class BaseIdentifiableStructure extends BaseStructure
 {
     private string $identifier;
 
     /**
-     * IdentifiableStructure constructor.
+     * @param string $identifier
      */
-    protected function setIdentifier(string $identifier): void
+    public function __construct(string $identifier)
     {
         $this->identifier = $identifier;
     }

@@ -11,8 +11,11 @@
 
 namespace PdfGenerator\Backend\Structure\Document;
 
+use PdfGenerator\Backend\Catalog\Font as CatalogFont;
+use PdfGenerator\Backend\Catalog\Image as CatalogImage;
+use PdfGenerator\Backend\Catalog\Content as CatalogContent;
+use PdfGenerator\Backend\Catalog\Page as CatalogPage;
 use PdfGenerator\Backend\Catalog\Contents;
-use PdfGenerator\Backend\Catalog\Pages;
 use PdfGenerator\Backend\Catalog\Resources;
 use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
@@ -64,29 +67,31 @@ class Page
         $this->images = $images;
     }
 
-    public function render(Pages $parent, DocumentResources $documentResources): \PdfGenerator\Backend\Catalog\Page
+    public function render(DocumentResources $documentResources): CatalogPage
     {
         $contentVisitor = new ContentVisitor($documentResources);
 
-        $contentArray = [];
-        foreach ($this->content as $item) {
-            $content = $item->accept($contentVisitor);
-            $contentArray[] = $content;
+        /** @var CatalogContent[] $contentEntries */
+        $contentEntries = [];
+        foreach ($this->content as $content) {
+            $contentEntries[] = $content->accept($contentVisitor);
         }
 
-        $contents = new Contents($contentArray);
+        $contents = new Contents($contentEntries);
 
-        $resources = new Resources();
+        /** @var CatalogFont[] $fonts */
+        $fonts = [];
         foreach ($this->fonts as $font) {
-            $mappedFont = $documentResources->getFont($font);
-            $resources->addFont($mappedFont);
+            $fonts[] = $documentResources->getFont($font);
         }
 
+        /** @var CatalogImage[] $images */
+        $images = [];
         foreach ($this->images as $image) {
-            $mappedImage = $documentResources->getImage($image);
-            $resources->addImage($mappedImage);
+            $images[] = $documentResources->getImage($image);
         }
 
-        return new \PdfGenerator\Backend\Catalog\Page($parent, $this->mediaBox, $resources, $contents);
+        $resources = new Resources($fonts, $images);
+        return new CatalogPage($this->mediaBox, $resources, $contents);
     }
 }

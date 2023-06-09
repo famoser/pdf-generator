@@ -15,7 +15,7 @@ use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
-class Type1 extends Font
+readonly class Type1 extends Font
 {
     public const BASE_FONT_TIMES__ROMAN = 'Times-Roman';
     public const BASE_FONT_HELVETICA = 'Helvetica';
@@ -37,7 +37,7 @@ class Type1 extends Font
     /**
      * Type1 constructor.
      */
-    public function __construct(string $identifier, private readonly string $baseFont)
+    public function __construct(string $identifier, private string $baseFont)
     {
         parent::__construct($identifier);
     }
