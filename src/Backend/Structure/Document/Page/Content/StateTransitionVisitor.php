@@ -21,11 +21,11 @@ class StateTransitionVisitor
 {
     private FullState $previousState;
 
-    private ColorState $appliedColorState;
+    private ?ColorState $appliedColorState = null;
 
-    private GeneralGraphicState $appliedGeneralGraphicsState;
+    private ?GeneralGraphicState $appliedGeneralGraphicsState = null;
 
-    private TextState $appliedTextState;
+    private ?TextState $appliedTextState = null;
 
     private DocumentResources $documentResources;
 

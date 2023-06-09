@@ -27,7 +27,7 @@ class Page
     /**
      * @var int[]
      */
-    private array $mediaBox = [];
+    private array $mediaBox;
 
     /**
      * @var Font[]
