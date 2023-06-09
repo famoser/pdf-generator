@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Structure\Document\Page\State\Base;
 
 use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 
-abstract class BaseState
+readonly abstract class BaseState
 {
     /**
      * @return string[]

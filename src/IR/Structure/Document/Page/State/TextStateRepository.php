@@ -69,13 +69,7 @@ class TextStateRepository
             return $this->activeTextState;
         }
 
-        $this->activeTextState = new TextState();
-        $this->activeTextState->setFontSize($this->fontSize);
-        $this->activeTextState->setLeading($this->leading);
-        $this->activeTextState->setFont($this->font);
-        $this->activeTextState->setCharSpace($this->charSpace);
-        $this->activeTextState->setWordSpace($this->wordSpace);
-        $this->activeTextState->setScale($this->scale);
+        $this->activeTextState = new TextState($this->font, $this->fontSize, $this->leading, $this->charSpace, $this->wordSpace, $this->scale);
 
         return $this->activeTextState;
     }
