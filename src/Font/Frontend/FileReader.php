@@ -303,7 +303,7 @@ class FileReader
             if ($componentGlyph->getFlags() & ComponentGlyf::ARG_1_AND_2_ARE_WORDS) {
                 $componentGlyphContent = $compositeGlyfReader->readFor(2 * 2); // two arguments each 16bits
             } else {
-                $componentGlyphContent = $compositeGlyfReader->readFor(2 * 1); // two arguments each 8 bits
+                $componentGlyphContent = $compositeGlyfReader->readFor(2); // two arguments each 8 bits
             }
 
             if ($componentGlyph->getFlags() & ComponentGlyf::WE_HAVE_A_SCALE) {

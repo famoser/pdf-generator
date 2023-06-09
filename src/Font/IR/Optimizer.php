@@ -47,9 +47,6 @@ class Optimizer
         return $font;
     }
 
-    /**
-     * @return Character[]
-     */
     private function ensureComponentCharactersIncluded(array &$characters, array $reservedCharacters): void
     {
         // characters may be composed out of others, which need also be included in the subset

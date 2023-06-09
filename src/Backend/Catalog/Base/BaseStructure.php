@@ -19,5 +19,5 @@ abstract class BaseStructure
     /**
      * @return BaseObject|BaseObject[]
      */
-    abstract public function accept(CatalogVisitor $visitor);
+    abstract public function accept(CatalogVisitor $visitor): BaseObject|array;
 }
