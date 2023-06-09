@@ -18,8 +18,8 @@ use PdfGenerator\Font\Backend\File\Traits\BinaryTreeSearchableTrait;
 /**
  * the offset table (also called sfnt) defines how many tables the font consists of.
  *
- * it also contain the dimensions a binary search tree that could be constructed from the amount of tables contained in the font
- * it assumes the binary search tree will have a value at each node; hence not all tables will fit in most cases (except there is a x such that numTables == 2**x)
+ * it also contains the dimensions a binary search tree that could be constructed from the amount of tables contained in the font
+ * it assumes the binary search tree will have a value at each node; hence not all tables will fit in most cases (except there is an x such that numTables == 2**x)
  *
  * @see https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6.html
  * @see https://docs.microsoft.com/en-us/typography/opentype/spec/otff

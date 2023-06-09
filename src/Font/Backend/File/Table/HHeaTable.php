@@ -33,7 +33,7 @@ class HHeaTable extends BaseTable
     private float $version;
 
     /**
-     * distance from baseline to highest ascender
+     * distance from baseline to the highest ascender
      * designers intention only; not calculated.
      *
      * @ttf-type fword
@@ -41,7 +41,7 @@ class HHeaTable extends BaseTable
     private int $ascent;
 
     /**
-     * distance from baseline to highest ascender
+     * distance from baseline to the highest ascender
      * designers intention only; not calculated.
      *
      * @ttf-type fword

@@ -34,9 +34,6 @@ class StreamReader
         $this->byteCount = \strlen($content);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readUInt8(): int
     {
         // append empty string if less than two bytes left because have to be able to unpack uInt16
@@ -53,8 +50,6 @@ class StreamReader
 
     /**
      * @return int[]
-     *
-     * @throws \Exception
      */
     public function readUInt8Array(int $size): array
     {
@@ -66,9 +61,6 @@ class StreamReader
         return $array;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readInt8(): int
     {
         $uInt8 = $this->readUInt8();
@@ -78,8 +70,6 @@ class StreamReader
 
     /**
      * @return int[]
-     *
-     * @throws \Exception
      */
     public function readInt8Array(int $size): array
     {
@@ -91,9 +81,6 @@ class StreamReader
         return $array;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readUInt16(): int
     {
         $uInt16 = static::unpackUInt16($this->content, $this->offset);
@@ -104,8 +91,6 @@ class StreamReader
 
     /**
      * @return int[]
-     *
-     * @throws \Exception
      */
     public function readUInt16Array(int $size): array
     {
@@ -117,9 +102,6 @@ class StreamReader
         return $array;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readInt16(): int
     {
         $uInt16 = $this->readUInt16();
@@ -129,8 +111,6 @@ class StreamReader
 
     /**
      * @return int[]
-     *
-     * @throws \Exception
      */
     public function readInt16Array(int $size): array
     {
@@ -142,9 +122,6 @@ class StreamReader
         return $array;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readUInt24(): int
     {
         $uInt16 = $this->readUInt16();
@@ -153,9 +130,6 @@ class StreamReader
         return $uInt16 << 8 | $uInt8;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readUInt32(): int
     {
         $uInt32 = static::unpackUInt32($this->content, $this->offset);
@@ -200,9 +174,6 @@ class StreamReader
         return $mantissa + ($fraction / 65536.0);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readFWORD(): int
     {
         return $this->readInt16();
@@ -216,9 +187,7 @@ class StreamReader
         $uInt64 = self::unpackUInt64($this->content, $this->offset);
         $this->offset += 8;
 
-        $int64 = self::transformToSinged($uInt64, 64);
-
-        return $int64;
+        return self::transformToSinged($uInt64, 64);
     }
 
     /**
@@ -263,9 +232,6 @@ class StreamReader
         return $this->readUInt16Array($size);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readOffset32(): int
     {
         return $this->readUInt32();
@@ -318,9 +284,6 @@ class StreamReader
         $this->offset += $align;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function isEndOfFileReached(): bool
     {
         return $this->offset >= $this->byteCount;

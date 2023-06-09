@@ -354,7 +354,7 @@ class FileWriter
 
         $locaTable->addOffset($currentOffset);
 
-        // consider placing this in TableVisitor, as there glyf table sizes are known anyways
+        // consider placing this in TableVisitor, as there glyf table sizes are known anyway
         // reduces code complexity
         foreach ($glyfTables as $glyfTable) {
             if (null !== $glyfTable) {
@@ -633,7 +633,10 @@ class FileWriter
         return $writer->getStream();
     }
 
-    private static function setBinaryTreeSearchableProperties(BinaryTreeSearchableTrait $binaryTreeSearchable, int $numberOfEntries): void
+    /**
+     * @param BinaryTreeSearchableTrait $binaryTreeSearchable
+     */
+    private static function setBinaryTreeSearchableProperties(mixed $binaryTreeSearchable, int $numberOfEntries): void
     {
         $powerOfTwo = (int) log($numberOfEntries, 2);
 

@@ -86,7 +86,7 @@ class Optimizer
         $rawTableDirectory->setFpgmTable($source->getFpgmTable());
 
         /*
-         * intentionally skipping GDEF, GPOST, GSUB as these are dependant on glyphs
+         * intentionally skipping GDEF, GPOST, GSUB as these are dependent on glyphs
          */
 
         $rawTableDirectory->setGaspTable($source->getGaspTable());

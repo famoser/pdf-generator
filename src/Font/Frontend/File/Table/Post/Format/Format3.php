@@ -15,7 +15,7 @@ use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
 
 /**
  * specifies that no PostScript information will be supplied
- * may breaks printers which relay on the PostScript information.
+ * may break printers which relay on the PostScript information.
  */
 class Format3 extends Format
 {

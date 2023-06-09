@@ -67,9 +67,8 @@ class Parser
         $fileReader = new FileReader($cMapFormatReader, $postFormatReader);
 
         $fontFile = $fileReader->read($streamReader);
-        $font = $this->createFont($fontFile);
 
-        return $font;
+        return $this->createFont($fontFile);
     }
 
     /**
@@ -88,7 +87,7 @@ class Parser
         // some of the first glyphs might be strange, following one or the other convention
         // https://github.com/fontforge/fontforge/issues/796
         // like first glyphs must be .notdef, second null, third CR, ...
-        // the first char is always the .notdef, afterwards the conventions might diverge
+        // the first char is always the .notdef, afterward the conventions might diverge
         // we detect the convention-specific chars by assuming they have no unicode assigned
         $reservedCharacters = [array_shift($characters)];
         while (\count($characters) > 0 && null === $characters[0]->getUnicodePoint()) {
@@ -253,7 +252,10 @@ class Parser
         return $longHorMetric;
     }
 
-    private function calculateBoundingBox(BoundingBoxTrait $boundingBoxTrait): BoundingBox
+    /**
+     * @param BoundingBoxTrait $boundingBoxTrait
+     */
+    private function calculateBoundingBox(mixed $boundingBoxTrait): BoundingBox
     {
         $boundingBox = new BoundingBox();
 

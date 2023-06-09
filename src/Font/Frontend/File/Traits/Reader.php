@@ -16,9 +16,11 @@ use PdfGenerator\Font\Frontend\StreamReader;
 class Reader
 {
     /**
+     * @param BinaryTreeSearchableTrait $binaryTreeSearchable
+     *
      * @throws \Exception
      */
-    public static function readBinaryTreeSearchableUInt16(StreamReader $fileReader, BinaryTreeSearchableTrait $binaryTreeSearchable): void
+    public static function readBinaryTreeSearchableUInt16(StreamReader $fileReader, mixed $binaryTreeSearchable): void
     {
         $binaryTreeSearchable->setSearchRange($fileReader->readUInt16());
         $binaryTreeSearchable->setEntrySelector($fileReader->readUInt16());
@@ -26,9 +28,11 @@ class Reader
     }
 
     /**
+     * @param BoundingBoxTrait $boundingBoxTrait
+     *
      * @throws \Exception
      */
-    public static function readBoundingBoxInt16(StreamReader $fileReader, BoundingBoxTrait $boundingBoxTrait): void
+    public static function readBoundingBoxInt16(StreamReader $fileReader, mixed $boundingBoxTrait): void
     {
         $boundingBoxTrait->setXMin($fileReader->readInt16());
         $boundingBoxTrait->setYMin($fileReader->readInt16());
@@ -37,9 +41,9 @@ class Reader
     }
 
     /**
-     * @throws \Exception
+     * @param BoundingBoxTrait $boundingBoxTrait
      */
-    public static function readBoundingBoxFWORD(StreamReader $fileReader, BoundingBoxTrait $boundingBoxTrait): void
+    public static function readBoundingBoxFWORD(StreamReader $fileReader, mixed $boundingBoxTrait): void
     {
         $boundingBoxTrait->setXMin($fileReader->readFWORD());
         $boundingBoxTrait->setYMin($fileReader->readFWORD());
