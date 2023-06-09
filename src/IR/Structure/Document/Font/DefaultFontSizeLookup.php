@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR\Structure\Document\Font;
 
-class DefaultFontSize
+class DefaultFontSizeLookup
 {
     /**
      * @var int[][][]|null

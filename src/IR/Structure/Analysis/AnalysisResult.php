@@ -15,15 +15,15 @@ use PdfGenerator\IR\Structure\Document\Font;
 use PdfGenerator\IR\Structure\Document\Image;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
 
-class AnalysisResult
+readonly class AnalysisResult
 {
     /**
      * AnalysisResult constructor.
      *
-     * @param Size[]   $maxSizePerImage
+     * @param Size[] $maxSizePerImage
      * @param string[] $textPerFont
      */
-    public function __construct(private readonly array $maxSizePerImage, private readonly array $textPerFont)
+    public function __construct(private array $maxSizePerImage, private array $textPerFont)
     {
     }
 

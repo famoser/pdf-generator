@@ -11,10 +11,10 @@
 
 namespace PdfGenerator\IR\Structure\Document;
 
-use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
+use PdfGenerator\IR\Structure\Document\Base\BaseDocumentResource;
 use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 
-abstract class Font extends BaseDocumentStructure
+readonly abstract class Font extends BaseDocumentResource
 {
     abstract public function accept(FontVisitor $visitor);
 

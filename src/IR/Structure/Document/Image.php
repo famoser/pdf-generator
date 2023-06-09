@@ -11,10 +11,10 @@
 
 namespace PdfGenerator\IR\Structure\Document;
 
-use PdfGenerator\IR\Structure\Document\Base\BaseDocumentStructure;
+use PdfGenerator\IR\Structure\Document\Base\BaseDocumentResource;
 use PdfGenerator\IR\Structure\DocumentVisitor;
 
-class Image extends BaseDocumentStructure
+readonly class Image extends BaseDocumentResource
 {
     final public const TYPE_JPG = 'TYPE_JPG';
     final public const TYPE_JPEG = 'TYPE_JPEG';
@@ -24,7 +24,7 @@ class Image extends BaseDocumentStructure
     /**
      * Image constructor.
      */
-    public function __construct(private readonly string $src, private readonly string $data, private readonly string $type, private readonly int $width, private readonly int $height)
+    public function __construct(private string $src, private string $data, private string $type, private int $width, private int $height)
     {
     }
 

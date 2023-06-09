@@ -13,7 +13,7 @@ namespace PdfGenerator\IR\Structure\Document\Font;
 
 use PdfGenerator\IR\Structure\Document\Font;
 
-class DefaultFont extends Font
+readonly class DefaultFont extends Font
 {
     final public const FONT_HELVETICA = 'Helvetica';
     final public const FONT_COURIER = 'Courier';
@@ -32,14 +32,14 @@ class DefaultFont extends Font
     /**
      * @var int[]
      */
-    private readonly array $size;
+    private array $size;
 
     /**
      * DefaultFont constructor.
      */
-    public function __construct(private readonly string $font, private readonly string $style)
+    public function __construct(private string $font, private string $style)
     {
-        $this->size = DefaultFontSize::getSize($this->font, $this->style);
+        $this->size = DefaultFontSizeLookup::getSize($this->font, $this->style);
     }
 
     /**
