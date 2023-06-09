@@ -27,27 +27,27 @@ class FontFile
 {
     private bool $isTrueTypeFile;
 
-    private ?CMapTable $cMapTable;
+    private ?CMapTable $cMapTable = null;
 
     /**
      * lists values which can be referenced by instructions.
      */
-    private ?RawTable $cvtTable;
+    private ?RawTable $cvtTable = null;
 
     /**
      * lists instructions to be executed when first opening the font.
      */
-    private ?RawTable $fpgmTable;
+    private ?RawTable $fpgmTable = null;
 
     /**
      * defines rasterization techniques based on the ppem of the device.
      */
-    private ?RawTable $gaspTable;
+    private ?RawTable $gaspTable = null;
 
     /**
      * contains additional glyph properties such as ligatures.
      */
-    private ?RawTable $gDEFTable;
+    private ?RawTable $gDEFTable = null;
 
     /**
      * @var GlyfTable[]
@@ -57,22 +57,22 @@ class FontFile
     /**
      * defines the position of glyphs for complex usages.
      */
-    private ?RawTable $gPOSTable;
+    private ?RawTable $gPOSTable = null;
 
     /**
      * includes glyph substitutions.
      */
-    private ?RawTable $gSUBTable;
+    private ?RawTable $gSUBTable = null;
 
-    private ?HeadTable $headTable;
+    private ?HeadTable $headTable = null;
 
-    private ?HHeaTable $hHeaTable;
+    private ?HHeaTable $hHeaTable = null;
 
-    private ?HMtxTable $hMtxTable;
+    private ?HMtxTable $hMtxTable = null;
 
-    private ?LocaTable $locaTable;
+    private ?LocaTable $locaTable = null;
 
-    private ?MaxPTable $maxPTable;
+    private ?MaxPTable $maxPTable = null;
 
     private NameTable $nameTable;
 
@@ -81,9 +81,9 @@ class FontFile
     /**
      * lists instructions to be executed before each glyph is drawn.
      */
-    private ?RawTable $prepTable;
+    private ?RawTable $prepTable = null;
 
-    private ?PostTable $postTable;
+    private ?PostTable $postTable = null;
 
     /**
      * any other table not recognised.
