@@ -25,10 +25,7 @@ class StateTransitionVisitor
 
     private ?TextState $appliedTextState = null;
 
-    /**
-     * StateTransitionVisitor constructor.
-     */
-    public function __construct(private readonly FullState $previousState, private readonly DocumentResources $documentResources)
+    public function __construct(private readonly ?FullState $previousState, private readonly DocumentResources $documentResources)
     {
     }
 
@@ -39,7 +36,7 @@ class StateTransitionVisitor
     {
         $this->appliedColorState = $targetState;
 
-        $previousState = $this->previousState->getColorState();
+        $previousState = $this->previousState?->getColorState();
 
         return $this->getColorOperators($targetState, $previousState);
     }
@@ -51,7 +48,7 @@ class StateTransitionVisitor
     {
         $this->appliedGeneralGraphicsState = $targetState;
 
-        $previousState = $this->previousState->getGeneralGraphicsState();
+        $previousState = $this->previousState?->getGeneralGraphicsState();
 
         return $this->getGeneralGraphicsOperators($targetState, $previousState);
     }
@@ -63,7 +60,7 @@ class StateTransitionVisitor
     {
         $this->appliedTextState = $targetState;
 
-        $previousState = $this->previousState->getTextState();
+        $previousState = $this->previousState?->getTextState();
 
         return $this->getTextOperators($targetState, $previousState);
     }
@@ -71,16 +68,16 @@ class StateTransitionVisitor
     public function getAppliedState(): FullState
     {
         return new FullState(
-            $this->appliedGeneralGraphicsState ?: $this->previousState->getGeneralGraphicsState(),
-            $this->appliedColorState ?: $this->previousState->getColorState(),
-            $this->appliedTextState ?: $this->previousState->getTextState()
+            $this->appliedGeneralGraphicsState ?: $this->previousState?->getGeneralGraphicsState(),
+            $this->appliedColorState ?: $this->previousState?->getColorState(),
+            $this->appliedTextState ?: $this->previousState?->getTextState()
         );
     }
 
     /**
      * @return string[]
      */
-    private function getTextOperators(TextState $targetState, TextState $previousState): array
+    private function getTextOperators(TextState $targetState, ?TextState $previousState): array
     {
         // if reference matches, we do not need to do anything
         if ($previousState === $targetState) {
@@ -88,9 +85,13 @@ class StateTransitionVisitor
         }
 
         $operators = [];
-        if ($previousState->getFont() !== $targetState->getFont() || $previousState->getFontSize() !== $targetState->getFontSize()) {
+        if ($previousState?->getFont() !== $targetState->getFont() || $previousState?->getFontSize() !== $targetState->getFontSize()) {
             $font = $this->documentResources->getFont($targetState->getFont());
             $operators[] = '/'.$font->getIdentifier().' '.$targetState->getFontSize().' Tf';
+        }
+
+        if (!$previousState) {
+            $previousState = new TextState($targetState->getFont(), $targetState->getFontSize());
         }
 
         if ($previousState->getCharSpace() !== $targetState->getCharSpace()) {
@@ -123,7 +124,7 @@ class StateTransitionVisitor
     /**
      * @return string[]
      */
-    private function getGeneralGraphicsOperators(GeneralGraphicState $targetState, GeneralGraphicState $previousState): array
+    private function getGeneralGraphicsOperators(GeneralGraphicState $targetState, ?GeneralGraphicState $previousState): array
     {
         // if reference matches, we do not need to do anything
         if ($previousState === $targetState) {
@@ -131,6 +132,10 @@ class StateTransitionVisitor
         }
 
         $operators = [];
+
+        if (!$previousState) {
+           $previousState = new GeneralGraphicState();
+        }
 
         if ($previousState->getLineWidth() !== $targetState->getLineWidth()) {
             $operators[] = $targetState->getLineWidth().' w';
@@ -158,11 +163,15 @@ class StateTransitionVisitor
     /**
      * @return string[]
      */
-    private function getColorOperators(ColorState $targetState, ColorState $previousState): array
+    private function getColorOperators(ColorState $targetState, ?ColorState $previousState): array
     {
         // if reference matches, we do not need to do anything
         if ($previousState === $targetState) {
             return [];
+        }
+
+        if (!$previousState) {
+            $previousState = new ColorState();
         }
 
         $operators = [];
