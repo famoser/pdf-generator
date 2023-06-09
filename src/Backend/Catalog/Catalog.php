@@ -18,14 +18,11 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class Catalog extends BaseStructure
 {
-    private Pages $pages;
-
     /**
      * Catalog constructor.
      */
-    public function __construct(Pages $pages)
+    public function __construct(private Pages $pages)
     {
-        $this->pages = $pages;
     }
 
     public function accept(CatalogVisitor $visitor): BaseObject

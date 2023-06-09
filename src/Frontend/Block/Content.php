@@ -22,16 +22,12 @@ class Content extends Block
 {
     private ContentStyle $style;
 
-    private MeasuredContent $measuredContent;
-
     /**
      * Content constructor.
      */
-    public function __construct(MeasuredContent $measuredContent, ContentStyle $style = null, array $dimensions = null)
+    public function __construct(private MeasuredContent $measuredContent, ContentStyle $style = null, array $dimensions = null)
     {
         parent::__construct($dimensions);
-
-        $this->measuredContent = $measuredContent;
         $this->style = $style ?? new BlockStyle();
     }
 

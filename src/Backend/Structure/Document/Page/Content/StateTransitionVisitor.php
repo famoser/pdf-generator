@@ -19,23 +19,17 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
 class StateTransitionVisitor
 {
-    private FullState $previousState;
-
     private ?ColorState $appliedColorState = null;
 
     private ?GeneralGraphicState $appliedGeneralGraphicsState = null;
 
     private ?TextState $appliedTextState = null;
 
-    private DocumentResources $documentResources;
-
     /**
      * StateTransitionVisitor constructor.
      */
-    public function __construct(FullState $state, DocumentResources $documentResources)
+    public function __construct(private FullState $previousState, private DocumentResources $documentResources)
     {
-        $this->previousState = $state;
-        $this->documentResources = $documentResources;
     }
 
     /**

@@ -30,15 +30,11 @@ class DocumentVisitor implements FontVisitor
 {
     private DocumentResources $documentResources;
 
-    private AnalysisResult $analysisResult;
-
     /**
      * DocumentStructureVisitor constructor.
      */
-    public function __construct(AnalysisResult $analysisResult)
+    public function __construct(private AnalysisResult $analysisResult)
     {
-        $this->analysisResult = $analysisResult;
-
         $this->documentResources = new DocumentResources($this);
     }
 

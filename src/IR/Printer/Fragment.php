@@ -15,20 +15,11 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
 class Fragment
 {
-    private string $text;
-
-    private TextStyle $textStyle;
-
-    private float $width;
-
     /**
      * Fragment constructor.
      */
-    public function __construct(string $text, TextStyle $textStyle, float $width)
+    public function __construct(private string $text, private TextStyle $textStyle, private float $width)
     {
-        $this->text = $text;
-        $this->textStyle = $textStyle;
-        $this->width = $width;
     }
 
     public function getText(): string

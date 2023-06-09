@@ -15,24 +15,14 @@ use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 
 class RowStyle extends BlockStyle
 {
-    private float $gutter;
-
-    /**
-     * @var float[]
-     */
-    private array $columnWidths;
-
     /**
      * RowStyle constructor.
      *
-     * @param float[]|null $columnWidths
+     * @param float[] $columnWidths
      */
-    public function __construct(float $gutter = 0, array $columnWidths = [])
+    public function __construct(private float $gutter = 0, private array $columnWidths = [])
     {
         parent::__construct();
-
-        $this->gutter = $gutter;
-        $this->columnWidths = $columnWidths;
     }
 
     public function getGutter(): float

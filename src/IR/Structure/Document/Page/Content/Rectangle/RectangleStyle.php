@@ -15,20 +15,11 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 
 class RectangleStyle
 {
-    private float $lineWidth;
-
-    private ?Color $borderColor;
-
-    private ?Color $fillColor;
-
     /**
      * Style constructor.
      */
-    public function __construct(float $lineWidth, ?Color $borderColor, ?Color $fillColor)
+    public function __construct(private float $lineWidth, private ?\PdfGenerator\IR\Structure\Document\Page\Content\Common\Color $borderColor, private ?\PdfGenerator\IR\Structure\Document\Page\Content\Common\Color $fillColor)
     {
-        $this->borderColor = $borderColor;
-        $this->fillColor = $fillColor;
-        $this->lineWidth = $lineWidth;
     }
 
     public function getLineWidth(): float

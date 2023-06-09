@@ -23,8 +23,6 @@ class Document implements DocumentInterface
 {
     private \PdfGenerator\IR\Structure\Document $document;
 
-    private ?Cursor $cursor;
-
     private PageGenerator $pageGenerator;
 
     private FontRepository $fontRepository;
@@ -35,10 +33,9 @@ class Document implements DocumentInterface
 
     private ContentVisitor $contentVisitor;
 
-    public function __construct(PageGenerator $pageGenerator = null, Cursor $cursor = null)
+    public function __construct(PageGenerator $pageGenerator = null, private ?\PdfGenerator\Frontend\Cursor $cursor = null)
     {
         $this->pageGenerator = $pageGenerator ?? new PageGenerator();
-        $this->cursor = $cursor;
 
         $this->fontRepository = new FontRepository();
         $this->imageRepository = new ImageRepository();

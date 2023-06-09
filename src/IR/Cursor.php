@@ -13,20 +13,11 @@ namespace PdfGenerator\IR;
 
 class Cursor
 {
-    private float $xCoordinate;
-
-    private float $yCoordinate;
-
-    private int $pageIndex;
-
     /**
      * Cursor constructor.
      */
-    public function __construct(float $xCoordinate, float $yCoordinate, int $page)
+    public function __construct(private float $xCoordinate, private float $yCoordinate, private int $pageIndex)
     {
-        $this->xCoordinate = $xCoordinate;
-        $this->yCoordinate = $yCoordinate;
-        $this->pageIndex = $page;
     }
 
     public function getXCoordinate(): float

@@ -17,24 +17,12 @@ use PdfGenerator\IR\Structure\Document\Font;
 class Phrase
 {
     /**
-     * @var Line[]
-     */
-    private array $measuredLines;
-
-    private TextStyle $textStyle;
-
-    private Font $font;
-
-    /**
      * MeasuredPhrase constructor.
      *
      * @param Line[] $measuredLines
      */
-    public function __construct(array $measuredLines, TextStyle $textStyle, Font $font)
+    public function __construct(private array $measuredLines, private TextStyle $textStyle, private Font $font)
     {
-        $this->measuredLines = $measuredLines;
-        $this->textStyle = $textStyle;
-        $this->font = $font;
     }
 
     /**

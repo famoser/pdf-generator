@@ -18,18 +18,12 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 class Contents extends BaseStructure
 {
     /**
-     * @var Content[]
-     */
-    private array $content;
-
-    /**
      * Contents constructor.
      *
      * @param Content[] $content
      */
-    public function __construct(array $content)
+    public function __construct(private array $content)
     {
-        $this->content = $content;
     }
 
     /**

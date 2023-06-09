@@ -18,7 +18,7 @@ class CharacterSizer
     /**
      * @var int[]
      */
-    private array $characterAdvanceWidthLookup;
+    private array $characterAdvanceWidthLookup = [];
 
     private int $invalidCharacterWidth;
 
@@ -28,7 +28,6 @@ class CharacterSizer
     public function __construct(Font $font)
     {
         $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());
-        $this->characterAdvanceWidthLookup = [];
         foreach ($characters as $character) {
             $this->characterAdvanceWidthLookup[$character->getUnicodePoint()] = $character->getLongHorMetric()->getAdvanceWidth();
         }

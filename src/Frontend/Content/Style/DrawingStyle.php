@@ -16,20 +16,14 @@ use PdfGenerator\Frontend\Content\Style\Base\Style;
 
 class DrawingStyle extends Style
 {
-    private float $lineWidth;
-
     private ?Color $borderColor;
-
-    private ?Color $fillColor;
 
     /**
      * Style constructor.
      */
-    public function __construct(float $lineWidth, Color $borderColor = null, Color $fillColor = null)
+    public function __construct(private float $lineWidth, Color $borderColor = null, private ?\PdfGenerator\Frontend\Block\Style\Part\Color $fillColor = null)
     {
         $this->borderColor = $borderColor ?? Color::black();
-        $this->fillColor = $fillColor;
-        $this->lineWidth = $lineWidth;
     }
 
     public function getLineWidth(): float

@@ -13,18 +13,6 @@ namespace PdfGenerator\Frontend\MeasuredContent\Paragraph;
 
 class Line
 {
-    /**
-     * @var string[]
-     */
-    private array $words;
-
-    /**
-     * @var float[]
-     */
-    private array $wordWidths;
-
-    private float $spaceWidth;
-
     private float $width;
 
     /**
@@ -33,12 +21,8 @@ class Line
      * @param string[] $words
      * @param float[]  $wordWidths
      */
-    public function __construct(array $words, array $wordWidths, float $spaceWidth)
+    public function __construct(private array $words, private array $wordWidths, private float $spaceWidth)
     {
-        $this->words = $words;
-        $this->wordWidths = $wordWidths;
-        $this->spaceWidth = $spaceWidth;
-
         $this->width = array_sum($this->wordWidths) + (\count($this->wordWidths) - 1) * $this->spaceWidth;
     }
 

@@ -15,8 +15,6 @@ use PdfGenerator\IR\Structure\Document;
 
 class InvoiceLayout
 {
-    private Document $document;
-
     private Document\Page\Content\Text\TextStyle $headerStyle;
 
     private Document\Page\Content\Text\TextStyle $bodyStyle;
@@ -24,10 +22,8 @@ class InvoiceLayout
     /**
      * InvoiceLayout constructor.
      */
-    public function __construct(Document $document, string $headerFontPath, string $bodyFontPath)
+    public function __construct(private Document $document, string $headerFontPath, string $bodyFontPath)
     {
-        $this->document = $document;
-
         $headerFont = $this->document->getOrCreateEmbeddedFont($headerFontPath);
         $this->headerStyle = new Document\Page\Content\Text\TextStyle($headerFont, 8);
 

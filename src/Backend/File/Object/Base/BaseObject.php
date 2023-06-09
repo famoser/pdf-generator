@@ -15,14 +15,11 @@ use PdfGenerator\Backend\File\ObjectVisitor;
 
 abstract class BaseObject
 {
-    private int $number;
-
     /**
      * BaseObject constructor.
      */
-    public function __construct(int $number)
+    public function __construct(private int $number)
     {
-        $this->number = $number;
     }
 
     abstract public function accept(ObjectVisitor $visitor): string;

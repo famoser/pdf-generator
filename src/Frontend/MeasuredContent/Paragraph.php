@@ -24,14 +24,11 @@ class Paragraph extends MeasuredContent
      */
     private array $phrases = [];
 
-    private ParagraphStyle $style;
-
     /**
      * Paragraph constructor.
      */
-    public function __construct(ParagraphStyle $style)
+    public function __construct(private ParagraphStyle $style)
     {
-        $this->style = $style;
     }
 
     public function addPhrase(Phrase $phrase): void

@@ -25,11 +25,6 @@ class Page
     private array $content = [];
 
     /**
-     * @var int[]
-     */
-    private array $mediaBox;
-
-    /**
      * @var Font[]
      */
     private array $fonts = [];
@@ -44,9 +39,8 @@ class Page
      *
      * @param int[] $mediaBox
      */
-    public function __construct(array $mediaBox)
+    public function __construct(private array $mediaBox)
     {
-        $this->mediaBox = $mediaBox;
     }
 
     public function addContent(BaseContent $content): void

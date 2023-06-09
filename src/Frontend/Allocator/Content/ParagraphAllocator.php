@@ -18,8 +18,6 @@ use PdfGenerator\Frontend\Size;
 
 class ParagraphAllocator implements ContentAllocatorInterface
 {
-    private Paragraph $paragraph;
-
     private ParagraphStyle $style;
 
     private ParagraphBreaker $paragraphBreaker;
@@ -29,9 +27,8 @@ class ParagraphAllocator implements ContentAllocatorInterface
     /**
      * ParagraphAllocator constructor.
      */
-    public function __construct(Paragraph $paragraph)
+    public function __construct(private Paragraph $paragraph)
     {
-        $this->paragraph = $paragraph;
         $this->style = $paragraph->getStyle();
 
         $this->paragraphBreaker = new ParagraphBreaker($paragraph);

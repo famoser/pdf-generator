@@ -18,25 +18,13 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
 class AnalysisResult
 {
     /**
-     * @var Size[]
-     */
-    private array $maxSizePerImage;
-
-    /**
-     * @var string[]
-     */
-    private array $textPerFont;
-
-    /**
      * AnalysisResult constructor.
      *
      * @param Size[]   $maxSizePerImage
      * @param string[] $textPerFont
      */
-    public function __construct(array $maxSizePerImage, array $textPerFont)
+    public function __construct(private array $maxSizePerImage, private array $textPerFont)
     {
-        $this->maxSizePerImage = $maxSizePerImage;
-        $this->textPerFont = $textPerFont;
     }
 
     public function getMaxSizePerImage(Image $image): Size

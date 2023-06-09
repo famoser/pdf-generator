@@ -13,17 +13,8 @@ namespace PdfGenerator\Frontend\Allocator\RowAllocator;
 
 class ColumnWidthEstimate
 {
-    private float $minimalWidth;
-
-    private float $widthEstimate;
-
-    private float $widthEstimateRelevance;
-
-    public function __construct(float $minimalWidth = 0, float $widthEstimate = 0, float $widthEstimateRelevance = 1)
+    public function __construct(private float $minimalWidth = 0, private float $widthEstimate = 0, private float $widthEstimateRelevance = 1)
     {
-        $this->minimalWidth = $minimalWidth;
-        $this->widthEstimate = $widthEstimate;
-        $this->widthEstimateRelevance = $widthEstimateRelevance;
     }
 
     public function getMinimalWidth(): float

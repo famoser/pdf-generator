@@ -14,28 +14,13 @@ namespace PdfGenerator\IR\Buffer\TextBuffer;
 class MeasuredLine
 {
     /**
-     * @var string[]
-     */
-    private array $words;
-
-    /**
-     * @var float[]
-     */
-    private array $wordWidths;
-
-    private float $spaceWidth;
-
-    /**
      * MeasuredPhrase constructor.
      *
      * @param string[] $words
      * @param float[]  $wordWidths
      */
-    public function __construct(array $words, array $wordWidths, float $spaceWidth)
+    public function __construct(private array $words, private array $wordWidths, private float $spaceWidth)
     {
-        $this->words = $words;
-        $this->wordWidths = $wordWidths;
-        $this->spaceWidth = $spaceWidth;
     }
 
     /**

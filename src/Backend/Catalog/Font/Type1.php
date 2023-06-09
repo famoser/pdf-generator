@@ -34,16 +34,12 @@ class Type1 extends Font
 
     public const ENCODING_WIN_ANSI_ENCODING = 'WinAnsiEncoding';
 
-    private string $baseFont;
-
     /**
      * Type1 constructor.
      */
-    public function __construct(string $identifier, string $baseFont)
+    public function __construct(string $identifier, private string $baseFont)
     {
         parent::__construct($identifier);
-
-        $this->baseFont = $baseFont;
     }
 
     public function getBaseFont(): string

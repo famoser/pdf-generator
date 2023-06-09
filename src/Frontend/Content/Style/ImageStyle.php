@@ -17,14 +17,11 @@ class ImageStyle extends Style
 {
     public const SIZE_CONTAIN = 'SIZING_CONTAIN';
 
-    private string $size;
-
     /**
      * ImageStyle constructor.
      */
-    public function __construct(string $size = self::SIZE_CONTAIN)
+    public function __construct(private string $size = self::SIZE_CONTAIN)
     {
-        $this->size = $size;
     }
 
     public function getSize(): string

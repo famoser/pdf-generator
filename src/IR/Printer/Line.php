@@ -18,20 +18,11 @@ class Line
      */
     private array $fragments = [];
 
-    private float $ascender;
-
-    private float $descender;
-
-    private float $leading;
-
     /**
      * Line constructor.
      */
-    public function __construct(float $ascender, float $descender, float $leading)
+    public function __construct(private float $ascender, private float $descender, private float $leading)
     {
-        $this->ascender = $ascender;
-        $this->descender = $descender;
-        $this->leading = $leading;
     }
 
     public function addFragment(Fragment $fragment): void

@@ -19,20 +19,11 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base\BaseState
 
 class WritingState extends BaseStateCollection
 {
-    private GeneralGraphicState $generalGraphicsState;
-
-    private ColorState $colorState;
-
-    private TextState $textState;
-
     /**
      * TextLevel constructor.
      */
-    public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState, TextState $textState)
+    public function __construct(private GeneralGraphicState $generalGraphicsState, private ColorState $colorState, private TextState $textState)
     {
-        $this->generalGraphicsState = $generalGraphicsState;
-        $this->colorState = $colorState;
-        $this->textState = $textState;
     }
 
     /**

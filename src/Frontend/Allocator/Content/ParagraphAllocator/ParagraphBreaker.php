@@ -17,8 +17,6 @@ use PdfGenerator\Frontend\MeasuredContent\Utils\FontMeasurement;
 
 class ParagraphBreaker
 {
-    private Paragraph $paragraph;
-
     /**
      * the next to be included word.
      */
@@ -26,9 +24,8 @@ class ParagraphBreaker
 
     private ?PhraseBreaker $phraseBreaker;
 
-    public function __construct(Paragraph $paragraph)
+    public function __construct(private Paragraph $paragraph)
     {
-        $this->paragraph = $paragraph;
     }
 
     public function isEmpty(): bool

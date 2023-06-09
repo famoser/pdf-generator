@@ -26,8 +26,6 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
 class Printer
 {
-    protected Document $document;
-
     protected TextStyle $textStyle;
 
     protected RectangleStyle $rectangleStyle;
@@ -35,10 +33,8 @@ class Printer
     /**
      * Printer constructor.
      */
-    public function __construct(Document $document)
+    public function __construct(protected Document $document)
     {
-        $this->document = $document;
-
         $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
         $this->textStyle = new TextStyle($font, 12, 12);
 

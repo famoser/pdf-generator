@@ -15,17 +15,11 @@ use PdfGenerator\IR\Cursor;
 
 class Position
 {
-    private float $startX;
-
-    private float $startY;
-
     /**
      * Position constructor.
      */
-    public function __construct(float $startX, float $startY)
+    public function __construct(private float $startX, private float $startY)
     {
-        $this->startX = $startX;
-        $this->startY = $startY;
     }
 
     public static function fromCursor(Cursor $cursor): Position

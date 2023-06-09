@@ -16,25 +16,14 @@ use PdfGenerator\IR\Structure\Document;
 
 class SingleColumnGenerator implements ColumnGenerator
 {
-    private Document $document;
-
-    /**
-     * @var float[]
-     */
-    private array $pageSize;
-
-    /**
-     * @var float[]
-     */
-    private array $margin;
-
     private ?Cursor $lastCursor = null;
 
-    public function __construct(Document $document, $pageSize = [210, 297], $margin = [25, 25, 25, 25])
+    /**
+     * @param float[] $pageSize
+     * @param float[] $margin
+     */
+    public function __construct(private Document $document, private $pageSize = [210, 297], private $margin = [25, 25, 25, 25])
     {
-        $this->document = $document;
-        $this->pageSize = $pageSize;
-        $this->margin = $margin;
     }
 
     public function getNextColumn(): Column

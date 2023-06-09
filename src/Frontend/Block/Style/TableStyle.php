@@ -15,22 +15,12 @@ use PdfGenerator\Frontend\Block\Style\Part\Color;
 
 class TableStyle extends RowStyle
 {
-    private float $rowDividerWidth;
-
     private Color $rowDividerColor;
 
-    private ?Color $alternatingBackgroundColor;
-
-    private bool $repeatHeader;
-
-    public function __construct(array $columnWidths = null, float $rowDividerWidth = 0, Color $rowDividerColor = null, Color $alternatingBackgroundColor = null, bool $repeatHeader = false)
+    public function __construct(array $columnWidths = null, private float $rowDividerWidth = 0, Color $rowDividerColor = null, private ?\PdfGenerator\Frontend\Block\Style\Part\Color $alternatingBackgroundColor = null, private bool $repeatHeader = false)
     {
         parent::__construct($columnWidths);
-
-        $this->rowDividerWidth = $rowDividerWidth;
         $this->rowDividerColor = $rowDividerColor ?? Color::black();
-        $this->alternatingBackgroundColor = $alternatingBackgroundColor;
-        $this->repeatHeader = $repeatHeader;
     }
 
     public function getRowDividerWidth(): float

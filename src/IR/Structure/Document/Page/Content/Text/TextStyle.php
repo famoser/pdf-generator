@@ -15,20 +15,11 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 class TextStyle
 {
-    private Font $font;
-
-    private float $fontSize;
-
-    private float $lineHeight;
-
     /**
      * Style constructor.
      */
-    public function __construct(Font $font, float $fontSize, float $lineHeight = 1)
+    public function __construct(private Font $font, private float $fontSize, private float $lineHeight = 1)
     {
-        $this->font = $font;
-        $this->fontSize = $fontSize;
-        $this->lineHeight = $lineHeight;
     }
 
     public function getFont(): Font

@@ -13,20 +13,11 @@ namespace PdfGenerator\IR\Structure\Document\Page\Content\Common;
 
 class Color
 {
-    private int $red;
-
-    private int $green;
-
-    private int $blue;
-
     /**
      * Color constructor.
      */
-    public function __construct(int $red, int $green, int $blue)
+    public function __construct(private int $red, private int $green, private int $blue)
     {
-        $this->red = $red;
-        $this->green = $green;
-        $this->blue = $blue;
     }
 
     /**

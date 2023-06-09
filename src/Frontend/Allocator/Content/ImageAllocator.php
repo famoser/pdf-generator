@@ -17,16 +17,13 @@ use PdfGenerator\Frontend\Size;
 
 class ImageAllocator implements ContentAllocatorInterface
 {
-    private Image $image;
-
     private ImageStyle $imageStyle;
 
     /**
      * ImageAllocator constructor.
      */
-    public function __construct(Image $image)
+    public function __construct(private Image $image)
     {
-        $this->image = $image;
         $this->imageStyle = $image->getImage();
     }
 

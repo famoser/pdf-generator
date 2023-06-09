@@ -15,20 +15,11 @@ use PdfGenerator\Frontend\Block\Base\Block;
 
 class GridEntry
 {
-    private int $columnSpan;
-
-    private int $rowSpan;
-
-    private Block $block;
-
     /**
      * GridEntry constructor.
      */
-    public function __construct(int $columnSpan, int $rowSpan, Block $block)
+    public function __construct(private int $columnSpan, private int $rowSpan, private Block $block)
     {
-        $this->columnSpan = $columnSpan;
-        $this->rowSpan = $rowSpan;
-        $this->block = $block;
     }
 
     public function getColumnSpan(): int

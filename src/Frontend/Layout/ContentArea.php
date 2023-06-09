@@ -16,17 +16,11 @@ use PdfGenerator\Frontend\Size;
 
 class ContentArea
 {
-    private Position $start;
-
-    private Size $size;
-
     /**
      * ContentArea constructor.
      */
-    public function __construct(Position $start, Size $size)
+    public function __construct(private Position $start, private Size $size)
     {
-        $this->start = $start;
-        $this->size = $size;
     }
 
     public function getStart(): Position

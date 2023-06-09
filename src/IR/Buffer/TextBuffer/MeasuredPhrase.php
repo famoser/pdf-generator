@@ -16,21 +16,12 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 class MeasuredPhrase
 {
     /**
-     * @var MeasuredLine[]
-     */
-    private array $measuredLines;
-
-    private TextStyle $textStyle;
-
-    /**
      * MeasuredPhrase constructor.
      *
      * @param MeasuredLine[] $measuredLines
      */
-    public function __construct(array $measuredLines, TextStyle $textStyle)
+    public function __construct(private array $measuredLines, private TextStyle $textStyle)
     {
-        $this->measuredLines = $measuredLines;
-        $this->textStyle = $textStyle;
     }
 
     /**

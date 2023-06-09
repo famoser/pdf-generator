@@ -17,14 +17,11 @@ use PdfGenerator\Backend\File\TokenVisitor;
 
 class ReferenceToken extends BaseToken
 {
-    private BaseObject $target;
-
     /**
      * ReferenceEntry constructor.
      */
-    public function __construct(BaseObject $target)
+    public function __construct(private BaseObject $target)
     {
-        $this->target = $target;
     }
 
     public function accept(TokenVisitor $visitor): string
