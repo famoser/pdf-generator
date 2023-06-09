@@ -17,10 +17,11 @@
     "famoser/agnes": "^4.2"
   },
   "require-dev": {
+    "brainmaestro/composer-git-hooks": "^2.6",
     "friendsofphp/php-cs-fixer": "^3",
     "mockery/mockery": "^1.2",
     "phpunit/phpunit": "^9.5.4",
-    "brainmaestro/composer-git-hooks": "^2.6",
+    "rector/rector": "^0.17.0",
     "scrutinizer/ocular": "^1.9"
   },
   "autoload": {
