@@ -17,12 +17,12 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
-class Rectangle extends BaseContent
+readonly class Rectangle extends BaseContent
 {
     /**
      * Rectangle constructor.
      */
-    public function __construct(private readonly Position $position, private readonly Size $size, private readonly RectangleStyle $style)
+    public function __construct(private Position $position, private Size $size, private RectangleStyle $style)
     {
     }
 

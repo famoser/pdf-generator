@@ -13,12 +13,12 @@ namespace PdfGenerator\IR\Structure\Document\Page\Content\Rectangle;
 
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 
-class RectangleStyle
+readonly class RectangleStyle
 {
     /**
      * Style constructor.
      */
-    public function __construct(private readonly float $lineWidth, private readonly ?Color $borderColor, private readonly ?Color $fillColor)
+    public function __construct(private float $lineWidth, private ?Color $borderColor, private ?Color $fillColor)
     {
     }
 

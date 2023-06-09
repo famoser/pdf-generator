@@ -16,12 +16,12 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
-class Text extends BaseContent
+readonly class Text extends BaseContent
 {
     /**
      * TextPlacement constructor.
      */
-    public function __construct(private readonly string $text, private readonly Position $position, private readonly TextStyle $style)
+    public function __construct(private string $text, private Position $position, private TextStyle $style)
     {
     }
 

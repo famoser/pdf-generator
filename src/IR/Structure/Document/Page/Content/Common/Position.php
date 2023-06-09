@@ -13,12 +13,12 @@ namespace PdfGenerator\IR\Structure\Document\Page\Content\Common;
 
 use PdfGenerator\IR\Cursor;
 
-class Position
+readonly class Position
 {
     /**
      * Position constructor.
      */
-    public function __construct(private readonly float $startX, private readonly float $startY)
+    public function __construct(private float $startX, private float $startY)
     {
     }
 

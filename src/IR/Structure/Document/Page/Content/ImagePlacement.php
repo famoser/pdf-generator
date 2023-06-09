@@ -17,12 +17,12 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Position;
 use PdfGenerator\IR\Structure\Document\Page\Content\Common\Size;
 use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
-class ImagePlacement extends BaseContent
+readonly class ImagePlacement extends BaseContent
 {
     /**
      * ImagePlacement constructor.
      */
-    public function __construct(private readonly Image $image, private readonly Position $position, private readonly Size $size)
+    public function __construct(private Image $image, private Position $position, private Size $size)
     {
     }
 
