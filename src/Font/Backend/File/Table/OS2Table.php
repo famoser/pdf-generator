@@ -204,7 +204,7 @@ class OS2Table extends BaseTable
      *
      * @var int[]
      */
-    private array $panose;
+    private array $panose = [];
 
     /**
      * contained unicode blocks with each bit representing one.
@@ -316,7 +316,7 @@ class OS2Table extends BaseTable
      *
      * @var int[]|null
      */
-    private ?array $ulCodePageRanges;
+    private ?array $ulCodePageRanges = null;
 
     /**
      * code page 1252.

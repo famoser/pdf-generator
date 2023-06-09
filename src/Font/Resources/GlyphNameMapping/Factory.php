@@ -14,9 +14,9 @@ namespace PdfGenerator\Font\Resources\GlyphNameMapping;
 class Factory
 {
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    private ?array $aGLFMappingCache;
+    private ?array $aGLFMappingCache = null;
 
     /**
      * @return string[]
@@ -31,9 +31,9 @@ class Factory
     }
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
-    private ?array $macintoshMappingCache;
+    private ?array $macintoshMappingCache = null;
 
     /**
      * @return string[]

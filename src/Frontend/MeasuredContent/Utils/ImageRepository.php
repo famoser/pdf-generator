@@ -18,7 +18,7 @@ class ImageRepository
     /**
      * @var \PdfGenerator\IR\Structure\Document\Image[]
      */
-    private array $imageCache;
+    private array $imageCache = [];
 
     public function getImage(Image $param): \PdfGenerator\IR\Structure\Document\Image
     {

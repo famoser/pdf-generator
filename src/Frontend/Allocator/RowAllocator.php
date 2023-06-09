@@ -23,9 +23,9 @@ class RowAllocator extends BaseAllocator
     private RowStyle $rowStyle;
 
     /**
-     * @var ColumnAllocator[]
+     * @var ColumnAllocator[]|null
      */
-    private array $columnAllocators;
+    private ?array $columnAllocators = null;
 
     /**
      * RowAllocator constructor.
