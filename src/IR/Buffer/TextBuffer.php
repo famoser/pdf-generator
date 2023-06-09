@@ -33,7 +33,7 @@ class TextBuffer
         $this->wordSizerRepository = new WordSizerRepository();
     }
 
-    public function add(TextStyle $textStyle, string $text)
+    public function add(TextStyle $textStyle, string $text): void
     {
         $phrase = new Phrase();
         $phrase->setText($text);
@@ -63,7 +63,7 @@ class TextBuffer
         return $measuredParagraph;
     }
 
-    private function measureLine(string $line, WordSizerInterface $sizer)
+    private function measureLine(string $line, WordSizerInterface $sizer): MeasuredLine
     {
         $words = explode(' ', $line);
 

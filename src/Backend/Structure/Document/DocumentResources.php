@@ -50,10 +50,8 @@ class DocumentResources
 
     /**
      * @param BaseDocumentStructure[] $cache
-     *
-     * @return BaseDocumentStructure|CatalogFont|CatalogImage
      */
-    private function getOrCreate(BaseDocumentStructure $structure, array &$cache)
+    private function getOrCreate(BaseDocumentStructure $structure, array &$cache): CatalogFont|BaseDocumentStructure|CatalogImage
     {
         $identifier = spl_object_id($structure);
 

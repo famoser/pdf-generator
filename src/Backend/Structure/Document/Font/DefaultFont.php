@@ -31,7 +31,7 @@ class DefaultFont extends Font
         return $this->baseFont;
     }
 
-    public function accept(DocumentVisitor $documentVisitor)
+    public function accept(DocumentVisitor $documentVisitor): \PdfGenerator\Backend\Catalog\Font\Type1
     {
         return $documentVisitor->visitDefaultFont($this);
     }

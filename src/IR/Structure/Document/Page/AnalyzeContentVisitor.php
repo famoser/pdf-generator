@@ -29,7 +29,7 @@ class AnalyzeContentVisitor extends ContentVisitor
      */
     private array $textPerFont = [];
 
-    public function visitImagePlacement(ImagePlacement $placement)
+    public function visitImagePlacement(ImagePlacement $placement): void
     {
         $identifier = $placement->getImage()->getIdentifier();
 
@@ -53,7 +53,7 @@ class AnalyzeContentVisitor extends ContentVisitor
     {
     }
 
-    public function visitText(Text $param)
+    public function visitText(Text $param): void
     {
         $identifier = $param->getStyle()->getFont()->getIdentifier();
         if (!\array_key_exists($identifier, $this->textPerFont)) {

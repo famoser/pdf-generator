@@ -47,7 +47,7 @@ class ParagraphAllocator implements ContentAllocatorInterface
         return [$lines, $size];
     }
 
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->paragraphBreaker->isEmpty();
     }

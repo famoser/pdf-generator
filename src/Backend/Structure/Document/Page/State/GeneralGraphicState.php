@@ -84,7 +84,7 @@ class GeneralGraphicState extends BaseState
      */
     private float $dashPhase = 0;
 
-    public function setMinimalAngleOfMiterJoin(float $angle)
+    public function setMinimalAngleOfMiterJoin(float $angle): void
     {
         $this->miterLimit = $this->lineWidth * sin($angle / 2);
     }

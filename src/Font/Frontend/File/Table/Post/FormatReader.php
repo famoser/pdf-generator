@@ -25,18 +25,13 @@ class FormatReader
      */
     public function readFormat(StreamReader $streamReader, float $format, int $length): Format
     {
-        switch ($format) {
-            case 1.0:
-                return new Format1();
-            case 2.0:
-                return $this->readFormat2($streamReader, $length);
-            case 2.5:
-                return $this->readFormat25($streamReader);
-            case 3:
-                return new Format3();
-            default:
-                throw new \Exception('unknown post format '.$format);
-        }
+        return match ($format) {
+            1.0 => new Format1(),
+            2.0 => $this->readFormat2($streamReader, $length),
+            2.5 => $this->readFormat25($streamReader),
+            3 => new Format3(),
+            default => throw new \Exception('unknown post format '.$format),
+        };
     }
 
     /**

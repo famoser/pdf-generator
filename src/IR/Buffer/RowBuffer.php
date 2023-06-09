@@ -21,7 +21,7 @@ class RowBuffer
      */
     private array $columns = [];
 
-    public function add(int $columnIndex, TextBuffer $buffer)
+    public function add(int $columnIndex, TextBuffer $buffer): void
     {
         $paragraph = $buffer->getMeasuredParagraph();
 

@@ -22,7 +22,7 @@ class ColorStateRepository
 
     private ColorState $activeColorState;
 
-    public function setFillColor(?Color $fillColor)
+    public function setFillColor(?Color $fillColor): void
     {
         if ($fillColor === $this->fillColor) {
             return;
@@ -32,7 +32,7 @@ class ColorStateRepository
         $this->activeColorState = null;
     }
 
-    public function setBorderColor(?Color $borderColor)
+    public function setBorderColor(?Color $borderColor): void
     {
         if ($borderColor === $this->borderColor) {
             return;

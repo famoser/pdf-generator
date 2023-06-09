@@ -128,7 +128,7 @@ class Parser
      *
      * @throws \Exception
      */
-    private function addGlyphInfo(array $characters, FontFile $fontFile)
+    private function addGlyphInfo(array $characters, FontFile $fontFile): void
     {
         $subtable = $this->chooseBestCMapSubtable($fontFile->getCMapTable());
 

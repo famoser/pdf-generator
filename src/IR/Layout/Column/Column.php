@@ -66,7 +66,7 @@ class Column
         return $cursor->getYCoordinate() - $this->getMinTop();
     }
 
-    public function hasHorizontalSpaceFor(Cursor $cursor, float $width)
+    public function hasHorizontalSpaceFor(Cursor $cursor, float $width): bool
     {
         if ($cursor->getXCoordinate() !== $this->start->getXCoordinate()) {
             $afterLeft = $cursor->getXCoordinate() + $width;
@@ -79,7 +79,7 @@ class Column
         return true;
     }
 
-    public function hasVerticalSpaceFor(Cursor $cursor, float $height)
+    public function hasVerticalSpaceFor(Cursor $cursor, float $height): bool
     {
         if ($cursor->getYCoordinate() !== $this->start->getYCoordinate()) {
             $afterTop = $cursor->getYCoordinate() - $height;

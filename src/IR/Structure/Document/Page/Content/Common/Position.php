@@ -28,7 +28,7 @@ class Position
         $this->startY = $startY;
     }
 
-    public static function fromCursor(Cursor $cursor)
+    public static function fromCursor(Cursor $cursor): Position
     {
         return new self($cursor->getXCoordinate(), $cursor->getYCoordinate());
     }

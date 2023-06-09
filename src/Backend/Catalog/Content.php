@@ -42,7 +42,7 @@ class Content extends BaseStructure
     /**
      * @return BaseObject|BaseObject[]
      */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): BaseObject|array
     {
         return $visitor->visitContent($this);
     }

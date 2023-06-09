@@ -150,7 +150,7 @@ class TableDirectory
     /**
      * @param RawTable[] $rawTables
      */
-    public function setRawTables(array $rawTables)
+    public function setRawTables(array $rawTables): void
     {
         $this->rawTables = $rawTables;
     }

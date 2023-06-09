@@ -30,7 +30,7 @@ class Line
         $this->height = $height;
     }
 
-    public function addFragment(Fragment $fragment)
+    public function addFragment(Fragment $fragment): void
     {
         $this->fragments[] = $fragment;
         $this->width += $fragment->getWidth();

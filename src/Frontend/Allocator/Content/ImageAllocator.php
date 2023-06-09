@@ -30,7 +30,7 @@ class ImageAllocator implements ContentAllocatorInterface
         $this->imageStyle = $image->getImage();
     }
 
-    public function allocate(string $maxWidth, string $maxHeight)
+    public function allocate(string $maxWidth, string $maxHeight): Size
     {
         $image = $this->image->getImage();
 

@@ -52,7 +52,7 @@ class EmbeddedFont extends Font
      *
      * @throws \Exception
      */
-    public function accept(DocumentVisitor $documentVisitor)
+    public function accept(DocumentVisitor $documentVisitor): \PdfGenerator\Backend\Catalog\Font\TrueType|\PdfGenerator\Backend\Catalog\Font\Type0
     {
         return $documentVisitor->visitEmbeddedFont($this);
     }

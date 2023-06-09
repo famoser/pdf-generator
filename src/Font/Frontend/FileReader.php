@@ -276,7 +276,7 @@ class FileReader
         return $glyfTables;
     }
 
-    private function readGlyfTable(StreamReader $fileReader, $endOffset)
+    private function readGlyfTable(StreamReader $fileReader, $endOffset): GlyfTable
     {
         $glyfTable = new GlyfTable();
         $glyfTable->setNumberOfContours($fileReader->readInt16());

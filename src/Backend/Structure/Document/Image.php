@@ -46,10 +46,7 @@ class Image extends BaseDocumentStructure
         $this->maxUsedHeight = $maxUsedHeight;
     }
 
-    /**
-     * @return mixed
-     */
-    public function accept(DocumentVisitor $documentVisitor)
+    public function accept(DocumentVisitor $documentVisitor): \PdfGenerator\Backend\Catalog\Image
     {
         return $documentVisitor->visitImage($this);
     }

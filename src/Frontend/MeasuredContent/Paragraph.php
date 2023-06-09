@@ -34,7 +34,7 @@ class Paragraph extends MeasuredContent
         $this->style = $style;
     }
 
-    public function addPhrase(Phrase $phrase)
+    public function addPhrase(Phrase $phrase): void
     {
         $this->phrases[] = $phrase;
     }

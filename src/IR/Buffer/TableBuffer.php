@@ -20,7 +20,7 @@ class TableBuffer
      */
     private array $rows;
 
-    public function add(RowBuffer $buffer)
+    public function add(RowBuffer $buffer): void
     {
         $this->rows[] = $buffer->getRow();
     }

@@ -27,12 +27,12 @@ class Resources extends BaseStructure
      */
     private array $images = [];
 
-    public function addFont(Font $font)
+    public function addFont(Font $font): void
     {
         $this->fonts[] = $font;
     }
 
-    public function addImage(Image $image)
+    public function addImage(Image $image): void
     {
         $this->images[] = $image;
     }

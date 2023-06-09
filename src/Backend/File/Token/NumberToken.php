@@ -16,22 +16,17 @@ use PdfGenerator\Backend\File\TokenVisitor;
 
 class NumberToken extends BaseToken
 {
-    /**
-     * @var float|int
-     */
-    private $number;
+    private int|float $number;
 
     /**
      * TextToken constructor.
-     *
-     * @param float|int $number
      */
-    public function __construct($number)
+    public function __construct(float|int $number)
     {
         $this->number = $number;
     }
 
-    public static function format($number)
+    public static function format($number): float
     {
         return round($number, 6);
     }
@@ -41,10 +36,7 @@ class NumberToken extends BaseToken
         return $visitor->visitNumberToken($this);
     }
 
-    /**
-     * @return float|int
-     */
-    public function getNumber()
+    public function getNumber(): float|int
     {
         return $this->number;
     }

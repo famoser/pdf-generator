@@ -59,10 +59,7 @@ class DefaultFont extends Font
         return $visitor->visitDefaultFont($this);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->font.'_'.$this->style;
     }

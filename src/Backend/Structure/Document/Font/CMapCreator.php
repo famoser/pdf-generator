@@ -140,7 +140,7 @@ class CMapCreator
             implode("\n\n", $notDefRangeDictionaries);
     }
 
-    private function getNotDefRange(array $codePointsWithoutCharacterIndex)
+    private function getNotDefRange(array $codePointsWithoutCharacterIndex): array
     {
         // must always map 0 character
         if (0 === \count($codePointsWithoutCharacterIndex) || 0 !== $codePointsWithoutCharacterIndex[0]) {
@@ -152,7 +152,7 @@ class CMapCreator
         return $this->toDictionary($notDefRanges, 'notdefrange');
     }
 
-    private function getCidRange($textInHexToCharacterIndexMappingByLength)
+    private function getCidRange($textInHexToCharacterIndexMappingByLength): array
     {
         $codeMappings = [];
         foreach ($textInHexToCharacterIndexMappingByLength as $length => $textInHexToCharacterIndexMapping) {
@@ -162,7 +162,7 @@ class CMapCreator
         return $this->toDictionary($codeMappings, 'cidrange');
     }
 
-    private function getBfRange($characterIndexToUnicodeMappingInHexByLength)
+    private function getBfRange($characterIndexToUnicodeMappingInHexByLength): array
     {
         $bfRanges = [];
         foreach ($characterIndexToUnicodeMappingInHexByLength as $length => $characterIndexToUnicodeMappingInHex) {
@@ -172,7 +172,7 @@ class CMapCreator
         return $this->toDictionary($bfRanges, 'bfrange');
     }
 
-    private function getCodeSpaceRange(array $hexKeysByLength)
+    private function getCodeSpaceRange(array $hexKeysByLength): array
     {
         $codeSpaces = [];
         foreach ($hexKeysByLength as $length => $textInHexToCharacterIndexMapping) {

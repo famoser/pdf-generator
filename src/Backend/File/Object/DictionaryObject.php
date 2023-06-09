@@ -30,30 +30,27 @@ class DictionaryObject extends BaseObject
         $this->dictionaryToken = new DictionaryToken();
     }
 
-    public function addReferenceEntry(string $key, BaseObject $object)
+    public function addReferenceEntry(string $key, BaseObject $object): void
     {
         $this->dictionaryToken->setReferenceEntry($key, $object);
     }
 
-    public function addTextEntry(string $key, string $text)
+    public function addTextEntry(string $key, string $text): void
     {
         $this->dictionaryToken->setTextEntry($key, $text);
     }
 
-    public function addNameEntry(string $key, string $name)
+    public function addNameEntry(string $key, string $name): void
     {
         $this->dictionaryToken->setNameEntry($key, $name);
     }
 
-    /**
-     * @param float|int $number
-     */
-    public function addNumberEntry(string $key, $number)
+    public function addNumberEntry(string $key, float|int $number): void
     {
         $this->dictionaryToken->setNumberEntry($key, $number);
     }
 
-    public function addDictionaryEntry(string $key, DictionaryToken $dictionaryToken)
+    public function addDictionaryEntry(string $key, DictionaryToken $dictionaryToken): void
     {
         $this->dictionaryToken->setDictionaryEntry($key, $dictionaryToken);
     }
@@ -61,7 +58,7 @@ class DictionaryObject extends BaseObject
     /**
      * @param int[] $numbers
      */
-    public function addNumberArrayEntry(string $key, array $numbers)
+    public function addNumberArrayEntry(string $key, array $numbers): void
     {
         $tokens = [];
 
@@ -72,10 +69,7 @@ class DictionaryObject extends BaseObject
         $this->dictionaryToken->setArrayEntry($key, $tokens);
     }
 
-    /**
-     * @param int[] $numbers
-     */
-    public function addNumberOfNumbersArrayEntry(string $key, array $numberOfNumbers)
+    public function addNumberOfNumbersArrayEntry(string $key, array $numberOfNumbers): void
     {
         $tokens = [];
         foreach ($numberOfNumbers as $index => $numbers) {
@@ -97,7 +91,7 @@ class DictionaryObject extends BaseObject
     /**
      * @param int[] $values
      */
-    public function addNameArrayEntry(string $key, array $values)
+    public function addNameArrayEntry(string $key, array $values): void
     {
         $tokens = [];
 
@@ -111,7 +105,7 @@ class DictionaryObject extends BaseObject
     /**
      * @param BaseObject[] $references
      */
-    public function addReferenceArrayEntry(string $key, array $references)
+    public function addReferenceArrayEntry(string $key, array $references): void
     {
         $tokens = [];
 
@@ -132,7 +126,7 @@ class DictionaryObject extends BaseObject
         return $this->dictionaryToken;
     }
 
-    public function addDateEntry(string $key, \DateTime $dateTime)
+    public function addDateEntry(string $key, \DateTime $dateTime): void
     {
         // target: D:20191225080419-00'00
         $text = $dateTime->format('YmdHisP');

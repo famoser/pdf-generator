@@ -21,7 +21,7 @@ trait StyleGetSetTrait
         return $this->printer->getTextStyle();
     }
 
-    public function setTextStyle(TextStyle $textStyle)
+    public function setTextStyle(TextStyle $textStyle): void
     {
         $this->printer->setTextStyle($textStyle);
     }

@@ -206,22 +206,22 @@ class Format4 extends Format
         return $formatVisitor->visitFormat4($this);
     }
 
-    public function addStartCode(int $startCode)
+    public function addStartCode(int $startCode): void
     {
         $this->startCodes[] = $startCode;
     }
 
-    public function addEndCode(int $endCode)
+    public function addEndCode(int $endCode): void
     {
         $this->endCodes[] = $endCode;
     }
 
-    public function addIdDelta(int $idDelta)
+    public function addIdDelta(int $idDelta): void
     {
         $this->idDeltas[] = $idDelta;
     }
 
-    public function addIdRangeOffset(int $idRangeOffset)
+    public function addIdRangeOffset(int $idRangeOffset): void
     {
         $this->idRangeOffsets[] = $idRangeOffset;
     }

@@ -49,7 +49,7 @@ class Page
         $this->mediaBox = $mediaBox;
     }
 
-    public function addContent(BaseContent $content)
+    public function addContent(BaseContent $content): void
     {
         $this->content[] = $content;
     }

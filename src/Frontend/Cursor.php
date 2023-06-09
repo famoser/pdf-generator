@@ -44,7 +44,7 @@ class Cursor
         return $this->pageIndex;
     }
 
-    public static function moveRightDown(self $cursor, float $right, float $down)
+    public static function moveRightDown(self $cursor, float $right, float $down): Cursor
     {
         return new self($cursor->left + $right, $cursor->top + $down, $cursor->pageIndex);
     }

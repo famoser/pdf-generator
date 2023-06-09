@@ -96,18 +96,13 @@ class DocumentVisitor implements FontVisitor
      */
     private static function getImageType(string $type): string
     {
-        switch ($type) {
-            case Image::TYPE_JPG:
-                return BackendImage::TYPE_JPG;
-            case Image::TYPE_JPEG:
-                return BackendImage::TYPE_JPEG;
-            case Image::TYPE_PNG:
-                return BackendImage::TYPE_PNG;
-            case Image::TYPE_GIF:
-                return BackendImage::TYPE_GIF;
-            default:
-                throw new \Exception('Image type not supported: ' . $type . '. Use jpg, jpeg, png or gif');
-        }
+        return match ($type) {
+            Image::TYPE_JPG => BackendImage::TYPE_JPG,
+            Image::TYPE_JPEG => BackendImage::TYPE_JPEG,
+            Image::TYPE_PNG => BackendImage::TYPE_PNG,
+            Image::TYPE_GIF => BackendImage::TYPE_GIF,
+            default => throw new \Exception('Image type not supported: '.$type.'. Use jpg, jpeg, png or gif'),
+        };
     }
 
     public function visitPage(Page $param): BackendPage

@@ -18,7 +18,7 @@ class Reader
     /**
      * @throws \Exception
      */
-    public static function readBinaryTreeSearchableUInt16(StreamReader $fileReader, BinaryTreeSearchableTrait $binaryTreeSearchable)
+    public static function readBinaryTreeSearchableUInt16(StreamReader $fileReader, BinaryTreeSearchableTrait $binaryTreeSearchable): void
     {
         $binaryTreeSearchable->setSearchRange($fileReader->readUInt16());
         $binaryTreeSearchable->setEntrySelector($fileReader->readUInt16());
@@ -28,7 +28,7 @@ class Reader
     /**
      * @throws \Exception
      */
-    public static function readBoundingBoxInt16(StreamReader $fileReader, BoundingBoxTrait $boundingBoxTrait)
+    public static function readBoundingBoxInt16(StreamReader $fileReader, BoundingBoxTrait $boundingBoxTrait): void
     {
         $boundingBoxTrait->setXMin($fileReader->readInt16());
         $boundingBoxTrait->setYMin($fileReader->readInt16());
@@ -39,7 +39,7 @@ class Reader
     /**
      * @throws \Exception
      */
-    public static function readBoundingBoxFWORD(StreamReader $fileReader, BoundingBoxTrait $boundingBoxTrait)
+    public static function readBoundingBoxFWORD(StreamReader $fileReader, BoundingBoxTrait $boundingBoxTrait): void
     {
         $boundingBoxTrait->setXMin($fileReader->readFWORD());
         $boundingBoxTrait->setYMin($fileReader->readFWORD());
