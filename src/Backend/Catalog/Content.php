@@ -17,14 +17,11 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class Content extends BaseStructure
 {
-    private string $content;
-
     /**
      * Content constructor.
      */
-    public function __construct(string $content)
+    public function __construct(private string $content)
     {
-        $this->content = $content;
     }
 
     public function getContent(): string

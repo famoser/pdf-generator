@@ -35,17 +35,11 @@ use PdfGenerator\Font\Frontend\File\Traits\Reader;
 
 class FileReader
 {
-    private FormatReader $cMapFormatReader;
-
-    private File\Table\Post\FormatReader $postFormatReader;
-
     /**
      * StructureReader constructor.
      */
-    public function __construct(FormatReader $cMapFormatReader, File\Table\Post\FormatReader $postFormatReader)
+    public function __construct(private FormatReader $cMapFormatReader, private File\Table\Post\FormatReader $postFormatReader)
     {
-        $this->cMapFormatReader = $cMapFormatReader;
-        $this->postFormatReader = $postFormatReader;
     }
 
     public function read(StreamReader $fileReader): FontFile

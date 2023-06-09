@@ -13,20 +13,11 @@ namespace PdfGenerator\Frontend;
 
 class Cursor
 {
-    private float $top;
-
-    private float $left;
-
-    private int $pageIndex;
-
     /**
      * Cursor constructor.
      */
-    public function __construct(float $left, float $top, int $pageIndex)
+    public function __construct(private float $left, private float $top, private int $pageIndex)
     {
-        $this->left = $left;
-        $this->top = $top;
-        $this->pageIndex = $pageIndex;
     }
 
     public function getLeft(): float

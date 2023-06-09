@@ -16,14 +16,11 @@ use PdfGenerator\Backend\Structure\DocumentVisitor;
 
 class DefaultFont extends Font
 {
-    private string $baseFont;
-
     /**
      * DefaultFont constructor.
      */
-    public function __construct(string $baseFont)
+    public function __construct(private string $baseFont)
     {
-        $this->baseFont = $baseFont;
     }
 
     public function getBaseFont(): string

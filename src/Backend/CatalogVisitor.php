@@ -29,14 +29,11 @@ class CatalogVisitor
      */
     private array $objectNodeLookup = [];
 
-    private File $file;
-
     /**
      * StructureVisitor constructor.
      */
-    public function __construct(File $file)
+    public function __construct(private File $file)
     {
-        $this->file = $file;
     }
 
     public function visitCatalog(Catalog\Catalog $structure): BaseObject

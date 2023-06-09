@@ -31,20 +31,11 @@ use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 class Parser
 {
-    private GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor;
-
-    private Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor;
-
-    private Factory $glyphNameMappingFactory;
-
     /**
      * Parser constructor.
      */
-    public function __construct(GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, Factory $glyphNameMappingFactory)
+    public function __construct(private GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, private Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, private Factory $glyphNameMappingFactory)
     {
-        $this->cMapGlyphIndexFormatVisitor = $cMapGlyphIndexFormatVisitor;
-        $this->postGlyphIndexFormatVisitor = $postGlyphIndexFormatVisitor;
-        $this->glyphNameMappingFactory = $glyphNameMappingFactory;
     }
 
     public static function create(): Parser

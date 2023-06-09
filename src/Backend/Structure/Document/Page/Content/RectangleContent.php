@@ -24,20 +24,8 @@ class RectangleContent extends BaseContent
     public const PAINTING_MODE_FILL = 2;
     public const PAINTING_MODE_STROKE_FILL = 3;
 
-    private float $width;
-
-    private float $height;
-
-    private int $paintingMode;
-
-    private DrawingState $drawingState;
-
-    public function __construct(float $width, float $height, int $paintingMode, DrawingState $drawingState)
+    public function __construct(private float $width, private float $height, private int $paintingMode, private DrawingState $drawingState)
     {
-        $this->width = $width;
-        $this->height = $height;
-        $this->paintingMode = $paintingMode;
-        $this->drawingState = $drawingState;
     }
 
     public function getWidth(): float

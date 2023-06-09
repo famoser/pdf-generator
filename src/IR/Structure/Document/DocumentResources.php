@@ -28,14 +28,11 @@ class DocumentResources
      */
     private array $imageCache = [];
 
-    private DocumentVisitor $documentContentVisitor;
-
     /**
      * DocumentResources constructor.
      */
-    public function __construct(DocumentVisitor $documentContentVisitor)
+    public function __construct(private DocumentVisitor $documentContentVisitor)
     {
-        $this->documentContentVisitor = $documentContentVisitor;
     }
 
     public function getFont(Font $structure): BackendFont

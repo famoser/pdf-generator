@@ -15,20 +15,11 @@ use PdfGenerator\IR\Cursor;
 
 class Column
 {
-    private Cursor $start;
-
-    private float $width;
-
-    private float $height;
-
     /**
      * Column constructor.
      */
-    public function __construct(Cursor $start, float $width, float $height)
+    public function __construct(private Cursor $start, private float $width, private float $height)
     {
-        $this->start = $start;
-        $this->width = $width;
-        $this->height = $height;
     }
 
     public function getStart(): Cursor

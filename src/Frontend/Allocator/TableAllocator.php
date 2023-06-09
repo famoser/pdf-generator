@@ -17,10 +17,6 @@ use PdfGenerator\Frontend\Block\Table;
 
 class TableAllocator extends BaseAllocator
 {
-    private Table $table;
-
-    private TableStyle $tableStyle;
-
     private bool $firstTime = true;
 
     /**
@@ -31,10 +27,8 @@ class TableAllocator extends BaseAllocator
     /**
      * TableAllocator constructor.
      */
-    public function __construct(Table $table, TableStyle $tableStyle)
+    public function __construct(private Table $table, private TableStyle $tableStyle)
     {
-        $this->table = $table;
-        $this->tableStyle = $tableStyle;
     }
 
     /**

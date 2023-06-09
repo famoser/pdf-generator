@@ -17,13 +17,10 @@ use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 abstract class Block
 {
     /**
-     * @var float[]|null
+     * @param float[]|null $dimensions
      */
-    private ?array $dimensions = null;
-
-    public function __construct(array $dimensions = null)
+    public function __construct(private ?array $dimensions = null)
     {
-        $this->dimensions = $dimensions;
     }
 
     abstract public function getStyle(): BlockStyle;

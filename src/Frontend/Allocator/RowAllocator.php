@@ -18,8 +18,6 @@ use PdfGenerator\Frontend\Block\Style\RowStyle;
 
 class RowAllocator extends BaseAllocator
 {
-    private Row $row;
-
     private RowStyle $rowStyle;
 
     /**
@@ -30,9 +28,8 @@ class RowAllocator extends BaseAllocator
     /**
      * RowAllocator constructor.
      */
-    public function __construct(Row $row)
+    public function __construct(private Row $row)
     {
-        $this->row = $row;
         $this->rowStyle = $row->getStyle();
     }
 

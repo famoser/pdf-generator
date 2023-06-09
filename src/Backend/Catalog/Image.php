@@ -19,24 +19,14 @@ class Image extends BaseIdentifiableStructure
 {
     public const IMAGE_TYPE_JPEG = 0;
 
-    private float $width;
-
-    private float $height;
-
-    private string $content;
-
     /**
      * Image constructor.
      */
-    public function __construct(string $identifier, int $type, string $content, float $width, float $height)
+    public function __construct(string $identifier, int $type, private string $content, private float $width, private float $height)
     {
         $this->setIdentifier($identifier);
 
         \assert(self::IMAGE_TYPE_JPEG === $type);
-
-        $this->content = $content;
-        $this->width = $width;
-        $this->height = $height;
     }
 
     public function accept(CatalogVisitor $visitor): BaseObject

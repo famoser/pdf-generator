@@ -17,8 +17,6 @@ use PdfGenerator\Frontend\Block\Style\ContentStyle;
 
 class ContentAllocator implements AllocatorInterface
 {
-    private Content $content;
-
     private ContentStyle $style;
 
     private ContentAllocatorInterface $contentAllocator;
@@ -26,9 +24,8 @@ class ContentAllocator implements AllocatorInterface
     /**
      * ContentAllocator constructor.
      */
-    public function __construct(Content $content)
+    public function __construct(private Content $content)
     {
-        $this->content = $content;
         $this->style = $content->getStyle();
 
         $this->contentAllocator = $content->getMeasuredContent()->createAllocator();

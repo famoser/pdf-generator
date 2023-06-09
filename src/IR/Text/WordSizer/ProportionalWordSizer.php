@@ -13,19 +13,13 @@ namespace PdfGenerator\IR\Text\WordSizer;
 
 class ProportionalWordSizer implements WordSizerInterface
 {
-    private int $invalidCharacterWidth;
-
-    /**
-     * @var int[]
-     */
-    private array $characterAdvanceWidthLookup;
-
     private int $spaceCharacterWidth;
 
-    public function __construct(int $invalidCharacterWidth, array $characterAdvanceWidthLookup)
+    /**
+     * @param int[] $characterAdvanceWidthLookup
+     */
+    public function __construct(private int $invalidCharacterWidth, private array $characterAdvanceWidthLookup)
     {
-        $this->invalidCharacterWidth = $invalidCharacterWidth;
-        $this->characterAdvanceWidthLookup = $characterAdvanceWidthLookup;
         $this->spaceCharacterWidth = $this->getWidth(' ');
     }
 

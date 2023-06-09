@@ -25,14 +25,11 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Text;
  */
 class ToBackendContentVisitor extends ContentVisitor
 {
-    private PageResources $pageResources;
-
     /**
      * ContentVisitor constructor.
      */
-    public function __construct(PageResources $pageResources)
+    public function __construct(private PageResources $pageResources)
     {
-        $this->pageResources = $pageResources;
     }
 
     public function visitImagePlacement(ImagePlacement $placement): ImageContent

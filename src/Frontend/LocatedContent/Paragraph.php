@@ -19,20 +19,13 @@ use PdfGenerator\Frontend\Size;
 class Paragraph extends LocatedContent
 {
     /**
-     * @var Line[]
-     */
-    private array $lines;
-
-    /**
      * Paragraph constructor.
      *
      * @param Line[] $lines
      */
-    public function __construct(Position $position, Size $size, array $lines)
+    public function __construct(Position $position, Size $size, private array $lines)
     {
         parent::__construct($position, $size);
-
-        $this->lines = $lines;
     }
 
     /**

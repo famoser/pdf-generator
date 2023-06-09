@@ -18,17 +18,11 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base\BaseState
 
 class DrawingState extends BaseStateCollection
 {
-    private GeneralGraphicState $generalGraphicsState;
-
-    private ColorState $colorState;
-
     /**
      * TextLevel constructor.
      */
-    public function __construct(GeneralGraphicState $generalGraphicsState, ColorState $colorState)
+    public function __construct(private GeneralGraphicState $generalGraphicsState, private ColorState $colorState)
     {
-        $this->generalGraphicsState = $generalGraphicsState;
-        $this->colorState = $colorState;
     }
 
     public function getGeneralGraphicsState(): GeneralGraphicState

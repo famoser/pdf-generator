@@ -21,14 +21,11 @@ use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 class GlyphIndexFormatVisitor implements VisitorInterface
 {
-    private Factory $factory;
-
     /**
      * GlyphIndexFormatVisitor constructor.
      */
-    public function __construct(Factory $factory)
+    public function __construct(private Factory $factory)
     {
-        $this->factory = $factory;
     }
 
     /**

@@ -17,25 +17,10 @@ use PdfGenerator\Frontend\Size;
 class ContentAreaGenerator implements ContentAreaGeneratorInterface
 {
     /**
-     * @var float[]
-     */
-    private array $margins;
-
-    private float $gutter;
-
-    private int $columnCount;
-
-    private int $rowCount;
-
-    /**
      * @param float[] $margins
      */
-    public function __construct(array $margins = [25, 25, 25, 25], float $gutter = 5, int $columnCount = 1, int $rowCount = 1)
+    public function __construct(private array $margins = [25, 25, 25, 25], private float $gutter = 5, private int $columnCount = 1, private int $rowCount = 1)
     {
-        $this->margins = $margins;
-        $this->gutter = $gutter;
-        $this->columnCount = $columnCount;
-        $this->rowCount = $rowCount;
     }
 
     /**

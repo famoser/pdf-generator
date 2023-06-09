@@ -29,10 +29,6 @@ class DefaultFont extends Font
     public const STYLE_BOLD_OBLIQUE = 'BOLD_OBLIQUE';
     public const STYLE_BOLD_ITALIC = 'BOLD_ITALIC';
 
-    private string $font;
-
-    private string $style;
-
     /**
      * @var int[]
      */
@@ -41,11 +37,8 @@ class DefaultFont extends Font
     /**
      * DefaultFont constructor.
      */
-    public function __construct(string $font, string $style)
+    public function __construct(private string $font, private string $style)
     {
-        $this->font = $font;
-        $this->style = $style;
-
         $this->size = DefaultFontSize::getSize($this->font, $this->style);
     }
 

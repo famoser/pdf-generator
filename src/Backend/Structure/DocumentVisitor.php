@@ -33,8 +33,6 @@ use PdfGenerator\Font\IR\Structure\Font;
 
 class DocumentVisitor
 {
-    private Configuration $configuration;
-
     /**
      * @var int[]
      */
@@ -49,10 +47,8 @@ class DocumentVisitor
     /**
      * DocumentVisitor constructor.
      */
-    public function __construct(Configuration $configuration)
+    public function __construct(private Configuration $configuration)
     {
-        $this->configuration = $configuration;
-
         $this->fontOptimizer = new FontOptimizer();
         $this->cMapCreator = new CMapCreator();
         $this->imageOptimizer = new ImageOptimizer();

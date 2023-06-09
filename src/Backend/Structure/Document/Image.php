@@ -21,29 +21,11 @@ class Image extends BaseDocumentStructure
     public const TYPE_PNG = 'png';
     public const TYPE_GIF = 'gif';
 
-    private string $imageContent;
-
-    private string $type;
-
-    private int $width;
-
-    private int $height;
-
-    private int $maxUsedWidth;
-
-    private int $maxUsedHeight;
-
     /**
      * Image constructor.
      */
-    public function __construct(string $imageContent, string $imageType, int $width, int $height, int $maxUsedWidth, int $maxUsedHeight)
+    public function __construct(private string $imageContent, private string $type, private int $width, private int $height, private int $maxUsedWidth, private int $maxUsedHeight)
     {
-        $this->imageContent = $imageContent;
-        $this->type = $imageType;
-        $this->width = $width;
-        $this->height = $height;
-        $this->maxUsedWidth = $maxUsedWidth;
-        $this->maxUsedHeight = $maxUsedHeight;
     }
 
     public function accept(DocumentVisitor $documentVisitor): \PdfGenerator\Backend\Catalog\Image

@@ -19,8 +19,6 @@ namespace PdfGenerator\Font\Frontend;
  */
 class StreamReader
 {
-    private string $content;
-
     private int $offset = 0;
 
     private int $byteCount;
@@ -28,9 +26,8 @@ class StreamReader
     /**
      * Reader constructor.
      */
-    public function __construct(string $content)
+    public function __construct(private string $content)
     {
-        $this->content = $content;
         $this->byteCount = \strlen($content);
     }
 

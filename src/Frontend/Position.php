@@ -13,17 +13,11 @@ namespace PdfGenerator\Frontend;
 
 class Position
 {
-    private float $left;
-
-    private float $top;
-
     /**
      * Position constructor.
      */
-    public function __construct(float $left, float $top)
+    public function __construct(private float $left, private float $top)
     {
-        $this->left = $left;
-        $this->top = $top;
     }
 
     public function getLeft(): float

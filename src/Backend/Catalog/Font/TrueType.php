@@ -17,18 +17,14 @@ use PdfGenerator\Backend\File\Object\DictionaryObject;
 
 class TrueType extends Type1
 {
-    /**
-     * @var int[]
-     */
-    private array $widths;
-
     private Font\Structure\FontDescriptor $fontDescriptor;
 
-    public function __construct(string $identifier, Font\Structure\FontDescriptor $fontDescriptor, array $widths)
+    /**
+     * @param int[] $widths
+     */
+    public function __construct(string $identifier, Font\Structure\FontDescriptor $fontDescriptor, private array $widths)
     {
         parent::__construct($identifier, $fontDescriptor->getFontName());
-
-        $this->widths = $widths;
         $this->fontDescriptor = $fontDescriptor;
     }
 

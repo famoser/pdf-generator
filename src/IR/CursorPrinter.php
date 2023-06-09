@@ -23,13 +23,10 @@ class CursorPrinter
 
     private Cursor $cursor;
 
-    private Document $document;
-
     private Printer $printer;
 
-    public function __construct(Document $document)
+    public function __construct(private Document $document)
     {
-        $this->document = $document;
         $this->printer = new Printer($document);
         $this->cursor = new Cursor(0, 0, 0);
     }

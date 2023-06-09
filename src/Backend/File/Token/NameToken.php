@@ -16,14 +16,11 @@ use PdfGenerator\Backend\File\TokenVisitor;
 
 class NameToken extends BaseToken
 {
-    private string $name;
-
     /**
      * TextToken constructor.
      */
-    public function __construct(string $text)
+    public function __construct(private string $name)
     {
-        $this->name = $text;
     }
 
     public function getName(): string

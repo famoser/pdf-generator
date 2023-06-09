@@ -21,19 +21,11 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
 class TextContent extends BaseContent
 {
     /**
-     * @var string[]
-     */
-    private array $lines;
-
-    private WritingState $writingState;
-
-    /**
      * TextSymbol constructor.
+     * @param string[] $lines
      */
-    public function __construct(array $lines, WritingState $writingState)
+    public function __construct(private array $lines, private WritingState $writingState)
     {
-        $this->lines = $lines;
-        $this->writingState = $writingState;
     }
 
     /**

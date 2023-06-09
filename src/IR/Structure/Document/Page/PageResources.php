@@ -30,8 +30,6 @@ class PageResources
 
     private TextStateRepository $textStateRepository;
 
-    private DocumentResources $documentResources;
-
     /**
      * @var BackendFont[]
      */
@@ -45,10 +43,8 @@ class PageResources
     /**
      * PageResources constructor.
      */
-    public function __construct(DocumentResources $documentResources)
+    public function __construct(private DocumentResources $documentResources)
     {
-        $this->documentResources = $documentResources;
-
         $this->generalGraphicStateRepository = new GeneralGraphicStateRepository();
         $this->colorStateRepository = new ColorStateRepository();
         $this->textStateRepository = new TextStateRepository();

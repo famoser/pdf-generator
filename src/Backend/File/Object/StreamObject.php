@@ -17,19 +17,16 @@ use PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class StreamObject extends BaseObject
 {
-    private string $content;
-
     private DictionaryToken $dictionary;
 
     /**
      * StreamObject constructor.
      */
-    public function __construct(int $number, string $content)
+    public function __construct(int $number, private string $content)
     {
         parent::__construct($number);
 
         $this->dictionary = new DictionaryToken();
-        $this->content = $content;
 
         $this->dictionary->setNumberEntry('Length', \strlen($this->content));
     }

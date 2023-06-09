@@ -15,20 +15,11 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 class FontMeasurement
 {
-    private Font $font;
-
-    private float $fontSize;
-
-    private float $lineHeight;
-
     /**
      * FontMeasurement constructor.
      */
-    public function __construct(Font $font, float $fontSize, float $lineHeight)
+    public function __construct(private Font $font, private float $fontSize, private float $lineHeight)
     {
-        $this->font = $font;
-        $this->fontSize = $fontSize;
-        $this->lineHeight = $lineHeight;
     }
 
     public function getAscender(): float|int

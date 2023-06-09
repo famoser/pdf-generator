@@ -17,23 +17,11 @@ use PdfGenerator\Backend\File\StructureVisitor;
 
 class FileTrailer extends BaseStructure
 {
-    private int $size;
-
-    private int $startOfCrossReferenceTable;
-
-    private BaseObject $root;
-
-    private BaseObject $info;
-
     /**
      * FileTrailer constructor.
      */
-    public function __construct(int $size, int $startOfCrossReferenceTable, BaseObject $root, BaseObject $info)
+    public function __construct(private int $size, private int $startOfCrossReferenceTable, private BaseObject $root, private BaseObject $info)
     {
-        $this->size = $size;
-        $this->startOfCrossReferenceTable = $startOfCrossReferenceTable;
-        $this->root = $root;
-        $this->info = $info;
     }
 
     public function accept(StructureVisitor $visitor): string

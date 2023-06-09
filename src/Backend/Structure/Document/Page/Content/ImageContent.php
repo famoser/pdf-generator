@@ -20,14 +20,8 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
 
 class ImageContent extends BaseContent
 {
-    private Image $image;
-
-    private DrawingState $drawingState;
-
-    public function __construct(Image $image, DrawingState $drawingState)
+    public function __construct(private Image $image, private DrawingState $drawingState)
     {
-        $this->image = $image;
-        $this->drawingState = $drawingState;
     }
 
     public function getImage(): Image

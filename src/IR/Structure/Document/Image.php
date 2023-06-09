@@ -16,31 +16,16 @@ use PdfGenerator\IR\Structure\DocumentVisitor;
 
 class Image extends BaseDocumentStructure
 {
-    private string $src;
-
-    private string $data;
-
     public const TYPE_JPG = 'TYPE_JPG';
     public const TYPE_JPEG = 'TYPE_JPEG';
     public const TYPE_PNG = 'TYPE_PNG';
     public const TYPE_GIF = 'TYPE_GIF';
 
-    private string $type;
-
-    private int $width;
-
-    private int $height;
-
     /**
      * Image constructor.
      */
-    public function __construct(string $src, string $data, string $type, int $width, int $height)
+    public function __construct(private string $src, private string $data, private string $type, private int $width, private int $height)
     {
-        $this->src = $src;
-        $this->data = $data;
-        $this->type = $type;
-        $this->width = $width;
-        $this->height = $height;
     }
 
     public static function create(string $imagePath, string $type): self

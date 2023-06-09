@@ -17,10 +17,6 @@ use PdfGenerator\Frontend\MeasuredContent\Utils\FontMeasurement;
 
 class PhraseBreaker
 {
-    private Phrase $phrase;
-
-    private FontMeasurement $fontMeasurement;
-
     /**
      * the next to be included word.
      */
@@ -28,10 +24,8 @@ class PhraseBreaker
 
     private ?LineBreaker $lineBreaker;
 
-    public function __construct(Phrase $phrase, FontMeasurement $fontMeasurement)
+    public function __construct(private Phrase $phrase, private FontMeasurement $fontMeasurement)
     {
-        $this->phrase = $phrase;
-        $this->fontMeasurement = $fontMeasurement;
     }
 
     public function getPhrase(): Phrase

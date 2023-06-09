@@ -17,19 +17,13 @@ use PdfGenerator\Font\Backend\StreamWriter;
 
 class TableVisitor
 {
-    private FormatVisitor $cMapFormatVisitor;
-
-    private Table\Post\FormatVisitor $postFormatVisitor;
-
     public static int $indexToLocFormat = 0;
 
     /**
      * TableWriter constructor.
      */
-    public function __construct(FormatVisitor $cMapFormatVisitor, Table\Post\FormatVisitor $postFormatVisitor)
+    public function __construct(private FormatVisitor $cMapFormatVisitor, private Table\Post\FormatVisitor $postFormatVisitor)
     {
-        $this->cMapFormatVisitor = $cMapFormatVisitor;
-        $this->postFormatVisitor = $postFormatVisitor;
     }
 
     public static function create(): TableVisitor

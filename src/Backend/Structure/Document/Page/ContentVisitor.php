@@ -23,17 +23,13 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
 class ContentVisitor
 {
-    private DocumentResources $documentResources;
-
     private FullState $lastAppliedState;
 
     /**
      * ContentVisitor constructor.
      */
-    public function __construct(DocumentResources $documentResources)
+    public function __construct(private DocumentResources $documentResources)
     {
-        $this->documentResources = $documentResources;
-
         $this->lastAppliedState = FullState::createInitial();
     }
 

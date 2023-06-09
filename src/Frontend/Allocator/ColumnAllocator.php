@@ -18,8 +18,6 @@ use PdfGenerator\Frontend\Block\Style\ColumnStyle;
 
 class ColumnAllocator extends BaseAllocator
 {
-    private Column $column;
-
     private ColumnStyle $style;
 
     /**
@@ -30,9 +28,8 @@ class ColumnAllocator extends BaseAllocator
     /**
      * ColumnAllocator constructor.
      */
-    public function __construct(Column $column)
+    public function __construct(private Column $column)
     {
-        $this->column = $column;
         $this->style = $column->getStyle();
     }
 

@@ -20,26 +20,12 @@ class Page extends BaseStructure
 {
     use IdentifiableTrait;
 
-    private Pages $parent;
-
-    /**
-     * @var int[]
-     */
-    private array $mediaBox;
-
-    private Contents $contents;
-
-    private Resources $resources;
-
     /**
      * Page constructor.
+     * @param int[] $mediaBox
      */
-    public function __construct(Pages $parent, array $mediaBox, Resources $resources, Contents $contents)
+    public function __construct(private Pages $parent, private array $mediaBox, private Resources $resources, private Contents $contents)
     {
-        $this->parent = $parent;
-        $this->mediaBox = $mediaBox;
-        $this->contents = $contents;
-        $this->resources = $resources;
     }
 
     public function accept(CatalogVisitor $visitor): BaseObject

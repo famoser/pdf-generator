@@ -13,8 +13,6 @@ namespace PdfGenerator\Frontend\LocatedContent\Paragraph;
 
 class Line
 {
-    private float $height;
-
     private float $width;
 
     /**
@@ -25,9 +23,8 @@ class Line
     /**
      * Line constructor.
      */
-    public function __construct(float $height)
+    public function __construct(private float $height)
     {
-        $this->height = $height;
     }
 
     public function addFragment(Fragment $fragment): void

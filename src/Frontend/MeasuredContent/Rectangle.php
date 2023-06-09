@@ -18,17 +18,11 @@ use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Rectangle extends MeasuredContent
 {
-    private DrawingStyle $style;
-
-    private \PdfGenerator\Frontend\Content\Rectangle $rectangle;
-
     /**
      * Rectangle constructor.
      */
-    public function __construct(DrawingStyle $style, \PdfGenerator\Frontend\Content\Rectangle $rectangle)
+    public function __construct(private DrawingStyle $style, private \PdfGenerator\Frontend\Content\Rectangle $rectangle)
     {
-        $this->style = $style;
-        $this->rectangle = $rectangle;
     }
 
     public function getStyle(): DrawingStyle

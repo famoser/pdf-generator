@@ -13,11 +13,8 @@ namespace PdfGenerator\IR\Text\WordSizer;
 
 class MonospaceProportionalWordSizer implements WordSizerInterface
 {
-    private int $characterWidth;
-
-    public function __construct(int $characterWidth)
+    public function __construct(private int $characterWidth)
     {
-        $this->characterWidth = $characterWidth;
     }
 
     public function getWidth(string $word): float
