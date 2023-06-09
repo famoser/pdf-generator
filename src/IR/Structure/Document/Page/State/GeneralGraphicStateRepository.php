@@ -47,10 +47,8 @@ class GeneralGraphicStateRepository
             return $this->generalGraphicState;
         }
 
-        $this->generalGraphicState = new GeneralGraphicState();
         $transformationMatrixShort = [$this->position[0], 0, 0, $this->position[1], $this->position[2], $this->position[3]];
-        $this->generalGraphicState->setCurrentTransformationMatrix($transformationMatrixShort);
-        $this->generalGraphicState->setLineWidth($this->lineWidth);
+        $this->generalGraphicState = new GeneralGraphicState($transformationMatrixShort, $this->lineWidth);
 
         return $this->generalGraphicState;
     }

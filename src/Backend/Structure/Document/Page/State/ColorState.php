@@ -14,21 +14,15 @@ namespace PdfGenerator\Backend\Structure\Document\Page\State;
 use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
-class ColorState extends BaseState
+readonly class ColorState extends BaseState
 {
     /**
-     * the line/border color.
-     *
-     * @var float[]
+     * @param float[] $rgbStrokingColour line/border color
+     * @param float[] $rgbNonStrokingColour fill color
      */
-    private array $rgbStrokingColour = [0, 0, 0];
-
-    /**
-     * the fill color.
-     *
-     * @var float[]
-     */
-    private array $rgbNonStrokingColour = [0, 0, 0];
+    public function __construct(private array $rgbStrokingColour, private array $rgbNonStrokingColour)
+    {
+    }
 
     /**
      * @return float[]
@@ -39,31 +33,11 @@ class ColorState extends BaseState
     }
 
     /**
-     * @param float[] $rgbStrokingColour
-     */
-    public function setRgbStrokingColour(array $rgbStrokingColour): void
-    {
-        \assert(3 === \count($rgbStrokingColour));
-
-        $this->rgbStrokingColour = $rgbStrokingColour;
-    }
-
-    /**
      * @return float[]
      */
     public function getRgbNonStrokingColour(): array
     {
         return $this->rgbNonStrokingColour;
-    }
-
-    /**
-     * @param float[] $rgbNonStrokingColour
-     */
-    public function setRgbNonStrokingColour(array $rgbNonStrokingColour): void
-    {
-        \assert(3 === \count($rgbNonStrokingColour));
-
-        $this->rgbNonStrokingColour = $rgbNonStrokingColour;
     }
 
     /**

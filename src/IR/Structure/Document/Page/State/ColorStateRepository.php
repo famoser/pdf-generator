@@ -42,38 +42,34 @@ class ColorStateRepository
         $this->activeColorState = null;
     }
 
-    private function convertToPdfColourSpecification(Color $color): array
-    {
-        return [
-            $this->convertToPdfColourValue($color->getRed()),
-            $this->convertToPdfColourValue($color->getGreen()),
-            $this->convertToPdfColourValue($color->getBlue()),
-        ];
-    }
-
-    private function convertToPdfColourValue(int $number): float
-    {
-        return round($number / 255.0, 2);
-    }
-
     public function getColorState(): ColorState
     {
         if (null !== $this->activeColorState) {
             return $this->activeColorState;
         }
 
-        $this->activeColorState = new ColorState();
-
-        if (null !== $this->fillColor) {
-            $rgbNonStrokingColour = $this->convertToPdfColourSpecification($this->fillColor);
-            $this->activeColorState->setRgbNonStrokingColour($rgbNonStrokingColour);
-        }
-
-        if (null !== $this->borderColor) {
-            $rgbStrokingColour = $this->convertToPdfColourSpecification($this->borderColor);
-            $this->activeColorState->setRgbStrokingColour($rgbStrokingColour);
-        }
+        $rgbStrokingColour = self::convertToPdfColourSpecificationOrDefault($this->borderColor);
+        $rgbNonStrokingColour = self::convertToPdfColourSpecificationOrDefault($this->fillColor);
+        $this->activeColorState = new ColorState($rgbStrokingColour, $rgbNonStrokingColour);
 
         return $this->activeColorState;
+    }
+
+    private static function convertToPdfColourSpecificationOrDefault(?Color $color): array
+    {
+        if (!$color) {
+            return [0,0,0];
+        }
+
+        return [
+            self::convertToPdfColourValue($color->getRed()),
+            self::convertToPdfColourValue($color->getGreen()),
+            self::convertToPdfColourValue($color->getBlue()),
+        ];
+    }
+
+    private static function convertToPdfColourValue(int $number): float
+    {
+        return round($number / 255.0, 2);
     }
 }
