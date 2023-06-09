@@ -79,9 +79,6 @@ class Document
         return $this->defaultFonts[$key];
     }
 
-    /**
-     * @throws \Exception
-     */
     public function getOrCreateEmbeddedFont(string $fontPath): EmbeddedFont
     {
         if (!\array_key_exists($fontPath, $this->embeddedFonts)) {

@@ -20,9 +20,6 @@ use PdfGenerator\Font\Frontend\StreamReader;
 
 class FormatReader
 {
-    /**
-     * @throws \Exception
-     */
     public function readFormat(StreamReader $streamReader, float $format, int $length): Format
     {
         return match ($format) {
@@ -34,9 +31,6 @@ class FormatReader
         };
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readFormat2(StreamReader $streamReader, int $length): Format2
     {
         $format2 = new Format2();
@@ -51,9 +45,6 @@ class FormatReader
         return $format2;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readFormat25(StreamReader $streamReader): Format25
     {
         $format = new Format25();

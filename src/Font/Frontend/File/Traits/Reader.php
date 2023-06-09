@@ -17,8 +17,6 @@ class Reader
 {
     /**
      * @param BinaryTreeSearchableTrait $binaryTreeSearchable
-     *
-     * @throws \Exception
      */
     public static function readBinaryTreeSearchableUInt16(StreamReader $fileReader, mixed $binaryTreeSearchable): void
     {
@@ -29,8 +27,6 @@ class Reader
 
     /**
      * @param BoundingBoxTrait $boundingBoxTrait
-     *
-     * @throws \Exception
      */
     public static function readBoundingBoxInt16(StreamReader $fileReader, mixed $boundingBoxTrait): void
     {

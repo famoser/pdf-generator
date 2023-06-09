@@ -56,9 +56,6 @@ class Parser
         return new self($cMapFormatVisitor, $postFormatVisitor, $factory);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function parse(string $content): Font
     {
         $streamReader = new StreamReader($content);
@@ -71,9 +68,6 @@ class Parser
         return $this->createFont($fontFile);
     }
 
-    /**
-     * @throws \Exception
-     */
     private function createFont(FontFile $fontFile): Font
     {
         $font = new Font();
@@ -124,8 +118,6 @@ class Parser
 
     /**
      * @param Character[] $characters
-     *
-     * @throws \Exception
      */
     private function addGlyphInfo(array $characters, FontFile $fontFile): void
     {
