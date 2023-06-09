@@ -100,10 +100,8 @@ class CMapCreator
 
     /**
      * @param Character[] $characters
-     *
-     * @return string
      */
-    private function getCharacterIndexToUnicodeMappings(array $characters)
+    private function getCharacterIndexToUnicodeMappings(array $characters): string
     {
         $characterIndexToUnicodeMappingInHexByLength = $this->getCharacterIndexToUnicodeMappingInHexByLength($characters);
 
@@ -118,10 +116,8 @@ class CMapCreator
     /**
      * @param Character[] $characters
      * @param int[]       $usedCodepoints
-     *
-     * @return string
      */
-    private function getTextToCharacterIndexMappings(array $characters, array $usedCodepoints)
+    private function getTextToCharacterIndexMappings(array $characters, array $usedCodepoints): string
     {
         $textInHexToCharacterIndexMappingByLength = $this->getTextInHexToCharacterIndexMappingByLength($characters);
 
@@ -193,7 +189,7 @@ class CMapCreator
      *
      * @return string[]
      */
-    private function toDictionary(array $entries, string $identifier, int $maxEntries = 100)
+    private function toDictionary(array $entries, string $identifier, int $maxEntries = 100): array
     {
         $dictionaries = [];
         foreach (array_chunk($entries, $maxEntries) as $currentEntries) {

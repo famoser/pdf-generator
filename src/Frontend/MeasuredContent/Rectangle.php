@@ -18,15 +18,9 @@ use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Rectangle extends MeasuredContent
 {
-    /**
-     * @var DrawingStyle
-     */
-    private $style;
+    private DrawingStyle $style;
 
-    /**
-     * @var \PdfGenerator\Frontend\Content\Rectangle
-     */
-    private $rectangle;
+    private \PdfGenerator\Frontend\Content\Rectangle $rectangle;
 
     /**
      * Rectangle constructor.

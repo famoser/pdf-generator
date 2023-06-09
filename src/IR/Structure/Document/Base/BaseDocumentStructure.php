@@ -17,8 +17,5 @@ abstract class BaseDocumentStructure
 {
     abstract public function accept(DocumentVisitor $visitor);
 
-    /**
-     * @return string
-     */
-    abstract public function getIdentifier();
+    abstract public function getIdentifier(): string;
 }

@@ -24,12 +24,9 @@ class TextBuffer
     /**
      * @var Phrase[]
      */
-    private $phrases = [];
+    private array $phrases = [];
 
-    /**
-     * @var WordSizerRepository
-     */
-    private $wordSizerRepository;
+    private WordSizerRepository $wordSizerRepository;
 
     public function __construct()
     {
@@ -81,7 +78,7 @@ class TextBuffer
     /**
      * @return string[]
      */
-    private function splitAtNewlines(string $text)
+    private function splitAtNewlines(string $text): array
     {
         $textWithNormalizedNewlines = str_replace(["\r\n", "\n\r", "\r"], "\n", $text);
 

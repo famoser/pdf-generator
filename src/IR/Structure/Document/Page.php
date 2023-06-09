@@ -20,17 +20,14 @@ class Page extends BaseDocumentStructure
     /**
      * @var float[]
      */
-    private $size;
+    private array $size;
 
-    /**
-     * @var string
-     */
-    private $pageNumber;
+    private string $pageNumber;
 
     /**
      * @var BaseContent[]
      */
-    private $content = [];
+    private array $content = [];
 
     /**
      * Page constructor.

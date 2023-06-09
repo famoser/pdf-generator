@@ -20,12 +20,12 @@ class Resources extends BaseStructure
     /**
      * @var Font[]
      */
-    private $fonts = [];
+    private array $fonts = [];
 
     /**
      * @var Image[]
      */
-    private $images = [];
+    private array $images = [];
 
     public function addFont(Font $font)
     {
@@ -53,10 +53,7 @@ class Resources extends BaseStructure
         return $this->images;
     }
 
-    /**
-     * @return BaseObject
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): BaseObject
     {
         return $visitor->visitResources($this);
     }

@@ -25,10 +25,7 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Text;
  */
 class ToBackendContentVisitor extends ContentVisitor
 {
-    /**
-     * @var PageResources
-     */
-    private $pageResources;
+    private PageResources $pageResources;
 
     /**
      * ContentVisitor constructor.
@@ -75,7 +72,7 @@ class ToBackendContentVisitor extends ContentVisitor
     /**
      * @return string[]
      */
-    private function splitAtNewlines(string $text)
+    private function splitAtNewlines(string $text): array
     {
         $textWithNormalizedNewlines = str_replace(["\r\n", "\n\r", "\r"], "\n", $text);
 

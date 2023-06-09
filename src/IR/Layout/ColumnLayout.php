@@ -20,20 +20,11 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 
 class ColumnLayout
 {
-    /**
-     * @var CursorPrinter
-     */
-    private $printer;
+    private CursorPrinter $printer;
 
-    /**
-     * @var ColumnGenerator
-     */
-    private $columnGenerator;
+    private ColumnGenerator $columnGenerator;
 
-    /**
-     * @var Column
-     */
-    private $activeColumn;
+    private Column $activeColumn;
 
     /**
      * ColumnLayout constructor.

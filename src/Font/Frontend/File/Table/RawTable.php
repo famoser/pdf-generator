@@ -16,15 +16,9 @@ namespace PdfGenerator\Font\Frontend\File\Table;
  */
 class RawTable
 {
-    /**
-     * @var string
-     */
-    private $tag;
+    private string $tag;
 
-    /**
-     * @var string
-     */
-    private $content;
+    private string $content;
 
     public function getTag(): string
     {

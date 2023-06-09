@@ -21,15 +21,10 @@ class FontStream extends BaseIdentifiableStructure
 
     /**
      * should be set to OpenType.
-     *
-     * @var string
      */
-    private $subtype = self::SUBTYPE_OPEN_TYPE;
+    private string $subtype = self::SUBTYPE_OPEN_TYPE;
 
-    /**
-     * @var string
-     */
-    private $fontData;
+    private string $fontData;
 
     public function getSubtype(): string
     {

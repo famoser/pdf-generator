@@ -13,20 +13,11 @@ namespace PdfGenerator\Frontend\Block\Style\Part;
 
 class Color
 {
-    /**
-     * @var int
-     */
-    private $red;
+    private int $red;
 
-    /**
-     * @var int
-     */
-    private $green;
+    private int $green;
 
-    /**
-     * @var int
-     */
-    private $blue;
+    private int $blue;
 
     /**
      * Color constructor.

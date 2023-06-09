@@ -13,15 +13,9 @@ namespace PdfGenerator\Font\IR\Structure;
 
 class PostScriptInfo
 {
-    /**
-     * @var int|null
-     */
-    private $macintoshGlyphIndex;
+    private ?int $macintoshGlyphIndex;
 
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     public function isInStandardMacintoshSet(): bool
     {

@@ -21,7 +21,7 @@ class Transformer
      *
      * @return Segment[]
      */
-    public static function arraysToSegments(array $startCodes, array $endCodes, array $idDeltas, array $idOffsets)
+    public static function arraysToSegments(array $startCodes, array $endCodes, array $idDeltas, array $idOffsets): array
     {
         $segments = [];
 

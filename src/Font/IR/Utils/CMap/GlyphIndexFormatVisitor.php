@@ -24,7 +24,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     /**
      * @return int[]
      */
-    public function visitFormat(Format $format)
+    public function visitFormat(Format $format): array
     {
         return $format->accept($this);
     }

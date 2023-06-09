@@ -18,20 +18,14 @@ use PdfGenerator\Frontend\Block\Style\ColumnStyle;
 
 class ColumnAllocator extends BaseAllocator
 {
-    /**
-     * @var Column
-     */
-    private $column;
+    private Column $column;
 
-    /**
-     * @var ColumnStyle
-     */
-    private $style;
+    private ColumnStyle $style;
 
     /**
      * @var AllocatorInterface[]|null
      */
-    private $allocators;
+    private ?array $allocators;
 
     /**
      * ColumnAllocator constructor.

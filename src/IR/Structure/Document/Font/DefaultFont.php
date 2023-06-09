@@ -29,20 +29,14 @@ class DefaultFont extends Font
     public const STYLE_BOLD_OBLIQUE = 'BOLD_OBLIQUE';
     public const STYLE_BOLD_ITALIC = 'BOLD_ITALIC';
 
-    /**
-     * @var string
-     */
-    private $font;
+    private string $font;
 
-    /**
-     * @var string
-     */
-    private $style;
+    private string $style;
 
     /**
      * @var int[]
      */
-    private $size;
+    private array $size;
 
     /**
      * DefaultFont constructor.

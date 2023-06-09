@@ -13,20 +13,11 @@ namespace PdfGenerator\IR;
 
 class Cursor
 {
-    /**
-     * @var float
-     */
-    private $xCoordinate;
+    private float $xCoordinate;
 
-    /**
-     * @var float
-     */
-    private $yCoordinate;
+    private float $yCoordinate;
 
-    /**
-     * @var int
-     */
-    private $pageIndex;
+    private int $pageIndex;
 
     /**
      * Cursor constructor.
@@ -90,10 +81,7 @@ class Cursor
         return new self($newXCoordinate, $newYCoordinate, $this->getPageIndex());
     }
 
-    /**
-     * @return bool
-     */
-    public function isBiggerThan(self $other)
+    public function isBiggerThan(self $other): bool
     {
         return $other->getPageIndex() < $this->getPageIndex() || ($other->getPageIndex() === $this->getPageIndex() && $other->getYCoordinate() < $this->getYCoordinate());
     }

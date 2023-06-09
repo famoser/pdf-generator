@@ -15,20 +15,11 @@ use PdfGenerator\Frontend\Content\Style\TextStyle;
 
 class Fragment
 {
-    /**
-     * @var string
-     */
-    private $text;
+    private string $text;
 
-    /**
-     * @var TextStyle
-     */
-    private $textStyle;
+    private TextStyle $textStyle;
 
-    /**
-     * @var float
-     */
-    private $width;
+    private float $width;
 
     /**
      * Fragment constructor.

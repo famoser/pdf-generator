@@ -20,15 +20,12 @@ use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Paragraph extends Content
 {
-    /**
-     * @var ParagraphStyle
-     */
-    private $style;
+    private ParagraphStyle $style;
 
     /**
      * @var Phrase[]
      */
-    private $phrases = [];
+    private array $phrases = [];
 
     public function __construct(ParagraphStyle $style = null)
     {

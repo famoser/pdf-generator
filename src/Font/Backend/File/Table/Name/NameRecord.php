@@ -20,20 +20,16 @@ class NameRecord
      * platform id.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $platformID;
+    private int $platformID;
 
     /**
      * encoding id.
      * called platformSpecificID in the apple specification.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $encodingID;
+    private int $encodingID;
 
     /**
      * language id.
@@ -41,44 +37,34 @@ class NameRecord
      * langTagRecordIndex = languageID - 0x8000.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $languageID;
+    private int $languageID;
 
     /**
      * name id.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $nameID;
+    private int $nameID;
 
     /**
      * length.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $length;
+    private int $length;
 
     /**
      * offset from start of storage area.
      *
      * @ttf-type offset16
-     *
-     * @var int
      */
-    private $offset;
+    private int $offset;
 
     /**
      * the actual read out value.
-     *
-     * @var string
      */
-    private $value;
+    private string $value;
 
     public function getPlatformID(): int
     {

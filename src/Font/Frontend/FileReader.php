@@ -35,15 +35,9 @@ use PdfGenerator\Font\Frontend\File\Traits\Reader;
 
 class FileReader
 {
-    /**
-     * @var FormatReader
-     */
-    private $cMapFormatReader;
+    private FormatReader $cMapFormatReader;
 
-    /**
-     * @var File\Table\Post\FormatReader
-     */
-    private $postFormatReader;
+    private File\Table\Post\FormatReader $postFormatReader;
 
     /**
      * StructureReader constructor.
@@ -55,11 +49,9 @@ class FileReader
     }
 
     /**
-     * @return FontFile
-     *
      * @throws \Exception
      */
-    public function read(StreamReader $fileReader)
+    public function read(StreamReader $fileReader): FontFile
     {
         $offsetTable = $this->readOffsetTable($fileReader);
 
@@ -186,11 +178,9 @@ class FileReader
     }
 
     /**
-     * @return OffsetTable
-     *
      * @throws \Exception
      */
-    private function readOffsetTable(StreamReader $fileReader)
+    private function readOffsetTable(StreamReader $fileReader): OffsetTable
     {
         $offsetTable = new OffsetTable();
 
@@ -202,11 +192,9 @@ class FileReader
     }
 
     /**
-     * @return TableDirectoryEntry
-     *
      * @throws \Exception
      */
-    private function readTableDirectoryEntry(StreamReader $fileReader)
+    private function readTableDirectoryEntry(StreamReader $fileReader): TableDirectoryEntry
     {
         $tableDirectoryEntry = new TableDirectoryEntry();
 
@@ -219,11 +207,9 @@ class FileReader
     }
 
     /**
-     * @return CMapTable
-     *
      * @throws \Exception
      */
-    private function readCMapTable(StreamReader $fileReader)
+    private function readCMapTable(StreamReader $fileReader): CMapTable
     {
         $cmapTable = new CMapTable();
 
@@ -241,11 +227,9 @@ class FileReader
     }
 
     /**
-     * @return Subtable
-     *
      * @throws \Exception
      */
-    private function readCMapSubtable(StreamReader $fileReader, int $cmapTableOffset)
+    private function readCMapSubtable(StreamReader $fileReader, int $cmapTableOffset): Subtable
     {
         $cMapSubtable = new Subtable();
 
@@ -266,7 +250,7 @@ class FileReader
      *
      * @throws \Exception
      */
-    private function readGlyfTables(StreamReader $fileReader, LocaTable $locaTable, HeadTable $headTable)
+    private function readGlyfTables(StreamReader $fileReader, LocaTable $locaTable, HeadTable $headTable): array
     {
         $glyphTableOffset = $fileReader->getOffset();
         // if short format the offsets are in words, else in bytes
@@ -340,11 +324,9 @@ class FileReader
     }
 
     /**
-     * @return LocaTable
-     *
      * @throws \Exception
      */
-    private function readLocaTable(StreamReader $fileReader, HeadTable $headTable, MaxPTable $maxPTable)
+    private function readLocaTable(StreamReader $fileReader, HeadTable $headTable, MaxPTable $maxPTable): LocaTable
     {
         $glyfTable = new LocaTable();
 
@@ -362,11 +344,9 @@ class FileReader
     }
 
     /**
-     * @return MaxPTable
-     *
      * @throws \Exception
      */
-    private function readMaxPTable(StreamReader $fileReader)
+    private function readMaxPTable(StreamReader $fileReader): MaxPTable
     {
         $maxPTable = new MaxPTable();
 
@@ -390,11 +370,9 @@ class FileReader
     }
 
     /**
-     * @return HeadTable
-     *
      * @throws \Exception
      */
-    private function readHeadTable(StreamReader $fileReader)
+    private function readHeadTable(StreamReader $fileReader): HeadTable
     {
         $headTable = new HeadTable();
 
@@ -417,10 +395,7 @@ class FileReader
         return $headTable;
     }
 
-    /**
-     * @return RawTable
-     */
-    private function readRawTable(StreamReader $fileReader, TableDirectoryEntry $tableDirectoryEntry)
+    private function readRawTable(StreamReader $fileReader, TableDirectoryEntry $tableDirectoryEntry): RawTable
     {
         $rawTable = new RawTable();
         $rawTable->setTag($tableDirectoryEntry->getTag());
@@ -432,11 +407,9 @@ class FileReader
     }
 
     /**
-     * @return HHeaTable
-     *
      * @throws \Exception
      */
-    private function readHHeaTable(StreamReader $fileReader)
+    private function readHHeaTable(StreamReader $fileReader): HHeaTable
     {
         $table = new HHeaTable();
 
@@ -463,11 +436,9 @@ class FileReader
     }
 
     /**
-     * @return PostTable
-     *
      * @throws \Exception
      */
-    private function readPostTable(StreamReader $fileReader, int $length)
+    private function readPostTable(StreamReader $fileReader, int $length): PostTable
     {
         $table = new PostTable();
 
@@ -489,11 +460,9 @@ class FileReader
     }
 
     /**
-     * @return NameTable
-     *
      * @throws \Exception
      */
-    private function readNameTable(StreamReader $fileReader)
+    private function readNameTable(StreamReader $fileReader): NameTable
     {
         $startTableOffset = $fileReader->getOffset();
 
@@ -540,11 +509,9 @@ class FileReader
     }
 
     /**
-     * @return NameRecord
-     *
      * @throws \Exception
      */
-    private function readNameRecord(StreamReader $streamReader)
+    private function readNameRecord(StreamReader $streamReader): NameRecord
     {
         $nameRecord = new NameRecord();
 
@@ -559,11 +526,9 @@ class FileReader
     }
 
     /**
-     * @return OS2Table
-     *
      * @throws \Exception
      */
-    private function readOS2Table(StreamReader $streamReader)
+    private function readOS2Table(StreamReader $streamReader): OS2Table
     {
         $os2Table = new OS2Table();
 
@@ -635,11 +600,9 @@ class FileReader
     }
 
     /**
-     * @return LangTagRecord
-     *
      * @throws \Exception
      */
-    private function readLangTagRecord(StreamReader $streamReader)
+    private function readLangTagRecord(StreamReader $streamReader): LangTagRecord
     {
         $langTagRecord = new LangTagRecord();
 
@@ -650,11 +613,9 @@ class FileReader
     }
 
     /**
-     * @return HMtxTable
-     *
      * @throws \Exception
      */
-    private function readHMtxTable(StreamReader $fileReader, HHeaTable $hHeaTable, MaxPTable $maxPTable)
+    private function readHMtxTable(StreamReader $fileReader, HHeaTable $hHeaTable, MaxPTable $maxPTable): HMtxTable
     {
         $hMtxTable = new HMtxTable();
 

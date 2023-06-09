@@ -15,17 +15,12 @@ use PdfGenerator\Frontend\MeasuredContent\Paragraph\Line;
 
 class LineBreaker
 {
-    /**
-     * @var Line
-     */
-    private $line;
+    private Line $line;
 
     /**
      * the next to be included word.
-     *
-     * @var int
      */
-    private $nextWordIndex = 0;
+    private int $nextWordIndex = 0;
 
     public function __construct(Line $line)
     {

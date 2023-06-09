@@ -26,55 +26,43 @@ class MaxPTable extends BaseTable
      * version of the table.
      *
      * @ttf-type fixed
-     *
-     * @var float
      */
-    private $version;
+    private float $version;
 
     /**
      * number of glyphs provided by this font.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $numGlyphs;
+    private int $numGlyphs;
 
     /**
      * max points in non-composite glyphs.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxPoints;
+    private int $maxPoints;
 
     /**
      * max contours in non-composite glyph.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxContours;
+    private int $maxContours;
 
     /**
      * max points in composite glyphs.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxCompositePoints;
+    private int $maxCompositePoints;
 
     /**
      * max contours in composite glyph.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxCompositeContours;
+    private int $maxCompositeContours;
 
     /**
      * max zones used by instructions
@@ -82,83 +70,65 @@ class MaxPTable extends BaseTable
      * 2 if twilight zone is used.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxZones;
+    private int $maxZones;
 
     /**
      * max points used in the twilight zone.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxTwilightPoints;
+    private int $maxTwilightPoints;
 
     /**
      * number of storage area locations.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxStorage;
+    private int $maxStorage;
 
     /**
      * count of defined functions.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxFunctionDefs;
+    private int $maxFunctionDefs;
 
     /**
      * count of defined instructions.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxInstructionDefs;
+    private int $maxInstructionDefs;
 
     /**
      * max stack depth over font/cvt/glyph programs.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxStackElements;
+    private int $maxStackElements;
 
     /**
      * max byte count over all glyph instructions.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxSizeOfInstructions;
+    private int $maxSizeOfInstructions;
 
     /**
      * max top-level referenced components by composite glyphs.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxComponentElements;
+    private int $maxComponentElements;
 
     /**
      * max level of recursion
      * 1 for simple components.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $maxComponentDepth;
+    private int $maxComponentDepth;
 
     public function getVersion(): float
     {

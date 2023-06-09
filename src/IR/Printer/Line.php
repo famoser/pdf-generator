@@ -16,22 +16,13 @@ class Line
     /**
      * @var Fragment[]
      */
-    private $fragments;
+    private array $fragments;
 
-    /**
-     * @var float
-     */
-    private $ascender;
+    private float $ascender;
 
-    /**
-     * @var float
-     */
-    private $descender;
+    private float $descender;
 
-    /**
-     * @var float
-     */
-    private $leading;
+    private float $leading;
 
     /**
      * Line constructor.

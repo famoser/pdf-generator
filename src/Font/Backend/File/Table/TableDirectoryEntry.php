@@ -20,37 +20,29 @@ class TableDirectoryEntry extends BaseTable
      * identifier of the referenced table.
      *
      * @ttf-type uint32
-     *
-     * @var string
      */
-    private $tag;
+    private string $tag;
 
     /**
      * checksum.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $checkSum;
+    private int $checkSum;
 
     /**
      * offset from start of font directory.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $offset;
+    private int $offset;
 
     /**
      * length of this table.
      *
      * @ttf-type uint32
-     *
-     * @var int
      */
-    private $length;
+    private int $length;
 
     public function getTag(): string
     {

@@ -19,30 +19,15 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
 class StateTransitionVisitor
 {
-    /**
-     * @var FullState
-     */
-    private $previousState;
+    private FullState $previousState;
 
-    /**
-     * @var ColorState
-     */
-    private $appliedColorState;
+    private ColorState $appliedColorState;
 
-    /**
-     * @var GeneralGraphicState
-     */
-    private $appliedGeneralGraphicsState;
+    private GeneralGraphicState $appliedGeneralGraphicsState;
 
-    /**
-     * @var TextState
-     */
-    private $appliedTextState;
+    private TextState $appliedTextState;
 
-    /**
-     * @var DocumentResources
-     */
-    private $documentResources;
+    private DocumentResources $documentResources;
 
     /**
      * StateTransitionVisitor constructor.
@@ -56,7 +41,7 @@ class StateTransitionVisitor
     /**
      * @return string[]
      */
-    public function visitColorState(ColorState $targetState)
+    public function visitColorState(ColorState $targetState): array
     {
         $this->appliedColorState = $targetState;
 
@@ -68,7 +53,7 @@ class StateTransitionVisitor
     /**
      * @return string[]
      */
-    public function visitGeneralGraphicState(GeneralGraphicState $targetState)
+    public function visitGeneralGraphicState(GeneralGraphicState $targetState): array
     {
         $this->appliedGeneralGraphicsState = $targetState;
 
@@ -80,7 +65,7 @@ class StateTransitionVisitor
     /**
      * @return string[]
      */
-    public function visitTextState(TextState $targetState)
+    public function visitTextState(TextState $targetState): array
     {
         $this->appliedTextState = $targetState;
 

@@ -28,15 +28,9 @@ use PdfGenerator\IR\Structure\Document\Page\ToBackendContentVisitor;
 
 class DocumentVisitor implements FontVisitor
 {
-    /**
-     * @var DocumentResources
-     */
-    private $documentResources;
+    private DocumentResources $documentResources;
 
-    /**
-     * @var AnalysisResult
-     */
-    private $analysisResult;
+    private AnalysisResult $analysisResult;
 
     /**
      * DocumentStructureVisitor constructor.
@@ -49,11 +43,9 @@ class DocumentVisitor implements FontVisitor
     }
 
     /**
-     * @return BackendDefaultFont
-     *
      * @throws \Exception
      */
-    public function visitDefaultFont(DefaultFont $param)
+    public function visitDefaultFont(DefaultFont $param): BackendDefaultFont
     {
         $baseFont = $this->getDefaultFontBaseFont($param->getFont(), $param->getStyle());
 
@@ -78,11 +70,9 @@ class DocumentVisitor implements FontVisitor
     }
 
     /**
-     * @return BackendEmbeddedFont
-     *
      * @throws \Exception
      */
-    public function visitEmbeddedFont(EmbeddedFont $param)
+    public function visitEmbeddedFont(EmbeddedFont $param): BackendEmbeddedFont
     {
         $text = $this->analysisResult->getTextPerFont($param);
 
@@ -90,11 +80,9 @@ class DocumentVisitor implements FontVisitor
     }
 
     /**
-     * @return BackendImage
-     *
      * @throws \Exception
      */
-    public function visitImage(Image $param)
+    public function visitImage(Image $param): BackendImage
     {
         $type = self::getImageType($param->getType());
 
@@ -104,11 +92,9 @@ class DocumentVisitor implements FontVisitor
     }
 
     /**
-     * @return string
-     *
      * @throws \Exception
      */
-    private static function getImageType(string $type)
+    private static function getImageType(string $type): string
     {
         switch ($type) {
             case Image::TYPE_JPG:
@@ -124,10 +110,7 @@ class DocumentVisitor implements FontVisitor
         }
     }
 
-    /**
-     * @return BackendPage
-     */
-    public function visitPage(Page $param)
+    public function visitPage(Page $param): BackendPage
     {
         $mediaBox = array_merge([0, 0], $param->getSize());
 

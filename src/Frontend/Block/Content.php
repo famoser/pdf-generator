@@ -20,15 +20,9 @@ use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Content extends Block
 {
-    /**
-     * @var ContentStyle
-     */
-    private $style;
+    private ContentStyle $style;
 
-    /**
-     * @var MeasuredContent
-     */
-    private $measuredContent;
+    private MeasuredContent $measuredContent;
 
     /**
      * Content constructor.

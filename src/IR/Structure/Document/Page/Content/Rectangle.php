@@ -19,20 +19,11 @@ use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
 class Rectangle extends BaseContent
 {
-    /**
-     * @var Position
-     */
-    private $position;
+    private Position $position;
 
-    /**
-     * @var Size
-     */
-    private $size;
+    private Size $size;
 
-    /**
-     * @var RectangleStyle
-     */
-    private $style;
+    private RectangleStyle $style;
 
     /**
      * Rectangle constructor.

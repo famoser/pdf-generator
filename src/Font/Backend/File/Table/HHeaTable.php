@@ -29,129 +29,103 @@ class HHeaTable extends BaseTable
      * version of table.
      *
      * @ttf-type fixed
-     *
-     * @var float
      */
-    private $version;
+    private float $version;
 
     /**
      * distance from baseline to highest ascender
      * designers intention only; not calculated.
      *
      * @ttf-type fword
-     *
-     * @var int
      */
-    private $ascent;
+    private int $ascent;
 
     /**
      * distance from baseline to highest ascender
      * designers intention only; not calculated.
      *
      * @ttf-type fword
-     *
-     * @var int
      */
-    private $descent;
+    private int $descent;
 
     /**
      * line gap (additional spacing to form the line height after summation of ascent + descend)
      * designers intention only; not calculated.
      *
      * @ttf-type fword
-     *
-     * @var int
      */
-    private $lineGap;
+    private int $lineGap;
 
     /**
      * max advance width
      * computed values over all glyphs.
      *
      * @ttf-type ufword
-     *
-     * @var int
      */
-    private $advanceWidthMax;
+    private int $advanceWidthMax;
 
     /**
      * min left side bearing
      * computed values over all glyphs.
      *
      * @ttf-type fword
-     *
-     * @var int
      */
-    private $minLeftSideBearing;
+    private int $minLeftSideBearing;
 
     /**
      * min right side bearing
      * computed values over all glyphs.
      *
      * @ttf-type fword
-     *
-     * @var int
      */
-    private $minRightSideBearing;
+    private int $minRightSideBearing;
 
     /**
      * max extent
      * calculated: max of all glyphs of (leftSideBearing + (xMax-xMin)).
      *
      * @ttf-type fword
-     *
-     * @var int
      */
-    private $xMaxExtent;
+    private int $xMaxExtent;
 
     /**
      * used to calculate the angle of the characters
      * angle: caretSlopeRise / caretSlopeRun.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $caretSlopeRise;
+    private int $caretSlopeRise;
 
     /**
      * used to calculate the angle of the characters
      * angle: caretSlopeRise / caretSlopeRun.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $caretSlopeRun;
+    private int $caretSlopeRun;
 
     /**
      * caret offset
      * by which amount the highlight of the slanted character should be shifted.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $caretOffset;
+    private int $caretOffset;
 
     /**
      * metric data format
      * 0 for current format.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $metricDataFormat;
+    private int $metricDataFormat;
 
     /**
      * number of advance widths in metrics table.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $numOfLongHorMetrics;
+    private int $numOfLongHorMetrics;
 
     public function getVersion(): float
     {

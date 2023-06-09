@@ -18,12 +18,9 @@ class CharacterSizer
     /**
      * @var int[]
      */
-    private $characterAdvanceWidthLookup;
+    private array $characterAdvanceWidthLookup;
 
-    /**
-     * @var int
-     */
-    private $invalidCharacterWidth;
+    private int $invalidCharacterWidth;
 
     /**
      * CharacterSizer constructor.

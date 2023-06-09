@@ -16,20 +16,11 @@ use PdfGenerator\Frontend\Content\Style\Base\Style;
 
 class DrawingStyle extends Style
 {
-    /**
-     * @var float
-     */
-    private $lineWidth;
+    private float $lineWidth;
 
-    /**
-     * @var Color|null
-     */
-    private $borderColor;
+    private ?Color $borderColor;
 
-    /**
-     * @var Color|null
-     */
-    private $fillColor;
+    private ?Color $fillColor;
 
     /**
      * Style constructor.

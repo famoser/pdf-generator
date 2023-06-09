@@ -19,20 +19,11 @@ use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
 class ImagePlacement extends BaseContent
 {
-    /**
-     * @var Image
-     */
-    private $image;
+    private Image $image;
 
-    /**
-     * @var Position
-     */
-    private $position;
+    private Position $position;
 
-    /**
-     * @var Size
-     */
-    private $size;
+    private Size $size;
 
     /**
      * ImagePlacement constructor.

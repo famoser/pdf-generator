@@ -17,22 +17,14 @@ use PdfGenerator\Frontend\MeasuredContent\Utils\FontMeasurement;
 
 class ParagraphBreaker
 {
-    /**
-     * @var Paragraph
-     */
-    private $paragraph;
+    private Paragraph $paragraph;
 
     /**
      * the next to be included word.
-     *
-     * @var int
      */
-    private $nextPhraseIndex = 0;
+    private int $nextPhraseIndex = 0;
 
-    /**
-     * @var PhraseBreaker|null
-     */
-    private $phraseBreaker;
+    private ?PhraseBreaker $phraseBreaker;
 
     public function __construct(Paragraph $paragraph)
     {

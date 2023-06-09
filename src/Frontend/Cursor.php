@@ -13,20 +13,11 @@ namespace PdfGenerator\Frontend;
 
 class Cursor
 {
-    /**
-     * @var float
-     */
-    private $top;
+    private float $top;
 
-    /**
-     * @var float
-     */
-    private $left;
+    private float $left;
 
-    /**
-     * @var int
-     */
-    private $pageIndex;
+    private int $pageIndex;
 
     /**
      * Cursor constructor.

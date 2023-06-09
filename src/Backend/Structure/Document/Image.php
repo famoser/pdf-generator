@@ -21,35 +21,17 @@ class Image extends BaseDocumentStructure
     public const TYPE_PNG = 'png';
     public const TYPE_GIF = 'gif';
 
-    /**
-     * @var string
-     */
-    private $imageContent;
+    private string $imageContent;
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
-    /**
-     * @var int
-     */
-    private $width;
+    private int $width;
 
-    /**
-     * @var int
-     */
-    private $height;
+    private int $height;
 
-    /**
-     * @var int
-     */
-    private $maxUsedWidth;
+    private int $maxUsedWidth;
 
-    /**
-     * @var int
-     */
-    private $maxUsedHeight;
+    private int $maxUsedHeight;
 
     /**
      * Image constructor.

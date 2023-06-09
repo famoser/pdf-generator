@@ -19,8 +19,6 @@ interface TransactionInterface extends RootTransactionInterface
      * will group the transaction content together.
      *
      * if used in conjunction with a document with pages:, the returned transaction will add a page break before all elements if they do not fit on the same page
-     *
-     * @return TransactionInterface
      */
-    public function asGroupedTransaction();
+    public function asGroupedTransaction(): TransactionInterface;
 }

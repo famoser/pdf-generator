@@ -15,20 +15,14 @@ use PdfGenerator\Font\Backend\StreamWriter;
 
 class Writer
 {
-    /**
-     * @param BinaryTreeSearchableTrait $binaryTreeSearchable
-     */
-    public static function writeBinaryTreeSearchableUInt16($binaryTreeSearchable, StreamWriter $writer)
+    public static function writeBinaryTreeSearchableUInt16(BinaryTreeSearchableTrait $binaryTreeSearchable, StreamWriter $writer)
     {
         $writer->writeUInt16($binaryTreeSearchable->getSearchRange());
         $writer->writeUInt16($binaryTreeSearchable->getEntrySelector());
         $writer->writeUInt16($binaryTreeSearchable->getRangeShift());
     }
 
-    /**
-     * @param BoundingBoxTrait $boundingBoxTrait
-     */
-    public static function writeBoundingBoxInt16($boundingBoxTrait, StreamWriter $writer)
+    public static function writeBoundingBoxInt16(BoundingBoxTrait $boundingBoxTrait, StreamWriter $writer)
     {
         $writer->writeInt16($boundingBoxTrait->getXMin());
         $writer->writeInt16($boundingBoxTrait->getYMin());
@@ -36,10 +30,7 @@ class Writer
         $writer->writeInt16($boundingBoxTrait->getYMax());
     }
 
-    /**
-     * @param BoundingBoxTrait $boundingBoxTrait
-     */
-    public static function writeBoundingBoxFWORD($boundingBoxTrait, StreamWriter $writer)
+    public static function writeBoundingBoxFWORD(BoundingBoxTrait $boundingBoxTrait, StreamWriter $writer)
     {
         $writer->writeFWORD($boundingBoxTrait->getXMin());
         $writer->writeFWORD($boundingBoxTrait->getYMin());

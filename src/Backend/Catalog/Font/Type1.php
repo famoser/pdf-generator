@@ -34,10 +34,7 @@ class Type1 extends Font
 
     public const ENCODING_WIN_ANSI_ENCODING = 'WinAnsiEncoding';
 
-    /**
-     * @var string
-     */
-    private $baseFont;
+    private string $baseFont;
 
     /**
      * Type1 constructor.
@@ -59,10 +56,7 @@ class Type1 extends Font
         return self::ENCODING_WIN_ANSI_ENCODING;
     }
 
-    /**
-     * @return BaseObject
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): BaseObject
     {
         return $visitor->visitType1Font($this);
     }

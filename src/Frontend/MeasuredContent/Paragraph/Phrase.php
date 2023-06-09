@@ -19,17 +19,11 @@ class Phrase
     /**
      * @var Line[]
      */
-    private $measuredLines;
+    private array $measuredLines;
 
-    /**
-     * @var TextStyle
-     */
-    private $textStyle;
+    private TextStyle $textStyle;
 
-    /**
-     * @var Font
-     */
-    private $font;
+    private Font $font;
 
     /**
      * MeasuredPhrase constructor.

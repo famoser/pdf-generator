@@ -18,10 +18,7 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class Catalog extends BaseStructure
 {
-    /**
-     * @var Pages
-     */
-    private $pages;
+    private Pages $pages;
 
     /**
      * Catalog constructor.
@@ -31,10 +28,7 @@ class Catalog extends BaseStructure
         $this->pages = $pages;
     }
 
-    /**
-     * @return BaseObject
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): BaseObject
     {
         return $visitor->visitCatalog($this);
     }
@@ -44,10 +38,7 @@ class Catalog extends BaseStructure
         return $this->pages;
     }
 
-    /**
-     * @return string
-     */
-    public function render()
+    public function render(): string
     {
         $file = new File();
         $structureVisitor = new CatalogVisitor($file);
@@ -57,10 +48,7 @@ class Catalog extends BaseStructure
         return $file->render();
     }
 
-    /**
-     * @return string
-     */
-    public function save()
+    public function save(): string
     {
         return $this->render();
     }

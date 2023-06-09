@@ -19,35 +19,22 @@ class CIDFont extends BaseStructure
 {
     public const SUBTYPE_CID_FONT_TYPE_2 = 'CIDFontType2';
 
-    /**
-     * @var string
-     */
-    private $subType = self::SUBTYPE_CID_FONT_TYPE_2;
+    private string $subType = self::SUBTYPE_CID_FONT_TYPE_2;
 
     /**
      * determined by looking at the TTF 'name' table (9.6.3)
      * if subset, then prefix with 6 uppercase letters unique for that specific subset followed by a + sign.
-     *
-     * @var string
      */
-    private $baseFont;
+    private string $baseFont;
 
-    /**
-     * @var CIDSystemInfo
-     */
-    private $cIDSystemInfo;
+    private CIDSystemInfo $cIDSystemInfo;
 
-    /**
-     * @var FontDescriptor
-     */
-    private $fontDescriptor;
+    private FontDescriptor $fontDescriptor;
 
     /**
      * default width of a character.
-     *
-     * @var int
      */
-    private $dW = 1000;
+    private int $dW = 1000;
 
     /**
      * width per character.
@@ -56,7 +43,7 @@ class CIDFont extends BaseStructure
      *
      * @var int[]|int[][]
      */
-    private $w = [];
+    private array $w = [];
 
     public function getSubType(): string
     {

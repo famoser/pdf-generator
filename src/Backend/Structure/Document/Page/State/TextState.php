@@ -29,66 +29,50 @@ class TextState extends BaseState
     /**
      * the font
      * pdf-operator: Tt.
-     *
-     * @var Font
      */
-    private $font;
+    private Font $font;
 
     /**
      * the font size to be used
      * pdf-operator: Tts.
-     *
-     * @var float
      */
-    private $fontSize = 0;
+    private float $fontSize = 0;
 
     /**
      * space between chars
      * pdf-operator: Tc.
-     *
-     * @var float
      */
-    private $charSpace = 0;
+    private float $charSpace = 0;
 
     /**
      * space between words (like @see $charSpace, but only applies to SPACE)
      * pdf-operator: Tw.
-     *
-     * @var float
      */
-    private $wordSpace = 0;
+    private float $wordSpace = 0;
 
     /**
      * percentage of normal width
      * pdf-operator: Th.
-     *
-     * @var float
      */
-    private $scale = 100;
+    private float $scale = 100;
 
     /**
      * vertical distance between baselines (the line height)
      * pdf-operator: Tl.
-     *
-     * @var float
      */
-    private $leading = 0;
+    private float $leading = 0;
 
     /**
      * fill/stroke render combinations
      * pdf-operator: Tr.
-     *
-     * @var float
      */
-    private $renderMode = self::RENDER_MODE_FILL;
+    private float $renderMode = self::RENDER_MODE_FILL;
 
     /**
      * upwards shift from the baseline
      * pdf-operator: Tr.
-     *
-     * @var float
      */
-    private $rise = 0;
+    private float $rise = 0;
 
     public function setFont(Font $font): void
     {

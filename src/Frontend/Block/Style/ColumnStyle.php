@@ -18,15 +18,9 @@ class ColumnStyle extends BlockStyle
     public const SIZING_BY_CONTENT = 'SIZING_BY_CONTENT';
     public const SIZING_BY_WEIGHT = 'SIZING_BY_WEIGHT';
 
-    /**
-     * @var string
-     */
-    private $sizing;
+    private string $sizing;
 
-    /**
-     * @var int
-     */
-    private $sizingWeight;
+    private int $sizingWeight;
 
     public function __construct(float $gutter = 0, string $sizing = self::SIZING_BY_WEIGHT, int $sizingWeight = 1)
     {

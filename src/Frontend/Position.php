@@ -13,15 +13,9 @@ namespace PdfGenerator\Frontend;
 
 class Position
 {
-    /**
-     * @var float
-     */
-    private $left;
+    private float $left;
 
-    /**
-     * @var float
-     */
-    private $top;
+    private float $top;
 
     /**
      * Position constructor.

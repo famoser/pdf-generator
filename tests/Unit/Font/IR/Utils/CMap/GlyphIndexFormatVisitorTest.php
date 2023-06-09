@@ -17,10 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class GlyphIndexFormatVisitorTest extends TestCase
 {
-    /**
-     * @var GlyphIndexFormatVisitor
-     */
-    private $visitor;
+    private GlyphIndexFormatVisitor $visitor;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {

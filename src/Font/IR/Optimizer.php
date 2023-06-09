@@ -17,10 +17,7 @@ use PdfGenerator\Font\IR\Structure\TableDirectory;
 
 class Optimizer
 {
-    /**
-     * @return Optimizer
-     */
-    public static function create()
+    public static function create(): Optimizer
     {
         return new self();
     }
@@ -28,11 +25,9 @@ class Optimizer
     /**
      * @param Character[] $characters
      *
-     * @return Font
-     *
      * @throws \Exception
      */
-    public function getFontSubset(Font $source, array $characters)
+    public function getFontSubset(Font $source, array $characters): Font
     {
         $font = new Font();
         $font->setIsTrueTypeFont($source->getIsTrueTypeFont());
@@ -86,10 +81,7 @@ class Optimizer
         usort($characters, $sortByCodePoint);
     }
 
-    /**
-     * @return TableDirectory
-     */
-    private function getTableDirectoryAfterSubsetting(TableDirectory $source)
+    private function getTableDirectoryAfterSubsetting(TableDirectory $source): TableDirectory
     {
         $rawTableDirectory = new TableDirectory();
 

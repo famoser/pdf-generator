@@ -28,35 +28,29 @@ class NameTable extends BaseTable
      * the format of the table.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $format;
+    private int $format;
 
     /**
      * number of records.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $count;
+    private int $count;
 
     /**
      * offset of start of string content from the beginning of the table.
      *
      * @ttf-type offset16
-     *
-     * @var int
      */
-    private $stringOffset;
+    private int $stringOffset;
 
     /**
      * name records.
      *
      * @var NameRecord[]
      */
-    private $nameRecords = [];
+    private array $nameRecords = [];
 
     public function getFormat(): int
     {

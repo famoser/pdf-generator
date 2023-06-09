@@ -18,15 +18,9 @@ use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Image extends MeasuredContent
 {
-    /**
-     * @var \PdfGenerator\IR\Structure\Document\Image
-     */
-    private $image;
+    private \PdfGenerator\IR\Structure\Document\Image $image;
 
-    /**
-     * @var ImageStyle
-     */
-    private $style;
+    private ImageStyle $style;
 
     /**
      * Image constructor.

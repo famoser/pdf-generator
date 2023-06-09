@@ -32,7 +32,7 @@ class HMtxTable
      *
      * @var LongHorMetric[]
      */
-    private $longHorMetrics = [];
+    private array $longHorMetrics = [];
 
     /**
      * the left side bearing of the characters not specified using the longHorMetric.
@@ -42,7 +42,7 @@ class HMtxTable
      *
      * @var int[]
      */
-    private $leftSideBearings = [];
+    private array $leftSideBearings = [];
 
     /**
      * @return LongHorMetric[]

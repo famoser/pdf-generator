@@ -29,28 +29,19 @@ class FileReaderTest extends TestCase
 {
     private static $defaultFilePath = __DIR__.\DIRECTORY_SEPARATOR.'OpenSans-Regular.ttf';
 
-    /**
-     * @return string
-     */
-    public static function getDefaultFontContent()
+    public static function getDefaultFontContent(): string
     {
         return file_get_contents(self::$defaultFilePath);
     }
 
-    /**
-     * @return StreamReader
-     */
-    public static function getFileReader()
+    public static function getFileReader(): StreamReader
     {
         $content = self::getDefaultFontContent();
 
         return new StreamReader($content);
     }
 
-    /**
-     * @return FileReader
-     */
-    public static function getStructureReader()
+    public static function getStructureReader(): FileReader
     {
         $cMapFormatReader = new FormatReader();
         $postFormatReader = new \PdfGenerator\Font\Frontend\File\Table\Post\FormatReader();

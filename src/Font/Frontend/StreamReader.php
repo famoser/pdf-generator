@@ -19,27 +19,16 @@ namespace PdfGenerator\Font\Frontend;
  */
 class StreamReader
 {
-    /**
-     * @var string
-     */
-    private $content;
+    private string $content;
 
-    /**
-     * @var int
-     */
-    private $offset = 0;
+    private int $offset = 0;
 
-    /**
-     * @var int
-     */
-    private $byteCount;
+    private int $byteCount;
 
     /**
      * Reader constructor.
-     *
-     * @param string $content
      */
-    public function __construct($content)
+    public function __construct(string $content)
     {
         $this->content = $content;
         $this->byteCount = \strlen($content);
@@ -293,11 +282,9 @@ class StreamReader
     }
 
     /**
-     * @return int
-     *
      * @throws \Exception
      */
-    public function readUFWORD()
+    public function readUFWORD(): int
     {
         return $this->readUInt16();
     }
@@ -397,10 +384,7 @@ class StreamReader
         $this->setOffset($offset);
     }
 
-    /**
-     * @return string
-     */
-    public function readUntil(int $offset)
+    public function readUntil(int $offset): string
     {
         $result = '';
 
@@ -411,10 +395,7 @@ class StreamReader
         return $result;
     }
 
-    /**
-     * @return string
-     */
-    public function readUntilEnd()
+    public function readUntilEnd(): string
     {
         $result = substr($this->content, $this->offset);
         $this->offset += \strlen($result);
@@ -422,10 +403,7 @@ class StreamReader
         return $result;
     }
 
-    /**
-     * @return string
-     */
-    public function readFor(int $length)
+    public function readFor(int $length): string
     {
         $offset = $this->getOffset();
 

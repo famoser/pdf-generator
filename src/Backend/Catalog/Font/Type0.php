@@ -18,25 +18,13 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class Type0 extends Font
 {
-    /**
-     * @var string
-     */
-    private $baseFont;
+    private string $baseFont;
 
-    /**
-     * @var CMap
-     */
-    private $encoding;
+    private CMap $encoding;
 
-    /**
-     * @var Font\Structure\CIDFont
-     */
-    private $descendantFont;
+    private Font\Structure\CIDFont $descendantFont;
 
-    /**
-     * @var CMap
-     */
-    private $toUnicode;
+    private CMap $toUnicode;
 
     public function getBaseFont(): string
     {

@@ -24,35 +24,23 @@ use PdfGenerator\IR\Structure\Document\Page\State\TextStateRepository;
 
 class PageResources
 {
-    /**
-     * @var GeneralGraphicStateRepository
-     */
-    private $generalGraphicStateRepository;
+    private GeneralGraphicStateRepository $generalGraphicStateRepository;
 
-    /**
-     * @var ColorStateRepository
-     */
-    private $colorStateRepository;
+    private ColorStateRepository $colorStateRepository;
 
-    /**
-     * @var TextStateRepository
-     */
-    private $textStateRepository;
+    private TextStateRepository $textStateRepository;
 
-    /**
-     * @var DocumentResources
-     */
-    private $documentResources;
+    private DocumentResources $documentResources;
 
     /**
      * @var BackendFont[]
      */
-    private $fonts = [];
+    private array $fonts = [];
 
     /**
      * @var BackendImage[]
      */
-    private $images = [];
+    private array $images = [];
 
     /**
      * PageResources constructor.
@@ -81,10 +69,7 @@ class PageResources
         return $this->textStateRepository;
     }
 
-    /**
-     * @return BackendFont
-     */
-    public function getFont(Font $structure)
+    public function getFont(Font $structure): BackendFont
     {
         $font = $this->documentResources->getFont($structure);
         $this->fonts[$structure->getIdentifier()] = $font;
@@ -92,10 +77,7 @@ class PageResources
         return $font;
     }
 
-    /**
-     * @return BackendImage
-     */
-    public function getImage(Image $structure)
+    public function getImage(Image $structure): BackendImage
     {
         $image = $this->documentResources->getImage($structure);
         $this->images[$structure->getIdentifier()] = $image;
@@ -103,10 +85,7 @@ class PageResources
         return $image;
     }
 
-    /**
-     * @return DrawingState
-     */
-    public function getDrawingState()
+    public function getDrawingState(): DrawingState
     {
         $generalGraphicState = $this->generalGraphicStateRepository->getGeneralGraphicState();
         $colorState = $this->colorStateRepository->getColorState();
@@ -114,10 +93,7 @@ class PageResources
         return new DrawingState($generalGraphicState, $colorState);
     }
 
-    /**
-     * @return WritingState
-     */
-    public function getWritingState()
+    public function getWritingState(): WritingState
     {
         $generalGraphicState = $this->generalGraphicStateRepository->getGeneralGraphicState();
         $colorState = $this->colorStateRepository->getColorState();

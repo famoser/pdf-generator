@@ -13,10 +13,7 @@ namespace PdfGenerator\IR\Text\WordSizer;
 
 class MonospaceProportionalWordSizer implements WordSizerInterface
 {
-    /**
-     * @var int
-     */
-    private $characterWidth;
+    private int $characterWidth;
 
     public function __construct(int $characterWidth)
     {

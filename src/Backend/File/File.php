@@ -20,15 +20,9 @@ use PdfGenerator\Backend\File\Structure\FileTrailer;
 
 class File
 {
-    /**
-     * @var Body
-     */
-    private $body;
+    private Body $body;
 
-    /**
-     * @var int
-     */
-    private $bodyCounter = 1;
+    private int $bodyCounter = 1;
 
     /**
      * File constructor.
@@ -38,10 +32,7 @@ class File
         $this->body = new Body();
     }
 
-    /**
-     * @return StreamObject
-     */
-    public function addStreamObject(string $content)
+    public function addStreamObject(string $content): StreamObject
     {
         $streamObject = new StreamObject($this->bodyCounter++, $content);
         $this->body->addObject($streamObject);
@@ -49,10 +40,7 @@ class File
         return $streamObject;
     }
 
-    /**
-     * @return DictionaryObject
-     */
-    public function addDictionaryObject()
+    public function addDictionaryObject(): DictionaryObject
     {
         $dictionaryObject = new DictionaryObject($this->bodyCounter++);
         $this->body->addObject($dictionaryObject);
@@ -60,10 +48,7 @@ class File
         return $dictionaryObject;
     }
 
-    /**
-     * @return DictionaryObject
-     */
-    public function addInfoDictionaryObject()
+    public function addInfoDictionaryObject(): DictionaryObject
     {
         $dictionaryObject = new DictionaryObject($this->bodyCounter++);
         $this->body->addInfoObject($dictionaryObject);

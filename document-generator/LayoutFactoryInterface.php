@@ -19,17 +19,13 @@ interface LayoutFactoryInterface
 {
     /**
      * starts a region with columns and the column is chosen automatically.
-     *
-     * @return AutoColumnLayoutInterface
      */
-    public function createAutoColumnLayout(int $columnCount);
+    public function createAutoColumnLayout(int $columnCount): AutoColumnLayoutInterface;
 
     /**
      * starts a table.
      *
      * @param ColumnConfiguration[] $tableColumns
-     *
-     * @return TableLayoutInterface
      */
-    public function createTableLayout(array $tableColumns);
+    public function createTableLayout(array $tableColumns): TableLayoutInterface;
 }

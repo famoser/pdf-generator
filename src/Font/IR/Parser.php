@@ -31,20 +31,11 @@ use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 class Parser
 {
-    /**
-     * @var GlyphIndexFormatVisitor
-     */
-    private $cMapGlyphIndexFormatVisitor;
+    private GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor;
 
-    /**
-     * @var Utils\Post\GlyphIndexFormatVisitor
-     */
-    private $postGlyphIndexFormatVisitor;
+    private Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor;
 
-    /**
-     * @var Factory
-     */
-    private $glyphNameMappingFactory;
+    private Factory $glyphNameMappingFactory;
 
     /**
      * Parser constructor.
@@ -56,10 +47,7 @@ class Parser
         $this->glyphNameMappingFactory = $glyphNameMappingFactory;
     }
 
-    /**
-     * @return Parser
-     */
-    public static function create()
+    public static function create(): Parser
     {
         $factory = new Factory();
         $cMapFormatVisitor = new GlyphIndexFormatVisitor();
@@ -113,10 +101,7 @@ class Parser
         return $font;
     }
 
-    /**
-     * @return TableDirectory
-     */
-    private function createTableDirectory(FontFile $fontFile)
+    private function createTableDirectory(FontFile $fontFile): TableDirectory
     {
         $tableDirectory = new TableDirectory();
 
@@ -180,10 +165,7 @@ class Parser
         }
     }
 
-    /**
-     * @return Subtable
-     */
-    private function chooseBestCMapSubtable(CMapTable $cMapTable)
+    private function chooseBestCMapSubtable(CMapTable $cMapTable): Subtable
     {
         /** @var Subtable[] $cMapSubtable */
         $cMapSubtable = [];
@@ -271,12 +253,7 @@ class Parser
         return $longHorMetric;
     }
 
-    /**
-     * @param BoundingBoxTrait $boundingBoxTrait
-     *
-     * @return BoundingBox
-     */
-    private function calculateBoundingBox($boundingBoxTrait)
+    private function calculateBoundingBox(BoundingBoxTrait $boundingBoxTrait): BoundingBox
     {
         $boundingBox = new BoundingBox();
 

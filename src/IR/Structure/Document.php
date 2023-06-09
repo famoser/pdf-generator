@@ -23,22 +23,22 @@ class Document
     /**
      * @var Page[]
      */
-    private $pages = [];
+    private array $pages = [];
 
     /**
      * @var Image[]
      */
-    private $images = [];
+    private array $images = [];
 
     /**
      * @var DefaultFont[]
      */
-    private $defaultFonts = [];
+    private array $defaultFonts = [];
 
     /**
      * @var EmbeddedFont[]
      */
-    private $embeddedFonts = [];
+    private array $embeddedFonts = [];
 
     public function addPage(Page $page)
     {
@@ -93,10 +93,7 @@ class Document
         return $this->embeddedFonts[$fontPath];
     }
 
-    /**
-     * @return \PdfGenerator\Backend\Structure\Document
-     */
-    public function render()
+    public function render(): \PdfGenerator\Backend\Structure\Document
     {
         $analysisResult = $this->analyze();
 
@@ -110,10 +107,7 @@ class Document
         return $document;
     }
 
-    /**
-     * @return string
-     */
-    public function save()
+    public function save(): string
     {
         return $this->render()->save();
     }

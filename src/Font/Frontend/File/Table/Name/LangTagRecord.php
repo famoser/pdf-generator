@@ -21,26 +21,20 @@ class LangTagRecord
      * the length of the language string.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $length;
+    private int $length;
 
     /**
      * language tag string offset from beginning of storage area.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $offset;
+    private int $offset;
 
     /**
      * the actual read out value.
-     *
-     * @var string
      */
-    private $value;
+    private string $value;
 
     public function getLength(): int
     {

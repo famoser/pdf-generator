@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase
 {
-    /**
-     * @return Factory
-     */
-    public static function getFactory()
+    public static function getFactory(): Factory
     {
         return new Factory();
     }

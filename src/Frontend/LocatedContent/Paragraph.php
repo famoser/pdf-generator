@@ -21,7 +21,7 @@ class Paragraph extends LocatedContent
     /**
      * @var Line[]
      */
-    private $lines;
+    private array $lines;
 
     /**
      * Paragraph constructor.

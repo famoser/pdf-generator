@@ -21,20 +21,11 @@ use PdfGenerator\IR\Text\WordSizer\WordSizerRepository;
 
 class ContentVisitor
 {
-    /**
-     * @var ImageRepository
-     */
-    private $imageRespository;
+    private ImageRepository $imageRespository;
 
-    /**
-     * @var FontRepository
-     */
-    private $fontRepository;
+    private FontRepository $fontRepository;
 
-    /**
-     * @var WordSizerRepository
-     */
-    private $wordSizerRepository;
+    private WordSizerRepository $wordSizerRepository;
 
     /**
      * ContentVisitor constructor.

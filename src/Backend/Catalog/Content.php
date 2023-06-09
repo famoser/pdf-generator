@@ -17,15 +17,9 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 class Content extends BaseStructure
 {
-    /**
-     * @var string
-     */
-    private $content;
+    private string $content;
 
-    /**
-     * @var int
-     */
-    private $contentType;
+    private int $contentType;
 
     public const CONTENT_TYPE_TEXT = 1;
     public const CONTENT_TYPE_IMAGE = 2;

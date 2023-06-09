@@ -16,7 +16,7 @@ class DefaultFontSize
     /**
      * @var int[][][]|null
      */
-    private static $sizeLookup = null;
+    private static ?array $sizeLookup;
 
     /**
      * @var string[][]

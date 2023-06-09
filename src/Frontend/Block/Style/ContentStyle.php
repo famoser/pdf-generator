@@ -20,10 +20,7 @@ class ContentStyle extends BlockStyle
     public const FLOAT_BOTTOM_LEFT = 'FLOAT_BOTTOM_LEFT';
     public const FLOAT_BOTTOM_RIGHT = 'FLOAT_BUTTOM_RIGHT';
 
-    /**
-     * @var string|null
-     */
-    private $float;
+    private ?string $float;
 
     public function __construct(string $float = null)
     {

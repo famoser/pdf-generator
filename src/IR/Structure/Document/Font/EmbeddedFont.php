@@ -16,20 +16,11 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 class EmbeddedFont extends Font
 {
-    /**
-     * @var string
-     */
-    private $fontPath;
+    private string $fontPath;
 
-    /**
-     * @var string
-     */
-    private $fontData;
+    private string $fontData;
 
-    /**
-     * @var \PdfGenerator\Font\IR\Structure\Font
-     */
-    private $font;
+    private \PdfGenerator\Font\IR\Structure\Font $font;
 
     /**
      * EmbeddedFont constructor.
@@ -66,18 +57,12 @@ class EmbeddedFont extends Font
         return $visitor->visitEmbeddedFont($this);
     }
 
-    /**
-     * @return string
-     */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->fontPath;
     }
 
-    /**
-     * @return string
-     */
-    public function getFontData()
+    public function getFontData(): string
     {
         return $this->fontData;
     }

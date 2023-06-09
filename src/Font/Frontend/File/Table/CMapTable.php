@@ -34,26 +34,22 @@ class CMapTable
      * simply ignore or set to 0.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $version;
+    private int $version;
 
     /**
      * the number of provided encoding subtables.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $numberSubtables;
+    private int $numberSubtables;
 
     /**
      * the encoding subtables.
      *
      * @var Subtable[]
      */
-    private $subtables;
+    private array $subtables;
 
     public function getVersion(): int
     {

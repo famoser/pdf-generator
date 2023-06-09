@@ -17,37 +17,29 @@ trait BoundingBoxTrait
      * x of lower left corner of bounding box.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $xMin;
+    private int $xMin;
 
     /**
      * y of lower left corner of bounding box.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $yMin;
+    private int $yMin;
 
     /**
      * x of upper right corner of bounding box.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $xMax;
+    private int $xMax;
 
     /**
      * y of upper right corner of bounding box.
      *
      * @ttf-type int16
-     *
-     * @var int
      */
-    private $yMax;
+    private int $yMax;
 
     public function getXMin(): int
     {

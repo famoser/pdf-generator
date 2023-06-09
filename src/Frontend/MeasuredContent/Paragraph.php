@@ -22,12 +22,9 @@ class Paragraph extends MeasuredContent
     /**
      * @var Phrase[]
      */
-    private $phrases = [];
+    private array $phrases = [];
 
-    /**
-     * @var ParagraphStyle
-     */
-    private $style;
+    private ParagraphStyle $style;
 
     /**
      * Paragraph constructor.

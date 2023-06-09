@@ -25,10 +25,8 @@ class Format2 extends Format
      * same number than the one in maxp profile.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $numGlyphs;
+    private int $numGlyphs;
 
     /**
      * maps glyph index to the character it represents
@@ -39,16 +37,14 @@ class Format2 extends Format
      *
      * @var int[]
      */
-    private $glyphNameIndex = [];
+    private array $glyphNameIndex = [];
 
     /**
      * glyph names with length byte.
      *
      * @ttf-type pascal string stream
-     *
-     * @var string
      */
-    private $names;
+    private string $names;
 
     public function getNumGlyphs(): int
     {

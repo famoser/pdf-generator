@@ -16,10 +16,7 @@ use PdfGenerator\Backend\File\StructureVisitor;
 
 class FileHeader extends BaseStructure
 {
-    /**
-     * @var float
-     */
-    private $version = 1.7;
+    private float $version = 1.7;
 
     public function accept(StructureVisitor $visitor): string
     {

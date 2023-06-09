@@ -22,22 +22,22 @@ class Page
     /**
      * @var BaseContent[]
      */
-    private $content = [];
+    private array $content = [];
 
     /**
      * @var int[]
      */
-    private $mediaBox;
+    private array $mediaBox;
 
     /**
      * @var Font[]
      */
-    private $fonts;
+    private array $fonts;
 
     /**
      * @var Image[]
      */
-    private $images;
+    private array $images;
 
     /**
      * Page constructor.
@@ -70,10 +70,7 @@ class Page
         $this->images = $images;
     }
 
-    /**
-     * @return \PdfGenerator\Backend\Catalog\Page
-     */
-    public function render(Pages $parent, DocumentResources $documentResources)
+    public function render(Pages $parent, DocumentResources $documentResources): \PdfGenerator\Backend\Catalog\Page
     {
         $contentVisitor = new ContentVisitor($documentResources);
 

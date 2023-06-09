@@ -39,7 +39,7 @@ class Format12 extends Format
     /**
      * @var Format12Group[]
      */
-    private $groups = [];
+    private array $groups = [];
 
     /**
      * the format of the encoding.

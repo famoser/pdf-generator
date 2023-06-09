@@ -15,30 +15,21 @@ use PdfGenerator\Font\IR\Structure\Tables\FontInformation;
 
 class Font
 {
-    /**
-     * @var bool
-     */
-    private $isTrueTypeFont;
+    private bool $isTrueTypeFont;
 
     /**
      * @var Character[]
      */
-    private $reservedCharacters;
+    private array $reservedCharacters;
 
     /**
      * @var Character[]
      */
-    private $characters = [];
+    private array $characters = [];
 
-    /**
-     * @var FontInformation
-     */
-    private $fontInformation;
+    private FontInformation $fontInformation;
 
-    /**
-     * @var TableDirectory
-     */
-    private $tableDirectory;
+    private TableDirectory $tableDirectory;
 
     public function getIsTrueTypeFont(): bool
     {

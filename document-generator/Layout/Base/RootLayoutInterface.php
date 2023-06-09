@@ -17,8 +17,6 @@ interface RootLayoutInterface
 {
     /**
      * will produce a transaction with the to-be-printed document.
-     *
-     * @return TransactionInterface
      */
-    public function getTransaction();
+    public function getTransaction(): TransactionInterface;
 }

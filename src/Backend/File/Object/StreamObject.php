@@ -17,15 +17,9 @@ use PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class StreamObject extends BaseObject
 {
-    /**
-     * @var string
-     */
-    private $content;
+    private string $content;
 
-    /**
-     * @var DictionaryToken
-     */
-    private $dictionary;
+    private DictionaryToken $dictionary;
 
     /**
      * StreamObject constructor.

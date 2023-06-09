@@ -22,12 +22,9 @@ class Document
     /**
      * @var Page[]
      */
-    private $pages = [];
+    private array $pages = [];
 
-    /**
-     * @var Configuration
-     */
-    private $configuration;
+    private Configuration $configuration;
 
     public function __construct()
     {
@@ -39,10 +36,7 @@ class Document
         $this->pages[] = $page;
     }
 
-    /**
-     * @return Catalog
-     */
-    public function render()
+    public function render(): Catalog
     {
         $documentVisitor = new DocumentVisitor($this->configuration);
         $documentResources = new DocumentResources($documentVisitor);
@@ -56,10 +50,7 @@ class Document
         return new Catalog($pages);
     }
 
-    /**
-     * @return string
-     */
-    public function save()
+    public function save(): string
     {
         return $this->render()->save();
     }

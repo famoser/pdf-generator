@@ -21,10 +21,7 @@ use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 class GlyphIndexFormatVisitor implements VisitorInterface
 {
-    /**
-     * @var Factory
-     */
-    private $factory;
+    private Factory $factory;
 
     /**
      * GlyphIndexFormatVisitor constructor.
@@ -37,7 +34,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     /**
      * @return GlyphInfo[]
      */
-    public function visitFormat(Format $format)
+    public function visitFormat(Format $format): array
     {
         return $format->accept($this);
     }
@@ -57,7 +54,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     /**
      * @return GlyphInfo[]
      */
-    public function visitFormat2(Format2 $format2)
+    public function visitFormat2(Format2 $format2): array
     {
         $macintoshMapping = $this->factory->getMacintoshMapping();
         $names = $this->streamToPascalStrings($format2->getNames());
@@ -97,10 +94,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return [];
     }
 
-    /**
-     * @return GlyphInfo
-     */
-    private static function createGlyphInfo(string $name, int $macintoshSetIndex = null)
+    private static function createGlyphInfo(string $name, int $macintoshSetIndex = null): GlyphInfo
     {
         $glyphInfo = new GlyphInfo();
         $glyphInfo->setName($name);
@@ -109,10 +103,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return $glyphInfo;
     }
 
-    /**
-     * @return array
-     */
-    private function streamToPascalStrings(string $stream)
+    private function streamToPascalStrings(string $stream): array
     {
         $length = \strlen($stream);
         $activeIndex = 0;

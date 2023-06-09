@@ -13,20 +13,14 @@ namespace PdfGenerator\Frontend\LocatedContent\Paragraph;
 
 class Line
 {
-    /**
-     * @var float
-     */
-    private $height;
+    private float $height;
 
-    /**
-     * @var float
-     */
-    private $width;
+    private float $width;
 
     /**
      * @var Fragment[]
      */
-    private $fragments;
+    private array $fragments;
 
     /**
      * Line constructor.

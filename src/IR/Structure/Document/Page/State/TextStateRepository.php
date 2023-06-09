@@ -16,46 +16,28 @@ use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 
 class TextStateRepository
 {
-    /**
-     * @var Font
-     */
-    private $font = null;
+    private Font $font;
 
-    /**
-     * @var float
-     */
-    private $fontSize = 8;
+    private float $fontSize = 8;
 
-    /**
-     * @var float
-     */
-    private $leading = 8;
+    private float $leading = 8;
 
     /**
      * spacing between characters in unscaled text space.
-     *
-     * @var float
      */
-    private $charSpace = 0;
+    private float $charSpace = 0;
 
     /**
      * spacing between words in unscaled text space.
-     *
-     * @var float
      */
-    private $wordSpace = 0;
+    private float $wordSpace = 0;
 
     /**
      * horizontal scaling in percentage.
-     *
-     * @var float
      */
-    private $scale = 100;
+    private float $scale = 100;
 
-    /**
-     * @var TextState
-     */
-    private $activeTextState;
+    private TextState $activeTextState;
 
     public function setFontSize(float $fontSize)
     {
@@ -81,10 +63,7 @@ class TextStateRepository
         }
     }
 
-    /**
-     * @return TextState
-     */
-    public function getTextState()
+    public function getTextState(): TextState
     {
         if (null !== $this->activeTextState) {
             return $this->activeTextState;

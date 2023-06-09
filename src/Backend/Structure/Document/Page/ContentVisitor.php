@@ -23,15 +23,9 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
 class ContentVisitor
 {
-    /**
-     * @var DocumentResources
-     */
-    private $documentResources;
+    private DocumentResources $documentResources;
 
-    /**
-     * @var FullState
-     */
-    private $lastAppliedState;
+    private FullState $lastAppliedState;
 
     /**
      * ContentVisitor constructor.

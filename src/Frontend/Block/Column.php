@@ -20,12 +20,9 @@ class Column extends Block
     /**
      * @var Block[]
      */
-    private $blocks = [];
+    private array $blocks = [];
 
-    /**
-     * @var ColumnStyle
-     */
-    private $style;
+    private ColumnStyle $style;
 
     /**
      * @param float[]|null $dimensions

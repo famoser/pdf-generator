@@ -13,10 +13,7 @@ namespace PdfGenerator\Backend\Catalog\Base;
 
 abstract class BaseIdentifiableStructure extends BaseStructure
 {
-    /**
-     * @var string
-     */
-    private $identifier;
+    private string $identifier;
 
     /**
      * IdentifiableStructure constructor.

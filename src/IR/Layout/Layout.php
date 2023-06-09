@@ -15,10 +15,7 @@ use PdfGenerator\IR\Cursor;
 
 class Layout
 {
-    /**
-     * @var Cursor
-     */
-    private $cursor;
+    private Cursor $cursor;
 
     public function getCursor(): Cursor
     {

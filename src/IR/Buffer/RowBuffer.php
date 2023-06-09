@@ -19,7 +19,7 @@ class RowBuffer
     /**
      * @var MeasuredColumn[]
      */
-    private $columns = [];
+    private array $columns = [];
 
     public function add(int $columnIndex, TextBuffer $buffer)
     {

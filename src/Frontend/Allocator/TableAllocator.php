@@ -17,25 +17,16 @@ use PdfGenerator\Frontend\Block\Table;
 
 class TableAllocator extends BaseAllocator
 {
-    /**
-     * @var Table
-     */
-    private $table;
+    private Table $table;
 
-    /**
-     * @var TableStyle
-     */
-    private $tableStyle;
+    private TableStyle $tableStyle;
 
-    /**
-     * @var bool
-     */
-    private $firstTime = true;
+    private bool $firstTime = true;
 
     /**
      * @var RowAllocator[]|null
      */
-    private $rowAllocators;
+    private ?array $rowAllocators;
 
     /**
      * TableAllocator constructor.

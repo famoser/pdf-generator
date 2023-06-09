@@ -15,10 +15,8 @@ trait RawContent
 {
     /**
      * raw byte data.
-     *
-     * @var string
      */
-    private $content;
+    private string $content;
 
     public function getContent(): string
     {

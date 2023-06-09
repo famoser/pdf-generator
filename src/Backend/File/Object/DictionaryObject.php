@@ -21,10 +21,7 @@ use PdfGenerator\Backend\File\Token\ReferenceToken;
 
 class DictionaryObject extends BaseObject
 {
-    /**
-     * @var DictionaryToken
-     */
-    private $dictionaryToken;
+    private DictionaryToken $dictionaryToken;
 
     public function __construct(int $number)
     {

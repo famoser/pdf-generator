@@ -16,37 +16,22 @@ use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 
 class Character
 {
-    /**
-     * @var int|null
-     */
-    private $unicodePoint;
+    private ?int $unicodePoint;
 
-    /**
-     * @var PostScriptInfo
-     */
-    private $postScriptInfo;
+    private PostScriptInfo $postScriptInfo;
 
-    /**
-     * @var BoundingBox|null
-     */
-    private $boundingBox;
+    private ?BoundingBox $boundingBox;
 
-    /**
-     * @var GlyfTable|null
-     */
-    private $glyfTable;
+    private ?GlyfTable $glyfTable;
 
-    /**
-     * @var LongHorMetric
-     */
-    private $longHorMetric;
+    private LongHorMetric $longHorMetric;
 
     /**
      * carefull: entries in array could be null for invalid font files.
      *
      * @var Character[]
      */
-    private $componentCharacters = [];
+    private array $componentCharacters = [];
 
     public function getUnicodePoint(): ?int
     {

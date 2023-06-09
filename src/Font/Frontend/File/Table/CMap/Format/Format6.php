@@ -22,19 +22,15 @@ class Format6 extends Format
      * first character code of subrange.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $firstCode;
+    private int $firstCode;
 
     /**
      * number of character codes in subrange.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $entryCount;
+    private int $entryCount;
 
     /**
      * glyph index value per character code in subrange.
@@ -43,7 +39,7 @@ class Format6 extends Format
      *
      * @var int[]
      */
-    private $glyphIndexArray;
+    private array $glyphIndexArray;
 
     /**
      * the format of the encoding.

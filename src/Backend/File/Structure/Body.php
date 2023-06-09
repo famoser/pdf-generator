@@ -20,12 +20,9 @@ class Body extends BaseStructure
     /**
      * @var BaseObject[]
      */
-    private $entries = [];
+    private array $entries = [];
 
-    /**
-     * @var BaseObject
-     */
-    private $infoObject;
+    private BaseObject $infoObject;
 
     public function addObject(BaseObject $baseObject)
     {

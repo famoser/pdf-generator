@@ -13,25 +13,13 @@ namespace PdfGenerator\Backend\Structure\Optimization;
 
 class Configuration
 {
-    /**
-     * @var bool
-     */
-    private $autoResizeImages = false;
+    private bool $autoResizeImages = false;
 
-    /**
-     * @var int
-     */
-    private $autoResizeImagesDpi = 72;
+    private int $autoResizeImagesDpi = 72;
 
-    /**
-     * @var bool
-     */
-    private $createFontSubsets = true;
+    private bool $createFontSubsets = true;
 
-    /**
-     * @var bool
-     */
-    private $useTTFFonts = false;
+    private bool $useTTFFonts = false;
 
     public function getAutoResizeImages(): bool
     {

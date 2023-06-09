@@ -17,25 +17,13 @@ use PdfGenerator\Backend\File\StructureVisitor;
 
 class FileTrailer extends BaseStructure
 {
-    /**
-     * @var int
-     */
-    private $size;
+    private int $size;
 
-    /**
-     * @var int
-     */
-    private $startOfCrossReferenceTable;
+    private int $startOfCrossReferenceTable;
 
-    /**
-     * @var BaseObject
-     */
-    private $root;
+    private BaseObject $root;
 
-    /**
-     * @var BaseObject
-     */
-    private $info;
+    private BaseObject $info;
 
     /**
      * FileTrailer constructor.

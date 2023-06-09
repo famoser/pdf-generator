@@ -17,19 +17,15 @@ class LongHorMetric
      * the width of the character.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $advanceWidth;
+    private int $advanceWidth;
 
     /**
      * the distance left from the previous character.
      *
      * @ttf-type uint16
-     *
-     * @var int
      */
-    private $leftSideBearing;
+    private int $leftSideBearing;
 
     public function getAdvanceWidth(): int
     {

@@ -27,12 +27,9 @@ class CatalogVisitor
     /**
      * @var BaseObject[]
      */
-    private $objectNodeLookup = [];
+    private array $objectNodeLookup = [];
 
-    /**
-     * @var File
-     */
-    private $file;
+    private File $file;
 
     /**
      * StructureVisitor constructor.
@@ -121,14 +118,12 @@ class CatalogVisitor
     /**
      * @var BaseObject[]
      */
-    private $referenceLookup = [];
+    private array $referenceLookup = [];
 
     /**
      * @param BaseIdentifiableStructure[] $structures
-     *
-     * @return DictionaryToken
      */
-    private function createReferenceDictionary(array $structures)
+    private function createReferenceDictionary(array $structures): DictionaryToken
     {
         $dictionary = new DictionaryToken();
         foreach ($structures as $structure) {
@@ -209,10 +204,7 @@ class CatalogVisitor
         return $stream;
     }
 
-    /**
-     * @return StreamObject
-     */
-    public function visitFontStream(Catalog\Font\Structure\FontStream $structure)
+    public function visitFontStream(Catalog\Font\Structure\FontStream $structure): StreamObject
     {
         $stream = $this->file->addStreamObject($structure->getFontData());
 
@@ -222,10 +214,7 @@ class CatalogVisitor
         return $stream;
     }
 
-    /**
-     * @return DictionaryObject
-     */
-    public function visitFontDescriptor(FontDescriptor $structure)
+    public function visitFontDescriptor(FontDescriptor $structure): DictionaryObject
     {
         $dictionary = $this->file->addDictionaryObject();
 
@@ -247,10 +236,7 @@ class CatalogVisitor
         return $dictionary;
     }
 
-    /**
-     * @return DictionaryObject
-     */
-    public function visitType0Font(Catalog\Font\Type0 $structure)
+    public function visitType0Font(Catalog\Font\Type0 $structure): DictionaryObject
     {
         $dictionary = $this->file->addDictionaryObject();
 
@@ -270,10 +256,7 @@ class CatalogVisitor
         return $dictionary;
     }
 
-    /**
-     * @return DictionaryObject
-     */
-    public function visitCIDFont(Catalog\Font\Structure\CIDFont $structure)
+    public function visitCIDFont(Catalog\Font\Structure\CIDFont $structure): DictionaryObject
     {
         $dictionary = $this->file->addDictionaryObject();
 
@@ -294,10 +277,7 @@ class CatalogVisitor
         return $dictionary;
     }
 
-    /**
-     * @return StreamObject
-     */
-    public function visitCMap(CMap $structure)
+    public function visitCMap(CMap $structure): StreamObject
     {
         $stream = $this->file->addStreamObject($structure->getCMapData());
 
@@ -311,10 +291,7 @@ class CatalogVisitor
         return $stream;
     }
 
-    /**
-     * @return DictionaryToken
-     */
-    public function visitCIDSystemInfo(CIDSystemInfo $structure)
+    public function visitCIDSystemInfo(CIDSystemInfo $structure): DictionaryToken
     {
         $cidDictionary = new DictionaryToken();
 
@@ -325,10 +302,7 @@ class CatalogVisitor
         return $cidDictionary;
     }
 
-    /**
-     * @return StreamObject
-     */
-    public function visitContent(Catalog\Content $param)
+    public function visitContent(Catalog\Content $param): StreamObject
     {
         /*
         could compress at this point with

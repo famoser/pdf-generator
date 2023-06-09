@@ -17,20 +17,14 @@ use PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class StructureVisitor
 {
-    /**
-     * @var ObjectVisitor
-     */
-    private $objectVisitor;
+    private ObjectVisitor $objectVisitor;
 
-    /**
-     * @var TokenVisitor
-     */
-    private $tokenVisitor;
+    private TokenVisitor $tokenVisitor;
 
     /**
      * @var string[]
      */
-    private $bodyEntrySizes = [];
+    private array $bodyEntrySizes = [];
 
     /**
      * StructureVisitor constructor.
@@ -41,10 +35,7 @@ class StructureVisitor
         $this->tokenVisitor = new TokenVisitor();
     }
 
-    /**
-     * @return string
-     */
-    public function visitFileHeader(Structure\FileHeader $param)
+    public function visitFileHeader(Structure\FileHeader $param): string
     {
         return '%PDF-'.$param->getVersion()."\n".
             '%'.hex2bin('E2E3CFD3'); // declares that PDF contains binary data
@@ -52,10 +43,8 @@ class StructureVisitor
 
     /**
      * @param FileTrailer $param
-     *
-     * @return string
      */
-    public function visitFileTrailer(Structure\FileTrailer $param)
+    public function visitFileTrailer(Structure\FileTrailer $param): string
     {
         $trailerDictionary = new DictionaryToken();
         $trailerDictionary->setNumberEntry('Size', $param->getSize() + 1);
@@ -72,10 +61,7 @@ class StructureVisitor
         return implode("\n", $lines);
     }
 
-    /**
-     * @return string
-     */
-    public function visitCrossReferenceTable(CrossReferenceTable $param)
+    public function visitCrossReferenceTable(CrossReferenceTable $param): string
     {
         $entries = $param->getEntries();
 
@@ -91,10 +77,7 @@ class StructureVisitor
         return implode("\n", $lines);
     }
 
-    /**
-     * @return string
-     */
-    public function visitBody(Structure\Body $param)
+    public function visitBody(Structure\Body $param): string
     {
         $output = '';
 

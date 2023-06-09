@@ -21,14 +21,14 @@ class ColorState extends BaseState
      *
      * @var float[]
      */
-    private $rgbStrokingColour = [0, 0, 0];
+    private array $rgbStrokingColour = [0, 0, 0];
 
     /**
      * the fill color.
      *
      * @var float[]
      */
-    private $rgbNonStrokingColour = [0, 0, 0];
+    private array $rgbNonStrokingColour = [0, 0, 0];
 
     /**
      * @return float[]

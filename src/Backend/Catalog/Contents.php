@@ -20,7 +20,7 @@ class Contents extends BaseStructure
     /**
      * @var Content[]
      */
-    private $content;
+    private array $content;
 
     /**
      * Contents constructor.
@@ -35,7 +35,7 @@ class Contents extends BaseStructure
     /**
      * @return BaseObject[]
      */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): array
     {
         return $visitor->visitContents($this);
     }
