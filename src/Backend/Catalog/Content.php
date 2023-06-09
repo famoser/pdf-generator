@@ -19,19 +19,12 @@ class Content extends BaseStructure
 {
     private string $content;
 
-    private int $contentType;
-
-    public const CONTENT_TYPE_TEXT = 1;
-    public const CONTENT_TYPE_IMAGE = 2;
-    public const CONTENT_TYPE_FONT = 3;
-
     /**
      * Content constructor.
      */
-    public function __construct(string $content, int $contentType)
+    public function __construct(string $content)
     {
         $this->content = $content;
-        $this->contentType = $contentType;
     }
 
     public function getContent(): string

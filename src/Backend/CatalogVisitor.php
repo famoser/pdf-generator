@@ -304,15 +304,6 @@ class CatalogVisitor
 
     public function visitContent(Catalog\Content $param): StreamObject
     {
-        /*
-        could compress at this point with
-        if ($contentType === self::CONTENT_TYPE_TEXT && \extension_loaded('zlib')) {
-            $this->dictionary->setTextEntry('Filter', '/FlatDecode');
-            $this->content = gzcompress($this->content);
-        }
-
-        currently does not work and not the target of the project
-        */
         return $this->file->addStreamObject($param->getContent());
     }
 }

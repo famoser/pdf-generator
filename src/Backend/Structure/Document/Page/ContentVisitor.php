@@ -79,7 +79,7 @@ class ContentVisitor
 
     private function createStreamObject(array $operators): Content
     {
-        return new Content(implode(' ', $operators), Content::CONTENT_TYPE_TEXT);
+        return new Content(implode(' ', $operators));
     }
 
     /**
