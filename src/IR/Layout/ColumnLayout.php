@@ -25,7 +25,7 @@ class ColumnLayout
     /**
      * ColumnLayout constructor.
      */
-    public function __construct(private CursorPrinter $printer, private ColumnGenerator $columnGenerator)
+    public function __construct(private readonly CursorPrinter $printer, private readonly ColumnGenerator $columnGenerator)
     {
         $this->activeColumn = $columnGenerator->getNextColumn();
         $this->printer->setCursor($this->activeColumn->getStart());

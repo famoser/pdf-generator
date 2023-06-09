@@ -16,9 +16,9 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 
 class ColorStateRepository
 {
-    private ?Color $fillColor;
+    private ?Color $fillColor = null;
 
-    private ?Color $borderColor;
+    private ?Color $borderColor = null;
 
     private ?ColorState $activeColorState = null;
 

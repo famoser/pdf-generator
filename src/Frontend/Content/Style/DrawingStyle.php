@@ -16,12 +16,12 @@ use PdfGenerator\Frontend\Content\Style\Base\Style;
 
 class DrawingStyle extends Style
 {
-    private ?Color $borderColor;
+    private readonly ?Color $borderColor;
 
     /**
      * Style constructor.
      */
-    public function __construct(private float $lineWidth, Color $borderColor = null, private ?\PdfGenerator\Frontend\Block\Style\Part\Color $fillColor = null)
+    public function __construct(private readonly float $lineWidth, Color $borderColor = null, private readonly ?\PdfGenerator\Frontend\Block\Style\Part\Color $fillColor = null)
     {
         $this->borderColor = $borderColor ?? Color::black();
     }

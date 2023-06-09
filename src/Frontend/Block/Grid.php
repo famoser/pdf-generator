@@ -17,7 +17,7 @@ use PdfGenerator\Frontend\Block\Style\GridStyle;
 
 class Grid extends Block
 {
-    private GridStyle $style;
+    private readonly GridStyle $style;
 
     /**
      * @var GridEntry[][]

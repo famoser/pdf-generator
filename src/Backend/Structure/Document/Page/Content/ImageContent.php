@@ -20,7 +20,7 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
 
 class ImageContent extends BaseContent
 {
-    public function __construct(private Image $image, private DrawingState $drawingState)
+    public function __construct(private readonly Image $image, private readonly DrawingState $drawingState)
     {
     }
 

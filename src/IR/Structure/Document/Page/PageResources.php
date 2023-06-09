@@ -24,11 +24,11 @@ use PdfGenerator\IR\Structure\Document\Page\State\TextStateRepository;
 
 class PageResources
 {
-    private GeneralGraphicStateRepository $generalGraphicStateRepository;
+    private readonly GeneralGraphicStateRepository $generalGraphicStateRepository;
 
-    private ColorStateRepository $colorStateRepository;
+    private readonly ColorStateRepository $colorStateRepository;
 
-    private TextStateRepository $textStateRepository;
+    private readonly TextStateRepository $textStateRepository;
 
     /**
      * @var BackendFont[]
@@ -43,7 +43,7 @@ class PageResources
     /**
      * PageResources constructor.
      */
-    public function __construct(private DocumentResources $documentResources)
+    public function __construct(private readonly DocumentResources $documentResources)
     {
         $this->generalGraphicStateRepository = new GeneralGraphicStateRepository();
         $this->colorStateRepository = new ColorStateRepository();

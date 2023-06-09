@@ -21,7 +21,7 @@ class DrawingState extends BaseStateCollection
     /**
      * TextLevel constructor.
      */
-    public function __construct(private GeneralGraphicState $generalGraphicsState, private ColorState $colorState)
+    public function __construct(private readonly GeneralGraphicState $generalGraphicsState, private readonly ColorState $colorState)
     {
     }
 

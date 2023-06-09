@@ -18,9 +18,9 @@ use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Image extends Content
 {
-    private ImageStyle $style;
+    private readonly ImageStyle $style;
 
-    public function __construct(private string $src, ImageStyle $style = null)
+    public function __construct(private readonly string $src, ImageStyle $style = null)
     {
         $this->style = $style ?? new ImageStyle();
     }

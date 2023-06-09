@@ -24,7 +24,7 @@ class ContentVisitor
     /**
      * ContentVisitor constructor.
      */
-    public function __construct(private ImageRepository $imageRespository, private FontRepository $fontRepository, private WordSizerRepository $wordSizerRepository)
+    public function __construct(private readonly ImageRepository $imageRespository, private readonly FontRepository $fontRepository, private readonly WordSizerRepository $wordSizerRepository)
     {
     }
 

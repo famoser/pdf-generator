@@ -19,7 +19,7 @@ class NameToken extends BaseToken
     /**
      * TextToken constructor.
      */
-    public function __construct(private string $name)
+    public function __construct(private readonly string $name)
     {
     }
 

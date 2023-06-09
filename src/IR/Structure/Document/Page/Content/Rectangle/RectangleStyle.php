@@ -18,7 +18,7 @@ class RectangleStyle
     /**
      * Style constructor.
      */
-    public function __construct(private float $lineWidth, private ?\PdfGenerator\IR\Structure\Document\Page\Content\Common\Color $borderColor, private ?\PdfGenerator\IR\Structure\Document\Page\Content\Common\Color $fillColor)
+    public function __construct(private readonly float $lineWidth, private readonly ?\PdfGenerator\IR\Structure\Document\Page\Content\Common\Color $borderColor, private readonly ?\PdfGenerator\IR\Structure\Document\Page\Content\Common\Color $fillColor)
     {
     }
 

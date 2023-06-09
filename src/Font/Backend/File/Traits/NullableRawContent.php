@@ -16,7 +16,7 @@ trait NullableRawContent
     /**
      * raw byte data.
      */
-    private ?string $content;
+    private ?string $content = null;
 
     public function getContent(): ?string
     {

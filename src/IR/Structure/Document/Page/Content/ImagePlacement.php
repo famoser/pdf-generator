@@ -22,7 +22,7 @@ class ImagePlacement extends BaseContent
     /**
      * ImagePlacement constructor.
      */
-    public function __construct(private Image $image, private Position $position, private Size $size)
+    public function __construct(private readonly Image $image, private readonly Position $position, private readonly Size $size)
     {
     }
 

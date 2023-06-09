@@ -15,9 +15,9 @@ use PdfGenerator\Frontend\Block\Style\Part\Color;
 
 class TableStyle extends RowStyle
 {
-    private Color $rowDividerColor;
+    private readonly Color $rowDividerColor;
 
-    public function __construct(array $columnWidths = null, private float $rowDividerWidth = 0, Color $rowDividerColor = null, private ?\PdfGenerator\Frontend\Block\Style\Part\Color $alternatingBackgroundColor = null, private bool $repeatHeader = false)
+    public function __construct(array $columnWidths = null, private readonly float $rowDividerWidth = 0, Color $rowDividerColor = null, private readonly ?\PdfGenerator\Frontend\Block\Style\Part\Color $alternatingBackgroundColor = null, private readonly bool $repeatHeader = false)
     {
         parent::__construct($columnWidths);
         $this->rowDividerColor = $rowDividerColor ?? Color::black();

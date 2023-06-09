@@ -16,7 +16,7 @@ class Cursor
     /**
      * Cursor constructor.
      */
-    public function __construct(private float $xCoordinate, private float $yCoordinate, private int $pageIndex)
+    public function __construct(private readonly float $xCoordinate, private readonly float $yCoordinate, private readonly int $pageIndex)
     {
     }
 

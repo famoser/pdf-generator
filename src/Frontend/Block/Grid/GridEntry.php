@@ -18,7 +18,7 @@ class GridEntry
     /**
      * GridEntry constructor.
      */
-    public function __construct(private int $columnSpan, private int $rowSpan, private Block $block)
+    public function __construct(private readonly int $columnSpan, private readonly int $rowSpan, private readonly Block $block)
     {
     }
 

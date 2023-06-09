@@ -20,7 +20,7 @@ class MeasuredPhrase
      *
      * @param MeasuredLine[] $measuredLines
      */
-    public function __construct(private array $measuredLines, private TextStyle $textStyle)
+    public function __construct(private readonly array $measuredLines, private readonly TextStyle $textStyle)
     {
     }
 

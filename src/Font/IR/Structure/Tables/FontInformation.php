@@ -13,7 +13,7 @@ namespace PdfGenerator\Font\IR\Structure\Tables;
 
 class FontInformation
 {
-    private ?string $copyrightNotice;
+    private ?string $copyrightNotice = null;
 
     /**
      * the family of the font; used to group together fonts with different style/width.
@@ -21,115 +21,115 @@ class FontInformation
      * note that only four variations are allowed (regular, italic, bold, bold italic).
      * if you need more variations, use the typographicFamily & typographicSubfamilyName fields.
      */
-    private ?string $family;
+    private ?string $family = null;
 
     /**
      * the variation of the specific font family (one of regular, italic, bold or bold italic).
      */
-    private ?string $subfamily;
+    private ?string $subfamily = null;
 
     /**
      * unique font identifier.
      */
-    private ?string $identifier;
+    private ?string $identifier = null;
 
     /**
      * human-readable name of the font typically consisting of the family / subfamily.
      */
-    private ?string $fullName;
+    private ?string $fullName = null;
 
     /**
      * to compare font versions.
      *
      * should be of the form "Version 1.1"
      */
-    private ?string $version;
+    private ?string $version = null;
 
     /**
      * the name of the font for PostScript when invoking `composefont`.
      *
      * at most 63 chars, ASCII subset, codes 33 through 126, except '[', ']', '(', ')', '{', '}', '<', '>', '/', '%'.
      */
-    private ?string $postScriptName;
+    private ?string $postScriptName = null;
 
     /**
      * trademark information for the font (should be based on legal advice).
      */
-    private ?string $trademarkNotice;
+    private ?string $trademarkNotice = null;
 
     /**
      * name of the manufacturer.
      */
-    private ?string $manufacturer;
+    private ?string $manufacturer = null;
 
     /**
      * name of the designer.
      */
-    private ?string $designer;
+    private ?string $designer = null;
 
     /**
      * description of the typeface (history, usage recommendations, ...).
      */
-    private ?string $description;
+    private ?string $description = null;
 
     /**
      * url of font vendor.
      */
-    private ?string $urlVendor;
+    private ?string $urlVendor = null;
 
     /**
      * url of font designer.
      */
-    private ?string $urlDesigner;
+    private ?string $urlDesigner = null;
 
     /**
      * plain english description of how the font may be used.
      */
-    private ?string $licenseDescription;
+    private ?string $licenseDescription = null;
 
     /**
      * url of the license.
      */
-    private ?string $licenseUrl;
+    private ?string $licenseUrl = null;
 
     /**
      * the family of the font; used to group together fonts with different style/width.
      */
-    private ?string $typographicFamily;
+    private ?string $typographicFamily = null;
 
     /**
      * the variation of the specific font family (one of regular, italic, bold or bold italic).
      */
-    private ?string $typographicSubfamily;
+    private ?string $typographicSubfamily = null;
 
     /**
      * how the font should be called on Macintosh.
      */
-    private ?string $compatibleFull;
+    private ?string $compatibleFull = null;
 
     /**
      * the text best to sample the font by.
      */
-    private ?string $sampleText;
+    private ?string $sampleText = null;
 
     /**
      * the name of the font for PostScript when invoking `findfont`.
      *
      * ASCII subset, codes 33 through 126, except '[', ']', '(', ')', '{', '}', '<', '>', '/', '%'.
      */
-    private ?string $postScriptCIDName;
+    private ?string $postScriptCIDName = null;
 
     /**
      * the family of the font conforming to WWS (width, weight, slope) if the typographic family includes additional specifiers (like "Display", "Body").
      *
      * if there are two fonts called "Calibri Body" and "Calibri Header" then their wws name would be for both "Calibri"
      */
-    private ?string $wwsFamilyName;
+    private ?string $wwsFamilyName = null;
 
     /**
      * the Subfamily of the font conforming to WWS (width, weight, slope) if the typographic subfamily includes additional specifiers (like "Display", "Body").
      */
-    private ?string $wwsSubfamilyName;
+    private ?string $wwsSubfamilyName = null;
 
     public function getCopyrightNotice(): ?string
     {

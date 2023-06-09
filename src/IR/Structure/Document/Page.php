@@ -26,7 +26,7 @@ class Page extends BaseDocumentStructure
      * Page constructor.
      * @param float[] $size
      */
-    public function __construct(private string $pageNumber, private array $size)
+    public function __construct(private readonly string $pageNumber, private readonly array $size)
     {
     }
 

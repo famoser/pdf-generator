@@ -27,7 +27,7 @@ class Paragraph extends MeasuredContent
     /**
      * Paragraph constructor.
      */
-    public function __construct(private ParagraphStyle $style)
+    public function __construct(private readonly ParagraphStyle $style)
     {
     }
 

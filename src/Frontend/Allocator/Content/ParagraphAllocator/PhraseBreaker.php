@@ -22,9 +22,9 @@ class PhraseBreaker
      */
     private int $nextLineIndex = 0;
 
-    private ?LineBreaker $lineBreaker;
+    private ?LineBreaker $lineBreaker = null;
 
-    public function __construct(private Phrase $phrase, private FontMeasurement $fontMeasurement)
+    public function __construct(private readonly Phrase $phrase, private readonly FontMeasurement $fontMeasurement)
     {
     }
 

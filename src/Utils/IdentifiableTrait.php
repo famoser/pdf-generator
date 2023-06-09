@@ -15,7 +15,7 @@ trait IdentifiableTrait
 {
     private static int $nextIdentifier = 0;
 
-    private ?int $identifier;
+    private ?int $identifier = null;
 
     public function getIdentifier(): int
     {

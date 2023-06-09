@@ -16,7 +16,7 @@ class Position
     /**
      * Position constructor.
      */
-    public function __construct(private float $left, private float $top)
+    public function __construct(private readonly float $left, private readonly float $top)
     {
     }
 

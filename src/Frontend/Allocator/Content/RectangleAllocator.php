@@ -16,12 +16,12 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 
 class RectangleAllocator implements ContentAllocatorInterface
 {
-    private RectangleStyle $style;
+    private readonly RectangleStyle $style;
 
     /**
      * RectangleAllocator constructor.
      */
-    public function __construct(private Rectangle $rectangle)
+    public function __construct(private readonly Rectangle $rectangle)
     {
         $this->style = $rectangle->getStyle();
     }

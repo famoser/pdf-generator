@@ -28,12 +28,12 @@ use PdfGenerator\IR\Structure\Document\Page\ToBackendContentVisitor;
 
 class DocumentVisitor implements FontVisitor
 {
-    private DocumentResources $documentResources;
+    private readonly DocumentResources $documentResources;
 
     /**
      * DocumentStructureVisitor constructor.
      */
-    public function __construct(private AnalysisResult $analysisResult)
+    public function __construct(private readonly AnalysisResult $analysisResult)
     {
         $this->documentResources = new DocumentResources($this);
     }

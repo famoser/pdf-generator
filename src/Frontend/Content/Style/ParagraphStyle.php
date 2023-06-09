@@ -15,12 +15,12 @@ use PdfGenerator\Frontend\Content\Style\Base\Style;
 
 class ParagraphStyle extends Style
 {
-    public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
+    final public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
 
     /**
      * ParagraphStyle constructor.
      */
-    public function __construct(private string $alignment = self::ALIGNMENT_LEFT, private float $indent = 0)
+    public function __construct(private readonly string $alignment = self::ALIGNMENT_LEFT, private readonly float $indent = 0)
     {
     }
 

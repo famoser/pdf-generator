@@ -28,7 +28,7 @@ class ContentVisitor
     /**
      * ContentVisitor constructor.
      */
-    public function __construct(private DocumentResources $documentResources)
+    public function __construct(private readonly DocumentResources $documentResources)
     {
         $this->lastAppliedState = FullState::createInitial();
     }

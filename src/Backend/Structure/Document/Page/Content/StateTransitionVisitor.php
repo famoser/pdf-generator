@@ -28,7 +28,7 @@ class StateTransitionVisitor
     /**
      * StateTransitionVisitor constructor.
      */
-    public function __construct(private FullState $previousState, private DocumentResources $documentResources)
+    public function __construct(private readonly FullState $previousState, private readonly DocumentResources $documentResources)
     {
     }
 

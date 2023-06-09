@@ -20,7 +20,7 @@ class RowStyle extends BlockStyle
      *
      * @param float[] $columnWidths
      */
-    public function __construct(private float $gutter = 0, private array $columnWidths = [])
+    public function __construct(private readonly float $gutter = 0, private readonly array $columnWidths = [])
     {
         parent::__construct();
     }

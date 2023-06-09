@@ -20,7 +20,7 @@ class CharacterSizer
      */
     private array $characterAdvanceWidthLookup = [];
 
-    private int $invalidCharacterWidth;
+    private readonly int $invalidCharacterWidth;
 
     /**
      * CharacterSizer constructor.

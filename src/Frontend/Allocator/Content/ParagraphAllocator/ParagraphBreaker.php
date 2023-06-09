@@ -22,9 +22,9 @@ class ParagraphBreaker
      */
     private int $nextPhraseIndex = 0;
 
-    private ?PhraseBreaker $phraseBreaker;
+    private ?PhraseBreaker $phraseBreaker = null;
 
-    public function __construct(private Paragraph $paragraph)
+    public function __construct(private readonly Paragraph $paragraph)
     {
     }
 

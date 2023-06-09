@@ -20,7 +20,7 @@ class ReferenceToken extends BaseToken
     /**
      * ReferenceEntry constructor.
      */
-    public function __construct(private BaseObject $target)
+    public function __construct(private readonly BaseObject $target)
     {
     }
 

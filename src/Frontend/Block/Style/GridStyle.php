@@ -15,7 +15,7 @@ use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 
 class GridStyle extends BlockStyle
 {
-    public function __construct(private float $gutterColumn = 0, private float $gutterRow = 0)
+    public function __construct(private readonly float $gutterColumn = 0, private readonly float $gutterRow = 0)
     {
         parent::__construct();
     }

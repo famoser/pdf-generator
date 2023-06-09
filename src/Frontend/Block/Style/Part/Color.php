@@ -16,7 +16,7 @@ class Color
     /**
      * Color constructor.
      */
-    public function __construct(private int $red, private int $green, private int $blue)
+    public function __construct(private readonly int $red, private readonly int $green, private readonly int $blue)
     {
     }
 

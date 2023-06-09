@@ -16,15 +16,15 @@ use PdfGenerator\Backend\Structure\DocumentVisitor;
 
 class Image extends BaseDocumentStructure
 {
-    public const TYPE_JPG = 'jpg';
-    public const TYPE_JPEG = 'jpeg';
-    public const TYPE_PNG = 'png';
-    public const TYPE_GIF = 'gif';
+    final public const TYPE_JPG = 'jpg';
+    final public const TYPE_JPEG = 'jpeg';
+    final public const TYPE_PNG = 'png';
+    final public const TYPE_GIF = 'gif';
 
     /**
      * Image constructor.
      */
-    public function __construct(private string $imageContent, private string $type, private int $width, private int $height, private int $maxUsedWidth, private int $maxUsedHeight)
+    public function __construct(private readonly string $imageContent, private readonly string $type, private readonly int $width, private readonly int $height, private readonly int $maxUsedWidth, private readonly int $maxUsedHeight)
     {
     }
 

@@ -23,7 +23,7 @@ class Line
     /**
      * Line constructor.
      */
-    public function __construct(private float $height)
+    public function __construct(private readonly float $height)
     {
     }
 

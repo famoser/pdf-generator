@@ -22,7 +22,7 @@ class SingleColumnGenerator implements ColumnGenerator
      * @param float[] $pageSize
      * @param float[] $margin
      */
-    public function __construct(private Document $document, private $pageSize = [210, 297], private $margin = [25, 25, 25, 25])
+    public function __construct(private readonly Document $document, private $pageSize = [210, 297], private $margin = [25, 25, 25, 25])
     {
     }
 

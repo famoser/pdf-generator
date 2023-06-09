@@ -16,7 +16,7 @@ class Size
     /**
      * Size constructor.
      */
-    public function __construct(private float $width, private float $height)
+    public function __construct(private readonly float $width, private readonly float $height)
     {
     }
 

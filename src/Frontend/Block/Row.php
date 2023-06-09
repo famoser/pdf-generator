@@ -17,7 +17,7 @@ use PdfGenerator\Frontend\Block\Style\RowStyle;
 
 class Row extends Block
 {
-    private RowStyle $style;
+    private readonly RowStyle $style;
 
     /**
      * @var Column[]

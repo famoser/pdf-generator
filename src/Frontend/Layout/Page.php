@@ -18,7 +18,7 @@ class Page
      *
      * @param float[] $dimensions
      */
-    public function __construct(private array $dimensions = [210, 297])
+    public function __construct(private readonly array $dimensions = [210, 297])
     {
     }
 

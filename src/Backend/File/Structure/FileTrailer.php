@@ -20,7 +20,7 @@ class FileTrailer extends BaseStructure
     /**
      * FileTrailer constructor.
      */
-    public function __construct(private int $size, private int $startOfCrossReferenceTable, private BaseObject $root, private BaseObject $info)
+    public function __construct(private readonly int $size, private readonly int $startOfCrossReferenceTable, private readonly BaseObject $root, private readonly BaseObject $info)
     {
     }
 

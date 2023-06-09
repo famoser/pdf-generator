@@ -20,7 +20,7 @@ class LineBreaker
      */
     private int $nextWordIndex = 0;
 
-    public function __construct(private Line $line)
+    public function __construct(private readonly Line $line)
     {
     }
 

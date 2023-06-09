@@ -17,7 +17,7 @@ use PdfGenerator\Backend\File\Object\DictionaryObject;
 
 class CIDFont extends BaseStructure
 {
-    public const SUBTYPE_CID_FONT_TYPE_2 = 'CIDFontType2';
+    final public const SUBTYPE_CID_FONT_TYPE_2 = 'CIDFontType2';
 
     private string $subType = self::SUBTYPE_CID_FONT_TYPE_2;
 

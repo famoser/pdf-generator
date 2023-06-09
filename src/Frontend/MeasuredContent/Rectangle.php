@@ -21,7 +21,7 @@ class Rectangle extends MeasuredContent
     /**
      * Rectangle constructor.
      */
-    public function __construct(private DrawingStyle $style, private \PdfGenerator\Frontend\Content\Rectangle $rectangle)
+    public function __construct(private readonly DrawingStyle $style, private readonly \PdfGenerator\Frontend\Content\Rectangle $rectangle)
     {
     }
 

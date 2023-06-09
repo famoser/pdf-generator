@@ -17,14 +17,14 @@ use PdfGenerator\Frontend\Block\Style\ContentStyle;
 
 class ContentAllocator implements AllocatorInterface
 {
-    private ContentStyle $style;
+    private readonly ContentStyle $style;
 
-    private ContentAllocatorInterface $contentAllocator;
+    private readonly ContentAllocatorInterface $contentAllocator;
 
     /**
      * ContentAllocator constructor.
      */
-    public function __construct(private Content $content)
+    public function __construct(private readonly Content $content)
     {
         $this->style = $content->getStyle();
 

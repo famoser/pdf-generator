@@ -22,7 +22,7 @@ class Column extends Block
      */
     private array $blocks = [];
 
-    private ColumnStyle $style;
+    private readonly ColumnStyle $style;
 
     /**
      * @param float[]|null $dimensions

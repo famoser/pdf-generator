@@ -20,7 +20,7 @@ use PdfGenerator\Backend\File\Structure\FileTrailer;
 
 class File
 {
-    private Body $body;
+    private readonly Body $body;
 
     private int $bodyCounter = 1;
 

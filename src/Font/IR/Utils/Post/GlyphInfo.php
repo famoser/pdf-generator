@@ -13,9 +13,9 @@ namespace PdfGenerator\Font\IR\Utils\Post;
 
 class GlyphInfo
 {
-    private ?int $macintoshIndex;
+    private ?int $macintoshIndex = null;
 
-    private ?string $name;
+    private ?string $name = null;
 
     public function getMacintoshIndex(): ?int
     {

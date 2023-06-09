@@ -24,7 +24,7 @@ class TextContent extends BaseContent
      * TextSymbol constructor.
      * @param string[] $lines
      */
-    public function __construct(private array $lines, private WritingState $writingState)
+    public function __construct(private readonly array $lines, private readonly WritingState $writingState)
     {
     }
 

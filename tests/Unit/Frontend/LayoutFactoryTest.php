@@ -22,9 +22,9 @@ use PHPUnit\Framework\TestCase;
 
 class LayoutFactoryTest extends TestCase
 {
-    private Document $pdfDocument;
+    private readonly Document $pdfDocument;
 
-    private LayoutFactoryConfigurationInterface $layoutFactoryConfiguration;
+    private readonly LayoutFactoryConfigurationInterface $layoutFactoryConfiguration;
 
     /**
      * LayoutFactoryTest constructor.

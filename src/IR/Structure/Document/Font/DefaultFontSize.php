@@ -25,7 +25,7 @@ class DefaultFontSize
     {
         if (null === self::$sizeLookup) {
             $json = file_get_contents(__DIR__.\DIRECTORY_SEPARATOR.'default_font_size.json');
-            self::$sizeLookup = json_decode($json, true);
+            self::$sizeLookup = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
         }
 
         return self::$sizeLookup[$font][$style];

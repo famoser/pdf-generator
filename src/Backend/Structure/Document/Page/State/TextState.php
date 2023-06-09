@@ -17,14 +17,14 @@ use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
 class TextState extends BaseState
 {
-    public const RENDER_MODE_FILL = 0;
-    public const RENDER_MODE_STROKE = 1;
-    public const RENDER_MODE_FILL_STROKE = 2;
-    public const RENDER_MODE_INVISIBLE = 3;
-    public const RENDER_MODE_PATH_FILL = 4;
-    public const RENDER_MODE_PATH_STROKE = 5;
-    public const RENDER_MODE_PATH_FILL_STROKE = 6;
-    public const RENDER_MODE_PATH_INVISIBLE = 7;
+    final public const RENDER_MODE_FILL = 0;
+    final public const RENDER_MODE_STROKE = 1;
+    final public const RENDER_MODE_FILL_STROKE = 2;
+    final public const RENDER_MODE_INVISIBLE = 3;
+    final public const RENDER_MODE_PATH_FILL = 4;
+    final public const RENDER_MODE_PATH_STROKE = 5;
+    final public const RENDER_MODE_PATH_FILL_STROKE = 6;
+    final public const RENDER_MODE_PATH_INVISIBLE = 7;
 
     /**
      * the font

@@ -61,7 +61,7 @@ class StreamWriterTest extends TestCase
         $values = [
             0,
             9213,
-            4294967295,
+            4_294_967_295,
         ];
 
         $this->assertValueWritesUsingReader($values, 'UInt32');
@@ -75,8 +75,8 @@ class StreamWriterTest extends TestCase
         $values = [
             0,
             1,
-            7128381,
-            42949672958123,
+            7_128_381,
+            42_949_672_958_123,
         ];
 
         $this->assertValueWritesUsingReader($values, 'LONGDATETIME');

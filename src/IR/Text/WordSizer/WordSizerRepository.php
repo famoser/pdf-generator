@@ -15,7 +15,7 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 class WordSizerRepository
 {
-    private WordSizerVisitor $wordSizerVisitor;
+    private readonly WordSizerVisitor $wordSizerVisitor;
 
     /**
      * @var WordSizerInterface[]

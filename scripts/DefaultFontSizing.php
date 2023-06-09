@@ -31,7 +31,7 @@ $jsonFlags = 0; // \JSON_PRETTY_PRINT
 $fontMap = file_get_contents($fontMapPath);
 $fontToFontFilename = [];
 foreach (explode("\n", $fontMap) as $line) {
-    if (strpos($line, '/') === 0) {
+    if (str_starts_with($line, '/')) {
         $mapping = preg_split('/\s+/', $line);
         $fontToFontFilename[$mapping[0]] = $mapping[1];
     }
