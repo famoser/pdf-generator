@@ -44,7 +44,7 @@ class CMapTable extends BaseTable
      *
      * @var Subtable[]
      */
-    private array $subtables;
+    private array $subtables = [];
 
     public function getVersion(): int
     {

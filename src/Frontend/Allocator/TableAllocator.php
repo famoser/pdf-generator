@@ -26,7 +26,7 @@ class TableAllocator extends BaseAllocator
     /**
      * @var RowAllocator[]|null
      */
-    private ?array $rowAllocators;
+    private ?array $rowAllocators = null;
 
     /**
      * TableAllocator constructor.

@@ -27,17 +27,17 @@ class Page
     /**
      * @var int[]
      */
-    private array $mediaBox;
+    private array $mediaBox = [];
 
     /**
      * @var Font[]
      */
-    private array $fonts;
+    private array $fonts = [];
 
     /**
      * @var Image[]
      */
-    private array $images;
+    private array $images = [];
 
     /**
      * Page constructor.

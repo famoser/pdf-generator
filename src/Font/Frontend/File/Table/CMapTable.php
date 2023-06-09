@@ -49,7 +49,7 @@ class CMapTable
      *
      * @var Subtable[]
      */
-    private array $subtables;
+    private array $subtables = [];
 
     public function getVersion(): int
     {

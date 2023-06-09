@@ -20,7 +20,7 @@ class Line
     /**
      * @var Fragment[]
      */
-    private array $fragments;
+    private array $fragments = [];
 
     /**
      * Line constructor.

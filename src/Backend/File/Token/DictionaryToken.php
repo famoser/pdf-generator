@@ -20,7 +20,7 @@ class DictionaryToken extends BaseToken
     /**
      * @var BaseToken[]
      */
-    private array $keyValue;
+    private array $keyValue = [];
 
     /**
      * @param BaseToken[] $tokens

@@ -201,7 +201,7 @@ class OS2Table
      *
      * @var int[]
      */
-    private array $panose;
+    private array $panose = [];
 
     /**
      * contained unicode blocks with each bit representing one.
@@ -210,7 +210,7 @@ class OS2Table
      *
      * @var int[]
      */
-    private array $ulUnicodeRanges;
+    private array $ulUnicodeRanges = [];
 
     /**
      * activated in first entry of @see ulUnicodeRanges when all chars inside range 0000-007F contained.
@@ -313,7 +313,7 @@ class OS2Table
      *
      * @var int[]|null
      */
-    private ?array $ulCodePageRanges;
+    private ?array $ulCodePageRanges = null;
 
     /**
      * code page 1252.

@@ -25,7 +25,7 @@ class ColumnAllocator extends BaseAllocator
     /**
      * @var AllocatorInterface[]|null
      */
-    private ?array $allocators;
+    private ?array $allocators = null;
 
     /**
      * ColumnAllocator constructor.
