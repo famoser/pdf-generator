@@ -63,9 +63,6 @@ class FontRepository
         return $this->defaultFonts[$key];
     }
 
-    /**
-     * @throws \Exception
-     */
     private function getOrCreateEmbeddedFont(string $fontPath): EmbeddedFont
     {
         if (!\array_key_exists($fontPath, $this->embeddedFonts)) {

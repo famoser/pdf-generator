@@ -140,8 +140,6 @@ class StreamReader
 
     /**
      * @return int[]
-     *
-     * @throws \Exception
      */
     public function readUInt32Array(int $size): array
     {
@@ -153,9 +151,6 @@ class StreamReader
         return $array;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readInt32(): int
     {
         $uInt32 = $this->readUInt32();
@@ -163,9 +158,6 @@ class StreamReader
         return self::transformToSinged($uInt32, 32);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readFixed(): float
     {
         $mantissa = $this->readInt16();
@@ -179,9 +171,6 @@ class StreamReader
         return $this->readInt16();
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readLONGDATETIME(): int
     {
         $uInt64 = self::unpackUInt64($this->content, $this->offset);
@@ -190,9 +179,6 @@ class StreamReader
         return self::transformToSinged($uInt64, 64);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readTag(): array
     {
         $uInt32 = $this->readUInt32();
@@ -203,9 +189,6 @@ class StreamReader
         return [$val3 & 0xFF, $val2 & 0xFF, $val1 & 0xFF, $uInt32 & 0xFF];
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readTagAsString(): string
     {
         $result = '';
@@ -216,17 +199,11 @@ class StreamReader
         return $result;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readOffset16(): int
     {
         return $this->readUInt16();
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readOffset16Array(int $size): array
     {
         return $this->readUInt16Array($size);
@@ -239,25 +216,17 @@ class StreamReader
 
     /**
      * @return int[]
-     *
-     * @throws \Exception
      */
     public function readOffset32Array(int $size): array
     {
         return $this->readUInt32Array($size);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readUFWORD(): int
     {
         return $this->readUInt16();
     }
 
-    /**
-     * @throws \Exception
-     */
     public function readF2DOT14(): float
     {
         $uInt16 = $this->readUInt16();

@@ -60,7 +60,7 @@ class CatalogVisitor
         $dictionary->addNameEntry('Type', 'Pages');
         $this->objectNodeLookup[spl_object_id($structure)] = $dictionary;
 
-        /** @var Page[] $kids */
+        /** @var BaseObject[] $kids */
         $kids = [];
         foreach ($structure->getKids() as $kid) {
             $kids[] = $kid->accept($this);

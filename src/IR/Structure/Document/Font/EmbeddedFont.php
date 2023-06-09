@@ -32,9 +32,6 @@ class EmbeddedFont extends Font
         $this->font = $font;
     }
 
-    /**
-     * @throws \Exception
-     */
     public static function create(string $fontPath): self
     {
         $fontData = file_get_contents($fontPath);

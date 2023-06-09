@@ -48,9 +48,6 @@ class FileReader
         $this->postFormatReader = $postFormatReader;
     }
 
-    /**
-     * @throws \Exception
-     */
     public function read(StreamReader $fileReader): FontFile
     {
         $offsetTable = $this->readOffsetTable($fileReader);
@@ -65,8 +62,6 @@ class FileReader
 
     /**
      * @param TableDirectoryEntry[] $tableDirectoryEntries
-     *
-     * @throws \Exception
      */
     private function readFontFile(StreamReader $fileReader, array $tableDirectoryEntries, bool $isTrueTypeFile): FontFile
     {
@@ -177,9 +172,6 @@ class FileReader
         return $font;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readOffsetTable(StreamReader $fileReader): OffsetTable
     {
         $offsetTable = new OffsetTable();
@@ -191,9 +183,6 @@ class FileReader
         return $offsetTable;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readTableDirectoryEntry(StreamReader $fileReader): TableDirectoryEntry
     {
         $tableDirectoryEntry = new TableDirectoryEntry();
@@ -206,9 +195,6 @@ class FileReader
         return $tableDirectoryEntry;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readCMapTable(StreamReader $fileReader): CMapTable
     {
         $cmapTable = new CMapTable();
@@ -226,9 +212,6 @@ class FileReader
         return $cmapTable;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readCMapSubtable(StreamReader $fileReader, int $cmapTableOffset): Subtable
     {
         $cMapSubtable = new Subtable();
@@ -247,8 +230,6 @@ class FileReader
 
     /**
      * @return GlyfTable[]
-     *
-     * @throws \Exception
      */
     private function readGlyfTables(StreamReader $fileReader, LocaTable $locaTable, HeadTable $headTable): array
     {
@@ -323,9 +304,6 @@ class FileReader
         return $glyfTable;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readLocaTable(StreamReader $fileReader, HeadTable $headTable, MaxPTable $maxPTable): LocaTable
     {
         $glyfTable = new LocaTable();
@@ -343,9 +321,6 @@ class FileReader
         return $glyfTable;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readMaxPTable(StreamReader $fileReader): MaxPTable
     {
         $maxPTable = new MaxPTable();
@@ -369,9 +344,6 @@ class FileReader
         return $maxPTable;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readHeadTable(StreamReader $fileReader): HeadTable
     {
         $headTable = new HeadTable();
@@ -406,9 +378,6 @@ class FileReader
         return $rawTable;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readHHeaTable(StreamReader $fileReader): HHeaTable
     {
         $table = new HHeaTable();
@@ -435,9 +404,6 @@ class FileReader
         return $table;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readPostTable(StreamReader $fileReader, int $length): PostTable
     {
         $table = new PostTable();
@@ -459,9 +425,6 @@ class FileReader
         return $table;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readNameTable(StreamReader $fileReader): NameTable
     {
         $startTableOffset = $fileReader->getOffset();
@@ -508,9 +471,6 @@ class FileReader
         return $table;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readNameRecord(StreamReader $streamReader): NameRecord
     {
         $nameRecord = new NameRecord();
@@ -525,9 +485,6 @@ class FileReader
         return $nameRecord;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readOS2Table(StreamReader $streamReader): OS2Table
     {
         $os2Table = new OS2Table();
@@ -599,9 +556,6 @@ class FileReader
         return $os2Table;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readLangTagRecord(StreamReader $streamReader): LangTagRecord
     {
         $langTagRecord = new LangTagRecord();
@@ -612,9 +566,6 @@ class FileReader
         return $langTagRecord;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readHMtxTable(StreamReader $fileReader, HHeaTable $hHeaTable, MaxPTable $maxPTable): HMtxTable
     {
         $hMtxTable = new HMtxTable();
