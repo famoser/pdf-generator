@@ -53,6 +53,8 @@ readonly class GeneralGraphicState extends BaseState
      * if empty, then a solid line will be rendered
      *
      * @param float $dashPhase the pattern shift at start
+     *
+     * default arguments correspond to PDF defaults
      */
     public function __construct(private array $currentTransformationMatrix = [1, 0, 0, 1, 0, 0], private float $lineWidth = 0, private int $lineCap = self::LINE_CAP_BUTT, private int $lineJoin = self::LINE_JOIN_MITER, private float $miterLimit = 2.0, private array $dashArray = [], private float $dashPhase = 0)
     {

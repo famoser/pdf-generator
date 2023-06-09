@@ -20,26 +20,30 @@ readonly class FullState
     /**
      * TextLevel constructor.
      */
-    public function __construct(private GeneralGraphicState $generalGraphicsState, private ColorState $colorState, private TextState $textState)
+    public function __construct(private ?GeneralGraphicState $generalGraphicsState, private ?ColorState $colorState, private ?TextState $textState)
     {
     }
 
-    public static function createInitial(): FullState
-    {
-        return new self(new GeneralGraphicState(), new ColorState(), new TextState());
-    }
-
-    public function getGeneralGraphicsState(): GeneralGraphicState
+    /**
+     * @return GeneralGraphicState|null
+     */
+    public function getGeneralGraphicsState(): ?GeneralGraphicState
     {
         return $this->generalGraphicsState;
     }
 
-    public function getColorState(): ColorState
+    /**
+     * @return ColorState|null
+     */
+    public function getColorState(): ?ColorState
     {
         return $this->colorState;
     }
 
-    public function getTextState(): TextState
+    /**
+     * @return TextState|null
+     */
+    public function getTextState(): ?TextState
     {
         return $this->textState;
     }
