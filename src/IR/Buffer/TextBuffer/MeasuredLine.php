@@ -16,7 +16,7 @@ class MeasuredLine
     /**
      * @var string[]
      */
-    private array $words = [];
+    private array $words;
 
     /**
      * @var float[]

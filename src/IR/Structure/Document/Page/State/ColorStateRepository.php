@@ -20,7 +20,7 @@ class ColorStateRepository
 
     private ?Color $borderColor;
 
-    private ColorState $activeColorState;
+    private ?ColorState $activeColorState = null;
 
     public function setFillColor(?Color $fillColor): void
     {

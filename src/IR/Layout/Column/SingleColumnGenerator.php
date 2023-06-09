@@ -28,7 +28,7 @@ class SingleColumnGenerator implements ColumnGenerator
      */
     private array $margin;
 
-    private Cursor $lastCursor;
+    private ?Cursor $lastCursor = null;
 
     public function __construct(Document $document, $pageSize = [210, 297], $margin = [25, 25, 25, 25])
     {

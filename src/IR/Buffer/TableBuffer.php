@@ -24,4 +24,12 @@ class TableBuffer
     {
         $this->rows[] = $buffer->getRow();
     }
+
+    /**
+     * @return MeasuredRow[]
+     */
+    public function getRows(): array
+    {
+        return $this->rows;
+    }
 }

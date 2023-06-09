@@ -79,9 +79,6 @@ class DocumentVisitor implements FontVisitor
         return new BackendEmbeddedFont($param->getFontData(), $param->getFont(), $text);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function visitImage(Image $param): BackendImage
     {
         $type = self::getImageType($param->getType());
@@ -91,9 +88,6 @@ class DocumentVisitor implements FontVisitor
         return new BackendImage($param->getData(), $type, $param->getWidth(), $param->getHeight(), (int)round($maxSize->getWidth()), (int)round($maxSize->getHeight()));
     }
 
-    /**
-     * @throws \Exception
-     */
     private static function getImageType(string $type): string
     {
         return match ($type) {
@@ -101,7 +95,7 @@ class DocumentVisitor implements FontVisitor
             Image::TYPE_JPEG => BackendImage::TYPE_JPEG,
             Image::TYPE_PNG => BackendImage::TYPE_PNG,
             Image::TYPE_GIF => BackendImage::TYPE_GIF,
-            default => throw new \Exception('Image type not supported: '.$type.'. Use jpg, jpeg, png or gif'),
+            default => Image::TYPE_JPG,
         };
     }
 

@@ -139,9 +139,10 @@ class ComposerTest extends TestCase
         $document = new Document();
         $layout = $this->createSingleColumnLayout($document);
         $imageSrc = ResourcesProvider::getImage1Path();
+        $imageType = ResourcesProvider::getImage1Type();
 
         // act
-        $image = $document->getOrCreateImage($imageSrc);
+        $image = $document->getOrCreateImage($imageSrc, $imageType);
         $layout->addImage($image, 30, 30);
         $layout->addImage($image, 100, 20);
         $layout->addImage($image, 40, 40);
