@@ -14,12 +14,12 @@ namespace PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\DocumentVisitor;
 
-class EmbeddedFont extends Font
+readonly class EmbeddedFont extends Font
 {
     /**
      * EmbeddedFont constructor.
      */
-    public function __construct(private readonly string $fontData, private readonly \PdfGenerator\Font\IR\Structure\Font $font, private readonly string $charactersUsedInText)
+    public function __construct(private string $fontData, private \PdfGenerator\Font\IR\Structure\Font $font, private string $charactersUsedInText)
     {
     }
 

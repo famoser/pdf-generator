@@ -15,9 +15,9 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
 use PdfGenerator\Backend\File\Object\StreamObject;
 
-class ObjectVisitor
+readonly class ObjectVisitor
 {
-    private readonly TokenVisitor $tokenVisitor;
+    private TokenVisitor $tokenVisitor;
 
     /**
      * ObjectVisitor constructor.

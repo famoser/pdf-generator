@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base;
 
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
-abstract class BaseStateCollection
+readonly abstract class BaseStateCollection
 {
     /**
      * @return BaseState[]

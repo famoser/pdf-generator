@@ -17,12 +17,12 @@ use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
 use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base\BaseStateCollection;
 
-class WritingState extends BaseStateCollection
+readonly class WritingState extends BaseStateCollection
 {
     /**
      * TextLevel constructor.
      */
-    public function __construct(private readonly GeneralGraphicState $generalGraphicsState, private readonly ColorState $colorState, private readonly TextState $textState)
+    public function __construct(private GeneralGraphicState $generalGraphicsState, private ColorState $colorState, private TextState $textState)
     {
     }
 

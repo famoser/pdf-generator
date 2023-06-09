@@ -17,14 +17,14 @@ use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
 
-class RectangleContent extends BaseContent
+readonly class RectangleContent extends BaseContent
 {
     final public const PAINTING_MODE_NONE = 0;
     final public const PAINTING_MODE_STROKE = 1;
     final public const PAINTING_MODE_FILL = 2;
     final public const PAINTING_MODE_STROKE_FILL = 3;
 
-    public function __construct(private readonly float $width, private readonly float $height, private readonly int $paintingMode, private readonly DrawingState $drawingState)
+    public function __construct(private float $width, private float $height, private int $paintingMode, private DrawingState $drawingState)
     {
     }
 
