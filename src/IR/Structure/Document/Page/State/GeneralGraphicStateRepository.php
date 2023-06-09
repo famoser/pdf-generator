@@ -22,7 +22,7 @@ class GeneralGraphicStateRepository
 
     private float $lineWidth = 1;
 
-    private GeneralGraphicState $generalGraphicState;
+    private ?GeneralGraphicState $generalGraphicState = null;
 
     public function setPosition(float $xStart, float $yStart, float $scaleX = 1, float $scaleY = 1): void
     {

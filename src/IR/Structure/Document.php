@@ -58,10 +58,10 @@ class Document
         return $this->pages;
     }
 
-    public function getOrCreateImage(string $imagePath): Image
+    public function getOrCreateImage(string $imagePath, string $type): Image
     {
         if (!\array_key_exists($imagePath, $this->images)) {
-            $image = Image::create($imagePath);
+            $image = Image::create($imagePath, $type);
 
             $this->images[$imagePath] = $image;
         }

@@ -37,7 +37,7 @@ class TextStateRepository
      */
     private float $scale = 100;
 
-    private TextState $activeTextState;
+    private ?TextState $activeTextState = null;
 
     public function setFontSize(float $fontSize): void
     {

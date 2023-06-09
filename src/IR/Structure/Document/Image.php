@@ -43,33 +43,12 @@ class Image extends BaseDocumentStructure
         $this->height = $height;
     }
 
-    /**
-     * @throws \Exception
-     */
-    public static function create(string $imagePath): self
+    public static function create(string $imagePath, string $type): self
     {
         $data = file_get_contents($imagePath);
         list($width, $height) = getimagesizefromstring($data);
-        $type = self::getImageType($imagePath);
 
         return new self($imagePath, $data, $type, $width, $height);
-    }
-
-    /**
-     * @throws \Exception
-     */
-    private static function getImageType(string $imagePath): string
-    {
-        /** @var string $extension */
-        $extension = pathinfo($imagePath, \PATHINFO_EXTENSION);
-
-        return match ($extension) {
-            'jpg' => self::TYPE_JPG,
-            'jpeg' => self::TYPE_JPEG,
-            'png' => self::TYPE_PNG,
-            'gif' => self::TYPE_GIF,
-            default => throw new \Exception('Image type not supported: '.$extension.'. Use jpg, jpeg, png or gif'),
-        };
     }
 
     public function accept(DocumentVisitor $visitor): \PdfGenerator\Backend\Structure\Document\Image
