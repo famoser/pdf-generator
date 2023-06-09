@@ -18,9 +18,9 @@ use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
 
-class ImageContent extends BaseContent
+readonly class ImageContent extends BaseContent
 {
-    public function __construct(private readonly Image $image, private readonly DrawingState $drawingState)
+    public function __construct(private Image $image, private DrawingState $drawingState)
     {
     }
 

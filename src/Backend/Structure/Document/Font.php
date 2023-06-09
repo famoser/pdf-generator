@@ -13,6 +13,6 @@ namespace PdfGenerator\Backend\Structure\Document;
 
 use PdfGenerator\Backend\Structure\Document\Base\BaseDocumentStructure;
 
-abstract class Font extends BaseDocumentStructure
+readonly abstract class Font extends BaseDocumentStructure
 {
 }

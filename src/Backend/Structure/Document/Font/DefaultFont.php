@@ -14,12 +14,12 @@ namespace PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\DocumentVisitor;
 
-class DefaultFont extends Font
+readonly class DefaultFont extends Font
 {
     /**
      * DefaultFont constructor.
      */
-    public function __construct(private readonly string $baseFont)
+    public function __construct(private string $baseFont)
     {
     }
 

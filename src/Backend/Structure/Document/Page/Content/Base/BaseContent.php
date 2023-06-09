@@ -15,7 +15,7 @@ use PdfGenerator\Backend\Catalog\Content;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
-abstract class BaseContent
+readonly abstract class BaseContent
 {
     abstract public function accept(ContentVisitor $visitor): Content;
 

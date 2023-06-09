@@ -14,17 +14,14 @@ namespace PdfGenerator\Backend\Structure\Document;
 use PdfGenerator\Backend\Structure\Document\Base\BaseDocumentStructure;
 use PdfGenerator\Backend\Structure\DocumentVisitor;
 
-class Image extends BaseDocumentStructure
+readonly class Image extends BaseDocumentStructure
 {
     final public const TYPE_JPG = 'jpg';
     final public const TYPE_JPEG = 'jpeg';
     final public const TYPE_PNG = 'png';
     final public const TYPE_GIF = 'gif';
 
-    /**
-     * Image constructor.
-     */
-    public function __construct(private readonly string $imageContent, private readonly string $type, private readonly int $width, private readonly int $height, private readonly int $maxUsedWidth, private readonly int $maxUsedHeight)
+    public function __construct(private string $imageContent, private string $type, private int $width, private int $height, private int $maxUsedWidth, private int $maxUsedHeight)
     {
     }
 

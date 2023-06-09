@@ -15,7 +15,7 @@ use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use PdfGenerator\Font\IR\Structure\Character;
 
-class CMapCreator
+readonly class CMapCreator
 {
     /**
      * @param Character[] $characters
