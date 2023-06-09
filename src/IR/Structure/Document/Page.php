@@ -46,9 +46,6 @@ class Page extends BaseDocumentStructure
         $this->content[] = $baseContent;
     }
 
-    /**
-     * @return mixed
-     */
     public function getIdentifier()
     {
         return $this->pageNumber;
@@ -62,9 +59,6 @@ class Page extends BaseDocumentStructure
         return $this->content;
     }
 
-    /**
-     * @return mixed
-     */
     public function accept(DocumentVisitor $visitor)
     {
         return $visitor->visitPage($this);

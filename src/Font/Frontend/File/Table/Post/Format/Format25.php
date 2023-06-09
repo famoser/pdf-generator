@@ -63,9 +63,6 @@ class Format25 extends Format
         $this->offsets = $offsets;
     }
 
-    /**
-     * @return mixed
-     */
     public function accept(VisitorInterface $visitor)
     {
         return $visitor->visitFormat25($this);

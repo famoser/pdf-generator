@@ -19,7 +19,7 @@ class Character
     /**
      * @var int|null
      */
-    private $unicodePoint = null;
+    private $unicodePoint;
 
     /**
      * @var PostScriptInfo

@@ -40,7 +40,7 @@ class ImageAllocator implements ContentAllocatorInterface
     {
         $image = $this->image->getImage();
 
-        if ($this->imageStyle->getSize() === ImageStyle::SIZE_CONTAIN) {
+        if (ImageStyle::SIZE_CONTAIN === $this->imageStyle->getSize()) {
             $widthAspect = $maxWidth / $image->getWidth();
             $heightAspect = $maxHeight / $image->getHeight();
             $aspect = min($widthAspect, $heightAspect);

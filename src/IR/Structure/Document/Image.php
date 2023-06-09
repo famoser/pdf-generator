@@ -26,10 +26,10 @@ class Image extends BaseDocumentStructure
      */
     private $data;
 
-    const TYPE_JPG = 'TYPE_JPG';
-    const TYPE_JPEG = 'TYPE_JPEG';
-    const TYPE_PNG = 'TYPE_PNG';
-    const TYPE_GIF = 'TYPE_GIF';
+    public const TYPE_JPG = 'TYPE_JPG';
+    public const TYPE_JPEG = 'TYPE_JPEG';
+    public const TYPE_PNG = 'TYPE_PNG';
+    public const TYPE_GIF = 'TYPE_GIF';
 
     /**
      * @var string
@@ -87,13 +87,10 @@ class Image extends BaseDocumentStructure
             case 'gif':
                 return self::TYPE_GIF;
             default:
-                throw new \Exception('Image type not supported: ' . $extension . '. Use jpg, jpeg, png or gif');
+                throw new \Exception('Image type not supported: '.$extension.'. Use jpg, jpeg, png or gif');
         }
     }
 
-    /**
-     * @return mixed
-     */
     public function accept(DocumentVisitor $visitor)
     {
         return $visitor->visitImage($this);

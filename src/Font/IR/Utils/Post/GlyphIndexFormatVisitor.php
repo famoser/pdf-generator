@@ -42,9 +42,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return $format->accept($this);
     }
 
-    /**
-     * @return mixed
-     */
     public function visitFormat1(Format1 $format1)
     {
         $macintoshMapping = $this->factory->getMacintoshMapping();
@@ -80,9 +77,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return $result;
     }
 
-    /**
-     * @return mixed
-     */
     public function visitFormat25(Format25 $format25)
     {
         $macintoshMapping = $this->factory->getMacintoshMapping();
@@ -98,9 +92,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return $result;
     }
 
-    /**
-     * @return mixed
-     */
     public function visitFormat3(Format3 $format3)
     {
         return [];
@@ -109,7 +100,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     /**
      * @return GlyphInfo
      */
-    private static function createGlyphInfo(string $name, ?int $macintoshSetIndex = null)
+    private static function createGlyphInfo(string $name, int $macintoshSetIndex = null)
     {
         $glyphInfo = new GlyphInfo();
         $glyphInfo->setName($name);

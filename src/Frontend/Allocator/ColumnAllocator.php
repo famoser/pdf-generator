@@ -31,7 +31,7 @@ class ColumnAllocator extends BaseAllocator
     /**
      * @var AllocatorInterface[]|null
      */
-    private $allocators = null;
+    private $allocators;
 
     /**
      * ColumnAllocator constructor.
@@ -44,7 +44,7 @@ class ColumnAllocator extends BaseAllocator
 
     private function getAllocators(): array
     {
-        if ($this->allocators === null) {
+        if (null === $this->allocators) {
             $this->allocators = [];
             foreach ($this->column->getBlocks() as $item) {
                 $this->allocators[] = $item->createAllocator();
@@ -56,11 +56,11 @@ class ColumnAllocator extends BaseAllocator
 
     public function minimalWidth(): float
     {
-        if ($this->style->getSizing() === ColumnStyle::SIZING_BY_WEIGHT) {
+        if (ColumnStyle::SIZING_BY_WEIGHT === $this->style->getSizing()) {
             return 0;
         }
 
-        \assert($this->style->getSizing() === ColumnStyle::SIZING_BY_CONTENT);
+        \assert(ColumnStyle::SIZING_BY_CONTENT === $this->style->getSizing());
 
         $maxWidth = 0;
         foreach ($this->getAllocators() as $allocator) {

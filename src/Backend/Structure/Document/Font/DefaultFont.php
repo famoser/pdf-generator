@@ -34,9 +34,6 @@ class DefaultFont extends Font
         return $this->baseFont;
     }
 
-    /**
-     * @return mixed
-     */
     public function accept(DocumentVisitor $documentVisitor)
     {
         return $documentVisitor->visitDefaultFont($this);

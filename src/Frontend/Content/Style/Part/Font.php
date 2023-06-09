@@ -13,7 +13,7 @@ namespace PdfGenerator\Frontend\Content\Style\Part;
 
 class Font
 {
-    const NAME_HELVETICA = 'NAME_HELVETICA';
+    public const NAME_HELVETICA = 'NAME_HELVETICA';
 
     /**
      * @var string|null

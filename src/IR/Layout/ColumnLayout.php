@@ -68,8 +68,8 @@ class ColumnLayout
     {
         $cursor = $this->printer->getCursor();
         // start newline if:
-        if ($this->activeColumn->getStart()->equals($cursor) || // totally new column
-            !$this->activeColumn->hasHorizontalSpaceFor($cursor, $width)) { // not enough horizontal space
+        if ($this->activeColumn->getStart()->equals($cursor) // totally new column
+            || !$this->activeColumn->hasHorizontalSpaceFor($cursor, $width)) { // not enough horizontal space
             $cursor = $this->nextLine($cursor, $height);
         }
 

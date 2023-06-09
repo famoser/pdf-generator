@@ -91,9 +91,6 @@ class Format6 extends Format
         $this->glyphIndexArray = $glyphIndexArray;
     }
 
-    /**
-     * @return mixed
-     */
     public function accept(VisitorInterface $formatVisitor)
     {
         return $formatVisitor->visitFormat6($this);

@@ -16,9 +16,6 @@ use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 
 abstract class Font extends BaseDocumentStructure
 {
-    /**
-     * @return mixed
-     */
     abstract public function accept(FontVisitor $visitor);
 
     abstract public function getUnitsPerEm();

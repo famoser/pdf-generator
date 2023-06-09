@@ -31,8 +31,6 @@ class Paragraph extends MeasuredContent
 
     /**
      * Paragraph constructor.
-     *
-     * @param Phrase[] $phrases
      */
     public function __construct(ParagraphStyle $style)
     {

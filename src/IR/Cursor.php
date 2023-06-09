@@ -100,8 +100,8 @@ class Cursor
 
     public function equals(self $start): bool
     {
-        return $this->getPageIndex() === $start->getPageIndex() &&
-            $this->getYCoordinate() === $start->getYCoordinate() &&
-            $this->getXCoordinate() === $start->getXCoordinate();
+        return $this->getPageIndex() === $start->getPageIndex()
+            && $this->getYCoordinate() === $start->getYCoordinate()
+            && $this->getXCoordinate() === $start->getXCoordinate();
     }
 }

@@ -51,7 +51,7 @@ class TableAllocator extends BaseAllocator
      */
     private function getAllocators(): array
     {
-        if ($this->rowAllocators === null) {
+        if (null === $this->rowAllocators) {
             $this->rowAllocators = [];
             foreach ($this->table->getRows() as $item) {
                 $this->rowAllocators[] = $item->createAllocator();
