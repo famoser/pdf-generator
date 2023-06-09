@@ -263,10 +263,7 @@ class Parser
         return $boundingBox;
     }
 
-    /**
-     * @param FontInformation $fontFile
-     */
-    private function createFontInformation(FontFile $fontFile)
+    private function createFontInformation(FontFile $fontFile): FontInformation
     {
         $fontInformation = new FontInformation();
 

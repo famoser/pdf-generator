@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Catalog\Font;
 
 use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\File\Object\DictionaryObject;
 
 class TrueType extends Type1
 {
@@ -45,16 +45,13 @@ class TrueType extends Type1
         return $this->fontDescriptor;
     }
 
-    /**
-     * @return BaseObject|BaseObject[]
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): DictionaryObject
     {
         return $visitor->visitTrueTypeFont($this);
     }
 
-    public function encode(string $escaped): string
+    public function encode(string $value): string
     {
-        return mb_convert_encoding($escaped, 'Windows-1252', 'UTF-8');
+        return mb_convert_encoding($value, 'Windows-1252', 'UTF-8');
     }
 }

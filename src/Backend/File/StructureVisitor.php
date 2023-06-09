@@ -12,7 +12,6 @@
 namespace PdfGenerator\Backend\File;
 
 use PdfGenerator\Backend\File\Structure\CrossReferenceTable;
-use PdfGenerator\Backend\File\Structure\FileTrailer;
 use PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class StructureVisitor
@@ -41,9 +40,6 @@ class StructureVisitor
             '%'.hex2bin('E2E3CFD3'); // declares that PDF contains binary data
     }
 
-    /**
-     * @param FileTrailer $param
-     */
     public function visitFileTrailer(Structure\FileTrailer $param): string
     {
         $trailerDictionary = new DictionaryToken();

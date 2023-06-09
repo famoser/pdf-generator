@@ -167,7 +167,7 @@ class CatalogVisitor
         return $dictionary;
     }
 
-    public function visitTrueTypeFont(Catalog\Font\TrueType $structure): BaseObject
+    public function visitTrueTypeFont(Catalog\Font\TrueType $structure): DictionaryObject
     {
         $dictionary = $this->file->addDictionaryObject();
 

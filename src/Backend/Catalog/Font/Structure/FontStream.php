@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Catalog\Font\Structure;
 
 use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\File\Object\StreamObject;
 
 class FontStream extends BaseIdentifiableStructure
 {
@@ -46,10 +46,7 @@ class FontStream extends BaseIdentifiableStructure
         $this->fontData = $fontData;
     }
 
-    /**
-     * @return BaseObject|BaseObject[]
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): StreamObject
     {
         return $visitor->visitFontStream($this);
     }

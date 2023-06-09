@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Catalog\Font\Structure;
 
 use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\File\Object\DictionaryObject;
 
 class FontDescriptor extends BaseIdentifiableStructure
 {
@@ -203,10 +203,7 @@ class FontDescriptor extends BaseIdentifiableStructure
         $this->fontFile3 = $fontFile3;
     }
 
-    /**
-     * @return BaseObject|BaseObject[]
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): DictionaryObject
     {
         return $visitor->visitFontDescriptor($this);
     }

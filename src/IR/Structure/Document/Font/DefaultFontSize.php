@@ -19,9 +19,9 @@ class DefaultFontSize
     private static ?array $sizeLookup;
 
     /**
-     * @var string[][]
+     * @return string[][]
      */
-    public static function getSize(string $font, string $style)
+    public static function getSize(string $font, string $style): array
     {
         if (null === self::$sizeLookup) {
             $json = file_get_contents(__DIR__.\DIRECTORY_SEPARATOR.'default_font_size.json');

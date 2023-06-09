@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Catalog\Font\Structure;
 
 use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\File\Object\DictionaryObject;
 
 class CIDFont extends BaseStructure
 {
@@ -111,10 +111,7 @@ class CIDFont extends BaseStructure
         $this->w = $w;
     }
 
-    /**
-     * @return BaseObject|BaseObject[]
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): DictionaryObject
     {
         return $visitor->visitCIDFont($this);
     }

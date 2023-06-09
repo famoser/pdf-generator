@@ -64,9 +64,9 @@ class Type1 extends Font
     /**
      * sets the encoding used by the font.
      */
-    public function encode(string $escaped): string
+    public function encode(string $value): string
     {
         /* windows-1252 is equivalent WinAnsiEncoding according to comment https://www.php.net/manual/de/haru.builtin.encodings.php. */
-        return mb_convert_encoding($escaped, 'Windows-1252', 'UTF-8');
+        return mb_convert_encoding($value, 'Windows-1252', 'UTF-8');
     }
 }

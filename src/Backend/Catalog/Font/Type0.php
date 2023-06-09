@@ -14,7 +14,7 @@ namespace PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use PdfGenerator\Backend\File\Object\DictionaryObject;
 
 class Type0 extends Font
 {
@@ -66,16 +66,13 @@ class Type0 extends Font
         $this->toUnicode = $toUnicode;
     }
 
-    /**
-     * @return BaseObject|BaseObject[]
-     */
-    public function accept(CatalogVisitor $visitor)
+    public function accept(CatalogVisitor $visitor): DictionaryObject
     {
         return $visitor->visitType0Font($this);
     }
 
-    public function encode(string $escaped): string
+    public function encode(string $value): string
     {
-        return mb_convert_encoding($escaped, 'UTF-8');
+        return mb_convert_encoding($value, 'UTF-8');
     }
 }
