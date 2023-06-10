@@ -11,24 +11,24 @@
 
 namespace PdfGenerator\Examples;
 
-use PdfGenerator\IR\Structure\Document;
+use PdfGenerator\IR\Document;
 
 class InvoiceLayout
 {
-    private readonly Document\Page\Content\Text\TextStyle $headerStyle;
+    private readonly \PdfGenerator\IR\Document\Page\Content\Text\TextStyle $headerStyle;
 
-    private readonly Document\Page\Content\Text\TextStyle $bodyStyle;
+    private readonly \PdfGenerator\IR\Document\Page\Content\Text\TextStyle $bodyStyle;
 
     public function __construct(private readonly Document $document, string $headerFontPath, string $bodyFontPath)
     {
         $headerFont = $this->document->getOrCreateEmbeddedFont($headerFontPath);
-        $this->headerStyle = new Document\Page\Content\Text\TextStyle($headerFont, 8);
+        $this->headerStyle = new \PdfGenerator\IR\Document\Page\Content\Text\TextStyle($headerFont, 8);
 
         $bodyFont = $this->document->getOrCreateEmbeddedFont($bodyFontPath);
-        $this->bodyStyle = new Document\Page\Content\Text\TextStyle($bodyFont, 6);
+        $this->bodyStyle = new \PdfGenerator\IR\Document\Page\Content\Text\TextStyle($bodyFont, 6);
     }
 
-    public function withHeaderStyle(Document\Page\Content\Text\TextStyle $textStyle)
+    public function withHeaderStyle(\PdfGenerator\IR\Document\Page\Content\Text\TextStyle $textStyle)
     {
     }
 

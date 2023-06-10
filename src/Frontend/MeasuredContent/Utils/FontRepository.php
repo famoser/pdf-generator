@@ -12,8 +12,8 @@
 namespace PdfGenerator\Frontend\MeasuredContent\Utils;
 
 use PdfGenerator\Frontend\Content\Style\Part\Font;
-use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
-use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
+use PdfGenerator\IR\Document\Font\DefaultFont;
+use PdfGenerator\IR\Document\Font\EmbeddedFont;
 
 class FontRepository
 {

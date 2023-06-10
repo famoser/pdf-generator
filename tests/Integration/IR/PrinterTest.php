@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Tests\Integration\IR;
 
-use PdfGenerator\IR\CursorPrinter;
-use PdfGenerator\IR\Structure\Document;
+use PdfGenerator\Frontend\CursorPrinter\CursorPrinter;
+use PdfGenerator\IR\Document;
 use PHPUnit\Framework\TestCase;
 
 class PrinterTest extends TestCase
@@ -24,7 +24,7 @@ class PrinterTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $document->addPage(new Document\Page(1, [210, 297]));
+        $document->addPage(new \PdfGenerator\IR\Document\Page(1, [210, 297]));
 
         $printer = new CursorPrinter($document);
 

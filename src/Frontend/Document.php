@@ -17,11 +17,11 @@ use PdfGenerator\Frontend\Content\Base\Content;
 use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
 use PdfGenerator\Frontend\MeasuredContent\Utils\ImageRepository;
-use PdfGenerator\IR\Text\WordSizer\WordSizerRepository;
+use PdfGenerator\Frontend\WordSizer\WordSizerRepository;
 
 class Document implements DocumentInterface
 {
-    private readonly \PdfGenerator\IR\Structure\Document $document;
+    private readonly \PdfGenerator\IR\Document $document;
 
     private readonly PageGenerator $pageGenerator;
 

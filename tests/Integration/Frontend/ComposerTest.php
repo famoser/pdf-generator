@@ -12,16 +12,16 @@
 namespace PdfGenerator\Tests\Integration\Frontend;
 
 use PdfGenerator\Backend\Catalog\Font\Type0;
-use PdfGenerator\IR\Buffer\RowBuffer;
-use PdfGenerator\IR\Buffer\TableBuffer;
-use PdfGenerator\IR\Buffer\TextBuffer;
-use PdfGenerator\IR\CursorPrinter;
-use PdfGenerator\IR\Layout\Column\SingleColumnGenerator;
-use PdfGenerator\IR\Layout\ColumnLayout;
-use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
-use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\Frontend\CursorPrinter\Buffer\RowBuffer;
+use PdfGenerator\Frontend\CursorPrinter\Buffer\TableBuffer;
+use PdfGenerator\Frontend\CursorPrinter\Buffer\TextBuffer;
+use PdfGenerator\Frontend\CursorPrinter\CursorPrinter;
+use PdfGenerator\Frontend\CursorPrinter\Layout\Column\SingleColumnGenerator;
+use PdfGenerator\Frontend\CursorPrinter\Layout\ColumnLayout;
+use PdfGenerator\IR\Document;
+use PdfGenerator\IR\Document\Page\Content\Common\Color;
+use PdfGenerator\IR\Document\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Document\Page\Content\Text\TextStyle;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
 
 class ComposerTest
@@ -293,21 +293,21 @@ class ComposerTest
 
     private function createBodyTextStyle(Document $document): TextStyle
     {
-        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_DEFAULT);
+        $font = $document->getOrCreateDefaultFont(\PdfGenerator\IR\Document\Font\DefaultFont::FONT_TIMES, \PdfGenerator\IR\Document\Font\DefaultFont::STYLE_DEFAULT);
 
         return new TextStyle($font, 5);
     }
 
     private function createBodyBoldTextStyle(Document $document): TextStyle
     {
-        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_TIMES, Document\Font\DefaultFont::STYLE_BOLD);
+        $font = $document->getOrCreateDefaultFont(\PdfGenerator\IR\Document\Font\DefaultFont::FONT_TIMES, \PdfGenerator\IR\Document\Font\DefaultFont::STYLE_BOLD);
 
         return new TextStyle($font, 5);
     }
 
     private function createHeaderTextStyle(Document $document): TextStyle
     {
-        $font = $document->getOrCreateDefaultFont(Document\Font\DefaultFont::FONT_HELVETICA, Document\Font\DefaultFont::STYLE_DEFAULT);
+        $font = $document->getOrCreateDefaultFont(\PdfGenerator\IR\Document\Font\DefaultFont::FONT_HELVETICA, \PdfGenerator\IR\Document\Font\DefaultFont::STYLE_DEFAULT);
 
         return new TextStyle($font, 8);
     }
