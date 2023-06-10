@@ -13,7 +13,7 @@ namespace PdfGenerator\Frontend\MeasuredContent\Utils;
 
 use PdfGenerator\IR\Structure\Document\Font;
 
-class FontMeasurement
+readonly class FontMeasurement
 {
     public function __construct(private readonly Font $font, private readonly float $fontSize, private readonly float $lineHeight)
     {

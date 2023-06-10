@@ -11,13 +11,11 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
-use PdfGenerator\Frontend\Block\Style\Part\Font;
 use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Document;
-use PHPUnit\Framework\TestCase;
 
-class UseCases extends TestCase
+class UseCases
 {
     public function testPrintLetter()
     {
