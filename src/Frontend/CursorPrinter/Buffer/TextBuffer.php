@@ -17,7 +17,7 @@ use PdfGenerator\Frontend\CursorPrinter\Buffer\TextBuffer\MeasuredPhrase;
 use PdfGenerator\Frontend\CursorPrinter\Buffer\TextBuffer\Phrase;
 use PdfGenerator\Frontend\WordSizer\WordSizerInterface;
 use PdfGenerator\Frontend\WordSizer\WordSizerRepository;
-use PdfGenerator\IR\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Document\Content\Text\TextStyle;
 
 class TextBuffer
 {

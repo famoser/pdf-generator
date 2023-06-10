@@ -13,11 +13,11 @@ namespace PdfGenerator\IR;
 
 use PdfGenerator\IR\Analysis\AnalysisResult;
 use PdfGenerator\IR\Analysis\AnalyzeContentVisitor;
-use PdfGenerator\IR\Document\DocumentResources;
-use PdfGenerator\IR\Document\Font\DefaultFont;
-use PdfGenerator\IR\Document\Font\EmbeddedFont;
-use PdfGenerator\IR\Document\Image;
 use PdfGenerator\IR\Document\Page;
+use PdfGenerator\IR\Document\Resource\DocumentResources;
+use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
+use PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
+use PdfGenerator\IR\Document\Resource\Image;
 
 class Document
 {
@@ -70,11 +70,14 @@ class Document
         return $this->images[$imagePath];
     }
 
+    /**
+     * @throws \JsonException
+     */
     public function getOrCreateDefaultFont(string $font, string $style): DefaultFont
     {
         $key = $font.'_'.$style;
         if (!\array_key_exists($key, $this->defaultFonts)) {
-            $this->defaultFonts[$key] = new DefaultFont($font, $style);
+            $this->defaultFonts[$key] = DefaultFont::create($font, $style);
         }
 
         return $this->defaultFonts[$key];

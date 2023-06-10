@@ -40,17 +40,11 @@ readonly class CMapCreator
 
     private function createCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, string $mappings): CMap
     {
-        $cmap = new CMap();
-        $cmap->setCIDSystemInfo($cIDSystemInfo);
-        $cmap->setCMapName($cMapName);
-
         $header = $this->getCMapHeader($cIDSystemInfo, $cMapName);
         $trailer = $this->getCMapTrailer();
-
         $cMapData = $header."\n".$mappings."\n".$trailer;
-        $cmap->setCMapData($cMapData);
 
-        return $cmap;
+        return new CMap($cMapName, $cIDSystemInfo, $cMapData);
     }
 
     private function getCMapHeader(CIDSystemInfo $cIDSystemInfo, string $cMapName): string

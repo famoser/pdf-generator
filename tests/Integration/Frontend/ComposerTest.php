@@ -19,9 +19,9 @@ use PdfGenerator\Frontend\CursorPrinter\CursorPrinter;
 use PdfGenerator\Frontend\CursorPrinter\Layout\Column\SingleColumnGenerator;
 use PdfGenerator\Frontend\CursorPrinter\Layout\ColumnLayout;
 use PdfGenerator\IR\Document;
-use PdfGenerator\IR\Document\Page\Content\Common\Color;
-use PdfGenerator\IR\Document\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Document\Content\Common\Color;
+use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Document\Content\Text\TextStyle;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
 
 class ComposerTest
@@ -293,21 +293,21 @@ class ComposerTest
 
     private function createBodyTextStyle(Document $document): TextStyle
     {
-        $font = $document->getOrCreateDefaultFont(\PdfGenerator\IR\Document\Font\DefaultFont::FONT_TIMES, \PdfGenerator\IR\Document\Font\DefaultFont::STYLE_DEFAULT);
+        $font = $document->getOrCreateDefaultFont(Document\Resource\Font\DefaultFont::FONT_TIMES, Document\Resource\Font\DefaultFont::STYLE_DEFAULT);
 
         return new TextStyle($font, 5);
     }
 
     private function createBodyBoldTextStyle(Document $document): TextStyle
     {
-        $font = $document->getOrCreateDefaultFont(\PdfGenerator\IR\Document\Font\DefaultFont::FONT_TIMES, \PdfGenerator\IR\Document\Font\DefaultFont::STYLE_BOLD);
+        $font = $document->getOrCreateDefaultFont(Document\Resource\Font\DefaultFont::FONT_TIMES, Document\Resource\Font\DefaultFont::STYLE_BOLD);
 
         return new TextStyle($font, 5);
     }
 
     private function createHeaderTextStyle(Document $document): TextStyle
     {
-        $font = $document->getOrCreateDefaultFont(\PdfGenerator\IR\Document\Font\DefaultFont::FONT_HELVETICA, \PdfGenerator\IR\Document\Font\DefaultFont::STYLE_DEFAULT);
+        $font = $document->getOrCreateDefaultFont(Document\Resource\Font\DefaultFont::FONT_HELVETICA, Document\Resource\Font\DefaultFont::STYLE_DEFAULT);
 
         return new TextStyle($font, 8);
     }

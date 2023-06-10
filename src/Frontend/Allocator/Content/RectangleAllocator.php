@@ -12,7 +12,7 @@
 namespace PdfGenerator\Frontend\Allocator\Content;
 
 use PdfGenerator\Frontend\MeasuredContent\Rectangle;
-use PdfGenerator\IR\Document\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
 
 class RectangleAllocator implements ContentAllocatorInterface
 {

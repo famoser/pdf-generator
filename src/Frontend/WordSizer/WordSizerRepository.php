@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Frontend\WordSizer;
 
-use PdfGenerator\IR\Document\Font;
+use PdfGenerator\IR\Document\Resource\Font;
 
 class WordSizerRepository
 {

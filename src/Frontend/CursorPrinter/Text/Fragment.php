@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Frontend\CursorPrinter\Text;
 
-use PdfGenerator\IR\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Document\Content\Text\TextStyle;
 
 class Fragment
 {

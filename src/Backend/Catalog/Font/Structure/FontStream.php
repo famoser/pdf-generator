@@ -11,39 +11,26 @@
 
 namespace PdfGenerator\Backend\Catalog\Font\Structure;
 
-use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
+use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\StreamObject;
 
-class FontStream extends BaseIdentifiableStructure
+readonly class FontStream extends BaseStructure
 {
     final public const SUBTYPE_OPEN_TYPE = 'OpenType';
 
-    /**
-     * should be set to OpenType.
-     */
-    private string $subtype = self::SUBTYPE_OPEN_TYPE;
-
-    private string $fontData;
+    public function __construct(private string $subtype, private string $fontData)
+    {
+    }
 
     public function getSubtype(): string
     {
         return $this->subtype;
     }
 
-    public function setSubtype(string $subtype): void
-    {
-        $this->subtype = $subtype;
-    }
-
     public function getFontData(): string
     {
         return $this->fontData;
-    }
-
-    public function setFontData(string $fontData): void
-    {
-        $this->fontData = $fontData;
     }
 
     public function accept(CatalogVisitor $visitor): StreamObject

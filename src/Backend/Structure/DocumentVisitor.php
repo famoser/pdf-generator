@@ -115,9 +115,7 @@ class DocumentVisitor
         $fontName = $font->getFontInformation()->getFullName() ?? 'invalidFontName';
         $fontName = strtr($fontName, [' ' => '']); // remove any spaces in name
 
-        $fontStream = new FontStream();
-        $fontStream->setFontData($fontData);
-        $fontStream->setSubtype(FontStream::SUBTYPE_OPEN_TYPE);
+        $fontStream = new FontStream(FontStream::SUBTYPE_OPEN_TYPE, $fontData);
 
         // glyph space -> text space (=em) is in units of 1000 for PDF
         // the font defines its own sizing in the head table, hence we need to normalize the units
@@ -169,18 +167,8 @@ class DocumentVisitor
         // start at CID 0 with our widths
         $widths = [0 => $characterWidths];
 
-        $cIDSystemInfo = new CIDSystemInfo();
-        $cIDSystemInfo->setRegistry('famoser');
-        $cIDSystemInfo->setOrdering('custom-1');
-        $cIDSystemInfo->setSupplement(1);
-
-        $cidFont = new CIDFont();
-        $cidFont->setSubType(CIDFont::SUBTYPE_CID_FONT_TYPE_2);
-        $cidFont->setDW(500);
-        $cidFont->setCIDSystemInfo($cIDSystemInfo);
-        $cidFont->setFontDescriptor($fontDescriptor);
-        $cidFont->setBaseFont($fontDescriptor->getFontName());
-        $cidFont->setW($widths);
+        $cIDSystemInfo = new CIDSystemInfo('famoser', 'custom-1', 1);
+        $cidFont = new CIDFont(CIDFont::SUBTYPE_CID_FONT_TYPE_2, $fontDescriptor->getFontName(), $cIDSystemInfo, $fontDescriptor, 500, $widths);
 
         $identifier = $this->generateIdentifier('F');
         $type0Font = new Type0($identifier);
@@ -203,25 +191,15 @@ class DocumentVisitor
         $HHeaTable = $font->getTableDirectory()->getHHeaTable();
         $OS2Table = $font->getTableDirectory()->getOS2Table();
 
-        $fontDescriptor = new FontDescriptor();
-        $fontDescriptor->setFontName($fontName);
-
-        $BBox = $this->getFontBBox($font->getCharacters(), $sizeNormalizer);
-        $fontDescriptor->setFontBBox($BBox);
-
         $angle = $this->getFontItalicAngle($HHeaTable);
-
         $fontFlags = $this->calculateFontFlags($OS2Table, $angle > 0);
-        $fontDescriptor->setFlags($fontFlags);
+        $BBox = $this->getFontBBox($font->getCharacters(), $sizeNormalizer);
+        $ascent = (int) ($HHeaTable->getAscent() * $sizeNormalizer);
+        $descent = (int) ($HHeaTable->getDescent() * $sizeNormalizer);
+        $capHeight = (int) ($OS2Table->getSCapHeight() * $sizeNormalizer);
+        $stemVGuess = 0; // TODO find out where to get this from
 
-        $fontDescriptor->setItalicAngle((int) $angle);
-        $fontDescriptor->setAscent((int) ($HHeaTable->getAscent() * $sizeNormalizer));
-        $fontDescriptor->setDescent((int) ($HHeaTable->getDescent() * $sizeNormalizer));
-        $fontDescriptor->setCapHeight((int) ($OS2Table->getSCapHeight() * $sizeNormalizer));
-        $fontDescriptor->setStemV(0); // TODO find out where to get this from
-        $fontDescriptor->setFontFile3($fontStream);
-
-        return $fontDescriptor;
+        return new FontDescriptor($fontName, $fontFlags, $BBox, (int) $angle, $ascent, $descent, $capHeight, $stemVGuess, $fontStream);
     }
 
     /**

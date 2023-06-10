@@ -15,11 +15,11 @@ use PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFo
 use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
 use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
 use PdfGenerator\IR\Analysis\AnalysisResult;
-use PdfGenerator\IR\Document\Font\DefaultFont;
-use PdfGenerator\IR\Document\Font\EmbeddedFont;
-use PdfGenerator\IR\Document\Font\FontVisitor;
-use PdfGenerator\IR\Document\Font\Utils\DefaultFontType1Mapping;
-use PdfGenerator\IR\Document\Image;
+use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
+use PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
+use PdfGenerator\IR\Document\Resource\Font\FontVisitor;
+use PdfGenerator\IR\Document\Resource\Font\Utils\DefaultFontType1Mapping;
+use PdfGenerator\IR\Document\Resource\Image;
 
 class DocumentVisitor implements FontVisitor
 {

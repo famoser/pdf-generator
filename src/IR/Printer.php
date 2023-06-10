@@ -11,15 +11,15 @@
 
 namespace PdfGenerator\IR;
 
-use PdfGenerator\IR\Document\Image;
+use PdfGenerator\IR\Document\Content\Common\Position;
+use PdfGenerator\IR\Document\Content\Common\Size;
+use PdfGenerator\IR\Document\Content\ImagePlacement;
+use PdfGenerator\IR\Document\Content\Rectangle;
+use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Document\Content\Text;
+use PdfGenerator\IR\Document\Content\Text\TextStyle;
 use PdfGenerator\IR\Document\Page;
-use PdfGenerator\IR\Document\Page\Content\Common\Position;
-use PdfGenerator\IR\Document\Page\Content\Common\Size;
-use PdfGenerator\IR\Document\Page\Content\ImagePlacement;
-use PdfGenerator\IR\Document\Page\Content\Rectangle;
-use PdfGenerator\IR\Document\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Document\Page\Content\Text;
-use PdfGenerator\IR\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Document\Resource\Image;
 
 class Printer
 {

@@ -20,12 +20,12 @@ class Image extends MeasuredContent
 {
     private readonly ImageStyle $style;
 
-    public function __construct(private readonly \PdfGenerator\IR\Document\Image $image, ImageStyle $style = null)
+    public function __construct(private readonly \PdfGenerator\IR\Document\Resource\Image $image, ImageStyle $style = null)
     {
         $this->style = $style ?? new ImageStyle();
     }
 
-    public function getImage(): \PdfGenerator\IR\Document\Image
+    public function getImage(): \PdfGenerator\IR\Document\Resource\Image
     {
         return $this->image;
     }

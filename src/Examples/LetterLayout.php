@@ -13,15 +13,15 @@ namespace PdfGenerator\Examples;
 
 class LetterLayout
 {
-    private readonly \PdfGenerator\IR\Document\Page\Content\Text\TextStyle $headerStyle;
+    private readonly \PdfGenerator\IR\Document\Content\Text\TextStyle $headerStyle;
 
-    private readonly \PdfGenerator\IR\Document\Page\Content\Text\TextStyle $bodyStyle;
+    private readonly \PdfGenerator\IR\Document\Content\Text\TextStyle $bodyStyle;
 
-    public function withHeaderStyle(\PdfGenerator\IR\Document\Page\Content\Text\TextStyle $textStyle)
+    public function withHeaderStyle(\PdfGenerator\IR\Document\Content\Text\TextStyle $textStyle)
     {
     }
 
-    public function withBodyStyle(\PdfGenerator\IR\Document\Page\Content\Text\TextStyle $textStyle)
+    public function withBodyStyle(\PdfGenerator\IR\Document\Content\Text\TextStyle $textStyle)
     {
     }
 

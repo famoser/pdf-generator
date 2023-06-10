@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Frontend\MeasuredContent\Utils;
 
-use PdfGenerator\IR\Document\Font;
+use PdfGenerator\IR\Document\Resource\Font;
 
 readonly class FontMeasurement
 {

@@ -15,32 +15,22 @@ use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\StreamObject;
 
-class CMap extends BaseStructure
+readonly class CMap extends BaseStructure
 {
     /**
-     * the name of that CMap
-     * must equal to the name specified in the stream from useCMan.
+     * @param string        $cMapName      the name of that CMap
+     *                                     must equal to the name specified in the stream from useCMan
+     * @param CIDSystemInfo $cIDSystemInfo the system info
+     *                                     must match with the one specified on the CIDFont
+     * @param string        $cMapData      the actual encoding data
      */
-    private string $cMapName;
-
-    /**
-     * the system info which must match with the one specified on the CIDFont.
-     */
-    private CIDSystemInfo $cIDSystemInfo;
-
-    /**
-     * the actual encoding data.
-     */
-    private string $cMapData;
+    public function __construct(private string $cMapName, private CIDSystemInfo $cIDSystemInfo, private string $cMapData)
+    {
+    }
 
     public function getCMapName(): string
     {
         return $this->cMapName;
-    }
-
-    public function setCMapName(string $cMapName): void
-    {
-        $this->cMapName = $cMapName;
     }
 
     public function getCIDSystemInfo(): CIDSystemInfo
@@ -48,19 +38,9 @@ class CMap extends BaseStructure
         return $this->cIDSystemInfo;
     }
 
-    public function setCIDSystemInfo(CIDSystemInfo $cIDSystemInfo): void
-    {
-        $this->cIDSystemInfo = $cIDSystemInfo;
-    }
-
     public function getCMapData(): string
     {
         return $this->cMapData;
-    }
-
-    public function setCMapData(string $cMapData): void
-    {
-        $this->cMapData = $cMapData;
     }
 
     public function accept(CatalogVisitor $visitor): StreamObject
