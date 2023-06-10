@@ -11,10 +11,8 @@
 
 namespace PdfGenerator\IR;
 
-use PdfGenerator\IR\Document\Font\DefaultFont;
 use PdfGenerator\IR\Document\Image;
 use PdfGenerator\IR\Document\Page;
-use PdfGenerator\IR\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Document\Page\Content\Common\Position;
 use PdfGenerator\IR\Document\Page\Content\Common\Size;
 use PdfGenerator\IR\Document\Page\Content\ImagePlacement;
@@ -25,22 +23,9 @@ use PdfGenerator\IR\Document\Page\Content\Text\TextStyle;
 
 class Printer
 {
-    protected TextStyle $textStyle;
-
-    protected RectangleStyle $rectangleStyle;
-
-    public function __construct(protected Document $document)
+    public function printText(Page $page, Position $position, string $text, TextStyle $textStyle): void
     {
-        $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
-        $this->textStyle = new TextStyle($font, 12, 12);
-
-        $color = new Color(0, 0, 0);
-        $this->rectangleStyle = new RectangleStyle(1, $color, null);
-    }
-
-    public function printText(Page $page, Position $position, string $text): void
-    {
-        $text = new Text($text, $position, $this->textStyle);
+        $text = new Text($text, $position, $textStyle);
 
         $page->addContent($text);
     }
@@ -53,31 +38,11 @@ class Printer
         $page->addContent($imagePlacement);
     }
 
-    public function printRectangle(Page $page, Position $position, float $width, float $height): void
+    public function printRectangle(Page $page, Position $position, float $width, float $height, RectangleStyle $rectangleStyle): void
     {
         $size = new Size($width, $height);
-        $text = new Rectangle($position, $size, $this->rectangleStyle);
+        $text = new Rectangle($position, $size, $rectangleStyle);
 
         $page->addContent($text);
-    }
-
-    public function getTextStyle(): TextStyle
-    {
-        return $this->textStyle;
-    }
-
-    public function setTextStyle(TextStyle $textStyle): void
-    {
-        $this->textStyle = $textStyle;
-    }
-
-    public function getRectangleStyle(): RectangleStyle
-    {
-        return $this->rectangleStyle;
-    }
-
-    public function setRectangleStyle(RectangleStyle $rectangleStyle): void
-    {
-        $this->rectangleStyle = $rectangleStyle;
     }
 }
