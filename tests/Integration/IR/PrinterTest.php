@@ -11,8 +11,11 @@
 
 namespace PdfGenerator\Tests\Integration\IR;
 
-use PdfGenerator\Frontend\CursorPrinter\CursorPrinter;
 use PdfGenerator\IR\Document;
+use PdfGenerator\IR\Document\Font\DefaultFont;
+use PdfGenerator\IR\Document\Page;
+use PdfGenerator\IR\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Printer;
 use PHPUnit\Framework\TestCase;
 
 class PrinterTest extends TestCase
@@ -24,12 +27,16 @@ class PrinterTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $document->addPage(new \PdfGenerator\IR\Document\Page(1, [210, 297]));
-
-        $printer = new CursorPrinter($document);
+        $page = new Page(1, [210, 297]);
+        $document->addPage($page);
 
         // act
-        $printer->printText($printer->getCursor(), 'hallo welt', 20);
+        $bottomLeft = new Page\Content\Common\Position(20, 80);
+        $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
+        $textStyle = new TextStyle($font, 12, 1);
+
+        $printer = new Printer();
+        $printer->printText($page, $bottomLeft, "hallo welt\nWie geht es?", $textStyle);
 
         // assert
         $result = $document->save();
