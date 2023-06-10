@@ -16,14 +16,14 @@ use PdfGenerator\Frontend\Content\Image;
 class ImageRepository
 {
     /**
-     * @var \PdfGenerator\IR\Document\Image[]
+     * @var \PdfGenerator\IR\Document\Resource\Image[]
      */
     private array $imageCache = [];
 
-    public function getImage(Image $param): \PdfGenerator\IR\Document\Image
+    public function getImage(Image $param): \PdfGenerator\IR\Document\Resource\Image
     {
         if (!\array_key_exists($param->getSrc(), $this->imageCache)) {
-            $image = \PdfGenerator\IR\Document\Image::create($param->getSrc());
+            $image = \PdfGenerator\IR\Document\Resource\Image::create($param->getSrc());
 
             $this->imageCache[$param->getSrc()] = $image;
         }

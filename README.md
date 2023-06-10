@@ -42,7 +42,7 @@ To design an API that is truly easy to understand,
 focusing on the content the user wants to print, but not on PDF specific details,
 this is done closely together with the document-generator project.
 
-The `document-generator project` will provide an way to generate documents
+The `document-generator project` will provide a way to generate documents
 using an easy to test API which supports multiple generators.
 One of these generators will be this pdf-generator, another one will generate HTML/CSS.
 
@@ -120,7 +120,6 @@ First, the backend will be created following closely the standard of adobe.
 
 To be able to print to the pdf sensible some initial works needs to be done to see whats doable and what is not.
 
-- [x] calculate dimensions of text
 - [x] place text on pages with automatic breaks
 
 ### Text API Milestone
@@ -129,6 +128,7 @@ Then, the public API will be defined.
 
 text printing:
 
+- [x] calculate dimensions of text
 - [x] paragraphs
 - [x] different styles in same paragraphs
 - [x] measurement

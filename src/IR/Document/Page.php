@@ -12,9 +12,9 @@
 namespace PdfGenerator\IR\Document;
 
 use PdfGenerator\Backend\Structure\Document\Page as BackendPage;
-use PdfGenerator\IR\Document\Page\Content\Base\BaseContent;
-use PdfGenerator\IR\Document\Page\PageResources;
-use PdfGenerator\IR\Document\Page\ToBackendContentVisitor;
+use PdfGenerator\IR\Document\Content\Base\BaseContent;
+use PdfGenerator\IR\Document\Resource\DocumentResources;
+use PdfGenerator\IR\Document\Resource\PageResources;
 
 class Page
 {
@@ -60,7 +60,7 @@ class Page
         $page = new BackendPage($mediaBox);
 
         $pageResources = new PageResources($documentResources);
-        $contentVisitor = new ToBackendContentVisitor($pageResources);
+        $contentVisitor = new ContentVisitor($pageResources);
         foreach ($this->getContent() as $item) {
             $content = $item->accept($contentVisitor);
             $page->addContent($content);

@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Frontend\CursorPrinter\Text;
 
-use PdfGenerator\IR\Document\Page\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Document\Content\Text\TextStyle;
 
 trait StyleGetSetTrait
 {

@@ -12,10 +12,11 @@
 namespace PdfGenerator\Tests\Integration\IR;
 
 use PdfGenerator\IR\Document;
-use PdfGenerator\IR\Document\Font\DefaultFont;
+use PdfGenerator\IR\Document\Content\Text\TextStyle;
 use PdfGenerator\IR\Document\Page;
-use PdfGenerator\IR\Document\Page\Content\Text\TextStyle;
+use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
 use PdfGenerator\IR\Printer;
+use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
 class PrinterTest extends TestCase
@@ -23,7 +24,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintTextTextInResultFile()
+    public function testPrintDefaultFont()
     {
         // arrange
         $document = new Document();
@@ -31,16 +32,41 @@ class PrinterTest extends TestCase
         $document->addPage($page);
 
         // act
-        $bottomLeft = new Page\Content\Common\Position(20, 80);
+        $bottomLeft = new Document\Content\Common\Position(20, 80);
         $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 12, 1);
 
         $printer = new Printer();
-        $printer->printText($page, $bottomLeft, "hallo welt\nWie geht es?", $textStyle);
+        $printer->printText($page, $bottomLeft, "Hallo Welt!\nWie geht es?", $textStyle);
 
         // assert
         $result = $document->save();
-        $this->assertStringContainsString('hallo welt', $result);
+        $this->assertStringContainsString('Hallo Welt!', $result);
+        file_put_contents('pdf.pdf', $result);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintEmbeddedFont()
+    {
+        // arrange
+        $document = new Document();
+        $page = new Page(1, [210, 297]);
+        $document->addPage($page);
+
+        // act
+        $bottomLeft = new Document\Content\Common\Position(20, 80);
+        $fontPath = ResourcesProvider::getFontOpenSansPath();
+        $font = $document->getOrCreateEmbeddedFont($fontPath);
+        $textStyle = new TextStyle($font, 12, 1);
+
+        $printer = new Printer();
+        $printer->printText($page, $bottomLeft, "Dies ist ein Test mit äöü!\nKlappt das?", $textStyle);
+
+        // assert
+        $result = $document->save();
+        $this->assertStringContainsString('Dies ist ein', $result);
         file_put_contents('pdf.pdf', $result);
     }
 }

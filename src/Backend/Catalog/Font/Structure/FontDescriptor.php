@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\Backend\Catalog\Font\Structure;
 
-use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
+use PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
 
-class FontDescriptor extends BaseIdentifiableStructure
+readonly class FontDescriptor extends BaseStructure
 {
     /**
      * all characters have same with.
@@ -58,73 +58,32 @@ class FontDescriptor extends BaseIdentifiableStructure
     final public const FLAG_SMALL_CAP = 262144; // 2^18
 
     /**
-     * will advice readers to print extra pixels for lower text sizes.
+     * will advise readers to print extra pixels for lower text sizes.
      */
     final public const FLAG_FORCE_BOLD = 524288; // 2^19
 
     /**
-     * same value than from the referencing entry.
+     * @param string $fontName    same value than from the referencing entry
+     * @param int    $flags       characteristics of the font
+     * @param int[]  $fontBBox    the max bounding box of all characters
+     * @param int    $italicAngle angle of the font (negative for slope to the right)
+     * @param int    $ascent      max height above baseline
+     * @param int    $descent     max depth below baseline
+     * @param int    $capHeight   height of cap characters
+     * @param int    $stemV       thickness of dominant stems (de: stängel) of characters
      */
-    private string $fontName;
-
-    /**
-     * characteristics of the font.
-     */
-    private int $flags;
-
-    /**
-     * the max bounding box of all characters.
-     *
-     * @var int[]
-     */
-    private array $fontBBox = [];
-
-    /**
-     * angle of the font
-     * negative for slope to the right.
-     */
-    private int $italicAngle;
-
-    /**
-     * max height above baseline.
-     */
-    private int $ascent;
-
-    /**
-     * max depth below baseline.
-     */
-    private int $descent;
-
-    /**
-     * height of cap characters.
-     */
-    private int $capHeight;
-
-    /**
-     * thickness of dominant stems (de: stängel) of characters.
-     */
-    private int $stemV;
-
-    private ?FontStream $fontFile3 = null;
+    public function __construct(private string $fontName, private int $flags, private array $fontBBox, private int $italicAngle, private int $ascent, private int $descent, private int $capHeight, private int $stemV, private FontStream $fontFile3)
+    {
+    }
 
     public function getFontName(): string
     {
         return $this->fontName;
     }
 
-    public function setFontName(string $fontName): void
-    {
-        $this->fontName = $fontName;
-    }
-
     public function getFlags(): int
     {
         return $this->flags;
-    }
-
-    public function setFlags(int $flags): void
-    {
-        $this->flags = $flags;
     }
 
     /**
@@ -135,22 +94,9 @@ class FontDescriptor extends BaseIdentifiableStructure
         return $this->fontBBox;
     }
 
-    /**
-     * @param int[] $fontBBox
-     */
-    public function setFontBBox(array $fontBBox): void
-    {
-        $this->fontBBox = $fontBBox;
-    }
-
     public function getItalicAngle(): int
     {
         return $this->italicAngle;
-    }
-
-    public function setItalicAngle(int $italicAngle): void
-    {
-        $this->italicAngle = $italicAngle;
     }
 
     public function getAscent(): int
@@ -158,19 +104,9 @@ class FontDescriptor extends BaseIdentifiableStructure
         return $this->ascent;
     }
 
-    public function setAscent(int $ascent): void
-    {
-        $this->ascent = $ascent;
-    }
-
     public function getDescent(): int
     {
         return $this->descent;
-    }
-
-    public function setDescent(int $descent): void
-    {
-        $this->descent = $descent;
     }
 
     public function getCapHeight(): int
@@ -178,29 +114,14 @@ class FontDescriptor extends BaseIdentifiableStructure
         return $this->capHeight;
     }
 
-    public function setCapHeight(int $capHeight): void
-    {
-        $this->capHeight = $capHeight;
-    }
-
     public function getStemV(): int
     {
         return $this->stemV;
     }
 
-    public function setStemV(int $stemV): void
-    {
-        $this->stemV = $stemV;
-    }
-
     public function getFontFile3(): ?FontStream
     {
         return $this->fontFile3;
-    }
-
-    public function setFontFile3(?FontStream $fontFile3): void
-    {
-        $this->fontFile3 = $fontFile3;
     }
 
     public function accept(CatalogVisitor $visitor): DictionaryObject

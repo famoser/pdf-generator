@@ -15,8 +15,8 @@ use PdfGenerator\Frontend\CursorPrinter\Cursor;
 use PdfGenerator\Frontend\CursorPrinter\CursorPrinter;
 use PdfGenerator\Frontend\CursorPrinter\Layout\Column\Column;
 use PdfGenerator\Frontend\CursorPrinter\Layout\Column\ColumnGenerator;
-use PdfGenerator\IR\Document\Image;
-use PdfGenerator\IR\Document\Page\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Document\Resource\Image;
 
 class ColumnLayout
 {

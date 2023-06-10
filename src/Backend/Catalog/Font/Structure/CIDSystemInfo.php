@@ -20,33 +20,22 @@ use PdfGenerator\Backend\File\Token\DictionaryToken;
  *
  * @see https://www.adobe.com/content/dam/acom/en/devnet/font/pdfs/5014.CIDFont_Spec.pdf page 23ff
  */
-class CIDSystemInfo
+readonly class CIDSystemInfo
 {
     /**
-     * the font vendor
-     * can use "famoser" here.
+     * @param string $registry   the font vendor
+     *                           can use "famoser" here
+     * @param string $ordering   the specific character set (defined by cmap)
+     *                           use unique ordering for each character subset
+     * @param int    $supplement a version number which can be used when adding a new character to an existing set
      */
-    private string $registry;
-
-    /**
-     * the specific character set (defined by cmap)
-     * use unique ordering for each character subset.
-     */
-    private string $ordering;
-
-    /**
-     * a version number which can be used when adding a new character to an existing set.
-     */
-    private int $supplement = 0;
+    public function __construct(private string $registry, private string $ordering, private int $supplement = 0)
+    {
+    }
 
     public function getRegistry(): string
     {
         return $this->registry;
-    }
-
-    public function setRegistry(string $registry): void
-    {
-        $this->registry = $registry;
     }
 
     public function getOrdering(): string
@@ -54,19 +43,9 @@ class CIDSystemInfo
         return $this->ordering;
     }
 
-    public function setOrdering(string $ordering): void
-    {
-        $this->ordering = $ordering;
-    }
-
     public function getSupplement(): int
     {
         return $this->supplement;
-    }
-
-    public function setSupplement(int $supplement): void
-    {
-        $this->supplement = $supplement;
     }
 
     public function accept(CatalogVisitor $param): DictionaryToken

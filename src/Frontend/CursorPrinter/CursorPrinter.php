@@ -14,8 +14,8 @@ namespace PdfGenerator\Frontend\CursorPrinter;
 use PdfGenerator\Frontend\CursorPrinter\Text\Line;
 use PdfGenerator\Frontend\CursorPrinter\Text\StyleGetSetTrait;
 use PdfGenerator\IR\Document;
-use PdfGenerator\IR\Document\Image;
-use PdfGenerator\IR\Document\Page\Content\Common\Position;
+use PdfGenerator\IR\Document\Content\Common\Position;
+use PdfGenerator\IR\Document\Resource\Image;
 use PdfGenerator\IR\Printer;
 
 class CursorPrinter

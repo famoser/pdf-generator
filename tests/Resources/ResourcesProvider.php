@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Tests\Resources;
 
-use PdfGenerator\IR\Document\Image;
+use PdfGenerator\IR\Document\Resource\Image;
 
 class ResourcesProvider
 {
