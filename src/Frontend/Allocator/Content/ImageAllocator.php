@@ -19,9 +19,6 @@ class ImageAllocator implements ContentAllocatorInterface
 {
     private readonly ImageStyle $imageStyle;
 
-    /**
-     * ImageAllocator constructor.
-     */
     public function __construct(private readonly Image $image)
     {
         $this->imageStyle = $image->getImage();

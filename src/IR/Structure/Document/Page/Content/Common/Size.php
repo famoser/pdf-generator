@@ -13,9 +13,6 @@ namespace PdfGenerator\IR\Structure\Document\Page\Content\Common;
 
 readonly class Size
 {
-    /**
-     * Size constructor.
-     */
     public function __construct(private float $width, private float $height)
     {
     }

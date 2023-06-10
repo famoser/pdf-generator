@@ -16,8 +16,6 @@ use PdfGenerator\Frontend\Block\Style\Base\BlockStyle;
 class RowStyle extends BlockStyle
 {
     /**
-     * RowStyle constructor.
-     *
      * @param float[] $columnWidths
      */
     public function __construct(private readonly float $gutter = 0, private readonly array $columnWidths = [])

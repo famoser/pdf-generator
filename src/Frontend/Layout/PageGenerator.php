@@ -19,8 +19,6 @@ class PageGenerator implements PageGeneratorInterface
     private readonly array $pageDimensions;
 
     /**
-     * PageGenerator constructor.
-     *
      * @param float[] $pageDimensions
      */
     public function __construct(array $pageDimensions = null)

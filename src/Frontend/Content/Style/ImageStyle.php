@@ -17,9 +17,6 @@ class ImageStyle extends Style
 {
     final public const SIZE_CONTAIN = 'SIZING_CONTAIN';
 
-    /**
-     * ImageStyle constructor.
-     */
     public function __construct(private readonly string $size = self::SIZE_CONTAIN)
     {
     }

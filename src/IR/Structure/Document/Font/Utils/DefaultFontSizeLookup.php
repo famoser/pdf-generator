@@ -20,6 +20,7 @@ class DefaultFontSizeLookup
 
     /**
      * @return string[][]
+     *
      * @throws \JsonException
      */
     public static function getSize(string $font, string $style): array

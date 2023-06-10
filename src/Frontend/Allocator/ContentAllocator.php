@@ -21,9 +21,6 @@ class ContentAllocator implements AllocatorInterface
 
     private readonly ContentAllocatorInterface $contentAllocator;
 
-    /**
-     * ContentAllocator constructor.
-     */
     public function __construct(private readonly Content $content)
     {
         $this->style = $content->getStyle();

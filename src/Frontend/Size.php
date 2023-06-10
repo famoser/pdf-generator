@@ -13,9 +13,6 @@ namespace PdfGenerator\Frontend;
 
 class Size
 {
-    /**
-     * Size constructor.
-     */
     public function __construct(private readonly float $width, private readonly float $heigth)
     {
     }

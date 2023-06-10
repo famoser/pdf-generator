@@ -17,9 +17,6 @@ use PdfGenerator\Backend\File\TokenVisitor;
 
 class ReferenceToken extends BaseToken
 {
-    /**
-     * ReferenceEntry constructor.
-     */
     public function __construct(private readonly BaseObject $target)
     {
     }

@@ -22,9 +22,6 @@ class CharacterSizer
 
     private readonly int $invalidCharacterWidth;
 
-    /**
-     * CharacterSizer constructor.
-     */
     public function __construct(Font $font)
     {
         $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());

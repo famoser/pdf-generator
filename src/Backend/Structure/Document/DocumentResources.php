@@ -29,9 +29,6 @@ class DocumentResources
      */
     private array $imageCache = [];
 
-    /**
-     * DocumentResources constructor.
-     */
     public function __construct(private readonly DocumentVisitor $documentContentVisitor)
     {
     }

@@ -58,7 +58,7 @@ class ColorStateRepository
     private static function convertToPdfColourSpecificationOrDefault(?Color $color): array
     {
         if (!$color) {
-            return [0,0,0];
+            return [0, 0, 0];
         }
 
         return [

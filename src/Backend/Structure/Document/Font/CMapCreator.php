@@ -223,7 +223,7 @@ readonly class CMapCreator
             $characterByte = dechex($i);
             $normalizedCharacterByte = $this->ensureLengthMultipleOf2($characterByte);
             $length = \strlen($normalizedCharacterByte);
-            if (!isset($hexPointsByLength[$length])) {
+            if (!array_key_exists($length, $hexPointsByLength)) {
                 $hexPointsByLength[$length] = [];
             }
 
@@ -253,7 +253,7 @@ readonly class CMapCreator
             $normalizedByte = $this->ensureLengthMultipleOf2($byte);
             $length = \strlen($normalizedByte);
 
-            if (!isset($hexPointsByLength[$length])) {
+            if (!array_key_exists($length, $hexPointsByLength)) {
                 $hexPointsByLength[$length] = [];
             }
 

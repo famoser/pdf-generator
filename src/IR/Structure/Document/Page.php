@@ -24,7 +24,6 @@ class Page
     private array $content = [];
 
     /**
-     * Page constructor.
      * @param float[] $size
      */
     public function __construct(private readonly string $pageNumber, private readonly array $size)

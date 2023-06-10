@@ -23,9 +23,6 @@ use PdfGenerator\IR\Structure\Document\Image;
 
 class DocumentVisitor implements FontVisitor
 {
-    /**
-     * DocumentStructureVisitor constructor.
-     */
     public function __construct(private readonly AnalysisResult $analysisResult)
     {
     }
@@ -73,7 +70,7 @@ class DocumentVisitor implements FontVisitor
 
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
-        return new BackendImage($param->getData(), $type, $param->getWidth(), $param->getHeight(), (int)round($maxSize->getWidth()), (int)round($maxSize->getHeight()));
+        return new BackendImage($param->getData(), $type, $param->getWidth(), $param->getHeight(), (int) round($maxSize->getWidth()), (int) round($maxSize->getHeight()));
     }
 
     private static function getImageType(string $type): string

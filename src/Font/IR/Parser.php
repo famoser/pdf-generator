@@ -31,9 +31,6 @@ use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 class Parser
 {
-    /**
-     * Parser constructor.
-     */
     public function __construct(private readonly GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, private readonly Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, private readonly Factory $glyphNameMappingFactory)
     {
     }

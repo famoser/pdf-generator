@@ -17,11 +17,9 @@ use PdfGenerator\Backend\File\TokenVisitor;
 class ArrayToken extends BaseToken
 {
     /**
-     * ArrayToken constructor.
-     *
      * @param BaseToken[] $values
      */
-    public function __construct(private readonly array $values, private readonly ?\PdfGenerator\Backend\File\Token\Base\BaseToken $key = null)
+    public function __construct(private readonly array $values, private readonly ?BaseToken $key = null)
     {
     }
 

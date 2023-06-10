@@ -24,9 +24,6 @@ class File
 
     private int $bodyCounter = 1;
 
-    /**
-     * File constructor.
-     */
     public function __construct()
     {
         $this->body = new Body();

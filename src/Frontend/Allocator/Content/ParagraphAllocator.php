@@ -24,9 +24,6 @@ class ParagraphAllocator implements ContentAllocatorInterface
 
     private bool $firstTime = false;
 
-    /**
-     * ParagraphAllocator constructor.
-     */
     public function __construct(private readonly Paragraph $paragraph)
     {
         $this->style = $paragraph->getStyle();

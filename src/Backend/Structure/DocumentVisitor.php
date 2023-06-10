@@ -44,9 +44,6 @@ class DocumentVisitor
 
     private readonly ImageOptimizer $imageOptimizer;
 
-    /**
-     * DocumentVisitor constructor.
-     */
     public function __construct(private readonly Configuration $configuration)
     {
         $this->fontOptimizer = new FontOptimizer();

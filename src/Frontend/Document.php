@@ -33,7 +33,7 @@ class Document implements DocumentInterface
 
     private readonly ContentVisitor $contentVisitor;
 
-    public function __construct(PageGenerator $pageGenerator = null, private readonly ?\PdfGenerator\Frontend\Cursor $cursor = null)
+    public function __construct(PageGenerator $pageGenerator = null, private readonly ?Cursor $cursor = null)
     {
         $this->pageGenerator = $pageGenerator ?? new PageGenerator();
 

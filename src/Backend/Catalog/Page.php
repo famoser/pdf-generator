@@ -21,7 +21,6 @@ readonly class Page extends BaseStructure
     use IdentifiableTrait;
 
     /**
-     * Page constructor.
      * @param int[] $mediaBox
      */
     public function __construct(private array $mediaBox, private Resources $resources, private Contents $contents)

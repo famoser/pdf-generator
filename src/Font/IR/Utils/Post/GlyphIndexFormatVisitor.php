@@ -21,9 +21,6 @@ use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 class GlyphIndexFormatVisitor implements VisitorInterface
 {
-    /**
-     * GlyphIndexFormatVisitor constructor.
-     */
     public function __construct(private readonly Factory $factory)
     {
     }

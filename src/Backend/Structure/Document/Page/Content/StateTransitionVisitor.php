@@ -134,7 +134,7 @@ class StateTransitionVisitor
         $operators = [];
 
         if (!$previousState) {
-           $previousState = new GeneralGraphicState();
+            $previousState = new GeneralGraphicState();
         }
 
         if ($previousState->getLineWidth() !== $targetState->getLineWidth()) {

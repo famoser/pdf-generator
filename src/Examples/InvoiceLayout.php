@@ -19,9 +19,6 @@ class InvoiceLayout
 
     private readonly Document\Page\Content\Text\TextStyle $bodyStyle;
 
-    /**
-     * InvoiceLayout constructor.
-     */
     public function __construct(private readonly Document $document, string $headerFontPath, string $bodyFontPath)
     {
         $headerFont = $this->document->getOrCreateEmbeddedFont($headerFontPath);

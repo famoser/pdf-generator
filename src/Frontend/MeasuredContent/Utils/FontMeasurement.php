@@ -15,9 +15,6 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 class FontMeasurement
 {
-    /**
-     * FontMeasurement constructor.
-     */
     public function __construct(private readonly Font $font, private readonly float $fontSize, private readonly float $lineHeight)
     {
     }

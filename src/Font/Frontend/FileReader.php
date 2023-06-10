@@ -35,9 +35,6 @@ use PdfGenerator\Font\Frontend\File\Traits\Reader;
 
 class FileReader
 {
-    /**
-     * StructureReader constructor.
-     */
     public function __construct(private readonly FormatReader $cMapFormatReader, private readonly File\Table\Post\FormatReader $postFormatReader)
     {
     }

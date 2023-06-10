@@ -16,9 +16,6 @@ use PdfGenerator\Backend\File\TokenVisitor;
 
 class NumberToken extends BaseToken
 {
-    /**
-     * TextToken constructor.
-     */
     public function __construct(private readonly float|int $number)
     {
     }

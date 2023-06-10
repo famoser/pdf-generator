@@ -16,9 +16,6 @@ use PdfGenerator\Backend\Structure\DocumentVisitor;
 
 readonly class EmbeddedFont extends Font
 {
-    /**
-     * EmbeddedFont constructor.
-     */
     public function __construct(private string $fontData, private \PdfGenerator\Font\IR\Structure\Font $font, private string $charactersUsedInText)
     {
     }

@@ -15,9 +15,6 @@ readonly abstract class BaseIdentifiableStructure extends BaseStructure
 {
     private string $identifier;
 
-    /**
-     * @param string $identifier
-     */
     public function __construct(string $identifier)
     {
         $this->identifier = $identifier;

@@ -16,9 +16,6 @@ use PdfGenerator\Backend\Structure\DocumentVisitor;
 
 readonly class DefaultFont extends Font
 {
-    /**
-     * DefaultFont constructor.
-     */
     public function __construct(private string $baseFont)
     {
     }

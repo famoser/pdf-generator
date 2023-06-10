@@ -40,9 +40,6 @@ class PageResources
      */
     private array $images = [];
 
-    /**
-     * PageResources constructor.
-     */
     public function __construct(private readonly DocumentResources $documentResources)
     {
         $this->generalGraphicStateRepository = new GeneralGraphicStateRepository();

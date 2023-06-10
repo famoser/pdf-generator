@@ -20,14 +20,8 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text;
 
-/**
- * Class ToBackendContentVisitor.
- */
 class ToBackendContentVisitor extends ContentVisitor
 {
-    /**
-     * ContentVisitor constructor.
-     */
     public function __construct(private readonly PageResources $pageResources)
     {
     }

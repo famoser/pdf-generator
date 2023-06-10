@@ -14,8 +14,6 @@ namespace PdfGenerator\IR\Buffer\TextBuffer;
 class MeasuredLine
 {
     /**
-     * MeasuredPhrase constructor.
-     *
      * @param string[] $words
      * @param float[]  $wordWidths
      */

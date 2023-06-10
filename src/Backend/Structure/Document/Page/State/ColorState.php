@@ -17,12 +17,12 @@ use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 readonly class ColorState extends BaseState
 {
     /**
-     * @param float[] $rgbStrokingColour line/border color
+     * @param float[] $rgbStrokingColour    line/border color
      * @param float[] $rgbNonStrokingColour fill color
      *
      * default arguments correspond to PDF defaults
      */
-    public function __construct(private array $rgbStrokingColour = [0,0,0], private array $rgbNonStrokingColour = [0,0,0])
+    public function __construct(private array $rgbStrokingColour = [0, 0, 0], private array $rgbNonStrokingColour = [0, 0, 0])
     {
     }
 

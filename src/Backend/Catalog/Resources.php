@@ -18,7 +18,7 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 readonly class Resources extends BaseStructure
 {
     /**
-     * @param Font[] $fonts
+     * @param Font[]  $fonts
      * @param Image[] $images
      */
     public function __construct(private array $fonts, private array $images)

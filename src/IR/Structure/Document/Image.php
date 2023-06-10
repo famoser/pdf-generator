@@ -21,9 +21,6 @@ readonly class Image extends BaseDocumentResource
     final public const TYPE_PNG = 'TYPE_PNG';
     final public const TYPE_GIF = 'TYPE_GIF';
 
-    /**
-     * Image constructor.
-     */
     public function __construct(private string $src, private string $data, private string $type, private int $width, private int $height)
     {
     }

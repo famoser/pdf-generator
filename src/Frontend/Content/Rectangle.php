@@ -18,9 +18,6 @@ use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Rectangle extends Content
 {
-    /**
-     * Rectangle constructor.
-     */
     public function __construct(private readonly DrawingStyle $style, private readonly float $width, private readonly float $height)
     {
     }
