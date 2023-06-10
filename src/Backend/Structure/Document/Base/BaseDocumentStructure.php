@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Structure\Document\Base;
 
 use PdfGenerator\Backend\Structure\DocumentVisitor;
 
-readonly abstract class BaseDocumentStructure
+abstract readonly class BaseDocumentStructure
 {
     abstract public function accept(DocumentVisitor $documentVisitor);
 }

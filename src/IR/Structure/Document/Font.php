@@ -14,7 +14,7 @@ namespace PdfGenerator\IR\Structure\Document;
 use PdfGenerator\IR\Structure\Document\Base\BaseDocumentResource;
 use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
 
-readonly abstract class Font extends BaseDocumentResource
+abstract readonly class Font extends BaseDocumentResource
 {
     abstract public function accept(FontVisitor $visitor);
 

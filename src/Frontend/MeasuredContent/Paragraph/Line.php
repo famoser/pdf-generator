@@ -17,7 +17,7 @@ readonly class Line
 
     /**
      * @param string[] $words
-     * @param float[] $wordWidths
+     * @param float[]  $wordWidths
      */
     public function __construct(private readonly array $words, private readonly array $wordWidths, private readonly float $spaceWidth)
     {

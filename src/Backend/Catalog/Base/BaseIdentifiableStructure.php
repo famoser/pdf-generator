@@ -11,13 +11,10 @@
 
 namespace PdfGenerator\Backend\Catalog\Base;
 
-readonly abstract class BaseIdentifiableStructure extends BaseStructure
+abstract readonly class BaseIdentifiableStructure extends BaseStructure
 {
-    private string $identifier;
-
-    public function __construct(string $identifier)
+    public function __construct(private string $identifier)
     {
-        $this->identifier = $identifier;
     }
 
     public function getIdentifier(): string
