@@ -15,9 +15,6 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 
 readonly class RectangleStyle
 {
-    /**
-     * Style constructor.
-     */
     public function __construct(private float $lineWidth, private ?Color $borderColor, private ?Color $fillColor)
     {
     }

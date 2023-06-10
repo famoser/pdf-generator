@@ -21,7 +21,6 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
 readonly class TextContent extends BaseContent
 {
     /**
-     * TextSymbol constructor.
      * @param string[] $lines
      */
     public function __construct(private array $lines, private WritingState $writingState)

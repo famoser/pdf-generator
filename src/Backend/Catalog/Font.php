@@ -15,9 +15,6 @@ use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 
 readonly abstract class Font extends BaseIdentifiableStructure
 {
-    /**
-     * File constructor.
-     */
     public function __construct(string $identifier)
     {
         parent::__construct($identifier);

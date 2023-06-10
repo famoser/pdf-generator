@@ -25,9 +25,6 @@ class RowAllocator extends BaseAllocator
      */
     private ?array $columnAllocators = null;
 
-    /**
-     * RowAllocator constructor.
-     */
     public function __construct(private readonly Row $row)
     {
         $this->rowStyle = $row->getStyle();

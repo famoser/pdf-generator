@@ -20,9 +20,6 @@ class Image extends MeasuredContent
 {
     private readonly ImageStyle $style;
 
-    /**
-     * Image constructor.
-     */
     public function __construct(private readonly \PdfGenerator\IR\Structure\Document\Image $image, ImageStyle $style = null)
     {
         $this->style = $style ?? new ImageStyle();

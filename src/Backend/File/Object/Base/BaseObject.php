@@ -15,9 +15,6 @@ use PdfGenerator\Backend\File\ObjectVisitor;
 
 abstract class BaseObject
 {
-    /**
-     * BaseObject constructor.
-     */
     public function __construct(private readonly int $number)
     {
     }

@@ -19,8 +19,6 @@ use PdfGenerator\Frontend\Size;
 class Paragraph extends LocatedContent
 {
     /**
-     * Paragraph constructor.
-     *
      * @param Line[] $lines
      */
     public function __construct(Position $position, Size $size, private readonly array $lines)

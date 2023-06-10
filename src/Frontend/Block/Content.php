@@ -22,9 +22,6 @@ class Content extends Block
 {
     private readonly ContentStyle $style;
 
-    /**
-     * Content constructor.
-     */
     public function __construct(private readonly MeasuredContent $measuredContent, ContentStyle $style = null, array $dimensions = null)
     {
         parent::__construct($dimensions);

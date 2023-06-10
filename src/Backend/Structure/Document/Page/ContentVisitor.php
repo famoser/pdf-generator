@@ -19,18 +19,12 @@ use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
-use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
-use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
-use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
 class ContentVisitor
 {
     private ?FullState $lastAppliedState = null;
 
-    /**
-     * ContentVisitor constructor.
-     */
     public function __construct(private readonly DocumentResources $documentResources)
     {
     }

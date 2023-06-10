@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\Backend\Structure\Document;
 
+use PdfGenerator\Backend\Catalog\Content as CatalogContent;
+use PdfGenerator\Backend\Catalog\Contents;
 use PdfGenerator\Backend\Catalog\Font as CatalogFont;
 use PdfGenerator\Backend\Catalog\Image as CatalogImage;
-use PdfGenerator\Backend\Catalog\Content as CatalogContent;
 use PdfGenerator\Backend\Catalog\Page as CatalogPage;
-use PdfGenerator\Backend\Catalog\Contents;
 use PdfGenerator\Backend\Catalog\Resources;
 use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
@@ -38,8 +38,6 @@ class Page
     private array $images = [];
 
     /**
-     * Page constructor.
-     *
      * @param int[] $mediaBox
      */
     public function __construct(private readonly array $mediaBox)
@@ -92,6 +90,7 @@ class Page
         }
 
         $resources = new Resources($fonts, $images);
+
         return new CatalogPage($this->mediaBox, $resources, $contents);
     }
 }

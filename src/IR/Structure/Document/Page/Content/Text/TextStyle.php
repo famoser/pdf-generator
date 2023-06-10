@@ -15,9 +15,6 @@ use PdfGenerator\IR\Structure\Document\Font;
 
 readonly class TextStyle
 {
-    /**
-     * Style constructor.
-     */
     public function __construct(private Font $font, private float $fontSize, private float $lineHeight = 1)
     {
     }

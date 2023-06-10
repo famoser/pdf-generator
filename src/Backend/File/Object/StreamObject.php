@@ -19,9 +19,6 @@ class StreamObject extends BaseObject
 {
     private readonly DictionaryToken $dictionary;
 
-    /**
-     * StreamObject constructor.
-     */
     public function __construct(int $number, private readonly string $content)
     {
         parent::__construct($number);

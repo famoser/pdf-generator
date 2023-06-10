@@ -18,9 +18,6 @@ use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
 readonly class Text extends BaseContent
 {
-    /**
-     * TextPlacement constructor.
-     */
     public function __construct(private string $text, private Position $position, private TextStyle $style)
     {
     }

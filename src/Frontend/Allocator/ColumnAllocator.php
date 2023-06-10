@@ -25,9 +25,6 @@ class ColumnAllocator extends BaseAllocator
      */
     private ?array $allocators = null;
 
-    /**
-     * ColumnAllocator constructor.
-     */
     public function __construct(private readonly Column $column)
     {
         $this->style = $column->getStyle();

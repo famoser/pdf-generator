@@ -15,9 +15,6 @@ use PdfGenerator\IR\Cursor;
 
 class Column
 {
-    /**
-     * Column constructor.
-     */
     public function __construct(private readonly Cursor $start, private readonly float $width, private readonly float $height)
     {
     }

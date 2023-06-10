@@ -16,8 +16,6 @@ class Line
     private readonly float $width;
 
     /**
-     * MeasuredPhrase constructor.
-     *
      * @param string[] $words
      * @param float[]  $wordWidths
      */

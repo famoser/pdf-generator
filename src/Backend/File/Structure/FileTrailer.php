@@ -17,9 +17,6 @@ use PdfGenerator\Backend\File\StructureVisitor;
 
 class FileTrailer extends BaseStructure
 {
-    /**
-     * FileTrailer constructor.
-     */
     public function __construct(private readonly int $size, private readonly int $startOfCrossReferenceTable, private readonly BaseObject $root, private readonly BaseObject $info)
     {
     }

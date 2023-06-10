@@ -16,9 +16,6 @@ use PdfGenerator\Frontend\Size;
 
 class ContentArea
 {
-    /**
-     * ContentArea constructor.
-     */
     public function __construct(private readonly Position $start, private readonly Size $size)
     {
     }

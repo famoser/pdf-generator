@@ -15,9 +15,6 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 
 class Fragment
 {
-    /**
-     * Fragment constructor.
-     */
     public function __construct(private readonly string $text, private readonly TextStyle $textStyle, private readonly float $width)
     {
     }

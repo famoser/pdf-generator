@@ -19,9 +19,6 @@ use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
 readonly class Rectangle extends BaseContent
 {
-    /**
-     * Rectangle constructor.
-     */
     public function __construct(private Position $position, private Size $size, private RectangleStyle $style)
     {
     }

@@ -13,9 +13,6 @@ namespace PdfGenerator\IR;
 
 class Cursor
 {
-    /**
-     * Cursor constructor.
-     */
     public function __construct(private readonly float $xCoordinate, private readonly float $yCoordinate, private readonly int $pageIndex)
     {
     }

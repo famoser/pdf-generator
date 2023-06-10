@@ -68,6 +68,7 @@ class Optimizer
         $sortByCodePoint = function (Character $character1, Character $character2) {
             $unicodePoint1 = $character1->getUnicodePoint();
             $unicodePoint2 = $character2->getUnicodePoint();
+
             return $unicodePoint1 <=> $unicodePoint2;
         };
 

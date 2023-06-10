@@ -21,9 +21,6 @@ use PdfGenerator\IR\Text\WordSizer\WordSizerRepository;
 
 class ContentVisitor
 {
-    /**
-     * ContentVisitor constructor.
-     */
     public function __construct(private readonly ImageRepository $imageRespository, private readonly FontRepository $fontRepository, private readonly WordSizerRepository $wordSizerRepository)
     {
     }

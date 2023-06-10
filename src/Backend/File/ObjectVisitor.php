@@ -19,9 +19,6 @@ class ObjectVisitor
 {
     private TokenVisitor $tokenVisitor;
 
-    /**
-     * ObjectVisitor constructor.
-     */
     public function __construct()
     {
         $this->tokenVisitor = new TokenVisitor();

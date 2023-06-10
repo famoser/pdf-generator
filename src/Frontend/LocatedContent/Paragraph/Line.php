@@ -20,9 +20,6 @@ class Line
      */
     private array $fragments = [];
 
-    /**
-     * Line constructor.
-     */
     public function __construct(private readonly float $height)
     {
     }

@@ -24,9 +24,6 @@ class TableAllocator extends BaseAllocator
      */
     private ?array $rowAllocators = null;
 
-    /**
-     * TableAllocator constructor.
-     */
     public function __construct(private readonly Table $table, private readonly TableStyle $tableStyle)
     {
     }

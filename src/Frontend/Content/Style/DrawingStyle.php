@@ -18,10 +18,7 @@ class DrawingStyle extends Style
 {
     private readonly ?Color $borderColor;
 
-    /**
-     * Style constructor.
-     */
-    public function __construct(private readonly float $lineWidth, Color $borderColor = null, private readonly ?\PdfGenerator\Frontend\Block\Style\Part\Color $fillColor = null)
+    public function __construct(private readonly float $lineWidth, Color $borderColor = null, private readonly ?Color $fillColor = null)
     {
         $this->borderColor = $borderColor ?? Color::black();
     }

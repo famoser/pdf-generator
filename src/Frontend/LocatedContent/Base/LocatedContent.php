@@ -16,9 +16,6 @@ use PdfGenerator\Frontend\Size;
 
 class LocatedContent
 {
-    /**
-     * LocatedContent constructor.
-     */
     public function __construct(private readonly Position $position, private readonly Size $size)
     {
     }

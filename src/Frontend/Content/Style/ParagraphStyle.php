@@ -17,9 +17,6 @@ class ParagraphStyle extends Style
 {
     final public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
 
-    /**
-     * ParagraphStyle constructor.
-     */
     public function __construct(private readonly string $alignment = self::ALIGNMENT_LEFT, private readonly float $indent = 0)
     {
     }

@@ -19,9 +19,6 @@ use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
 readonly class ImagePlacement extends BaseContent
 {
-    /**
-     * ImagePlacement constructor.
-     */
     public function __construct(private Image $image, private Position $position, private Size $size)
     {
     }

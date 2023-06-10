@@ -21,9 +21,6 @@ class CharacterRepository
      */
     private array $charactersByCodePoint = [];
 
-    /**
-     * FontRepository constructor.
-     */
     public function __construct(Font $font)
     {
         foreach ($font->getCharacters() as $character) {

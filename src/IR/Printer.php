@@ -30,9 +30,6 @@ class Printer
 
     protected RectangleStyle $rectangleStyle;
 
-    /**
-     * Printer constructor.
-     */
     public function __construct(protected Document $document)
     {
         $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);

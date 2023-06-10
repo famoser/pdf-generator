@@ -41,9 +41,6 @@ use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
 
 class FileWriter
 {
-    /**
-     * FileWriter constructor.
-     */
     public function __construct(private readonly TableVisitor $tableVisitor)
     {
     }

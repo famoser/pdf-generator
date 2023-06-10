@@ -18,9 +18,6 @@ class RectangleAllocator implements ContentAllocatorInterface
 {
     private readonly RectangleStyle $style;
 
-    /**
-     * RectangleAllocator constructor.
-     */
     public function __construct(private readonly Rectangle $rectangle)
     {
         $this->style = $rectangle->getStyle();

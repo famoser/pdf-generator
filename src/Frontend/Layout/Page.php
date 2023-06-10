@@ -14,8 +14,6 @@ namespace PdfGenerator\Frontend\Layout;
 class Page
 {
     /**
-     * Page constructor.
-     *
      * @param float[] $dimensions
      */
     public function __construct(private readonly array $dimensions = [210, 297])

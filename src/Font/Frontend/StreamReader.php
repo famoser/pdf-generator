@@ -23,9 +23,6 @@ class StreamReader
 
     private readonly int $byteCount;
 
-    /**
-     * Reader constructor.
-     */
     public function __construct(private readonly string $content)
     {
         $this->byteCount = \strlen($content);

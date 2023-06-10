@@ -19,9 +19,6 @@ class TableVisitor
 {
     public static int $indexToLocFormat = 0;
 
-    /**
-     * TableWriter constructor.
-     */
     public function __construct(private readonly FormatVisitor $cMapFormatVisitor, private readonly Table\Post\FormatVisitor $postFormatVisitor)
     {
     }

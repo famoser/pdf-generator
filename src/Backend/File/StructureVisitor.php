@@ -25,9 +25,6 @@ class StructureVisitor
      */
     private array $bodyEntrySizes = [];
 
-    /**
-     * StructureVisitor constructor.
-     */
     public function __construct()
     {
         $this->objectVisitor = new ObjectVisitor();

@@ -17,8 +17,6 @@ use PdfGenerator\IR\Structure\Document\Font;
 class Phrase
 {
     /**
-     * MeasuredPhrase constructor.
-     *
      * @param Line[] $measuredLines
      */
     public function __construct(private readonly array $measuredLines, private readonly TextStyle $textStyle, private readonly Font $font)

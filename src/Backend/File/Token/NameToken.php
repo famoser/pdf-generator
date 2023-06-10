@@ -16,9 +16,6 @@ use PdfGenerator\Backend\File\TokenVisitor;
 
 class NameToken extends BaseToken
 {
-    /**
-     * TextToken constructor.
-     */
     public function __construct(private readonly string $name)
     {
     }

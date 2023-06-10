@@ -15,9 +15,6 @@ use PdfGenerator\Frontend\Block\Base\Block;
 
 class GridEntry
 {
-    /**
-     * GridEntry constructor.
-     */
     public function __construct(private readonly int $columnSpan, private readonly int $rowSpan, private readonly Block $block)
     {
     }

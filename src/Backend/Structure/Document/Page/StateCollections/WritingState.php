@@ -19,9 +19,6 @@ use PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base\BaseState
 
 readonly class WritingState extends BaseStateCollection
 {
-    /**
-     * TextLevel constructor.
-     */
     public function __construct(private GeneralGraphicState $generalGraphicsState, private ColorState $colorState, private TextState $textState)
     {
     }
