@@ -29,7 +29,7 @@ class PrinterTest extends TestCase
         $printer = new CursorPrinter($document);
 
         // act
-        $printer->printText($printer->getCursor(), "hallo welt", 20);
+        $printer->printText($printer->getCursor(), 'hallo welt', 20);
 
         // assert
         $result = $document->save();

@@ -13,7 +13,7 @@ namespace PdfGenerator\IR\Structure\Document\Page\Content\Base;
 
 use PdfGenerator\IR\Structure\Document\Page\ContentVisitor;
 
-readonly abstract class BaseContent
+abstract readonly class BaseContent
 {
     abstract public function accept(ContentVisitor $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 }

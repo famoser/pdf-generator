@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Catalog;
 
 use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 
-readonly abstract class Font extends BaseIdentifiableStructure
+abstract readonly class Font extends BaseIdentifiableStructure
 {
     public function __construct(string $identifier)
     {
