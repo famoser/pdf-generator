@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\Document\Font;
+namespace PdfGenerator\IR\Structure\Document\Font\Utils;
 
 use PdfGenerator\Backend\Catalog\Font\Type1;
+use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
 
 class DefaultFontType1Mapping
 {

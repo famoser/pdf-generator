@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Structure\Document\Font;
+namespace PdfGenerator\IR\Structure\Document\Font\Utils;
 
 class DefaultFontSizeLookup
 {
@@ -20,6 +20,7 @@ class DefaultFontSizeLookup
 
     /**
      * @return string[][]
+     * @throws \JsonException
      */
     public static function getSize(string $font, string $style): array
     {
