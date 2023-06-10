@@ -15,9 +15,17 @@ $finder = PhpCsFixer\Finder::create()
     ->in('tests');
 
 $config = new PhpCsFixer\Config();
-return $config->setRules([
-    '@Symfony' => true,
-    'array_syntax' => ['syntax' => 'short'],
-    'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
-])
+return $config
+    ->registerCustomFixers(new PhpCsFixerCustomFixers\Fixers())
+    ->setRules([
+        '@Symfony' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'header_comment' => ['header' => $fileHeaderComment, 'separate' => 'both'],
+        PhpCsFixerCustomFixers\Fixer\CommentSurroundedBySpacesFixer::name() => true,
+        PhpCsFixerCustomFixers\Fixer\IssetToArrayKeyExistsFixer::name() => true,
+        PhpCsFixerCustomFixers\Fixer\MultilineCommentOpeningClosingAloneFixer::name() => true,
+        PhpCsFixerCustomFixers\Fixer\NoUselessCommentFixer::name() => true,
+        PhpCsFixerCustomFixers\Fixer\NoUselessDirnameCallFixer::name() => true,
+        PhpCsFixerCustomFixers\Fixer\PhpdocNoIncorrectVarAnnotationFixer::name() => true,
+    ])
     ->setFinder($finder);
