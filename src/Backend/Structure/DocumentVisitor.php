@@ -171,19 +171,14 @@ class DocumentVisitor
         $cidFont = new CIDFont(CIDFont::SUBTYPE_CID_FONT_TYPE_2, $fontDescriptor->getFontName(), $cIDSystemInfo, $fontDescriptor, 500, $widths);
 
         $identifier = $this->generateIdentifier('F');
-        $type0Font = new Type0($identifier);
-        $type0Font->setDescendantFont($cidFont);
-        $type0Font->setBaseFont($fontDescriptor->getFontName());
 
         $cMapName = $fontDescriptor->getFontName().'CMap';
         $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, $cMapName, $characters, $usedCodepoints);
-        $type0Font->setEncoding($characterIndexCMap);
 
         $cMapInvertedName = $fontDescriptor->getFontName().'CMapInverted';
         $unicodeCMap = $this->cMapCreator->createCharacterIndexToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $characters);
-        $type0Font->setToUnicode($unicodeCMap);
 
-        return $type0Font;
+        return new Type0($identifier, $fontDescriptor->getFontName(), $characterIndexCMap, $cidFont, $unicodeCMap);
     }
 
     private function getFontDescriptor(string $fontName, Font $font, FontStream $fontStream, float $sizeNormalizer): FontDescriptor

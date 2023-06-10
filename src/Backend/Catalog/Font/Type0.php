@@ -18,22 +18,14 @@ use PdfGenerator\Backend\File\Object\DictionaryObject;
 
 readonly class Type0 extends Font
 {
-    private string $baseFont;
-
-    private CMap $encoding;
-
-    private Font\Structure\CIDFont $descendantFont;
-
-    private CMap $toUnicode;
+    public function __construct(string $identifier, private string $baseFont, private CMap $encoding, private Structure\CIDFont $descendantFont, private CMap $toUnicode)
+    {
+        parent::__construct($identifier);
+    }
 
     public function getBaseFont(): string
     {
         return $this->baseFont;
-    }
-
-    public function setBaseFont(string $baseFont): void
-    {
-        $this->baseFont = $baseFont;
     }
 
     public function getEncoding(): CMap
@@ -41,29 +33,14 @@ readonly class Type0 extends Font
         return $this->encoding;
     }
 
-    public function setEncoding(CMap $encoding): void
-    {
-        $this->encoding = $encoding;
-    }
-
     public function getDescendantFont(): Structure\CIDFont
     {
         return $this->descendantFont;
     }
 
-    public function setDescendantFont(Structure\CIDFont $descendantFont): void
-    {
-        $this->descendantFont = $descendantFont;
-    }
-
     public function getToUnicode(): CMap
     {
         return $this->toUnicode;
-    }
-
-    public function setToUnicode(CMap $toUnicode): void
-    {
-        $this->toUnicode = $toUnicode;
     }
 
     public function accept(CatalogVisitor $visitor): DictionaryObject
