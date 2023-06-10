@@ -16,8 +16,8 @@ use PdfGenerator\Frontend\MeasuredContent\Paragraph;
 use PdfGenerator\Frontend\MeasuredContent\Rectangle;
 use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
 use PdfGenerator\Frontend\MeasuredContent\Utils\ImageRepository;
-use PdfGenerator\IR\Text\WordSizer\WordSizerInterface;
-use PdfGenerator\IR\Text\WordSizer\WordSizerRepository;
+use PdfGenerator\Frontend\WordSizer\WordSizerInterface;
+use PdfGenerator\Frontend\WordSizer\WordSizerRepository;
 
 class ContentVisitor
 {

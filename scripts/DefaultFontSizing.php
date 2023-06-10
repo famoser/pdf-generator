@@ -15,8 +15,8 @@
 
 include '../vendor/autoload.php';
 
-use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Structure\Document\Font\Utils\DefaultFontType1Mapping;
+use PdfGenerator\IR\Document;
+use PdfGenerator\IR\Document\Font\Utils\DefaultFontType1Mapping;
 use PdfGenerator\IR\Text\LineBreak\WordSizer\CharacterSizer;
 
 $fontMapPath = '/usr/share/ghostscript/9.54.0/Resource/Init/Fontmap.GS';

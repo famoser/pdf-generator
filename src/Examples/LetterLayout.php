@@ -11,19 +11,17 @@
 
 namespace PdfGenerator\Examples;
 
-use PdfGenerator\IR\Structure\Document;
-
 class LetterLayout
 {
-    private readonly Document\Page\Content\Text\TextStyle $headerStyle;
+    private readonly \PdfGenerator\IR\Document\Page\Content\Text\TextStyle $headerStyle;
 
-    private readonly Document\Page\Content\Text\TextStyle $bodyStyle;
+    private readonly \PdfGenerator\IR\Document\Page\Content\Text\TextStyle $bodyStyle;
 
-    public function withHeaderStyle(Document\Page\Content\Text\TextStyle $textStyle)
+    public function withHeaderStyle(\PdfGenerator\IR\Document\Page\Content\Text\TextStyle $textStyle)
     {
     }
 
-    public function withBodyStyle(Document\Page\Content\Text\TextStyle $textStyle)
+    public function withBodyStyle(\PdfGenerator\IR\Document\Page\Content\Text\TextStyle $textStyle)
     {
     }
 

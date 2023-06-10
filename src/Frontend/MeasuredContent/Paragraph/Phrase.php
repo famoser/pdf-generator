@@ -12,7 +12,7 @@
 namespace PdfGenerator\Frontend\MeasuredContent\Paragraph;
 
 use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\IR\Structure\Document\Font;
+use PdfGenerator\IR\Document\Font;
 
 readonly class Phrase
 {
