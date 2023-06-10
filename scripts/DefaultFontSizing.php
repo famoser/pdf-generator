@@ -16,7 +16,7 @@
 include '../vendor/autoload.php';
 
 use PdfGenerator\IR\Structure\Document;
-use PdfGenerator\IR\Structure\Document\Font\DefaultFontType1Mapping;
+use PdfGenerator\IR\Structure\Document\Font\Utils\DefaultFontType1Mapping;
 use PdfGenerator\IR\Text\LineBreak\WordSizer\CharacterSizer;
 
 $fontMapPath = '/usr/share/ghostscript/9.54.0/Resource/Init/Fontmap.GS';
@@ -40,8 +40,8 @@ foreach (explode("\n", $fontMap) as $line) {
 $fontFilenames = [];
 foreach (DefaultFontType1Mapping::$mapping as $fontName => $fontStyles) {
     foreach ($fontStyles as $fontStyle => $baseFontName) {
-        $fontname = $fontToFontFilename['/' . $baseFontName];
-        $fontFilenames[$fontName][$fontStyle] = substr($fontname, 1) . $fontEnding;
+        $fontname = $fontToFontFilename['/'.$baseFontName];
+        $fontFilenames[$fontName][$fontStyle] = substr($fontname, 1).$fontEnding;
     }
 }
 
@@ -50,7 +50,7 @@ $sizing = [];
 $characterSizes = [];
 foreach ($fontFilenames as $fontName => $fontStyles) {
     foreach ($fontStyles as $fontStyle => $fontFilename) {
-        $fontPath = $fontDir . '/' . $fontFilename;
+        $fontPath = $fontDir.'/'.$fontFilename;
         $font = $document->getOrCreateEmbeddedFont($fontPath);
 
         $sizing[$fontName][$fontStyle] = [
@@ -68,7 +68,7 @@ foreach ($fontFilenames as $fontName => $fontStyles) {
         ];
 
         $characterSizesJson = json_encode($characterSizes, $jsonFlags);
-        $characterSizesFilepath = $defaultFontCharacterSizeFolder . '/' . $fontName . '_' . $fontStyle . '.json';
+        $characterSizesFilepath = $defaultFontCharacterSizeFolder.'/'.$fontName.'_'.$fontStyle.'.json';
         file_put_contents($characterSizesFilepath, $characterSizesJson);
     }
 }

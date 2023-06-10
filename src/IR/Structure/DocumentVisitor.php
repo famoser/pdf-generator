@@ -16,9 +16,9 @@ use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbedded
 use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
 use PdfGenerator\IR\Structure\Analysis\AnalysisResult;
 use PdfGenerator\IR\Structure\Document\Font\DefaultFont;
-use PdfGenerator\IR\Structure\Document\Font\DefaultFontType1Mapping;
 use PdfGenerator\IR\Structure\Document\Font\EmbeddedFont;
 use PdfGenerator\IR\Structure\Document\Font\FontVisitor;
+use PdfGenerator\IR\Structure\Document\Font\Utils\DefaultFontType1Mapping;
 use PdfGenerator\IR\Structure\Document\Image;
 
 class DocumentVisitor implements FontVisitor

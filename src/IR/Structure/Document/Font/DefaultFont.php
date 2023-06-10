@@ -12,6 +12,7 @@
 namespace PdfGenerator\IR\Structure\Document\Font;
 
 use PdfGenerator\IR\Structure\Document\Font;
+use PdfGenerator\IR\Structure\Document\Font\Utils\DefaultFontSizeLookup;
 
 readonly class DefaultFont extends Font
 {
@@ -34,9 +35,6 @@ readonly class DefaultFont extends Font
      */
     private array $size;
 
-    /**
-     * DefaultFont constructor.
-     */
     public function __construct(private string $font, private string $style)
     {
         $this->size = DefaultFontSizeLookup::getSize($this->font, $this->style);
