@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Integration\IR;
+namespace PdfGenerator\Tests\Integration\Frontend;
 
 use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\IR\Buffer\RowBuffer;
@@ -23,9 +23,8 @@ use PdfGenerator\IR\Structure\Document\Page\Content\Common\Color;
 use PdfGenerator\IR\Structure\Document\Page\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Structure\Document\Page\Content\Text\TextStyle;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
-use PHPUnit\Framework\TestCase;
 
-class ComposerTest extends TestCase
+class ComposerTest
 {
     /**
      * @throws \Exception
@@ -40,7 +39,8 @@ class ComposerTest extends TestCase
 
         // act
         $textWriter->add($textStyle, 'hi mom');
-        $layout->addParagraph($textWriter);
+        $paragraph = $textWriter->getMeasuredParagraph();
+        $layout->add($textWriter);
 
         // assert
         $result = $this->render($document);
@@ -152,6 +152,7 @@ class ComposerTest extends TestCase
 
         // assert
         $result = $this->render($document);
+        file_put_contents('pdf.pdf', $result);
         $this->assertNotEmpty($result);
     }
 

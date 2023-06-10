@@ -14,7 +14,7 @@ namespace PdfGenerator\Frontend\MeasuredContent\Paragraph;
 use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\IR\Structure\Document\Font;
 
-class Phrase
+readonly class Phrase
 {
     /**
      * @param Line[] $measuredLines

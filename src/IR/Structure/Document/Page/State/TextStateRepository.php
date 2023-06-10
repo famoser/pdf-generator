@@ -16,7 +16,7 @@ use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 
 class TextStateRepository
 {
-    private Font $font;
+    private ?Font $font = null;
 
     private float $fontSize = 8;
 
