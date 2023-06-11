@@ -13,17 +13,18 @@ namespace PdfGenerator\Frontend\Content\Style;
 
 use PdfGenerator\IR\Document\Content\Common\Color;
 
-class DrawingStyle
+class DrawingStyle extends BlockStyle
 {
     private ?float $lineWidth;
     private ?Color $lineColor;
     private ?Color $fillColor;
 
-    public function __construct(float $lineWidth = 1, ?Color $lineColor = new Color(0, 0, 0), Color $fillColor = null)
+    public function __construct(float $borderWidth = 1, ?Color $borderColor = new Color(0, 0, 0), Color $backgroundColor = null)
     {
-        $this->lineWidth = $lineWidth;
-        $this->lineColor = $lineColor;
-        $this->fillColor = $fillColor;
+        parent::__construct();
+        $this->lineWidth = $borderWidth;
+        $this->lineColor = $borderColor;
+        $this->fillColor = $backgroundColor;
     }
 
     public function setLineWidth(?float $lineWidth): self
