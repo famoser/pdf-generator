@@ -12,7 +12,7 @@
 namespace PdfGenerator\Frontend\Allocator;
 
 use PdfGenerator\Frontend\Allocator\Content\ContentAllocatorInterface;
-use PdfGenerator\Frontend\Block\Content;
+use PdfGenerator\Frontend\Block\Block;
 use PdfGenerator\Frontend\Block\Style\ContentStyle;
 
 class ContentAllocator implements AllocatorInterface
@@ -21,7 +21,7 @@ class ContentAllocator implements AllocatorInterface
 
     private readonly ContentAllocatorInterface $contentAllocator;
 
-    public function __construct(private readonly Content $content)
+    public function __construct(private readonly Block $content)
     {
         $this->style = $content->getStyle();
 

@@ -20,7 +20,7 @@ class TableAllocator extends BaseAllocator
     private bool $firstTime = true;
 
     /**
-     * @var RowAllocator[]|null
+     * @var FlowAllocator[]|null
      */
     private ?array $rowAllocators = null;
 
@@ -29,7 +29,7 @@ class TableAllocator extends BaseAllocator
     }
 
     /**
-     * @return RowAllocator[]
+     * @return FlowAllocator[]
      */
     private function getAllocators(): array
     {

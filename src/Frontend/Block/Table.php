@@ -11,61 +11,72 @@
 
 namespace PdfGenerator\Frontend\Block;
 
-use PdfGenerator\Frontend\Block\Base\Block;
-use PdfGenerator\Frontend\Block\Style\TableStyle;
+use PdfGenerator\Frontend\Block\Base\BaseBlock;
+use PdfGenerator\Frontend\Block\Base\FlowTrait;
+use PdfGenerator\Frontend\Block\Base\PerpendicularFlowTrait;
 
-class Table extends Block
+class Table extends BaseBlock
 {
-    private readonly TableStyle $style;
+    use FlowTrait;
+    use PerpendicularFlowTrait;
 
     /**
-     * @var Row[]
+     * @var Block[][]
      */
-    private array $headerRows = [];
+    private array $header = [];
 
     /**
-     * @var Row[]
+     * @var Block[][]
      */
-    private array $rows = [];
+    private array $body = [];
 
     /**
-     * @param float[]|null $dimensions
+     * @param float[]|null $perpendicularDimensions
+     * @param float[]      $dimensions
      */
-    public function __construct(TableStyle $style = null, array $dimensions = null)
+    public function __construct(string $direction = self::DIRECTION_ROW, float $gap = 0, float $perpendicularGap = 0, array $dimensions = null, array $perpendicularDimensions = null)
     {
-        parent::__construct($dimensions);
-
-        $this->style = $style ?? new TableStyle();
-    }
-
-    public function addRow(Row $row): void
-    {
-        $this->rows[] = $row;
-    }
-
-    public function addHeaderRow(Row $row): void
-    {
-        $this->headerRows[] = $row;
-    }
-
-    public function getStyle(): TableStyle
-    {
-        return $this->style;
+        parent::__construct();
+        $this->setDirection($direction);
+        $this->setGap($gap);
+        $this->setPerpendicularGap($perpendicularGap);
+        $this->setDimensions($dimensions);
+        $this->setPerpendicularDimensions($perpendicularDimensions);
     }
 
     /**
-     * @return Row[]
+     * @param Block[] $blocks
      */
-    public function getHeaderRows(): array
+    public function addHeader(array $blocks): self
     {
-        return $this->headerRows;
+        $this->header[] = $blocks;
+
+        return $this;
     }
 
     /**
-     * @return Row[]
+     * @param Block[] $blocks
      */
-    public function getRows(): array
+    public function addBody(array $blocks): self
     {
-        return $this->rows;
+        $this->body[] = $blocks;
+
+        return $this;
+    }
+
+    /**
+     * @return Block[]
+     */
+    public function getHeader(): array
+    {
+        return $this->header;
+    }
+
+    /**
+     * @return Block[]
+     */
+    public function getBody(): array
+    {
+        return $this->body;
     }
 }
