@@ -12,12 +12,12 @@
 namespace PdfGenerator\Tests\Integration\Frontend;
 
 use PdfGenerator\Backend\Catalog\Font\Type0;
-use PdfGenerator\Frontend\CursorPrinter\Buffer\RowBuffer;
-use PdfGenerator\Frontend\CursorPrinter\Buffer\TableBuffer;
-use PdfGenerator\Frontend\CursorPrinter\Buffer\TextBuffer;
-use PdfGenerator\Frontend\CursorPrinter\CursorPrinter;
-use PdfGenerator\Frontend\CursorPrinter\Layout\Column\SingleColumnGenerator;
-use PdfGenerator\Frontend\CursorPrinter\Layout\ColumnLayout;
+use PdfGenerator\FrontendResources\CursorPrinter\Buffer\RowBuffer;
+use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TableBuffer;
+use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer;
+use PdfGenerator\FrontendResources\CursorPrinter\CursorPrinter;
+use PdfGenerator\FrontendResources\CursorPrinter\Layout\Column\SingleColumnGenerator;
+use PdfGenerator\FrontendResources\CursorPrinter\Layout\ColumnLayout;
 use PdfGenerator\IR\Document;
 use PdfGenerator\IR\Document\Content\Common\Color;
 use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
