@@ -11,16 +11,50 @@
 
 namespace PdfGenerator\Frontend\Content\Style;
 
-use PdfGenerator\Frontend\Block\Style\Part\Color;
-use PdfGenerator\Frontend\Content\Style\Part\Font;
+use PdfGenerator\Frontend\Resource\Font;
+use PdfGenerator\IR\Document\Content\Common\Color;
 
 class TextStyle
 {
-    private readonly Color $color;
+    private Font $font;
+    private float $fontSize;
+    private float $lineHeight;
+    private Color $color;
 
-    public function __construct(private readonly Font $font, private readonly float $fontSize = 12, private readonly float $lineHeight = 1.2, Color $color = null)
+    public function __construct(Font $font, float $fontSize = 12, float $lineHeight = 1.2, Color $color = null)
     {
-        $this->color = $color ?? Color::black();
+        $this->font = $font;
+        $this->fontSize = $fontSize;
+        $this->lineHeight = $lineHeight;
+        $this->color = $color ?? new Color(0, 0, 0);
+    }
+
+    public function setFont(Font $font): self
+    {
+        $this->font = $font;
+
+        return $this;
+    }
+
+    public function setFontSize(float $fontSize): self
+    {
+        $this->fontSize = $fontSize;
+
+        return $this;
+    }
+
+    public function setLineHeight(float $lineHeight): self
+    {
+        $this->lineHeight = $lineHeight;
+
+        return $this;
+    }
+
+    public function setColor(Color $color): self
+    {
+        $this->color = $color;
+
+        return $this;
     }
 
     public function getFont(): Font

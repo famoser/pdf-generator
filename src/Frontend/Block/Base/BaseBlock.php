@@ -25,15 +25,18 @@ abstract class BaseBlock
 
     private ?float $width;
 
+    private ?float $height;
+
     /**
      * @param float[] $margin
      * @param float[] $padding
      */
-    public function __construct(array $margin = [0, 0, 0, 0], array $padding = [0, 0, 0, 0], float $width = null)
+    public function __construct(array $margin = [0, 0, 0, 0], array $padding = [0, 0, 0, 0], float $width = null, float $height = null)
     {
         $this->margin = $margin;
         $this->padding = $padding;
         $this->width = $width;
+        $this->height = $height;
     }
 
     /**
@@ -63,6 +66,13 @@ abstract class BaseBlock
         return $this;
     }
 
+    public function setHeight(?float $height): self
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
     /**
      * @return float[]
      */
@@ -82,5 +92,10 @@ abstract class BaseBlock
     public function getWidth(): ?float
     {
         return $this->width;
+    }
+
+    public function getHeight(): ?float
+    {
+        return $this->height;
     }
 }

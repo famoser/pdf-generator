@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Frontend\MeasuredContent\Utils;
 
-use PdfGenerator\Frontend\Content\Image;
+use PdfGenerator\Frontend\Content\ImagePlacement;
 
 class ImageRepository
 {
@@ -20,7 +20,7 @@ class ImageRepository
      */
     private array $imageCache = [];
 
-    public function getImage(Image $param): \PdfGenerator\IR\Document\Resource\Image
+    public function getImage(ImagePlacement $param): \PdfGenerator\IR\Document\Resource\Image
     {
         if (!\array_key_exists($param->getSrc(), $this->imageCache)) {
             $image = \PdfGenerator\IR\Document\Resource\Image::create($param->getSrc());

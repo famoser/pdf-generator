@@ -25,7 +25,7 @@ class ContentVisitor
     {
     }
 
-    public function visitImage(Content\Image $param): Image
+    public function visitImage(Content\ImagePlacement $param): Image
     {
         $image = $this->imageRespository->getImage($param);
 

@@ -12,17 +12,17 @@
 namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\Content\Base\Content;
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\Resource\Image;
 
-class Rectangle extends Content
+class ImagePlacement extends Content
 {
-    public function __construct(private readonly DrawingStyle $style)
+    public function __construct(private readonly Image $image)
     {
         parent::__construct();
     }
 
-    public function getStyle(): DrawingStyle
+    public function getImage(): Image
     {
-        return $this->style;
+        return $this->image;
     }
 }
