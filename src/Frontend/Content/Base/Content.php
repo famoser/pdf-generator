@@ -11,10 +11,8 @@
 
 namespace PdfGenerator\Frontend\Content\Base;
 
-use PdfGenerator\Frontend\ContentVisitor;
-use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
+use PdfGenerator\Frontend\Block\Base\BaseBlock;
 
-abstract class Content
+abstract class Content extends BaseBlock
 {
-    abstract public function accept(ContentVisitor $contentVisitor): MeasuredContent;
 }

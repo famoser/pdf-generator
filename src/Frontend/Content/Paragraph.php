@@ -13,23 +13,30 @@ namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\Content\Base\Content;
 use PdfGenerator\Frontend\Content\Paragraph\Phrase;
-use PdfGenerator\Frontend\Content\Style\ParagraphStyle;
 use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\ContentVisitor;
-use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 
 class Paragraph extends Content
 {
-    private readonly ParagraphStyle $style;
+    final public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
+
+    private string $alignment;
 
     /**
      * @var Phrase[]
      */
     private array $phrases = [];
 
-    public function __construct(ParagraphStyle $style = null)
+    public function __construct(string $alignment = self::ALIGNMENT_LEFT)
     {
-        $this->style = $style ?? new ParagraphStyle();
+        parent::__construct();
+        $this->alignment = $alignment;
+    }
+
+    public function setAlignment(string $alignment): self
+    {
+        $this->alignment = $alignment;
+
+        return $this;
     }
 
     public function add(TextStyle $textStyle, string $text): void
@@ -41,21 +48,16 @@ class Paragraph extends Content
         $this->phrases[] = $phrase;
     }
 
+    public function getAlignment(): string
+    {
+        return $this->alignment;
+    }
+
     /**
      * @return Phrase[]
      */
     public function getPhrases(): array
     {
         return $this->phrases;
-    }
-
-    public function getStyle(): ParagraphStyle
-    {
-        return $this->style;
-    }
-
-    public function accept(ContentVisitor $contentVisitor): MeasuredContent
-    {
-        return $contentVisitor->visitParagraph($this);
     }
 }

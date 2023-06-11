@@ -11,26 +11,53 @@
 
 namespace PdfGenerator\Frontend\Content\Style;
 
-use PdfGenerator\Frontend\Block\Style\Part\Color;
-use PdfGenerator\Frontend\Content\Style\Base\Style;
+use PdfGenerator\IR\Document\Content\Common\Color;
 
-class DrawingStyle extends Style
+class DrawingStyle
 {
-    private readonly ?Color $borderColor;
+    private ?float $lineWidth;
+    private ?Color $lineColor;
+    private ?Color $fillColor;
 
-    public function __construct(private readonly float $lineWidth, Color $borderColor = null, private readonly ?Color $fillColor = null)
+    /**
+     * @param float|null $lineWidth
+     */
+    public function __construct(float $lineWidth = 1, ?Color $lineColor = new Color(0, 0, 0), Color $fillColor = null)
     {
-        $this->borderColor = $borderColor ?? Color::black();
+        $this->lineWidth = $lineWidth;
+        $this->lineColor = $lineColor;
+        $this->fillColor = $fillColor;
     }
 
-    public function getLineWidth(): float
+    public function setLineWidth(?float $lineWidth): self
+    {
+        $this->lineWidth = $lineWidth;
+
+        return $this;
+    }
+
+    public function setLineColor(?Color $lineColor): self
+    {
+        $this->lineColor = $lineColor;
+
+        return $this;
+    }
+
+    public function setFillColor(?Color $fillColor): self
+    {
+        $this->fillColor = $fillColor;
+
+        return $this;
+    }
+
+    public function getLineWidth(): ?float
     {
         return $this->lineWidth;
     }
 
-    public function getBorderColor(): ?Color
+    public function getLineColor(): ?Color
     {
-        return $this->borderColor;
+        return $this->lineColor;
     }
 
     public function getFillColor(): ?Color
