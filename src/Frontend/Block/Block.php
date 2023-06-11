@@ -9,24 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block\Grid;
+namespace PdfGenerator\Frontend\Block;
 
 use PdfGenerator\Frontend\Block\Base\BaseBlock;
 
-readonly class GridEntry
+class Block extends BaseBlock
 {
-    public function __construct(private int $columnSpan, private int $rowSpan, private BaseBlock $block)
-    {
-    }
+    private BaseBlock $block;
 
-    public function getColumnSpan(): int
+    public function __construct(BaseBlock $block)
     {
-        return $this->columnSpan;
-    }
-
-    public function getRowSpan(): int
-    {
-        return $this->rowSpan;
+        parent::__construct();
+        $this->block = $block;
     }
 
     public function getBlock(): BaseBlock

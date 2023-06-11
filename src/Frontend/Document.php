@@ -12,7 +12,7 @@
 namespace PdfGenerator\Frontend;
 
 use DocumentGenerator\DocumentInterface;
-use PdfGenerator\Frontend\Block\Base\Block;
+use PdfGenerator\Frontend\Block\Base\BaseBlock;
 use PdfGenerator\Frontend\Content\Base\Content;
 use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
 use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
@@ -48,11 +48,11 @@ class Document implements DocumentInterface
     {
         $measuredContent = $this->measureContent($content);
 
-        $contentBlock = new \PdfGenerator\Frontend\Block\Content($measuredContent);
+        $contentBlock = new \PdfGenerator\Frontend\Block\Block($measuredContent);
         $this->add($contentBlock);
     }
 
-    public function add(Block $block): void
+    public function add(BaseBlock $block): void
     {
         $locatedBlocks = $this->locate($block);
 
@@ -66,7 +66,7 @@ class Document implements DocumentInterface
         return $content->accept($this->contentVisitor);
     }
 
-    public function locate(Block $block, Cursor $startCursor = null): array
+    public function locate(BaseBlock $block, Cursor $startCursor = null): array
     {
         $allocator = $block->createAllocator();
         $allocator->place();

@@ -57,9 +57,4 @@ class Document
     {
         return $this->render()->save();
     }
-
-    public function setConfiguration(Configuration $configuration): void
-    {
-        $this->configuration = $configuration;
-    }
 }

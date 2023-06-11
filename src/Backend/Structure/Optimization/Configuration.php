@@ -11,24 +11,15 @@
 
 namespace PdfGenerator\Backend\Structure\Optimization;
 
-class Configuration
+readonly class Configuration
 {
-    private bool $autoResizeImages = false;
-
-    private int $autoResizeImagesDpi = 72;
-
-    private bool $createFontSubsets = true;
-
-    private bool $useTTFFonts = false;
+    public function __construct(private bool $autoResizeImages = true, private int $autoResizeImagesDpi = 72, private bool $createFontSubsets = true, private bool $useTTFFonts = false)
+    {
+    }
 
     public function getAutoResizeImages(): bool
     {
         return $this->autoResizeImages;
-    }
-
-    public function setAutoResizeImages(bool $autoResizeImages): void
-    {
-        $this->autoResizeImages = $autoResizeImages;
     }
 
     public function getAutoResizeImagesDpi(): int
@@ -36,28 +27,13 @@ class Configuration
         return $this->autoResizeImagesDpi;
     }
 
-    public function setAutoResizeImagesDpi(int $autoResizeImagesDpi): void
-    {
-        $this->autoResizeImagesDpi = $autoResizeImagesDpi;
-    }
-
     public function getCreateFontSubsets(): bool
     {
         return $this->createFontSubsets;
     }
 
-    public function setCreateFontSubsets(bool $createFontSubsets): void
-    {
-        $this->createFontSubsets = $createFontSubsets;
-    }
-
     public function getUseTTFFonts(): bool
     {
         return $this->useTTFFonts;
-    }
-
-    public function setUseTTFFonts(bool $useTTFFonts): void
-    {
-        $this->useTTFFonts = $useTTFFonts;
     }
 }

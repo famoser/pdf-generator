@@ -13,10 +13,10 @@ namespace PdfGenerator\Frontend\Allocator;
 
 use PdfGenerator\Frontend\Allocator\Base\BaseAllocator;
 use PdfGenerator\Frontend\Allocator\RowAllocator\ColumnWidthEstimate;
-use PdfGenerator\Frontend\Block\Row;
+use PdfGenerator\Frontend\Block\Flow;
 use PdfGenerator\Frontend\Block\Style\RowStyle;
 
-class RowAllocator extends BaseAllocator
+class FlowAllocator extends BaseAllocator
 {
     private readonly RowStyle $rowStyle;
 
@@ -25,7 +25,7 @@ class RowAllocator extends BaseAllocator
      */
     private ?array $columnAllocators = null;
 
-    public function __construct(private readonly Row $row)
+    public function __construct(private readonly Flow $row)
     {
         $this->rowStyle = $row->getStyle();
     }
