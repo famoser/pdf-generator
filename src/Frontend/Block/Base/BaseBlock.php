@@ -59,7 +59,7 @@ abstract class BaseBlock
         return $this;
     }
 
-    public function setWidth(?float $width): BaseBlock
+    public function setWidth(?float $width): self
     {
         $this->width = $width;
 

@@ -19,9 +19,6 @@ class DrawingStyle
     private ?Color $lineColor;
     private ?Color $fillColor;
 
-    /**
-     * @param float|null $lineWidth
-     */
     public function __construct(float $lineWidth = 1, ?Color $lineColor = new Color(0, 0, 0), Color $fillColor = null)
     {
         $this->lineWidth = $lineWidth;
