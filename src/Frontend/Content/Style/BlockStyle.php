@@ -1,0 +1,76 @@
+<?php
+
+/*
+ * This file is part of the famoser/pdf-generator project.
+ *
+ * (c) Florian Moser <git@famoser.ch>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace PdfGenerator\Frontend\Content\Style;
+
+use PdfGenerator\IR\Document\Content\Common\Color;
+
+class BlockStyle
+{
+    /**
+     * @var float[]|null
+     */
+    private ?array $borderWidth;
+    private ?Color $borderColor;
+    private ?Color $backgroundColor;
+
+    /**
+     * @param float[]|null $borderWidth
+     */
+    public function __construct(array $borderWidth = null, ?Color $borderColor = new Color(0, 0, 0), Color $backgroundColor = null)
+    {
+        $this->borderWidth = $borderWidth;
+        $this->borderColor = $borderColor;
+        $this->backgroundColor = $backgroundColor;
+    }
+
+    /**
+     * @param float[]|null $borderWidth
+     */
+    public function setBorderWidth(?array $borderWidth): self
+    {
+        $this->borderWidth = $borderWidth;
+
+        return $this;
+    }
+
+    public function setBorderColor(?Color $borderColor): self
+    {
+        $this->borderColor = $borderColor;
+
+        return $this;
+    }
+
+    public function setBackgroundColor(?Color $backgroundColor): self
+    {
+        $this->backgroundColor = $backgroundColor;
+
+        return $this;
+    }
+
+    /**
+     * @return float[]|null
+     */
+    public function getBorderWidth(): ?array
+    {
+        return $this->borderWidth;
+    }
+
+    public function getBorderColor(): ?Color
+    {
+        return $this->borderColor;
+    }
+
+    public function getBackgroundColor(): ?Color
+    {
+        return $this->backgroundColor;
+    }
+}
