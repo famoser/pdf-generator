@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\IR\Document\Content\Common;
 
-use PdfGenerator\Frontend\CursorPrinter\Cursor;
+use PdfGenerator\FrontendResources\CursorPrinter\Cursor;
 
 readonly class Position
 {

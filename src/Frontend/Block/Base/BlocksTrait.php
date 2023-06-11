@@ -20,7 +20,7 @@ trait BlocksTrait
      */
     private array $blocks = [];
 
-    public function addBlock(BaseBlock $block): self
+    public function add(BaseBlock $block): self
     {
         $this->blocks[] = $block;
 

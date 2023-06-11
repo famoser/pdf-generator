@@ -13,11 +13,11 @@ namespace PdfGenerator\Frontend;
 
 use DocumentGenerator\DocumentInterface;
 use PdfGenerator\Frontend\Block\Base\BaseBlock;
-use PdfGenerator\Frontend\Content\Base\Content;
-use PdfGenerator\Frontend\MeasuredContent\Base\MeasuredContent;
-use PdfGenerator\Frontend\MeasuredContent\Utils\FontRepository;
-use PdfGenerator\Frontend\MeasuredContent\Utils\ImageRepository;
-use PdfGenerator\Frontend\WordSizer\WordSizerRepository;
+use PdfGenerator\FrontendResources\ContentVisitor;
+use PdfGenerator\FrontendResources\Cursor;
+use PdfGenerator\FrontendResources\MeasuredContent\Utils\FontRepository;
+use PdfGenerator\FrontendResources\MeasuredContent\Utils\ImageRepository;
+use PdfGenerator\FrontendResources\WordSizer\WordSizerRepository;
 
 class Document implements DocumentInterface
 {
@@ -44,14 +44,6 @@ class Document implements DocumentInterface
         $this->contentVisitor = new ContentVisitor($this->imageRepository, $this->fontRepository, $this->wordSizerRepository);
     }
 
-    public function addContent(Content $content): void
-    {
-        $measuredContent = $this->measureContent($content);
-
-        $contentBlock = new \PdfGenerator\Frontend\Block\Block($measuredContent);
-        $this->add($contentBlock);
-    }
-
     public function add(BaseBlock $block): void
     {
         $locatedBlocks = $this->locate($block);
@@ -59,11 +51,6 @@ class Document implements DocumentInterface
         foreach ($locatedBlocks as $locatedBlock) {
             $this->print($locatedBlock);
         }
-    }
-
-    public function measureContent(Content $content): MeasuredContent
-    {
-        return $content->accept($this->contentVisitor);
     }
 
     public function locate(BaseBlock $block, Cursor $startCursor = null): array
