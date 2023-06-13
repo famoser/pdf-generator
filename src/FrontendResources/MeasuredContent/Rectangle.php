@@ -11,14 +11,14 @@
 
 namespace PdfGenerator\FrontendResources\MeasuredContent;
 
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\Layout\Content\Style\DrawingStyle;
 use PdfGenerator\FrontendResources\Allocator\Content\ContentAllocatorInterface;
 use PdfGenerator\FrontendResources\Allocator\Content\RectangleAllocator;
 use PdfGenerator\FrontendResources\MeasuredContent\Base\MeasuredContent;
 
 class Rectangle extends MeasuredContent
 {
-    public function __construct(private readonly DrawingStyle $style, private readonly \PdfGenerator\Frontend\Content\Rectangle $rectangle)
+    public function __construct(private readonly DrawingStyle $style, private readonly \PdfGenerator\Frontend\Layout\Content\Rectangle $rectangle)
     {
     }
 
@@ -27,7 +27,7 @@ class Rectangle extends MeasuredContent
         return $this->style;
     }
 
-    public function getRectangle(): \PdfGenerator\Frontend\Content\Rectangle
+    public function getRectangle(): \PdfGenerator\Frontend\Layout\Content\Rectangle
     {
         return $this->rectangle;
     }

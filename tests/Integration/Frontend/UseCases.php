@@ -11,10 +11,10 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
-use PdfGenerator\Frontend\Block\Flow;
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Document;
+use PdfGenerator\Frontend\Layout\Content\Paragraph;
+use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
+use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\Resource\Font;
 
 class UseCases

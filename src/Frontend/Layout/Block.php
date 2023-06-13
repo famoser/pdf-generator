@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block;
+namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Block\Base\BaseBlock;
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Block extends BaseBlock
 {
@@ -26,5 +27,10 @@ class Block extends BaseBlock
     public function getBlock(): BaseBlock
     {
         return $this->block;
+    }
+
+    public function accept(AbstractBlockVisitor $visitor): mixed
+    {
+        return $visitor->visitBlock($this);
     }
 }

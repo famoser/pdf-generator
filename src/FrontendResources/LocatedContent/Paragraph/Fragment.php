@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\FrontendResources\LocatedContent\Paragraph;
 
-use PdfGenerator\Frontend\Content\Style\TextStyle;
+use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
 
 class Fragment
 {

@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block;
+namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Block\Base\BaseBlock;
-use PdfGenerator\Frontend\Block\Base\FlowTrait;
-use PdfGenerator\Frontend\Block\Base\PerpendicularFlowTrait;
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
+use PdfGenerator\Frontend\Layout\Base\FlowTrait;
+use PdfGenerator\Frontend\Layout\Base\PerpendicularFlowTrait;
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Table extends BaseBlock
 {
@@ -78,5 +79,10 @@ class Table extends BaseBlock
     public function getBody(): array
     {
         return $this->body;
+    }
+
+    public function accept(AbstractBlockVisitor $visitor): mixed
+    {
+        return $visitor->visitTable($this);
     }
 }

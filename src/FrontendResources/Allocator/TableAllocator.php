@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\FrontendResources\Allocator;
 
-use PdfGenerator\Frontend\Block\Style\TableStyle;
-use PdfGenerator\Frontend\Block\Table;
+use PdfGenerator\Frontend\Layout\Style\TableStyle;
+use PdfGenerator\Frontend\Layout\Table;
 use PdfGenerator\FrontendResources\Allocator\Base\BaseAllocator;
 
 class TableAllocator extends BaseAllocator

@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block\Base;
+namespace PdfGenerator\Frontend\Layout\Base;
+
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 abstract class BaseBlock
 {
@@ -98,4 +100,13 @@ abstract class BaseBlock
     {
         return $this->height;
     }
+
+    /**
+     * @template T
+     *
+     * @param AbstractBlockVisitor<T> $visitor
+     *
+     * @return T
+     */
+    abstract public function accept(AbstractBlockVisitor $visitor): mixed;
 }

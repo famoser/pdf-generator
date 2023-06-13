@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block\Base;
+namespace PdfGenerator\Frontend\Layout\Base;
 
 trait PerpendicularFlowTrait
 {

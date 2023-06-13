@@ -9,12 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block;
+namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Block\Base\BaseBlock;
-use PdfGenerator\Frontend\Block\Base\BlocksTrait;
-use PdfGenerator\Frontend\Block\Base\FlowTrait;
-use PdfGenerator\Frontend\Block\Base\PerpendicularFlowTrait;
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
+use PdfGenerator\Frontend\Layout\Base\BlocksTrait;
+use PdfGenerator\Frontend\Layout\Base\FlowTrait;
+use PdfGenerator\Frontend\Layout\Base\PerpendicularFlowTrait;
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Grid extends BaseBlock
 {
@@ -34,5 +35,10 @@ class Grid extends BaseBlock
         $this->setPerpendicularGap($perpendicularGap);
         $this->setDimensions($dimensions);
         $this->setPerpendicularDimensions($perpendicularDimensions);
+    }
+
+    public function accept(AbstractBlockVisitor $visitor): mixed
+    {
+        return $visitor->visitGrid($this);
     }
 }

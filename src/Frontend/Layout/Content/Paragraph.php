@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content;
+namespace PdfGenerator\Frontend\Layout\Content;
 
-use PdfGenerator\Frontend\Content\Base\Content;
-use PdfGenerator\Frontend\Content\Paragraph\Phrase;
-use PdfGenerator\Frontend\Content\Style\TextStyle;
+use PdfGenerator\Frontend\Layout\Content;
+use PdfGenerator\Frontend\Layout\Content\Paragraph\Phrase;
+use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
 
 class Paragraph extends Content
 {

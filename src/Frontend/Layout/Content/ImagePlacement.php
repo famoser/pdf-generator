@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content;
+namespace PdfGenerator\Frontend\Layout\Content;
 
-use PdfGenerator\Frontend\Content\Base\Content;
+use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\Resource\Image;
 
 class ImagePlacement extends Content

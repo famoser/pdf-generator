@@ -9,10 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content\Base;
+namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Block\Base\BaseBlock;
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 abstract class Content extends BaseBlock
 {
+    public function accept(AbstractBlockVisitor $visitor): mixed
+    {
+        return $visitor->visitContent($this);
+    }
 }

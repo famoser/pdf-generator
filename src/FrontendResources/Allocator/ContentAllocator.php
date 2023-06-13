@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\FrontendResources\Allocator;
 
-use PdfGenerator\Frontend\Block\Block;
-use PdfGenerator\Frontend\Block\Style\ContentStyle;
+use PdfGenerator\Frontend\Layout\Block;
+use PdfGenerator\Frontend\Layout\Style\ContentStyle;
 use PdfGenerator\FrontendResources\Allocator\Content\ContentAllocatorInterface;
 
 class ContentAllocator implements AllocatorInterface

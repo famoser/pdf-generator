@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\FrontendResources\Allocator;
 
-use PdfGenerator\Frontend\Block\Flow;
-use PdfGenerator\Frontend\Block\Style\RowStyle;
+use PdfGenerator\Frontend\Layout\Flow;
+use PdfGenerator\Frontend\Layout\Style\RowStyle;
 use PdfGenerator\FrontendResources\Allocator\Base\BaseAllocator;
 use PdfGenerator\FrontendResources\Allocator\RowAllocator\ColumnWidthEstimate;
 
