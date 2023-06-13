@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block\Base;
+namespace PdfGenerator\Frontend\Layout\Base;
 
-use PdfGenerator\Frontend\Block\Block;
+use PdfGenerator\Frontend\Layout\Block;
 
 trait BlocksTrait
 {

@@ -12,7 +12,7 @@
 namespace PdfGenerator\Frontend;
 
 use DocumentGenerator\DocumentInterface;
-use PdfGenerator\Frontend\Block\Base\BaseBlock;
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
 use PdfGenerator\FrontendResources\ContentVisitor;
 use PdfGenerator\FrontendResources\Cursor;
 use PdfGenerator\FrontendResources\MeasuredContent\Utils\FontRepository;

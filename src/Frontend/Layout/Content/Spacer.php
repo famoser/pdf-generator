@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content;
+namespace PdfGenerator\Frontend\Layout\Content;
 
-use PdfGenerator\Frontend\Content\Base\Content;
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\Layout\Content;
+use PdfGenerator\Frontend\Layout\Content\Style\BlockStyle;
 
-class Rectangle extends Content
+class Spacer extends Content
 {
-    public function __construct(private readonly DrawingStyle $style)
+    public function __construct(private readonly BlockStyle $style)
     {
         parent::__construct();
     }
 
-    public function getStyle(): DrawingStyle
+    public function getStyle(): BlockStyle
     {
         return $this->style;
     }

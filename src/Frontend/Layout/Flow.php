@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block;
+namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Block\Base\BaseBlock;
-use PdfGenerator\Frontend\Block\Base\BlocksTrait;
-use PdfGenerator\Frontend\Block\Base\FlowTrait;
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
+use PdfGenerator\Frontend\Layout\Base\BlocksTrait;
+use PdfGenerator\Frontend\Layout\Base\FlowTrait;
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Flow extends BaseBlock
 {
@@ -29,5 +30,10 @@ class Flow extends BaseBlock
         $this->setDirection($direction);
         $this->setGap($gap);
         $this->setDimensions($dimensions);
+    }
+
+    public function accept(AbstractBlockVisitor $visitor): mixed
+    {
+        return $visitor->visitFlow($this);
     }
 }

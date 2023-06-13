@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content\Style;
+namespace PdfGenerator\Frontend\Layout\Content\Style;
 
 use PdfGenerator\Frontend\Resource\Font;
 use PdfGenerator\IR\Document\Content\Common\Color;

@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\FrontendResources\MeasuredContent\Utils;
 
-use PdfGenerator\Frontend\Content\ImagePlacement;
+use PdfGenerator\Frontend\Layout\Content\ImagePlacement;
 
 class ImageRepository
 {

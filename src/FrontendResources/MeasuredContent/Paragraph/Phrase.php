@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\FrontendResources\MeasuredContent\Paragraph;
 
-use PdfGenerator\Frontend\Content\Style\TextStyle;
+use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
 use PdfGenerator\IR\Document\Resource\Font;
 
 readonly class Phrase

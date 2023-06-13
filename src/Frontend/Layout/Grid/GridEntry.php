@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Block\Grid;
+namespace PdfGenerator\Frontend\Layout\Grid;
 
-use PdfGenerator\Frontend\Block\Base\BaseBlock;
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
 
 readonly class GridEntry
 {

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content\Style\Base;
+namespace PdfGenerator\Frontend\Layout\Content\Style\Base;
 
 class Style
 {
