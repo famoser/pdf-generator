@@ -11,16 +11,16 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Measure;
 
-class Measurement
+readonly class Measurement
 {
     /**
-     * @param float|null $weight set by flowing content (e.g. text)
-     *                           intuitively represents the approximate area covered by the element
-     *                           typically include the minimal area measured, multiplied by a factor depending on how elastic the content flows
-     * @param float|null $width  set by fixed-size content or if parent forces a height
-     * @param float|null $height set by fixed-size content or if the parent forces a width
+     * @param float|null $weight    set by flowing content (e.g. text)
+     *                              intuitively represents the approximate area covered by the element
+     *                              typically include the minimal area measured, multiplied by a factor depending on how elastic the content flows
+     * @param float|null $minWidth  set by fixed-size content or if parent forces a height
+     * @param float|null $minHeight set by fixed-size content or if the parent forces a width
      */
-    public function __construct(private readonly ?float $weight, private readonly ?float $width, private readonly ?float $height)
+    public function __construct(private ?float $weight, private ?float $minWidth, private ?float $minHeight)
     {
     }
 
@@ -29,13 +29,13 @@ class Measurement
         return $this->weight;
     }
 
-    public function getWidth(): ?float
+    public function getMinWidth(): ?float
     {
-        return $this->width;
+        return $this->minWidth;
     }
 
-    public function getHeight(): ?float
+    public function getMinHeight(): ?float
     {
-        return $this->height;
+        return $this->minHeight;
     }
 }
