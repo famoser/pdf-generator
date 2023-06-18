@@ -11,10 +11,10 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
-use PdfGenerator\Frontend\Document;
 use PdfGenerator\Frontend\Layout\Content\Paragraph;
 use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Layout\Flow;
+use PdfGenerator\Frontend\LinearPrinter;
 use PdfGenerator\Frontend\Resource\Font;
 
 class UseCases
@@ -22,7 +22,7 @@ class UseCases
     public function testPrintParagraph()
     {
         // arrange
-        $document = new Document();
+        $document = new LinearPrinter();
 
         // act
         $headerFont = Font::createFromDefault(Font::NAME_HELVETICA, Font::STYLE_ROMAN, Font::WEIGHT_BOLD);
@@ -47,7 +47,7 @@ class UseCases
     public function testPrintFlow()
     {
         // arrange
-        $document = new Document();
+        $document = new LinearPrinter();
         $flow = new Flow();
 
         // act
@@ -71,7 +71,7 @@ class UseCases
         $this->assertStringContainsString('Veröffentlichung', $result);
     }
 
-    private function render(Document $document): string
+    private function render(LinearPrinter $document): string
     {
         $result = $document->save();
         file_put_contents('pdf.pdf', $result);
