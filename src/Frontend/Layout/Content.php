@@ -12,12 +12,7 @@
 namespace PdfGenerator\Frontend\Layout;
 
 use PdfGenerator\Frontend\Layout\Base\BaseBlock;
-use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 abstract class Content extends BaseBlock
 {
-    public function accept(AbstractBlockVisitor $visitor): mixed
-    {
-        return $visitor->visitContent($this);
-    }
 }

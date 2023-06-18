@@ -13,6 +13,7 @@ namespace PdfGenerator\Frontend\Layout\Content;
 
 use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\Layout\Content\Style\BlockStyle;
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Spacer extends Content
 {
@@ -24,5 +25,10 @@ class Spacer extends Content
     public function getStyle(): BlockStyle
     {
         return $this->style;
+    }
+
+    public function accept(AbstractBlockVisitor $visitor): mixed
+    {
+        return $visitor->visitSpacer($this);
     }
 }

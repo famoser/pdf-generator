@@ -13,6 +13,7 @@ namespace PdfGenerator\Frontend\Layout\Content;
 
 use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\Layout\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Rectangle extends Content
 {
@@ -24,5 +25,10 @@ class Rectangle extends Content
     public function getStyle(): DrawingStyle
     {
         return $this->style;
+    }
+
+    public function accept(AbstractBlockVisitor $visitor): mixed
+    {
+        return $visitor->visitRectangle($this);
     }
 }
