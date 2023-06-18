@@ -32,18 +32,18 @@ readonly class Catalog extends BaseStructure
         return $this->pages;
     }
 
-    public function render(): string
+    public function render(): File
     {
         $file = new File();
         $structureVisitor = new CatalogVisitor($file);
 
         $structureVisitor->visitCatalog($this);
 
-        return $file->render();
+        return $file;
     }
 
     public function save(): string
     {
-        return $this->render();
+        return $this->render()->render();
     }
 }
