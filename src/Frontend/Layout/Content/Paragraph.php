@@ -14,6 +14,7 @@ namespace PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\Layout\Content\Paragraph\Phrase;
 use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Paragraph extends Content
 {
@@ -59,5 +60,10 @@ class Paragraph extends Content
     public function getPhrases(): array
     {
         return $this->phrases;
+    }
+
+    public function accept(AbstractBlockVisitor $visitor): mixed
+    {
+        return $visitor->visitParagraph($this);
     }
 }

@@ -12,6 +12,7 @@
 namespace PdfGenerator\Frontend\Layout\Content;
 
 use PdfGenerator\Frontend\Layout\Content;
+use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 use PdfGenerator\Frontend\Resource\Image;
 
 class ImagePlacement extends Content
@@ -24,5 +25,10 @@ class ImagePlacement extends Content
     public function getImage(): Image
     {
         return $this->image;
+    }
+
+    public function accept(AbstractBlockVisitor $visitor): mixed
+    {
+        return $visitor->visitImagePlacement($this);
     }
 }

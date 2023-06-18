@@ -25,25 +25,56 @@ abstract class AbstractBlockVisitor
     /**
      * @return T
      */
-    abstract public function visitBlock(Block $block): mixed;
+    public function visitBlock(Block $block): mixed
+    {
+    }
 
     /**
      * @return T
      */
-    abstract public function visitFlow(Flow $flow): mixed;
+    public function visitFlow(Flow $flow): mixed
+    {
+    }
 
     /**
      * @return T
      */
-    abstract public function visitGrid(Grid $grid): mixed;
+    public function visitGrid(Grid $grid): mixed
+    {
+    }
 
     /**
      * @return T
      */
-    abstract public function visitTable(Table $table): mixed;
+    public function visitTable(Table $table): mixed
+    {
+    }
 
     /**
      * @return T
      */
-    abstract public function visitContent(Content $content): mixed;
+    public function visitParagraph(Content\Paragraph $param): mixed
+    {
+    }
+
+    /**
+     * @return T
+     */
+    public function visitRectangle(Content\Rectangle $param): mixed
+    {
+    }
+
+    /**
+     * @return T
+     */
+    public function visitSpacer(Content\Spacer $param): mixed
+    {
+    }
+
+    /**
+     * @return T
+     */
+    public function visitImagePlacement(Content\ImagePlacement $param): mixed
+    {
+    }
 }
