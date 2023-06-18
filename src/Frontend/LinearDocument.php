@@ -24,11 +24,12 @@ class LinearDocument implements DocumentInterface
     private readonly \PdfGenerator\IR\Document $document;
 
     public Page $currentPage;
-    public float $currentY;
+    public float $currentY = 0;
 
     public function __construct(private array $pageSize = [210, 297], private array $margin = [35, 35, 35, 35])
     {
         $this->document = new \PdfGenerator\IR\Document();
+        $this->addPage();
     }
 
     public function add(BaseBlock $block): void

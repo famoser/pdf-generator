@@ -16,7 +16,7 @@ use PdfGenerator\Frontend\Layout\Content\Style\DrawingStyle;
 use PdfGenerator\Frontend\LinearDocument;
 use PHPUnit\Framework\TestCase;
 
-class DocumentTest extends TestCase
+class LinearDocumentTest extends TestCase
 {
     public function testPrintRectangle()
     {
