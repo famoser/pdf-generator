@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Measure\Layout;
+namespace PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 
 use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 use PdfGenerator\Frontend\LayoutEngine\Measure\MeasurementVisitor;
 
-readonly class FlowMeasuring
+readonly class FlowMeasurer
 {
     public function __construct(private ?float $maxWidth, private ?float $maxHeight)
     {
     }
 
-    public function measure(Flow $flow): Measurement
+    public function measure(array $blocks, string $direction, ?array $dimensions, float $gap): Measurement
     {
-        $measurements = $this->getMeasurements($flow->getBlocks(), $flow->getDirection(), $flow->getDimensions());
-        $weight = $this->getWeight($measurements, $flow);
+        $measurements = $this->getMeasurements($blocks, $direction, $dimensions);
+        $weight = $this->getWeight($measurements, $direction, $gap);
         [$minWidth, $minHeight] = $this->getMinDimensions($measurements);
 
         return new Measurement($weight, $minWidth, $minHeight);
@@ -55,7 +55,7 @@ readonly class FlowMeasuring
         return $measurements;
     }
 
-    public function getWeight(array $measurements, Flow $flow): float
+    private function getWeight(array $measurements, string $direction, float $gap): float
     {
         $weight = 0;
         for ($i = 0; $i < count($measurements); ++$i) {
@@ -67,11 +67,11 @@ readonly class FlowMeasuring
             }
 
             $previousMeasurement = $measurements[$i - 1];
-            $dimension = Flow::DIRECTION_ROW === $flow->getDirection() ?
+            $dimension = Flow::DIRECTION_ROW === $direction ?
                 $measurement->getMinHeight() + $previousMeasurement->getMinHeight() :
                 $measurement->getMinWidth() + $previousMeasurement->getMinWidth();
 
-            $weight += (1.0 * $dimension) / 2 * $flow->getGap();
+            $weight += (1.0 * $dimension) / 2 * $gap;
         }
 
         return $weight;

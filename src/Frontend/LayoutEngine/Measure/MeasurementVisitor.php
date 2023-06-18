@@ -11,15 +11,17 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Measure;
 
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
 use PdfGenerator\Frontend\Layout\Block;
-use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\Layout\Grid;
-use PdfGenerator\Frontend\Layout\Table;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
-use PdfGenerator\Frontend\LayoutEngine\Measure\Layout\FlowMeasuring;
+use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
 
 /**
+ * Measurements allow the layout engine to plan the layout. It contains:
+ * - minimal space required to make progress
+ * - average space required to fully print the content.
+ *
  * @implements AbstractBlockVisitor<Measurement>
  */
 class MeasurementVisitor extends AbstractBlockVisitor
@@ -30,28 +32,37 @@ class MeasurementVisitor extends AbstractBlockVisitor
 
     public function visitBlock(Block $block): Measurement
     {
-        return $block->accept($this);
+        $contentMeasurement = $block->getBlock()->accept($this);
+
+        return $this->measureBlock($block, $contentMeasurement);
     }
 
     public function visitFlow(Flow $flow): Measurement
     {
-        $measuring = new FlowMeasuring($this->maxWidth, $this->maxHeight);
+        $measurer = new FlowMeasurer($this->maxWidth, $this->maxHeight);
+        $contentMeasurement = $measurer->measure($flow->getBlocks(), $flow->getDirection(), $flow->getDimensions(), $flow->getGap());
 
-        return $measuring->measure($flow);
+        return $this->measureBlock($flow, $contentMeasurement);
     }
 
-    public function visitGrid(Grid $grid): mixed
+    private function measureBlock(BaseBlock $block, Measurement $contentMeasurement): Measurement
     {
-        // TODO: Implement visitGrid() method.
-    }
+        $widthPadding = $block->getPadding()[0] + $block->getPadding()[2];
+        $heightPadding = $block->getPadding()[1] + $block->getPadding()[3];
+        $minContentHeight = $block->getHeight() ?? $contentMeasurement->getMinHeight() + $widthPadding;
+        $minContentWidth = $block->getWidth() ?? $contentMeasurement->getMinWidth() + $heightPadding;
 
-    public function visitTable(Table $table): mixed
-    {
-        // TODO: Implement visitTable() method.
-    }
+        $widthMargin = $block->getMargin()[0] + $block->getMargin()[2];
+        $heightMargin = $block->getMargin()[1] + $block->getMargin()[3];
+        $minHeight = $minContentHeight + $widthMargin;
+        $minWidth = $minContentWidth + $heightMargin;
 
-    public function visitContent(Content $content): mixed
-    {
-        // TODO: Implement visitContent() method.
+        // assumes blocks are more or less quadratic. should be OK for the approximate weight number
+        $approximateDimension = sqrt($contentMeasurement->getWeight());
+        $approximateWidth = $approximateDimension + $widthPadding + $widthMargin;
+        $approximateHeight = $approximateDimension + $heightPadding + $heightMargin;
+        $weight = $approximateWidth * $approximateHeight;
+
+        return new Measurement($weight, $minWidth, $minHeight);
     }
 }
