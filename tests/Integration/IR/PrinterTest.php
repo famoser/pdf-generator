@@ -12,10 +12,10 @@
 namespace PdfGenerator\Tests\Integration\IR;
 
 use PdfGenerator\IR\Document;
+use PdfGenerator\IR\Document\Content\Text;
 use PdfGenerator\IR\Document\Content\Text\TextStyle;
 use PdfGenerator\IR\Document\Page;
 use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
-use PdfGenerator\IR\Printer;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -36,8 +36,8 @@ class PrinterTest extends TestCase
         $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 12, 1);
 
-        $printer = new Printer();
-        $printer->printText($page, $bottomLeft, "Hallo Welt!\nWie geht es?", $textStyle);
+        $text = new Text("Hallo Welt!\nWie geht es?", $bottomLeft, $textStyle);
+        $page->addContent($text);
 
         // assert
         $result = $document->save();
@@ -61,8 +61,8 @@ class PrinterTest extends TestCase
         $font = $document->getOrCreateEmbeddedFont($fontPath);
         $textStyle = new TextStyle($font, 12, 1);
 
-        $printer = new Printer();
-        $printer->printText($page, $bottomLeft, "Dies ist ein Test mit äöü!\nKlappt das?", $textStyle);
+        $text = new Text("Dies ist ein Test mit äöü!\nKlappt das?", $bottomLeft, $textStyle);
+        $page->addContent($text);
 
         // assert
         $result = $document->save();
