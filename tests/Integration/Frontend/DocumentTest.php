@@ -13,7 +13,7 @@ namespace PdfGenerator\Tests\Integration\Frontend;
 
 use PdfGenerator\Frontend\Layout\Content\Rectangle;
 use PdfGenerator\Frontend\Layout\Content\Style\DrawingStyle;
-use PdfGenerator\Frontend\LinearPrinter;
+use PdfGenerator\Frontend\LinearDocument;
 use PHPUnit\Framework\TestCase;
 
 class DocumentTest extends TestCase
@@ -21,7 +21,7 @@ class DocumentTest extends TestCase
     public function testPrintRectangle()
     {
         // arrange
-        $document = new LinearPrinter();
+        $document = new LinearDocument();
 
         // act
         $rectangleStyle = new DrawingStyle();
@@ -36,7 +36,7 @@ class DocumentTest extends TestCase
         $this->assertStringContainsString('20', $result);
     }
 
-    private function render(LinearPrinter $document): string
+    private function render(LinearDocument $document): string
     {
         $result = $document->save();
         file_put_contents('pdf.pdf', $result);

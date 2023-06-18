@@ -19,7 +19,7 @@ use PdfGenerator\Frontend\LayoutEngine\Place\Placement;
 use PdfGenerator\Frontend\LayoutEngine\Place\PlacementVisitor;
 use PdfGenerator\IR\Document\Page;
 
-class LinearPrinter implements DocumentInterface
+class LinearDocument implements DocumentInterface
 {
     private readonly \PdfGenerator\IR\Document $document;
 
@@ -63,7 +63,8 @@ class LinearPrinter implements DocumentInterface
         $left = $this->margin[3];
         $top = $this->currentY + $this->margin[0];
         [$width, $height] = $this->getPrintingArea();
-        $placementVisitor = new PlacementVisitor($this->document, $this->currentPage, $left, $top, $width, $height);
+        $pagePrinter = new Printer($this->document, $this->currentPage, $left, $top);
+        $placementVisitor = new PlacementVisitor($pagePrinter, $width, $height);
 
         return $block->accept($placementVisitor);
     }

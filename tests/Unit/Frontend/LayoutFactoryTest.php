@@ -17,12 +17,12 @@ use DocumentGenerator\Layout\Configuration\ColumnConfiguration;
 use DocumentGenerator\Layout\TableLayoutInterface;
 use PdfGenerator\Frontend\LayoutFactory;
 use PdfGenerator\Frontend\LayoutFactoryConfigurationInterface;
-use PdfGenerator\Frontend\LinearPrinter;
+use PdfGenerator\Frontend\LinearDocument;
 use PHPUnit\Framework\TestCase;
 
 class LayoutFactoryTest extends TestCase
 {
-    private readonly LinearPrinter $pdfDocument;
+    private readonly LinearDocument $pdfDocument;
 
     private readonly LayoutFactoryConfigurationInterface $layoutFactoryConfiguration;
 
@@ -30,7 +30,7 @@ class LayoutFactoryTest extends TestCase
     {
         parent::__construct($name, $data, $dataName);
 
-        $this->pdfDocument = \Mockery::mock(LinearPrinter::class);
+        $this->pdfDocument = \Mockery::mock(LinearDocument::class);
         $this->layoutFactoryConfiguration = \Mockery::mock(LayoutFactoryConfigurationInterface::class, [
             'getContentXSize' => 20,
             'getColumnGutter' => 20,
