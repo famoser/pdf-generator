@@ -11,12 +11,17 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use PdfGenerator\Frontend\Layout\Block;
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
 
 readonly class Allocation
 {
-    private function __construct(private float $width, private float $height, private Block $content)
+    public function __construct(private float $width, private float $height, private ?BaseBlock $content)
     {
+    }
+
+    public static function createEmpty(): self
+    {
+        return new self(0, 0, null);
     }
 
     public function getWidth(): float
@@ -29,7 +34,7 @@ readonly class Allocation
         return $this->height;
     }
 
-    public function getContent(): ?Block
+    public function getContent(): ?BaseBlock
     {
         return $this->content;
     }

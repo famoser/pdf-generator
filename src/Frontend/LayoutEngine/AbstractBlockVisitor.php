@@ -60,7 +60,7 @@ abstract class AbstractBlockVisitor
     /**
      * @return T
      */
-    public function visitRectangle(Content\Rectangle $param): mixed
+    public function visitRectangle(Content\Rectangle $rectangle): mixed
     {
     }
 

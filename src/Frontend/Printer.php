@@ -43,6 +43,7 @@ readonly class Printer
     {
         $position = $this->getPosition($height);
         $size = new Size($width, $height);
+
         $rectangle = new Rectangle($position, $size, $rectangleStyle);
         $this->page->addContent($rectangle);
     }

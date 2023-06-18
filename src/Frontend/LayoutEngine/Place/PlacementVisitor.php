@@ -14,7 +14,7 @@ namespace PdfGenerator\Frontend\LayoutEngine\Place;
 use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 use PdfGenerator\Frontend\Printer;
-use PdfGenerator\IR\Document;
+use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
 
 /**
  * This places content on the PDF.
@@ -30,12 +30,16 @@ class PlacementVisitor extends AbstractBlockVisitor
     {
     }
 
-    public function visitRectangle(Content\Rectangle $param): Placement
+    public function visitRectangle(Content\Rectangle $rectangle): Placement
     {
-        // TODO: convert frontend rectangle style to IR rectangle style
-        $rectangleStyle = new Document\Content\Rectangle\RectangleStyle();
-        $this->pagePrinter->printRectangle($param->getWidth(), $param->getHeight(), $rectangleStyle);
+        $rectangleStyle = self::createRectangleStyle($rectangle->getStyle());
+        $this->pagePrinter->printRectangle($rectangle->getWidth(), $rectangle->getHeight(), $rectangleStyle);
 
-        return new Placement($param->getWidth(), $param->getHeight());
+        return new Placement($rectangle->getWidth(), $rectangle->getHeight());
+    }
+
+    private static function createRectangleStyle(Content\Style\DrawingStyle $drawingStyle): RectangleStyle
+    {
+        return new RectangleStyle($drawingStyle->getLineWidth(), $drawingStyle->getBorderColor(), $drawingStyle->getFillColor());
     }
 }

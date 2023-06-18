@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
 
+use PdfGenerator\Frontend\Layout\Content\Rectangle;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 /**
@@ -25,5 +26,16 @@ class AllocationVisitor extends AbstractBlockVisitor
 {
     public function __construct(private ?float $maxWidth, private ?float $maxHeight)
     {
+    }
+
+    public function visitRectangle(Rectangle $rectangle): Allocation
+    {
+        $tooWide = $this->maxWidth && $this->maxWidth < $rectangle->getWidth();
+        $tooHigh = $this->maxHeight && $this->maxHeight < $rectangle->getHeight();
+        if ($tooWide || $tooHigh) {
+            return Allocation::createEmpty();
+        }
+
+        return new Allocation($rectangle->getWidth(), $rectangle->getHeight(), $rectangle);
     }
 }
