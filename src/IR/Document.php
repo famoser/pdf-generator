@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\IR;
 
-use PdfGenerator\IR\Analysis\AnalysisResult;
 use PdfGenerator\IR\Analysis\AnalyzeContentVisitor;
 use PdfGenerator\IR\Document\Page;
 use PdfGenerator\IR\Document\Resource\DocumentResources;
@@ -44,11 +43,6 @@ class Document
     public function addPage(Page $page): void
     {
         $this->pages[] = $page;
-    }
-
-    public function getPage(int $pageIndex): Page
-    {
-        return $this->getPages()[$pageIndex];
     }
 
     /**
@@ -96,7 +90,13 @@ class Document
 
     public function render(): \PdfGenerator\Backend\Structure\Document
     {
-        $analysisResult = $this->analyze();
+        $analyzeContentVisitor = new AnalyzeContentVisitor();
+        foreach ($this->pages as $page) {
+            foreach ($page->getContent() as $content) {
+                $content->accept($analyzeContentVisitor);
+            }
+        }
+        $analysisResult = $analyzeContentVisitor->getAnalysisResult();
 
         $document = new \PdfGenerator\Backend\Structure\Document();
         $documentVisitor = new DocumentVisitor($analysisResult);
@@ -112,18 +112,5 @@ class Document
     public function save(): string
     {
         return $this->render()->save();
-    }
-
-    private function analyze(): AnalysisResult
-    {
-        $analyzeContentVisitor = new AnalyzeContentVisitor();
-
-        foreach ($this->pages as $page) {
-            foreach ($page->getContent() as $content) {
-                $content->accept($analyzeContentVisitor);
-            }
-        }
-
-        return $analyzeContentVisitor->getAnalysisResult();
     }
 }
