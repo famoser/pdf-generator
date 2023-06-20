@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Place;
 
+use PdfGenerator\Frontend\Layout\Base\BaseBlock;
 use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 use PdfGenerator\Frontend\Printer;
@@ -33,9 +34,33 @@ class PlacementVisitor extends AbstractBlockVisitor
     public function visitRectangle(Content\Rectangle $rectangle): Placement
     {
         $rectangleStyle = self::createRectangleStyle($rectangle->getStyle());
-        $this->pagePrinter->printRectangle($rectangle->getWidth(), $rectangle->getHeight(), $rectangleStyle);
+        $placement = new Placement($rectangle->getWidth(), $rectangle->getHeight());
+        [$finalPlacement, $positionedPrinter] = $this->placeBlock($placement, $rectangle);
 
-        return new Placement($rectangle->getWidth(), $rectangle->getHeight());
+        $positionedPrinter->printRectangle($rectangle->getWidth(), $rectangle->getHeight(), $rectangleStyle);
+
+        return $finalPlacement;
+    }
+
+    private function placeBlock(Placement $placement, BaseBlock $block): array
+    {
+        $blockStyle = $block->getStyle();
+        $hasBorder = $blockStyle->getBorderWidth() && $blockStyle->getBorderColor();
+        if ($hasBorder || $blockStyle->getBackgroundColor()) {
+            $rectangleStyle = new RectangleStyle($blockStyle->getBorderWidth() ?? 0, $blockStyle->getBorderColor(), $blockStyle->getBackgroundColor());
+            $blockPrinter = $this->pagePrinter->position($block->getLeftMargin(), $block->getTopMargin());
+            $blockWidth = $placement->getWidth() + $block->getXPadding();
+            $blockHeight = $placement->getHeight() + $block->getYPadding();
+            $blockPrinter->printRectangle($blockWidth, $blockHeight, $rectangleStyle);
+        }
+
+        $totalWidth = $placement->getWidth() + $block->getXSpace();
+        $totalHeight = $placement->getHeight() + $block->getYSpace();
+        $finalPlacement = new Placement($totalWidth, $totalHeight, $placement->getOverflow());
+
+        $positionedPrinter = $this->pagePrinter->position($block->getLeftSpace(), $block->getTopSpace());
+
+        return [$finalPlacement, $positionedPrinter];
     }
 
     private static function createRectangleStyle(Content\Style\DrawingStyle $drawingStyle): RectangleStyle

@@ -26,7 +26,7 @@ class LinearDocument implements DocumentInterface
     public Page $currentPage;
     public float $currentY = 0;
 
-    public function __construct(private array $pageSize = [210, 297], private array $margin = [35, 35, 35, 35])
+    public function __construct(private array $pageSize = [210, 297], private array $margin = [25, 25, 25, 25])
     {
         $this->document = new \PdfGenerator\IR\Document();
         $this->addPage();

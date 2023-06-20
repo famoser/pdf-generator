@@ -12,6 +12,7 @@
 namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
 
 use PdfGenerator\Frontend\Layout\Content\Rectangle;
+use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 /**
@@ -30,6 +31,11 @@ class AllocationVisitor extends AbstractBlockVisitor
 
     public function visitRectangle(Rectangle $rectangle): Allocation
     {
+        $widthPadding = $rectangle->getPadding()[1] + $rectangle->getPadding()[3];
+        $heightPadding = $rectangle->getPadding()[1] + $rectangle->getPadding()[3];
+        $width = $rectangle->getWidth() + $widthPadding;
+        $height = $rectangle->getWidth() + $widthPadding;
+
         $tooWide = $this->maxWidth && $this->maxWidth < $rectangle->getWidth();
         $tooHigh = $this->maxHeight && $this->maxHeight < $rectangle->getHeight();
         if ($tooWide || $tooHigh) {
@@ -37,5 +43,12 @@ class AllocationVisitor extends AbstractBlockVisitor
         }
 
         return new Allocation($rectangle->getWidth(), $rectangle->getHeight(), $rectangle);
+    }
+
+    /**
+     * @return Allocation
+     */
+    public function visitFlow(Flow $flow): mixed
+    {
     }
 }

@@ -15,16 +15,14 @@ use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\Layout\Content\Style\BlockStyle;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
+/**
+ * @implements Content<BlockStyle>
+ */
 class Spacer extends Content
 {
-    public function __construct(private readonly BlockStyle $style)
+    public function __construct(BlockStyle $style)
     {
-        parent::__construct();
-    }
-
-    public function getStyle(): BlockStyle
-    {
-        return $this->style;
+        parent::__construct($style);
     }
 
     public function accept(AbstractBlockVisitor $visitor): mixed

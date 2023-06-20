@@ -13,9 +13,13 @@ namespace PdfGenerator\Frontend\Layout\Content;
 
 use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\Layout\Content\Paragraph\Phrase;
+use PdfGenerator\Frontend\Layout\Content\Style\BlockStyle;
 use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
+/**
+ * @implements Content<BlockStyle>
+ */
 class Paragraph extends Content
 {
     final public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
@@ -27,9 +31,9 @@ class Paragraph extends Content
      */
     private array $phrases = [];
 
-    public function __construct(string $alignment = self::ALIGNMENT_LEFT)
+    public function __construct(string $alignment = self::ALIGNMENT_LEFT, BlockStyle $style = new BlockStyle())
     {
-        parent::__construct();
+        parent::__construct($style);
         $this->alignment = $alignment;
     }
 
