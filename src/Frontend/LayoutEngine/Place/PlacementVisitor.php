@@ -65,6 +65,6 @@ class PlacementVisitor extends AbstractBlockVisitor
 
     private static function createRectangleStyle(Content\Style\DrawingStyle $drawingStyle): RectangleStyle
     {
-        return new RectangleStyle($drawingStyle->getLineWidth(), $drawingStyle->getBorderColor(), $drawingStyle->getFillColor());
+        return new RectangleStyle($drawingStyle->getLineWidth(), $drawingStyle->getLineColor(), $drawingStyle->getFillColor());
     }
 }
