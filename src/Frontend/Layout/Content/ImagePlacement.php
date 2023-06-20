@@ -12,14 +12,18 @@
 namespace PdfGenerator\Frontend\Layout\Content;
 
 use PdfGenerator\Frontend\Layout\Content;
+use PdfGenerator\Frontend\Layout\Content\Style\BlockStyle;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 use PdfGenerator\Frontend\Resource\Image;
 
+/**
+ * @implements Content<BlockStyle>
+ */
 class ImagePlacement extends Content
 {
-    public function __construct(private readonly Image $image)
+    public function __construct(private readonly Image $image, BlockStyle $style = new BlockStyle())
     {
-        parent::__construct();
+        parent::__construct($style);
     }
 
     public function getImage(): Image

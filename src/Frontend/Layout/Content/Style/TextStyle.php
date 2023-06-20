@@ -14,7 +14,7 @@ namespace PdfGenerator\Frontend\Layout\Content\Style;
 use PdfGenerator\Frontend\Resource\Font;
 use PdfGenerator\IR\Document\Content\Common\Color;
 
-class TextStyle
+class TextStyle extends BlockStyle
 {
     private Font $font;
     private float $fontSize;
@@ -23,6 +23,7 @@ class TextStyle
 
     public function __construct(Font $font, float $fontSize = 12, float $lineHeight = 1.2, Color $color = null)
     {
+        parent::__construct();
         $this->font = $font;
         $this->fontSize = $fontSize;
         $this->lineHeight = $lineHeight;

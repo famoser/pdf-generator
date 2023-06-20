@@ -13,6 +13,7 @@ namespace PdfGenerator\Frontend\LayoutEngine\Measure;
 
 use PdfGenerator\Frontend\Layout\Base\BaseBlock;
 use PdfGenerator\Frontend\Layout\Block;
+use PdfGenerator\Frontend\Layout\Content\Rectangle;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
@@ -45,22 +46,26 @@ class MeasurementVisitor extends AbstractBlockVisitor
         return $this->measureBlock($flow, $contentMeasurement);
     }
 
+    public function visitRectangle(Rectangle $rectangle): Measurement
+    {
+        $weight = $rectangle->getWidth() * $rectangle->getHeight();
+        $contentMeasurement = new Measurement($weight, $rectangle->getWidth(), $rectangle->getHeight());
+
+        return $this->measureBlock($rectangle, $contentMeasurement);
+    }
+
     private function measureBlock(BaseBlock $block, Measurement $contentMeasurement): Measurement
     {
-        $widthPadding = $block->getPadding()[0] + $block->getPadding()[2];
-        $heightPadding = $block->getPadding()[1] + $block->getPadding()[3];
-        $minContentHeight = $block->getHeight() ?? $contentMeasurement->getMinHeight() + $widthPadding;
-        $minContentWidth = $block->getWidth() ?? $contentMeasurement->getMinWidth() + $heightPadding;
+        $minContentHeight = $block->getHeight() ?? $contentMeasurement->getMinHeight() + $block->getXPadding();
+        $minContentWidth = $block->getWidth() ?? $contentMeasurement->getMinWidth() + $block->getYPadding();
 
-        $widthMargin = $block->getMargin()[0] + $block->getMargin()[2];
-        $heightMargin = $block->getMargin()[1] + $block->getMargin()[3];
-        $minHeight = $minContentHeight + $widthMargin;
-        $minWidth = $minContentWidth + $heightMargin;
+        $minHeight = $minContentHeight + $block->getXMargin();
+        $minWidth = $minContentWidth + $block->getYMargin();
 
         // assumes blocks are more or less quadratic. should be OK for the approximate weight number
         $approximateDimension = sqrt($contentMeasurement->getWeight());
-        $approximateWidth = $approximateDimension + $widthPadding + $widthMargin;
-        $approximateHeight = $approximateDimension + $heightPadding + $heightMargin;
+        $approximateWidth = $approximateDimension + $block->getXPadding() + $block->getXMargin();
+        $approximateHeight = $approximateDimension + $block->getYPadding() + $block->getYMargin();
         $weight = $approximateWidth * $approximateHeight;
 
         return new Measurement($weight, $minWidth, $minHeight);

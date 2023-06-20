@@ -25,6 +25,11 @@ readonly class Printer
     {
     }
 
+    public function position(float $left, float $top): self
+    {
+        return new self($this->document, $this->page, $this->left + $left, $this->top + $top);
+    }
+
     public function getOrCreateImage(string $imagePath, string $type): Image
     {
         return $this->document->getOrCreateImage($imagePath, $type);

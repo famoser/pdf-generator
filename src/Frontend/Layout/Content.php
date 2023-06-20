@@ -12,7 +12,13 @@
 namespace PdfGenerator\Frontend\Layout;
 
 use PdfGenerator\Frontend\Layout\Base\BaseBlock;
+use PdfGenerator\Frontend\Layout\Content\Style\BlockStyle;
 
+/**
+ * @template T of BlockStyle
+ *
+ * @implements BaseBlock<T>
+ */
 abstract class Content extends BaseBlock
 {
 }

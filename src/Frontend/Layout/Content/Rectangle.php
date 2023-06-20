@@ -15,16 +15,14 @@ use PdfGenerator\Frontend\Layout\Content;
 use PdfGenerator\Frontend\Layout\Content\Style\DrawingStyle;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
+/**
+ * @implements Content<DrawingStyle>
+ */
 class Rectangle extends Content
 {
-    public function __construct(private readonly DrawingStyle $style)
+    public function __construct(DrawingStyle $style)
     {
-        parent::__construct();
-    }
-
-    public function getStyle(): DrawingStyle
-    {
-        return $this->style;
+        parent::__construct($style);
     }
 
     public function accept(AbstractBlockVisitor $visitor): mixed
