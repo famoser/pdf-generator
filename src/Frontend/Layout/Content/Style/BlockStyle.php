@@ -15,10 +15,7 @@ use PdfGenerator\IR\Document\Content\Common\Color;
 
 class BlockStyle
 {
-    /**
-     * @var float[]|null
-     */
-    private ?array $borderWidth;
+    private ?float $borderWidth;
     private ?Color $borderColor;
     private ?Color $backgroundColor;
 
@@ -32,10 +29,7 @@ class BlockStyle
         $this->backgroundColor = $backgroundColor;
     }
 
-    /**
-     * @param float[]|null $borderWidth
-     */
-    public function setBorderWidth(?array $borderWidth): self
+    public function setBorderWidth(?float $borderWidth): self
     {
         $this->borderWidth = $borderWidth;
 
@@ -56,10 +50,7 @@ class BlockStyle
         return $this;
     }
 
-    /**
-     * @return float[]|null
-     */
-    public function getBorderWidth(): ?array
+    public function getBorderWidth(): ?float
     {
         return $this->borderWidth;
     }
