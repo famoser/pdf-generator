@@ -64,8 +64,8 @@ class MeasurementVisitor extends AbstractBlockVisitor
 
         // assumes blocks are more or less quadratic. should be OK for the approximate weight number
         $approximateDimension = sqrt($contentMeasurement->getWeight());
-        $approximateWidth = $approximateDimension + $block->getXPadding() + $block->getXMargin();
-        $approximateHeight = $approximateDimension + $block->getYPadding() + $block->getYMargin();
+        $approximateWidth = $approximateDimension + $block->getXSpace();
+        $approximateHeight = $approximateDimension + $block->getYSpace();
         $weight = $approximateWidth * $approximateHeight;
 
         return new Measurement($weight, $minWidth, $minHeight);

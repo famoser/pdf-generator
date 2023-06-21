@@ -15,13 +15,13 @@ use PdfGenerator\Frontend\Layout\Base\BaseBlock;
 
 readonly class Allocation
 {
-    public function __construct(private float $width, private float $height, private ?BaseBlock $content)
+    public function __construct(private float $width, private float $height, private ?BaseBlock $content, private bool $overflow)
     {
     }
 
     public static function createEmpty(): self
     {
-        return new self(0, 0, null);
+        return new self(0, 0, null, true);
     }
 
     public function getWidth(): float
@@ -37,5 +37,10 @@ readonly class Allocation
     public function getContent(): ?BaseBlock
     {
         return $this->content;
+    }
+
+    public function hasOverflow(): bool
+    {
+        return $this->overflow;
     }
 }
