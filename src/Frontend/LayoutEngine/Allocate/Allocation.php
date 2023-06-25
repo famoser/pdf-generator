@@ -19,9 +19,9 @@ readonly class Allocation
     {
     }
 
-    public static function createEmpty(): self
+    public static function createEmpty(bool $overflow): self
     {
-        return new self(0, 0, null, true);
+        return new self(0, 0, null, $overflow);
     }
 
     public function getWidth(): float

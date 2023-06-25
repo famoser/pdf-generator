@@ -42,6 +42,11 @@ class PlacementVisitor extends AbstractBlockVisitor
         return $finalPlacement;
     }
 
+    private static function createRectangleStyle(Content\Style\DrawingStyle $drawingStyle): RectangleStyle
+    {
+        return new RectangleStyle($drawingStyle->getLineWidth(), $drawingStyle->getLineColor(), $drawingStyle->getFillColor());
+    }
+
     private function placeBlock(Placement $placement, BaseBlock $block): array
     {
         $blockStyle = $block->getStyle();
@@ -61,10 +66,5 @@ class PlacementVisitor extends AbstractBlockVisitor
         $positionedPrinter = $this->pagePrinter->position($block->getLeftSpace(), $block->getTopSpace());
 
         return [$finalPlacement, $positionedPrinter];
-    }
-
-    private static function createRectangleStyle(Content\Style\DrawingStyle $drawingStyle): RectangleStyle
-    {
-        return new RectangleStyle($drawingStyle->getLineWidth(), $drawingStyle->getLineColor(), $drawingStyle->getFillColor());
     }
 }
