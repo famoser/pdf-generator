@@ -38,67 +38,54 @@ Like any compiler, its divided primarily into Frontend, Intermediate Representat
 The frontend contains the API the user works with. It should be easy to understand,
 but not hinder the user to access any feature of the backend it may need.
 
-To design an API that is truly easy to understand,
-focusing on the content the user wants to print, but not on PDF specific details,
-this is done closely together with the document-generator project.
+The basic concept is that a user chooses a layout (e.g. a grid), and then adds content to that layout (e.g. a
+paragraph). This can be done recursively. Importantly, the layouts also "flow": If too much content is available for the
+space left (e.g. on the same page), only parts are printed.
 
-The `document-generator project` will provide a way to generate documents
-using an easy to test API which supports multiple generators.
-One of these generators will be this pdf-generator, another one will generate HTML/CSS.
+For the layout system, the following design decisions were taken:
 
-The frontend currently builds on a Layout-Print-Transaction model.
+- `width` (`height`) includes the `padding`, but not the `margin`
+- `margin` does not collapse with adjacent margins
+- drawings are ignored during size calculations (e.g. `borderWidth` has no influence on the calculated `width` of an
+  element
+- `width` (`height`) overrides calculated `maxWidth` (`maxHeight`)
 
-#### Layout
+The frontend currently has the following rough architecture:
 
-The library provides layouts to position elements on the final document.
-For more complex documents, multiple layouts can also be combined together.
+- *Measure* allows the layout engine to plan the layout: By calculating minimal space required to print something
+  meaningful, and a rough estimate of how much needs to be printed.
+- *Allocate* provides content that fits in the given space: Given max dimensions to print in, it calculates the concrete
+  content that fits and the space this requires.
+- *Print* puts content on a page: Given fixed dimensions to print it, it places content on the document that fits, but
+  guarantees progress (hence might print something that does not fit).
 
-#### Print
-
-Using the layout, a cursor can be positioned.
-
-Then a print action can be executed, which prints text/images or other inside the boundaries as set by the layout.
-
-#### Transaction
-
-Before any printed content appears on the document, a transaction has to be created.
-
-The transaction knows its position and appearance on the final document,
-hence is useful to investigate everything will appear as expected and to position future layouts.
-
-If the transaction is of the expected form, it can be committed and will be written to the final document.
+The frontend then may become the backend of more abstract document generation library, and this frontend may then unify
+a way e.g. generate both HTML and PDF documents using the same code. Experiments towards this are done in
+the `document-generator` folder.
 
 ### IR
 
-The Intermediate Representation provides an API that is convenient to use for the frontend.
-This structure could apply to any paginated document; hence does not expose PDF-specific details.
+The Intermediate Representation provides an API that is capable of transforming itself to something the backend can work
+with. The API is largely PDF-independent (i.e. might apply to other paginated document formats).
 
-#### Structure
+It is structured mainly into:
 
-Contains the structure of the IR.
-It can convert the user input to data supported by the backend (text encoding, image resizing).
+- *Document* which stores content (e.g. text) and resources (e.g. images) as read-only entities.
+- *Analysis* which passes through the entire document to gather overall statistics (e.g. image size / character sets in
+  use).
 
 ### Backend
 
-The Backend itself is divided into multiple parts.
+The Backend itself is divided into multiple parts
 
-#### Content
-
-Contains a minimal structure of supported structures by the backend.  
-It renders content types such as text / images into a stream consumable for PDFs.
-It creates the catalog structure of the PDF.
-
-#### Catalog
-
-Contains the logical structure of a PDF.
-It converts this logical structure into a structure using only streams and dictionaries (the first higher-level
-structures of a PDF).
-
-#### File
-
-Contains the structure of a PDF as it can be written to a file.
-It can setup the the file header/trailer/cross reference table given the body of the file (streams/dictionaries).
-It converts the body to tokens and then writes the content of the resulting file.
+- *Content* contains a minimal structure of supported structures by the backend (hence the "frontend" for the IR). It
+  renders content types such as text / images into a stream consumable for PDFs, and creates the catalog structure of
+  the PDF.
+- *Catalog* contains the logical structure of a PDF. It is capable of converting this logical structure into a structure
+  using only streams and dictionaries (the first higher-level structures of a PDF).
+- *File* contains the structure of a PDF as it can be written to a file. It can setup the the file header/trailer/cross
+  reference table given the body of the file (streams/dictionaries). Lastly, it converts the body to tokens and then
+  writes the content of the resulting file.
 
 ## Timeline
 
@@ -137,18 +124,16 @@ text printing:
 
 layouts:
 
-- [x] fixed-position printing (printer)
-- [ ] columns
-- [ ] rows
-- [ ] grid
-- [ ] table
+- [x] flows (rows, columns)
+- [x] grid
+- [x] table
 
 styling:
 
-- [ ] margin
-- [ ] padding
-- [ ] border (color, thickness, stroke style)
-- [ ] background (color)
+- [x] margin
+- [x] padding
+- [x] border (color, thickness, stroke style)
+- [x] background (color)
 
 ### Multimedia API Milestone
 
