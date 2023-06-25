@@ -69,4 +69,15 @@ trait FlowTrait
     {
         return $this->dimensions;
     }
+
+    public function getDimension(int $entry): ?float
+    {
+        if (!$this->dimensions) {
+            return null;
+        }
+
+        $index = $entry % count($this->dimensions);
+
+        return $this->dimensions[$index];
+    }
 }

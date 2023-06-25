@@ -81,6 +81,13 @@ class Table extends BaseBlock
         return $this->body;
     }
 
+    /**
+     * @template T
+     *
+     * @param AbstractBlockVisitor<T> $visitor
+     *
+     * @return T
+     */
     public function accept(AbstractBlockVisitor $visitor): mixed
     {
         return $visitor->visitTable($this);

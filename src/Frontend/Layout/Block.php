@@ -29,6 +29,13 @@ class Block extends BaseBlock
         return $this->block;
     }
 
+    /**
+     * @template T
+     *
+     * @param AbstractBlockVisitor<T> $visitor
+     *
+     * @return T
+     */
     public function accept(AbstractBlockVisitor $visitor): mixed
     {
         return $visitor->visitBlock($this);

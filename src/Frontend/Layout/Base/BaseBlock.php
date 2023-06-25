@@ -88,14 +88,6 @@ abstract class BaseBlock
         return $this;
     }
 
-    /**
-     * @return float[]
-     */
-    public function getMargin(): array
-    {
-        return $this->margin;
-    }
-
     public function getXMargin(): float
     {
         return $this->margin[1] + $this->margin[3];
@@ -114,14 +106,6 @@ abstract class BaseBlock
     public function getTopMargin(): float
     {
         return $this->margin[0];
-    }
-
-    /**
-     * @return float[]
-     */
-    public function getPadding(): array
-    {
-        return $this->padding;
     }
 
     public function getXPadding(): float
@@ -154,12 +138,12 @@ abstract class BaseBlock
         return $this->getYMargin() + $this->getYPadding();
     }
 
-    public function getLeftSpace()
+    public function getLeftSpace(): float
     {
         return $this->getLeftMargin() + $this->getLeftPadding();
     }
 
-    public function getTopSpace()
+    public function getTopSpace(): float
     {
         return $this->getTopMargin() + $this->getTopPadding();
     }

@@ -26,7 +26,7 @@ use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
  */
 class AllocationVisitor extends AbstractBlockVisitor
 {
-    public function __construct(private readonly ?float $maxWidth, private readonly ?float $maxHeight)
+    public function __construct(private readonly float $maxWidth, private readonly float $maxHeight)
     {
     }
 
@@ -40,26 +40,60 @@ class AllocationVisitor extends AbstractBlockVisitor
     public function visitFlow(Flow $flow): Allocation
     {
         [$availableMaxWidth, $availableMaxHeight] = $this->getAvailableSpace($flow);
+        $usedWidth = 0;
+        $usedHeight = 0;
+        /** @var BaseBlock[] $blocks */
+        $blocks = [];
+        $overflow = true;
         for ($i = 0; $i < count($flow->getBlocks()); ++$i) {
             $block = $flow->getBlocks()[$i];
 
-            // TODO; get width out of dimension array check whether enough space or abort
-            $availableWidth = Flow::DIRECTION_ROW === $flow->getDirection() && $flow->getDimensions() ? $flow->getDimensions() : null;
+            $necessaryWidth = Flow::DIRECTION_ROW === $flow->getDirection() ? $flow->getDimension($i) : null;
+            $necessaryHeight = Flow::DIRECTION_COLUMN === $flow->getDirection() ? $flow->getDimension($i) : null;
+            if ($availableMaxWidth < $necessaryWidth || $availableMaxHeight < $necessaryHeight) {
+                break;
+            }
 
-            $allocationVisitor = new AllocationVisitor($availableMaxWidth, $availableMaxHeight);
+            $providedWeight = $necessaryWidth ?? $availableMaxWidth;
+            $providedHeight = $necessaryHeight ?? $availableMaxHeight;
+            $allocationVisitor = new AllocationVisitor($providedWeight, $providedHeight);
+            /** @var Allocation $allocation */
             $allocation = $block->accept($allocationVisitor);
 
-            // TODO: update available width vars
+            $blocks[] = $allocation->getContent();
+            if (Flow::DIRECTION_ROW === $flow->getDirection()) {
+                $usedHeight = max($usedHeight, $allocation->getHeight());
+                $usedWidth += $allocation->getWidth() + $flow->getGap();
+            } else {
+                $usedHeight += $allocation->getHeight() + $flow->getGap();
+                $usedWidth = max($usedWidth, $allocation->getWidth());
+            }
+
+            if ($allocation->hasOverflow()) {
+                break;
+            }
+
+            if ($i + 1 === count($flow->getBlocks())) {
+                $overflow = false;
+            }
         }
+
+        // remove gap again
+        if (Flow::DIRECTION_ROW === $flow->getDirection()) {
+            $usedWidth -= count($blocks) > 0 ? $flow->getGap() : 0;
+        } else {
+            $usedHeight -= count($blocks) > 0 ? $flow->getGap() : 0;
+        }
+
+        $block = $flow->cloneWithBlocks($blocks);
+
+        return new Allocation($usedWidth, $usedHeight, $block, $overflow);
     }
 
     private function getAvailableSpace(BaseBlock $block): array
     {
-        $maxWidth = $block->getWidth() ?? $this->maxWidth;
-        $maxHeight = $block->getHeight() ?? $this->maxHeight;
-
-        $availableMaxWidth = $maxWidth ? $maxWidth - $block->getXSpace() : null;
-        $availableMaxHeight = $maxHeight ? $maxHeight - $block->getYSpace() : null;
+        $availableMaxWidth = $this->maxWidth - $block->getXSpace();
+        $availableMaxHeight = $this->maxHeight - $block->getYSpace();
 
         return [$availableMaxWidth, $availableMaxHeight];
     }
@@ -69,9 +103,7 @@ class AllocationVisitor extends AbstractBlockVisitor
         $totalWidth = $allocation->getWidth() + $block->getXSpace();
         $totalHeight = $allocation->getHeight() + $block->getYSpace();
 
-        $tooWide = $this->maxWidth && $this->maxWidth <= $totalWidth;
-        $tooHigh = $this->maxHeight && $this->maxHeight <= $totalHeight;
-        if ($tooWide || $tooHigh) {
+        if (($this->maxWidth <= $totalWidth) || ($this->maxHeight <= $totalHeight)) {
             return Allocation::createEmpty(true);
         }
 

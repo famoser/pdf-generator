@@ -37,6 +37,13 @@ class Grid extends BaseBlock
         $this->setPerpendicularDimensions($perpendicularDimensions);
     }
 
+    /**
+     * @template T
+     *
+     * @param AbstractBlockVisitor<T> $visitor
+     *
+     * @return T
+     */
     public function accept(AbstractBlockVisitor $visitor): mixed
     {
         return $visitor->visitGrid($this);

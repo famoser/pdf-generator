@@ -83,7 +83,7 @@ The Backend itself is divided into multiple parts
   the PDF.
 - *Catalog* contains the logical structure of a PDF. It is capable of converting this logical structure into a structure
   using only streams and dictionaries (the first higher-level structures of a PDF).
-- *File* contains the structure of a PDF as it can be written to a file. It can setup the the file header/trailer/cross
+- *File* contains the structure of a PDF as it can be written to a file. It can setup the file header/trailer/cross
   reference table given the body of the file (streams/dictionaries). Lastly, it converts the body to tokens and then
   writes the content of the resulting file.
 
