@@ -32,6 +32,13 @@ class Flow extends BaseBlock
         $this->setDimensions($dimensions);
     }
 
+    /**
+     * @template T
+     *
+     * @param AbstractBlockVisitor<T> $visitor
+     *
+     * @return T
+     */
     public function accept(AbstractBlockVisitor $visitor): mixed
     {
         return $visitor->visitFlow($this);

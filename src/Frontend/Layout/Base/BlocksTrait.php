@@ -34,4 +34,15 @@ trait BlocksTrait
     {
         return $this->blocks;
     }
+
+    /**
+     * @param BaseBlock[] $blocks
+     */
+    public function cloneWithBlocks(array $blocks): self
+    {
+        $self = clone $this;
+        $self->blocks = $blocks;
+
+        return $self;
+    }
 }
