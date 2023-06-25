@@ -21,7 +21,7 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
 /**
  * Measurements allow the layout engine to plan the layout. It contains:
  * - minimal space required to make progress
- * - average space required to fully print the content.
+ * - expected space required to fully print the content (given as-of-yet possibly unknown height/width).
  *
  * @implements AbstractBlockVisitor<Measurement>
  */
