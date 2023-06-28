@@ -42,7 +42,7 @@ class LinearDocumentTest extends TestCase
         $contentBlock->setMargin([20, 0, 0, 0]);
         $contentBlock->setPadding([5, 5, 5, 10]);
         $contentBlock->setWidth(40);
-        $contentBlock->setHeight(20);
+        $contentBlock->setHeight(40);
         $document->add($contentBlock);
 
         // assert
@@ -62,9 +62,10 @@ class LinearDocumentTest extends TestCase
         $flow = new Flow();
         for ($i = 0; $i < 10; ++$i) {
             $rectangle = new Rectangle($rectangleStyle);
-            $rectangle->setWidth($i * 5 % 40);
-            $rectangle->setHeight($i * 3 % 17);
-            $flow->add($rectangle);
+            $contentBlock = new ContentBlock($rectangle);
+            $contentBlock->setWidth($i * 5 % 40);
+            $contentBlock->setHeight($i * 3 % 17);
+            $flow->add($contentBlock);
         }
         $document->add($flow);
 
