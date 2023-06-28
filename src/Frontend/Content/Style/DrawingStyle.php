@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout\Content\Style;
+namespace PdfGenerator\Frontend\Content\Style;
 
 use PdfGenerator\IR\Document\Content\Common\Color;
 
-class DrawingStyle extends BlockStyle
+class DrawingStyle
 {
     private ?float $lineWidth;
     private ?Color $lineColor;
@@ -21,7 +21,6 @@ class DrawingStyle extends BlockStyle
 
     public function __construct(float $borderWidth = 1, ?Color $borderColor = new Color(0, 0, 0), Color $backgroundColor = null)
     {
-        parent::__construct();
         $this->lineWidth = $borderWidth;
         $this->lineColor = $borderColor;
         $this->fillColor = $backgroundColor;

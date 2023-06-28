@@ -12,11 +12,11 @@
 namespace PdfGenerator\Frontend;
 
 use DocumentGenerator\DocumentInterface;
-use PdfGenerator\Frontend\Layout\Base\BaseBlock;
+use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
-use PdfGenerator\Frontend\LayoutEngine\Place\Placement;
-use PdfGenerator\Frontend\LayoutEngine\Place\PlacementVisitor;
+use PdfGenerator\Frontend\LayoutEngine\Place\BlockPlacement;
+use PdfGenerator\Frontend\LayoutEngine\Place\BlockPlacementVisitor;
 use PdfGenerator\IR\Document\Page;
 
 class LinearDocument implements DocumentInterface
@@ -32,7 +32,7 @@ class LinearDocument implements DocumentInterface
         $this->addPage();
     }
 
-    public function add(BaseBlock $block): void
+    public function add(AbstractBlock $block): void
     {
         $allocation = $this->allocate($block);
 
@@ -51,7 +51,7 @@ class LinearDocument implements DocumentInterface
         }
     }
 
-    public function allocate(BaseBlock $block): Allocation
+    public function allocate(AbstractBlock $block): Allocation
     {
         [$width, $height] = $this->getPrintingArea();
         $allocationVisitor = new AllocationVisitor($width, $height);
@@ -59,13 +59,13 @@ class LinearDocument implements DocumentInterface
         return $block->accept($allocationVisitor);
     }
 
-    public function place(BaseBlock $block): Placement
+    public function place(AbstractBlock $block): BlockPlacement
     {
         $left = $this->margin[3];
         $top = $this->currentY + $this->margin[0];
         [$width, $height] = $this->getPrintingArea();
         $pagePrinter = new Printer($this->document, $this->currentPage, $left, $top);
-        $placementVisitor = new PlacementVisitor($pagePrinter, $width, $height);
+        $placementVisitor = new BlockPlacementVisitor($pagePrinter, $width, $height);
 
         return $block->accept($placementVisitor);
     }

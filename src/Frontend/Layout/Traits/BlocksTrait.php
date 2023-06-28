@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout\Base;
+namespace PdfGenerator\Frontend\Layout\Traits;
 
+use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\Block;
 
 trait BlocksTrait
@@ -20,7 +21,7 @@ trait BlocksTrait
      */
     private array $blocks = [];
 
-    public function add(BaseBlock $block): self
+    public function add(AbstractBlock $block): self
     {
         $this->blocks[] = $block;
 
@@ -36,7 +37,7 @@ trait BlocksTrait
     }
 
     /**
-     * @param BaseBlock[] $blocks
+     * @param AbstractBlock[] $blocks
      */
     public function cloneWithBlocks(array $blocks): self
     {

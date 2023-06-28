@@ -11,13 +11,12 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Layout\Base\BaseBlock;
-use PdfGenerator\Frontend\Layout\Base\BlocksTrait;
-use PdfGenerator\Frontend\Layout\Base\FlowTrait;
-use PdfGenerator\Frontend\Layout\Base\PerpendicularFlowTrait;
+use PdfGenerator\Frontend\Layout\Traits\BlocksTrait;
+use PdfGenerator\Frontend\Layout\Traits\FlowTrait;
+use PdfGenerator\Frontend\Layout\Traits\PerpendicularFlowTrait;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
-class Grid extends BaseBlock
+class Grid extends AbstractBlock
 {
     use FlowTrait;
     use PerpendicularFlowTrait;

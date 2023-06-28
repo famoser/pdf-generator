@@ -11,9 +11,11 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
-use PdfGenerator\Frontend\Layout\Content\Rectangle;
-use PdfGenerator\Frontend\Layout\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\Content\Rectangle;
+use PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
+use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use PdfGenerator\Frontend\LinearDocument;
 use PdfGenerator\IR\Document\Content\Common\Color;
 use PHPUnit\Framework\TestCase;
@@ -27,17 +29,21 @@ class LinearDocumentTest extends TestCase
 
         // act
         $rectangleStyle = new DrawingStyle();
-        $rectangleStyle->setBackgroundColor(new Color(255, 0, 0));
         $rectangleStyle->setFillColor(new Color(0, 255, 0));
-        $rectangleStyle->setBorderColor(new Color(0, 0, 255));
         $rectangleStyle->setLineColor(new Color(0, 255, 255));
-        $rectangleStyle->setBorderWidth(1.0);
         $rectangle = new Rectangle($rectangleStyle);
-        $rectangle->setMargin([20, 0, 0, 0]);
-        $rectangle->setPadding([5, 5, 5, 10]);
-        $rectangle->setWidth(40);
-        $rectangle->setHeight(20);
-        $document->add($rectangle);
+
+        $blockStyle = new BlockStyle();
+        $blockStyle->setBackgroundColor(new Color(255, 0, 0));
+        $blockStyle->setBorderColor(new Color(0, 0, 255));
+        $blockStyle->setBorderWidth(1.0);
+        $contentBlock = new ContentBlock($rectangle);
+        $contentBlock->setStyle($blockStyle);
+        $contentBlock->setMargin([20, 0, 0, 0]);
+        $contentBlock->setPadding([5, 5, 5, 10]);
+        $contentBlock->setWidth(40);
+        $contentBlock->setHeight(20);
+        $document->add($contentBlock);
 
         // assert
         $result = $this->render($document);

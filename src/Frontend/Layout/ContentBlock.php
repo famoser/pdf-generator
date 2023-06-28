@@ -11,21 +11,19 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
+use PdfGenerator\Frontend\Content\AbstractContent;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
-class Block extends AbstractBlock
+class ContentBlock extends AbstractBlock
 {
-    private AbstractBlock $block;
-
-    public function __construct(AbstractBlock $block)
+    public function __construct(private readonly AbstractContent $content)
     {
         parent::__construct();
-        $this->block = $block;
     }
 
-    public function getBlock(): AbstractBlock
+    public function getContent(): AbstractContent
     {
-        return $this->block;
+        return $this->content;
     }
 
     /**
@@ -37,6 +35,6 @@ class Block extends AbstractBlock
      */
     public function accept(AbstractBlockVisitor $visitor): mixed
     {
-        return $visitor->visitBlock($this);
+        return $visitor->visitContentBlock($this);
     }
 }

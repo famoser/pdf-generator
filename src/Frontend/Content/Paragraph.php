@@ -9,18 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout\Content;
+namespace PdfGenerator\Frontend\Content;
 
-use PdfGenerator\Frontend\Layout\Content;
-use PdfGenerator\Frontend\Layout\Content\Paragraph\Phrase;
-use PdfGenerator\Frontend\Layout\Content\Style\BlockStyle;
-use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
-use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
+use PdfGenerator\Frontend\Content\Paragraph\Phrase;
+use PdfGenerator\Frontend\Content\Style\TextStyle;
+use PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
 
 /**
- * @implements Content<BlockStyle>
+ * @implements AbstractContent<BlockStyle>
  */
-class Paragraph extends Content
+class Paragraph extends AbstractContent
 {
     final public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
 
@@ -31,9 +30,8 @@ class Paragraph extends Content
      */
     private array $phrases = [];
 
-    public function __construct(string $alignment = self::ALIGNMENT_LEFT, BlockStyle $style = new BlockStyle())
+    public function __construct(string $alignment = self::ALIGNMENT_LEFT)
     {
-        parent::__construct($style);
         $this->alignment = $alignment;
     }
 
@@ -66,7 +64,7 @@ class Paragraph extends Content
         return $this->phrases;
     }
 
-    public function accept(AbstractBlockVisitor $visitor): mixed
+    public function accept(AbstractContentVisitor $visitor): mixed
     {
         return $visitor->visitParagraph($this);
     }
