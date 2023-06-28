@@ -13,8 +13,8 @@ namespace PdfGenerator\Frontend;
 
 use DocumentGenerator\DocumentInterface;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
+use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
+use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Place\BlockPlacement;
 use PdfGenerator\Frontend\LayoutEngine\Place\BlockPlacementVisitor;
 use PdfGenerator\IR\Document\Page;
@@ -51,10 +51,10 @@ class LinearDocument implements DocumentInterface
         }
     }
 
-    public function allocate(AbstractBlock $block): Allocation
+    public function allocate(AbstractBlock $block): BlockAllocation
     {
         [$width, $height] = $this->getPrintingArea();
-        $allocationVisitor = new AllocationVisitor($width, $height);
+        $allocationVisitor = new BlockAllocationVisitor($width, $height);
 
         return $block->accept($allocationVisitor);
     }

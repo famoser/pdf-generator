@@ -19,12 +19,12 @@ readonly class BlockPlacement
     {
     }
 
-    public static function create(AbstractBlock $block, float $contentWidth, float $contentHeight, AbstractBlock $overflow = null): BlockPlacement
+    public static function create(AbstractBlock $block, float $contentWidth, float $contentHeight, AbstractBlock $overflow = null): self
     {
         $width = $contentWidth + $block->getXSpace();
         $height = $contentHeight + $block->getYSpace();
 
-        return new BlockPlacement($width, $height, $overflow);
+        return new self($width, $height, $overflow);
     }
 
     public function getWidth(): float
