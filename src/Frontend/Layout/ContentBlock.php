@@ -16,7 +16,7 @@ use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class ContentBlock extends AbstractBlock
 {
-    public function __construct(private readonly AbstractContent $content)
+    public function __construct(private AbstractContent $content)
     {
         parent::__construct();
     }
@@ -24,6 +24,14 @@ class ContentBlock extends AbstractBlock
     public function getContent(): AbstractContent
     {
         return $this->content;
+    }
+
+    public function cloneWithContent(?AbstractContent $content): self
+    {
+        $clone = clone $this;
+        $clone->content = $content;
+
+        return $clone;
     }
 
     /**

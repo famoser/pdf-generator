@@ -58,9 +58,9 @@ class LinearDocumentTest extends TestCase
         $document = new LinearDocument();
 
         // act
-        $rectangleStyle = new DrawingStyle();
+        $rectangleStyle = new DrawingStyle(0.25);
         $flow = new Flow();
-        for ($i = 0; $i < 10; ++$i) {
+        for ($i = 0; $i < 20; ++$i) {
             $rectangle = new Rectangle($rectangleStyle);
             $contentBlock = new ContentBlock($rectangle);
             $contentBlock->setWidth($i * 5 % 40);
