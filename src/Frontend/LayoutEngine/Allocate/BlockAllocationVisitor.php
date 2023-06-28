@@ -69,7 +69,7 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         $blocks = [];
         $overflow = false;
         for ($i = 0; $i < count($flow->getBlocks()); ++$i) {
-            $allocatedFlow = $flow->getBlocks()[$i];
+            $block = $flow->getBlocks()[$i];
 
             // check if enough space available
             $necessaryWidth = Flow::DIRECTION_ROW === $flow->getDirection() ? $flow->getDimension($i) : null;
@@ -84,7 +84,7 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             $providedHeight = $necessaryHeight ?? $availableHeight;
             $allocationVisitor = new BlockAllocationVisitor($providedWeight, $providedHeight);
             /** @var BlockAllocation $allocation */
-            $allocation = $allocatedFlow->accept($allocationVisitor);
+            $allocation = $block->accept($allocationVisitor);
 
             // update allocated content
             $blocks[] = $allocation->getContent();

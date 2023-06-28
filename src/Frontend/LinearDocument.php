@@ -35,6 +35,7 @@ class LinearDocument implements DocumentInterface
     public function add(AbstractBlock $block): void
     {
         $allocation = $this->allocate($block);
+        var_dump($allocation);
 
         // auto-advance page
         if (!$allocation->getContent() && $this->currentY > 0) {
@@ -43,11 +44,13 @@ class LinearDocument implements DocumentInterface
 
         $lastPlacement = $this->place($block);
         $this->currentY += $lastPlacement->getHeight();
+        var_dump($lastPlacement);
 
         while ($lastPlacement->getOverflow()) {
             $this->addPage();
             $lastPlacement = $this->place($lastPlacement->getOverflow());
             $this->currentY += $lastPlacement->getHeight();
+            var_dump($lastPlacement);
         }
     }
 

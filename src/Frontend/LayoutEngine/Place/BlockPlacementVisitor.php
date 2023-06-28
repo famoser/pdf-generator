@@ -12,7 +12,9 @@
 namespace PdfGenerator\Frontend\LayoutEngine\Place;
 
 use PdfGenerator\Frontend\Layout\AbstractBlock;
+use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\ContentBlock;
+use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 use PdfGenerator\Frontend\Printer;
 use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
@@ -41,6 +43,67 @@ class BlockPlacementVisitor extends AbstractBlockVisitor
         $overflowBlock = $contentPlacement->getOverflow() ? new ContentBlock($contentPlacement->getOverflow()) : null;
 
         return BlockPlacement::create($contentBlock, $contentWidth, $contentHeight, $overflowBlock);
+    }
+
+    public function visitBlock(Block $block): BlockPlacement
+    {
+        [$contentPrinter, $contentWidth, $contentHeight] = $this->positionBlock($block);
+
+        $blockVisitor = new BlockPlacementVisitor($contentPrinter, $contentWidth, $contentHeight);
+        /** @var ContentPlacement $contentPlacement */
+        $contentPlacement = $block->getBlock()->accept($blockVisitor);
+
+        return BlockPlacement::create($block, $contentWidth, $contentHeight, $contentPlacement->getOverflow());
+    }
+
+    public function visitFlow(Flow $flow): BlockPlacement
+    {
+        /** @var Printer $contentPrinter */
+        [$contentPrinter, $contentWidth, $contentHeight] = $this->positionBlock($flow);
+        $usedWidth = 0;
+        $usedHeight = 0;
+        /** @var AbstractBlock[] $overflowBlocks */
+        $overflowBlocks = [];
+        for ($i = 0; $i < count($flow->getBlocks()); ++$i) {
+            $overflowBlock = $flow->getBlocks()[$i];
+
+            // check if enough space available
+            $availableWidth = $contentWidth - $usedWidth;
+            $availableHeight = $contentHeight - $usedHeight;
+            $necessaryWidth = Flow::DIRECTION_ROW === $flow->getDirection() ? $flow->getDimension($i) : null;
+            $necessaryHeight = Flow::DIRECTION_COLUMN === $flow->getDirection() ? $flow->getDimension($i) : null;
+            if (($availableWidth < $necessaryWidth || $availableHeight < $necessaryHeight) && $i > 0) {
+                $overflowBlocks = [...array_slice($flow->getBlocks(), $i)];
+                break;
+            }
+
+            // get placement of child
+            $providedWeight = $necessaryWidth ?? $availableWidth;
+            $providedHeight = $necessaryHeight ?? $availableHeight;
+            $blockPlacementVisitor = new BlockPlacementVisitor($contentPrinter, $providedWeight, $providedHeight);
+            /** @var BlockPlacement $placement */
+            $placement = $overflowBlock->accept($blockPlacementVisitor);
+
+            if ($placement->getOverflow()) {
+                $overflowBlocks = [$placement->getOverflow(), ...array_slice($flow->getBlocks(), $i + 1)];
+                break;
+            }
+
+            // update printer
+            if (Flow::DIRECTION_ROW === $flow->getDirection()) {
+                $leftAdvance = $placement->getWidth() + $flow->getGap();
+                $usedWidth += $leftAdvance;
+                $contentPrinter = $contentPrinter->position($leftAdvance, 0);
+            } else {
+                $topAdvance = $placement->getHeight() + $flow->getGap();
+                $usedHeight += $topAdvance;
+                $contentPrinter = $contentPrinter->position(0, $topAdvance);
+            }
+        }
+
+        $overflowBlock = count($overflowBlocks) > 0 ? $flow->cloneWithBlocks($overflowBlocks) : null;
+
+        return BlockPlacement::create($flow, $contentWidth, $contentHeight, $overflowBlock);
     }
 
     private function positionBlock(AbstractBlock $block): array
