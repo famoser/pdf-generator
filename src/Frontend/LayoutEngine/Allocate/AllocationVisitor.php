@@ -11,18 +11,18 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use PdfGenerator\Frontend\Layout\Base\BaseBlock;
-use PdfGenerator\Frontend\Layout\Content\Rectangle;
+use PdfGenerator\Frontend\Content\Rectangle;
+use PdfGenerator\Frontend\Layout\AbstractBlock;
+use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 /**
  * This allocates content on the PDF.
  *
- * Importantly, the printer guarantees progress (i.e. with each print call, less to-be-printed content remains).
- * For this guarantee, the printer is allowed to disrespect boundaries (e.g. print content wider than the maxWidth).
+ * All allocated content fits
  *
- * @implements AbstractBlockVisitor<Allocation>
+ * @implements AbstractBlockVisitor<Allocation|null>
  */
 class AllocationVisitor extends AbstractBlockVisitor
 {
@@ -30,36 +30,59 @@ class AllocationVisitor extends AbstractBlockVisitor
     {
     }
 
-    public function visitRectangle(Rectangle $rectangle): Allocation
+    public function visitRectangle(Rectangle $rectangle): ?Allocation
     {
-        $allocation = new Allocation($rectangle->getWidth(), $rectangle->getHeight(), $rectangle, false);
+        $usableSpace = $this->getUsableSpace($rectangle);
+        if (!$usableSpace) {
+            return null;
+        }
+
+        $allocation = new Allocation($usableSpace[0], $usableSpace[1], $rectangle, false);
 
         return $this->allocateBlock($allocation, $rectangle);
     }
 
+    public function visitBlock(Block $block): ?Allocation
+    {
+        $usableSpace = $this->getUsableSpace($block);
+        if (!$usableSpace) {
+            return null;
+        }
+
+        $allocationVisitor = new AllocationVisitor($usableSpace[0], $usableSpace[1]);
+        /** @var Allocation $allocation */
+        $allocation = $block->accept($allocationVisitor);
+
+        return $this->allocateBlock($allocation, $block);
+    }
+
     public function visitFlow(Flow $flow): Allocation
     {
-        [$availableMaxWidth, $availableMaxHeight] = $this->getAvailableSpace($flow);
+        [$availableWidth, $availableHeight] = $this->getUsableSpace($flow);
         $usedWidth = 0;
         $usedHeight = 0;
-        /** @var BaseBlock[] $blocks */
+        /** @var AbstractBlock[] $blocks */
         $blocks = [];
-        $overflow = true;
+        $overflow = false;
         for ($i = 0; $i < count($flow->getBlocks()); ++$i) {
-            $block = $flow->getBlocks()[$i];
+            $allocatedFlow = $flow->getBlocks()[$i];
 
+            // check if enough space available
             $necessaryWidth = Flow::DIRECTION_ROW === $flow->getDirection() ? $flow->getDimension($i) : null;
             $necessaryHeight = Flow::DIRECTION_COLUMN === $flow->getDirection() ? $flow->getDimension($i) : null;
-            if ($availableMaxWidth < $necessaryWidth || $availableMaxHeight < $necessaryHeight) {
+            if ($availableWidth < $necessaryWidth || $availableHeight < $necessaryHeight) {
+                $overflow = true;
                 break;
             }
 
-            $providedWeight = $necessaryWidth ?? $availableMaxWidth;
-            $providedHeight = $necessaryHeight ?? $availableMaxHeight;
+            // get allocation of child
+            $providedWeight = $necessaryWidth ?? $availableWidth;
+            $providedHeight = $necessaryHeight ?? $availableHeight;
             $allocationVisitor = new AllocationVisitor($providedWeight, $providedHeight);
             /** @var Allocation $allocation */
-            $allocation = $block->accept($allocationVisitor);
+            $allocation = $allocatedFlow->accept($allocationVisitor);
 
+            // update allocated content
             $blocks[] = $allocation->getContent();
             if (Flow::DIRECTION_ROW === $flow->getDirection()) {
                 $usedHeight = max($usedHeight, $allocation->getHeight());
@@ -69,44 +92,48 @@ class AllocationVisitor extends AbstractBlockVisitor
                 $usedWidth = max($usedWidth, $allocation->getWidth());
             }
 
+            // abort if child overflowed
             if ($allocation->hasOverflow()) {
+                $overflow = true;
                 break;
             }
-
-            if ($i + 1 === count($flow->getBlocks())) {
-                $overflow = false;
-            }
         }
 
-        // remove gap again
+        // remove gap from last iteration
         if (Flow::DIRECTION_ROW === $flow->getDirection()) {
-            $usedWidth -= count($blocks) > 0 ? $flow->getGap() : 0;
+            $usedWidth -= $flow->getGap();
         } else {
-            $usedHeight -= count($blocks) > 0 ? $flow->getGap() : 0;
+            $usedHeight -= $flow->getGap();
         }
 
-        $block = $flow->cloneWithBlocks($blocks);
+        $allocatedFlow = $flow->cloneWithBlocks($blocks);
+        $contentAllocation = new Allocation($usedWidth, $usedHeight, $allocatedFlow, $overflow);
 
-        return new Allocation($usedWidth, $usedHeight, $block, $overflow);
+        return $this->allocateBlock($contentAllocation, $allocatedFlow);
     }
 
-    private function getAvailableSpace(BaseBlock $block): array
+    private function getUsableSpace(AbstractBlock $block): ?array
     {
-        $availableMaxWidth = $this->maxWidth - $block->getXSpace();
-        $availableMaxHeight = $this->maxHeight - $block->getYSpace();
+        $availableMaxWidth = $this->maxWidth - $block->getXMargin();
+        $availableMaxHeight = $this->maxHeight - $block->getYMargin();
 
-        return [$availableMaxWidth, $availableMaxHeight];
-    }
-
-    private function allocateBlock(Allocation $allocation, BaseBlock $block): Allocation
-    {
-        $totalWidth = $allocation->getWidth() + $block->getXSpace();
-        $totalHeight = $allocation->getHeight() + $block->getYSpace();
-
-        if (($this->maxWidth <= $totalWidth) || ($this->maxHeight <= $totalHeight)) {
-            return Allocation::createEmpty(true);
+        $tooWide = $block->getWidth() && $availableMaxWidth < $block->getWidth();
+        $tooHigh = $block->getHeight() && $availableMaxHeight < $block->getHeight();
+        if ($tooWide || $tooHigh) {
+            return null;
         }
 
-        return new Allocation($totalWidth, $totalHeight, $block, $allocation->hasOverflow());
+        $usableWidth = ($block->getWidth() ?? $availableMaxWidth) - $block->getXPadding();
+        $usableHeight = ($block->getHeight() ?? $availableMaxHeight) - $block->getYPadding();
+
+        return [$usableWidth, $usableHeight];
+    }
+
+    private function allocateBlock(Allocation $contentAllocation, AbstractBlock $content): Allocation
+    {
+        $width = $contentAllocation->getWidth() + $content->getXSpace();
+        $height = $contentAllocation->getHeight() + $content->getYSpace();
+
+        return new Allocation($width, $height, $content, $contentAllocation->hasOverflow());
     }
 }

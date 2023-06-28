@@ -25,14 +25,14 @@ class ContentVisitor
     {
     }
 
-    public function visitImage(\PdfGenerator\Frontend\Layout\Content\ImagePlacement $param): Image
+    public function visitImage(\PdfGenerator\Frontend\Content\ImagePlacement $param): Image
     {
         $image = $this->imageRespository->getImage($param);
 
         return new Image($image, $param->getStyle());
     }
 
-    public function visitParagraph(\PdfGenerator\Frontend\Layout\Content\Paragraph $param): Paragraph
+    public function visitParagraph(\PdfGenerator\Frontend\Content\Paragraph $param): Paragraph
     {
         $paragraph = new Paragraph($param->getStyle());
 
@@ -54,7 +54,7 @@ class ContentVisitor
         return $paragraph;
     }
 
-    public function visitRectangle(\PdfGenerator\Frontend\Layout\Content\Rectangle $param): Rectangle
+    public function visitRectangle(\PdfGenerator\Frontend\Content\Rectangle $param): Rectangle
     {
         return new Rectangle($param->getStyle(), $param);
     }

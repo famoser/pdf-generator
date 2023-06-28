@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Place;
 
-use PdfGenerator\Frontend\Layout\Base\BaseBlock;
+use PdfGenerator\Frontend\Content\AbstractContent;
 
-readonly class Placement
+readonly class ContentPlacement
 {
-    public function __construct(private float $width, private float $height, private ?BaseBlock $overflow = null)
+    public function __construct(private float $width, private float $height, private ?AbstractContent $overflow = null)
     {
     }
 
@@ -29,7 +29,7 @@ readonly class Placement
         return $this->height;
     }
 
-    public function getOverflow(): ?BaseBlock
+    public function getOverflow(): ?AbstractContent
     {
         return $this->overflow;
     }

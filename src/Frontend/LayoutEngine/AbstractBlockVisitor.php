@@ -12,7 +12,7 @@
 namespace PdfGenerator\Frontend\LayoutEngine;
 
 use PdfGenerator\Frontend\Layout\Block;
-use PdfGenerator\Frontend\Layout\Content;
+use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\Layout\Grid;
 use PdfGenerator\Frontend\Layout\Table;
@@ -22,6 +22,13 @@ use PdfGenerator\Frontend\Layout\Table;
  */
 abstract class AbstractBlockVisitor
 {
+    /**
+     * @return T
+     */
+    public function visitContentBlock(ContentBlock $contentBlock): mixed
+    {
+    }
+
     /**
      * @return T
      */
@@ -47,34 +54,6 @@ abstract class AbstractBlockVisitor
      * @return T
      */
     public function visitTable(Table $table): mixed
-    {
-    }
-
-    /**
-     * @return T
-     */
-    public function visitParagraph(Content\Paragraph $param): mixed
-    {
-    }
-
-    /**
-     * @return T
-     */
-    public function visitRectangle(Content\Rectangle $rectangle): mixed
-    {
-    }
-
-    /**
-     * @return T
-     */
-    public function visitSpacer(Content\Spacer $param): mixed
-    {
-    }
-
-    /**
-     * @return T
-     */
-    public function visitImagePlacement(Content\ImagePlacement $param): mixed
     {
     }
 }

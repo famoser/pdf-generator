@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout\Content\Paragraph;
+namespace PdfGenerator\Frontend\Content\Paragraph;
 
-use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
+use PdfGenerator\Frontend\Content\Style\TextStyle;
 
 class Phrase
 {

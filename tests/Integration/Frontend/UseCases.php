@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
-use PdfGenerator\Frontend\Layout\Content\Paragraph;
-use PdfGenerator\Frontend\Layout\Content\Style\TextStyle;
+use PdfGenerator\Frontend\Content\Paragraph;
+use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\LinearDocument;
 use PdfGenerator\Frontend\Resource\Font;

@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout\Base;
+namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Layout\Content\Style\BlockStyle;
+use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 /**
  * @template T of BlockStyle
  */
-abstract class BaseBlock
+abstract class AbstractBlock
 {
     /**
      * @var float[]
@@ -38,12 +38,19 @@ abstract class BaseBlock
      * @param float[] $margin
      * @param float[] $padding
      */
-    public function __construct(private readonly mixed $style = new BlockStyle(), array $margin = [0, 0, 0, 0], array $padding = [0, 0, 0, 0], float $width = null, float $height = null)
+    public function __construct(private BlockStyle $style = new BlockStyle(), array $margin = [0, 0, 0, 0], array $padding = [0, 0, 0, 0], float $width = null, float $height = null)
     {
         $this->margin = $margin;
         $this->padding = $padding;
         $this->width = $width;
         $this->height = $height;
+    }
+
+    public function setStyle(BlockStyle $style): AbstractBlock
+    {
+        $this->style = $style;
+
+        return $this;
     }
 
     /**
