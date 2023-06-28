@@ -11,11 +11,11 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use PdfGenerator\Frontend\Layout\AbstractBlock;
+use PdfGenerator\Frontend\Content\AbstractContent;
 
-readonly class Allocation
+readonly class ContentAllocation
 {
-    public function __construct(private float $width, private float $height, private ?AbstractBlock $content, private bool $overflow)
+    public function __construct(private float $width, private float $height, private ?AbstractContent $content, private bool $overflow)
     {
     }
 
@@ -34,7 +34,7 @@ readonly class Allocation
         return $this->height;
     }
 
-    public function getContent(): ?AbstractBlock
+    public function getContent(): ?AbstractContent
     {
         return $this->content;
     }
