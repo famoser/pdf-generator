@@ -65,7 +65,7 @@ class BlockPlacementVisitor extends AbstractBlockVisitor
         /** @var AbstractBlock[] $overflowBlocks */
         $overflowBlocks = [];
         for ($i = 0; $i < count($flow->getBlocks()); ++$i) {
-            $overflowBlock = $flow->getBlocks()[$i];
+            $block = $flow->getBlocks()[$i];
 
             // check if enough space available
             $availableWidth = $contentWidth - $usedWidth;
@@ -82,7 +82,7 @@ class BlockPlacementVisitor extends AbstractBlockVisitor
             $providedHeight = $necessaryHeight ?? $availableHeight;
             $blockPlacementVisitor = new BlockPlacementVisitor($contentPrinter, $providedWeight, $providedHeight);
             /** @var BlockPlacement $placement */
-            $placement = $overflowBlock->accept($blockPlacementVisitor);
+            $placement = $block->accept($blockPlacementVisitor);
 
             if ($placement->getOverflow()) {
                 $overflowBlocks = [$placement->getOverflow(), ...array_slice($flow->getBlocks(), $i + 1)];

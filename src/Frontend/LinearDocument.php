@@ -34,24 +34,20 @@ class LinearDocument implements DocumentInterface
 
     public function add(AbstractBlock $block): void
     {
-        $allocation = $this->allocate($block);
-        var_dump($allocation);
+        do {
+            $allocation = $this->allocate($block);
 
-        // auto-advance page
-        if (!$allocation->getContent() && $this->currentY > 0) {
-            $this->addPage();
-        }
+            // advance page if no sensible allocation
+            if (!$allocation->getContent() && $this->currentY > 0) {
+                $this->addPage();
+                $allocation = $this->allocate($block);
+            }
 
-        $lastPlacement = $this->place($block);
-        $this->currentY += $lastPlacement->getHeight();
-        var_dump($lastPlacement);
+            var_dump($allocation);
 
-        while ($lastPlacement->getOverflow()) {
-            $this->addPage();
-            $lastPlacement = $this->place($lastPlacement->getOverflow());
+            $lastPlacement = $this->place($allocation->getContent());
             $this->currentY += $lastPlacement->getHeight();
-            var_dump($lastPlacement);
-        }
+        } while ($block = $lastPlacement->getOverflow());
     }
 
     public function allocate(AbstractBlock $block): BlockAllocation
