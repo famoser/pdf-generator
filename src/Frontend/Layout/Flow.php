@@ -20,15 +20,11 @@ class Flow extends AbstractBlock
     use FlowTrait;
     use BlocksTrait;
 
-    /**
-     * @param float[] $dimensions
-     */
-    public function __construct(string $direction = self::DIRECTION_ROW, float $gap = 0, array $dimensions = null)
+    public function __construct(string $direction = self::DIRECTION_ROW, float $gap = 0)
     {
         parent::__construct();
         $this->setDirection($direction);
         $this->setGap($gap);
-        $this->setDimensions($dimensions);
     }
 
     /**

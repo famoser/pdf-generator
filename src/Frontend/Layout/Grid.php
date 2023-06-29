@@ -22,18 +22,12 @@ class Grid extends AbstractBlock
     use PerpendicularFlowTrait;
     use BlocksTrait;
 
-    /**
-     * @param float[]|null $perpendicularDimensions
-     * @param float[]      $dimensions
-     */
-    public function __construct(string $direction = self::DIRECTION_ROW, float $gap = 0, float $perpendicularGap = 0, array $dimensions = null, array $perpendicularDimensions = null)
+    public function __construct(string $direction = self::DIRECTION_ROW, float $gap = 0, float $perpendicularGap = 0)
     {
         parent::__construct();
         $this->setDirection($direction);
         $this->setGap($gap);
         $this->setPerpendicularGap($perpendicularGap);
-        $this->setDimensions($dimensions);
-        $this->setPerpendicularDimensions($perpendicularDimensions);
     }
 
     /**
