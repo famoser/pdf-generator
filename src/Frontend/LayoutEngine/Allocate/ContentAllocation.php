@@ -15,13 +15,8 @@ use PdfGenerator\Frontend\Content\AbstractContent;
 
 readonly class ContentAllocation
 {
-    public function __construct(private float $width, private float $height, private ?AbstractContent $content, private bool $overflow)
+    public function __construct(private float $width, private float $height, private AbstractContent $content, private ?AbstractContent $overflow = null)
     {
-    }
-
-    public static function createEmpty(bool $overflow): self
-    {
-        return new self(0, 0, null, $overflow);
     }
 
     public function getWidth(): float
@@ -34,12 +29,12 @@ readonly class ContentAllocation
         return $this->height;
     }
 
-    public function getContent(): ?AbstractContent
+    public function getContent(): AbstractContent
     {
         return $this->content;
     }
 
-    public function hasOverflow(): bool
+    public function getOverflow(): ?AbstractContent
     {
         return $this->overflow;
     }
