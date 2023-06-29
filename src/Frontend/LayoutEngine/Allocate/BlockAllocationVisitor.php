@@ -29,7 +29,7 @@ use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
  */
 class BlockAllocationVisitor extends AbstractBlockVisitor
 {
-    public function __construct(private readonly float $width, private readonly float $height)
+    public function __construct(private readonly float $maxWidth, private readonly float $maxHeight)
     {
     }
 
@@ -39,6 +39,7 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         if (!$usableSpace) {
             return null;
         }
+        var_dump($usableSpace, $this->maxWidth);
 
         $contentAllocationVisitor = new ContentAllocationVisitor(...$usableSpace);
         /** @var ContentAllocation|null $contentAllocation */
@@ -95,9 +96,9 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             }
 
             // get allocation of child
-            $providedWeight = $necessaryWidth ?? $usableWidth;
-            $providedHeight = $necessaryHeight ?? $usableHeight;
-            $allocationVisitor = new BlockAllocationVisitor($providedWeight, $providedHeight);
+            $providedWidth = $necessaryWidth ?? $availableWidth;
+            $providedHeight = $necessaryHeight ?? $availableHeight;
+            $allocationVisitor = new BlockAllocationVisitor($providedWidth, $providedHeight);
             /** @var BlockAllocation $allocation */
             $allocation = $block->accept($allocationVisitor);
             if (!$allocation) {
@@ -141,8 +142,8 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
 
     private function getUsableSpace(AbstractBlock $block): ?array
     {
-        $availableMaxWidth = $this->width - $block->getXMargin();
-        $availableMaxHeight = $this->height - $block->getYMargin();
+        $availableMaxWidth = $this->maxWidth - $block->getXMargin();
+        $availableMaxHeight = $this->maxHeight - $block->getYMargin();
 
         $tooWide = $block->getWidth() && $availableMaxWidth < $block->getWidth();
         $tooHigh = $block->getHeight() && $availableMaxHeight < $block->getHeight();
@@ -168,7 +169,10 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             array_unshift($blockAllocations, $backgroundAllocation);
         }
 
-        return new BlockAllocation($block->getLeftSpace(), $block->getTopSpace(), $this->width, $this->height, $blockAllocations, $contentAllocations, $overflow);
+        $width = $block->getWidth() ? $block->getWidth() + $block->getXMargin() : $contentWidth + $block->getXSpace();
+        $height = $block->getHeight() ? $block->getHeight() + $block->getXMargin() : $contentHeight + $block->getXSpace();
+
+        return new BlockAllocation($block->getLeftSpace(), $block->getTopSpace(), $width, $height, $blockAllocations, $contentAllocations, $overflow);
     }
 
     private function allocateBackground(AbstractBlock $block, float $contentWidth, float $contentHeight): ?ContentAllocation
@@ -187,8 +191,8 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             $width = $contentWidth + $block->getXPadding();
             $height = $contentHeight + $block->getYPadding();
         } else {
-            $width = $this->width - $block->getXMargin();
-            $height = $this->height - $block->getYMargin();
+            $width = $this->maxWidth - $block->getXMargin();
+            $height = $this->maxHeight - $block->getYMargin();
         }
 
         return new ContentAllocation($width, $height, $rectangle);
