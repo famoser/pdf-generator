@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\FrontendResources\MeasuredContent\Utils;
+namespace PdfGenerator\Frontend\Font;
 
 use PdfGenerator\Frontend\Resource\Font;
 use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
@@ -17,6 +17,8 @@ use PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
 
 class FontRepository
 {
+    use SingletonTrait;
+
     /**
      * @var EmbeddedFont[]
      */
@@ -57,7 +59,7 @@ class FontRepository
         $weightStyle = self::$weightStyleConverter[$weight][$style];
         $key = $font.'_'.$weightStyle;
         if (!\array_key_exists($key, $this->defaultFonts)) {
-            $this->defaultFonts[$key] = new DefaultFont($font, $weightStyle);
+            $this->defaultFonts[$key] = DefaultFont::create($font, $weightStyle);
         }
 
         return $this->defaultFonts[$key];
