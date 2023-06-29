@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Frontend;
 
+use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
+use PdfGenerator\Frontend\LayoutEngine\Place\ContentPlacementVisitor;
 use PdfGenerator\IR\Document\Content\Common\Position;
 use PdfGenerator\IR\Document\Content\Common\Size;
 use PdfGenerator\IR\Document\Content\ImagePlacement;
@@ -58,5 +60,19 @@ readonly class Printer
         $top = $this->page->getSize()[1] - $this->top - $height;
 
         return new Position($this->left, $top);
+    }
+
+    public function print(BlockAllocation $allocation): void
+    {
+        $placedPrinter = self::position($allocation->getLeft(), $allocation->getTop());
+
+        foreach ($allocation->getBlockAllocations() as $blockAllocation) {
+            $placedPrinter->print($blockAllocation);
+        }
+
+        foreach ($allocation->getContentAllocations() as $contentAllocation) {
+            $contentVisitor = new ContentPlacementVisitor($placedPrinter, $contentAllocation->getWidth(), $contentAllocation->getHeight());
+            $contentAllocation->getContent()->accept($contentVisitor);
+        }
     }
 }

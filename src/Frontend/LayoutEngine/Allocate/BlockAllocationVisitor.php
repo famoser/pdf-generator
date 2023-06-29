@@ -17,6 +17,7 @@ use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
+use PdfGenerator\Frontend\Layout\Style\BlockSize;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 /**
@@ -34,46 +35,46 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
 
     public function visitContentBlock(ContentBlock $contentBlock): ?BlockAllocation
     {
-        [$usableWidth, $usableHeight] = $this->getUsableSpace($contentBlock);
-        if (!$usableWidth || !$usableHeight) {
+        $usableSpace = $this->getUsableSpace($contentBlock);
+        if (!$usableSpace) {
             return null;
         }
 
-        $contentAllocationVisitor = new ContentAllocationVisitor($usableWidth, $usableHeight);
+        $contentAllocationVisitor = new ContentAllocationVisitor(...$usableSpace);
+        /** @var ContentAllocation|null $contentAllocation */
         $contentAllocation = $contentBlock->getContent()->accept($contentAllocationVisitor);
         if (!$contentAllocation) {
             return null;
         }
 
-        return $this->allocateFullSizeBlock($contentBlock, [], [$contentAllocation]);
+        return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], [$contentAllocation]);
     }
 
     public function visitBlock(Block $block): ?BlockAllocation
     {
-        [$usableWidth, $usableHeight] = $this->getUsableSpace($block);
-        if (!$usableWidth || !$usableHeight) {
+        $usableSpace = $this->getUsableSpace($block);
+        if (!$usableSpace) {
             return null;
         }
 
-        $blockAllocationVisitor = new BlockAllocationVisitor($usableWidth, $usableHeight);
+        $blockAllocationVisitor = new BlockAllocationVisitor(...$usableSpace);
         $blockAllocation = $block->getBlock()->accept($blockAllocationVisitor);
         if (!$blockAllocation) {
             return null;
         }
 
-        return $this->allocateFullSizeBlock($block, [$blockAllocation]);
+        return $this->allocateBlock($block, $blockAllocation->getWidth(), $blockAllocation->getHeight(), [$blockAllocation]);
     }
 
     public function visitFlow(Flow $flow): ?BlockAllocation
     {
-        // TODO: Continue refactoring of the placement visitor
-        // TODO: Consider introducing background drawing mode (to force sound architecture)
         // TODO: Consider removing n:n (many content allocations, many block allocations), as probably not needed
-        [$usableWidth, $usableHeight] = $this->getUsableSpace($flow);
-        if (!$usableWidth || !$usableHeight) {
+        $usableSpace = $this->getUsableSpace($flow);
+        if (!$usableSpace) {
             return null;
         }
 
+        [$usableWidth, $usableHeight] = $usableSpace;
         $usedWidth = 0;
         $usedHeight = 0;
         /** @var BlockAllocation[] $blockAllocations */
@@ -133,9 +134,9 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             $usedHeight -= $flow->getGap();
         }
 
-        $overflow = $flow->cloneWithBlocks($overflowBlocks);
+        $overflow = count($overflowBlocks) > 0 ? $flow->cloneWithBlocks($overflowBlocks) : null;
 
-        return $this->allocateFullSizeBlock($flow, $blockAllocations, [], $overflow);
+        return $this->allocateBlock($flow, $usedWidth, $usedHeight, $blockAllocations, [], $overflow);
     }
 
     private function getUsableSpace(AbstractBlock $block): ?array
@@ -146,7 +147,7 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         $tooWide = $block->getWidth() && $availableMaxWidth < $block->getWidth();
         $tooHigh = $block->getHeight() && $availableMaxHeight < $block->getHeight();
         if ($tooWide || $tooHigh) {
-            return [null, null];
+            return null;
         }
 
         $usableWidth = ($block->getWidth() ?? $availableMaxWidth) - $block->getXPadding();
@@ -159,28 +160,37 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
      * @param BlockAllocation[]   $blockAllocations
      * @param ContentAllocation[] $contentAllocations
      */
-    private function allocateFullSizeBlock(AbstractBlock $block, array $blockAllocations = [], array $contentAllocations = [], AbstractBlock $overflow = null): BlockAllocation
+    private function allocateBlock(AbstractBlock $block, float $contentWidth, float $contentHeight, array $blockAllocations = [], array $contentAllocations = [], AbstractBlock $overflow = null): BlockAllocation
     {
-        $background = $this->allocateBackground($block);
+        $background = $this->allocateBackground($block, $contentWidth, $contentHeight);
         if ($background) {
-            array_unshift($contentAllocations, $background);
+            $backgroundAllocation = new BlockAllocation(-$block->getLeftPadding(), -$block->getTopPadding(), $background->getWidth(), $background->getHeight(), [], [$background]);
+            array_unshift($blockAllocations, $backgroundAllocation);
         }
 
         return new BlockAllocation($block->getLeftSpace(), $block->getTopSpace(), $this->width, $this->height, $blockAllocations, $contentAllocations, $overflow);
     }
 
-    private function allocateBackground(AbstractBlock $block): ?ContentAllocation
+    private function allocateBackground(AbstractBlock $block, float $contentWidth, float $contentHeight): ?ContentAllocation
     {
         // print block background
         $blockStyle = $block->getStyle();
         $hasBorder = $blockStyle->getBorderWidth() && $blockStyle->getBorderColor();
-        if ($hasBorder || $blockStyle->getBackgroundColor()) {
-            $drawingStyle = new DrawingStyle($blockStyle->getBorderWidth() ?? 0, $blockStyle->getBorderColor(), $blockStyle->getBackgroundColor());
-            $rectangle = new Rectangle($drawingStyle);
-
-            return new ContentAllocation($this->width, $this->height, $rectangle);
+        if (!$hasBorder && !$blockStyle->getBackgroundColor()) {
+            return null;
         }
 
-        return null;
+        $drawingStyle = new DrawingStyle($blockStyle->getBorderWidth() ?? 0, $blockStyle->getBorderColor(), $blockStyle->getBackgroundColor());
+        $rectangle = new Rectangle($drawingStyle);
+
+        if (BlockSize::INNER === $blockStyle->getBlockSize()) {
+            $width = $contentWidth + $block->getXPadding();
+            $height = $contentHeight + $block->getYPadding();
+        } else {
+            $width = $this->width - $block->getXMargin();
+            $height = $this->height - $block->getYMargin();
+        }
+
+        return new ContentAllocation($width, $height, $rectangle);
     }
 }

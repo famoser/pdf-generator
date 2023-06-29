@@ -25,7 +25,7 @@ use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
  * Importantly, the placement guarantees progress (i.e. with each call, less to-be-placed content remains).
  * For this guarantee, boundaries might be disrespected (e.g. content wider than the maxWidth is placed).
  *
- * @implements AbstractContentVisitor<ContentPlacement>
+ * @implements AbstractContentVisitor<void>
  */
 class ContentPlacementVisitor extends AbstractContentVisitor
 {
@@ -33,25 +33,25 @@ class ContentPlacementVisitor extends AbstractContentVisitor
     {
     }
 
-    public function visitRectangle(Rectangle $rectangle): ContentPlacement
+    public function visitRectangle(Rectangle $rectangle): null
     {
         $rectangleStyle = self::createRectangleStyle($rectangle->getStyle());
         $this->printer->printRectangle($this->width, $this->height, $rectangleStyle);
 
-        return new ContentPlacement($this->width, $this->height);
+        return null;
     }
 
-    public function visitImagePlacement(ImagePlacement $imagePlacement): ContentPlacement
+    public function visitImagePlacement(ImagePlacement $imagePlacement): null
     {
         $image = $this->printer->getOrCreateImage($imagePlacement->getImage()->getSrc(), $imagePlacement->getImage()->getType());
         $this->printer->printImage($image, $this->width, $this->height);
 
-        return new ContentPlacement($this->width, $this->height);
+        return null;
     }
 
-    public function visitSpacer(Spacer $spacer): ContentPlacement
+    public function visitSpacer(Spacer $spacer): null
     {
-        return new ContentPlacement(0, 0);
+        return null;
     }
 
     private static function createRectangleStyle(DrawingStyle $drawingStyle): RectangleStyle
