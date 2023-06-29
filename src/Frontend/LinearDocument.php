@@ -15,8 +15,6 @@ use DocumentGenerator\DocumentInterface;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
-use PdfGenerator\Frontend\LayoutEngine\Place\BlockPlacement;
-use PdfGenerator\Frontend\LayoutEngine\Place\BlockPlacementVisitor;
 use PdfGenerator\IR\Document\Page;
 
 class LinearDocument implements DocumentInterface
@@ -34,23 +32,27 @@ class LinearDocument implements DocumentInterface
 
     public function add(AbstractBlock $block): void
     {
+        $currentBlock = $block;
         do {
-            $allocation = $this->allocate($block);
+            $allocation = $this->allocate($currentBlock);
 
             // advance page if no sensible allocation
-            if (!$allocation->getContent() && $this->currentY > 0) {
-                $this->addPage();
-                $allocation = $this->allocate($block);
+            if (!$allocation) {
+                if ($this->currentY > 0) {
+                    $this->addPage();
+                    continue;
+                } else {
+                    // TODO: measure min width, then allocate using that min width
+                }
             }
 
-            var_dump($allocation);
-
-            $lastPlacement = $this->place($allocation->getContent());
-            $this->currentY += $lastPlacement->getHeight();
-        } while ($block = $lastPlacement->getOverflow());
+            $this->place($allocation);
+            $this->currentY += $allocation->getHeight();
+            $currentBlock = $allocation->getOverflow();
+        } while (null !== $currentBlock);
     }
 
-    public function allocate(AbstractBlock $block): BlockAllocation
+    public function allocate(AbstractBlock $block): ?BlockAllocation
     {
         [$width, $height] = $this->getPrintingArea();
         $allocationVisitor = new BlockAllocationVisitor($width, $height);
@@ -58,15 +60,12 @@ class LinearDocument implements DocumentInterface
         return $block->accept($allocationVisitor);
     }
 
-    public function place(AbstractBlock $block): BlockPlacement
+    public function place(BlockAllocation $allocation): void
     {
         $left = $this->margin[3];
         $top = $this->currentY + $this->margin[0];
-        [$width, $height] = $this->getPrintingArea();
         $pagePrinter = new Printer($this->document, $this->currentPage, $left, $top);
-        $placementVisitor = new BlockPlacementVisitor($pagePrinter, $width, $height);
-
-        return $block->accept($placementVisitor);
+        $pagePrinter->print($allocation);
     }
 
     /**
