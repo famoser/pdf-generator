@@ -18,6 +18,8 @@ use PdfGenerator\IR\Document\Content\Common\Size;
 use PdfGenerator\IR\Document\Content\ImagePlacement;
 use PdfGenerator\IR\Document\Content\Rectangle;
 use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
+use PdfGenerator\IR\Document\Content\Text;
+use PdfGenerator\IR\Document\Content\Text\TextStyle;
 use PdfGenerator\IR\Document\Page;
 use PdfGenerator\IR\Document\Resource\Image;
 
@@ -52,6 +54,14 @@ readonly class Printer
         $size = new Size($width, $height);
 
         $rectangle = new Rectangle($position, $size, $rectangleStyle);
+        $this->page->addContent($rectangle);
+    }
+
+    public function printText(string $text, float $height, TextStyle $textStyle): void
+    {
+        $position = $this->getPosition($height);
+
+        $rectangle = new Text($text, $position, $textStyle);
         $this->page->addContent($rectangle);
     }
 

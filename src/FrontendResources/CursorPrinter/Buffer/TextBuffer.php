@@ -11,12 +11,12 @@
 
 namespace PdfGenerator\FrontendResources\CursorPrinter\Buffer;
 
+use PdfGenerator\Frontend\Font\WordSizer\WordSizerInterface;
+use PdfGenerator\Frontend\Font\WordSizer\WordSizerRepository;
 use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\MeasuredLine;
 use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\MeasuredParagraph;
 use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\MeasuredPhrase;
 use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\Phrase;
-use PdfGenerator\FrontendResources\WordSizer\WordSizerInterface;
-use PdfGenerator\FrontendResources\WordSizer\WordSizerRepository;
 use PdfGenerator\IR\Document\Content\Text\TextStyle;
 
 class TextBuffer

@@ -12,8 +12,8 @@
 namespace PdfGenerator\FrontendResources\Allocator\Content;
 
 use PdfGenerator\Frontend\Content\Style\ParagraphStyle;
+use PdfGenerator\Frontend\Font\MeasuredContent\Paragraph;
 use PdfGenerator\FrontendResources\Allocator\Content\ParagraphAllocator\ParagraphBreaker;
-use PdfGenerator\FrontendResources\MeasuredContent\Paragraph;
 use PdfGenerator\FrontendResources\Size;
 
 class ParagraphAllocator implements ContentAllocatorInterface

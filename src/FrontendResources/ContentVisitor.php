@@ -11,13 +11,13 @@
 
 namespace PdfGenerator\FrontendResources;
 
-use PdfGenerator\FrontendResources\MeasuredContent\Image;
-use PdfGenerator\FrontendResources\MeasuredContent\Paragraph;
-use PdfGenerator\FrontendResources\MeasuredContent\Rectangle;
-use PdfGenerator\FrontendResources\MeasuredContent\Utils\FontRepository;
+use PdfGenerator\Frontend\Font\FontRepository;
+use PdfGenerator\Frontend\Font\MeasuredContent\Image;
+use PdfGenerator\Frontend\Font\MeasuredContent\Paragraph;
+use PdfGenerator\Frontend\Font\MeasuredContent\Rectangle;
+use PdfGenerator\Frontend\Font\WordSizer\WordSizerInterface;
+use PdfGenerator\Frontend\Font\WordSizer\WordSizerRepository;
 use PdfGenerator\FrontendResources\MeasuredContent\Utils\ImageRepository;
-use PdfGenerator\FrontendResources\WordSizer\WordSizerInterface;
-use PdfGenerator\FrontendResources\WordSizer\WordSizerRepository;
 
 class ContentVisitor
 {
@@ -47,7 +47,7 @@ class ContentVisitor
                 $measuredLines[] = $this->measureLine($line, $sizer);
             }
 
-            $measuredPhrase = new \PdfGenerator\FrontendResources\MeasuredContent\Paragraph\Phrase($measuredLines, $textStyle, $font);
+            $measuredPhrase = new MeasuredContent\Paragraph\Phrase($measuredLines, $textStyle, $font);
             $paragraph->addPhrase($measuredPhrase);
         }
 
@@ -68,7 +68,7 @@ class ContentVisitor
             $wordWidths[] = $sizer->getWidth($word);
         }
 
-        return new \PdfGenerator\FrontendResources\MeasuredContent\Paragraph\Line($words, $wordWidths, $sizer->getSpaceWidth());
+        return new MeasuredContent\Paragraph\Line($words, $wordWidths, $sizer->getSpaceWidth());
     }
 
     /**

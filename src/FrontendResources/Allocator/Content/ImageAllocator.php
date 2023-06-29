@@ -12,7 +12,7 @@
 namespace PdfGenerator\FrontendResources\Allocator\Content;
 
 use PdfGenerator\Frontend\Content\Style\ImageStyle;
-use PdfGenerator\FrontendResources\MeasuredContent\Image;
+use PdfGenerator\Frontend\Font\MeasuredContent\Image;
 use PdfGenerator\FrontendResources\Size;
 
 class ImageAllocator implements ContentAllocatorInterface
