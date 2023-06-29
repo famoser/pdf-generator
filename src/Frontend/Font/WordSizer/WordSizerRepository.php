@@ -9,12 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\FrontendResources\WordSizer;
+namespace PdfGenerator\Frontend\Font\WordSizer;
 
+use PdfGenerator\Frontend\Font\SingletonTrait;
 use PdfGenerator\IR\Document\Resource\Font;
 
 class WordSizerRepository
 {
+    use SingletonTrait;
+
     private readonly WordSizerVisitor $wordSizerVisitor;
 
     /**

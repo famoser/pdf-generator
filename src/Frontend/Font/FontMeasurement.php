@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\FrontendResources\MeasuredContent\Utils;
+namespace PdfGenerator\Frontend\Font;
 
 use PdfGenerator\IR\Document\Resource\Font;
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\FrontendResources\WordSizer;
+namespace PdfGenerator\Frontend\Font\WordSizer;
 
 class ProportionalWordSizer implements WordSizerInterface
 {
