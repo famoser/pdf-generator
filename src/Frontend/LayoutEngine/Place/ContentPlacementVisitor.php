@@ -12,6 +12,7 @@
 namespace PdfGenerator\Frontend\LayoutEngine\Place;
 
 use PdfGenerator\Frontend\Content\ImagePlacement;
+use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
 use PdfGenerator\Frontend\Content\Spacer;
 use PdfGenerator\Frontend\Content\Style\DrawingStyle;
@@ -47,6 +48,11 @@ class ContentPlacementVisitor extends AbstractContentVisitor
         $this->printer->printImage($image, $this->width, $this->height);
 
         return null;
+    }
+
+    public function visitParagraph(Paragraph $paragraph): mixed
+    {
+        $this->printer->printText()
     }
 
     public function visitSpacer(Spacer $spacer): null
