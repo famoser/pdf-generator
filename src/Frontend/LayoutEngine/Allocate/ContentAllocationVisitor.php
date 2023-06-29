@@ -23,12 +23,12 @@ use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
  */
 class ContentAllocationVisitor extends AbstractContentVisitor
 {
-    public function __construct(private readonly float $maxWidth, private readonly float $maxHeight)
+    public function __construct(private readonly float $width, private readonly float $height)
     {
     }
 
     public function visitRectangle(Rectangle $rectangle): ?ContentAllocation
     {
-        return new ContentAllocation($this->maxWidth, $this->maxHeight, $rectangle, false);
+        return new ContentAllocation($this->width, $this->height, $rectangle);
     }
 }

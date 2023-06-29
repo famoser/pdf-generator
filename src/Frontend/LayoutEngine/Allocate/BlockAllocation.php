@@ -15,21 +15,22 @@ use PdfGenerator\Frontend\Layout\AbstractBlock;
 
 readonly class BlockAllocation
 {
-    public function __construct(private float $width, private float $height, private ?AbstractBlock $content, private bool $overflow)
+    /**
+     * @param BlockAllocation[]   $blockAllocations
+     * @param ContentAllocation[] $contentAllocations
+     */
+    public function __construct(private float $left, private float $top, private float $width, private float $height, private array $blockAllocations = [], private array $contentAllocations = [], private ?AbstractBlock $overflow = null)
     {
     }
 
-    public static function create(AbstractBlock $block, float $contentWidth, float $contentHeight, ?AbstractBlock $content, bool $overflow): self
+    public function getLeft(): float
     {
-        $width = $contentWidth + $block->getXSpace();
-        $height = $contentHeight + $block->getYSpace();
-
-        return new self($width, $height, $content, $overflow);
+        return $this->left;
     }
 
-    public static function createEmpty(bool $overflow): self
+    public function getTop(): float
     {
-        return new self(0, 0, null, $overflow);
+        return $this->top;
     }
 
     public function getWidth(): float
@@ -42,12 +43,23 @@ readonly class BlockAllocation
         return $this->height;
     }
 
-    public function getContent(): ?AbstractBlock
+    /**
+     * @return BlockAllocation[]
+     */
+    public function getBlockAllocations(): array
     {
-        return $this->content;
+        return $this->blockAllocations;
     }
 
-    public function hasOverflow(): bool
+    /**
+     * @return ContentAllocation[]
+     */
+    public function getContentAllocations(): array
+    {
+        return $this->contentAllocations;
+    }
+
+    public function getOverflow(): ?AbstractBlock
     {
         return $this->overflow;
     }
