@@ -59,15 +59,17 @@ class LinearDocumentTest extends TestCase
 
         // act
         $rectangleStyle = new DrawingStyle(0.25);
-        $flow = new Flow();
-        for ($i = 0; $i < 7; ++$i) {
+        $flow = new Flow(Flow::DIRECTION_COLUMN);
+        for ($i = 0; $i < 800; ++$i) {
             $rectangle = new Rectangle($rectangleStyle);
             $contentBlock = new ContentBlock($rectangle);
             $contentBlock->setWidth($i * 5 % 40);
             $contentBlock->setHeight($i * 3 % 17);
             $flow->add($contentBlock);
         }
-        $document->add($flow);
+        $outerFlow = new Flow();
+        $outerFlow->add($flow);
+        $document->add($outerFlow);
 
         // assert
         $result = $this->render($document);

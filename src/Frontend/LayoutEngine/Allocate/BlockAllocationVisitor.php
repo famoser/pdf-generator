@@ -39,7 +39,6 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         if (!$usableSpace) {
             return null;
         }
-        var_dump($usableSpace, $this->maxWidth);
 
         $contentAllocationVisitor = new ContentAllocationVisitor(...$usableSpace);
         /** @var ContentAllocation|null $contentAllocation */
@@ -80,29 +79,18 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         $usedHeight = 0;
         /** @var BlockAllocation[] $blockAllocations */
         $blockAllocations = [];
-        /** @var AbstractBlock[] $overflowBlocks */
-        $overflowBlocks = [];
-        for ($i = 0; $i < count($flow->getBlocks()); ++$i) {
-            $block = $flow->getBlocks()[$i];
-
-            // check if enough space available
-            $availableWidth = $usableWidth - $usedWidth;
-            $availableHeight = $usableHeight - $usedHeight;
-            $necessaryWidth = Flow::DIRECTION_ROW === $flow->getDirection() ? $flow->getDimension($i) : null;
-            $necessaryHeight = Flow::DIRECTION_COLUMN === $flow->getDirection() ? $flow->getDimension($i) : null;
-            if ($availableWidth < (int) $necessaryWidth || $availableHeight < (int) $necessaryHeight) {
-                $overflowBlocks = [...array_slice($flow->getBlocks(), $i)];
-                break;
-            }
+        /** @var AbstractBlock[] $pendingBlocks */
+        $pendingBlocks = $flow->getBlocks();
+        while (count($pendingBlocks) > 0) {
+            $block = $pendingBlocks[0];
 
             // get allocation of child
-            $providedWidth = $necessaryWidth ?? $availableWidth;
-            $providedHeight = $necessaryHeight ?? $availableHeight;
-            $allocationVisitor = new BlockAllocationVisitor($providedWidth, $providedHeight);
+            $availableWidth = Flow::DIRECTION_ROW === $flow->getDirection() ? $usableWidth - $usedWidth : $usableWidth;
+            $availableHeight = Flow::DIRECTION_COLUMN === $flow->getDirection() ? $usableHeight - $usedHeight : $usableHeight;
+            $allocationVisitor = new BlockAllocationVisitor($availableWidth, $availableHeight);
             /** @var BlockAllocation $allocation */
             $allocation = $block->accept($allocationVisitor);
             if (!$allocation) {
-                $overflowBlocks = [...array_slice($flow->getBlocks(), $i)];
                 break;
             }
 
@@ -117,10 +105,10 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
                 $usedWidth = max($usedWidth, $allocation->getWidth());
             }
 
-            // abort if child overflowed
             if ($allocation->getOverflow()) {
-                $overflowBlocks = [$allocation->getOverflow(), ...array_slice($flow->getBlocks(), $i + 1)];
-                break;
+                $pendingBlocks[0] = $allocation->getOverflow();
+            } else {
+                array_shift($pendingBlocks);
             }
         }
 
@@ -135,7 +123,7 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             $usedHeight -= $flow->getGap();
         }
 
-        $overflow = count($overflowBlocks) > 0 ? $flow->cloneWithBlocks($overflowBlocks) : null;
+        $overflow = count($pendingBlocks) > 0 ? $flow->cloneWithBlocks($pendingBlocks) : null;
 
         return $this->allocateBlock($flow, $usedWidth, $usedHeight, $blockAllocations, [], $overflow);
     }
