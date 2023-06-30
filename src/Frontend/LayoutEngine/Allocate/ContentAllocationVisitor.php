@@ -18,9 +18,6 @@ use PdfGenerator\Frontend\Font\FontRepository;
 use PdfGenerator\Frontend\Font\WordSizer\WordSizerInterface;
 use PdfGenerator\Frontend\Font\WordSizer\WordSizerRepository;
 use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
-use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\MeasuredLine;
-use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\MeasuredParagraph;
-use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\MeasuredPhrase;
 
 /**
  * This allocates content on the PDF.
@@ -50,7 +47,7 @@ class ContentAllocationVisitor extends AbstractContentVisitor
         $usedHeight = 0;
         $usedWidth = 0;
         $pendingPhrases = $paragraph->getPhrases();
-        /** @var Paragraph\Phrase $allocatedPhrases */
+        /** @var Paragraph\Phrase[] $allocatedPhrases */
         $allocatedPhrases = [];
         while (count($pendingPhrases) > 0) {
             $phrase = $pendingPhrases[0];
@@ -60,27 +57,22 @@ class ContentAllocationVisitor extends AbstractContentVisitor
             $sizer = $wordSizerRepository->getWordSizer($font);
 
             $availableHeight = $this->height - $usedHeight;
-            // TODO: wrong, because previous line height not considered
-            // TODO: move lineHeight calculation inside allocateLines
-            $maxLineCount = (int)($availableHeight / $fontMeasurement->getLeading());
+            $currentLineHeight = max($usedLineHeight, $fontMeasurement->getLeading());
+            $maxLineCount = (int) ((($availableHeight - $currentLineHeight) / $fontMeasurement->getLeading()) + 1);
+            assert($availableHeight > $currentLineHeight || 0 === $maxLineCount);
 
             $pendingLines = $phrase->getLines();
             $allocatedLines = $this->allocateLines($maxLineCount, $sizer, $pendingLines, $usedLineWidth, $usedWidth);
 
             if (count($allocatedLines) > 0) {
-                $usedLineHeight = max($usedLineHeight, $fontMeasurement->getLeading());
+                $usedLineHeight = $currentLineHeight;
                 if (count($allocatedLines) > 1) {
                     $usedHeight += $usedLineHeight;
                     $usedLineHeight = $fontMeasurement->getLeading();
                     $usedHeight += (count($allocatedLines) - 2) * $fontMeasurement->getLeading();
                 }
-            }
 
-            if (count($allocatedLines) > 0) {
                 $allocatedPhrases[] = Paragraph\Phrase::createFromLines($allocatedLines, $textStyle);
-                $usedWidth = max($usedWidth, $usedLineWidth);
-                $usedHeight += max($usedHeight, $usedLineHeight);
-
                 if (count($pendingLines) > 0) {
                     $phrase = Paragraph\Phrase::createFromLines($pendingLines, $textStyle);
                     $pendingPhrases[0] = $phrase;
@@ -92,12 +84,19 @@ class ContentAllocationVisitor extends AbstractContentVisitor
             }
         }
 
+        if (0 === count($allocatedPhrases)) {
+            return null;
+        }
+
+        $allocated = $paragraph->cloneWithPhrases($allocatedPhrases);
         $overflow = count($pendingPhrases) > 0 ? $paragraph->cloneWithPhrases($pendingPhrases) : null;
-        return new ContentAllocation()
+
+        return new ContentAllocation($usedWidth, $usedHeight, $allocated, $overflow);
     }
 
     /**
      * @param string[] $pendingLines
+     *
      * @return string[]
      */
     private function allocateLines(int $maxLines, WordSizerInterface $sizer, array &$pendingLines, float &$usedLineWidth, float &$usedWidth): array
@@ -111,7 +110,7 @@ class ContentAllocationVisitor extends AbstractContentVisitor
                 $allocatedWords = $this->allocatedWords($sizer, $pendingWords, $usedLineWidth);
 
                 // force at least a single word to be printed
-                $noProgress = count($allocatedWords) === 0 && $usedLineWidth === 0;
+                $noProgress = 0 === count($allocatedWords) && 0 === $usedLineWidth;
                 if ($noProgress) {
                     $firstWord = array_shift($pendingWords);
                     $allocatedWords[] = $firstWord;
