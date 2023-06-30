@@ -69,7 +69,7 @@ class ContentVisitor
             // to resolve, include transformation matrix as any other state. will also simplify code here
             $stateTransitionOperators = $this->applyState($phrase->getInfluentialStates());
             $textOperator = $this->getTextOperators($phrase->getLines(), $phrase->getTextState()->getFont());
-            $phraseOperators = array_merge($phraseOperators, [$stateTransitionOperators, $textOperator]);
+            $phraseOperators = array_merge($phraseOperators, $stateTransitionOperators, $textOperator);
         }
 
         $operators = $this->wrapPrintingOperators($paragraph, $phraseOperators);
