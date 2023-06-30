@@ -69,4 +69,33 @@ class PrinterTest extends TestCase
         $this->assertStringContainsString('Dies ist ein', $result);
         file_put_contents('pdf.pdf', $result);
     }
+
+    /**
+     * @throws \Exception
+     */
+    public function testPrintPhrases()
+    {
+        // arrange
+        $document = new Document();
+        $page = new Page(1, [210, 297]);
+        $document->addPage($page);
+
+        // act
+        $bottomLeft = new Document\Content\Common\Position(20, 80);
+        $fontPath = ResourcesProvider::getFontOpenSansPath();
+        $font = $document->getOrCreateEmbeddedFont($fontPath);
+        $textStyle1 = new TextStyle($font, 12, 1);
+        $textStyle2 = new TextStyle($font, 5, 1);
+
+        $phrase1 = new Text\Phrase("Dies ist ein Test\nNeue Zeile. ", $textStyle1);
+        $phrase2 = new Text\Phrase("Es geht weiter\nKlappt das?", $textStyle2);
+        $paragraph = new Document\Content\Paragraph([$phrase1, $phrase2], $bottomLeft);
+        $page->addContent($paragraph);
+
+        // assert
+        $result = $document->save();
+        $this->assertStringContainsString('Dies ist ein', $result);
+        $this->assertStringContainsString('Es geht wei', $result);
+        file_put_contents('pdf.pdf', $result);
+    }
 }

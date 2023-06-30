@@ -65,7 +65,7 @@ class ContentVisitor implements ContentVisitorInterface
         return new TextContent($lines, $writingState);
     }
 
-    public function visitParagraph(Paragraph $paragraph)
+    public function visitParagraph(Paragraph $paragraph): ParagraphContent
     {
         $this->applyPosition($paragraph->getPosition());
         $generalGraphicState = $this->pageResources->getGeneralGraphicState();
