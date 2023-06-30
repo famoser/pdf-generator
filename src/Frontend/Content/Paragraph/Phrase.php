@@ -15,9 +15,16 @@ use PdfGenerator\Frontend\Content\Style\TextStyle;
 
 class Phrase
 {
-    private string $text;
+    public function __construct(private string $text, private TextStyle $textStyle)
+    {
+    }
 
-    private TextStyle $textStyle;
+    public static function createFromLines(array $lines, TextStyle $textStyle): self
+    {
+        $text = implode("\n", $lines);
+
+        return new self($text, $textStyle);
+    }
 
     public function getText(): string
     {
@@ -27,6 +34,16 @@ class Phrase
     public function setText(string $text): void
     {
         $this->text = $text;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getLines(): array
+    {
+        $textWithNormalizedNewlines = str_replace(["\r\n", "\n\r", "\r"], "\n", $this->text);
+
+        return explode("\n", $textWithNormalizedNewlines);
     }
 
     public function getTextStyle(): TextStyle

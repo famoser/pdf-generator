@@ -50,9 +50,11 @@ class ContentPlacementVisitor extends AbstractContentVisitor
         return null;
     }
 
-    public function visitParagraph(Paragraph $paragraph): mixed
+    public function visitParagraph(Paragraph $paragraph): null
     {
-        $this->printer->printText()
+        $this->printer->printText();
+
+        return null;
     }
 
     public function visitSpacer(Spacer $spacer): null

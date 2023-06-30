@@ -44,10 +44,7 @@ class Paragraph extends AbstractContent
 
     public function add(TextStyle $textStyle, string $text): void
     {
-        $phrase = new Phrase();
-        $phrase->setText($text);
-        $phrase->setTextStyle($textStyle);
-
+        $phrase = new Phrase($text, $textStyle);
         $this->phrases[] = $phrase;
     }
 
@@ -62,6 +59,14 @@ class Paragraph extends AbstractContent
     public function getPhrases(): array
     {
         return $this->phrases;
+    }
+
+    public function cloneWithPhrases(array $phrases): self
+    {
+        $clone = clone $this;
+        $clone->phrases = $phrases;
+
+        return $clone;
     }
 
     public function accept(AbstractContentVisitor $visitor): mixed
