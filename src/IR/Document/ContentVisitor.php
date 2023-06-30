@@ -12,11 +12,14 @@
 namespace PdfGenerator\IR\Document;
 
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
+use PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\Phrase;
+use PdfGenerator\Backend\Structure\Document\Page\Content\ParagraphContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
 use PdfGenerator\IR\Document\Content\Common\Position;
 use PdfGenerator\IR\Document\Content\ContentVisitorInterface;
 use PdfGenerator\IR\Document\Content\ImagePlacement;
+use PdfGenerator\IR\Document\Content\Paragraph;
 use PdfGenerator\IR\Document\Content\Rectangle;
 use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Document\Content\Text;
@@ -51,15 +54,31 @@ class ContentVisitor implements ContentVisitorInterface
         return new RectangleContent($width, $height, $paintingMode, $drawingState);
     }
 
-    public function visitText(Text $param): TextContent
+    public function visitText(Text $text): TextContent
     {
-        $lines = $this->splitAtNewlines($param->getText());
+        $lines = $this->splitAtNewlines($text->getText());
 
-        $this->applyPosition($param->getPosition());
-        $this->applyTextStyle($param->getStyle());
+        $this->applyPosition($text->getPosition());
+        $this->applyTextStyle($text->getStyle());
         $writingState = $this->pageResources->getWritingState();
 
         return new TextContent($lines, $writingState);
+    }
+
+    public function visitParagraph(Paragraph $paragraph)
+    {
+        $this->applyPosition($paragraph->getPosition());
+        $generalGraphicState = $this->pageResources->getGeneralGraphicState();
+        /** @var Phrase[] $phrase */
+        $phrases = [];
+        foreach ($paragraph->getPhrase() as $phrase) {
+            $lines = $this->splitAtNewlines($phrase->getText());
+            $this->applyTextStyle($phrase->getStyle());
+            $writingState = $this->pageResources->getWritingState();
+            $phrases[] = new Phrase($lines, $writingState);
+        }
+
+        return new ParagraphContent($phrases, $generalGraphicState);
     }
 
     /**

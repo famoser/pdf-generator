@@ -28,8 +28,13 @@ use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
  */
 class ContentAllocationVisitor extends AbstractContentVisitor
 {
+    private FontRepository $fontRepository;
+    private WordSizerRepository $wordSizerRepository;
+
     public function __construct(private readonly float $width, private readonly float $height)
     {
+        $this->fontRepository = FontRepository::instance();
+        $this->wordSizerRepository = WordSizerRepository::instance();
     }
 
     public function visitRectangle(Rectangle $rectangle): ?ContentAllocation
@@ -39,22 +44,38 @@ class ContentAllocationVisitor extends AbstractContentVisitor
 
     public function visitParagraph(Paragraph $paragraph): ?ContentAllocation
     {
-        $wordSizerRepository = WordSizerRepository::instance();
-        $fontRepository = FontRepository::instance();
-
-        $usedLineWidth = 0;
-        $usedLineHeight = 0;
         $usedHeight = 0;
         $usedWidth = 0;
         $pendingPhrases = $paragraph->getPhrases();
+        $allocatedPhrases = $this->allocatePhrases($pendingPhrases, $usedWidth, $usedHeight);
+
+        if (0 === count($allocatedPhrases)) {
+            return null;
+        }
+
+        $allocated = $paragraph->cloneWithPhrases($allocatedPhrases);
+        $overflow = count($pendingPhrases) > 0 ? $paragraph->cloneWithPhrases($pendingPhrases) : null;
+
+        return new ContentAllocation($usedWidth, $usedHeight, $allocated, $overflow);
+    }
+
+    /**
+     * @param Paragraph\Phrase[] $pendingPhrases
+     *
+     * @return Paragraph\Phrase[]
+     */
+    private function allocatePhrases(array &$pendingPhrases, int &$usedWidth, int &$usedHeight): array
+    {
+        $usedLineWidth = 0;
+        $usedLineHeight = 0;
         /** @var Paragraph\Phrase[] $allocatedPhrases */
         $allocatedPhrases = [];
         while (count($pendingPhrases) > 0) {
             $phrase = $pendingPhrases[0];
             $textStyle = $phrase->getTextStyle();
-            $font = $fontRepository->getFont($textStyle->getFont());
+            $font = $this->fontRepository->getFont($textStyle->getFont());
             $fontMeasurement = new FontMeasurement($font, $textStyle->getFontSize(), $textStyle->getLineHeight());
-            $sizer = $wordSizerRepository->getWordSizer($font);
+            $sizer = $this->wordSizerRepository->getWordSizer($font);
 
             $availableHeight = $this->height - $usedHeight;
             $currentLineHeight = max($usedLineHeight, $fontMeasurement->getLeading());
@@ -84,14 +105,7 @@ class ContentAllocationVisitor extends AbstractContentVisitor
             }
         }
 
-        if (0 === count($allocatedPhrases)) {
-            return null;
-        }
-
-        $allocated = $paragraph->cloneWithPhrases($allocatedPhrases);
-        $overflow = count($pendingPhrases) > 0 ? $paragraph->cloneWithPhrases($pendingPhrases) : null;
-
-        return new ContentAllocation($usedWidth, $usedHeight, $allocated, $overflow);
+        return $allocatedPhrases;
     }
 
     /**

@@ -16,6 +16,7 @@ use PdfGenerator\Backend\Structure\Document\DocumentResources;
 use PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
+use PdfGenerator\Backend\Structure\Document\Page\Content\ParagraphContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
@@ -60,9 +61,27 @@ class ContentVisitor
         return $this->createStreamObject($operators);
     }
 
+    public function visitParagraphContent(ParagraphContent $paragraph): Content
+    {
+        $phraseOperators = [];
+        foreach ($paragraph->getPhrases() as $phrase) {
+            // TODO: likely text state inconsistent, as modified state popped again with q
+            // to resolve, include transformation matrix as any other state. will also simplify code here
+            $stateTransitionOperators = $this->applyState($phrase->getInfluentialStates());
+            $textOperator = $this->getTextOperators($phrase->getLines(), $phrase->getTextState()->getFont());
+            $phraseOperators = array_merge($phraseOperators, [$stateTransitionOperators, $textOperator]);
+        }
+
+        $operators = $this->wrapPrintingOperators($paragraph, $phraseOperators);
+        // need to add BT before & ET after so text state change operators are valid
+        $operators = array_merge(['BT'], $operators, ['ET']);
+
+        return $this->createStreamObject($operators);
+    }
+
     private function wrapPrintingOperators(BaseContent $baseContent, array $printingOperators): array
     {
-        $stateTransitionOperators = $this->applyState($baseContent);
+        $stateTransitionOperators = $this->applyState($baseContent->getInfluentialStates());
         $translationMatrix = $baseContent->getCurrentTransformationMatrix();
         $translationOperator = implode(' ', $translationMatrix).' cm';
 
@@ -126,13 +145,13 @@ class ContentVisitor
     /**
      * @return string[]
      */
-    private function applyState(BaseContent $baseContent): array
+    private function applyState(array $influentialStates): array
     {
         $stateTransitionVisitor = new StateTransitionVisitor($this->lastAppliedState, $this->documentResources);
 
         /** @var string[] $operators */
         $operators = [];
-        foreach ($baseContent->getInfluentialStates() as $influentialState) {
+        foreach ($influentialStates as $influentialState) {
             $operators = array_merge($operators, $influentialState->accept($stateTransitionVisitor));
         }
 

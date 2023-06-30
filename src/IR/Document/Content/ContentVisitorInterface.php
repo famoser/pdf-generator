@@ -17,5 +17,7 @@ interface ContentVisitorInterface
 
     public function visitRectangle(Rectangle $rectangle);
 
-    public function visitText(Text $param);
+    public function visitText(Text $text);
+
+    public function visitParagraph(Paragraph $paragraph);
 }
