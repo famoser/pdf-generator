@@ -45,61 +45,126 @@ class ContentAllocationVisitor extends AbstractContentVisitor
         $wordSizerRepository = WordSizerRepository::instance();
         $fontRepository = FontRepository::instance();
 
-        $availableHeight = $this->height;
-        foreach ($paragraph->getPhrases() as $phrase) {
+        $usedLineWidth = 0;
+        $usedLineHeight = 0;
+        $usedHeight = 0;
+        $usedWidth = 0;
+        $pendingPhrases = $paragraph->getPhrases();
+        /** @var Paragraph\Phrase $allocatedPhrases */
+        $allocatedPhrases = [];
+        while (count($pendingPhrases) > 0) {
+            $phrase = $pendingPhrases[0];
             $textStyle = $phrase->getTextStyle();
             $font = $fontRepository->getFont($textStyle->getFont());
-
             $fontMeasurement = new FontMeasurement($font, $textStyle->getFontSize(), $textStyle->getLineHeight());
-            if (!$availableHeight < $fontMeasurement->getLeading()) {
+            $sizer = $wordSizerRepository->getWordSizer($font);
+
+            $availableHeight = $this->height - $usedHeight;
+            // TODO: wrong, because previous line height not considered
+            // TODO: move lineHeight calculation inside allocateLines
+            $maxLineCount = (int)($availableHeight / $fontMeasurement->getLeading());
+
+            $pendingLines = $phrase->getLines();
+            $allocatedLines = $this->allocateLines($maxLineCount, $sizer, $pendingLines, $usedLineWidth, $usedWidth);
+
+            if (count($allocatedLines) > 0) {
+                $usedLineHeight = max($usedLineHeight, $fontMeasurement->getLeading());
+                if (count($allocatedLines) > 1) {
+                    $usedHeight += $usedLineHeight;
+                    $usedLineHeight = $fontMeasurement->getLeading();
+                    $usedHeight += (count($allocatedLines) - 2) * $fontMeasurement->getLeading();
+                }
+            }
+
+            if (count($allocatedLines) > 0) {
+                $allocatedPhrases[] = Paragraph\Phrase::createFromLines($allocatedLines, $textStyle);
+                $usedWidth = max($usedWidth, $usedLineWidth);
+                $usedHeight += max($usedHeight, $usedLineHeight);
+
+                if (count($pendingLines) > 0) {
+                    $phrase = Paragraph\Phrase::createFromLines($pendingLines, $textStyle);
+                    $pendingPhrases[0] = $phrase;
+                } else {
+                    array_shift($pendingPhrases);
+                }
+            } else {
                 break;
             }
-
-            $sizer = $wordSizerRepository->getWordSizer($font);
-            $lines = $this->splitAtNewlines($phrase->getText());
-        }
-    }
-
-    public function getMeasuredParagraph(): MeasuredParagraph
-    {
-        $measuredParagraph = new MeasuredParagraph();
-
-        foreach ($this->phrases as $phrase) {
-            $textStyle = $phrase->getTextStyle();
-
-            $measuredLines = [];
-            $lines = $this->splitAtNewlines($phrase->getText());
-            $sizer = $this->wordSizerRepository->getWordSizer($textStyle->getFont());
-            foreach ($lines as $line) {
-                $measuredLines[] = $this->measureLine($line, $sizer);
-            }
-
-            $measuredPhrase = new MeasuredPhrase($measuredLines, $textStyle);
-            $measuredParagraph->addMeasuredPhrase($measuredPhrase);
         }
 
-        return $measuredParagraph;
-    }
-
-    private function measureLine(string $line, WordSizerInterface $sizer): MeasuredLine
-    {
-        $words = explode(' ', $line);
-
-        $wordWidths = [];
-        foreach ($words as $word) {
-            $wordWidths[] = $sizer->getWidth($word);
-        }
-
-        return new MeasuredLine($words, $wordWidths, $sizer->getSpaceWidth());
+        $overflow = count($pendingPhrases) > 0 ? $paragraph->cloneWithPhrases($pendingPhrases) : null;
+        return new ContentAllocation()
     }
 
     /**
+     * @param string[] $pendingLines
      * @return string[]
      */
-    private function splitAtNewlines(string $text): array
+    private function allocateLines(int $maxLines, WordSizerInterface $sizer, array &$pendingLines, float &$usedLineWidth, float &$usedWidth): array
     {
-        $textWithNormalizedNewlines = str_replace(["\r\n", "\n\r", "\r"], "\n", $text);
+        /** @var string[] $allocatedLines */
+        $allocatedLines = [];
+        while (count($pendingLines) > 0 && count($allocatedLines) < $maxLines) {
+            $line = $pendingLines[0];
+            $pendingWords = explode(' ', $line);
+            while (count($pendingWords) > 0 && count($allocatedLines) < $maxLines) {
+                $allocatedWords = $this->allocatedWords($sizer, $pendingWords, $usedLineWidth);
 
-        return explode("\n", $textWithNormalizedNewlines);
+                // force at least a single word to be printed
+                $noProgress = count($allocatedWords) === 0 && $usedLineWidth === 0;
+                if ($noProgress) {
+                    $firstWord = array_shift($pendingWords);
+                    $allocatedWords[] = $firstWord;
+                    $usedLineWidth = $sizer->getWidth($firstWord);
+                }
+
+                $allocatedLine = implode(' ', $allocatedWords);
+                $allocatedLines[] = $allocatedLine;
+
+                // begin new line
+                if (count($pendingWords) > 0) {
+                    $usedWidth = max($usedWidth, $usedLineWidth);
+                    $usedLineWidth = 0;
+                }
+            }
+
+            if (count($pendingWords) > 0) {
+                $pendingLines[0] = implode(' ', $pendingWords);
+            } else {
+                array_shift($pendingLines);
+            }
+        }
+
+        return $allocatedLines;
+    }
+
+    private function allocatedWords(WordSizerInterface $sizer, array &$pendingWords, float &$usedLineWidth): array
+    {
+        /** @var string[] $allocatedWords */
+        $allocatedWords = [];
+
+        while (count($pendingWords) > 0) {
+            $word = $pendingWords[0];
+            $wordSize = $sizer->getWidth($word);
+            $availableWidth = $this->width - $usedLineWidth;
+            if ($wordSize < $availableWidth) {
+                $allocatedWords[] = $word;
+                $usedLineWidth += $wordSize;
+                array_shift($pendingWords);
+
+                // more words follow; add space
+                if (count($pendingWords) > 0) {
+                    $usedLineWidth += $sizer->getSpaceWidth();
+                }
+            } else {
+                // natural line break; remove space at the end
+                if (count($allocatedWords) > 0) {
+                    $usedLineWidth -= $sizer->getSpaceWidth();
+                }
+                break;
+            }
+        }
+
+        return $allocatedWords;
     }
 }
