@@ -14,9 +14,6 @@ namespace PdfGenerator\IR;
 use PdfGenerator\IR\Analysis\AnalyzeContentVisitor;
 use PdfGenerator\IR\Document\Page;
 use PdfGenerator\IR\Document\Resource\DocumentResources;
-use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
-use PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
-use PdfGenerator\IR\Document\Resource\Image;
 
 class Document
 {
@@ -24,21 +21,6 @@ class Document
      * @var Page[]
      */
     private array $pages = [];
-
-    /**
-     * @var Image[]
-     */
-    private array $images = [];
-
-    /**
-     * @var DefaultFont[]
-     */
-    private array $defaultFonts = [];
-
-    /**
-     * @var EmbeddedFont[]
-     */
-    private array $embeddedFonts = [];
 
     public function addPage(Page $page): void
     {
@@ -51,41 +33,6 @@ class Document
     public function getPages(): array
     {
         return $this->pages;
-    }
-
-    public function getOrCreateImage(string $imagePath, string $type): Image
-    {
-        if (!\array_key_exists($imagePath, $this->images)) {
-            $image = Image::create($imagePath, $type);
-
-            $this->images[$imagePath] = $image;
-        }
-
-        return $this->images[$imagePath];
-    }
-
-    /**
-     * @throws \JsonException
-     */
-    public function getOrCreateDefaultFont(string $font, string $style): DefaultFont
-    {
-        $key = $font.'_'.$style;
-        if (!\array_key_exists($key, $this->defaultFonts)) {
-            $this->defaultFonts[$key] = DefaultFont::create($font, $style);
-        }
-
-        return $this->defaultFonts[$key];
-    }
-
-    public function getOrCreateEmbeddedFont(string $fontPath): EmbeddedFont
-    {
-        if (!\array_key_exists($fontPath, $this->embeddedFonts)) {
-            $font = EmbeddedFont::create($fontPath);
-
-            $this->embeddedFonts[$fontPath] = $font;
-        }
-
-        return $this->embeddedFonts[$fontPath];
     }
 
     public function render(): \PdfGenerator\Backend\Structure\Document

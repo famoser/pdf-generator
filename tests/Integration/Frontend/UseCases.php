@@ -16,6 +16,7 @@ use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\LinearDocument;
 use PdfGenerator\Frontend\Resource\Font;
+use PdfGenerator\Frontend\Resource\Font\FontFamily;
 
 class UseCases
 {
@@ -25,7 +26,7 @@ class UseCases
         $document = new LinearDocument();
 
         // act
-        $headerFont = Font::createFromDefault(Font::NAME_HELVETICA, Font::STYLE_ROMAN, Font::WEIGHT_BOLD);
+        $headerFont = Font::createFromDefault(FontFamily::Helvetica, Font\FontWeight::Bold);
         $headerTextStyle = new TextStyle($headerFont, 8);
         $paragraph = new Paragraph();
         $paragraph->add($headerTextStyle, 'Veröffentlichung PDF-writer');
@@ -51,7 +52,7 @@ class UseCases
         $flow = new Flow();
 
         // act
-        $headerFont = Font::createFromDefault(Font::NAME_HELVETICA, Font::STYLE_ROMAN, Font::WEIGHT_BOLD);
+        $headerFont = Font::createFromDefault(FontFamily::Helvetica, Font\FontWeight::Bold);
         $headerTextStyle = new TextStyle($headerFont, 8);
         $paragraph = new Paragraph();
         $paragraph->add($headerTextStyle, 'Veröffentlichung PDF-writer');

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Font\WordSizer;
+namespace PdfGenerator\Frontend\Resource\Font\WordSizer;
 
 class MonospaceProportionalWordSizer implements WordSizerInterface
 {

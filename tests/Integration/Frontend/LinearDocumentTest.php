@@ -11,12 +11,15 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
+use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
 use PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use PdfGenerator\Frontend\LinearDocument;
+use PdfGenerator\Frontend\Resource\Font;
 use PdfGenerator\IR\Document\Content\Common\Color;
 use PHPUnit\Framework\TestCase;
 
@@ -75,6 +78,32 @@ class LinearDocumentTest extends TestCase
         $result = $this->render($document);
         $this->assertStringContainsString('10', $result);
         $this->assertStringContainsString('20', $result);
+    }
+
+    public function testPrintFlowText()
+    {
+        // arrange
+        $document = new LinearDocument();
+
+        $font = Font::createFromDefault();
+        $normalText = new TextStyle($font);
+
+        // act
+        $flow = new Flow();
+        for ($i = 0; $i < 10; ++$i) {
+            $paragraph = new Paragraph();
+            $paragraph->add($normalText, 'Hi mom!');
+            $paragraph->add($normalText, ' Hi mom x fo real.');
+            $paragraph->add($normalText, ' Exactly what I need ');
+            $paragraph->add($normalText, ' Please allocate '.$i);
+            $contentBlock = new ContentBlock($paragraph);
+            $flow->add($contentBlock);
+        }
+        $document->add($flow);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('Hi mom', $result);
     }
 
     private function render(LinearDocument $document): string

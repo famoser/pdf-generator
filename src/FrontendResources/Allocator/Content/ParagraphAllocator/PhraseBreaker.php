@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\FrontendResources\Allocator\Content\ParagraphAllocator;
 
-use PdfGenerator\Frontend\Font\FontMeasurement;
+use PdfGenerator\Frontend\Resource\Font\FontMeasurement;
 use PdfGenerator\FrontendResources\LocatedContent\Paragraph\Fragment;
 use PdfGenerator\FrontendResources\MeasuredContent\Paragraph\Phrase;
 

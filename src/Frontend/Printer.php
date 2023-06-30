@@ -16,6 +16,7 @@ use PdfGenerator\Frontend\LayoutEngine\Place\ContentPlacementVisitor;
 use PdfGenerator\IR\Document\Content\Common\Position;
 use PdfGenerator\IR\Document\Content\Common\Size;
 use PdfGenerator\IR\Document\Content\ImagePlacement;
+use PdfGenerator\IR\Document\Content\Paragraph;
 use PdfGenerator\IR\Document\Content\Rectangle;
 use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Document\Content\Text;
@@ -32,11 +33,6 @@ readonly class Printer
     public function position(float $left, float $top): self
     {
         return new self($this->document, $this->page, $this->left + $left, $this->top + $top);
-    }
-
-    public function getOrCreateImage(string $imagePath, string $type): Image
-    {
-        return $this->document->getOrCreateImage($imagePath, $type);
     }
 
     public function printImage(Image $image, float $width, float $height): void
@@ -63,6 +59,17 @@ readonly class Printer
 
         $rectangle = new Text($text, $position, $textStyle);
         $this->page->addContent($rectangle);
+    }
+
+    /**
+     * @param Text\Phrase[] $phrases
+     */
+    public function printPhrases(array $phrases, float $height): void
+    {
+        $position = $this->getPosition($height);
+
+        $paragraph = new Paragraph($phrases, $position);
+        $this->page->addContent($paragraph);
     }
 
     private function getPosition(float $height): Position

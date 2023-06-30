@@ -33,7 +33,7 @@ class PrinterTest extends TestCase
 
         // act
         $bottomLeft = new Document\Content\Common\Position(20, 80);
-        $font = $document->getOrCreateDefaultFont(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
+        $font = DefaultFont::create(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 12, 1);
 
         $text = new Text("Hallo Welt!\nWie geht es?", $bottomLeft, $textStyle);
@@ -58,7 +58,7 @@ class PrinterTest extends TestCase
         // act
         $bottomLeft = new Document\Content\Common\Position(20, 80);
         $fontPath = ResourcesProvider::getFontOpenSansPath();
-        $font = $document->getOrCreateEmbeddedFont($fontPath);
+        $font = Document\Resource\Font\EmbeddedFont::create($fontPath);
         $textStyle = new TextStyle($font, 12, 1);
 
         $text = new Text("Dies ist ein Test mit äöü!\nKlappt das?", $bottomLeft, $textStyle);
@@ -83,7 +83,7 @@ class PrinterTest extends TestCase
         // act
         $bottomLeft = new Document\Content\Common\Position(20, 80);
         $fontPath = ResourcesProvider::getFontOpenSansPath();
-        $font = $document->getOrCreateEmbeddedFont($fontPath);
+        $font = Document\Resource\Font\EmbeddedFont::create($fontPath);
         $textStyle1 = new TextStyle($font, 12, 1);
         $textStyle2 = new TextStyle($font, 5, 1);
 

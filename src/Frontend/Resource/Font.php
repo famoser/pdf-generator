@@ -11,22 +11,26 @@
 
 namespace PdfGenerator\Frontend\Resource;
 
+use PdfGenerator\Frontend\Resource\Font\FontFamily;
+use PdfGenerator\Frontend\Resource\Font\FontStyle;
+use PdfGenerator\Frontend\Resource\Font\FontWeight;
+
 class Font
 {
-    final public const NAME_HELVETICA = 'NAME_HELVETICA';
+    final public const NAME_HELVETICA = 'HELVETICA';
 
-    private ?string $name = null;
+    private ?FontFamily $family = null;
 
     final public const WEIGHT_NORMAL = 'WEIGHT_NORMAL';
     final public const WEIGHT_BOLD = 'WEIGHT_BOLD';
 
-    private ?string $weight = null;
+    private ?FontWeight $weight = null;
 
     final public const STYLE_ROMAN = 'STYLE_ROMAN';
     final public const STYLE_ITALIC = 'STYLE_ITALIC';
     final public const STYLE_OBLIQUE = 'STYLE_OBLIQUE'; // like auto-generated italic
 
-    private ?string $style = null;
+    private ?FontStyle $style = null;
 
     private ?string $src = null;
 
@@ -34,11 +38,11 @@ class Font
     {
     }
 
-    public static function createFromDefault(string $name = self::NAME_HELVETICA, string $weight = self::WEIGHT_NORMAL, string $style = self::STYLE_ROMAN): self
+    public static function createFromDefault(FontFamily $family = FontFamily::Helvetica, FontWeight $weight = FontWeight::Normal, FontStyle $style = FontStyle::Roman): self
     {
         $font = new self();
 
-        $font->name = $name;
+        $font->family = $family;
         $font->weight = $weight;
         $font->style = $style;
 
@@ -54,17 +58,17 @@ class Font
         return $font;
     }
 
-    public function getName(): ?string
+    public function getFamily(): ?FontFamily
     {
-        return $this->name;
+        return $this->family;
     }
 
-    public function getWeight(): ?string
+    public function getWeight(): ?FontWeight
     {
         return $this->weight;
     }
 
-    public function getStyle(): ?string
+    public function getStyle(): ?FontStyle
     {
         return $this->style;
     }

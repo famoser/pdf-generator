@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Font;
+namespace PdfGenerator\Frontend\Resource\Font;
 
+use PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerInterface;
 use PdfGenerator\IR\Document\Resource\Font;
 
 readonly class FontMeasurement
 {
-    public function __construct(private readonly Font $font, private readonly float $fontSize, private readonly float $lineHeight)
+    public function __construct(private Font $font, private float $fontSize, private float $lineHeight, private WordSizerInterface $wordSizer)
     {
     }
 
@@ -42,5 +43,15 @@ readonly class FontMeasurement
     public function getFontScaling(): float|int
     {
         return $this->font->getUnitsPerEm() / $this->fontSize;
+    }
+
+    public function getWidth(string $word): float
+    {
+        return $this->wordSizer->getWidth($word) / $this->getFontScaling();
+    }
+
+    public function getSpaceWidth(): float
+    {
+        return $this->wordSizer->getSpaceWidth() / $this->getFontScaling();
     }
 }

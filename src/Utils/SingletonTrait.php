@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Font;
+namespace PdfGenerator\Utils;
 
 trait SingletonTrait
 {
