@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Font\WordSizer;
+namespace PdfGenerator\Frontend\Resource\Font;
 
-interface WordSizerInterface
+enum FontStyle: string
 {
-    public function getWidth(string $word): float;
-
-    public function getSpaceWidth(): float;
+    case Roman = 'Roman';
+    case Italic = 'Italic';
+    case Oblique = 'Oblique';
 }

@@ -11,13 +11,13 @@
 
 namespace PdfGenerator\FrontendResources;
 
-use PdfGenerator\Frontend\Font\FontRepository;
 use PdfGenerator\Frontend\Font\MeasuredContent\Image;
 use PdfGenerator\Frontend\Font\MeasuredContent\Paragraph;
 use PdfGenerator\Frontend\Font\MeasuredContent\Rectangle;
-use PdfGenerator\Frontend\Font\WordSizer\WordSizerInterface;
-use PdfGenerator\Frontend\Font\WordSizer\WordSizerRepository;
-use PdfGenerator\FrontendResources\MeasuredContent\Utils\ImageRepository;
+use PdfGenerator\Frontend\Resource\Font\FontRepository;
+use PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerInterface;
+use PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerRepository;
+use PdfGenerator\Frontend\Resource\Image\ImageRepository;
 
 class ContentVisitor
 {

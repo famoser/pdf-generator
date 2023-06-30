@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\FrontendResources\CursorPrinter\Buffer;
 
-use PdfGenerator\Frontend\Font\WordSizer\WordSizerInterface;
-use PdfGenerator\Frontend\Font\WordSizer\WordSizerRepository;
+use PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerInterface;
+use PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerRepository;
 use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\MeasuredLine;
 use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\MeasuredParagraph;
 use PdfGenerator\FrontendResources\CursorPrinter\Buffer\TextBuffer\MeasuredPhrase;

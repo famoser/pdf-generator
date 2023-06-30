@@ -13,11 +13,9 @@ namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
 
 use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
-use PdfGenerator\Frontend\Font\FontMeasurement;
-use PdfGenerator\Frontend\Font\FontRepository;
-use PdfGenerator\Frontend\Font\WordSizer\WordSizerInterface;
-use PdfGenerator\Frontend\Font\WordSizer\WordSizerRepository;
 use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\Resource\Font\FontMeasurement;
+use PdfGenerator\Frontend\Resource\Font\FontRepository;
 
 /**
  * This allocates content on the PDF.
@@ -29,12 +27,10 @@ use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
 class ContentAllocationVisitor extends AbstractContentVisitor
 {
     private FontRepository $fontRepository;
-    private WordSizerRepository $wordSizerRepository;
 
     public function __construct(private readonly float $width, private readonly float $height)
     {
         $this->fontRepository = FontRepository::instance();
-        $this->wordSizerRepository = WordSizerRepository::instance();
     }
 
     public function visitRectangle(Rectangle $rectangle): ?ContentAllocation
@@ -73,9 +69,7 @@ class ContentAllocationVisitor extends AbstractContentVisitor
         while (count($pendingPhrases) > 0) {
             $phrase = $pendingPhrases[0];
             $textStyle = $phrase->getTextStyle();
-            $font = $this->fontRepository->getFont($textStyle->getFont());
-            $fontMeasurement = new FontMeasurement($font, $textStyle->getFontSize(), $textStyle->getLineHeight());
-            $sizer = $this->wordSizerRepository->getWordSizer($font);
+            $fontMeasurement = $this->fontRepository->getFontMeasurement($textStyle);
 
             $availableHeight = $this->height - $usedHeight;
             $currentLineHeight = max($usedLineHeight, $fontMeasurement->getLeading());
@@ -83,7 +77,7 @@ class ContentAllocationVisitor extends AbstractContentVisitor
             assert($availableHeight > $currentLineHeight || 0 === $maxLineCount);
 
             $pendingLines = $phrase->getLines();
-            $allocatedLines = $this->allocateLines($maxLineCount, $sizer, $pendingLines, $usedLineWidth, $usedWidth);
+            $allocatedLines = $this->allocateLines($maxLineCount, $fontMeasurement, $pendingLines, $usedLineWidth, $usedWidth);
 
             if (count($allocatedLines) > 0) {
                 $usedLineHeight = $currentLineHeight;
@@ -113,7 +107,7 @@ class ContentAllocationVisitor extends AbstractContentVisitor
      *
      * @return string[]
      */
-    private function allocateLines(int $maxLines, WordSizerInterface $sizer, array &$pendingLines, float &$usedLineWidth, float &$usedWidth): array
+    private function allocateLines(int $maxLines, FontMeasurement $fontMeasurement, array &$pendingLines, float &$usedLineWidth, float &$usedWidth): array
     {
         /** @var string[] $allocatedLines */
         $allocatedLines = [];
@@ -121,14 +115,14 @@ class ContentAllocationVisitor extends AbstractContentVisitor
             $line = $pendingLines[0];
             $pendingWords = explode(' ', $line);
             while (count($pendingWords) > 0 && count($allocatedLines) < $maxLines) {
-                $allocatedWords = $this->allocatedWords($sizer, $pendingWords, $usedLineWidth);
+                $allocatedWords = $this->allocatedWords($fontMeasurement, $pendingWords, $usedLineWidth);
 
                 // force at least a single word to be printed
-                $noProgress = 0 === count($allocatedWords) && 0 === $usedLineWidth;
+                $noProgress = 0 === count($allocatedWords) && 0.0 === $usedLineWidth;
                 if ($noProgress) {
                     $firstWord = array_shift($pendingWords);
                     $allocatedWords[] = $firstWord;
-                    $usedLineWidth = $sizer->getWidth($firstWord);
+                    $usedLineWidth = $fontMeasurement->getWidth($firstWord);
                 }
 
                 $allocatedLine = implode(' ', $allocatedWords);
@@ -151,14 +145,14 @@ class ContentAllocationVisitor extends AbstractContentVisitor
         return $allocatedLines;
     }
 
-    private function allocatedWords(WordSizerInterface $sizer, array &$pendingWords, float &$usedLineWidth): array
+    private function allocatedWords(FontMeasurement $fontMeasurement, array &$pendingWords, float &$usedLineWidth): array
     {
         /** @var string[] $allocatedWords */
         $allocatedWords = [];
 
         while (count($pendingWords) > 0) {
             $word = $pendingWords[0];
-            $wordSize = $sizer->getWidth($word);
+            $wordSize = $fontMeasurement->getWidth($word);
             $availableWidth = $this->width - $usedLineWidth;
             if ($wordSize < $availableWidth) {
                 $allocatedWords[] = $word;
@@ -167,12 +161,12 @@ class ContentAllocationVisitor extends AbstractContentVisitor
 
                 // more words follow; add space
                 if (count($pendingWords) > 0) {
-                    $usedLineWidth += $sizer->getSpaceWidth();
+                    $usedLineWidth += $fontMeasurement->getSpaceWidth();
                 }
             } else {
                 // natural line break; remove space at the end
                 if (count($allocatedWords) > 0) {
-                    $usedLineWidth -= $sizer->getSpaceWidth();
+                    $usedLineWidth -= $fontMeasurement->getSpaceWidth();
                 }
                 break;
             }
