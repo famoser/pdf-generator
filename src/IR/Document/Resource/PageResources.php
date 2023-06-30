@@ -13,6 +13,7 @@ namespace PdfGenerator\IR\Document\Resource;
 
 use PdfGenerator\Backend\Structure\Document\Font as BackendFont;
 use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
 use PdfGenerator\IR\Document\Resource\State\ColorStateRepository;
@@ -73,6 +74,11 @@ class PageResources
         $this->images[$structure->getIdentifier()] = $image;
 
         return $image;
+    }
+
+    public function getGeneralGraphicState(): GeneralGraphicState
+    {
+        return $this->generalGraphicStateRepository->getGeneralGraphicState();
     }
 
     public function getDrawingState(): DrawingState

@@ -14,6 +14,7 @@ namespace PdfGenerator\IR\Analysis;
 use PdfGenerator\IR\Document\Content\Common\Size;
 use PdfGenerator\IR\Document\Content\ContentVisitorInterface;
 use PdfGenerator\IR\Document\Content\ImagePlacement;
+use PdfGenerator\IR\Document\Content\Paragraph;
 use PdfGenerator\IR\Document\Content\Rectangle;
 use PdfGenerator\IR\Document\Content\Text;
 
@@ -53,14 +54,26 @@ class AnalyzeContentVisitor implements ContentVisitorInterface
     {
     }
 
-    public function visitText(Text $param): void
+    public function visitText(Text $text): void
     {
-        $identifier = $param->getStyle()->getFont()->getIdentifier();
+        $identifier = $text->getStyle()->getFont()->getIdentifier();
         if (!\array_key_exists($identifier, $this->textPerFont)) {
             $this->textPerFont[$identifier] = '';
         }
 
-        $this->textPerFont[$identifier] .= $param->getText();
+        $this->textPerFont[$identifier] .= $text->getText();
+    }
+
+    public function visitParagraph(Paragraph $paragraph): void
+    {
+        foreach ($paragraph->getPhrase() as $phrase) {
+            $identifier = $phrase->getStyle()->getFont()->getIdentifier();
+            if (!\array_key_exists($identifier, $this->textPerFont)) {
+                $this->textPerFont[$identifier] = '';
+            }
+
+            $this->textPerFont[$identifier] .= $phrase->getText();
+        }
     }
 
     public function getAnalysisResult(): AnalysisResult
