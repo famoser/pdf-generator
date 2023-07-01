@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document\Page\Content;
+namespace PdfGenerator\Backend\Structure\Document\Page;
 
 use PdfGenerator\Backend\Structure\Document\DocumentResources;
 use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
@@ -135,6 +135,10 @@ class StateTransitionVisitor
 
         if (!$previousState) {
             $previousState = new GeneralGraphicState();
+        }
+
+        if ($previousState->getCurrentTransformationMatrix() !== $targetState->getCurrentTransformationMatrix()) {
+            $operators[] = implode(' ', $targetState->getCurrentTransformationMatrix()).' cm';
         }
 
         if ($previousState->getLineWidth() !== $targetState->getLineWidth()) {

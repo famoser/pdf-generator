@@ -12,8 +12,8 @@
 namespace PdfGenerator\Backend\Structure\Document\Page\State;
 
 use PdfGenerator\Backend\Structure\Document\Font;
-use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Document\Page\StateTransitionVisitor;
 
 readonly class TextState extends BaseState
 {

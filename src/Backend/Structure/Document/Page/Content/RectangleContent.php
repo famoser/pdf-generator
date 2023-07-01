@@ -55,9 +55,4 @@ readonly class RectangleContent extends BaseContent
     {
         return $visitor->visitRectangleContent($this);
     }
-
-    public function getCurrentTransformationMatrix(): array
-    {
-        return $this->drawingState->getGeneralGraphicsState()->getCurrentTransformationMatrix();
-    }
 }

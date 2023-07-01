@@ -44,9 +44,4 @@ readonly class ParagraphContent extends BaseContent
     {
         return $visitor->visitParagraphContent($this);
     }
-
-    public function getCurrentTransformationMatrix(): array
-    {
-        return $this->generalGraphicState->getCurrentTransformationMatrix();
-    }
 }

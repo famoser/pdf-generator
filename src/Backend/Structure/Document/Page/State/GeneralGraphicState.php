@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Backend\Structure\Document\Page\State;
 
-use PdfGenerator\Backend\Structure\Document\Page\Content\StateTransitionVisitor;
 use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use PdfGenerator\Backend\Structure\Document\Page\StateTransitionVisitor;
 
 readonly class GeneralGraphicState extends BaseState
 {
@@ -35,13 +35,8 @@ readonly class GeneralGraphicState extends BaseState
      *                                             if the value is 0, the thinnest line possible on the device will be rendered
      * @param int     $lineCap                     how the end of a line looks like
      *                                             butt cap stops squared at the end of the path
-     *                                             round cap produces a semicircular arch with the diameter = @see lineWidth
-     *                                             projecting square cap stops squared at the end of the path + @see lineWidth/2
-     * @param int     $lineJoin                    how two meeting lines are brought together
-     *                                             miter join produces a sharp edge, by extending the meeting lines until the @see miterLimit
-     *                                             round join creates an arch around the edge with diameter = @see lineWidth
-     *                                             bevel join produces a flat edge, by adding a triangle into the free space produced by the two lines with butt caps meeting
-     * @param float   $miterLimit                  impose maximum height of the sharp edge produced by a miter join
+     *                                             round cap produces a semicircular arch with the diameter = @param int $lineJoin how two meeting lines are brought together
+     *                                             miter join produces a sharp edge, by extending the meeting lines until the @param float $miterLimit impose maximum height of the sharp edge produced by a miter join
      *                                             when the threshold is reached, a bevel join is used
      *                                             calculate miterLimit = lineWidth * sin(angle / 2)
      * @param float[] $dashArray                   the pattern of on / off parts, repeated indefinitely
@@ -49,6 +44,12 @@ readonly class GeneralGraphicState extends BaseState
      * @param float   $dashPhase                   the pattern shift at start
      *
      * default arguments correspond to PDF defaults
+     *
+     * @see lineWidth
+     *                                             projecting square cap stops squared at the end of the path + @see lineWidth/2
+     * @see miterLimit
+     *                                             round join creates an arch around the edge with diameter = @see lineWidth
+     *                                             bevel join produces a flat edge, by adding a triangle into the free space produced by the two lines with butt caps meeting
      */
     public function __construct(private array $currentTransformationMatrix = [1, 0, 0, 1, 0, 0], private float $lineWidth = 0, private int $lineCap = self::LINE_CAP_BUTT, private int $lineJoin = self::LINE_JOIN_MITER, private float $miterLimit = 2.0, private array $dashArray = [], private float $dashPhase = 0)
     {
