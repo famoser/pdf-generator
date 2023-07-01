@@ -21,7 +21,7 @@ class TextStyle
     private float $lineHeight;
     private Color $color;
 
-    public function __construct(Font $font, float $fontSize = 12, float $lineHeight = 1.2, Color $color = null)
+    public function __construct(Font $font, float $fontSize = 4.218, float $lineHeight = 1.2, Color $color = null)
     {
         $this->font = $font;
         $this->fontSize = $fontSize;

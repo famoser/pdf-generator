@@ -63,12 +63,19 @@ class ContentPlacementVisitor extends AbstractContentVisitor
     {
         /** @var Phrase[] $phrases */
         $phrases = [];
+        $heightShift = 0;
+        if (count($paragraph->getPhrases()) > 0) {
+            $phrase = $paragraph->getPhrases()[0];
+            $fontMeasurement = $this->fontRepository->getFontMeasurement($phrase->getTextStyle());
+            $heightShift = $fontMeasurement->getAscender();
+        }
+
         foreach ($paragraph->getPhrases() as $phrase) {
             $textStyle = self::createTextStyle($phrase->getTextStyle());
             $phrases[] = new Phrase($phrase->getText(), $textStyle);
         }
 
-        $this->printer->printPhrases($phrases, $this->height);
+        $this->printer->printPhrases($phrases, $heightShift);
 
         return null;
     }
