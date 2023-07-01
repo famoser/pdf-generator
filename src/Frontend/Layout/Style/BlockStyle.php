@@ -20,10 +20,7 @@ class BlockStyle
     private ?Color $backgroundColor;
     private ?BlockSize $blockSize;
 
-    /**
-     * @param float[]|null $borderWidth
-     */
-    public function __construct(array $borderWidth = null, ?Color $borderColor = new Color(0, 0, 0), Color $backgroundColor = null, BlockSize $blockSize = BlockSize::INNER)
+    public function __construct(float $borderWidth = null, ?Color $borderColor = new Color(0, 0, 0), Color $backgroundColor = null, BlockSize $blockSize = BlockSize::INNER)
     {
         $this->borderWidth = $borderWidth;
         $this->borderColor = $borderColor;

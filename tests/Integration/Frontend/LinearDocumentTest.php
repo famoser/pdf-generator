@@ -87,26 +87,20 @@ class LinearDocumentTest extends TestCase
 
         $font = Font::createFromDefault();
         $normalText = new TextStyle($font);
+        $borderStyle = new BlockStyle(1.0);
 
         // act
-
         $flow = new Flow();
         $paragraph = new Paragraph();
         $paragraph->add($normalText, 'Hi mom!');
-        $paragraph->add($normalText, ' Hi mom x fo real 1 g with a new line and a g again.');
+        $paragraph->add($normalText, ' Hi mom x fo real 1 g with a new line and a g again and again.');
         $contentBlock = new ContentBlock($paragraph);
-        $flow->add($contentBlock);
-
-        $rectangleStyle = new DrawingStyle(0.25);
-        $rectangle = new Rectangle($rectangleStyle);
-        $contentBlock = new ContentBlock($rectangle);
-        $contentBlock->setWidth(20);
-        $contentBlock->setHeight(40);
+        $contentBlock->setStyle($borderStyle);
         $flow->add($contentBlock);
 
         $paragraph = new Paragraph();
-        $paragraph->add($normalText, 'Hi mom 2!');
-        $paragraph->add($normalText, ' Hi mom x fo real 1 g with a new line and a g again.');
+        $paragraph->add($normalText, 'Hi mom 2! ');
+        $paragraph->add($normalText, 'We will never be apart.');
         $contentBlock = new ContentBlock($paragraph);
         $flow->add($contentBlock);
 

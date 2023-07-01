@@ -55,7 +55,7 @@ class ContentVisitor
         $operators = $this->applyState($textContent->getInfluentialStates());
 
         $textOperators = $this->getTextOperators($textContent->getLines(), $textContent->getTextState()->getFont());
-        $operators = array_merge($operators, $textOperators);
+        $operators = array_merge($operators, ['BT'], $textOperators, ['ET']);
 
         return $this->createStreamObject($operators);
     }
@@ -64,11 +64,13 @@ class ContentVisitor
     {
         $operators = $this->applyState($paragraph->getInfluentialStates());
 
+        $operators[] = 'BT';
         foreach ($paragraph->getPhrases() as $phrase) {
             $stateTransitionOperators = $this->applyState($phrase->getInfluentialStates());
             $textOperators = $this->getTextOperators($phrase->getLines(), $phrase->getTextState()->getFont());
             $operators = array_merge($operators, $stateTransitionOperators, $textOperators);
         }
+        $operators[] = 'ET';
 
         return $this->createStreamObject($operators);
     }
@@ -122,7 +124,7 @@ class ContentVisitor
             $printOperators[] = '('.$this->prepareTextForPrint($lines[$i], $font).')\'';
         }
 
-        return array_merge(['BT'], $printOperators, ['ET']);
+        return $printOperators;
     }
 
     private function prepareTextForPrint(string $text, Font $font): string
