@@ -89,21 +89,32 @@ class LinearDocumentTest extends TestCase
         $normalText = new TextStyle($font);
 
         // act
+
         $flow = new Flow();
-        for ($i = 0; $i < 10; ++$i) {
-            $paragraph = new Paragraph();
-            $paragraph->add($normalText, 'Hi mom!');
-            $paragraph->add($normalText, ' Hi mom x fo real.');
-            $paragraph->add($normalText, ' Exactly what I need ');
-            $paragraph->add($normalText, ' Please allocate '.$i);
-            $contentBlock = new ContentBlock($paragraph);
-            $flow->add($contentBlock);
-        }
+        $paragraph = new Paragraph();
+        $paragraph->add($normalText, 'Hi mom!');
+        $paragraph->add($normalText, ' Hi mom x fo real 1 g with a new line and a g again.');
+        $contentBlock = new ContentBlock($paragraph);
+        $flow->add($contentBlock);
+
+        $rectangleStyle = new DrawingStyle(0.25);
+        $rectangle = new Rectangle($rectangleStyle);
+        $contentBlock = new ContentBlock($rectangle);
+        $contentBlock->setWidth(20);
+        $contentBlock->setHeight(40);
+        $flow->add($contentBlock);
+
+        $paragraph = new Paragraph();
+        $paragraph->add($normalText, 'Hi mom 2!');
+        $paragraph->add($normalText, ' Hi mom x fo real 1 g with a new line and a g again.');
+        $contentBlock = new ContentBlock($paragraph);
+        $flow->add($contentBlock);
+
         $document->add($flow);
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('Hi mom', $result);
+        $this->assertStringContainsString('Hi mom 2', $result);
     }
 
     private function render(LinearDocument $document): string

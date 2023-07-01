@@ -48,11 +48,6 @@ readonly class TextContent extends BaseContent
         return $visitor->visitTextContent($this);
     }
 
-    public function getCurrentTransformationMatrix(): array
-    {
-        return $this->writingState->getGeneralGraphicsState()->getCurrentTransformationMatrix();
-    }
-
     public function getTextState(): TextState
     {
         return $this->writingState->getTextState();

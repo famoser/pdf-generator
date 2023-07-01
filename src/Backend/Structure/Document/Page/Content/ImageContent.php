@@ -29,11 +29,6 @@ readonly class ImageContent extends BaseContent
         return $this->image;
     }
 
-    public function getCurrentTransformationMatrix(): array
-    {
-        return $this->drawingState->getGeneralGraphicsState()->getCurrentTransformationMatrix();
-    }
-
     /**
      * @return BaseState[]
      */
