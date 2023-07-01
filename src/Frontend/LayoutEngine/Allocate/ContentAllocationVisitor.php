@@ -47,6 +47,10 @@ class ContentAllocationVisitor extends AbstractContentVisitor
 
         if (0 === count($allocatedPhrases)) {
             return null;
+        } else {
+            $lastPhrase = $allocatedPhrases[count($allocatedPhrases) - 1];
+            $fontMeasurement = $this->fontRepository->getFontMeasurement($lastPhrase->getTextStyle());
+            $usedHeight -= $fontMeasurement->getLineGap();
         }
 
         $allocated = $paragraph->cloneWithPhrases($allocatedPhrases);
@@ -99,6 +103,10 @@ class ContentAllocationVisitor extends AbstractContentVisitor
             }
         }
 
+        if (count($allocatedPhrases) > 0) {
+            $usedHeight += $usedLineHeight;
+        }
+
         return $allocatedPhrases;
     }
 
@@ -140,6 +148,10 @@ class ContentAllocationVisitor extends AbstractContentVisitor
             } else {
                 array_shift($pendingLines);
             }
+        }
+
+        if (count($allocatedLines) > 0) {
+            $usedWidth = max($usedWidth, $usedLineWidth);
         }
 
         return $allocatedLines;

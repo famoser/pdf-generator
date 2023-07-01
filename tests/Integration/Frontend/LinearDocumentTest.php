@@ -87,13 +87,13 @@ class LinearDocumentTest extends TestCase
 
         $font = Font::createFromDefault();
         $normalText = new TextStyle($font);
-        $borderStyle = new BlockStyle(1.0);
+        $borderStyle = new BlockStyle(0.6);
 
         // act
-        $flow = new Flow();
+        $flow = new Flow(Flow::DIRECTION_COLUMN);
         $paragraph = new Paragraph();
-        $paragraph->add($normalText, 'Hi mom!');
-        $paragraph->add($normalText, ' Hi mom x fo real 1 g with a new line and a g again and again.');
+        $paragraph->add($normalText, 'Hi mom! ');
+        $paragraph->add($normalText, 'Hi mom x fo real 1 g with a new line and a g again and again. ');
         $contentBlock = new ContentBlock($paragraph);
         $contentBlock->setStyle($borderStyle);
         $flow->add($contentBlock);
