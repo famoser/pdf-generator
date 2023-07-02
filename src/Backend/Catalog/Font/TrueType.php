@@ -22,7 +22,7 @@ readonly class TrueType extends Type1
     /**
      * @param int[] $widths
      */
-    public function __construct(string $identifier, Font\Structure\FontDescriptor $fontDescriptor, private readonly array $widths)
+    public function __construct(string $identifier, Font\Structure\FontDescriptor $fontDescriptor, private array $widths)
     {
         parent::__construct($identifier, $fontDescriptor->getFontName());
         $this->fontDescriptor = $fontDescriptor;

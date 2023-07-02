@@ -27,14 +27,14 @@ readonly class TextState extends BaseState
     final public const RENDER_MODE_PATH_INVISIBLE = 7;
 
     /**
-     * @param Font|null $font       the font
-     * @param float     $fontSize   the font size to be used
-     * @param float     $leading    vertical distance between baselines, i.e. the line height
-     * @param float     $charSpace  space between chars
-     * @param float     $wordSpace  space between words; @see $charSpace but only applies to SPACE
-     * @param float     $scale      percentage of normal width
-     * @param float     $renderMode fill/stroke render combinations
-     * @param float     $rise       upwards shift from the baseline
+     * @param Font  $font       the font
+     * @param float $fontSize   the font size to be used
+     * @param float $leading    vertical distance between baselines, i.e. the line height
+     * @param float $charSpace  space between chars
+     * @param float $wordSpace  space between words; @see $charSpace but only applies to SPACE
+     * @param float $scale      percentage of normal width
+     * @param float $renderMode fill/stroke render combinations
+     * @param float $rise       upwards shift from the baseline
      *
      * default arguments correspond to PDF defaults
      */

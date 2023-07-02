@@ -12,6 +12,7 @@
 namespace PdfGenerator\Tests\Integration\IR;
 
 use PdfGenerator\IR\Document;
+use PdfGenerator\IR\Document\Content\Common\Position;
 use PdfGenerator\IR\Document\Content\Text;
 use PdfGenerator\IR\Document\Content\Text\TextStyle;
 use PdfGenerator\IR\Document\Page;
@@ -32,7 +33,7 @@ class PrinterTest extends TestCase
         $document->addPage($page);
 
         // act
-        $bottomLeft = new Document\Content\Common\Position(20, 80);
+        $bottomLeft = new Position(20, 80);
         $font = DefaultFont::create(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 12, 1);
 
@@ -56,7 +57,7 @@ class PrinterTest extends TestCase
         $document->addPage($page);
 
         // act
-        $bottomLeft = new Document\Content\Common\Position(20, 80);
+        $bottomLeft = new Position(20, 80);
         $fontPath = ResourcesProvider::getFontOpenSansPath();
         $font = Document\Resource\Font\EmbeddedFont::create($fontPath);
         $textStyle = new TextStyle($font, 12, 1);
@@ -81,7 +82,7 @@ class PrinterTest extends TestCase
         $document->addPage($page);
 
         // act
-        $bottomLeft = new Document\Content\Common\Position(20, 80);
+        $bottomLeft = new Position(20, 80);
         $fontPath = ResourcesProvider::getFontOpenSansPath();
         $font = Document\Resource\Font\EmbeddedFont::create($fontPath);
         $textStyle1 = new TextStyle($font, 12, 1);

@@ -11,17 +11,10 @@
 
 namespace PdfGenerator\IR\Document\Content\Common;
 
-use PdfGenerator\FrontendResources\CursorPrinter\Cursor;
-
 readonly class Position
 {
     public function __construct(private float $startX, private float $startY)
     {
-    }
-
-    public static function fromCursor(Cursor $cursor): Position
-    {
-        return new self($cursor->getXCoordinate(), $cursor->getYCoordinate());
     }
 
     public function getStartX(): float

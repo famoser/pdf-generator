@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Measure;
 
-use PdfGenerator\Frontend\Content\Rectangle;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\Flow;
@@ -41,17 +40,9 @@ class MeasurementVisitor extends AbstractBlockVisitor
     public function visitFlow(Flow $flow): Measurement
     {
         $measurer = new FlowMeasurer($this->maxWidth, $this->maxHeight);
-        $contentMeasurement = $measurer->measure($flow->getBlocks(), $flow->getDirection(), $flow->getDimensions(), $flow->getGap());
+        $contentMeasurement = $measurer->measure($flow->getBlocks(), $flow->getDirection(), $flow->getGap());
 
         return $this->measureBlock($flow, $contentMeasurement);
-    }
-
-    public function visitRectangle(Rectangle $rectangle): Measurement
-    {
-        $weight = $rectangle->getWidth() * $rectangle->getHeight();
-        $contentMeasurement = new Measurement($weight, $rectangle->getWidth(), $rectangle->getHeight());
-
-        return $this->measureBlock($rectangle, $contentMeasurement);
     }
 
     private function measureBlock(AbstractBlock $block, Measurement $contentMeasurement): Measurement
