@@ -18,7 +18,6 @@ class Block extends AbstractBlock
     public function __construct(private AbstractBlock $block)
     {
         parent::__construct();
-        $this->block = $block;
     }
 
     public function getBlock(): AbstractBlock

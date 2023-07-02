@@ -47,7 +47,9 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             return null;
         }
 
-        return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], [$contentAllocation]);
+        $overflow = $contentAllocation->getOverflow() ? $contentBlock->cloneWithContent($contentAllocation->getOverflow()) : null;
+
+        return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], [$contentAllocation], $overflow);
     }
 
     public function visitBlock(Block $block): ?BlockAllocation
@@ -63,7 +65,9 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             return null;
         }
 
-        return $this->allocateBlock($block, $blockAllocation->getWidth(), $blockAllocation->getHeight(), [$blockAllocation]);
+        $overflow = $blockAllocation->getOverflow() ? $block->cloneWithBlock($blockAllocation->getOverflow()) : null;
+
+        return $this->allocateBlock($block, $blockAllocation->getWidth(), $blockAllocation->getHeight(), [$blockAllocation], [], $overflow);
     }
 
     public function visitFlow(Flow $flow): ?BlockAllocation
@@ -158,7 +162,7 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         }
 
         $width = $block->getWidth() ? $block->getWidth() + $block->getXMargin() : $contentWidth + $block->getXSpace();
-        $height = $block->getHeight() ? $block->getHeight() + $block->getXMargin() : $contentHeight + $block->getXSpace();
+        $height = $block->getHeight() ? $block->getHeight() + $block->getYMargin() : $contentHeight + $block->getYSpace();
 
         return new BlockAllocation($block->getLeftSpace(), $block->getTopSpace(), $width, $height, $blockAllocations, $contentAllocations, $overflow);
     }

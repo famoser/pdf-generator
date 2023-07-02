@@ -11,8 +11,10 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
 
+use PdfGenerator\Frontend\Content\ImagePlacement;
 use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
+use PdfGenerator\Frontend\Content\Spacer;
 use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
 use PdfGenerator\Frontend\Resource\Font\FontMeasurement;
 use PdfGenerator\Frontend\Resource\Font\FontRepository;
@@ -33,9 +35,19 @@ class ContentAllocationVisitor extends AbstractContentVisitor
         $this->fontRepository = FontRepository::instance();
     }
 
+    public function visitSpacer(Spacer $spacer): ?ContentAllocation
+    {
+        return new ContentAllocation($this->width, $this->height, $spacer);
+    }
+
     public function visitRectangle(Rectangle $rectangle): ?ContentAllocation
     {
         return new ContentAllocation($this->width, $this->height, $rectangle);
+    }
+
+    public function visitImagePlacement(ImagePlacement $imagePlacement): ?ContentAllocation
+    {
+        return new ContentAllocation($this->width, $this->height, $imagePlacement);
     }
 
     public function visitParagraph(Paragraph $paragraph): ?ContentAllocation
@@ -47,10 +59,6 @@ class ContentAllocationVisitor extends AbstractContentVisitor
 
         if (0 === count($allocatedPhrases)) {
             return null;
-        } else {
-            $lastPhrase = $allocatedPhrases[count($allocatedPhrases) - 1];
-            $fontMeasurement = $this->fontRepository->getFontMeasurement($lastPhrase->getTextStyle());
-            $usedHeight -= $fontMeasurement->getLineGap();
         }
 
         $allocated = $paragraph->cloneWithPhrases($allocatedPhrases);
@@ -84,15 +92,16 @@ class ContentAllocationVisitor extends AbstractContentVisitor
             $allocatedLines = $this->allocateLines($maxLineCount, $fontMeasurement, $pendingLines, $usedLineWidth, $usedWidth);
 
             if (count($allocatedLines) > 0) {
+                $allocatedPhrases[] = Paragraph\Phrase::createFromLines($allocatedLines, $textStyle);
                 $usedLineHeight = $currentLineHeight;
-                if (count($allocatedLines) > 1) {
+
+                if (count($pendingLines) > 0 || count($allocatedLines) > 1) {
                     $usedHeight += $usedLineHeight;
                     $usedLineHeight = $fontMeasurement->getLeading();
-                    $usedHeight += (count($allocatedLines) - 2) * $fontMeasurement->getLeading();
-                }
+                    if (count($allocatedLines) > 1) {
+                        $usedHeight += (count($allocatedLines) - 2) * $fontMeasurement->getLeading();
+                    }
 
-                $allocatedPhrases[] = Paragraph\Phrase::createFromLines($allocatedLines, $textStyle);
-                if (count($pendingLines) > 0) {
                     $phrase = Paragraph\Phrase::createFromLines($pendingLines, $textStyle);
                     $pendingPhrases[0] = $phrase;
                 } else {
@@ -103,7 +112,7 @@ class ContentAllocationVisitor extends AbstractContentVisitor
             }
         }
 
-        if (count($allocatedPhrases) > 0) {
+        if (count($allocatedPhrases) > 0 && 0 === count($pendingPhrases)) {
             $usedHeight += $usedLineHeight;
         }
 
@@ -136,8 +145,8 @@ class ContentAllocationVisitor extends AbstractContentVisitor
                 $allocatedLine = implode(' ', $allocatedWords);
                 $allocatedLines[] = $allocatedLine;
 
-                // begin new line
-                if (count($pendingWords) > 0) {
+                // begin new line if possible
+                if (count($pendingWords) > 0 && count($allocatedLines) < $maxLines) {
                     $usedWidth = max($usedWidth, $usedLineWidth);
                     $usedLineWidth = 0;
                 }
