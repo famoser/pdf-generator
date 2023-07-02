@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend;
 
+use PdfGenerator\Frontend\Content\ImagePlacement;
 use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
 use PdfGenerator\Frontend\Content\Style\DrawingStyle;
@@ -20,7 +21,9 @@ use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use PdfGenerator\Frontend\LinearDocument;
 use PdfGenerator\Frontend\Resource\Font;
+use PdfGenerator\Frontend\Resource\Image;
 use PdfGenerator\IR\Document\Content\Common\Color;
+use PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
 class LinearDocumentTest extends TestCase
@@ -73,6 +76,30 @@ class LinearDocumentTest extends TestCase
         $outerFlow = new Flow();
         $outerFlow->add($flow);
         $document->add($outerFlow);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('10', $result);
+        $this->assertStringContainsString('20', $result);
+    }
+
+    public function testPrintFlowImagePlacements()
+    {
+        // arrange
+        $document = new LinearDocument();
+        $image = Image::createFromFile(ResourcesProvider::getImage1Path());
+
+        // act
+        $flow = new Flow();
+        for ($i = 0; $i < 800; ++$i) {
+            $imagePlacement = new ImagePlacement($image);
+            $contentBlock = new ContentBlock($imagePlacement);
+            $contentBlock->setWidth($i * 5 % 40);
+            $contentBlock->setHeight($i * 3 % 17);
+            $contentBlock->setStyle(new BlockStyle(0.25));
+            $flow->add($contentBlock);
+        }
+        $document->add($flow);
 
         // assert
         $result = $this->render($document);

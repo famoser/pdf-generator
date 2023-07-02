@@ -58,7 +58,7 @@ class ContentPlacementVisitor extends AbstractContentVisitor
 
     public function visitImagePlacement(ImagePlacement $imagePlacement): null
     {
-        $image = $this->imageRepository->getOrCreateImage($imagePlacement->getImage()->getSrc(), $imagePlacement->getImage()->getType());
+        $image = $this->imageRepository->getImage($imagePlacement->getImage());
         $this->printer->printImage($image, $this->width, $this->height);
 
         return null;

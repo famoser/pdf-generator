@@ -229,12 +229,12 @@ class TransformationMatrixCalculator
     private static function convertFromMatrixRounded(array $m): array
     {
         return [
-            round($m[0][0], 3),
-            round($m[0][1], 3),
-            round($m[1][0], 3),
-            round($m[1][1], 3),
-            round($m[2][0], 3),
-            round($m[2][1], 3),
+            round($m[0][0], 6),
+            round($m[0][1], 6),
+            round($m[1][0], 6),
+            round($m[1][1], 6),
+            round($m[2][0], 6),
+            round($m[2][1], 6),
         ];
     }
 

@@ -23,14 +23,14 @@ class ImageRepository
      */
     private array $images = [];
 
-    public function getOrCreateImage(string $imagePath, string $type): Image
+    public function getImage(\PdfGenerator\Frontend\Resource\Image $image): Image
     {
-        if (!\array_key_exists($imagePath, $this->images)) {
-            $image = Image::create($imagePath, $type);
+        if (!\array_key_exists($image->getSrc(), $this->images)) {
+            $image = Image::create($image->getSrc(), $image->getType());
 
-            $this->images[$imagePath] = $image;
+            $this->images[$image->getSrc()] = $image;
         }
 
-        return $this->images[$imagePath];
+        return $this->images[$image->getSrc()];
     }
 }
