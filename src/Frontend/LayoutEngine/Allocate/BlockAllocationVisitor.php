@@ -49,7 +49,12 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
 
         $overflow = $contentAllocation->getOverflow() ? $contentBlock->cloneWithContent($contentAllocation->getOverflow()) : null;
 
-        return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], [$contentAllocation], $overflow);
+        $content = $contentAllocation->getWidth() > 0 && $contentAllocation->getHeight() > 0 ? [$contentAllocation] : [];
+        if (0 == count($content)) {
+            var_dump('empty content block');
+        }
+
+        return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], $content, $overflow);
     }
 
     public function visitBlock(Block $block): ?BlockAllocation

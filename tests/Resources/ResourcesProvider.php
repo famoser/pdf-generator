@@ -11,18 +11,11 @@
 
 namespace PdfGenerator\Tests\Resources;
 
-use PdfGenerator\IR\Document\Resource\Image;
-
 class ResourcesProvider
 {
     public static function getImage1Path(): string
     {
         return realpath(__DIR__.\DIRECTORY_SEPARATOR.'images'.\DIRECTORY_SEPARATOR.'image1.jpg');
-    }
-
-    public static function getImage1Type(): string
-    {
-        return Image::TYPE_JPG;
     }
 
     public static function getFontOpenSansPath(): string
