@@ -26,10 +26,10 @@ Targets of the compiler:
 
 The frontend currently has the following rough architecture:
 
-- *Content* for the actual placed content; such as rectangles, image placements or text
-- *Layout* for defining the layout of the content; such as blocks, flows, grids or tables
-- *Resource* for resouces necessary to print the content, such as images or fonts
-- *LayoutEngine* which resolves the layout definition to something printable
+- *Content* for the actual placed content; such as rectangles, image placements or text.
+- *Layout* for defining the layout of the content; such as blocks, flows, grids or tables.
+- *Resource* for resouces necessary to print the content, such as images or fonts.
+- *LayoutEngine* which resolves the layout definition to something printable.
 
 The *LayoutEngine* itself is composed out of the following steps:
 
@@ -37,8 +37,8 @@ The *LayoutEngine* itself is composed out of the following steps:
   meaningful, and a rough estimate of how much needs to be printed.
 - *Allocate* provides content that fits in the given space: Given max dimensions to print in, it calculates the concrete
   content that fits and the space this requires.
-- *Print* puts content on a page: Given fixed dimensions to print it, it places content on the document that fits, but
-  guarantees progress (hence might print something that does not fit).
+- *Print* prints the calculated allocation. As this is a separate step, users can decide whether to abort printing
+  depending on the result of the allocation.
 
 The frontend may become the backend of more abstract document generation library, and this frontend may then unify
 a way e.g. generate both HTML and PDF documents using the same code. Experiments towards this are done in
