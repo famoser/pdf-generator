@@ -15,6 +15,7 @@ use PdfGenerator\Frontend\Content\Paragraph\Phrase;
 use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\Printer;
 
 /**
  * @implements AbstractContent<BlockStyle>
@@ -72,5 +73,10 @@ class Paragraph extends AbstractContent
     public function accept(AbstractContentVisitor $visitor): mixed
     {
         return $visitor->visitParagraph($this);
+    }
+
+    public function print(Printer $printer, float $width, float $height): void
+    {
+        $printer->printPhrases($this->getPhrases());
     }
 }

@@ -13,6 +13,7 @@ namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\Printer;
 
 class Rectangle extends AbstractContent
 {
@@ -35,5 +36,10 @@ class Rectangle extends AbstractContent
     public function accept(AbstractContentVisitor $visitor): mixed
     {
         return $visitor->visitRectangle($this);
+    }
+
+    public function print(Printer $printer, float $width, float $height): void
+    {
+        $printer->printRectangle($width, $height, $this->getStyle());
     }
 }

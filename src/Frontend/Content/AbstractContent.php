@@ -12,8 +12,11 @@
 namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\Printer;
 
 abstract class AbstractContent
 {
     abstract public function accept(AbstractContentVisitor $visitor): mixed;
+
+    abstract public function print(Printer $printer, float $width, float $height): void;
 }
