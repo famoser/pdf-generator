@@ -12,11 +12,17 @@
 namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\Printer;
 
 class Spacer extends AbstractContent
 {
     public function accept(AbstractContentVisitor $visitor): mixed
     {
         return $visitor->visitSpacer($this);
+    }
+
+    public function print(Printer $printer, float $width, float $height): void
+    {
+        // empty on purpose; the spacer has no content
     }
 }

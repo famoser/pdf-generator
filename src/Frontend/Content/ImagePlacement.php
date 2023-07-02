@@ -12,6 +12,7 @@
 namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\Printer;
 use PdfGenerator\Frontend\Resource\Image;
 
 class ImagePlacement extends AbstractContent
@@ -28,5 +29,10 @@ class ImagePlacement extends AbstractContent
     public function accept(AbstractContentVisitor $visitor): mixed
     {
         return $visitor->visitImagePlacement($this);
+    }
+
+    public function print(Printer $printer, float $width, float $height): void
+    {
+        $printer->printImage($this->getImage(), $width, $height);
     }
 }

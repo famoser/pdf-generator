@@ -15,17 +15,23 @@ use DocumentGenerator\DocumentInterface;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
+use PdfGenerator\Frontend\Resource\Font\FontRepository;
+use PdfGenerator\Frontend\Resource\Image\ImageRepository;
 use PdfGenerator\IR\Document\Page;
 
 class LinearDocument implements DocumentInterface
 {
     private readonly \PdfGenerator\IR\Document $document;
+    private readonly ImageRepository $imageRepository;
+    private readonly FontRepository $fontRepository;
 
-    public Page $currentPage;
+    public int $currentPageIndex;
     public float $currentY = 0;
 
     public function __construct(private array $pageSize = [210, 297], private array $margin = [15, 15, 15, 15])
     {
+        $this->imageRepository = ImageRepository::instance();
+        $this->fontRepository = FontRepository::instance();
         $this->document = new \PdfGenerator\IR\Document();
         $this->addPage();
     }
@@ -43,6 +49,7 @@ class LinearDocument implements DocumentInterface
                     continue;
                 } else {
                     // TODO: measure min width, then allocate using that min width
+                    throw new \Exception('Page too small to fit content.');
                 }
             }
 
@@ -54,7 +61,12 @@ class LinearDocument implements DocumentInterface
 
     public function allocate(AbstractBlock $block): ?BlockAllocation
     {
-        [$width, $height] = $this->getPrintingArea();
+        $widthMargin = $this->margin[0] + $this->margin[2];
+        $width = $this->pageSize[0] - $widthMargin;
+
+        $heightMargin = $this->margin[1] + $this->margin[3];
+        $height = $this->pageSize[1] - $this->currentY - $heightMargin;
+
         $allocationVisitor = new BlockAllocationVisitor($width, $height);
 
         return $block->accept($allocationVisitor);
@@ -64,31 +76,25 @@ class LinearDocument implements DocumentInterface
     {
         $left = $this->margin[0];
         $top = $this->currentY + $this->margin[1];
-        $pagePrinter = new Printer($this->document, $this->currentPage, $left, $top);
+        $pagePrinter = $this->createPrinter($this->currentPageIndex, $left, $top);
         $pagePrinter->print($allocation);
     }
 
-    /**
-     * @return float[]
-     */
-    public function getPrintingArea(): array
+    public function createPrinter(int $pageIndex, float $left, float $top): Printer
     {
-        $widthMargin = $this->margin[0] + $this->margin[2];
-        $width = $this->pageSize[0] - $widthMargin;
+        $page = $this->document->getPages()[$pageIndex];
 
-        $heightMargin = $this->margin[1] + $this->margin[3];
-        $height = $this->pageSize[1] - $this->currentY - $heightMargin;
-
-        return [$width, $height];
+        return new Printer($this->document, $this->imageRepository, $this->fontRepository, $page, $left, $top);
     }
 
-    public function addPage(): void
+    public function addPage(array $pageSize = null): void
     {
-        $page = new Page(count($this->document->getPages()) + 1, $this->pageSize);
+        $nextPageIndex = count($this->document->getPages());
+        $page = new Page($nextPageIndex + 1, $pageSize ?? $this->pageSize);
         $this->document->addPage($page);
 
         $this->currentY = 0;
-        $this->currentPage = $page;
+        $this->currentPageIndex = $nextPageIndex;
     }
 
     public function save(): string
