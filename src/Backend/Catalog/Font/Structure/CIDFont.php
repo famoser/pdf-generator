@@ -20,12 +20,12 @@ readonly class CIDFont extends BaseStructure
     final public const SUBTYPE_CID_FONT_TYPE_2 = 'CIDFontType2';
 
     /**
-     * @param string         $baseFont determined by looking at the TTF 'name' table (9.6.3)
-     *                                 if subset, then prefix with 6 uppercase letters unique for that specific subset followed by a + sign
-     * @param int            $dW       default width of a character
-     * @param int[]|\int[][] $w        width per character
-     *                                 for int[][], the first dimensions defines the character code the widths start at
-     *                                 so [32 => [120, 271]] defines that space (code 32) has width 120, the following character width 271
+     * @param string        $baseFont determined by looking at the TTF 'name' table (9.6.3)
+     *                                if subset, then prefix with 6 uppercase letters unique for that specific subset followed by a + sign
+     * @param int           $dW       default width of a character
+     * @param int[]|int[][] $w        width per character
+     *                                for int[][], the first dimensions defines the character code the widths start at
+     *                                so [32 => [120, 271]] defines that space (code 32) has width 120, the following character width 271
      */
     public function __construct(private string $subType, private string $baseFont, private CIDSystemInfo $cIDSystemInfo, private FontDescriptor $fontDescriptor, private int $dW = 1000, private array $w = [])
     {

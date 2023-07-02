@@ -22,9 +22,9 @@ readonly class FlowMeasurer
     {
     }
 
-    public function measure(array $blocks, string $direction, ?array $dimensions, float $gap): Measurement
+    public function measure(array $blocks, string $direction, float $gap): Measurement
     {
-        $measurements = $this->getMeasurements($blocks, $direction, $dimensions);
+        $measurements = $this->getMeasurements($blocks);
         $weight = $this->getWeight($measurements, $direction, $gap);
         [$minWidth, $minHeight] = $this->getMinDimensions($measurements);
 
@@ -32,23 +32,18 @@ readonly class FlowMeasurer
     }
 
     /**
-     * @param Block[]      $blocks
-     * @param float[]|null $dimensions
+     * @param Block[] $blocks
      *
      * @return Measurement[]
      */
-    private function getMeasurements(array $blocks, string $direction, ?array $dimensions): array
+    private function getMeasurements(array $blocks): array
     {
         /** @var Measurement[] $measurements */
         $measurements = [];
         for ($i = 0; $i < count($blocks); ++$i) {
             $block = $blocks[$i];
 
-            $dimension = $dimensions ? $dimensions[$i % count($dimensions)] : null;
-            $maxWidth = Flow::DIRECTION_ROW === $direction ? min($this->maxWidth, $dimension) : $this->maxWidth;
-            $maxHeight = Flow::DIRECTION_COLUMN === $direction ? min($this->maxHeight, $dimension) : $this->maxHeight;
-            $measurementVisitor = new MeasurementVisitor($maxWidth, $maxHeight);
-
+            $measurementVisitor = new MeasurementVisitor($this->maxWidth, $this->maxHeight);
             $measurements[] = $block->accept($measurementVisitor);
         }
 

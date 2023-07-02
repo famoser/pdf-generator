@@ -14,9 +14,6 @@ namespace PdfGenerator\Frontend\Layout;
 use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
-/**
- * @template T of BlockStyle
- */
 abstract class AbstractBlock
 {
     /**
@@ -34,7 +31,6 @@ abstract class AbstractBlock
     private ?float $height;
 
     /**
-     * @param T       $style
      * @param float[] $margin
      * @param float[] $padding
      */
