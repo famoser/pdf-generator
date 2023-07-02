@@ -97,42 +97,42 @@ abstract class AbstractBlock
 
     public function getXMargin(): float
     {
-        return $this->margin[1] + $this->margin[3];
+        return $this->margin[0] + $this->margin[2];
     }
 
     public function getYMargin(): float
     {
-        return $this->margin[0] + $this->margin[2];
+        return $this->margin[1] + $this->margin[3];
     }
 
     public function getLeftMargin(): float
     {
-        return $this->margin[3];
+        return $this->margin[0];
     }
 
     public function getTopMargin(): float
     {
-        return $this->margin[0];
+        return $this->margin[1];
     }
 
     public function getXPadding(): float
     {
-        return $this->padding[1] + $this->padding[3];
+        return $this->padding[0] + $this->padding[2];
     }
 
     public function getYPadding(): float
     {
-        return $this->padding[0] + $this->padding[2];
+        return $this->padding[1] + $this->padding[3];
     }
 
     public function getLeftPadding(): float
     {
-        return $this->padding[3];
+        return $this->padding[0];
     }
 
     public function getTopPadding(): float
     {
-        return $this->padding[0];
+        return $this->padding[1];
     }
 
     public function getXSpace(): float

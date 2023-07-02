@@ -43,6 +43,11 @@ class ContentPlacementVisitor extends AbstractContentVisitor
         $this->fontRepository = FontRepository::instance();
     }
 
+    public function visitSpacer(Spacer $spacer): null
+    {
+        return null;
+    }
+
     public function visitRectangle(Rectangle $rectangle): null
     {
         $rectangleStyle = self::createRectangleStyle($rectangle->getStyle());
@@ -77,11 +82,6 @@ class ContentPlacementVisitor extends AbstractContentVisitor
 
         $this->printer->printPhrases($phrases, $heightShift);
 
-        return null;
-    }
-
-    public function visitSpacer(Spacer $spacer): null
-    {
         return null;
     }
 

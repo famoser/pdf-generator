@@ -24,7 +24,7 @@ class LinearDocument implements DocumentInterface
     public Page $currentPage;
     public float $currentY = 0;
 
-    public function __construct(private array $pageSize = [210, 297], private array $margin = [25, 25, 25, 25])
+    public function __construct(private array $pageSize = [210, 297], private array $margin = [15, 15, 15, 15])
     {
         $this->document = new \PdfGenerator\IR\Document();
         $this->addPage();
@@ -62,8 +62,8 @@ class LinearDocument implements DocumentInterface
 
     public function place(BlockAllocation $allocation): void
     {
-        $left = $this->margin[3];
-        $top = $this->currentY + $this->margin[0];
+        $left = $this->margin[0];
+        $top = $this->currentY + $this->margin[1];
         $pagePrinter = new Printer($this->document, $this->currentPage, $left, $top);
         $pagePrinter->print($allocation);
     }
@@ -73,10 +73,11 @@ class LinearDocument implements DocumentInterface
      */
     public function getPrintingArea(): array
     {
-        $heightMargin = $this->margin[0] + $this->margin[2];
-        $widthMargin = $this->margin[1] + $this->margin[3];
-        $height = $this->pageSize[1] - $this->currentY - $heightMargin;
+        $widthMargin = $this->margin[0] + $this->margin[2];
         $width = $this->pageSize[0] - $widthMargin;
+
+        $heightMargin = $this->margin[1] + $this->margin[3];
+        $height = $this->pageSize[1] - $this->currentY - $heightMargin;
 
         return [$width, $height];
     }
