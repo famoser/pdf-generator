@@ -156,6 +156,10 @@ class ContentAllocationVisitor extends AbstractContentVisitor
                 $pendingLines[0] = implode(' ', $pendingWords);
             } else {
                 array_shift($pendingLines);
+                if (count($pendingLines) > 0) {
+                    $usedWidth = max($usedWidth, $usedLineWidth);
+                    $usedLineWidth = 0;
+                }
             }
         }
 
