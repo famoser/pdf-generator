@@ -125,8 +125,8 @@ text printing:
 layouts:
 
 - [x] flows (rows, columns)
-- [x] grid
-- [x] table
+- [ ] grid
+- [ ] table
 
 styling:
 
