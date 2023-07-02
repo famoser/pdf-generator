@@ -11,8 +11,10 @@
 
 namespace PdfGenerator\Frontend\Layout\Traits;
 
+use PdfGenerator\Frontend\Content\AbstractContent;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\Block;
+use PdfGenerator\Frontend\Layout\ContentBlock;
 
 trait BlocksTrait
 {
@@ -24,6 +26,13 @@ trait BlocksTrait
     public function add(AbstractBlock $block): self
     {
         $this->blocks[] = $block;
+
+        return $this;
+    }
+
+    public function addContent(AbstractContent $content): self
+    {
+        $this->blocks[] = new ContentBlock($content);
 
         return $this;
     }

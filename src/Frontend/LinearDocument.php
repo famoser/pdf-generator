@@ -25,11 +25,22 @@ class LinearDocument implements DocumentInterface
     private readonly ImageRepository $imageRepository;
     private readonly FontRepository $fontRepository;
 
-    public int $currentPageIndex;
-    public float $currentY = 0;
+    private int $currentPageIndex = 0;
+    private float $currentY = 0;
 
-    public function __construct(private array $pageSize = [210, 297], private array $margin = [15, 15, 15, 15])
+    /**
+     * @var float[]
+     */
+    private array $margin;
+
+    /**
+     * @param float[]       $pageSize
+     * @param float|float[] $margin
+     */
+    public function __construct(private array $pageSize = [210, 297], mixed $margin = [15, 15, 15, 15])
     {
+        $this->margin = is_array($margin) ? $margin : array_fill(0, 4, $margin);
+
         $this->imageRepository = ImageRepository::instance();
         $this->fontRepository = FontRepository::instance();
         $this->document = new \PdfGenerator\IR\Document();
@@ -100,5 +111,11 @@ class LinearDocument implements DocumentInterface
     public function save(): string
     {
         return $this->document->save();
+    }
+
+    public function position(float $currentY, int $currentPageIndex = null): void
+    {
+        $this->currentY = $currentY;
+        $this->currentPageIndex = $currentPageIndex ?? $this->currentPageIndex;
     }
 }
