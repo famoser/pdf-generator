@@ -32,9 +32,6 @@ readonly class EmbeddedFont extends Font
 
     /**
      * @throws \Exception
-     *
-     * @return mixed
-     *
      * @throws \Exception
      */
     public function accept(FontVisitor $visitor)

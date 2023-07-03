@@ -62,8 +62,5 @@ abstract class Format
         $this->language = $language;
     }
 
-    /**
-     * @return mixed
-     */
     abstract public function accept(VisitorInterface $formatVisitor);
 }

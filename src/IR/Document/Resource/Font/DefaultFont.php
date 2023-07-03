@@ -45,8 +45,6 @@ readonly class DefaultFont extends Font
     }
 
     /**
-     * @return mixed
-     *
      * @throws \Exception
      */
     public function accept(FontVisitor $visitor)
