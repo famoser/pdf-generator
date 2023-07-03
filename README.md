@@ -63,6 +63,26 @@ Layout engine particulars:
 
 ## Example
 
-[Invoice](./examples/invoice.php)
+### Invoice
+
+[Code](./examples/invoice.php) | [.pdf](./examples/invoice.pdf)
 
 <img src="examples/invoice.png?raw=true" alt="Invoice">
+
+### Book
+
+[Code](./examples/book.php) | [.pdf](./examples/book.pdf)
+
+<table>
+    <tbody>
+        <tr>
+            <td><img src="examples/book-1.png?raw=true" alt="Book page 1"></td>
+            <td><img src="examples/book-2.png?raw=true" alt="Book page 2"></td>
+        </tr>
+        <tr>
+            <td><img src="examples/book-3.png?raw=true" alt="Book page 3"></td>
+            <td><img src="examples/book-4.png?raw=true" alt="Book page 4"></td>
+        </tr>
+    </tbody>
+</table>
+
