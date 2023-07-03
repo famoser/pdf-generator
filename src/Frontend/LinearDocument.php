@@ -100,12 +100,17 @@ class LinearDocument implements DocumentInterface
 
     public function addPage(array $pageSize = null): void
     {
-        $nextPageIndex = count($this->document->getPages());
+        $nextPageIndex = $this->getPageCount();
         $page = new Page($nextPageIndex + 1, $pageSize ?? $this->pageSize);
         $this->document->addPage($page);
 
         $this->currentY = 0;
         $this->currentPageIndex = $nextPageIndex;
+    }
+
+    public function getPageCount(): int
+    {
+        return count($this->document->getPages());
     }
 
     public function save(): string
