@@ -66,8 +66,13 @@ Layout engine particulars:
 ### Invoice
 
 [Code](./examples/invoice.php) | [.pdf](./examples/invoice.pdf)
-
-<img src="examples/invoice.png?raw=true" alt="Invoice">
+<table>
+    <tbody>
+        <tr>
+            <td><img src="examples/invoice.png?raw=true" alt="Invoice"></td>
+        </tr>
+    </tbody>
+</table>
 
 ### Book
 
