@@ -62,3 +62,12 @@ extend PDF support:
 - [ ] forms
 - [ ] compress string streams
 - [ ] optimize rectangle position (do not modify transform matrix)
+
+## Maintenance contributions
+
+This is a large, long-lived project, and as such there are maintenance topics.
+
+Topics:
+- [ ] Transform `const` to `enum`
+- [ ] Rename `Flow::DIRECTION_ROW` to `Flow::DIRECTION_HORIZONTAL` (and `FLOW::DIRECTION_COLUMN` correspondingly)
+- [ ] Unit test the messy Phrase, Line, Word breaking algorithms
