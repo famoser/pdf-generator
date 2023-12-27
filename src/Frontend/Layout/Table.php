@@ -11,67 +11,20 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Layout\Traits\FlowTrait;
-use PdfGenerator\Frontend\Layout\Traits\PerpendicularFlowTrait;
+use PdfGenerator\Frontend\Layout\Traits\ColumnStylesTrait;
+use PdfGenerator\Frontend\Layout\Traits\HeadersTrait;
+use PdfGenerator\Frontend\Layout\Traits\RowsTrait;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Table extends AbstractBlock
 {
-    use FlowTrait;
-    use PerpendicularFlowTrait;
+    use RowsTrait;
+    use ColumnStylesTrait;
+    use HeadersTrait;
 
-    /**
-     * @var Block[][]
-     */
-    private array $header = [];
-
-    /**
-     * @var Block[][]
-     */
-    private array $body = [];
-
-    public function __construct(string $direction = self::DIRECTION_ROW, float $gap = 0, float $perpendicularGap = 0)
+    public function __construct()
     {
         parent::__construct();
-        $this->setDirection($direction);
-        $this->setGap($gap);
-        $this->setPerpendicularGap($perpendicularGap);
-    }
-
-    /**
-     * @param Block[] $blocks
-     */
-    public function addHeader(array $blocks): self
-    {
-        $this->header[] = $blocks;
-
-        return $this;
-    }
-
-    /**
-     * @param Block[] $blocks
-     */
-    public function addBody(array $blocks): self
-    {
-        $this->body[] = $blocks;
-
-        return $this;
-    }
-
-    /**
-     * @return Block[]
-     */
-    public function getHeader(): array
-    {
-        return $this->header;
-    }
-
-    /**
-     * @return Block[]
-     */
-    public function getBody(): array
-    {
-        return $this->body;
     }
 
     /**

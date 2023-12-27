@@ -11,21 +11,24 @@
 
 namespace PdfGenerator\Frontend\Layout\Traits;
 
-trait FlowTrait
+trait GapTrait
 {
-    public const DIRECTION_ROW = 'row';
-    public const DIRECTION_COLUMN = 'column';
-    private string $direction;
+    /**
+     * @var float
+     *
+     * margin to place in between the items
+     */
+    private float $gap;
 
-    public function setDirection(string $direction): self
+    public function setGap(float $gap): self
     {
-        $this->direction = $direction;
+        $this->gap = $gap;
 
         return $this;
     }
 
-    public function getDirection(): string
+    public function getGap(): float
     {
-        return $this->direction;
+        return $this->gap;
     }
 }

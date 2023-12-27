@@ -11,21 +11,27 @@
 
 namespace PdfGenerator\Frontend\Layout\Traits;
 
-trait FlowTrait
-{
-    public const DIRECTION_ROW = 'row';
-    public const DIRECTION_COLUMN = 'column';
-    private string $direction;
+use PdfGenerator\Frontend\Layout\Parts\Row;
 
-    public function setDirection(string $direction): self
+trait HeadersTrait
+{
+    /**
+     * @var Row[]
+     */
+    private array $headers = [];
+
+    public function addHeader(Row $row): self
     {
-        $this->direction = $direction;
+        $this->headers[] = $row;
 
         return $this;
     }
 
-    public function getDirection(): string
+    /**
+     * @return Row[]
+     */
+    public function getHeaders(): array
     {
-        return $this->direction;
+        return $this->headers;
     }
 }
