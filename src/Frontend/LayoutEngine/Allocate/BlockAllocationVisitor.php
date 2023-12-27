@@ -17,9 +17,10 @@ use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\Layout\Style\BlockSize;
+use PdfGenerator\Frontend\Layout\Grid;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\FlowAllocator;
+use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\GridAllocator;
 
 /**
  * This allocates content on the PDF.
@@ -93,6 +94,28 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         return $this->allocateBlock($flow, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
     }
 
+    public function visitGrid(Grid $grid): ?BlockAllocation
+    {
+        $usableSpace = $this->getUsableSpace($grid);
+        if (!$usableSpace) {
+            return null;
+        }
+
+        $allocator = new GridAllocator(...$usableSpace);
+        $usedWidth = 0;
+        $usedHeight = 0;
+        $overflowRows = [];
+        $allocatedBlocks = $allocator->allocate($grid, $overflowRows, $usedWidth, $usedHeight);
+
+        if (0 === count($allocatedBlocks)) {
+            return null;
+        }
+
+        $overflow = count($overflowRows) > 0 ? $grid->cloneWithRows($overflowRows) : null;
+
+        return $this->allocateBlock($grid, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
+    }
+
     private function getUsableSpace(AbstractBlock $block): ?array
     {
         $availableMaxWidth = $this->maxWidth - $block->getXMargin();
@@ -140,13 +163,8 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         $drawingStyle = new DrawingStyle($blockStyle->getBorderWidth() ?? 0, $blockStyle->getBorderColor(), $blockStyle->getBackgroundColor());
         $rectangle = new Rectangle($drawingStyle);
 
-        if (BlockSize::INNER === $blockStyle->getBlockSize()) {
-            $width = $contentWidth + $block->getXPadding();
-            $height = $contentHeight + $block->getYPadding();
-        } else {
-            $width = $this->maxWidth - $block->getXMargin();
-            $height = $this->maxHeight - $block->getYMargin();
-        }
+        $width = $contentWidth + $block->getXPadding();
+        $height = $contentHeight + $block->getYPadding();
 
         return new ContentAllocation($width, $height, $rectangle);
     }
