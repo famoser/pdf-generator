@@ -17,11 +17,12 @@ use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
 use PdfGenerator\Frontend\Resource\Font\FontRepository;
 use PdfGenerator\Frontend\Resource\Image\ImageRepository;
+use PdfGenerator\IR\Document;
 use PdfGenerator\IR\Document\Page;
 
 class LinearDocument implements DocumentInterface
 {
-    private readonly \PdfGenerator\IR\Document $document;
+    private readonly Document $document;
     private readonly ImageRepository $imageRepository;
     private readonly FontRepository $fontRepository;
 
@@ -43,7 +44,7 @@ class LinearDocument implements DocumentInterface
 
         $this->imageRepository = ImageRepository::instance();
         $this->fontRepository = FontRepository::instance();
-        $this->document = new \PdfGenerator\IR\Document();
+        $this->document = new Document();
         $this->addPage();
     }
 
