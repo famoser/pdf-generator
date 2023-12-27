@@ -24,28 +24,20 @@ abstract class AbstractContentVisitor
     /**
      * @return T
      */
-    public function visitParagraph(Paragraph $paragraph): mixed
-    {
-    }
+    abstract public function visitParagraph(Paragraph $paragraph): mixed;
 
     /**
      * @return T
      */
-    public function visitRectangle(Rectangle $rectangle): mixed
-    {
-    }
+    abstract public function visitRectangle(Rectangle $rectangle): mixed;
 
     /**
      * @return T
      */
-    public function visitSpacer(Spacer $spacer): mixed
-    {
-    }
+    abstract public function visitSpacer(Spacer $spacer): mixed;
 
     /**
      * @return T
      */
-    public function visitImagePlacement(ImagePlacement $imagePlacement): mixed
-    {
-    }
+    abstract public function visitImagePlacement(ImagePlacement $imagePlacement): mixed;
 }
