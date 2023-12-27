@@ -13,6 +13,7 @@ namespace PdfGenerator\Frontend\LayoutEngine\Measure;
 
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\Block;
+use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
@@ -24,10 +25,15 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
  *
  * @implements AbstractBlockVisitor<Measurement>
  */
-class MeasurementVisitor extends AbstractBlockVisitor
+class BlockMeasurementVisitor extends AbstractBlockVisitor
 {
     public function __construct(private readonly ?float $maxWidth = null, private readonly ?float $maxHeight = null)
     {
+    }
+
+    public function visitContentBlock(ContentBlock $contentBlock): Measurement
+    {
+        // TODO: Implement visitContentBlock() method.
     }
 
     public function visitBlock(Block $block): Measurement

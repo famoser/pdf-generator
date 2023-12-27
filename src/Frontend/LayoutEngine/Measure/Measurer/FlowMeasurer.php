@@ -13,8 +13,8 @@ namespace PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 
 use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\Flow;
+use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
-use PdfGenerator\Frontend\LayoutEngine\Measure\MeasurementVisitor;
 
 readonly class FlowMeasurer
 {
@@ -43,7 +43,7 @@ readonly class FlowMeasurer
         for ($i = 0; $i < count($blocks); ++$i) {
             $block = $blocks[$i];
 
-            $measurementVisitor = new MeasurementVisitor($this->maxWidth, $this->maxHeight);
+            $measurementVisitor = new BlockMeasurementVisitor($this->maxWidth, $this->maxHeight);
             $measurements[] = $block->accept($measurementVisitor);
         }
 
@@ -80,8 +80,8 @@ readonly class FlowMeasurer
     private function getMinDimensions(array $measurements): array
     {
         $firstMeasurement = count($measurements) > 0 ? $measurements[0] : null;
-        $minWidth = $firstMeasurement?->getMinWidth();
-        $minHeight = $firstMeasurement?->getMinHeight();
+        $minWidth = $firstMeasurement?->getMinWidth() ?? 0;
+        $minHeight = $firstMeasurement?->getMinHeight() ?? 0;
 
         return [$minWidth, $minHeight];
     }
