@@ -3,24 +3,9 @@
 Like any compiler, its divided primarily into Frontend, Intermediate Representation (IR) and Backend.
 
 Targets of the compiler:
-
-1. Correctness
-    - high unit test coverage (`codecov`)
-    - develop by following adobe standard (PDF 1.7)
-    - tests with multiple viewers (Adobe Acrobat, Firefox, Edge, Evince)
-    - tests on muliple OS (Linux, Windows)
-    - cross-reference output with other generators (ITextSharp, TCPDF)
-2. Maintainability
-    - low cyclomatic complexity (`scrutinizer`)
-    - no code smells (`scrutinizer`)
-    - classic compiler patterns (frontend, intermediate representation (IR) & backend)
-    - clearly defined purpose per namespace (see below for an overview)
-3. Small resulting file size
-    - elements only included in file if referenced somewhere (ensured by Backend)
-    - only new element created if not possible to append to another one (ensured by IR)
-4. Speed of compilation
-    - only provide single way to accomplish something
-    - no html/css parsing
+- high-quality output (PDF standard 2.0 compliance, no repetition, small filesize)
+- maintainable library code (sane compiler patterns, static analysis)
+- maintainable user code (no HTML/CSS, single way to accomplish something)
 
 ## Frontend
 
@@ -28,7 +13,7 @@ The frontend currently has the following rough architecture:
 
 - *Content* for the actual placed content; such as rectangles, image placements or text.
 - *Layout* for defining the layout of the content; such as blocks, flows, grids or tables.
-- *Resource* for resouces necessary to print the content, such as images or fonts.
+- *Resource* for resources necessary to print the content, such as images or fonts.
 - *LayoutEngine* which resolves the layout definition to something printable.
 
 The *LayoutEngine* itself is composed out of the following steps:
@@ -40,7 +25,7 @@ The *LayoutEngine* itself is composed out of the following steps:
 - *Print* prints the calculated allocation. As this is a separate step, users can decide whether to abort printing
   depending on the result of the allocation.
 
-The frontend may become the backend of more abstract document generation library, and this frontend may then unify
+The frontend may become the backend of more abstract document generation library, and its frontend may then unify
 a way e.g. generate both HTML and PDF documents using the same code. Experiments towards this are done in
 the `document-generator` folder.
 
