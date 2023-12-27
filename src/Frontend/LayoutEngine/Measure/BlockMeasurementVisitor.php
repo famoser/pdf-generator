@@ -27,13 +27,16 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
  */
 class BlockMeasurementVisitor extends AbstractBlockVisitor
 {
-    public function __construct(private readonly ?float $maxWidth = null, private readonly ?float $maxHeight = null)
+    public function __construct()
     {
     }
 
     public function visitContentBlock(ContentBlock $contentBlock): Measurement
     {
-        // TODO: Implement visitContentBlock() method.
+        $contentMeasurementVisitor = new ContentMeasurementVisitor();
+        $contentMeasurement = $contentBlock->getContent()->accept($contentMeasurementVisitor);
+
+        return $this->measureBlock($contentBlock, $contentMeasurement);
     }
 
     public function visitBlock(Block $block): Measurement
@@ -45,7 +48,7 @@ class BlockMeasurementVisitor extends AbstractBlockVisitor
 
     public function visitFlow(Flow $flow): Measurement
     {
-        $measurer = new FlowMeasurer($this->maxWidth, $this->maxHeight);
+        $measurer = new FlowMeasurer();
         $contentMeasurement = $measurer->measure($flow->getBlocks(), $flow->getDirection(), $flow->getGap());
 
         return $this->measureBlock($flow, $contentMeasurement);
