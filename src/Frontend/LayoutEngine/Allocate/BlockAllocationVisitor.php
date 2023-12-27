@@ -73,7 +73,6 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
 
     public function visitFlow(Flow $flow): ?BlockAllocation
     {
-        // TODO: Consider removing n:n (many content allocations, many block allocations), as probably not needed
         $usableSpace = $this->getUsableSpace($flow);
         if (!$usableSpace) {
             return null;

@@ -11,21 +11,22 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Layout\Traits\BlocksTrait;
-use PdfGenerator\Frontend\Layout\Traits\FlowTrait;
-use PdfGenerator\Frontend\Layout\Traits\PerpendicularFlowTrait;
+use PdfGenerator\Frontend\Layout\Traits\ColumnStylesTrait;
+use PdfGenerator\Frontend\Layout\Traits\GapTrait;
+use PdfGenerator\Frontend\Layout\Traits\PerpendicularGapTrait;
+use PdfGenerator\Frontend\Layout\Traits\RowsTrait;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Grid extends AbstractBlock
 {
-    use FlowTrait;
-    use PerpendicularFlowTrait;
-    use BlocksTrait;
+    use RowsTrait;
+    use GapTrait;
+    use PerpendicularGapTrait;
+    use ColumnStylesTrait;
 
-    public function __construct(string $direction = self::DIRECTION_ROW, float $gap = 0, float $perpendicularGap = 0)
+    public function __construct(float $gap = 0, float $perpendicularGap = 0)
     {
         parent::__construct();
-        $this->setDirection($direction);
         $this->setGap($gap);
         $this->setPerpendicularGap($perpendicularGap);
     }
