@@ -19,6 +19,7 @@ use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\Layout\Style\BlockSize;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
+use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\FlowAllocator;
 
 /**
  * This allocates content on the PDF.
@@ -49,9 +50,7 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
 
         $overflow = $contentAllocation->getOverflow() ? $contentBlock->cloneWithContent($contentAllocation->getOverflow()) : null;
 
-        $content = $contentAllocation->getWidth() > 0 && $contentAllocation->getHeight() > 0 ? [$contentAllocation] : [];
-
-        return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], $content, $overflow);
+        return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], [$contentAllocation], $overflow);
     }
 
     public function visitBlock(Block $block): ?BlockAllocation
@@ -80,58 +79,19 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             return null;
         }
 
-        [$usableWidth, $usableHeight] = $usableSpace;
+        $allocator = new FlowAllocator(...$usableSpace);
         $usedWidth = 0;
         $usedHeight = 0;
-        /** @var BlockAllocation[] $blockAllocations */
-        $blockAllocations = [];
-        /** @var AbstractBlock[] $pendingBlocks */
-        $pendingBlocks = $flow->getBlocks();
-        while (count($pendingBlocks) > 0) {
-            $block = $pendingBlocks[0];
+        $overflowBlocks = [];
+        $allocatedBlocks = $allocator->allocate($flow, $overflowBlocks, $usedWidth, $usedHeight);
 
-            // get allocation of child
-            $availableWidth = Flow::DIRECTION_ROW === $flow->getDirection() ? $usableWidth - $usedWidth : $usableWidth;
-            $availableHeight = Flow::DIRECTION_COLUMN === $flow->getDirection() ? $usableHeight - $usedHeight : $usableHeight;
-            $allocationVisitor = new BlockAllocationVisitor($availableWidth, $availableHeight);
-            /** @var BlockAllocation $allocation */
-            $allocation = $block->accept($allocationVisitor);
-            if (!$allocation) {
-                break;
-            }
-
-            // update allocated content
-            if (Flow::DIRECTION_ROW === $flow->getDirection()) {
-                $blockAllocations[] = new BlockAllocation($usedWidth, 0, $allocation->getWidth(), $allocation->getHeight(), [$allocation]);
-                $usedHeight = max($usedHeight, $allocation->getHeight());
-                $usedWidth += $allocation->getWidth() + $flow->getGap();
-            } else {
-                $blockAllocations[] = new BlockAllocation(0, $usedHeight, $allocation->getWidth(), $allocation->getHeight(), [$allocation]);
-                $usedHeight += $allocation->getHeight() + $flow->getGap();
-                $usedWidth = max($usedWidth, $allocation->getWidth());
-            }
-
-            if ($allocation->getOverflow()) {
-                $pendingBlocks[0] = $allocation->getOverflow();
-            } else {
-                array_shift($pendingBlocks);
-            }
-        }
-
-        if (0 === count($blockAllocations)) {
+        if (0 === count($allocatedBlocks)) {
             return null;
         }
 
-        // remove gap from last iteration
-        if (Flow::DIRECTION_ROW === $flow->getDirection()) {
-            $usedWidth -= $flow->getGap();
-        } else {
-            $usedHeight -= $flow->getGap();
-        }
+        $overflow = count($overflowBlocks) > 0 ? $flow->cloneWithBlocks($overflowBlocks) : null;
 
-        $overflow = count($pendingBlocks) > 0 ? $flow->cloneWithBlocks($pendingBlocks) : null;
-
-        return $this->allocateBlock($flow, $usedWidth, $usedHeight, $blockAllocations, [], $overflow);
+        return $this->allocateBlock($flow, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
     }
 
     private function getUsableSpace(AbstractBlock $block): ?array
