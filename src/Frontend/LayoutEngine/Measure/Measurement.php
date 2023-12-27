@@ -24,6 +24,11 @@ readonly class Measurement
     {
     }
 
+    public static function zero(): self
+    {
+        return new self(0, 0, 0);
+    }
+
     public function getWeight(): float
     {
         return $this->weight;

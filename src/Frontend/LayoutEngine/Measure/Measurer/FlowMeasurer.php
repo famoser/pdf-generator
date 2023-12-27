@@ -18,7 +18,7 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 
 readonly class FlowMeasurer
 {
-    public function __construct(private ?float $maxWidth, private ?float $maxHeight)
+    public function __construct()
     {
     }
 
@@ -43,7 +43,7 @@ readonly class FlowMeasurer
         for ($i = 0; $i < count($blocks); ++$i) {
             $block = $blocks[$i];
 
-            $measurementVisitor = new BlockMeasurementVisitor($this->maxWidth, $this->maxHeight);
+            $measurementVisitor = new BlockMeasurementVisitor();
             $measurements[] = $block->accept($measurementVisitor);
         }
 
