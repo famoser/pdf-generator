@@ -13,12 +13,13 @@ namespace PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
 
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\Flow;
+use PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
 
-class FlowAllocator
+readonly class FlowAllocator
 {
-    public function __construct(private readonly float $width, private readonly float $height)
+    public function __construct(private float $width, private float $height)
     {
     }
 
@@ -32,8 +33,8 @@ class FlowAllocator
             $block = $overflowBlocks[0];
 
             // get allocation of child
-            $availableWidth = Flow::DIRECTION_ROW === $flow->getDirection() ? $this->width - $usedWidth : $this->width;
-            $availableHeight = Flow::DIRECTION_COLUMN === $flow->getDirection() ? $this->height - $usedHeight : $this->height;
+            $availableWidth = FlowDirection::ROW === $flow->getDirection() ? $this->width - $usedWidth : $this->width;
+            $availableHeight = FlowDirection::COLUMN === $flow->getDirection() ? $this->height - $usedHeight : $this->height;
             $allocationVisitor = new BlockAllocationVisitor($availableWidth, $availableHeight);
             /** @var BlockAllocation $allocation */
             $allocation = $block->accept($allocationVisitor);
@@ -42,7 +43,7 @@ class FlowAllocator
             }
 
             // update allocated content
-            if (Flow::DIRECTION_ROW === $flow->getDirection()) {
+            if (FlowDirection::ROW === $flow->getDirection()) {
                 $blockAllocations[] = new BlockAllocation($usedWidth, 0, $allocation->getWidth(), $allocation->getHeight(), [$allocation]);
                 $usedHeight = max($usedHeight, $allocation->getHeight());
                 $usedWidth += $allocation->getWidth() + $flow->getGap();
@@ -61,7 +62,7 @@ class FlowAllocator
 
         if (count($blockAllocations) > 0) {
             // remove gap from last iteration
-            if (Flow::DIRECTION_ROW === $flow->getDirection()) {
+            if (FlowDirection::ROW === $flow->getDirection()) {
                 $usedWidth -= $flow->getGap();
             } else {
                 $usedHeight -= $flow->getGap();
