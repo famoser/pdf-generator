@@ -18,7 +18,6 @@ class ContentBlock extends AbstractBlock
 {
     public function __construct(private AbstractContent $content)
     {
-        parent::__construct();
     }
 
     public function getContent(): AbstractContent

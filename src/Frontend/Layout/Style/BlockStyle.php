@@ -18,25 +18,10 @@ class BlockStyle
     private ?float $borderWidth;
     private ?Color $borderColor;
     private ?Color $backgroundColor;
-    private ?BlockSize $blockSize;
 
-    public function __construct(float $borderWidth = null, ?Color $borderColor = new Color(0, 0, 0), Color $backgroundColor = null, BlockSize $blockSize = BlockSize::INNER)
+    public function setBorder(float $borderWidth, Color $borderColor = new Color(0, 0, 0)): self
     {
         $this->borderWidth = $borderWidth;
-        $this->borderColor = $borderColor;
-        $this->backgroundColor = $backgroundColor;
-        $this->blockSize = $blockSize;
-    }
-
-    public function setBorderWidth(?float $borderWidth): self
-    {
-        $this->borderWidth = $borderWidth;
-
-        return $this;
-    }
-
-    public function setBorderColor(?Color $borderColor): self
-    {
         $this->borderColor = $borderColor;
 
         return $this;
@@ -45,13 +30,6 @@ class BlockStyle
     public function setBackgroundColor(?Color $backgroundColor): self
     {
         $this->backgroundColor = $backgroundColor;
-
-        return $this;
-    }
-
-    public function setBlockSize(?BlockSize $blockSize): BlockStyle
-    {
-        $this->blockSize = $blockSize;
 
         return $this;
     }
@@ -69,10 +47,5 @@ class BlockStyle
     public function getBackgroundColor(): ?Color
     {
         return $this->backgroundColor;
-    }
-
-    public function getBlockSize(): ?BlockSize
-    {
-        return $this->blockSize;
     }
 }

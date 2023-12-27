@@ -11,22 +11,62 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Layout\Traits\BlocksTrait;
-use PdfGenerator\Frontend\Layout\Traits\FlowTrait;
-use PdfGenerator\Frontend\Layout\Traits\GapTrait;
+use PdfGenerator\Frontend\Content\AbstractContent;
+use PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Flow extends AbstractBlock
 {
-    use FlowTrait;
-    use GapTrait;
-    use BlocksTrait;
+    /**
+     * @var Block[]
+     */
+    private array $blocks = [];
 
-    public function __construct(string $direction = self::DIRECTION_ROW, float $gap = 0)
+    public function __construct(private readonly FlowDirection $direction = FlowDirection::ROW, private readonly float $gap = 0)
     {
-        parent::__construct();
-        $this->setDirection($direction);
-        $this->setGap($gap);
+    }
+
+    public function add(AbstractBlock $block): self
+    {
+        $this->blocks[] = $block;
+
+        return $this;
+    }
+
+    public function addContent(AbstractContent $content): self
+    {
+        $this->blocks[] = new ContentBlock($content);
+
+        return $this;
+    }
+
+    /**
+     * @return Block[]
+     */
+    public function getBlocks(): array
+    {
+        return $this->blocks;
+    }
+
+    /**
+     * @param AbstractBlock[] $blocks
+     */
+    public function cloneWithBlocks(array $blocks): self
+    {
+        $self = clone $this;
+        $self->blocks = $blocks;
+
+        return $self;
+    }
+
+    public function getDirection(): FlowDirection
+    {
+        return $this->direction;
+    }
+
+    public function getGap(): float
+    {
+        return $this->gap;
     }
 
     /**

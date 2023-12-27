@@ -11,8 +11,8 @@
 
 namespace PdfGenerator\Frontend\Layout\Style;
 
-enum BlockSize: string
+enum FlowDirection: string
 {
-    case INNER = 'inner';
-    case OUTER = 'outer';
+    case ROW = 'row';
+    case COLUMN = 'column';
 }

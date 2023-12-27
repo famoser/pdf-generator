@@ -11,24 +11,66 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Layout\Traits\ColumnStylesTrait;
-use PdfGenerator\Frontend\Layout\Traits\GapTrait;
-use PdfGenerator\Frontend\Layout\Traits\PerpendicularGapTrait;
-use PdfGenerator\Frontend\Layout\Traits\RowsTrait;
+use PdfGenerator\Frontend\Layout\Parts\Row;
+use PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Grid extends AbstractBlock
 {
-    use RowsTrait;
-    use GapTrait;
-    use PerpendicularGapTrait;
-    use ColumnStylesTrait;
+    /**
+     * @var Row[]
+     */
+    private array $rows = [];
 
-    public function __construct(float $gap = 0, float $perpendicularGap = 0)
+    /**
+     * @param (float|ColumnSize)[] $columnSizes
+     */
+    public function __construct(private readonly float $gap = 0, private readonly float $perpendicularGap = 0, private readonly array $columnSizes = [])
     {
-        parent::__construct();
-        $this->setGap($gap);
-        $this->setPerpendicularGap($perpendicularGap);
+    }
+
+    public function add(Row $row): self
+    {
+        $this->rows[] = $row;
+
+        return $this;
+    }
+
+    /**
+     * @return Row[]
+     */
+    public function getRows(): array
+    {
+        return $this->rows;
+    }
+
+    /**
+     * @param Row[] $rows
+     */
+    public function cloneWithRows(array $rows): self
+    {
+        $self = clone $this;
+        $self->rows = $rows;
+
+        return $self;
+    }
+
+    public function getGap(): float
+    {
+        return $this->gap;
+    }
+
+    public function getPerpendicularGap(): float
+    {
+        return $this->perpendicularGap;
+    }
+
+    /**
+     * @return (float|ColumnSize)[]
+     */
+    public function getColumnSizes(): array
+    {
+        return $this->columnSizes;
     }
 
     /**

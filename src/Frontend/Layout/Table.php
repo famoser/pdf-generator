@@ -11,20 +11,76 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Layout\Traits\ColumnStylesTrait;
-use PdfGenerator\Frontend\Layout\Traits\HeadersTrait;
-use PdfGenerator\Frontend\Layout\Traits\RowsTrait;
+use PdfGenerator\Frontend\Layout\Parts\Row;
+use PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 class Table extends AbstractBlock
 {
-    use RowsTrait;
-    use ColumnStylesTrait;
-    use HeadersTrait;
+    /**
+     * @var Row[]
+     */
+    private array $head = [];
 
-    public function __construct()
+    /**
+     * @var Row[]
+     */
+    private array $body = [];
+
+    /**
+     * @param (float|ColumnSize)[] $columnSizes
+     */
+    public function __construct(private readonly array $columnSizes = [])
     {
-        parent::__construct();
+    }
+
+    public function addHead(Row $row): self
+    {
+        $this->head[] = $row;
+
+        return $this;
+    }
+
+    public function addBody(Row $row): self
+    {
+        $this->body[] = $row;
+
+        return $this;
+    }
+
+    /**
+     * @return Row[]
+     */
+    public function getHead(): array
+    {
+        return $this->head;
+    }
+
+    /**
+     * @return Row[]
+     */
+    public function getBody(): array
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param Row[] $body
+     */
+    public function cloneWithBody(array $body): self
+    {
+        $self = clone $this;
+        $self->body = $body;
+
+        return $self;
+    }
+
+    /**
+     * @return (float|ColumnSize)[]
+     */
+    public function getColumnSizes(): array
+    {
+        return $this->columnSizes;
     }
 
     /**
