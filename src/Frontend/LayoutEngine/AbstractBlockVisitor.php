@@ -25,29 +25,24 @@ abstract class AbstractBlockVisitor
     /**
      * @return T
      */
-    public function visitContentBlock(ContentBlock $contentBlock): mixed
-    {
-    }
+    abstract public function visitContentBlock(ContentBlock $contentBlock): mixed;
 
     /**
      * @return T
      */
-    public function visitBlock(Block $block): mixed
-    {
-    }
+    abstract public function visitBlock(Block $block): mixed;
 
     /**
      * @return T
      */
-    public function visitFlow(Flow $flow): mixed
-    {
-    }
+    abstract public function visitFlow(Flow $flow): mixed;
 
     /**
      * @return T
      */
     public function visitGrid(Grid $grid): mixed
     {
+        throw new \Exception('not implemented');
     }
 
     /**
@@ -55,5 +50,6 @@ abstract class AbstractBlockVisitor
      */
     public function visitTable(Table $table): mixed
     {
+        throw new \Exception('not implemented');
     }
 }
