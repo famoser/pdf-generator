@@ -26,6 +26,8 @@ class ParagraphAllocator
 
     public function allocate(Paragraph $paragraph, Paragraph &$overflow = null, float &$usedHeight = 0, float &$usedWidth = 0): Paragraph
     {
+        $usedWidth = 0;
+        $usedHeight = 0;
         $pendingPhrases = [];
         $allocatedPhrases = $this->allocatedParagraph($paragraph->getPhrases(), $usedWidth, $usedHeight, $pendingPhrases);
 
@@ -58,6 +60,9 @@ class ParagraphAllocator
             $availableHeight += $previousLeadingAdjustment; // continue on previous line
             $availableLineCount = (int) ($availableHeight / $fontMeasurement->getLeading());
 
+            $allocatedUsedWidth = 0;
+            $lastLineOffset = 0;
+            $pendingLines = [];
             $allocatedLines = self::allocatePhrase($fontMeasurement, $phrase->getLines(), $this->width, $availableLineCount, $currentOffset, $allocatedUsedWidth, $lastLineOffset, $pendingLines);
 
             $progressMade = count($allocatedPhrases) > 0;
@@ -100,7 +105,9 @@ class ParagraphAllocator
             $words = explode(' ', $pendingLine);
 
             $availableLineWidth = $availableWidth - $currentLineWidth;
-            $allocatedWords = self::allocatedWords($fontMeasurement, $availableLineWidth, $words, $pendingWords, $allocatedWidth);
+            $pendingWords = [];
+            $allocatedWidth = 0;
+            $allocatedWords = self::allocatedWords($fontMeasurement, $availableLineWidth, $words, $allocatedWidth, $pendingWords);
 
             $outOfBoundingBox = $allocatedWidth > $availableLineWidth;
             $nextLineHasMoreSpace = $availableLineWidth < $availableWidth;
@@ -130,7 +137,7 @@ class ParagraphAllocator
         return $allocatedLines;
     }
 
-    private static function allocatedWords(FontMeasurement $fontMeasurement, float $availableWidth, array $words, array &$pendingWords, float &$width): array
+    private static function allocatedWords(FontMeasurement $fontMeasurement, float $availableWidth, array $words, float &$width, array &$pendingWords): array
     {
         $pendingWords = $words;
         /** @var string[] $allocatedWords */

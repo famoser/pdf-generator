@@ -15,9 +15,9 @@ use PdfGenerator\IR\Document\Content\Common\Color;
 
 class BlockStyle
 {
-    private ?float $borderWidth;
-    private ?Color $borderColor;
-    private ?Color $backgroundColor;
+    private ?float $borderWidth = null;
+    private ?Color $borderColor = null;
+    private ?Color $backgroundColor = null;
 
     public function setBorder(float $borderWidth, Color $borderColor = new Color(0, 0, 0)): self
     {

@@ -12,7 +12,7 @@
 namespace PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 
 use PdfGenerator\Frontend\Layout\Block;
-use PdfGenerator\Frontend\Layout\Flow;
+use PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 
@@ -22,7 +22,7 @@ readonly class FlowMeasurer
     {
     }
 
-    public function measure(array $blocks, string $direction, float $gap): Measurement
+    public function measure(array $blocks, FlowDirection $direction, float $gap): Measurement
     {
         $measurements = $this->getMeasurements($blocks);
         $weight = $this->getWeight($measurements, $direction, $gap);
@@ -50,7 +50,7 @@ readonly class FlowMeasurer
         return $measurements;
     }
 
-    private function getWeight(array $measurements, string $direction, float $gap): float
+    private function getWeight(array $measurements, FlowDirection $direction, float $gap): float
     {
         $weight = 0;
         for ($i = 0; $i < count($measurements); ++$i) {
@@ -62,7 +62,7 @@ readonly class FlowMeasurer
             }
 
             $previousMeasurement = $measurements[$i - 1];
-            $dimension = Flow::DIRECTION_ROW === $direction ?
+            $dimension = FlowDirection::ROW === $direction ?
                 $measurement->getMinHeight() + $previousMeasurement->getMinHeight() :
                 $measurement->getMinWidth() + $previousMeasurement->getMinWidth();
 

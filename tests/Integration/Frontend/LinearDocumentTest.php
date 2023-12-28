@@ -90,13 +90,16 @@ class LinearDocumentTest extends TestCase
         $image = Image::createFromFile(ResourcesProvider::getImage1Path());
 
         // act
+        $bordered = new BlockStyle();
+        $bordered->setBorder(0.25);
+
         $flow = new Flow();
         for ($i = 0; $i < 800; ++$i) {
             $imagePlacement = new ImagePlacement($image);
             $contentBlock = new ContentBlock($imagePlacement);
-            $contentBlock->setWidth($i * 5 % 40);
-            $contentBlock->setHeight($i * 3 % 17);
-            $contentBlock->setStyle(new BlockStyle(0.25));
+            $contentBlock->setWidth($i * 5 % 40 + 1);
+            $contentBlock->setHeight($i * 3 % 17 + 1);
+            $contentBlock->setStyle($bordered);
             $flow->add($contentBlock);
         }
         $document->add($flow);
