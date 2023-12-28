@@ -19,7 +19,7 @@ readonly class BlockAllocation
      * @param BlockAllocation[]   $blockAllocations
      * @param ContentAllocation[] $contentAllocations
      */
-    public function __construct(private float $left, private float $top, private float $width, private float $height, private array $blockAllocations = [], private array $contentAllocations = [], private ?AbstractBlock $overflow = null)
+    public function __construct(private float $left, private float $top, private float $width, private float $height, private array $blockAllocations = [], private array $contentAllocations = [], private bool $allocationOverflows = false, private ?AbstractBlock $overflow = null)
     {
     }
 
@@ -57,6 +57,11 @@ readonly class BlockAllocation
     public function getContentAllocations(): array
     {
         return $this->contentAllocations;
+    }
+
+    public function getAllocationOverflows(): bool
+    {
+        return $this->allocationOverflows;
     }
 
     public function getOverflow(): ?AbstractBlock

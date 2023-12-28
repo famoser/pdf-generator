@@ -55,4 +55,15 @@ class Phrase
     {
         $this->textStyle = $textStyle;
     }
+
+    /**
+     * @param string[] $lines
+     */
+    public function cloneWithLines(array $lines): self
+    {
+        $self = clone $this;
+        $self->text = implode("\n", $lines);
+
+        return $self;
+    }
 }
