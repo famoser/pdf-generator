@@ -51,6 +51,9 @@ class ParagraphAllocator
 
         $currentOffset = 0;
         $currentLineHeight = 0;
+
+        $usedHeight = 0.0;
+        $usedWidth = 0.0;
         while (count($pendingPhrases) > 0) {
             $phrase = array_shift($pendingPhrases);
 
@@ -73,7 +76,7 @@ class ParagraphAllocator
             }
 
             $allocatedPhrases[] = $phrase->cloneWithLines($allocatedLines);
-            $usedHeight += $previousLeadingAdjustment;
+            $usedHeight += 1 === count($allocatedPhrases) ? $fontMeasurement->getLeading() : 0;
             $usedHeight += (count($allocatedLines) - 1) * $fontMeasurement->getLeading();
             $usedWidth = max($usedWidth, $allocatedUsedWidth);
 
@@ -100,6 +103,7 @@ class ParagraphAllocator
         /** @var string[] $allocatedLines */
         $allocatedLines = [];
         $currentLineWidth = $offset;
+        $lastLineOffset = $offset;
         while (count($pendingLines) > 0) {
             $pendingLine = array_shift($pendingLines);
             $words = explode(' ', $pendingLine);
@@ -111,8 +115,9 @@ class ParagraphAllocator
 
             $outOfBoundingBox = $allocatedWidth > $availableLineWidth;
             $nextLineHasMoreSpace = $availableLineWidth < $availableWidth;
-            $progressOptional = $maxLineCount > 1 && count($allocatedLines) > 0;
+            $progressOptional = $maxLineCount > 1 || count($allocatedLines) > 0;
             if ($outOfBoundingBox && $nextLineHasMoreSpace && $progressOptional) {
+                array_unshift($pendingLines, $pendingLine);
                 $allocatedLines[] = '';
                 $currentLineWidth = 0;
                 continue;
@@ -120,6 +125,7 @@ class ParagraphAllocator
 
             $allocatedLines[] = implode(' ', $allocatedWords);
             $usedWidth = max($usedWidth, $currentLineWidth + $allocatedWidth);
+            $lastLineOffset = $currentLineWidth + $allocatedWidth;
             $currentLineWidth = 0;
 
             // re-add line if more words, proceed to next line
@@ -131,8 +137,6 @@ class ParagraphAllocator
                 break;
             }
         }
-
-        $lastLineOffset = $currentLineWidth;
 
         return $allocatedLines;
     }
