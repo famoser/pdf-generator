@@ -30,7 +30,7 @@ readonly class FlowAllocator
         /** @var AbstractBlock[] $overflowBlocks */
         $overflowBlocks = $flow->getBlocks();
         while (count($overflowBlocks) > 0) {
-            $block = $overflowBlocks[0];
+            $block = array_shift($overflowBlocks);
 
             // get allocation of child
             $availableWidth = FlowDirection::ROW === $flow->getDirection() ? $this->width - $usedWidth : $this->width;
@@ -38,6 +38,13 @@ readonly class FlowAllocator
             $allocationVisitor = new BlockAllocationVisitor($availableWidth, $availableHeight);
             /** @var BlockAllocation $allocation */
             $allocation = $block->accept($allocationVisitor);
+
+            $progressMade = count($blockAllocations) > 0;
+            $overflow = $allocation->getWidth() > $availableWidth || $allocation->getHeight() > $availableHeight;
+            if ($progressMade && $overflow) {
+                array_unshift($overflowBlocks, $block);
+                break;
+            }
 
             // update allocated content
             if (FlowDirection::ROW === $flow->getDirection()) {
@@ -51,9 +58,7 @@ readonly class FlowAllocator
             }
 
             if ($allocation->getOverflow()) {
-                $overflowBlocks[0] = $allocation->getOverflow();
-            } else {
-                array_shift($overflowBlocks);
+                array_unshift($overflowBlocks, $allocation->getOverflow());
             }
         }
 

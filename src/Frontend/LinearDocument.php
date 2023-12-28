@@ -15,6 +15,8 @@ use DocumentGenerator\DocumentInterface;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
+use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
+use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 use PdfGenerator\Frontend\Resource\Font\FontRepository;
 use PdfGenerator\Frontend\Resource\Image\ImageRepository;
 use PdfGenerator\IR\Document;
@@ -52,26 +54,25 @@ class LinearDocument implements DocumentInterface
     {
         $currentBlock = $block;
         do {
-            $allocation = $this->allocate($currentBlock);
-
-            // advance page if no sensible allocation
-            if (!$allocation) {
-                if ($this->currentY > 0) {
+            if ($this->currentY > 0) {
+                $measurement = $this->measure($currentBlock);
+                [, $height] = $this->getUsableSpace();
+                if ($measurement->getMinHeight() > $height) {
                     $this->addPage();
-                    continue;
-                } else {
-                    // TODO: measure min width, then allocate using that min width
-                    throw new \Exception('Page too small to fit content.');
                 }
             }
 
+            $allocation = $this->allocate($currentBlock);
             $this->place($allocation);
             $this->currentY += $allocation->getHeight();
             $currentBlock = $allocation->getOverflow();
         } while (null !== $currentBlock);
     }
 
-    public function allocate(AbstractBlock $block): ?BlockAllocation
+    /**
+     * @return float[]
+     */
+    private function getUsableSpace(): array
     {
         $widthMargin = $this->margin[0] + $this->margin[2];
         $width = $this->pageSize[0] - $widthMargin;
@@ -79,7 +80,20 @@ class LinearDocument implements DocumentInterface
         $heightMargin = $this->margin[1] + $this->margin[3];
         $height = $this->pageSize[1] - $this->currentY - $heightMargin;
 
-        $allocationVisitor = new BlockAllocationVisitor($width, $height);
+        return [$width, $height];
+    }
+
+    public function measure(AbstractBlock $block): Measurement
+    {
+        $allocationVisitor = new BlockMeasurementVisitor();
+
+        return $block->accept($allocationVisitor);
+    }
+
+    public function allocate(AbstractBlock $block): BlockAllocation
+    {
+        $usableSpace = $this->getUsableSpace();
+        $allocationVisitor = new BlockAllocationVisitor(...$usableSpace);
 
         return $block->accept($allocationVisitor);
     }
