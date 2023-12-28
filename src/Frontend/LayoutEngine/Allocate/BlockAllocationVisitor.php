@@ -35,20 +35,12 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
     {
     }
 
-    public function visitContentBlock(ContentBlock $contentBlock): ?BlockAllocation
+    public function visitContentBlock(ContentBlock $contentBlock): BlockAllocation
     {
         $usableSpace = $this->getUsableSpace($contentBlock);
-        if (!$usableSpace) {
-            return null;
-        }
 
         $contentAllocationVisitor = new ContentAllocationVisitor(...$usableSpace);
-        /** @var ContentAllocation|null $contentAllocation */
-        $contentAllocation = $contentBlock->getContent()->accept($contentAllocationVisitor);
-        if (!$contentAllocation) {
-            return null;
-        }
-
+        $contentAllocation = $contentBlock->getContent()->accept($contentAllocationVisitor); /** @var ContentAllocation $contentAllocation */
         $overflow = $contentAllocation->getOverflow() ? $contentBlock->cloneWithContent($contentAllocation->getOverflow()) : null;
 
         return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], [$contentAllocation], $overflow);
@@ -57,16 +49,9 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
     public function visitBlock(Block $block): ?BlockAllocation
     {
         $usableSpace = $this->getUsableSpace($block);
-        if (!$usableSpace) {
-            return null;
-        }
 
         $blockAllocationVisitor = new BlockAllocationVisitor(...$usableSpace);
-        $blockAllocation = $block->getBlock()->accept($blockAllocationVisitor);
-        if (!$blockAllocation) {
-            return null;
-        }
-
+        $blockAllocation = $block->getBlock()->accept($blockAllocationVisitor); /** @var BlockAllocation $blockAllocation */
         $overflow = $blockAllocation->getOverflow() ? $block->cloneWithBlock($blockAllocation->getOverflow()) : null;
 
         return $this->allocateBlock($block, $blockAllocation->getWidth(), $blockAllocation->getHeight(), [$blockAllocation], [], $overflow);
@@ -75,57 +60,39 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
     public function visitFlow(Flow $flow): ?BlockAllocation
     {
         $usableSpace = $this->getUsableSpace($flow);
-        if (!$usableSpace) {
-            return null;
-        }
 
         $allocator = new FlowAllocator(...$usableSpace);
         $usedWidth = 0;
         $usedHeight = 0;
         $overflowBlocks = [];
         $allocatedBlocks = $allocator->allocate($flow, $overflowBlocks, $usedWidth, $usedHeight);
-
-        if (0 === count($allocatedBlocks)) {
-            return null;
-        }
+        assert(count($allocatedBlocks) > 0);
 
         $overflow = count($overflowBlocks) > 0 ? $flow->cloneWithBlocks($overflowBlocks) : null;
 
         return $this->allocateBlock($flow, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
     }
 
-    public function visitGrid(Grid $grid): ?BlockAllocation
+    public function visitGrid(Grid $grid): BlockAllocation
     {
         $usableSpace = $this->getUsableSpace($grid);
-        if (!$usableSpace) {
-            return null;
-        }
 
         $allocator = new GridAllocator(...$usableSpace);
         $usedWidth = 0;
         $usedHeight = 0;
         $overflowRows = [];
         $allocatedBlocks = $allocator->allocate($grid, $overflowRows, $usedWidth, $usedHeight);
-
-        if (0 === count($allocatedBlocks)) {
-            return null;
-        }
+        assert(count($allocatedBlocks) > 0);
 
         $overflow = count($overflowRows) > 0 ? $grid->cloneWithRows($overflowRows) : null;
 
         return $this->allocateBlock($grid, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
     }
 
-    private function getUsableSpace(AbstractBlock $block): ?array
+    private function getUsableSpace(AbstractBlock $block): array
     {
         $availableMaxWidth = $this->maxWidth - $block->getXMargin();
         $availableMaxHeight = $this->maxHeight - $block->getYMargin();
-
-        $tooWide = $block->getWidth() && $availableMaxWidth < $block->getWidth();
-        $tooHigh = $block->getHeight() && $availableMaxHeight < $block->getHeight();
-        if ($tooWide || $tooHigh) {
-            return null;
-        }
 
         $usableWidth = ($block->getWidth() ?? $availableMaxWidth) - $block->getXPadding();
         $usableHeight = ($block->getHeight() ?? $availableMaxHeight) - $block->getYPadding();
@@ -147,14 +114,19 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
 
         $width = $block->getWidth() ? $block->getWidth() + $block->getXMargin() : $contentWidth + $block->getXSpace();
         $height = $block->getHeight() ? $block->getHeight() + $block->getYMargin() : $contentHeight + $block->getYSpace();
+        $allocationOverflows = $width > $this->maxWidth || $height > $this->maxHeight;
 
-        return new BlockAllocation($block->getLeftSpace(), $block->getTopSpace(), $width, $height, $blockAllocations, $contentAllocations, $overflow);
+        return new BlockAllocation($block->getLeftSpace(), $block->getTopSpace(), $width, $height, $blockAllocations, $contentAllocations, $allocationOverflows, $overflow);
     }
 
     private function allocateBackground(AbstractBlock $block, float $contentWidth, float $contentHeight): ?ContentAllocation
     {
         // print block background
         $blockStyle = $block->getStyle();
+        if (!$blockStyle) {
+            return null;
+        }
+
         $hasBorder = $blockStyle->getBorderWidth() && $blockStyle->getBorderColor();
         if (!$hasBorder && !$blockStyle->getBackgroundColor()) {
             return null;

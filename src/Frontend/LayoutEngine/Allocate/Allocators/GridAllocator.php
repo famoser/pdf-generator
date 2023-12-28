@@ -39,6 +39,8 @@ class GridAllocator
             $blockAllocations[$columnIndex] = $this->allocateMinColumn($grid, $columnIndex, $distributeWidth, $usedColumnWidth);
             $distributeWidth -= $usedColumnWidth;
         }
+
+        throw new \Exception('Not implemented yet');
     }
 
     /**
@@ -75,14 +77,14 @@ class GridAllocator
      */
     private function getColumnSizes(Grid $grid): array
     {
-        $maxColumn = max(...array_keys($grid->getColumnStyles()));
+        $maxColumn = max(...array_keys($grid->getColumnSizes()));
         foreach ($grid->getRows() as $row) {
             $maxColumn = max($maxColumn, ...array_keys($row->getColumns()));
         }
 
         $columnSizes = array_fill(0, $maxColumn + 1, ColumnSize::AUTO);
-        foreach ($grid->getColumnStyles() as $index => $columnStyle) {
-            $columnSizes[$index] = $columnStyle->getColumnSize();
+        foreach ($grid->getColumnSizes() as $index => $columnSize) {
+            $columnSizes[$index] = $columnSize;
         }
 
         return $columnSizes;

@@ -19,6 +19,7 @@ use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use PdfGenerator\Frontend\LinearDocument;
 use PdfGenerator\Frontend\Resource\Font;
 use PdfGenerator\Frontend\Resource\Image;
@@ -41,8 +42,7 @@ class LinearDocumentTest extends TestCase
 
         $blockStyle = new BlockStyle();
         $blockStyle->setBackgroundColor(new Color(255, 0, 0));
-        $blockStyle->setBorderColor(new Color(0, 0, 255));
-        $blockStyle->setBorderWidth(1.0);
+        $blockStyle->setBorder(1.0, new Color(0, 0, 255));
         $contentBlock = new ContentBlock($rectangle);
         $contentBlock->setStyle($blockStyle);
         $contentBlock->setMargin([20, 0, 0, 0]);
@@ -65,7 +65,7 @@ class LinearDocumentTest extends TestCase
 
         // act
         $rectangleStyle = new DrawingStyle(0.25);
-        $flow = new Flow(Flow::DIRECTION_COLUMN);
+        $flow = new Flow(FlowDirection::COLUMN);
         for ($i = 0; $i < 800; ++$i) {
             $rectangle = new Rectangle($rectangleStyle);
             $contentBlock = new ContentBlock($rectangle);
@@ -141,9 +141,8 @@ class LinearDocumentTest extends TestCase
         $paragraph->add($normalText, 'Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten.');
         $paragraphs[] = $paragraph;
 
-        $outerFlow = new Flow(Flow::DIRECTION_ROW);
-        $outerFlow->setGap(10);
-        $flow = new Flow(Flow::DIRECTION_COLUMN);
+        $outerFlow = new Flow(FlowDirection::ROW, 10);
+        $flow = new Flow(FlowDirection::COLUMN);
         $flow->setWidth(85);
         for ($i = 0; $i < 30; ++$i) {
             foreach ($paragraphs as $paragraph) {

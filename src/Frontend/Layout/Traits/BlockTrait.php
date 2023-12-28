@@ -15,7 +15,7 @@ use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 
 trait BlockTrait
 {
-    private ?BlockStyle $style;
+    private ?BlockStyle $style = null;
 
     /**
      * @var float[]
@@ -27,9 +27,9 @@ trait BlockTrait
      */
     private array $padding = [0, 0, 0, 0];
 
-    private ?float $width;
+    private ?float $width = null;
 
-    private ?float $height;
+    private ?float $height = null;
 
     public function setStyle(BlockStyle $style): self
     {

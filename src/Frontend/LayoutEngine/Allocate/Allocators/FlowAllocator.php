@@ -38,9 +38,6 @@ readonly class FlowAllocator
             $allocationVisitor = new BlockAllocationVisitor($availableWidth, $availableHeight);
             /** @var BlockAllocation $allocation */
             $allocation = $block->accept($allocationVisitor);
-            if (!$allocation) {
-                break;
-            }
 
             // update allocated content
             if (FlowDirection::ROW === $flow->getDirection()) {

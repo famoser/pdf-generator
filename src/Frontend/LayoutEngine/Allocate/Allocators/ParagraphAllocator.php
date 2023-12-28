@@ -24,14 +24,10 @@ class ParagraphAllocator
         $this->fontRepository = FontRepository::instance();
     }
 
-    public function allocate(Paragraph $paragraph, Paragraph &$overflow = null, float &$usedHeight = 0, float &$usedWidth = 0): ?Paragraph
+    public function allocate(Paragraph $paragraph, Paragraph &$overflow = null, float &$usedHeight = 0, float &$usedWidth = 0): Paragraph
     {
-        $pendingPhrases = $paragraph->getPhrases();
-        $allocatedPhrases = $this->allocatePhrases($pendingPhrases, $usedWidth, $usedHeight);
-
-        if (0 === count($allocatedPhrases)) {
-            return null;
-        }
+        $pendingPhrases = [];
+        $allocatedPhrases = $this->allocatedParagraph($paragraph->getPhrases(), $usedWidth, $usedHeight, $pendingPhrases);
 
         $allocated = $paragraph->cloneWithPhrases($allocatedPhrases);
         $overflow = count($pendingPhrases) > 0 ? $paragraph->cloneWithPhrases($pendingPhrases) : null;
@@ -40,52 +36,49 @@ class ParagraphAllocator
     }
 
     /**
+     * @param Paragraph\Phrase[] $phrases
      * @param Paragraph\Phrase[] $pendingPhrases
      *
      * @return Paragraph\Phrase[]
      */
-    private function allocatePhrases(array &$pendingPhrases, int &$usedWidth, int &$usedHeight): array
+    private function allocatedParagraph(array $phrases, float &$usedWidth, float &$usedHeight, array &$pendingPhrases): array
     {
-        $usedLineWidth = 0;
-        $usedLineHeight = 0;
+        $pendingPhrases = $phrases;
         /** @var Paragraph\Phrase[] $allocatedPhrases */
         $allocatedPhrases = [];
+
+        $currentOffset = 0;
+        $currentLineHeight = 0;
         while (count($pendingPhrases) > 0) {
-            $phrase = $pendingPhrases[0];
-            $textStyle = $phrase->getTextStyle();
-            $fontMeasurement = $this->fontRepository->getFontMeasurement($textStyle);
+            $phrase = array_shift($pendingPhrases);
 
+            $fontMeasurement = $this->fontRepository->getFontMeasurement($phrase->getTextStyle());
             $availableHeight = $this->height - $usedHeight;
-            $currentLineHeight = max($usedLineHeight, $fontMeasurement->getLeading());
-            $maxLineCount = (int) ((($availableHeight - $currentLineHeight) / $fontMeasurement->getLeading()) + 1);
-            assert($availableHeight > $currentLineHeight || 0 === $maxLineCount);
+            $previousLeadingAdjustment = min($fontMeasurement->getLeading(), $currentLineHeight);
+            $availableHeight += $previousLeadingAdjustment; // continue on previous line
+            $availableLineCount = (int) ($availableHeight / $fontMeasurement->getLeading());
 
-            $pendingLines = $phrase->getLines();
-            $allocatedLines = $this->allocateLines($maxLineCount, $fontMeasurement, $pendingLines, $usedLineWidth, $usedWidth);
+            $allocatedLines = self::allocatePhrase($fontMeasurement, $phrase->getLines(), $this->width, $availableLineCount, $currentOffset, $allocatedUsedWidth, $lastLineOffset, $pendingLines);
 
-            if (count($allocatedLines) > 0) {
-                $allocatedPhrases[] = Paragraph\Phrase::createFromLines($allocatedLines, $textStyle);
-                $usedLineHeight = $currentLineHeight;
-
-                if (count($pendingLines) > 0 || count($allocatedLines) > 1) {
-                    $usedHeight += $usedLineHeight;
-                    $usedLineHeight = $fontMeasurement->getLeading();
-                    if (count($allocatedLines) > 1) {
-                        $usedHeight += (count($allocatedLines) - 2) * $fontMeasurement->getLeading();
-                    }
-
-                    $phrase = Paragraph\Phrase::createFromLines($pendingLines, $textStyle);
-                    $pendingPhrases[0] = $phrase;
-                } else {
-                    array_shift($pendingPhrases);
-                }
-            } else {
+            $progressMade = count($allocatedPhrases) > 0;
+            $outOfBoundingBox = count($allocatedLines) > $availableLineCount || (1 === $availableLineCount && $usedWidth > $this->width);
+            if ($progressMade && $outOfBoundingBox) {
+                array_unshift($pendingPhrases, $phrase);
                 break;
             }
-        }
 
-        if (count($allocatedPhrases) > 0 && 0 === count($pendingPhrases)) {
-            $usedHeight += $usedLineHeight;
+            $allocatedPhrases[] = $phrase->cloneWithLines($allocatedLines);
+            $usedHeight += $previousLeadingAdjustment;
+            $usedHeight += (count($allocatedLines) - 1) * $fontMeasurement->getLeading();
+            $usedWidth = max($usedWidth, $allocatedUsedWidth);
+
+            $currentOffset = $lastLineOffset;
+            $currentLineHeight = count($allocatedLines) > 1 ? $fontMeasurement->getLeading() : max($currentLineHeight, $fontMeasurement->getLeading());
+
+            if (count($pendingLines) > 0) {
+                array_unshift($pendingPhrases, $phrase->cloneWithLines($pendingLines));
+                break;
+            }
         }
 
         return $allocatedPhrases;
@@ -96,77 +89,67 @@ class ParagraphAllocator
      *
      * @return string[]
      */
-    private function allocateLines(int $maxLines, FontMeasurement $fontMeasurement, array &$pendingLines, float &$usedLineWidth, float &$usedWidth): array
+    private static function allocatePhrase(FontMeasurement $fontMeasurement, array $lines, float $availableWidth, int $maxLineCount, float $offset, float &$usedWidth, float &$lastLineOffset, array &$pendingLines): array
     {
+        $pendingLines = $lines;
         /** @var string[] $allocatedLines */
         $allocatedLines = [];
-        while (count($pendingLines) > 0 && count($allocatedLines) < $maxLines) {
-            $line = $pendingLines[0];
-            $pendingWords = explode(' ', $line);
-            while (count($pendingWords) > 0 && count($allocatedLines) < $maxLines) {
-                $allocatedWords = $this->allocatedWords($fontMeasurement, $pendingWords, $usedLineWidth);
+        $currentLineWidth = $offset;
+        while (count($pendingLines) > 0) {
+            $pendingLine = array_shift($pendingLines);
+            $words = explode(' ', $pendingLine);
 
-                // force at least a single word to be printed
-                $noProgress = 0 === count($allocatedWords) && 0.0 === $usedLineWidth;
-                if ($noProgress) {
-                    $firstWord = array_shift($pendingWords);
-                    $allocatedWords[] = $firstWord;
-                    $usedLineWidth = $fontMeasurement->getWidth($firstWord);
-                }
+            $availableLineWidth = $availableWidth - $currentLineWidth;
+            $allocatedWords = self::allocatedWords($fontMeasurement, $availableLineWidth, $words, $pendingWords, $allocatedWidth);
 
-                $allocatedLine = implode(' ', $allocatedWords);
-                $allocatedLines[] = $allocatedLine;
-
-                // begin new line if possible
-                if (count($pendingWords) > 0 && count($allocatedLines) < $maxLines) {
-                    $usedWidth = max($usedWidth, $usedLineWidth);
-                    $usedLineWidth = 0;
-                }
+            $outOfBoundingBox = $allocatedWidth > $availableLineWidth;
+            $nextLineHasMoreSpace = $availableLineWidth < $availableWidth;
+            $progressOptional = $maxLineCount > 1 && count($allocatedLines) > 0;
+            if ($outOfBoundingBox && $nextLineHasMoreSpace && $progressOptional) {
+                $allocatedLines[] = '';
+                $currentLineWidth = 0;
+                continue;
             }
 
+            $allocatedLines[] = implode(' ', $allocatedWords);
+            $usedWidth = max($usedWidth, $currentLineWidth + $allocatedWidth);
+            $currentLineWidth = 0;
+
+            // re-add line if more words, proceed to next line
             if (count($pendingWords) > 0) {
-                $pendingLines[0] = implode(' ', $pendingWords);
-            } else {
-                array_shift($pendingLines);
-                if (count($pendingLines) > 0) {
-                    $usedWidth = max($usedWidth, $usedLineWidth);
-                    $usedLineWidth = 0;
-                }
+                array_unshift($pendingLines, implode(' ', $pendingWords));
+            }
+
+            if (count($allocatedLines) >= $maxLineCount) {
+                break;
             }
         }
 
-        if (count($allocatedLines) > 0) {
-            $usedWidth = max($usedWidth, $usedLineWidth);
-        }
+        $lastLineOffset = $currentLineWidth;
 
         return $allocatedLines;
     }
 
-    private function allocatedWords(FontMeasurement $fontMeasurement, array &$pendingWords, float &$usedLineWidth): array
+    private static function allocatedWords(FontMeasurement $fontMeasurement, float $availableWidth, array $words, array &$pendingWords, float &$width): array
     {
+        $pendingWords = $words;
         /** @var string[] $allocatedWords */
         $allocatedWords = [];
-
+        $width = 0.0;
         while (count($pendingWords) > 0) {
-            $word = $pendingWords[0];
+            $word = array_shift($pendingWords);
             $wordSize = $fontMeasurement->getWidth($word);
-            $availableWidth = $this->width - $usedLineWidth;
-            if ($wordSize < $availableWidth) {
-                $allocatedWords[] = $word;
-                $usedLineWidth += $wordSize;
-                array_shift($pendingWords);
+            $widthAdvance = $wordSize + (count($allocatedWords) > 0 ? $fontMeasurement->getSpaceWidth() : 0);
 
-                // more words follow; add space
-                if (count($pendingWords) > 0) {
-                    $usedLineWidth += $fontMeasurement->getSpaceWidth();
-                }
-            } else {
-                // natural line break; remove space at the end
-                if (count($allocatedWords) > 0) {
-                    $usedLineWidth -= $fontMeasurement->getSpaceWidth();
-                }
+            $progressMade = count($allocatedWords) > 0;
+            $outOfBoundingBox = $availableWidth < ($width + $widthAdvance);
+            if ($progressMade && $outOfBoundingBox) {
+                array_unshift($pendingWords, $word);
                 break;
             }
+
+            $allocatedWords[] = $word;
+            $width += $widthAdvance;
         }
 
         return $allocatedWords;

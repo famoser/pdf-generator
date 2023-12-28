@@ -11,10 +11,13 @@
 
 namespace PdfGenerator\Frontend\Layout;
 
+use PdfGenerator\Frontend\Layout\Traits\BlockTrait;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 
 abstract class AbstractBlock
 {
+    use BlockTrait;
+
     /**
      * @template T
      *

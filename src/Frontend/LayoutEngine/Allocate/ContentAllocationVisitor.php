@@ -27,31 +27,28 @@ class ContentAllocationVisitor extends AbstractContentVisitor
     {
     }
 
-    public function visitSpacer(Spacer $spacer): ?ContentAllocation
+    public function visitSpacer(Spacer $spacer): ContentAllocation
     {
         return new ContentAllocation($this->width, $this->height, $spacer);
     }
 
-    public function visitRectangle(Rectangle $rectangle): ?ContentAllocation
+    public function visitRectangle(Rectangle $rectangle): ContentAllocation
     {
         return new ContentAllocation($this->width, $this->height, $rectangle);
     }
 
-    public function visitImagePlacement(ImagePlacement $imagePlacement): ?ContentAllocation
+    public function visitImagePlacement(ImagePlacement $imagePlacement): ContentAllocation
     {
         return new ContentAllocation($this->width, $this->height, $imagePlacement);
     }
 
-    public function visitParagraph(Paragraph $paragraph): ?ContentAllocation
+    public function visitParagraph(Paragraph $paragraph): ContentAllocation
     {
         $paragraphAllocator = new ParagraphAllocator($this->width, $this->height);
 
         $usedHeight = 0;
         $usedWidth = 0;
         $allocated = $paragraphAllocator->allocate($paragraph, $overflow, $usedHeight, $usedWidth);
-        if (!$allocated) {
-            return null;
-        }
 
         return new ContentAllocation($usedWidth, $usedHeight, $allocated, $overflow);
     }
