@@ -90,7 +90,9 @@ class PrinterTest extends TestCase
 
         $phrase1 = new Text\Phrase("Dies ist ein Test\nNeue Zeile. ", $textStyle1);
         $phrase2 = new Text\Phrase("Es geht weiter\nKlappt das?", $textStyle2);
-        $paragraph = new Document\Content\Paragraph([$phrase1, $phrase2], $bottomLeft);
+        $phrase3 = new Text\Phrase('Short', $textStyle1);
+        $phrase4 = new Text\Phrase('Big', $textStyle2);
+        $paragraph = new Document\Content\Paragraph([$phrase1, $phrase2, $phrase3, $phrase4], $bottomLeft);
         $page->addContent($paragraph);
 
         // assert
