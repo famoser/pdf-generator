@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integration\Frontend\LinearDocument;
+namespace PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
 use PdfGenerator\Frontend\Content\AbstractContent;
 use PdfGenerator\Frontend\Content\ImagePlacement;
@@ -25,7 +25,7 @@ use PdfGenerator\Frontend\Resource\Image;
 use PdfGenerator\IR\Document\Content\Common\Color;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
 
-class ContentTest extends AbstractLinearDocumentTest
+class ContentTestCase extends LinearDocumentTestCase
 {
     public function testPrintRectangle()
     {

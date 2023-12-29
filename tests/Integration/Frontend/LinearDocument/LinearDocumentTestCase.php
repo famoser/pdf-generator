@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Integration\Frontend\LinearDocument;
+namespace PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
 use PdfGenerator\Frontend\LinearDocument;
 use PHPUnit\Framework\TestCase;
 
-abstract class AbstractLinearDocumentTest extends TestCase
+abstract class LinearDocumentTestCase extends TestCase
 {
     protected function render(LinearDocument $document): string
     {

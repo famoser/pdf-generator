@@ -23,6 +23,20 @@ readonly class BlockAllocation
     {
     }
 
+    public static function shift(BlockAllocation $allocation, float $width, float $height): self
+    {
+        return new self(
+            $allocation->left + $width,
+            $allocation->top + $height,
+            $allocation->getWidth(),
+            $allocation->getHeight(),
+            $allocation->getBlockAllocations(),
+            $allocation->getContentAllocations(),
+            $allocation->getAllocationOverflows(),
+            $allocation->getOverflow()
+        );
+    }
+
     public function getLeft(): float
     {
         return $this->left;

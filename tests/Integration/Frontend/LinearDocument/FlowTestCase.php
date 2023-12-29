@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integration\Frontend\LinearDocument;
+namespace PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
 use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
@@ -21,7 +21,7 @@ use PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use PdfGenerator\Frontend\LinearDocument;
 use PdfGenerator\Frontend\Resource\Font;
 
-class FlowTest extends AbstractLinearDocumentTest
+class FlowTestCase extends LinearDocumentTestCase
 {
     public function testPrintFlowContent()
     {

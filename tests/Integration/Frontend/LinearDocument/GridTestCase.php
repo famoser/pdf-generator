@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integration\Frontend\LinearDocument;
+namespace PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
 use PdfGenerator\Frontend\Content\Rectangle;
 use PdfGenerator\Frontend\Content\Style\DrawingStyle;
@@ -20,14 +20,13 @@ use PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use PdfGenerator\Frontend\LinearDocument;
 use PdfGenerator\IR\Document\Content\Common\Color;
 
-class GridTest extends AbstractLinearDocumentTest
+class GridTestCase extends LinearDocumentTestCase
 {
     public function testPrintGrid()
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
         $grid = new Grid(3, 10, [ColumnSize::MINIMAL, ColumnSize::MINIMAL]);
-        $document->add($grid);
 
         $rectangleStyle = new DrawingStyle();
         $rectangleStyle->setFillColor(new Color(0, 255, 0));
@@ -43,14 +42,16 @@ class GridTest extends AbstractLinearDocumentTest
             $row = new Row();
             foreach ($rowDimensions as $index => $entryDimensions) {
                 $contentBlock = new ContentBlock($rectangle);
-                $contentBlock->setHeight(5);
-                $contentBlock->setWidth(10);
+                $contentBlock->setHeight($entryDimensions[0]);
+                $contentBlock->setWidth($entryDimensions[1]);
 
                 $row->set($index, $contentBlock);
             }
 
             $grid->add($row);
         }
+
+        $document->add($grid);
 
         // assert
         $result = $this->render($document);
