@@ -9,56 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Integration\Frontend;
+namespace Integration\Frontend\LinearDocument;
 
-use PdfGenerator\Frontend\Content\ImagePlacement;
 use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
 use PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use PdfGenerator\Frontend\LinearDocument;
 use PdfGenerator\Frontend\Resource\Font;
-use PdfGenerator\Frontend\Resource\Image;
-use PdfGenerator\IR\Document\Content\Common\Color;
-use PdfGenerator\Tests\Resources\ResourcesProvider;
-use PHPUnit\Framework\TestCase;
 
-class LinearDocumentTest extends TestCase
+class FlowTest extends AbstractLinearDocumentTest
 {
-    public function testPrintRectangle()
-    {
-        // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
-
-        // act
-        $rectangleStyle = new DrawingStyle();
-        $rectangleStyle->setFillColor(new Color(0, 255, 0));
-        $rectangleStyle->setLineColor(new Color(0, 255, 255));
-        $rectangle = new Rectangle($rectangleStyle);
-
-        $blockStyle = new BlockStyle();
-        $blockStyle->setBackgroundColor(new Color(255, 0, 0));
-        $blockStyle->setBorder(1.0, new Color(0, 0, 255));
-        $contentBlock = new ContentBlock($rectangle);
-        $contentBlock->setStyle($blockStyle);
-        $contentBlock->setMargin([20, 0, 0, 0]);
-        $contentBlock->setPadding([5, 5, 5, 10]);
-        $contentBlock->setWidth(40);
-        $contentBlock->setHeight(40);
-        $document->add($contentBlock);
-
-        // assert
-        $result = $this->render($document);
-        $this->assertStringContainsString('10', $result);
-        $this->assertStringContainsString('20', $result);
-        $this->assertStringContainsString('40', $result);
-    }
-
-    public function testPrintFlowRectangles()
+    public function testPrintFlowContent()
     {
         // arrange
         $document = new LinearDocument();
@@ -76,33 +41,6 @@ class LinearDocumentTest extends TestCase
         $outerFlow = new Flow();
         $outerFlow->add($flow);
         $document->add($outerFlow);
-
-        // assert
-        $result = $this->render($document);
-        $this->assertStringContainsString('10', $result);
-        $this->assertStringContainsString('20', $result);
-    }
-
-    public function testPrintFlowImagePlacements()
-    {
-        // arrange
-        $document = new LinearDocument();
-        $image = Image::createFromFile(ResourcesProvider::getImage1Path());
-
-        // act
-        $bordered = new BlockStyle();
-        $bordered->setBorder(0.25);
-
-        $flow = new Flow();
-        for ($i = 0; $i < 800; ++$i) {
-            $imagePlacement = new ImagePlacement($image);
-            $contentBlock = new ContentBlock($imagePlacement);
-            $contentBlock->setWidth($i * 5 % 40 + 1);
-            $contentBlock->setHeight($i * 3 % 17 + 1);
-            $contentBlock->setStyle($bordered);
-            $flow->add($contentBlock);
-        }
-        $document->add($flow);
 
         // assert
         $result = $this->render($document);
@@ -160,13 +98,5 @@ class LinearDocumentTest extends TestCase
         // assert
         $result = $this->render($document);
         $this->assertStringContainsString('PDF-Konzept', $result);
-    }
-
-    private function render(LinearDocument $document): string
-    {
-        $result = $document->save();
-        file_put_contents('pdf.pdf', $result);
-
-        return $result;
     }
 }
