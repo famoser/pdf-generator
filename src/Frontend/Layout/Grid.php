@@ -36,6 +36,16 @@ class Grid extends AbstractBlock
         return $this;
     }
 
+    public function addEntries(array $blocks): self
+    {
+        $row = new Row();
+        foreach ($blocks as $index => $block) {
+            $row->set($index, $block);
+        }
+
+        return $this->add($row);
+    }
+
     /**
      * @return Row[]
      */

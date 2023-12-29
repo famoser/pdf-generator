@@ -27,26 +27,70 @@ class GridAllocator
      */
     public function allocate(Grid $grid, array &$overflowRows = [], float &$usedWidth = 0, float &$usedHeight = 0): array
     {
+        if (0 === count($grid->getRows())) {
+            return [];
+        }
+
         $columnSizes = $this->getColumnSizes($grid);
         $distributeWidth = $this->getDistributeWidth($columnSizes, $grid);
 
-        $blockAllocations = [];
+        /** @var BlockAllocation[][] $blockAllocationsPerColumn */
+        $blockAllocationsPerColumn = [];
+        $widths = [];
         foreach ($columnSizes as $columnIndex => $columnSize) {
             if (ColumnSize::MINIMAL !== $columnSize) {
                 continue;
             }
 
-            $blockAllocations[$columnIndex] = $this->allocateMinColumn($grid, $columnIndex, $distributeWidth, $usedColumnWidth);
+            $usedColumnWidth = 0;
+            $blockAllocationsPerColumn[$columnIndex] = $this->allocateMinColumn($grid, $columnIndex, $distributeWidth, $usedColumnWidth);
+            $widths[$columnIndex] = $usedColumnWidth;
             $distributeWidth -= $usedColumnWidth;
         }
 
-        throw new \Exception('Not implemented yet');
+        $heights = [];
+        foreach ($blockAllocationsPerColumn as $column => $blockAllocations) {
+            foreach ($blockAllocations as $row => $blockAllocation) {
+                $heights[$row] = isset($heights[$row]) ? max($heights[$row], $blockAllocation->getHeight()) : $blockAllocation->getHeight();
+            }
+        }
+
+        /** @var BlockAllocation[] $allocatedBlocks */
+        $allocatedBlocks = [];
+        $overflowRows = $grid->getRows();
+        $usedHeight = 0;
+        foreach ($heights as $row => $height) {
+            $progressMade = count($allocatedBlocks) > 0;
+            $overflow = $usedHeight + $height > $this->height;
+            if ($overflow && $progressMade) {
+                $usedHeight = $grid->getPerpendicularGap();
+                break;
+            }
+
+            array_shift($overflowRows);
+
+            $currentWidth = 0;
+            foreach ($blockAllocationsPerColumn as $column => $blockAllocations) {
+                if (isset($blockAllocations[$row])) {
+                    $blockAllocation = BlockAllocation::shift($blockAllocations[$row], $currentWidth, $usedHeight);
+
+                    $allocatedBlocks[] = $blockAllocation;
+                }
+
+                $currentWidth += $widths[$column] + $grid->getGap();
+            }
+
+            $usedWidth = max($usedWidth, $currentWidth - $grid->getGap());
+            $usedHeight += $height + $grid->getPerpendicularGap();
+        }
+
+        return $allocatedBlocks;
     }
 
     /**
      * @return BlockAllocation[][]
      */
-    private function allocateMinColumn(Grid $grid, int $columnIndex, float $availableWidth, float &$usedWidth = 0): array
+    private function allocateMinColumn(Grid $grid, int $columnIndex, float $availableWidth, float &$usedWidth): array
     {
         $blockAllocations = [];
         $availableHeight = $this->height;
@@ -60,7 +104,9 @@ class GridAllocator
             $blockAllocation = $row->getColumns()[$columnIndex]->accept($blockAllocator);
 
             // abort if not enough space, but progress made
-            if ($rowIndex > 0 && $blockAllocation->getOverflow() || $blockAllocation->getHeight() > $availableHeight) {
+            $progressMade = $rowIndex > 0;
+            $overflow = $blockAllocation->getOverflow() || $blockAllocation->getHeight() > $availableHeight;
+            if ($progressMade && $overflow) {
                 break;
             }
 
