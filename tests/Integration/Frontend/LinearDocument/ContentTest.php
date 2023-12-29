@@ -24,9 +24,8 @@ use PdfGenerator\Frontend\Resource\Font;
 use PdfGenerator\Frontend\Resource\Image;
 use PdfGenerator\IR\Document\Content\Common\Color;
 use PdfGenerator\Tests\Resources\ResourcesProvider;
-use PHPUnit\Framework\TestCase;
 
-class ContentTest extends TestCase
+class ContentTest extends AbstractLinearDocumentTest
 {
     public function testPrintRectangle()
     {
@@ -85,6 +84,28 @@ class ContentTest extends TestCase
         $this->assertStringContainsString('PDF ist ein', $result);
     }
 
+    public function testPrintPhrases()
+    {
+        // arrange
+        $document = new LinearDocument();
+
+        // act
+        $font = Font::createFromDefault();
+        $normalText = new TextStyle($font, 3, 2, new Color(0, 0, 0));
+        $bigText = new TextStyle($font, 20, 1, new Color(0, 0, 0));
+        $paragraph = new Paragraph();
+        $paragraph->add($normalText, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
+        $paragraph->add($bigText, 'Am besten einmal ein kleines PDF im ');
+        $paragraph->add($normalText, 'Texteditor öffnen und durchschauen. Zum Beispiel vom Kontoauszug, diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
+
+        $contentBlock = $this->createHighlightedContentBlock($paragraph);
+        $document->add($contentBlock);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('PDF ist ein', $result);
+    }
+
     private function createHighlightedContentBlock(AbstractContent $content, float $width = null, float $height = null): ContentBlock
     {
         $highlightBlockStyle = new BlockStyle();
@@ -100,13 +121,5 @@ class ContentTest extends TestCase
         $contentBlock->setHeight($height);
 
         return $contentBlock;
-    }
-
-    private function render(LinearDocument $document): string
-    {
-        $result = $document->save();
-        file_put_contents('pdf.pdf', $result);
-
-        return $result;
     }
 }

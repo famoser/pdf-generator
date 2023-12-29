@@ -19,13 +19,6 @@ class Phrase
     {
     }
 
-    public static function createFromLines(array $lines, TextStyle $textStyle): self
-    {
-        $text = implode("\n", $lines);
-
-        return new self($text, $textStyle);
-    }
-
     public function getText(): string
     {
         return $this->text;
