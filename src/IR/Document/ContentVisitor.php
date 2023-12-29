@@ -140,5 +140,7 @@ class ContentVisitor implements ContentVisitorInterface
         $scale = $style->getFontSize() / $font->getUnitsPerEm();
         $leadingUnit = $font->getBaselineToBaselineDistance() * $scale;
         $textStateRepository->setLeading($style->getLineHeight() * $leadingUnit);
+
+        $this->pageResources->getColorStateRepository()->setFillColor($style->getColor());
     }
 }

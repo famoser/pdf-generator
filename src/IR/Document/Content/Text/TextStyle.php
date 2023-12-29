@@ -11,11 +11,12 @@
 
 namespace PdfGenerator\IR\Document\Content\Text;
 
+use PdfGenerator\IR\Document\Content\Common\Color;
 use PdfGenerator\IR\Document\Resource\Font;
 
 readonly class TextStyle
 {
-    public function __construct(private Font $font, private float $fontSize, private float $lineHeight = 1)
+    public function __construct(private Font $font, private float $fontSize, private float $lineHeight, private Color $color)
     {
     }
 
@@ -32,5 +33,10 @@ readonly class TextStyle
     public function getLineHeight(): float
     {
         return $this->lineHeight;
+    }
+
+    public function getColor(): Color
+    {
+        return $this->color;
     }
 }

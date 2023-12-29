@@ -21,9 +21,9 @@ use PdfGenerator\IR\Document\Resource\Font\FontVisitor;
 use PdfGenerator\IR\Document\Resource\Font\Utils\DefaultFontType1Mapping;
 use PdfGenerator\IR\Document\Resource\Image;
 
-class DocumentVisitor implements FontVisitor
+readonly class DocumentVisitor implements FontVisitor
 {
-    public function __construct(private readonly AnalysisResult $analysisResult)
+    public function __construct(private AnalysisResult $analysisResult)
     {
     }
 

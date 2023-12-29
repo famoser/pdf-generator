@@ -126,6 +126,6 @@ readonly class Printer
     {
         $font = $this->fontRepository->getFont($textStyle->getFont());
 
-        return new Text\TextStyle($font, $textStyle->getFontSize(), $textStyle->getLineHeight());
+        return new Text\TextStyle($font, $textStyle->getFontSize(), $textStyle->getLineHeight(), $textStyle->getColor());
     }
 }
