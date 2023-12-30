@@ -24,7 +24,7 @@ use PdfGenerator\IR\Document\Content\Common\Color;
 
 class GridTestCase extends LinearDocumentTestCase
 {
-    public function testPrintMinGrid()
+    public function testPrintGridRows()
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
@@ -55,9 +55,48 @@ class GridTestCase extends LinearDocumentTestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('10', $result);
-        $this->assertStringContainsString('20', $result);
-        $this->assertStringContainsString('40', $result);
+        $this->assertStringContainsString('1 0 -0 1 11 -20 cm 0 0 10 30 re b', $result);
+        $this->assertStringContainsString('1 0 -0 1 11 -32 cm 0 0 6 40 re b', $result);
+    }
+
+    public function testPrintFixedGrid()
+    {
+        // arrange
+        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+
+        $grid = new Grid(40, 20, [20, 40]);
+        $this->setBorderStyle($grid);
+        $dimensions = [
+            [10, 30],
+            [15, 20],
+        ];
+        $this->printWidthRectangles($grid, $dimensions);
+        $document->add($grid);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('1 0 0 1 60 0 cm 0 0 30 20 re b', $result);
+        $this->assertStringContainsString('1 0 0 1 60 0 cm 0 0 20 20 re b', $result);
+    }
+
+    public function testPrintMinGrid()
+    {
+        // arrange
+        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+
+        $grid = new Grid(40, 20, [ColumnSize::MINIMAL, ColumnSize::MINIMAL]);
+        $this->setBorderStyle($grid);
+        $dimensions = [
+            [10, 30],
+            [15, 20],
+        ];
+        $this->printWidthRectangles($grid, $dimensions);
+        $document->add($grid);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('1 0 0 1 55 0 cm 0 0 30 20 re', $result);
+        $this->assertStringContainsString('1 0 0 1 55 0 cm 0 0 20 20 re', $result);
     }
 
     public function testPrintAutoGrid()
@@ -76,9 +115,8 @@ class GridTestCase extends LinearDocumentTestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('20', $result);
-        $this->assertStringContainsString('232', $result);
-        $this->assertStringContainsString('200', $result);
+        $this->assertStringContainsString('1 0 0 1 100 0 cm 0 0 20 20 re b', $result);
+        $this->assertStringContainsString('1 0 0 1 100 0 cm 0 0 40 20 re b', $result);
     }
 
     public function testPrintUnitGrid()
@@ -97,9 +135,28 @@ class GridTestCase extends LinearDocumentTestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('10', $result);
-        $this->assertStringContainsString('20', $result);
-        $this->assertStringContainsString('40', $result);
+        $this->assertStringContainsString('1 0 0 1 152.5 0 cm 0 0 50 20 re b', $result);
+        $this->assertStringContainsString('1 0 0 1 152.5 0 cm 0 0 40 20 re b', $result);
+    }
+
+    public function testPrintDiverseGrid()
+    {
+        // arrange
+        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+
+        $grid = new Grid(2, 5, [ColumnSize::AUTO, 5, ColumnSize::MINIMAL, '3'.ColumnSize::UNIT, ColumnSize::UNIT]);
+        $this->setBorderStyle($grid);
+        $dimensions = [
+            [10, 5, 4, 3, 10],
+            [8, 5, 5, 20, 10],
+        ];
+        $this->printWidthRectangles($grid, $dimensions);
+        $document->add($grid);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('1 0 0 1 7 0 cm 0 0 3 20 re b', $result);
+        $this->assertStringContainsString('1 0 0 1 7 0 cm 0 0 20 20 re b', $result);
     }
 
     private function setBorderStyle(AbstractBlock $block): void
