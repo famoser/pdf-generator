@@ -13,7 +13,8 @@ namespace PdfGenerator\Frontend\Layout\Style;
 
 enum ColumnSize: string
 {
+    public const UNIT = '*';
+
     case AUTO = 'auto';
-    case UNIT = '*';
     case MINIMAL = 'min';
 }

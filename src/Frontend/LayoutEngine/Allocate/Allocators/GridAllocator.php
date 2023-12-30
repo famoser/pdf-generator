@@ -141,7 +141,11 @@ class GridAllocator
                 $widths[$columnIndex] = $optimalColumnWidth;
                 $usedWidth = 0;
                 $blockAllocationsPerColumn[$columnIndex] = $this->allocateColumn($grid, $columnIndex, $optimalColumnWidth, $usedWidth);
-            } elseif (str_ends_with($columnSize, ColumnSize::UNIT->value)) {
+            } elseif (ColumnSize::UNIT === $columnSize) {
+                $unitsPerColumn[$columnIndex] = 1;
+                ++$totalUnits;
+                $totalUnitsColumnSize += $optimalColumnWidth;
+            } elseif (str_ends_with($columnSize, ColumnSize::UNIT)) {
                 $units = floatval($columnSize);
                 $unitsPerColumn[$columnIndex] = $units;
                 $totalUnits += $units;
@@ -159,6 +163,7 @@ class GridAllocator
             foreach ($unitsPerColumn as $columnIndex => $units) {
                 $width = $columnSizePerUnit * $units;
                 $widths[$columnIndex] = $width;
+                $usedWidth = 0;
                 $blockAllocationsPerColumn[$columnIndex] = $this->allocateColumn($grid, $columnIndex, $width, $usedWidth);
             }
         }
