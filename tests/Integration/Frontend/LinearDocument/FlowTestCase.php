@@ -44,8 +44,10 @@ class FlowTestCase extends LinearDocumentTestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('10', $result);
-        $this->assertStringContainsString('20', $result);
+        $this->assertStringContainsString('1 0 0 1 0 -6 cm 0 0 10 6 re s', $result);
+        $this->assertStringContainsString('1 0 0 1 0 -6 cm 0 0 30 6 re s', $result);
+        $this->assertStringContainsString('1 0 0 1 0 -3 cm 0 0 10 3 re s', $result);
+        $this->assertStringContainsString('1 0 0 1 35 258 cm 0 0 30 7 re s', $result);
     }
 
     public function testPrintFlowText()
@@ -97,6 +99,8 @@ class FlowTestCase extends LinearDocumentTestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('PDF-Konzept', $result);
+        $this->assertStringContainsString('1 0 0 1 0 -60.96 cm BT', $result);
+        $this->assertStringContainsString('(Jeder dieser)Tj (Inhalte', $result);
+        $this->assertStringContainsString('1 0 0 1 0 -60.96 cm BT (Eine', $result);
     }
 }

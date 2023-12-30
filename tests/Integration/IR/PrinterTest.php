@@ -60,7 +60,7 @@ class PrinterTest extends TestCase
         $bottomLeft = new Position(20, 80);
         $fontPath = ResourcesProvider::getFontOpenSansPath();
         $font = Document\Resource\Font\EmbeddedFont::create($fontPath);
-        $textStyle = new TextStyle($font, 12, 1);
+        $textStyle = new TextStyle($font, 12, 1, Document\Content\Common\Color::createFromHex('#000000'));
 
         $text = new Text("Dies ist ein Test mit äöü!\nKlappt das?", $bottomLeft, $textStyle);
         $page->addContent($text);
@@ -85,8 +85,8 @@ class PrinterTest extends TestCase
         $bottomLeft = new Position(20, 80);
         $fontPath = ResourcesProvider::getFontOpenSansPath();
         $font = Document\Resource\Font\EmbeddedFont::create($fontPath);
-        $textStyle1 = new TextStyle($font, 12, 1);
-        $textStyle2 = new TextStyle($font, 5, 1);
+        $textStyle1 = new TextStyle($font, 12, 1, Document\Content\Common\Color::createFromHex('#000000'));
+        $textStyle2 = new TextStyle($font, 5, 1, Document\Content\Common\Color::createFromHex('#000000'));
 
         $phrase1 = new Text\Phrase("Dies ist ein Test\nNeue Zeile. ", $textStyle1);
         $phrase2 = new Text\Phrase("Es geht weiter\nKlappt das?", $textStyle2);

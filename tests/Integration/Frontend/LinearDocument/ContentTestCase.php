@@ -43,8 +43,8 @@ class ContentTestCase extends LinearDocumentTestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('20', $result);
-        $this->assertStringContainsString('40', $result);
+        $this->assertStringContainsString('1 0 0 1 22 235 cm 1 w 0 0 1 RG 1 0 0 rg 0 0 20 40 re b', $result);
+        $this->assertStringContainsString('1 0 0 1 5 5 cm 0 1 1 RG 0 1 0 rg 0 0 10 30 re b', $result);
     }
 
     public function testPrintImagePlacement()
@@ -61,8 +61,7 @@ class ContentTestCase extends LinearDocumentTestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('30', $result);
-        $this->assertStringContainsString('40', $result);
+        $this->assertStringContainsString('20 0 0 30 5 5 cm /I Do', $result);
     }
 
     public function testPrintPhrase()
@@ -81,7 +80,8 @@ class ContentTestCase extends LinearDocumentTestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('PDF ist ein', $result);
+        $this->assertStringContainsString('1 0 0 1 22 260.68 cm 1 w 0 0 1 RG 1 0 0 rg 0 0 122.704 14.32 re b', $result);
+        $this->assertStringContainsString('1 0 0 1 5 7.133 cm BT 0 0 0 rg /F 3 Tf 4.32 TL (PDF ist ein Textformat', $result);
     }
 
     public function testPrintPhrases()
@@ -103,7 +103,8 @@ class ContentTestCase extends LinearDocumentTestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('PDF ist ein', $result);
+        $this->assertStringContainsString('1 0 0 1 22 178.6 cm', $result);
+        $this->assertStringContainsString('1 -0 0 1 5 89.213 cm BT', $result);
     }
 
     private function createHighlightedContentBlock(AbstractContent $content, float $width = null, float $height = null): ContentBlock
