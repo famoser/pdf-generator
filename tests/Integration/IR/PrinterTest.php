@@ -35,7 +35,7 @@ class PrinterTest extends TestCase
         // act
         $bottomLeft = new Position(20, 80);
         $font = DefaultFont::create(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
-        $textStyle = new TextStyle($font, 12, 1);
+        $textStyle = new TextStyle($font, 12, 1, Document\Content\Common\Color::createFromHex('#efefef'));
 
         $text = new Text("Hallo Welt!\nWie geht es?", $bottomLeft, $textStyle);
         $page->addContent($text);

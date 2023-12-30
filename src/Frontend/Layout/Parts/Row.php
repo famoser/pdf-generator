@@ -13,13 +13,12 @@ namespace PdfGenerator\Frontend\Layout\Parts;
 
 use PdfGenerator\Frontend\Content\AbstractContent;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 
 class Row
 {
     /**
-     * @var Block[]
+     * @var AbstractBlock[]
      */
     private array $columns = [];
 
@@ -37,8 +36,13 @@ class Row
         return $this;
     }
 
+    public function tryGet(int $index): ?AbstractBlock
+    {
+        return $this->columns[$index] ?? null;
+    }
+
     /**
-     * @return Block[]
+     * @return AbstractBlock[]
      */
     public function getColumns(): array
     {

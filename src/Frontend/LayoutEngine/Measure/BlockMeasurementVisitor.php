@@ -56,16 +56,13 @@ class BlockMeasurementVisitor extends AbstractBlockVisitor
 
     private function measureBlock(AbstractBlock $block, Measurement $contentMeasurement): Measurement
     {
-        $minContentHeight = $block->getHeight() ?? $contentMeasurement->getMinHeight() + $block->getXPadding();
-        $minContentWidth = $block->getWidth() ?? $contentMeasurement->getMinWidth() + $block->getYPadding();
-
-        $minHeight = $minContentHeight + $block->getXMargin();
-        $minWidth = $minContentWidth + $block->getYMargin();
+        $minHeight = $block->getHeight() ?? $contentMeasurement->getMinHeight() + $block->getXSpace();
+        $minWidth = $block->getWidth() ?? $contentMeasurement->getMinWidth() + $block->getYSpace();
 
         // assumes blocks are more or less quadratic. should be OK for the approximate weight number
         $approximateDimension = sqrt($contentMeasurement->getWeight());
-        $approximateWidth = $approximateDimension + $block->getXSpace();
-        $approximateHeight = $approximateDimension + $block->getYSpace();
+        $approximateWidth = ($block->getHeight() ?? $approximateDimension) + $block->getXSpace();
+        $approximateHeight = ($block->getWidth() ?? $approximateDimension) + $block->getYSpace();
         $weight = $approximateWidth * $approximateHeight;
 
         return new Measurement($weight, $minWidth, $minHeight);
