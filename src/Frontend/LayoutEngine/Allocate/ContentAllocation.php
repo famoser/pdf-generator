@@ -12,11 +12,22 @@
 namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
 
 use PdfGenerator\Frontend\Content\AbstractContent;
+use PdfGenerator\Frontend\Content\Rectangle;
+use PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 
 readonly class ContentAllocation
 {
     public function __construct(private float $width, private float $height, private AbstractContent $content, private ?AbstractContent $overflow = null)
     {
+    }
+
+    public static function createFromBlockStyle(float $width, float $height, ?BlockStyle $style): self
+    {
+        $drawingStyle = DrawingStyle::createFromBlockStyle($style);
+        $rectangle = new Rectangle($drawingStyle);
+
+        return new self($width, $height, $rectangle);
     }
 
     public function getWidth(): float

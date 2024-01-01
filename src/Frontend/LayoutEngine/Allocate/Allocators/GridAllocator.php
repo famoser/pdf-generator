@@ -15,6 +15,7 @@ use PdfGenerator\Frontend\Layout\Grid;
 use PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
+use PdfGenerator\Frontend\LayoutEngine\Allocate\ContentAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
 
 readonly class GridAllocator
@@ -48,7 +49,7 @@ readonly class GridAllocator
         $allocatedBlocks = [];
         $overflowRows = $grid->getRows();
         $usedHeight = 0;
-        foreach ($heights as $row => $height) {
+        foreach ($heights as $rowIndex => $height) {
             $progressMade = \count($allocatedBlocks) > 0;
             $overflow = $usedHeight + $height > $this->height;
             if ($overflow && $progressMade) {
@@ -58,17 +59,28 @@ readonly class GridAllocator
             array_shift($overflowRows);
 
             $currentWidth = 0;
+            /** @var BlockAllocation[] $currentAllocatedBlocks */
+            $currentAllocatedBlocks = [];
             foreach (array_keys($columnSizes) as $columnIndex) {
-                if (isset($blockAllocationsPerColumn[$columnIndex][$row])) {
-                    $blockAllocation = BlockAllocation::shift($blockAllocationsPerColumn[$columnIndex][$row], $currentWidth, $usedHeight);
+                if (isset($blockAllocationsPerColumn[$columnIndex][$rowIndex])) {
+                    $blockAllocation = BlockAllocation::shift($blockAllocationsPerColumn[$columnIndex][$rowIndex], $currentWidth, $usedHeight);
 
-                    $allocatedBlocks[] = $blockAllocation;
+                    $currentAllocatedBlocks[] = $blockAllocation;
                 }
 
                 $currentWidth += $widths[$columnIndex] + $grid->getGap();
             }
 
-            $usedWidth = max($usedWidth, $currentWidth - $grid->getGap());
+            $width = $currentWidth - $grid->getGap();
+            $row = $grid->getRows()[$rowIndex];
+            if ($row->getStyle() && $row->getStyle()->hasImpact()) {
+                $background = ContentAllocation::createFromBlockStyle($width, $height, $row->getStyle());
+                $backgroundAllocation = new BlockAllocation(0, $usedHeight, $width, $height, [], [$background]);
+                array_unshift($currentAllocatedBlocks, $backgroundAllocation);
+            }
+
+            $allocatedBlocks = array_merge($allocatedBlocks, $currentAllocatedBlocks);
+            $usedWidth = max($usedWidth, $width);
             $usedHeight += $height + $grid->getPerpendicularGap();
         }
 

@@ -11,8 +11,6 @@
 
 namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use PdfGenerator\Frontend\Content\Rectangle;
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\ContentBlock;
@@ -127,17 +125,13 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
             return null;
         }
 
-        $hasBorder = $blockStyle->getBorderWidth() && $blockStyle->getBorderColor();
-        if (!$hasBorder && !$blockStyle->getBackgroundColor()) {
+        if (!$blockStyle->hasImpact()) {
             return null;
         }
-
-        $drawingStyle = new DrawingStyle($blockStyle->getBorderWidth() ?? 0, $blockStyle->getBorderColor(), $blockStyle->getBackgroundColor());
-        $rectangle = new Rectangle($drawingStyle);
 
         $width = $contentWidth + $block->getXPadding();
         $height = $contentHeight + $block->getYPadding();
 
-        return new ContentAllocation($width, $height, $rectangle);
+        return ContentAllocation::createFromBlockStyle($width, $height, $blockStyle);
     }
 }
