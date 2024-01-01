@@ -16,7 +16,7 @@ use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format12;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
 
-interface VisitorInterface
+interface FormatVisitorInterface
 {
     public function visitFormat0(Format0 $format0);
 

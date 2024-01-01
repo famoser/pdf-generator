@@ -11,26 +11,17 @@
 
 namespace PdfGenerator\Font\IR\Utils\CMap;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format0;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format12;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
-use PdfGenerator\Font\Frontend\File\Table\CMap\VisitorInterface;
+use PdfGenerator\Font\Frontend\File\Table\CMap\FormatVisitorInterface;
 use PdfGenerator\Font\IR\Utils\CMap\Format4\Transformer;
 
-class GlyphIndexFormatVisitor implements VisitorInterface
+class GlyphIndexFormatVisitor implements FormatVisitorInterface
 {
     /**
-     * @return int[]
-     */
-    public function visitFormat(Format $format): array
-    {
-        return $format->accept($this);
-    }
-
-    /**
-     * @return int[]
+     * @return array<int, int>
      */
     public function visitFormat0(Format0 $format0): array
     {
@@ -38,12 +29,13 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @return int[]
+     * @return array<int, int>
      */
     public function visitFormat4(Format4 $format4): array
     {
         $segments = Transformer::arraysToSegments($format4->getStartCodes(), $format4->getEndCodes(), $format4->getIdDeltas(), $format4->getIdRangeOffsets());
 
+        /** @var array<array<int,int>> $glyphIndexArrays */
         $glyphIndexArrays = [];
         $segmentCount = \count($segments);
         for ($i = 0; $i < $segmentCount; ++$i) {
@@ -51,6 +43,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
             $glyphIndexArrays[] = $segmentGlyphIndexes;
         }
 
+        /** @var array<int,int> $glyphIndexes */
         $glyphIndexes = [];
         foreach ($glyphIndexArrays as $glyphIndexArray) {
             foreach ($glyphIndexArray as $key => $value) {
@@ -62,7 +55,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @return int[]
+     * @return array<int, int>
      */
     public function visitFormat6(Format6 $format6): array
     {
@@ -76,7 +69,7 @@ class GlyphIndexFormatVisitor implements VisitorInterface
     }
 
     /**
-     * @return int[]
+     * @return array<int, int>
      */
     public function visitFormat12(Format12 $format12): array
     {
