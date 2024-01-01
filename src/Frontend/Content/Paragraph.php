@@ -13,13 +13,9 @@ namespace PdfGenerator\Frontend\Content;
 
 use PdfGenerator\Frontend\Content\Paragraph\Phrase;
 use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\Layout\Style\BlockStyle;
-use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 use PdfGenerator\Frontend\Printer;
 
-/**
- * @implements AbstractContent<BlockStyle>
- */
 class Paragraph extends AbstractContent
 {
     final public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
@@ -70,7 +66,7 @@ class Paragraph extends AbstractContent
         return $clone;
     }
 
-    public function accept(AbstractContentVisitor $visitor): mixed
+    public function accept(ContentVisitorInterface $visitor): mixed
     {
         return $visitor->visitParagraph($this);
     }

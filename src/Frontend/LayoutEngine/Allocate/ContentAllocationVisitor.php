@@ -15,15 +15,15 @@ use PdfGenerator\Frontend\Content\ImagePlacement;
 use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
 use PdfGenerator\Frontend\Content\Spacer;
-use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\ParagraphAllocator;
+use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 
 /**
- * @implements AbstractContentVisitor<ContentAllocation|null>
+ * @implements ContentVisitorInterface<ContentAllocation>
  */
-class ContentAllocationVisitor extends AbstractContentVisitor
+readonly class ContentAllocationVisitor implements ContentVisitorInterface
 {
-    public function __construct(private readonly float $width, private readonly float $height)
+    public function __construct(private float $width, private float $height)
     {
     }
 

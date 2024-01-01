@@ -19,25 +19,25 @@ use PdfGenerator\Frontend\Content\Spacer;
 /**
  * @template T
  */
-abstract class AbstractContentVisitor
+interface ContentVisitorInterface
 {
     /**
      * @return T
      */
-    abstract public function visitParagraph(Paragraph $paragraph): mixed;
+    public function visitParagraph(Paragraph $paragraph): mixed;
 
     /**
      * @return T
      */
-    abstract public function visitRectangle(Rectangle $rectangle): mixed;
+    public function visitRectangle(Rectangle $rectangle): mixed;
 
     /**
      * @return T
      */
-    abstract public function visitSpacer(Spacer $spacer): mixed;
+    public function visitSpacer(Spacer $spacer): mixed;
 
     /**
      * @return T
      */
-    abstract public function visitImagePlacement(ImagePlacement $imagePlacement): mixed;
+    public function visitImagePlacement(ImagePlacement $imagePlacement): mixed;
 }
