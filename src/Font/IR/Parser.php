@@ -17,7 +17,6 @@ use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
 use PdfGenerator\Font\Frontend\File\Table\CMapTable;
 use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
-use PdfGenerator\Font\Frontend\File\Traits\BoundingBoxTrait;
 use PdfGenerator\Font\Frontend\FileReader;
 use PdfGenerator\Font\Frontend\StreamReader;
 use PdfGenerator\Font\IR\Structure\BoundingBox;
@@ -29,9 +28,9 @@ use PdfGenerator\Font\IR\Structure\Tables\FontInformation;
 use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
 use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
-class Parser
+readonly class Parser
 {
-    public function __construct(private readonly GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, private readonly Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, private readonly Factory $glyphNameMappingFactory)
+    public function __construct(private GlyphIndexFormatVisitor $cMapGlyphIndexFormatVisitor, private Utils\Post\GlyphIndexFormatVisitor $postGlyphIndexFormatVisitor, private Factory $glyphNameMappingFactory)
     {
     }
 
@@ -189,7 +188,9 @@ class Parser
                 $character->setGlyfTable($fontFile->getGlyfTables()[$i]);
 
                 if ($character->getGlyfTable()) {
-                    $boundingBox = $this->calculateBoundingBox($character->getGlyfTable());
+                    $boundingBox = new BoundingBox();
+                    $boundingBox->setHeight((float) ($character->getGlyfTable()->getYMax() - $character->getGlyfTable()->getYMin()));
+                    $boundingBox->setWidth((float) ($character->getGlyfTable()->getXMax() - $character->getGlyfTable()->getXMin()));
                     $character->setBoundingBox($boundingBox);
                 }
             }
@@ -230,19 +231,6 @@ class Parser
         $longHorMetric->setLeftSideBearing($bearingEntry);
 
         return $longHorMetric;
-    }
-
-    /**
-     * @param BoundingBoxTrait $boundingBoxTrait
-     */
-    private function calculateBoundingBox(mixed $boundingBoxTrait): BoundingBox
-    {
-        $boundingBox = new BoundingBox();
-
-        $boundingBox->setHeight((float) ($boundingBoxTrait->getYMax() - $boundingBoxTrait->getYMin()));
-        $boundingBox->setWidth((float) ($boundingBoxTrait->getXMax() - $boundingBoxTrait->getXMin()));
-
-        return $boundingBox;
     }
 
     private function createFontInformation(FontFile $fontFile): FontInformation
