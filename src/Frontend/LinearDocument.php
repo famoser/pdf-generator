@@ -15,8 +15,6 @@ use DocumentGenerator\DocumentInterface;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
-use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
-use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 use PdfGenerator\Frontend\Resource\Font\FontRepository;
 use PdfGenerator\Frontend\Resource\Image\ImageRepository;
 use PdfGenerator\IR\Document;
@@ -54,15 +52,13 @@ class LinearDocument implements DocumentInterface
     {
         $currentBlock = $block;
         do {
-            if ($this->currentY > 0) {
-                $measurement = $this->measure($currentBlock);
-                [, $height] = $this->getUsableSpace();
-                if ($measurement->getMinHeight() > $height) {
-                    $this->addPage();
-                }
+            $allocation = $this->allocate($currentBlock);
+            [, $height] = $this->getUsableSpace();
+            if ($allocation->getHeight() > $height && $this->currentY > 0) {
+                $this->addPage();
+                continue;
             }
 
-            $allocation = $this->allocate($currentBlock);
             $this->place($allocation);
             $this->currentY += $allocation->getHeight();
             $currentBlock = $allocation->getOverflow();
@@ -81,13 +77,6 @@ class LinearDocument implements DocumentInterface
         $height = $this->pageSize[1] - $this->currentY - $heightMargin;
 
         return [$width, $height];
-    }
-
-    public function measure(AbstractBlock $block): Measurement
-    {
-        $allocationVisitor = new BlockMeasurementVisitor();
-
-        return $block->accept($allocationVisitor);
     }
 
     public function allocate(AbstractBlock $block): BlockAllocation
