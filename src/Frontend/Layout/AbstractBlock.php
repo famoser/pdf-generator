@@ -25,5 +25,5 @@ abstract class AbstractBlock
      *
      * @return T
      */
-    abstract public function accept(AbstractBlockVisitor $visitor): mixed;
+    abstract public function accept(AbstractBlockVisitor $visitor);
 }

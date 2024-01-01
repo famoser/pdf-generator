@@ -178,7 +178,7 @@ readonly class GridAllocator
     }
 
     /**
-     * @return BlockAllocation[][]
+     * @return array<int,BlockAllocation>
      */
     private function allocateColumn(Grid $grid, int $columnIndex, float $availableWidth, float &$usedWidth): array
     {
@@ -190,7 +190,6 @@ readonly class GridAllocator
             }
 
             $blockAllocator = new BlockAllocationVisitor($availableWidth, $availableHeight);
-            /** @var BlockAllocation $blockAllocation */
             $blockAllocation = $row->tryGet($columnIndex)->accept($blockAllocator);
 
             // abort if not enough space, but progress made

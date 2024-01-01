@@ -18,7 +18,7 @@ use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 class Flow extends AbstractBlock
 {
     /**
-     * @var Block[]
+     * @var AbstractBlock[]
      */
     private array $blocks = [];
 
@@ -41,7 +41,7 @@ class Flow extends AbstractBlock
     }
 
     /**
-     * @return Block[]
+     * @return AbstractBlock[]
      */
     public function getBlocks(): array
     {
