@@ -16,16 +16,10 @@ use PdfGenerator\IR\Document\Content\Common\Color;
 
 class TextStyle
 {
-    private Font $font;
-    private float $fontSize;
-    private float $lineHeight;
     private Color $color;
 
-    public function __construct(Font $font, float $fontSize = 3.8, float $lineHeight = 1.2, Color $color = null)
+    public function __construct(private Font $font, private float $fontSize = 3.8, private float $lineHeight = 1.2, Color $color = null)
     {
-        $this->font = $font;
-        $this->fontSize = $fontSize;
-        $this->lineHeight = $lineHeight;
         $this->color = $color ?? new Color(0, 0, 0);
     }
 

@@ -20,16 +20,13 @@ class Paragraph extends AbstractContent
 {
     final public const ALIGNMENT_LEFT = 'ALIGNMENT_LEFT';
 
-    private string $alignment;
-
     /**
      * @var Phrase[]
      */
     private array $phrases = [];
 
-    public function __construct(string $alignment = self::ALIGNMENT_LEFT)
+    public function __construct(private string $alignment = self::ALIGNMENT_LEFT)
     {
-        $this->alignment = $alignment;
     }
 
     public function setAlignment(string $alignment): self
