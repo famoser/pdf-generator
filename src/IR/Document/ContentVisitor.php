@@ -69,7 +69,7 @@ class ContentVisitor implements ContentVisitorInterface
     {
         $this->applyPosition($paragraph->getPosition());
         $generalGraphicState = $this->pageResources->getGeneralGraphicState();
-        /** @var Phrase[] $phrase */
+        /** @var Phrase[] $phrases */
         $phrases = [];
         foreach ($paragraph->getPhrase() as $phrase) {
             $lines = $this->splitAtNewlines($phrase->getText());
