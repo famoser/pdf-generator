@@ -11,7 +11,6 @@
 
 namespace PdfGenerator\Font\Backend\File\Table\CMap;
 
-use PdfGenerator\Font\Backend\File\Traits\Writer;
 use PdfGenerator\Font\Backend\StreamWriter;
 
 class FormatVisitor
@@ -23,7 +22,11 @@ class FormatVisitor
         $writer->writeUInt16($format->getLanguage());
 
         $writer->writeUInt16($format->getSegCountX2());
-        Writer::writeBinaryTreeSearchableUInt16($format, $writer);
+
+        // write searchable binary tree uint16
+        $writer->writeUInt16($format->getSearchRange());
+        $writer->writeUInt16($format->getEntrySelector());
+        $writer->writeUInt16($format->getRangeShift());
 
         $writer->writeUInt16Array($format->getEndCodes());
         $writer->writeUInt16($format->getReservedPad());
