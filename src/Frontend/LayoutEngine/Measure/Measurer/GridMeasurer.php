@@ -19,7 +19,7 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 
 class GridMeasurer
 {
-    private BlockMeasurementVisitor $measurementVisitor;
+    private readonly BlockMeasurementVisitor $measurementVisitor;
 
     public function __construct()
     {

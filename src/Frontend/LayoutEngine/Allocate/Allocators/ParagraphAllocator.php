@@ -17,7 +17,7 @@ use PdfGenerator\Frontend\Resource\Font\FontRepository;
 
 class ParagraphAllocator
 {
-    private FontRepository $fontRepository;
+    private readonly FontRepository $fontRepository;
 
     public function __construct(private readonly float $width, private readonly float $height)
     {
@@ -106,7 +106,7 @@ class ParagraphAllocator
         $lastLineOffset = $offset;
         while (count($pendingLines) > 0) {
             $pendingLine = array_shift($pendingLines);
-            $words = explode(' ', $pendingLine);
+            $words = explode(' ', (string) $pendingLine);
 
             $availableLineWidth = $availableWidth - $currentLineWidth;
             $pendingWords = [];

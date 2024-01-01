@@ -17,7 +17,7 @@ use PdfGenerator\Backend\File\Object\StreamObject;
 
 class ObjectVisitor
 {
-    private TokenVisitor $tokenVisitor;
+    private readonly TokenVisitor $tokenVisitor;
 
     public function __construct()
     {

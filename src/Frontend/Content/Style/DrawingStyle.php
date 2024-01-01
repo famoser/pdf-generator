@@ -16,15 +16,8 @@ use PdfGenerator\IR\Document\Content\Common\Color;
 
 class DrawingStyle
 {
-    private ?float $lineWidth;
-    private ?Color $lineColor;
-    private ?Color $fillColor;
-
-    public function __construct(float $borderWidth = 1, ?Color $borderColor = new Color(0, 0, 0), Color $backgroundColor = null)
+    public function __construct(private ?float $lineWidth = 1, private ?Color $lineColor = new Color(0, 0, 0), private ?Color $fillColor = null)
     {
-        $this->lineWidth = $borderWidth;
-        $this->lineColor = $borderColor;
-        $this->fillColor = $backgroundColor;
     }
 
     public static function createFromBlockStyle(BlockStyle $blockStyle): self

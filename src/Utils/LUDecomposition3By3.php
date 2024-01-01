@@ -13,5 +13,5 @@ namespace PdfGenerator\Utils;
 
 class LUDecomposition3By3
 {
-    public const DIMENSION = 3;
+    final public const DIMENSION = 3;
 }
