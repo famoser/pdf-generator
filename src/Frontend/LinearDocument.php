@@ -38,7 +38,7 @@ class LinearDocument implements DocumentInterface
      * @param float[]       $pageSize
      * @param float|float[] $margin
      */
-    public function __construct(private array $pageSize = [210, 297], mixed $margin = [15, 15, 15, 15])
+    public function __construct(private readonly array $pageSize = [210, 297], mixed $margin = [15, 15, 15, 15])
     {
         $this->margin = is_array($margin) ? $margin : array_fill(0, 4, $margin);
 

@@ -17,6 +17,7 @@ use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\Resource\Font\FontRepository;
 use PdfGenerator\Frontend\Resource\Image\ImageRepository;
+use PdfGenerator\IR\Document;
 use PdfGenerator\IR\Document\Content\Common\Position;
 use PdfGenerator\IR\Document\Content\Common\Size;
 use PdfGenerator\IR\Document\Content\ImagePlacement;
@@ -28,7 +29,7 @@ use PdfGenerator\IR\Document\Page;
 
 readonly class Printer
 {
-    public function __construct(private \PdfGenerator\IR\Document $document, private ImageRepository $imageRepository, private FontRepository $fontRepository, private Page $page, private float $left, private float $top)
+    public function __construct(private Document $document, private ImageRepository $imageRepository, private FontRepository $fontRepository, private Page $page, private float $left, private float $top)
     {
     }
 

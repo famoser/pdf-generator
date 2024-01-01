@@ -34,9 +34,6 @@ readonly class DefaultFont extends Font
     {
     }
 
-    /**
-     * @throws \JsonException
-     */
     public static function create(string $font, string $style): self
     {
         $size = DefaultFontSizeLookup::getSize($font, $style);
@@ -44,9 +41,6 @@ readonly class DefaultFont extends Font
         return new self($font, $style, $size);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function accept(FontVisitor $visitor)
     {
         return $visitor->visitDefaultFont($this);
