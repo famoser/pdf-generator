@@ -23,7 +23,7 @@ class Grid extends AbstractBlock
     private array $rows = [];
 
     /**
-     * @param (float|ColumnSize)[] $columnSizes
+     * @param array<string|float|ColumnSize> $columnSizes
      */
     public function __construct(private readonly float $gap = 0, private readonly float $perpendicularGap = 0, private readonly array $columnSizes = [])
     {
@@ -76,7 +76,7 @@ class Grid extends AbstractBlock
     }
 
     /**
-     * @return (float|ColumnSize)[]
+     * @return (string|float|ColumnSize)[]
      */
     public function getColumnSizes(): array
     {

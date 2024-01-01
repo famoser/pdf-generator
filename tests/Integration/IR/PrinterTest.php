@@ -29,7 +29,7 @@ class PrinterTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $page = new Page(1, [210, 297]);
+        $page = new Page('1', [210, 297]);
         $document->addPage($page);
 
         // act
@@ -53,7 +53,7 @@ class PrinterTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $page = new Page(1, [210, 297]);
+        $page = new Page('1', [210, 297]);
         $document->addPage($page);
 
         // act
@@ -78,7 +78,7 @@ class PrinterTest extends TestCase
     {
         // arrange
         $document = new Document();
-        $page = new Page(1, [210, 297]);
+        $page = new Page('1', [210, 297]);
         $document->addPage($page);
 
         // act
