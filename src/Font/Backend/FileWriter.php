@@ -226,6 +226,9 @@ readonly class FileWriter
         return $maxPTable;
     }
 
+    /**
+     * @param Character[] $characters
+     */
     private function generateSubtable(array $characters, int $reservedCharactersOffset): Subtable
     {
         $subtable = new Subtable();
@@ -233,7 +236,8 @@ readonly class FileWriter
         $subtable->setPlatformID(0);
         $subtable->setPlatformSpecificID(4);
 
-        $subtable->setFormat($this->generateCMapFormat4($characters, $reservedCharactersOffset));
+        $format = $this->generateCMapFormat4($characters, $reservedCharactersOffset);
+        $subtable->setFormat($format);
 
         return $subtable;
     }

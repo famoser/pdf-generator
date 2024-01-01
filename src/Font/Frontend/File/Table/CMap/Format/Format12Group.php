@@ -40,7 +40,7 @@ class Format12Group
         return $this->startCharCode;
     }
 
-    public function setStartCharCode($startCharCode): void
+    public function setStartCharCode(int $startCharCode): void
     {
         $this->startCharCode = $startCharCode;
     }
@@ -50,7 +50,7 @@ class Format12Group
         return $this->endCharCode;
     }
 
-    public function setEndCharCode($endCharCode): void
+    public function setEndCharCode(int $endCharCode): void
     {
         $this->endCharCode = $endCharCode;
     }
@@ -60,7 +60,7 @@ class Format12Group
         return $this->startGlyphCode;
     }
 
-    public function setStartGlyphCode($startGlyphCode): void
+    public function setStartGlyphCode(int $startGlyphCode): void
     {
         $this->startGlyphCode = $startGlyphCode;
     }

@@ -193,6 +193,9 @@ class StreamWriter
         return $number >= 0 ? $number : $number + 2 ** $bits;
     }
 
+    /**
+     * @param int[] $values
+     */
     public function writeUInt32Array(array $values): void
     {
         foreach ($values as $value) {
@@ -200,6 +203,9 @@ class StreamWriter
         }
     }
 
+    /**
+     * @param int[] $values
+     */
     public function writeUInt8Array(array $values): void
     {
         foreach ($values as $value) {

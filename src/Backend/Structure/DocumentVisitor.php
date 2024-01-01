@@ -155,6 +155,9 @@ class DocumentVisitor
         return new TrueType($identifier, $fontDescriptor, $widths);
     }
 
+    /**
+     * @param int[] $usedCodepoints
+     */
     private function createType0Font(FontDescriptor $fontDescriptor, Font $font, float $sizeNormalizer, array $usedCodepoints): Type0
     {
         /** @var int[] $characterWidths */

@@ -51,11 +51,6 @@ class Format12 extends Format
         return self::FORMAT_12;
     }
 
-    public function accept(FormatVisitorInterface $formatVisitor)
-    {
-        return $formatVisitor->visitFormat12($this);
-    }
-
     public function getNGroups(): int
     {
         return $this->nGroups;
@@ -77,5 +72,10 @@ class Format12 extends Format
     public function addGroup(Format12Group $group): void
     {
         $this->groups[] = $group;
+    }
+
+    public function accept(FormatVisitorInterface $formatVisitor)
+    {
+        return $formatVisitor->visitFormat12($this);
     }
 }

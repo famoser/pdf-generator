@@ -18,6 +18,7 @@ use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ParagraphContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
+use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
 class ContentVisitor
@@ -76,6 +77,8 @@ class ContentVisitor
     }
 
     /**
+     * @param BaseState[] $influentialStates
+     *
      * @return string[]
      */
     private function applyState(array $influentialStates): array
@@ -93,6 +96,9 @@ class ContentVisitor
         return $operators;
     }
 
+    /**
+     * @param string[] $operators
+     */
     private function createStreamObject(array $operators): Content
     {
         return new Content(implode(' ', $operators));
@@ -109,6 +115,8 @@ class ContentVisitor
     }
 
     /**
+     * @param string[] $lines
+     *
      * @return string[]
      */
     private function getTextOperators(array $lines, Font $font): array
