@@ -32,7 +32,7 @@ class TokenVisitor
 
     public function visitNumberToken(NumberToken $token): string
     {
-        return NumberToken::format($token->getNumber());
+        return strval(NumberToken::format($token->getNumber()));
     }
 
     public function visitDictionaryToken(DictionaryToken $token): string
