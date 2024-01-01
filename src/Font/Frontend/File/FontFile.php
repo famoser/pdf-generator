@@ -50,7 +50,7 @@ class FontFile
     private ?RawTable $gDEFTable = null;
 
     /**
-     * @var GlyfTable[]
+     * @var (GlyfTable|null)[]
      */
     private array $glyfTables = [];
 
@@ -153,7 +153,7 @@ class FontFile
     }
 
     /**
-     * @return GlyfTable[]
+     * @return (GlyfTable|null)[]
      */
     public function getGlyfTables(): array
     {
@@ -161,7 +161,7 @@ class FontFile
     }
 
     /**
-     * @param GlyfTable[] $glyfTables
+     * @param (GlyfTable|null)[] $glyfTables
      */
     public function setGlyfTables(array $glyfTables): void
     {

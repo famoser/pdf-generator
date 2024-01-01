@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
 
 class FileReaderTest extends TestCase
 {
-    private static $defaultFilePath = __DIR__.\DIRECTORY_SEPARATOR.'OpenSans-Regular.ttf';
+    private static string $defaultFilePath = __DIR__.\DIRECTORY_SEPARATOR.'OpenSans-Regular.ttf';
 
     public static function getDefaultFontContent(): string
     {
@@ -72,7 +72,7 @@ class FileReaderTest extends TestCase
         $this->assertCount(0, $font->getRawTables());
     }
 
-    private function assertCMapTable(CMapTable $cmapTable)
+    private function assertCMapTable(CMapTable $cmapTable): void
     {
         $this->assertSame(0, $cmapTable->getVersion());
         $this->assertSame(1, $cmapTable->getNumberSubtables());
@@ -104,7 +104,7 @@ class FileReaderTest extends TestCase
         $this->assertCount($count, $format4->getGlyphIndexArray());
     }
 
-    private function assertLocaTable(LocaTable $locaTable)
+    private function assertLocaTable(LocaTable $locaTable): void
     {
         $this->assertCount(939, $locaTable->getOffsets());
 
@@ -114,7 +114,7 @@ class FileReaderTest extends TestCase
         }
     }
 
-    private function assertHeadTable(HeadTable $headTable)
+    private function assertHeadTable(HeadTable $headTable): void
     {
         $this->assertSame(1, $headTable->getMajorVersion());
         $this->assertSame(0x5F0F3CF5, $headTable->getMagicNumber());
@@ -123,7 +123,7 @@ class FileReaderTest extends TestCase
         $this->assertSame(2, $headTable->getFontDirectionHints());
     }
 
-    private function assertMaxPTable(MaxPTable $maxPTable)
+    private function assertMaxPTable(MaxPTable $maxPTable): void
     {
         $this->assertSame(938, $maxPTable->getNumGlyphs());
         $this->assertSame(2, $maxPTable->getMaxZones());
@@ -131,9 +131,9 @@ class FileReaderTest extends TestCase
     }
 
     /**
-     * @param GlyfTable[] $glyfTables
+     * @param (GlyfTable|null)[] $glyfTables
      */
-    private function assertGlyfTable(array $glyfTables)
+    private function assertGlyfTable(array $glyfTables): void
     {
         $this->assertCount(938, $glyfTables);
 
@@ -147,14 +147,14 @@ class FileReaderTest extends TestCase
         }
     }
 
-    private function assertHHeaTable(HHeaTable $hHeaTable)
+    private function assertHHeaTable(HHeaTable $hHeaTable): void
     {
         $this->assertSame(-600, $hHeaTable->getDescent());
         $this->assertSame(1, $hHeaTable->getCaretSlopeRise());
         $this->assertSame(931, $hHeaTable->getNumOfLongHorMetrics());
     }
 
-    private function assertHMtxTable(HMtxTable $hMtxTable)
+    private function assertHMtxTable(HMtxTable $hMtxTable): void
     {
         $this->assertCount(931, $hMtxTable->getLongHorMetrics());
 
@@ -165,7 +165,7 @@ class FileReaderTest extends TestCase
         $this->assertSame(201, $hMtxTable->getLeftSideBearings()[1]);
     }
 
-    private function assertNameTable(NameTable $nameTable)
+    private function assertNameTable(NameTable $nameTable): void
     {
         $this->assertCount(8, $nameTable->getNameRecords());
 
@@ -173,7 +173,7 @@ class FileReaderTest extends TestCase
         // either the font file is broken, or the used encoding is indeed very weird
         $firstCharFirstValue = substr($nameTable->getNameRecords()[0]->getValue(), 1, 1);
         $firstCharSecondValue = substr($nameTable->getNameRecords()[1]->getValue(), 1, 1);
-        $this->assertEquals($firstCharFirstValue, 'D');
-        $this->assertEquals($firstCharSecondValue, 'O');
+        $this->assertEquals('D', $firstCharFirstValue);
+        $this->assertEquals('O', $firstCharSecondValue);
     }
 }
