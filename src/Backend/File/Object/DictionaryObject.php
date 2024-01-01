@@ -89,7 +89,7 @@ class DictionaryObject extends BaseObject
     }
 
     /**
-     * @param int[] $values
+     * @param string[] $values
      */
     public function addNameArrayEntry(string $key, array $values): void
     {

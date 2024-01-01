@@ -21,7 +21,7 @@ class StructureVisitor
     private readonly TokenVisitor $tokenVisitor;
 
     /**
-     * @var string[]
+     * @var int[]
      */
     private array $bodyEntrySizes = [];
 
@@ -86,7 +86,7 @@ class StructureVisitor
     }
 
     /**
-     * @return string[]
+     * @return int[]
      */
     public function getBodyEntrySizes(): array
     {

@@ -105,7 +105,7 @@ class LinearDocument implements DocumentInterface
     public function addPage(array $pageSize = null): void
     {
         $nextPageIndex = $this->getPageCount();
-        $page = new Page($nextPageIndex + 1, $pageSize ?? $this->pageSize);
+        $page = new Page(strval($nextPageIndex + 1), $pageSize ?? $this->pageSize);
         $this->document->addPage($page);
 
         $this->currentY = 0;
