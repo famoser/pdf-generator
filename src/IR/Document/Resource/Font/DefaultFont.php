@@ -30,6 +30,9 @@ readonly class DefaultFont extends Font
     final public const STYLE_BOLD_OBLIQUE = 'BOLD_OBLIQUE';
     final public const STYLE_BOLD_ITALIC = 'BOLD_ITALIC';
 
+    /**
+     * @param array<string,int> $size
+     */
     private function __construct(private string $font, private string $style, private array $size)
     {
     }
@@ -61,22 +64,22 @@ readonly class DefaultFont extends Font
         return $this->style;
     }
 
-    public function getUnitsPerEm()
+    public function getUnitsPerEm(): int
     {
         return $this->size['unitsPerEm'];
     }
 
-    public function getAscender()
+    public function getAscender(): int
     {
         return $this->size['ascender'];
     }
 
-    public function getDescender()
+    public function getDescender(): int
     {
         return $this->size['descender'];
     }
 
-    public function getLineGap()
+    public function getLineGap(): int
     {
         return $this->size['lineGap'];
     }

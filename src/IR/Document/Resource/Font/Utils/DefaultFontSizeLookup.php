@@ -14,12 +14,12 @@ namespace PdfGenerator\IR\Document\Resource\Font\Utils;
 class DefaultFontSizeLookup
 {
     /**
-     * @var int[][][]|null
+     * @var array<string, array<string, array<string, int>>>|null
      */
     private static ?array $sizeLookup = null;
 
     /**
-     * @return string[][]
+     * @return array<string, int>
      */
     public static function getSize(string $font, string $style): array
     {

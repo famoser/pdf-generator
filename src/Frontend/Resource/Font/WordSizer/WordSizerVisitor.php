@@ -16,6 +16,9 @@ use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
 use PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
 use PdfGenerator\IR\Document\Resource\Font\FontVisitor;
 
+/**
+ * @implements FontVisitor<WordSizerInterface>
+ */
 class WordSizerVisitor implements FontVisitor
 {
     public function visitDefaultFont(DefaultFont $param): MonospaceProportionalWordSizer|ProportionalWordSizer

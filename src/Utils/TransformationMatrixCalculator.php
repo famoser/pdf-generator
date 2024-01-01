@@ -54,6 +54,8 @@ class TransformationMatrixCalculator
 
     /**
      * @param float[][] $matrix
+     *
+     * @return array{float[][], int[]}
      */
     private static function LUDecompose(array $matrix): array
     {
