@@ -11,6 +11,8 @@
 
 namespace PdfGenerator\Backend\Structure\Document\Font;
 
+use PdfGenerator\Backend\Catalog\Font\TrueType;
+use PdfGenerator\Backend\Catalog\Font\Type0;
 use PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\DocumentVisitor;
 
@@ -36,11 +38,9 @@ readonly class EmbeddedFont extends Font
     }
 
     /**
-     * @return mixed
-     *
      * @throws \Exception
      */
-    public function accept(DocumentVisitor $documentVisitor): \PdfGenerator\Backend\Catalog\Font\TrueType|\PdfGenerator\Backend\Catalog\Font\Type0
+    public function accept(DocumentVisitor $documentVisitor): TrueType|Type0
     {
         return $documentVisitor->visitEmbeddedFont($this);
     }
