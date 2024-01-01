@@ -17,9 +17,9 @@ use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
 
-class GridAllocator
+readonly class GridAllocator
 {
-    public function __construct(private readonly float $width, private readonly float $height)
+    public function __construct(private float $width, private float $height)
     {
     }
 
@@ -32,7 +32,7 @@ class GridAllocator
             return [];
         }
 
-        $columnSizes = $this->getColumnSizes($grid);
+        $columnSizes = $grid->getNormalizedColumnSizes();
 
         $widths = [];
         $blockAllocationsPerColumn = $this->allocatedBlocksPerColumn($grid, $columnSizes, $widths);
@@ -141,19 +141,13 @@ class GridAllocator
                 $widths[$columnIndex] = $optimalColumnWidth;
                 $usedWidth = 0;
                 $blockAllocationsPerColumn[$columnIndex] = $this->allocateColumn($grid, $columnIndex, $optimalColumnWidth, $usedWidth);
-            } elseif (ColumnSize::UNIT === $columnSize) {
-                $unitsPerColumn[$columnIndex] = 1;
-                ++$totalUnits;
-                $totalUnitsColumnSize += $optimalColumnWidth;
-            } elseif (str_ends_with($columnSize, ColumnSize::UNIT)) {
-                $units = floatval($columnSize);
+            } elseif (ColumnSize::isUnit($columnSize)) {
+                $units = ColumnSize::parseUnit($columnSize);
                 $unitsPerColumn[$columnIndex] = $units;
                 $totalUnits += $units;
                 $totalUnitsColumnSize += $optimalColumnWidth;
             } else {
-                $error = 'Unknown column size: '.$columnSize.'.';
-                $explanation = 'Must be either a number, a ColumnSize, or a unit (number*, e.g. 2*).';
-                assert(false, $error.' '.$explanation);
+                assert(false, 'ColumnSize '.$columnSize.' unknown.');
             }
         }
 
@@ -200,23 +194,5 @@ class GridAllocator
         }
 
         return $blockAllocations;
-    }
-
-    /**
-     * @return (float|ColumnSize)[]
-     */
-    private function getColumnSizes(Grid $grid): array
-    {
-        $maxColumn = max(...array_keys($grid->getColumnSizes()));
-        foreach ($grid->getRows() as $row) {
-            $maxColumn = max($maxColumn, ...array_keys($row->getColumns()));
-        }
-
-        $columnSizes = array_fill(0, $maxColumn + 1, ColumnSize::AUTO);
-        foreach ($grid->getColumnSizes() as $index => $columnSize) {
-            $columnSizes[$index] = $columnSize;
-        }
-
-        return $columnSizes;
     }
 }
