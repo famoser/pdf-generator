@@ -12,7 +12,6 @@
 namespace PdfGenerator\Font\Backend\File;
 
 use PdfGenerator\Font\Backend\File\Table\CMap\FormatVisitor;
-use PdfGenerator\Font\Backend\File\Traits\Writer;
 use PdfGenerator\Font\Backend\StreamWriter;
 
 class TableVisitor
@@ -69,7 +68,12 @@ class TableVisitor
         $writer = new StreamWriter();
 
         $writer->writeInt16($glyfTable->getNumberOfContours());
-        Writer::writeBoundingBoxFWORD($glyfTable, $writer);
+
+        // write bounding box FWORD
+        $writer->writeFWORD($glyfTable->getXMin());
+        $writer->writeFWORD($glyfTable->getYMin());
+        $writer->writeFWORD($glyfTable->getXMax());
+        $writer->writeFWORD($glyfTable->getYMax());
 
         foreach ($glyfTable->getComponentGlyphs() as $componentGlyph) {
             $writer->writeUInt16($componentGlyph->getFlags());
@@ -96,7 +100,11 @@ class TableVisitor
         $writer->writeLONGDATETIME($headTable->getCreated());
         $writer->writeLONGDATETIME($headTable->getModified());
 
-        Writer::writeBoundingBoxInt16($headTable, $writer);
+        // write bounding box int16
+        $writer->writeInt16($headTable->getXMin());
+        $writer->writeInt16($headTable->getYMin());
+        $writer->writeInt16($headTable->getXMax());
+        $writer->writeInt16($headTable->getYMax());
 
         $writer->writeUInt16($headTable->getMacStyle());
         $writer->writeUInt16($headTable->getLowestRecPPEM());
@@ -191,7 +199,11 @@ class TableVisitor
 
         $writer->writeUInt32($offsetTable->getScalerType());
         $writer->writeUInt16($offsetTable->getNumTables());
-        Writer::writeBinaryTreeSearchableUInt16($offsetTable, $writer);
+
+        // write searchable binary tree uint16
+        $writer->writeUInt16($offsetTable->getSearchRange());
+        $writer->writeUInt16($offsetTable->getEntrySelector());
+        $writer->writeUInt16($offsetTable->getRangeShift());
 
         return $writer->getStream();
     }
