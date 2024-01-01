@@ -48,4 +48,11 @@ class BlockStyle
     {
         return $this->backgroundColor;
     }
+
+    public function hasImpact(): bool
+    {
+        $hasBorder = $this->getBorderWidth() && $this->getBorderColor();
+
+        return $hasBorder || $this->getBackgroundColor();
+    }
 }

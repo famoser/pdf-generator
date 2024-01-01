@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\Frontend\Content\Style;
 
+use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use PdfGenerator\IR\Document\Content\Common\Color;
 
 class DrawingStyle
@@ -24,6 +25,15 @@ class DrawingStyle
         $this->lineWidth = $borderWidth;
         $this->lineColor = $borderColor;
         $this->fillColor = $backgroundColor;
+    }
+
+    public static function createFromBlockStyle(BlockStyle $blockStyle): self
+    {
+        return new self(
+            $blockStyle->getBorderWidth() ?? 0,
+            $blockStyle->getBorderColor(),
+            $blockStyle->getBackgroundColor()
+        );
     }
 
     public function setLineWidth(?float $lineWidth): self

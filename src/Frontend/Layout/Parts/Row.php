@@ -14,6 +14,7 @@ namespace PdfGenerator\Frontend\Layout\Parts;
 use PdfGenerator\Frontend\Content\AbstractContent;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\ContentBlock;
+use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 
 class Row
 {
@@ -21,6 +22,8 @@ class Row
      * @var AbstractBlock[]
      */
     private array $columns = [];
+
+    private ?BlockStyle $style = null;
 
     public function set(int $index, AbstractBlock $block): self
     {
@@ -41,11 +44,23 @@ class Row
         return $this->columns[$index] ?? null;
     }
 
+    public function setStyle(BlockStyle $style): self
+    {
+        $this->style = $style;
+
+        return $this;
+    }
+
     /**
      * @return AbstractBlock[]
      */
     public function getColumns(): array
     {
         return $this->columns;
+    }
+
+    public function getStyle(): ?BlockStyle
+    {
+        return $this->style;
     }
 }

@@ -219,6 +219,18 @@ class GridTestCase extends LinearDocumentTestCase
         return new Rectangle($colorfulRectangleStyle);
     }
 
+    private function createAlternateColourfulRow(): Row
+    {
+        $colorfulRectangleStyle = new BlockStyle();
+        $colorfulRectangleStyle->setBackgroundColor(new Color(0, 125, 0));
+        $colorfulRectangleStyle->setBorder(0.25, new Color(0, 125, 125));
+
+        $row = new Row();
+        $row->setStyle($colorfulRectangleStyle);
+
+        return $row;
+    }
+
     /**
      * @param float[][] $dimensions
      */
@@ -227,7 +239,7 @@ class GridTestCase extends LinearDocumentTestCase
         $rectangle = $this->createColourfulRectangle();
 
         foreach ($dimensions as $widthDimensions) {
-            $row = new Row();
+            $row = $this->createAlternateColourfulRow();
             foreach ($widthDimensions as $index => $width) {
                 $contentBlock = new ContentBlock($rectangle);
                 $contentBlock->setHeight(20);
