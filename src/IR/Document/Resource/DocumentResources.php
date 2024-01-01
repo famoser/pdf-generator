@@ -43,9 +43,13 @@ class DocumentResources
     }
 
     /**
-     * @param BackendFont[]|BackendImage[] $cache
+     * @template T
+     *
+     * @param array<string, T> $cache
+     *
+     * @return T
      */
-    private function getOrCreate(BaseDocumentResource $structure, array &$cache): BackendImage|BackendFont
+    private function getOrCreate(BaseDocumentResource $structure, array &$cache): mixed
     {
         $identifier = $structure->getIdentifier();
 
