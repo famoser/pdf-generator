@@ -25,22 +25,22 @@ readonly class FontMeasurement
         return $this->font->getAscender() / $this->getFontScaling();
     }
 
-    public function getLineGap(): float|int
+    public function getLineGap(): float
     {
         return $this->getLeading() - $this->getAscender() + $this->getDescender();
     }
 
-    public function getDescender(): float|int
+    public function getDescender(): float
     {
         return $this->font->getDescender() / $this->getFontScaling();
     }
 
-    public function getLeading(): float|int
+    public function getLeading(): float
     {
         return $this->font->getBaselineToBaselineDistance() / $this->getFontScaling() * $this->lineHeight;
     }
 
-    public function getFontScaling(): float|int
+    public function getFontScaling(): float
     {
         return $this->font->getUnitsPerEm() / $this->fontSize;
     }
