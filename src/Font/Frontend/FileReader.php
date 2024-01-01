@@ -31,7 +31,6 @@ use PdfGenerator\Font\Frontend\File\Table\OS2Table;
 use PdfGenerator\Font\Frontend\File\Table\PostTable;
 use PdfGenerator\Font\Frontend\File\Table\RawTable;
 use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
-use PdfGenerator\Font\Frontend\File\Traits\Reader;
 
 class FileReader
 {
@@ -169,7 +168,11 @@ class FileReader
 
         $offsetTable->setScalerType($fileReader->readUInt32());
         $offsetTable->setNumTables($fileReader->readUInt16());
-        Reader::readBinaryTreeSearchableUInt16($fileReader, $offsetTable);
+
+        // read binary tree uint16
+        $offsetTable->setSearchRange($fileReader->readUInt16());
+        $offsetTable->setEntrySelector($fileReader->readUInt16());
+        $offsetTable->setRangeShift($fileReader->readUInt16());
 
         return $offsetTable;
     }
@@ -252,7 +255,12 @@ class FileReader
     {
         $glyfTable = new GlyfTable();
         $glyfTable->setNumberOfContours($fileReader->readInt16());
-        Reader::readBoundingBoxFWORD($fileReader, $glyfTable);
+
+        // read bounding box FWORD
+        $glyfTable->setXMin($fileReader->readFWORD());
+        $glyfTable->setYMin($fileReader->readFWORD());
+        $glyfTable->setXMax($fileReader->readFWORD());
+        $glyfTable->setYMax($fileReader->readFWORD());
 
         $rawFontData = $fileReader->readUntil($endOffset);
 
@@ -348,7 +356,13 @@ class FileReader
         $headTable->setUnitsPerEm($fileReader->readUInt16());
         $headTable->setCreated($fileReader->readLONGDATETIME());
         $headTable->setModified($fileReader->readLONGDATETIME());
-        Reader::readBoundingBoxInt16($fileReader, $headTable);
+
+        // read bounding box int16
+        $headTable->setXMin($fileReader->readInt16());
+        $headTable->setYMin($fileReader->readInt16());
+        $headTable->setXMax($fileReader->readInt16());
+        $headTable->setYMax($fileReader->readInt16());
+
         $headTable->setMacStyle($fileReader->readUInt16());
         $headTable->setLowestRecPPEM($fileReader->readUInt16());
         $headTable->setFontDirectionHints($fileReader->readInt16());
