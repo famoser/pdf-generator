@@ -11,9 +11,9 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\Post\Format;
 
-use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
+use PdfGenerator\Font\Frontend\File\Table\Post\FormatVisitorInterface;
 
 abstract class Format
 {
-    abstract public function accept(VisitorInterface $visitor);
+    abstract public function accept(FormatVisitorInterface $visitor);
 }

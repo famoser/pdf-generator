@@ -55,6 +55,9 @@ class Paragraph extends AbstractContent
         return $this->phrases;
     }
 
+    /**
+     * @param Phrase[] $phrases
+     */
     public function cloneWithPhrases(array $phrases): self
     {
         $clone = clone $this;

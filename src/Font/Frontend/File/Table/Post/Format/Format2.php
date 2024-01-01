@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\Post\Format;
 
-use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
+use PdfGenerator\Font\Frontend\File\Table\Post\FormatVisitorInterface;
 
 /**
  * used to specific glyphs within or without the standard macintosh character set
@@ -86,7 +86,7 @@ class Format2 extends Format
         $this->names = $names;
     }
 
-    public function accept(VisitorInterface $visitor)
+    public function accept(FormatVisitorInterface $visitor)
     {
         return $visitor->visitFormat2($this);
     }

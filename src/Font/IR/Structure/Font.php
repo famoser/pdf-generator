@@ -41,11 +41,17 @@ class Font
         $this->isTrueTypeFont = $isTrueTypeFont;
     }
 
+    /**
+     * @return Character[]
+     */
     public function getReservedCharacters(): array
     {
         return $this->reservedCharacters;
     }
 
+    /**
+     * @param Character[] $reservedCharacters
+     */
     public function setReservedCharacters(array $reservedCharacters): void
     {
         $this->reservedCharacters = $reservedCharacters;

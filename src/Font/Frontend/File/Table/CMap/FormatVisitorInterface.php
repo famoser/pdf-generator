@@ -16,13 +16,28 @@ use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format12;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
 use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
 
+/**
+ * @template T
+ */
 interface FormatVisitorInterface
 {
+    /**
+     * @return T
+     */
     public function visitFormat0(Format0 $format0);
 
+    /**
+     * @return T
+     */
     public function visitFormat4(Format4 $format4);
 
+    /**
+     * @return T
+     */
     public function visitFormat6(Format6 $format6);
 
+    /**
+     * @return T
+     */
     public function visitFormat12(Format12 $format12);
 }

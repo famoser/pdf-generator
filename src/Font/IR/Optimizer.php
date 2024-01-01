@@ -47,6 +47,10 @@ class Optimizer
         return $font;
     }
 
+    /**
+     * @param Character[] $characters
+     * @param Character[] $reservedCharacters
+     */
     private function ensureComponentCharactersIncluded(array &$characters, array $reservedCharacters): void
     {
         // characters may be composed out of others, which need also be included in the subset
@@ -63,6 +67,9 @@ class Optimizer
         }
     }
 
+    /**
+     * @param Character[] $characters
+     */
     private function sortCharactersByCodePoint(array &$characters): void
     {
         $sortByCodePoint = function (Character $character1, Character $character2) {
