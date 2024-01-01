@@ -11,19 +11,19 @@
 
 namespace PdfGenerator\Frontend\Resource\Font\WordSizer;
 
-class ProportionalWordSizer implements WordSizerInterface
+readonly class ProportionalWordSizer implements WordSizerInterface
 {
-    private readonly int $spaceCharacterWidth;
+    private int $spaceCharacterWidth;
 
     /**
      * @param int[] $characterAdvanceWidthLookup
      */
-    public function __construct(private readonly int $invalidCharacterWidth, private readonly array $characterAdvanceWidthLookup)
+    public function __construct(private int $invalidCharacterWidth, private array $characterAdvanceWidthLookup)
     {
         $this->spaceCharacterWidth = $this->getWidth(' ');
     }
 
-    public function getWidth(string $word): float
+    public function getWidth(string $word): int
     {
         if ('' === $word) {
             return 0;
@@ -43,7 +43,7 @@ class ProportionalWordSizer implements WordSizerInterface
         return $width;
     }
 
-    public function getSpaceWidth(): float
+    public function getSpaceWidth(): int
     {
         return $this->spaceCharacterWidth;
     }
