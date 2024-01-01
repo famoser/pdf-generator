@@ -11,8 +11,10 @@
 
 namespace PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
+use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
 use PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use PdfGenerator\Frontend\Content\Style\TextStyle;
 use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Grid;
@@ -20,6 +22,7 @@ use PdfGenerator\Frontend\Layout\Parts\Row;
 use PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use PdfGenerator\Frontend\LinearDocument;
+use PdfGenerator\Frontend\Resource\Font;
 use PdfGenerator\IR\Document\Content\Common\Color;
 
 class GridTestCase extends LinearDocumentTestCase
@@ -119,6 +122,47 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 100 0 cm 0 0 40 20 re b', $result);
     }
 
+    public function testAutoSizingGrid()
+    {
+        // arrange
+        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+
+        $grid = new Grid(10, 0, [ColumnSize::AUTO, ColumnSize::AUTO]);
+        $this->setBorderStyle($grid);
+        $this->printWidthRectangles($grid, [[10, 20], [20, 10]]);
+        $document->add($grid);
+
+        $grid = new Grid(10, 0, [ColumnSize::AUTO, ColumnSize::AUTO]);
+        $this->setBorderStyle($grid);
+        $this->printWidthRectangles($grid, [[10, 20], [10, 20]]);
+        $document->add($grid);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('1 0 0 1 -105 -40 cm 0 0 0 RG 0 0 0 rg 0 0 200 40 re', $result);
+        $this->assertStringContainsString('1 0 0 1 0 20 cm 0 1 1 RG 0 1 0 rg 0 0 10 20 re', $result);
+    }
+
+    public function testAutoSizingTextGrid()
+    {
+        // arrange
+        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+
+        $grid = new Grid(1, 2, [ColumnSize::MINIMAL, ColumnSize::AUTO, ColumnSize::AUTO]);
+        $this->setBorderStyle($grid);
+        $text = [
+            ['23', 'Bitte die grössten nicht.', 'hi'],
+            ['231', 'Dies ist immer noch am längesten.', 'Aber hier viel mehr Gewicht; daher sollte dieser Teil insgesamt doch mehr Platz eingeräumt werden'],
+        ];
+        $this->printText($grid, $text);
+        $document->add($grid);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('1 0 0 1 6.004 0 cm BT', $result);
+        $this->assertStringContainsString('1 0 0 1 71.361331 0 cm BT', $result);
+    }
+
     public function testPrintUnitGrid()
     {
         // arrange
@@ -190,6 +234,26 @@ class GridTestCase extends LinearDocumentTestCase
                 $contentBlock->setWidth($width);
 
                 $row->set($index, $contentBlock);
+            }
+
+            $grid->add($row);
+        }
+    }
+
+    /**
+     * @param string[][] $text
+     */
+    private function printText(Grid $grid, array $text): void
+    {
+        $font = Font::createFromDefault();
+        $normalText = new TextStyle($font, 3);
+
+        foreach ($text as $line) {
+            $row = new Row();
+            foreach ($line as $index => $cell) {
+                $paragraph = new Paragraph();
+                $paragraph->add($normalText, $cell);
+                $row->setContent($index, $paragraph);
             }
 
             $grid->add($row);
