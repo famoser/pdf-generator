@@ -11,26 +11,20 @@
 
 namespace PdfGenerator\Font\IR\Utils\Post;
 
-use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format;
 use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format1;
 use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format2;
 use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format25;
 use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format3;
-use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
+use PdfGenerator\Font\Frontend\File\Table\Post\FormatVisitorInterface;
 use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
-class GlyphIndexFormatVisitor implements VisitorInterface
+/**
+ * @implements FormatVisitorInterface<GlyphInfo[]>
+ */
+readonly class GlyphIndexFormatVisitor implements FormatVisitorInterface
 {
-    public function __construct(private readonly Factory $factory)
+    public function __construct(private Factory $factory)
     {
-    }
-
-    /**
-     * @return GlyphInfo[]
-     */
-    public function visitFormat(Format $format): array
-    {
-        return $format->accept($this);
     }
 
     public function visitFormat1(Format1 $format1): array
@@ -45,9 +39,6 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return $result;
     }
 
-    /**
-     * @return GlyphInfo[]
-     */
     public function visitFormat2(Format2 $format2): array
     {
         $macintoshMapping = $this->factory->getMacintoshMapping();
@@ -97,6 +88,9 @@ class GlyphIndexFormatVisitor implements VisitorInterface
         return $glyphInfo;
     }
 
+    /**
+     * @return string[]
+     */
     private function streamToPascalStrings(string $stream): array
     {
         $length = \strlen($stream);

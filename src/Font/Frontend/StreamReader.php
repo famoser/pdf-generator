@@ -173,6 +173,9 @@ class StreamReader
         return self::transformToSinged($uInt64, 64);
     }
 
+    /**
+     * @return int[]
+     */
     public function readTag(): array
     {
         $uInt32 = $this->readUInt32();
@@ -198,6 +201,9 @@ class StreamReader
         return $this->readUInt16();
     }
 
+    /**
+     * @return int[]
+     */
     public function readOffset16Array(int $size): array
     {
         return $this->readUInt16Array($size);
@@ -252,19 +258,19 @@ class StreamReader
         return $this->offset >= $this->byteCount;
     }
 
-    private static function unpackUInt16($content, int $offset): int
+    private static function unpackUInt16(string $content, int $offset): int
     {
-        return unpack('nnumber', (string) $content, $offset)['number'];
+        return unpack('nnumber', $content, $offset)['number'];
     }
 
-    private static function unpackUInt32($content, int $offset): int
+    private static function unpackUInt32(string $content, int $offset): int
     {
-        return unpack('Nnumber', (string) $content, $offset)['number'];
+        return unpack('Nnumber', $content, $offset)['number'];
     }
 
-    private static function unpackUInt64($content, int $offset): int
+    private static function unpackUInt64(string $content, int $offset): int
     {
-        return unpack('Jnumber', (string) $content, $offset)['number'];
+        return unpack('Jnumber', $content, $offset)['number'];
     }
 
     private static function transformTo8Bit(int $number): int
@@ -290,6 +296,9 @@ class StreamReader
         $this->offset = $offset;
     }
 
+    /**
+     * @var int[]
+     */
     private array $pushedOffsets = [];
 
     /**

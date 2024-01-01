@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\Post\Format;
 
-use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
+use PdfGenerator\Font\Frontend\File\Table\Post\FormatVisitorInterface;
 
 /**
  * specifies offsets to the standard macintosh ordering.
@@ -61,7 +61,7 @@ class Format25 extends Format
         $this->offsets = $offsets;
     }
 
-    public function accept(VisitorInterface $visitor)
+    public function accept(FormatVisitorInterface $visitor)
     {
         return $visitor->visitFormat25($this);
     }

@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\Post\Format;
 
-use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
+use PdfGenerator\Font\Frontend\File\Table\Post\FormatVisitorInterface;
 
 /**
  * specifies that no PostScript information will be supplied
@@ -19,7 +19,7 @@ use PdfGenerator\Font\Frontend\File\Table\Post\VisitorInterface;
  */
 class Format3 extends Format
 {
-    public function accept(VisitorInterface $visitor)
+    public function accept(FormatVisitorInterface $visitor)
     {
         return $visitor->visitFormat3($this);
     }

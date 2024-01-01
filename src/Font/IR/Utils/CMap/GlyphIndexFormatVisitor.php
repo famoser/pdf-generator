@@ -18,19 +18,16 @@ use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
 use PdfGenerator\Font\Frontend\File\Table\CMap\FormatVisitorInterface;
 use PdfGenerator\Font\IR\Utils\CMap\Format4\Transformer;
 
+/**
+ * @implements FormatVisitorInterface<array<int,int>>
+ */
 class GlyphIndexFormatVisitor implements FormatVisitorInterface
 {
-    /**
-     * @return array<int, int>
-     */
     public function visitFormat0(Format0 $format0): array
     {
         return array_values($format0->getGlyphIndexArray());
     }
 
-    /**
-     * @return array<int, int>
-     */
     public function visitFormat4(Format4 $format4): array
     {
         $segments = Transformer::arraysToSegments($format4->getStartCodes(), $format4->getEndCodes(), $format4->getIdDeltas(), $format4->getIdRangeOffsets());
@@ -54,9 +51,6 @@ class GlyphIndexFormatVisitor implements FormatVisitorInterface
         return $glyphIndexes;
     }
 
-    /**
-     * @return array<int, int>
-     */
     public function visitFormat6(Format6 $format6): array
     {
         $glyphIndexes = [];
@@ -68,9 +62,6 @@ class GlyphIndexFormatVisitor implements FormatVisitorInterface
         return $glyphIndexes;
     }
 
-    /**
-     * @return array<int, int>
-     */
     public function visitFormat12(Format12 $format12): array
     {
         $glyphIndexes = [];

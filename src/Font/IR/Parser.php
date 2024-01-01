@@ -111,7 +111,7 @@ readonly class Parser
         $subtable = $this->chooseBestCMapSubtable($fontFile->getCMapTable());
 
         $cMapMapping = $subtable->getFormat()->accept($this->cMapGlyphIndexFormatVisitor);
-        $postMapping = $this->postGlyphIndexFormatVisitor->visitFormat($fontFile->getPostTable()->getFormat());
+        $postMapping = $fontFile->getPostTable()->getFormat()->accept($this->postGlyphIndexFormatVisitor);
         $aGLFMapping = $this->glyphNameMappingFactory->getAGLFMapping();
 
         foreach ($characters as $characterIndex => $character) {
