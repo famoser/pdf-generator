@@ -40,10 +40,7 @@ abstract class AbstractBlockVisitor
     /**
      * @return T
      */
-    public function visitGrid(Grid $grid): mixed
-    {
-        throw new \Exception('not implemented');
-    }
+    abstract public function visitGrid(Grid $grid): mixed;
 
     /**
      * @return T
