@@ -55,6 +55,9 @@ class ColorStateRepository
         return $this->activeColorState;
     }
 
+    /**
+     * @return float[]
+     */
     private static function convertToPdfColourSpecificationOrDefault(?Color $color): array
     {
         if (!$color) {

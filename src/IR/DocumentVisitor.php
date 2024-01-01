@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\IR;
 
+use PdfGenerator\Backend\Structure\Document\Font;
 use PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
 use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
 use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
@@ -21,6 +22,9 @@ use PdfGenerator\IR\Document\Resource\Font\FontVisitor;
 use PdfGenerator\IR\Document\Resource\Font\Utils\DefaultFontType1Mapping;
 use PdfGenerator\IR\Document\Resource\Image;
 
+/**
+ * @implements FontVisitor<Font>
+ */
 readonly class DocumentVisitor implements FontVisitor
 {
     public function __construct(private AnalysisResult $analysisResult)
