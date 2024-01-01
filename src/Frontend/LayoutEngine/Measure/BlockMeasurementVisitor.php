@@ -28,7 +28,7 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\GridMeasurer;
  * Measurements may not be exact; i.e. minWidth / minHeight may not correspond to what is then allocated.
  * They are still useful to layout; e.g. define auto column widths in tables.
  *
- * @implements AbstractBlockVisitor<Measurement>
+ * @extends AbstractBlockVisitor<Measurement>
  */
 class BlockMeasurementVisitor extends AbstractBlockVisitor
 {

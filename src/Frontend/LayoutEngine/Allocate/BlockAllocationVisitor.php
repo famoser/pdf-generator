@@ -25,7 +25,7 @@ use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\GridAllocator;
  *
  * All allocated content fits
  *
- * @implements AbstractBlockVisitor<BlockAllocation>
+ * @extends AbstractBlockVisitor<BlockAllocation>
  */
 class BlockAllocationVisitor extends AbstractBlockVisitor
 {
