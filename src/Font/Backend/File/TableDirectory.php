@@ -28,7 +28,7 @@ class TableDirectory
     private CMapTable $cMapTable;
 
     /**
-     * @var GlyfTable[]
+     * @var (GlyfTable|null)[]
      */
     private array $glyphTables = [];
 
@@ -64,7 +64,7 @@ class TableDirectory
     }
 
     /**
-     * @return GlyfTable[]
+     * @return (GlyfTable|null)[]
      */
     public function getGlyphTables(): array
     {
@@ -72,7 +72,7 @@ class TableDirectory
     }
 
     /**
-     * @param GlyfTable[] $glyphTables
+     * @param (GlyfTable|null)[] $glyphTables
      */
     public function setGlyphTables(array $glyphTables): void
     {

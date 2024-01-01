@@ -27,7 +27,7 @@ class FormatReader
             2.0 => $this->readFormat2($streamReader, $length),
             2.5 => $this->readFormat25($streamReader),
             3.0 => new Format3(),
-            default => assert(false, 'unknown post format '.$format),
+            default => throw new \Exception('unknown post format '.$format),
         };
     }
 

@@ -159,7 +159,7 @@ readonly class GridAllocator
                 $totalUnits += $units;
                 $totalUnitsColumnSize += $optimalColumnWidth;
             } else {
-                assert(false, 'ColumnSize '.$columnSize.' unknown.');
+                throw new \Exception('ColumnSize '.$columnSize.' unknown.');
             }
         }
 

@@ -38,9 +38,9 @@ use PdfGenerator\Font\IR\Structure\Character;
 use PdfGenerator\Font\IR\Structure\Font;
 use PdfGenerator\Font\IR\Utils\CMap\Format4\Segment;
 
-class FileWriter
+readonly class FileWriter
 {
-    public function __construct(private readonly TableVisitor $tableVisitor)
+    public function __construct(private TableVisitor $tableVisitor)
     {
     }
 
@@ -317,11 +317,10 @@ class FileWriter
     /**
      * @param Character[] $characters
      *
-     * @return GlyfTable[]
+     * @return (GlyfTable|null)[]
      */
     private function generateGlyfTables(array $characters): array
     {
-        /** @var GlyfTable[] $glyfTables */
         $glyfTables = [];
 
         foreach ($characters as $character) {
@@ -377,7 +376,6 @@ class FileWriter
      */
     private function writeTableDirectory(TableDirectory $fontFile): string
     {
-        /** @var BaseTable[] $tables */
         $tables = [
             'cmap' => $fontFile->getCMapTable(),
             'head' => $fontFile->getHeadTable(),
@@ -403,10 +401,6 @@ class FileWriter
         $tableDirectoryEntries = [];
 
         foreach ($tables as $tag => $table) {
-            if (null === $table) {
-                continue;
-            }
-
             $tableDirectoryEntry = new TableDirectoryEntry();
             $tableDirectoryEntry->setTag($tag);
             $tableDirectoryEntry->setOffset($tableStreamWriter->getLength());

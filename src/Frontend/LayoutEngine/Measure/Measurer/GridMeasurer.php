@@ -63,7 +63,7 @@ class GridMeasurer
                 $widthPerUnit = $units > 0 ? $measuredColumn->getMinWidth() / $units : 0;
                 $minWidthPerUnit = max($minWidthPerUnit, $widthPerUnit);
             } else {
-                assert(false, 'ColumnSize '.$columnSize.' unknown.');
+                throw new \Exception('ColumnSize '.$columnSize.' unknown.');
             }
         }
 
