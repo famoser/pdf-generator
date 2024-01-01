@@ -94,4 +94,25 @@ class Grid extends AbstractBlock
     {
         return $visitor->visitGrid($this);
     }
+
+    /**
+     * returns all column sizes for all columns used in the grid.
+     * if column size undefined for some column, defaults to AUTO.
+     *
+     * @return (float|string|ColumnSize)[]
+     */
+    public function getNormalizedColumnSizes(): array
+    {
+        $maxColumn = max(...array_keys($this->getColumnSizes()));
+        foreach ($this->getRows() as $row) {
+            $maxColumn = max($maxColumn, ...array_keys($row->getColumns()));
+        }
+
+        $columnSizes = array_fill(0, $maxColumn + 1, ColumnSize::AUTO);
+        foreach ($this->getColumnSizes() as $index => $columnSize) {
+            $columnSizes[$index] = $columnSize;
+        }
+
+        return $columnSizes;
+    }
 }
