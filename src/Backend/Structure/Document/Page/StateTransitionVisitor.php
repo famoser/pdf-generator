@@ -86,7 +86,7 @@ class StateTransitionVisitor
         }
 
         $operators = [];
-        if ($previousState?->getFont() !== $targetState->getFont() || $previousState?->getFontSize() !== $targetState->getFontSize()) {
+        if ($previousState?->getFont() !== $targetState->getFont() || $previousState->getFontSize() !== $targetState->getFontSize()) {
             $font = $this->documentResources->getFont($targetState->getFont());
             $operators[] = '/'.$font->getIdentifier().' '.$targetState->getFontSize().' Tf';
         }
