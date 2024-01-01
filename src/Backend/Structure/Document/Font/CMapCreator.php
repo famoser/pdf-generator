@@ -142,9 +142,9 @@ readonly class CMapCreator
      */
     private function getNotDefRange(array $codePointsWithoutCharacterIndex): array
     {
-        // must always map 0 character
+        // must always map 0 character, at first position
         if (0 === \count($codePointsWithoutCharacterIndex) || 0 !== $codePointsWithoutCharacterIndex[0]) {
-            $codePointsWithoutCharacterIndex = array_merge([0], $codePointsWithoutCharacterIndex);
+            array_unshift($codePointsWithoutCharacterIndex, 0);
         }
 
         $notDefRanges = $this->getNotDefRanges($codePointsWithoutCharacterIndex, 0);
@@ -397,32 +397,37 @@ readonly class CMapCreator
     }
 
     /**
-     * @param string[] $hexPoints
+     * @param int[] $codePointsWithoutCharacterIndex
      *
      * @return string[]
      */
-    private function getNotDefRanges(array $hexPoints, int $notDefCharacterIndex): array
+    private function getNotDefRanges(array $codePointsWithoutCharacterIndex, int $notDefCharacterIndex): array
     {
         $codeMappings = [];
 
-        $lastValue = null;
-        $firstHexPoint = null;
-        $lastHexPoint = null;
-        foreach ($hexPoints as $hexPoint) {
-            $currentValue = hexdec($hexPoint);
+        $startCodePoint = null;
+        $endCodePoint = null;
 
-            if ($currentValue - 1 !== $lastValue) {
-                if (null !== $firstHexPoint) {
-                    $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> '.$notDefCharacterIndex;
+        $entries = [];
+        foreach ($codePointsWithoutCharacterIndex as $codePoint) {
+            if ($codePoint - 1 !== $endCodePoint) {
+                if (null !== $startCodePoint) {
+                    $entries[$startCodePoint] = $endCodePoint;
                 }
-                $firstHexPoint = $hexPoint;
+
+                $startCodePoint = $codePoint;
             }
 
-            $lastHexPoint = $hexPoint;
-            $lastValue = $currentValue;
+            $endCodePoint = $codePoint;
         }
 
-        $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> '.$notDefCharacterIndex;
+        if ($startCodePoint) {
+            $entries[$startCodePoint] = $endCodePoint;
+        }
+
+        foreach ($entries as $start => $end) {
+            $codeMappings[] = '<'.dechex($start).'> <'.dechex($end).'> '.$notDefCharacterIndex;
+        }
 
         return $codeMappings;
     }
