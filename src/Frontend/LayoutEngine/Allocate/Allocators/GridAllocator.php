@@ -12,6 +12,7 @@
 namespace PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
 
 use PdfGenerator\Frontend\Layout\Grid;
+use PdfGenerator\Frontend\Layout\Parts\Row;
 use PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
@@ -25,6 +26,8 @@ readonly class GridAllocator
     }
 
     /**
+     * @param Row[] $overflowRows
+     *
      * @return BlockAllocation[]
      */
     public function allocate(Grid $grid, array &$overflowRows = [], float &$usedWidth = 0, float &$usedHeight = 0): array
@@ -93,6 +96,7 @@ readonly class GridAllocator
 
     /**
      * @param (ColumnSize|string|numeric)[] $columnSizes
+     * @param float[]                       $widths
      *
      * @return BlockAllocation[][]
      */

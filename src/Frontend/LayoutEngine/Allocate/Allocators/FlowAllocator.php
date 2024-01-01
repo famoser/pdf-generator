@@ -23,11 +23,15 @@ readonly class FlowAllocator
     {
     }
 
+    /**
+     * @param AbstractBlock[] $overflowBlocks
+     *
+     * @return BlockAllocation[]
+     */
     public function allocate(Flow $flow, array &$overflowBlocks = [], float &$usedWidth = 0, float &$usedHeight = 0): array
     {
         /** @var BlockAllocation[] $blockAllocations */
         $blockAllocations = [];
-        /** @var AbstractBlock[] $overflowBlocks */
         $overflowBlocks = $flow->getBlocks();
         while (count($overflowBlocks) > 0) {
             $block = array_shift($overflowBlocks);

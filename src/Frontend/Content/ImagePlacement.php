@@ -26,7 +26,7 @@ class ImagePlacement extends AbstractContent
         return $this->image;
     }
 
-    public function accept(ContentVisitorInterface $visitor): mixed
+    public function accept(ContentVisitorInterface $visitor)
     {
         return $visitor->visitImagePlacement($this);
     }
