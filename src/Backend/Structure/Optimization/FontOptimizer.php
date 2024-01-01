@@ -19,7 +19,7 @@ use PdfGenerator\Font\IR\Structure\Font;
 class FontOptimizer
 {
     /**
-     * @throws \Exception
+     * @return array{Font,string,int[]}
      */
     public function createFontSubset(Font $font, string $charactersUsedInText): array
     {

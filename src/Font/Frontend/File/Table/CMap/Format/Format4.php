@@ -201,11 +201,6 @@ class Format4 extends Format
         $this->glyphIndexArray = $glyphIndexArray;
     }
 
-    public function accept(FormatVisitorInterface $formatVisitor)
-    {
-        return $formatVisitor->visitFormat4($this);
-    }
-
     public function addStartCode(int $startCode): void
     {
         $this->startCodes[] = $startCode;
@@ -224,5 +219,10 @@ class Format4 extends Format
     public function addIdRangeOffset(int $idRangeOffset): void
     {
         $this->idRangeOffsets[] = $idRangeOffset;
+    }
+
+    public function accept(FormatVisitorInterface $formatVisitor)
+    {
+        return $formatVisitor->visitFormat4($this);
     }
 }

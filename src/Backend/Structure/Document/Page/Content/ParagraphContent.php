@@ -27,6 +27,9 @@ readonly class ParagraphContent extends BaseContent
     {
     }
 
+    /**
+     * @return Phrase[]
+     */
     public function getPhrases(): array
     {
         return $this->phrases;

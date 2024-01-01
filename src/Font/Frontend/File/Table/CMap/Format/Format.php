@@ -62,5 +62,12 @@ abstract class Format
         $this->language = $language;
     }
 
+    /**
+     * @template T
+     *
+     * @param FormatVisitorInterface<T> $formatVisitor
+     *
+     * @return T
+     */
     abstract public function accept(FormatVisitorInterface $formatVisitor);
 }

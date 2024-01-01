@@ -17,8 +17,8 @@ use PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 readonly class Contents extends BaseStructure
 {
-    /*
-     * @param Content[] $content
+    /**
+     * @param Content[] $contents
      */
     public function __construct(private array $contents)
     {

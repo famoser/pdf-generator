@@ -20,7 +20,7 @@ class NumberToken extends BaseToken
     {
     }
 
-    public static function format($number): float
+    public static function format(float|int $number): float
     {
         return round($number, 6);
     }
