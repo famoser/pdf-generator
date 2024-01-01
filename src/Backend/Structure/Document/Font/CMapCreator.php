@@ -118,6 +118,7 @@ readonly class CMapCreator
         $codeSpaceDictionaries = $this->getCodeSpaceRange($textInHexToCharacterIndexMappingByLength);
         $codeMappingDictionaries = $this->getCidRange($textInHexToCharacterIndexMappingByLength);
 
+        /** @var int[] $existingCodepoint */
         $existingCodepoint = [];
         foreach ($characters as $character) {
             if (null !== $character->getUnicodePoint()) {
@@ -134,6 +135,11 @@ readonly class CMapCreator
             implode("\n\n", $notDefRangeDictionaries);
     }
 
+    /**
+     * @param int[] $codePointsWithoutCharacterIndex
+     *
+     * @return string[]
+     */
     private function getNotDefRange(array $codePointsWithoutCharacterIndex): array
     {
         // must always map 0 character
@@ -146,33 +152,51 @@ readonly class CMapCreator
         return $this->toDictionary($notDefRanges, 'notdefrange');
     }
 
-    private function getCidRange($textInHexToCharacterIndexMappingByLength): array
+    /**
+     * @param array<int, array<string, int>> $textInHexToCharacterIndexMappingByLength
+     *
+     * @return string[]
+     */
+    private function getCidRange(array $textInHexToCharacterIndexMappingByLength): array
     {
         $codeMappings = [];
-        foreach ($textInHexToCharacterIndexMappingByLength as $length => $textInHexToCharacterIndexMapping) {
-            $codeMappings = array_merge($codeMappings, $this->getSameLengthCidRanges($textInHexToCharacterIndexMapping));
+        foreach ($textInHexToCharacterIndexMappingByLength as $textInHexToCharacterIndexMapping) {
+            $sameLengthCidRanges = $this->getSameLengthCidRanges($textInHexToCharacterIndexMapping);
+            $codeMappings = array_merge($codeMappings, $sameLengthCidRanges);
         }
 
         return $this->toDictionary($codeMappings, 'cidrange');
     }
 
-    private function getBfRange($characterIndexToUnicodeMappingInHexByLength): array
+    /**
+     * @param array<int, array<string, int>> $characterIndexToUnicodeMappingInHexByLength
+     *
+     * @return string[]
+     */
+    private function getBfRange(array $characterIndexToUnicodeMappingInHexByLength): array
     {
         $bfRanges = [];
-        foreach ($characterIndexToUnicodeMappingInHexByLength as $length => $characterIndexToUnicodeMappingInHex) {
-            $bfRanges = array_merge($bfRanges, $this->getSameLengthBfRanges($characterIndexToUnicodeMappingInHex));
+        foreach ($characterIndexToUnicodeMappingInHexByLength as $characterIndexToUnicodeMappingInHex) {
+            $sameLengthBfRanges = $this->getSameLengthBfRanges($characterIndexToUnicodeMappingInHex);
+            $bfRanges = array_merge($bfRanges, $sameLengthBfRanges);
         }
 
         return $this->toDictionary($bfRanges, 'bfrange');
     }
 
+    /**
+     * @param array<int, array<string, int>> $hexKeysByLength
+     *
+     * @return string[]
+     */
     private function getCodeSpaceRange(array $hexKeysByLength): array
     {
         $codeSpaces = [];
-        foreach ($hexKeysByLength as $length => $textInHexToCharacterIndexMapping) {
+        foreach ($hexKeysByLength as $textInHexToCharacterIndexMapping) {
             ksort($textInHexToCharacterIndexMapping);
 
-            $codeSpaces = array_merge($codeSpaces, $this->getSameLengthCodeSpaceRanges(array_keys($textInHexToCharacterIndexMapping)));
+            $sameLengthCodeSpaceRanges = $this->getSameLengthCodeSpaceRanges(array_keys($textInHexToCharacterIndexMapping));
+            $codeSpaces = array_merge($codeSpaces, $sameLengthCodeSpaceRanges);
         }
 
         return $this->toDictionary($codeSpaces, 'codespacerange');
@@ -231,9 +255,12 @@ readonly class CMapCreator
 
     /**
      * @param Character[] $characters
+     *
+     * @return array<int, array<string, int>>
      */
     private function getTextInHexToCharacterIndexMappingByLength(array $characters): array
     {
+        /** @var array<int, array<string, int>> $hexPointsByLength */
         $hexPointsByLength = [];
         $characterCount = \count($characters);
         for ($i = 0; $i < $characterCount; ++$i) {
@@ -301,7 +328,7 @@ readonly class CMapCreator
     }
 
     /**
-     * @param string[] $hexValueToCharacterIndexMapping
+     * @param array<string, int> $hexValueToCharacterIndexMapping
      *
      * @return string[]
      */
