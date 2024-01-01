@@ -33,7 +33,7 @@ class Rectangle extends AbstractContent
         return $this->style;
     }
 
-    public function accept(ContentVisitorInterface $visitor): mixed
+    public function accept(ContentVisitorInterface $visitor)
     {
         return $visitor->visitRectangle($this);
     }

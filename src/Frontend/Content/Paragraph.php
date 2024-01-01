@@ -63,7 +63,7 @@ class Paragraph extends AbstractContent
         return $clone;
     }
 
-    public function accept(ContentVisitorInterface $visitor): mixed
+    public function accept(ContentVisitorInterface $visitor)
     {
         return $visitor->visitParagraph($this);
     }

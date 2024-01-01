@@ -44,7 +44,7 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], [$contentAllocation], $overflow);
     }
 
-    public function visitBlock(Block $block): ?BlockAllocation
+    public function visitBlock(Block $block): BlockAllocation
     {
         $usableSpace = $this->getUsableSpace($block);
 
@@ -87,6 +87,9 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
         return $this->allocateBlock($grid, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
     }
 
+    /**
+     * @return array{float, float}
+     */
     private function getUsableSpace(AbstractBlock $block): array
     {
         $availableMaxWidth = $this->maxWidth - $block->getXMargin();

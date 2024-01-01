@@ -17,9 +17,9 @@ use PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 
-class GridMeasurer
+readonly class GridMeasurer
 {
-    private readonly BlockMeasurementVisitor $measurementVisitor;
+    private BlockMeasurementVisitor $measurementVisitor;
 
     public function __construct()
     {
@@ -78,6 +78,8 @@ class GridMeasurer
 
     /**
      * @param AbstractBlock[] $columns
+     *
+     * @return Measurement[]
      */
     private function measureRow(array $columns): array
     {

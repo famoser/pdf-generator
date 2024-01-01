@@ -93,6 +93,7 @@ class ParagraphAllocator
     }
 
     /**
+     * @param string[] $lines
      * @param string[] $pendingLines
      *
      * @return string[]
@@ -141,6 +142,12 @@ class ParagraphAllocator
         return $allocatedLines;
     }
 
+    /**
+     * @param string[] $words
+     * @param string[] $pendingWords
+     *
+     * @return string[]
+     */
     private static function allocatedWords(FontMeasurement $fontMeasurement, float $availableWidth, array $words, float &$width, array &$pendingWords): array
     {
         $pendingWords = $words;

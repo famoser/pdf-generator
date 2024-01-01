@@ -16,7 +16,14 @@ use PdfGenerator\Frontend\Printer;
 
 abstract class AbstractContent
 {
-    abstract public function accept(ContentVisitorInterface $visitor): mixed;
+    /**
+     * @template T
+     *
+     * @param ContentVisitorInterface<T> $visitor
+     *
+     * @return T
+     */
+    abstract public function accept(ContentVisitorInterface $visitor);
 
     abstract public function print(Printer $printer, float $width, float $height): void;
 }

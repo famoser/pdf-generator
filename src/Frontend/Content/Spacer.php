@@ -16,7 +16,7 @@ use PdfGenerator\Frontend\Printer;
 
 class Spacer extends AbstractContent
 {
-    public function accept(ContentVisitorInterface $visitor): mixed
+    public function accept(ContentVisitorInterface $visitor)
     {
         return $visitor->visitSpacer($this);
     }
