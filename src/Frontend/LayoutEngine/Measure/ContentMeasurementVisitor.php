@@ -15,13 +15,13 @@ use PdfGenerator\Frontend\Content\ImagePlacement;
 use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Content\Rectangle;
 use PdfGenerator\Frontend\Content\Spacer;
-use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\ParagraphMeasurer;
 
 /**
- * @implements AbstractContentVisitor<Measurement>
+ * @implements ContentVisitorInterface<Measurement>
  */
-class ContentMeasurementVisitor extends AbstractContentVisitor
+class ContentMeasurementVisitor implements ContentVisitorInterface
 {
     public function visitRectangle(Rectangle $rectangle): Measurement
     {

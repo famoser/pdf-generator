@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Frontend\Content;
 
-use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 use PdfGenerator\Frontend\Printer;
 use PdfGenerator\Frontend\Resource\Image;
 
@@ -26,7 +26,7 @@ class ImagePlacement extends AbstractContent
         return $this->image;
     }
 
-    public function accept(AbstractContentVisitor $visitor): mixed
+    public function accept(ContentVisitorInterface $visitor): mixed
     {
         return $visitor->visitImagePlacement($this);
     }

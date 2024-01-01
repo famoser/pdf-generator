@@ -11,12 +11,12 @@
 
 namespace PdfGenerator\Frontend\Content;
 
-use PdfGenerator\Frontend\LayoutEngine\AbstractContentVisitor;
+use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 use PdfGenerator\Frontend\Printer;
 
 class Spacer extends AbstractContent
 {
-    public function accept(AbstractContentVisitor $visitor): mixed
+    public function accept(ContentVisitorInterface $visitor): mixed
     {
         return $visitor->visitSpacer($this);
     }
