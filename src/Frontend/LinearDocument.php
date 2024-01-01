@@ -102,6 +102,9 @@ class LinearDocument implements DocumentInterface
         return new Printer($this->document, $this->imageRepository, $this->fontRepository, $page, $left, $top);
     }
 
+    /**
+     * @param float[]|null $pageSize
+     */
     public function addPage(array $pageSize = null): void
     {
         $nextPageIndex = $this->getPageCount();

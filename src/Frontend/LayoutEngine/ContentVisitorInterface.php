@@ -24,20 +24,20 @@ interface ContentVisitorInterface
     /**
      * @return T
      */
-    public function visitParagraph(Paragraph $paragraph): mixed;
+    public function visitParagraph(Paragraph $paragraph);
 
     /**
      * @return T
      */
-    public function visitRectangle(Rectangle $rectangle): mixed;
+    public function visitRectangle(Rectangle $rectangle);
 
     /**
      * @return T
      */
-    public function visitSpacer(Spacer $spacer): mixed;
+    public function visitSpacer(Spacer $spacer);
 
     /**
      * @return T
      */
-    public function visitImagePlacement(ImagePlacement $imagePlacement): mixed;
+    public function visitImagePlacement(ImagePlacement $imagePlacement);
 }

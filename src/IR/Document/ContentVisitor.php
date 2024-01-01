@@ -11,6 +11,7 @@
 
 namespace PdfGenerator\IR\Document;
 
+use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\Phrase;
 use PdfGenerator\Backend\Structure\Document\Page\Content\ParagraphContent;
@@ -25,9 +26,12 @@ use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
 use PdfGenerator\IR\Document\Content\Text;
 use PdfGenerator\IR\Document\Resource\PageResources;
 
-class ContentVisitor implements ContentVisitorInterface
+/**
+ * @implements ContentVisitorInterface<BaseContent>
+ */
+readonly class ContentVisitor implements ContentVisitorInterface
 {
-    public function __construct(private readonly PageResources $pageResources)
+    public function __construct(private PageResources $pageResources)
     {
     }
 

@@ -37,7 +37,7 @@ readonly class ImagePlacement extends BaseContent
         return $this->size;
     }
 
-    public function accept(ContentVisitorInterface $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent
+    public function accept(ContentVisitorInterface $visitor)
     {
         return $visitor->visitImagePlacement($this);
     }

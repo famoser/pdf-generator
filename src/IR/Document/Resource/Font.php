@@ -23,7 +23,7 @@ abstract readonly class Font extends BaseDocumentResource
      *
      * @return T
      */
-    abstract public function accept(FontVisitor $visitor);
+    abstract public function acceptFont(FontVisitor $visitor);
 
     abstract public function getUnitsPerEm(): int;
 

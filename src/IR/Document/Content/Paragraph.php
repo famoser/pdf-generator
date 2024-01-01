@@ -37,7 +37,7 @@ readonly class Paragraph extends BaseContent
         return $this->position;
     }
 
-    public function accept(ContentVisitorInterface $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent
+    public function accept(ContentVisitorInterface $visitor)
     {
         return $visitor->visitParagraph($this);
     }

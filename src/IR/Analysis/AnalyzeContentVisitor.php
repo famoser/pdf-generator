@@ -18,6 +18,9 @@ use PdfGenerator\IR\Document\Content\Paragraph;
 use PdfGenerator\IR\Document\Content\Rectangle;
 use PdfGenerator\IR\Document\Content\Text;
 
+/**
+ * @implements ContentVisitorInterface<void>
+ */
 class AnalyzeContentVisitor implements ContentVisitorInterface
 {
     /**

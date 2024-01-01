@@ -11,11 +11,12 @@
 
 namespace PdfGenerator\IR\Document\Base;
 
+use PdfGenerator\Backend\Structure\Document\Base\BaseDocumentStructure;
 use PdfGenerator\IR\DocumentVisitor;
 
 abstract readonly class BaseDocumentResource
 {
-    abstract public function accept(DocumentVisitor $visitor);
+    abstract public function accept(DocumentVisitor $visitor): BaseDocumentStructure;
 
     abstract public function getIdentifier(): string;
 }
