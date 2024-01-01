@@ -30,10 +30,6 @@ readonly class EmbeddedFont extends Font
         return new self($fontPath, $fontData, $font);
     }
 
-    /**
-     * @throws \Exception
-     * @throws \Exception
-     */
     public function accept(FontVisitor $visitor)
     {
         return $visitor->visitEmbeddedFont($this);
