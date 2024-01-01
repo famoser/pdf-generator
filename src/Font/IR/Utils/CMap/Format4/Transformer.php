@@ -42,7 +42,7 @@ class Transformer
     /**
      * @param int[] $glyphIndexAddresses
      *
-     * @return int[]
+     * @return array<int, int>
      */
     public static function segmentToGlyphIndex(Segment $segment, int $segmentIndex, int $segmentCount, array $glyphIndexAddresses): array
     {
@@ -67,10 +67,15 @@ class Transformer
         return $glyphIndexes;
     }
 
+    /**
+     * @param int[] $glyphIndexAddresses
+     *
+     * @return array<int,int>
+     */
     private static function offsetRangeToGlyphIndex(Segment $segment, int $segmentIndex, int $segmentCount, array $glyphIndexAddresses): array
     {
         $segmentOffset = $segmentCount - $segmentIndex; // until segment array finished
-        $addressOffset = $segment->getIdRangeOffset() / 2 - $segmentOffset; // offset from beginning of glyph index addresses
+        $addressOffset = (int) ($segment->getIdRangeOffset() / 2 - $segmentOffset); // offset from beginning of glyph index addresses
 
         $glyphIndexes = [];
         $addressIndex = $addressOffset;

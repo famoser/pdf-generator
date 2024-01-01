@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\CMap\Format;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\VisitorInterface;
+use PdfGenerator\Font\Frontend\File\Table\CMap\FormatVisitorInterface;
 
 /**
  * two-byte encoding format for a single dense character range.
@@ -87,7 +87,7 @@ class Format6 extends Format
         $this->glyphIndexArray = $glyphIndexArray;
     }
 
-    public function accept(VisitorInterface $formatVisitor)
+    public function accept(FormatVisitorInterface $formatVisitor)
     {
         return $formatVisitor->visitFormat6($this);
     }

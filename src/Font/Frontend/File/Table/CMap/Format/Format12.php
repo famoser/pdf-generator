@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\CMap\Format;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\VisitorInterface;
+use PdfGenerator\Font\Frontend\File\Table\CMap\FormatVisitorInterface;
 
 class Format12 extends Format
 {
@@ -51,7 +51,7 @@ class Format12 extends Format
         return self::FORMAT_12;
     }
 
-    public function accept(VisitorInterface $formatVisitor)
+    public function accept(FormatVisitorInterface $formatVisitor)
     {
         return $formatVisitor->visitFormat12($this);
     }

@@ -11,7 +11,7 @@
 
 namespace PdfGenerator\Font\Frontend\File\Table\CMap\Format;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\VisitorInterface;
+use PdfGenerator\Font\Frontend\File\Table\CMap\FormatVisitorInterface;
 
 abstract class Format
 {
@@ -62,5 +62,5 @@ abstract class Format
         $this->language = $language;
     }
 
-    abstract public function accept(VisitorInterface $formatVisitor);
+    abstract public function accept(FormatVisitorInterface $formatVisitor);
 }
