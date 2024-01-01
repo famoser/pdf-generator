@@ -15,13 +15,18 @@ use PdfGenerator\Frontend\Layout\AbstractBlock;
 use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
+use PdfGenerator\Frontend\Layout\Grid;
 use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
+use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\GridMeasurer;
 
 /**
  * Measurements allow the layout engine to plan the layout. It contains:
  * - minimal space required to make progress
  * - expected space required to fully print the content (given as-of-yet possibly unknown height/width).
+ *
+ * Measurements may not be exact; i.e. minWidth / minHeight may not correspond to what is then allocated.
+ * They are still useful to layout; e.g. define auto column widths in tables.
  *
  * @implements AbstractBlockVisitor<Measurement>
  */
@@ -54,13 +59,20 @@ class BlockMeasurementVisitor extends AbstractBlockVisitor
         return $this->measureBlock($flow, $contentMeasurement);
     }
 
+    public function visitGrid(Grid $grid): Measurement
+    {
+        $measurer = new GridMeasurer();
+        $contentMeasurement = $measurer->measure($grid->getRows(), $grid->getNormalizedColumnSizes(), $grid->getGap(), $grid->getPerpendicularGap());
+
+        return $this->measureBlock($grid, $contentMeasurement);
+    }
+
     private function measureBlock(AbstractBlock $block, Measurement $contentMeasurement): Measurement
     {
         $minHeight = $block->getHeight() ?? $contentMeasurement->getMinHeight() + $block->getXSpace();
         $minWidth = $block->getWidth() ?? $contentMeasurement->getMinWidth() + $block->getYSpace();
 
-        // assumes blocks are more or less quadratic. should be OK for the approximate weight number
-        $approximateDimension = sqrt($contentMeasurement->getWeight());
+        $approximateDimension = $contentMeasurement->calculateDimension();
         $approximateWidth = ($block->getHeight() ?? $approximateDimension) + $block->getXSpace();
         $approximateHeight = ($block->getWidth() ?? $approximateDimension) + $block->getYSpace();
         $weight = $approximateWidth * $approximateHeight;

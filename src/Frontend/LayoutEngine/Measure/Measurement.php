@@ -43,4 +43,10 @@ readonly class Measurement
     {
         return $this->minHeight;
     }
+
+    public function calculateDimension(): float
+    {
+        // assumes blocks are more or less quadratic. should be OK for the approximate weight number
+        return sqrt($this->weight);
+    }
 }
