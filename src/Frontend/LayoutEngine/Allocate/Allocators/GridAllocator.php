@@ -122,7 +122,7 @@ readonly class GridAllocator
         // measure auto and unit columns
         $expectedMaxWeight = ($this->width - $availableWidth) * $this->height;
         $totalWeight = 0;
-        /** @var float[] $blockMeasurementsPerColumn */
+        /** @var float[] $weightPerColumn */
         $weightPerColumn = array_fill(0, \count($columnSizes), 0);
         $measurer = new BlockMeasurementVisitor();
         foreach ($grid->getRows() as $row) {
