@@ -11,8 +11,10 @@
 
 namespace PdfGenerator\IR\Document\Resource\Font;
 
+use PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
 use PdfGenerator\IR\Document\Resource\Font;
 use PdfGenerator\IR\Document\Resource\Font\Utils\DefaultFontSizeLookup;
+use PdfGenerator\IR\DocumentVisitor;
 
 readonly class DefaultFont extends Font
 {
@@ -44,7 +46,12 @@ readonly class DefaultFont extends Font
         return new self($font, $style, $size);
     }
 
-    public function accept(FontVisitor $visitor)
+    public function accept(DocumentVisitor $visitor): BackendDefaultFont
+    {
+        return $visitor->visitDefaultFont($this);
+    }
+
+    public function acceptFont(FontVisitor $visitor)
     {
         return $visitor->visitDefaultFont($this);
     }

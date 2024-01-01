@@ -80,7 +80,7 @@ class FontRepository
         if (!\array_key_exists($font->getIdentifier(), $this->wordSizerByFont)) {
             $wordSizerVisitor = new WordSizerVisitor();
             /** @var WordSizerInterface $wordSizer */
-            $wordSizer = $font->accept($wordSizerVisitor);
+            $wordSizer = $font->acceptFont($wordSizerVisitor);
             $this->wordSizerByFont[$font->getIdentifier()] = $wordSizer;
         }
 

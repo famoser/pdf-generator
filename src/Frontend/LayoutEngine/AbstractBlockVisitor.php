@@ -25,22 +25,22 @@ abstract class AbstractBlockVisitor
     /**
      * @return T
      */
-    abstract public function visitContentBlock(ContentBlock $contentBlock): mixed;
+    abstract public function visitContentBlock(ContentBlock $contentBlock);
 
     /**
      * @return T
      */
-    abstract public function visitBlock(Block $block): mixed;
+    abstract public function visitBlock(Block $block);
 
     /**
      * @return T
      */
-    abstract public function visitFlow(Flow $flow): mixed;
+    abstract public function visitFlow(Flow $flow);
 
     /**
      * @return T
      */
-    abstract public function visitGrid(Grid $grid): mixed;
+    abstract public function visitGrid(Grid $grid);
 
     /**
      * @return T

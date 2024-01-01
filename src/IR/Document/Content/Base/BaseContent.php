@@ -15,5 +15,12 @@ use PdfGenerator\IR\Document\Content\ContentVisitorInterface;
 
 abstract readonly class BaseContent
 {
-    abstract public function accept(ContentVisitorInterface $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
+    /**
+     * @template T
+     *
+     * @param ContentVisitorInterface<T> $visitor
+     *
+     * @return T
+     */
+    abstract public function accept(ContentVisitorInterface $visitor);
 }

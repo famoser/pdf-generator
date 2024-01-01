@@ -36,7 +36,7 @@ readonly class Text extends BaseContent
         return $this->style;
     }
 
-    public function accept(ContentVisitorInterface $visitor): ?\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent
+    public function accept(ContentVisitorInterface $visitor)
     {
         return $visitor->visitText($this);
     }

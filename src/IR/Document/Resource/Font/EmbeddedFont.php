@@ -11,8 +11,10 @@
 
 namespace PdfGenerator\IR\Document\Resource\Font;
 
+use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
 use PdfGenerator\Font\IR\Parser;
 use PdfGenerator\IR\Document\Resource\Font;
+use PdfGenerator\IR\DocumentVisitor;
 
 readonly class EmbeddedFont extends Font
 {
@@ -30,7 +32,12 @@ readonly class EmbeddedFont extends Font
         return new self($fontPath, $fontData, $font);
     }
 
-    public function accept(FontVisitor $visitor)
+    public function accept(DocumentVisitor $visitor): BackendEmbeddedFont
+    {
+        return $visitor->visitEmbeddedFont($this);
+    }
+
+    public function acceptFont(FontVisitor $visitor)
     {
         return $visitor->visitEmbeddedFont($this);
     }

@@ -48,6 +48,9 @@ class Page
         return $this->content;
     }
 
+    /**
+     * @return float[]
+     */
     public function getSize(): array
     {
         return $this->size;
