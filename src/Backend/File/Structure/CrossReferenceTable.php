@@ -49,6 +49,9 @@ class CrossReferenceTable extends BaseStructure
         return $this->lastEntry;
     }
 
+    /**
+     * @return int[]
+     */
     public function getEntries(): array
     {
         $entries = $this->registeredEntries;

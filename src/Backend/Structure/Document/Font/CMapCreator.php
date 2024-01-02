@@ -169,7 +169,7 @@ readonly class CMapCreator
     }
 
     /**
-     * @param array<int, array<string, int>> $characterIndexToUnicodeMappingInHexByLength
+     * @param array<int, array<string, string>> $characterIndexToUnicodeMappingInHexByLength
      *
      * @return string[]
      */
@@ -185,7 +185,9 @@ readonly class CMapCreator
     }
 
     /**
-     * @param array<int, array<string, int>> $hexKeysByLength
+     * @template T
+     *
+     * @param array<int, array<string, T>> $hexKeysByLength
      *
      * @return string[]
      */
@@ -223,6 +225,8 @@ readonly class CMapCreator
 
     /**
      * @param Character[] $characters
+     *
+     * @return array<int, array<string, string>>
      */
     private function getCharacterIndexToUnicodeMappingInHexByLength(array $characters): array
     {
@@ -363,6 +367,8 @@ readonly class CMapCreator
     }
 
     /**
+     * @param array<string, string> $characterIndexToUnicodeMappingInHex
+     *
      * @return string[]
      */
     private function getSameLengthBfRanges(array $characterIndexToUnicodeMappingInHex): array
@@ -376,7 +382,7 @@ readonly class CMapCreator
         $lastHexPoint = null;
         foreach ($characterIndexToUnicodeMappingInHex as $characterIndexHex => $unicodeHex) {
             $characterIndex = hexdec($characterIndexHex);
-            $unicodeValue = hexdec((string) $unicodeHex);
+            $unicodeValue = hexdec($unicodeHex);
 
             if ($characterIndex - 1 !== $lastCharacterIndex || $unicodeValue - 1 !== $lastUnicodeValue) {
                 if (null !== $firstHexPoint) {

@@ -69,6 +69,9 @@ class DictionaryObject extends BaseObject
         $this->dictionaryToken->setArrayEntry($key, $tokens);
     }
 
+    /**
+     * @param int[][]|int[] $numberOfNumbers
+     */
     public function addNumberOfNumbersArrayEntry(string $key, array $numberOfNumbers): void
     {
         $tokens = [];
