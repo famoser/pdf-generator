@@ -13,3 +13,8 @@ https://docs.microsoft.com/en-us/typography/opentype/spec/featurelist
 https://www.datalogics.com/products/pdftools/pdf-checker/  
 https://www.pdf-online.com/osa/validate.aspx  
 https://docs.verapdf.org/validation/pdfa-part1/
+https://www.pdfen.com/convert-to-pdfa
+
+```
+mutool clean -d input.pdf output.pdf
+```
