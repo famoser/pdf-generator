@@ -24,7 +24,7 @@ class FactoryTest extends TestCase
     /**
      * basic sanity check for some known characters.
      */
-    public function testAGLFMappingSomeSensibleValues()
+    public function testAGLFMappingSomeSensibleValues(): void
     {
         // arrange
         $factory = self::getFactory();
@@ -49,7 +49,7 @@ class FactoryTest extends TestCase
     /**
      * basic sanity check for some known characters.
      */
-    public function testMacintoshMappingSomeSensibleValues()
+    public function testMacintoshMappingSomeSensibleValues(): void
     {
         // arrange
         $factory = self::getFactory();

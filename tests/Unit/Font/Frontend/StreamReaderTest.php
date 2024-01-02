@@ -19,7 +19,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testUInt8MultipleNumbersResultAsExpected()
+    public function testUInt8MultipleNumbersResultAsExpected(): void
     {
         $input = 2172;
         $output = [0, 0, 8, 124];
@@ -36,7 +36,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testUInt8SingleNumbersResultAsExpected()
+    public function testUInt8SingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             0 => 0,
@@ -59,7 +59,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testInt8MultipleNumbersResultAsExpected()
+    public function testInt8MultipleNumbersResultAsExpected(): void
     {
         $input = 781111;
         $output = [0, 11, -21, 55];
@@ -76,7 +76,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testInt8SingleNumbersResultAsExpected()
+    public function testInt8SingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             0 => 0,
@@ -100,7 +100,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testUInt16MultipleNumbersResultAsExpected()
+    public function testUInt16MultipleNumbersResultAsExpected(): void
     {
         $input = 65537;
         $output = [1, 1];
@@ -115,7 +115,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testUInt16SingleNumbersResultAsExpected()
+    public function testUInt16SingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             0 => 0,
@@ -136,7 +136,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testInt16MultipleNumbersResultAsExpected()
+    public function testInt16MultipleNumbersResultAsExpected(): void
     {
         $input = 134_250_623;
         $output = [2048, -32641];
@@ -151,7 +151,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testInt16SingleNumbersResultAsExpected()
+    public function testInt16SingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             0 => 0,
@@ -171,7 +171,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testUInt24SingleNumbersResultAsExpected()
+    public function testUInt24SingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             0 => 0,
@@ -194,7 +194,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testUInt32MultipleNumbersResultAsExpected()
+    public function testUInt32MultipleNumbersResultAsExpected(): void
     {
         $input = 576_460_754_450_916_516;
         $output = [134_217_728, 2_147_493_028];
@@ -209,7 +209,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testUInt32SingleNumbersResultAsExpected()
+    public function testUInt32SingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             0 => 0,
@@ -231,7 +231,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testInt32SingleNumbersResultAsExpected()
+    public function testInt32SingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             0 => 0,
@@ -252,7 +252,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testFixedSingleNumbersResultAsExpected()
+    public function testFixedSingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             1_073_741_824 => 16384.0,
@@ -271,7 +271,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testFSDOT14SingleNumbersResultAsExpected()
+    public function testFSDOT14SingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             0x7FFF => 1.999939,
@@ -295,7 +295,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testLONGDATETIMESingleNumbersResultAsExpected()
+    public function testLONGDATETIMESingleNumbersResultAsExpected(): void
     {
         $testNumbers = [
             0 => 0,
@@ -315,7 +315,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testTagMultipleNumbersResultAsExpected()
+    public function testTagMultipleNumbersResultAsExpected(): void
     {
         $input = 2172;
         $output = [0, 0, 8, 124];
@@ -333,7 +333,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testTagAsStringResultAsExpected()
+    public function testTagAsStringResultAsExpected(): void
     {
         $input = 0x20202020;
         $output = '    '; // four spaces
@@ -348,7 +348,7 @@ class StreamReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testAlignLongAlignedAsExpected()
+    public function testAlignLongAlignedAsExpected(): void
     {
         $input = 0x2020202020202020;
         $input2 = 0x3030;

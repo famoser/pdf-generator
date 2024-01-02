@@ -23,7 +23,7 @@ use PdfGenerator\Frontend\Resource\Font;
 
 class FlowTestCase extends LinearDocumentTestCase
 {
-    public function testPrintFlowContent()
+    public function testPrintFlowContent(): void
     {
         // arrange
         $document = new LinearDocument();
@@ -50,7 +50,7 @@ class FlowTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 35 258 cm 0 0 30 7 re s', $result);
     }
 
-    public function testPrintFlowText()
+    public function testPrintFlowText(): void
     {
         // arrange
         $document = new LinearDocument();
