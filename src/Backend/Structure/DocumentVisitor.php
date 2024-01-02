@@ -179,7 +179,7 @@ class DocumentVisitor
         $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, $cMapName, $characters, $usedCodepoints);
 
         $cMapInvertedName = $fontDescriptor->getFontName().'CMapInverted';
-        $unicodeCMap = $this->cMapCreator->createCharacterIndexToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $characters);
+        $unicodeCMap = $this->cMapCreator->createToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $characters);
 
         return new Type0($identifier, $fontDescriptor->getFontName(), $characterIndexCMap, $cidFont, $unicodeCMap);
     }
