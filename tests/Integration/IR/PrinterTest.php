@@ -68,6 +68,8 @@ class PrinterTest extends TestCase
         // assert
         $result = $document->save();
         $this->assertStringContainsString('Dies ist ein', $result);
+        $this->assertStringContainsString('<73> <75> 18', $result);
+        $this->assertStringContainsString('<c380> <c3bf> <c0>', $result);
         file_put_contents('pdf.pdf', $result);
     }
 
