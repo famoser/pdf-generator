@@ -47,7 +47,7 @@ class DocumentVisitor
     public function __construct(private readonly Configuration $configuration)
     {
         $this->fontOptimizer = new FontOptimizer();
-        $this->cMapCreator = new CMapCreator();
+        $this->cMapCreator = new CMapCreator($this->configuration->getMinimalCMapSize());
         $this->imageOptimizer = new ImageOptimizer();
     }
 

@@ -17,6 +17,10 @@ use PdfGenerator\Font\IR\Structure\Character;
 
 readonly class CMapCreator
 {
+    public function __construct(private bool $minimalCMapSize)
+    {
+    }
+
     /**
      * @param Character[] $characters
      * @param int[]       $usedCodepoints
@@ -96,8 +100,13 @@ readonly class CMapCreator
     {
         $textInHexToUnicodeMappingByLength = $this->getTextInHexToUnicodeMappingByLength($characters);
 
-        $codeSpaceDictionaries = $this->getCodeSpaceRange($textInHexToUnicodeMappingByLength);
-        $codeMappingDictionaries = $this->getBfRange($textInHexToUnicodeMappingByLength);
+        if ($this->minimalCMapSize) {
+            $codeSpaceDictionaries = $this->getCodeSpaceOfLengths(array_keys($textInHexToUnicodeMappingByLength));
+            $codeMappingDictionaries = $this->getUTF8BfRange($textInHexToUnicodeMappingByLength);
+        } else {
+            $codeSpaceDictionaries = $this->getCodeSpaceRange($textInHexToUnicodeMappingByLength);
+            $codeMappingDictionaries = $this->getBfRange($textInHexToUnicodeMappingByLength);
+        }
 
         return
             implode("\n\n", $codeSpaceDictionaries)."\n\n".
@@ -169,15 +178,33 @@ readonly class CMapCreator
     /**
      * @template T
      *
-     * @param array<int, array<string, int>> $characterIndexToUnicodeMappingInHexByLength
+     * @param array<int, array<string, int>> $textInHexToUnicodeMappingByLength
      *
      * @return string[]
      */
-    private function getBfRange(array $characterIndexToUnicodeMappingInHexByLength): array
+    private function getUTF8BfRange(array $textInHexToUnicodeMappingByLength): array
     {
         $bfRanges = [];
-        foreach ($characterIndexToUnicodeMappingInHexByLength as $characterIndexToUnicodeMappingInHex) {
-            $sameLengthBfRanges = $this->getSameLengthBfRanges($characterIndexToUnicodeMappingInHex);
+        foreach ($textInHexToUnicodeMappingByLength as $textInHexToUnicodeMapping) {
+            $sameLengthBfRanges = $this->getSameLengthUTF8BfRanges($textInHexToUnicodeMapping);
+            $bfRanges = array_merge($bfRanges, $sameLengthBfRanges);
+        }
+
+        return $this->toDictionary($bfRanges, 'bfrange');
+    }
+
+    /**
+     * @template T
+     *
+     * @param array<int, array<string, int>> $textInHexToUnicodeMappingByLength
+     *
+     * @return string[]
+     */
+    private function getBfRange(array $textInHexToUnicodeMappingByLength): array
+    {
+        $bfRanges = [];
+        foreach ($textInHexToUnicodeMappingByLength as $textInHexToUnicodeMapping) {
+            $sameLengthBfRanges = $this->getSameLengthBfRanges($textInHexToUnicodeMapping);
             $bfRanges = array_merge($bfRanges, $sameLengthBfRanges);
         }
 
@@ -303,6 +330,24 @@ readonly class CMapCreator
     }
 
     /**
+     * @param int[] $lengths
+     *
+     * @return string[]
+     */
+    private function getCodeSpaceOfLengths(array $lengths): array
+    {
+        $codeSpaces = [];
+        foreach ($lengths as $length) {
+            $firstHexPoint = str_repeat('0', $length);
+            $lastHexPoint = str_repeat('f', $length);
+
+            $codeSpaces[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'>';
+        }
+
+        return $this->toDictionary($codeSpaces, 'codespacerange');
+    }
+
+    /**
      * @param string[] $sameLengthHexPoints
      *
      * @return string[]
@@ -369,13 +414,13 @@ readonly class CMapCreator
     }
 
     /**
-     * @param array<int> $characterIndexToUnicodeMappingInHex
+     * @param array<int> $textInHexToUnicodeMapping
      *
      * @return string[]
      */
-    private function getSameLengthBfRanges(array $characterIndexToUnicodeMappingInHex): array
+    private function getSameLengthBfRanges(array $textInHexToUnicodeMapping): array
     {
-        $firstUnicodePoint = null;
+        $firstUnicode = null;
         $firstHex = null;
 
         $expectedByte = null;
@@ -383,18 +428,18 @@ readonly class CMapCreator
 
         $lastHex = null;
         $codeMappings = [];
-        foreach ($characterIndexToUnicodeMappingInHex as $hex => $unicodePoint) {
+        foreach ($textInHexToUnicodeMapping as $hex => $unicode) {
             $byte = hexdec($hex);
 
-            if ($unicodePoint !== $expectedUnicode || $expectedByte !== $byte) {
-                if ($firstHex && $lastHex && $firstUnicodePoint) {
-                    $codeMappings[] = '<'.$firstHex.'> <'.$lastHex.'> <'.dechex($firstUnicodePoint).'>';
+            if ($unicode !== $expectedUnicode || $expectedByte !== $byte) {
+                if ($firstHex && $lastHex && $firstUnicode) {
+                    $codeMappings[] = '<'.$firstHex.'> <'.$lastHex.'> <'.dechex($firstUnicode).'>';
                 }
 
                 $expectedByte = $byte;
-                $expectedUnicode = $unicodePoint;
+                $expectedUnicode = $unicode;
                 $firstHex = $hex;
-                $firstUnicodePoint = $unicodePoint;
+                $firstUnicode = $unicode;
             }
 
             ++$expectedByte;
@@ -402,8 +447,54 @@ readonly class CMapCreator
             $lastHex = $hex;
         }
 
-        if ($firstHex && $lastHex && $firstUnicodePoint) {
-            $codeMappings[] = '<'.$firstHex.'> <'.$lastHex.'> <'.dechex($firstUnicodePoint).'>';
+        if ($firstHex && $lastHex && $firstUnicode) {
+            $codeMappings[] = '<'.$firstHex.'> <'.$lastHex.'> <'.dechex($firstUnicode).'>';
+        }
+
+        return $codeMappings;
+    }
+
+    /**
+     * @param array<int> $textInHexToUnicodeMapping
+     *
+     * @return string[]
+     */
+    private function getSameLengthUTF8BfRanges(array $textInHexToUnicodeMapping): array
+    {
+        /*
+         * The CMap character encoding chosen follows UTF-8
+         * We may use therefore use the structure of UTF-8 to efficiently define the cmap
+         * Concretely, we only need one Bf range for each UTF-8 range (all lower content bits until the first structure bit)
+         */
+
+        if (0 === count($textInHexToUnicodeMapping)) {
+            return [];
+        }
+
+        $firstHexValue = array_key_first($textInHexToUnicodeMapping);
+        if (2 === strlen($firstHexValue)) {
+            return ['<00> <7F> <00>']; // single-byte range has single structural bit in 8th position
+        }
+
+        $blockSize = 63; // for all byte lengths > 1, the first structural bit is in the 7th position
+
+        $currentBlock = null;
+        $blocks = [];
+        foreach ($textInHexToUnicodeMapping as $hex => $unicode) {
+            $byte = hexdec($hex);
+            $block = $byte - ($byte & $blockSize);
+            if (null === $currentBlock || $currentBlock !== $block) {
+                $blocks[] = $block;
+                $currentBlock = $block;
+            }
+        }
+
+        $codeMappings = [];
+        foreach ($blocks as $block) {
+            $endOfBlock = $block | $blockSize;
+            $binary = pack('n', $block);
+            $firstUnicodeOfBlock = mb_ord($binary, 'UTF-8');
+            $codeMappings[] = '<'.dechex($currentBlock).'> <'.dechex($endOfBlock).'> <'.dechex($firstUnicodeOfBlock).'>';
         }
 
         return $codeMappings;
