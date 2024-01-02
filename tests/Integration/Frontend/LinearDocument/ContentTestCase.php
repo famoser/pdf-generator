@@ -27,7 +27,7 @@ use PdfGenerator\Tests\Resources\ResourcesProvider;
 
 class ContentTestCase extends LinearDocumentTestCase
 {
-    public function testPrintRectangle()
+    public function testPrintRectangle(): void
     {
         // arrange
         $document = new LinearDocument();
@@ -47,7 +47,7 @@ class ContentTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 5 5 cm 0 1 1 RG 0 1 0 rg 0 0 10 30 re b', $result);
     }
 
-    public function testPrintImagePlacement()
+    public function testPrintImagePlacement(): void
     {
         // arrange
         $document = new LinearDocument();
@@ -64,7 +64,7 @@ class ContentTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('20 0 0 30 5 5 cm /I Do', $result);
     }
 
-    public function testPrintPhrase()
+    public function testPrintPhrase(): void
     {
         // arrange
         $document = new LinearDocument();
@@ -84,7 +84,7 @@ class ContentTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 5 7.133 cm BT 0 0 0 rg /F 3 Tf 4.32 TL (PDF ist ein Textformat', $result);
     }
 
-    public function testPrintPhrases()
+    public function testPrintPhrases(): void
     {
         // arrange
         $document = new LinearDocument();

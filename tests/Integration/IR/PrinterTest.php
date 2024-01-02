@@ -25,7 +25,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintDefaultFont()
+    public function testPrintDefaultFont(): void
     {
         // arrange
         $document = new Document();
@@ -49,7 +49,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintEmbeddedFont()
+    public function testPrintEmbeddedFont(): void
     {
         // arrange
         $document = new Document();
@@ -74,7 +74,7 @@ class PrinterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testPrintPhrases()
+    public function testPrintPhrases(): void
     {
         // arrange
         $document = new Document();

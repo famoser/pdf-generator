@@ -19,7 +19,11 @@ class GlyphIndexFormatVisitorTest extends TestCase
 {
     private readonly GlyphIndexFormatVisitor $visitor;
 
-    public function __construct($name = null, array $data = [], $dataName = '')
+    /**
+     * @param mixed[]    $data
+     * @param int|string $dataName
+     */
+    public function __construct(string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
@@ -29,7 +33,7 @@ class GlyphIndexFormatVisitorTest extends TestCase
     /**
      * format4 with idrangeoffset = 0.
      */
-    public function testFormat4SingleSegment()
+    public function testFormat4SingleSegment(): void
     {
         // arrange
         $format4 = new Format4();
@@ -51,7 +55,7 @@ class GlyphIndexFormatVisitorTest extends TestCase
     /**
      * format4 with idrangeoffset != 0.
      */
-    public function testFormat4SingleSegmentWithIdRangeOffset()
+    public function testFormat4SingleSegmentWithIdRangeOffset(): void
     {
         // arrange
         $format4 = new Format4();
@@ -73,7 +77,7 @@ class GlyphIndexFormatVisitorTest extends TestCase
     /**
      * format4 with idrangeoffset = 0.
      */
-    public function testFormat4MultipleSegments()
+    public function testFormat4MultipleSegments(): void
     {
         // arrange
         $format4 = new Format4();

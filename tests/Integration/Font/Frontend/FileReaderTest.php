@@ -52,7 +52,7 @@ class FileReaderTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testReadFontFontAsExpected()
+    public function testReadFontFontAsExpected(): void
     {
         // arrange
         $fileReader = self::getFileReader();

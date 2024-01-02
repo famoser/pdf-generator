@@ -20,7 +20,7 @@ class StreamWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testInt8()
+    public function testInt8(): void
     {
         $values = [
             -128,
@@ -38,7 +38,7 @@ class StreamWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testInt16()
+    public function testInt16(): void
     {
         $values = [
             -32768,
@@ -56,7 +56,7 @@ class StreamWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testUInt32()
+    public function testUInt32(): void
     {
         $values = [
             0,
@@ -70,7 +70,7 @@ class StreamWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testLONGDATETIME()
+    public function testLONGDATETIME(): void
     {
         $values = [
             0,
@@ -85,7 +85,7 @@ class StreamWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testFixed()
+    public function testFixed(): void
     {
         $values = [
             0.0,
@@ -97,14 +97,17 @@ class StreamWriterTest extends TestCase
         $this->assertValueWritesUsingReader($values, 'Fixed');
     }
 
-    private function assertValueWritesUsingReader(array $values, $type)
+    /**
+     * @param (float|int)[] $values
+     */
+    private function assertValueWritesUsingReader(array $values, string $type): void
     {
         foreach ($values as $value) {
             $this->assertValueWriteUsingReader($value, $type);
         }
     }
 
-    private function assertValueWriteUsingReader($value, $type)
+    private function assertValueWriteUsingReader(float|int $value, string $type): void
     {
         $writeFunction = 'write'.$type;
         $streamWriter = new StreamWriter();

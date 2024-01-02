@@ -27,7 +27,7 @@ use PdfGenerator\IR\Document\Content\Common\Color;
 
 class GridTestCase extends LinearDocumentTestCase
 {
-    public function testPrintGridRows()
+    public function testPrintGridRows(): void
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
@@ -62,7 +62,7 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 -0 1 11 -32 cm 0 0 6 40 re b', $result);
     }
 
-    public function testPrintFixedGrid()
+    public function testPrintFixedGrid(): void
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
@@ -82,7 +82,7 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 60 0 cm 0 0 20 20 re b', $result);
     }
 
-    public function testPrintMinGrid()
+    public function testPrintMinGrid(): void
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
@@ -102,7 +102,7 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 55 0 cm 0 0 20 20 re', $result);
     }
 
-    public function testPrintAutoGrid()
+    public function testPrintAutoGrid(): void
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
@@ -122,7 +122,7 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 100 0 cm 0 0 40 20 re b', $result);
     }
 
-    public function testAutoSizingGrid()
+    public function testAutoSizingGrid(): void
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
@@ -143,7 +143,7 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 0 20 cm 0 1 1 RG 0 1 0 rg 0 0 10 20 re', $result);
     }
 
-    public function testAutoSizingTextGrid()
+    public function testAutoSizingTextGrid(): void
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
@@ -163,7 +163,7 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 71.361331 0 cm BT', $result);
     }
 
-    public function testPrintUnitGrid()
+    public function testPrintUnitGrid(): void
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
@@ -183,7 +183,7 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 152.5 0 cm 0 0 40 20 re b', $result);
     }
 
-    public function testPrintDiverseGrid()
+    public function testPrintDiverseGrid(): void
     {
         // arrange
         $document = new LinearDocument([210, 297], [5, 5, 5, 5]);

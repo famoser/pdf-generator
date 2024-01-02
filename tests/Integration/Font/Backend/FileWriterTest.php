@@ -24,7 +24,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testWriteSubset()
+    public function testWriteSubset(): void
     {
         // arrange
         $parser = Parser::create();
@@ -42,7 +42,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testWriteSubsetMultipleCharacters()
+    public function testWriteSubsetMultipleCharacters(): void
     {
         // arrange
         $parser = Parser::create();
@@ -67,7 +67,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testReadSubset()
+    public function testReadSubset(): void
     {
         // arrange
         $parser = Parser::create();
@@ -89,7 +89,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testRepeatedSubsettingProducesSameFile()
+    public function testRepeatedSubsettingProducesSameFile(): void
     {
         // arrange
         $parser = Parser::create();
@@ -112,7 +112,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testSomeTablesEqualAfterSubsetting()
+    public function testSomeTablesEqualAfterSubsetting(): void
     {
         // arrange
         $parser = Parser::create();
@@ -132,7 +132,7 @@ class FileWriterTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testSubsetComponentGlyphs()
+    public function testSubsetComponentGlyphs(): void
     {
         // arrange
         $parser = Parser::create();
@@ -151,6 +151,8 @@ class FileWriterTest extends TestCase
     }
 
     /**
+     * @param string ...$characters
+     *
      * @throws \Exception
      */
     private static function getFontSubset(Font $font, ...$characters): Font

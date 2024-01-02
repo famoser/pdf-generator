@@ -22,7 +22,7 @@ class ParserTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testParse()
+    public function testParse(): void
     {
         // arrange
         $parser = Parser::create();
@@ -35,7 +35,7 @@ class ParserTest extends TestCase
         $this->assertSanityChecks($font);
     }
 
-    private function assertSanityChecks(Font $font)
+    private function assertSanityChecks(Font $font): void
     {
         $characterRepo = new CharacterRepository($font);
         $oCharacter = $characterRepo->findByChar('o');
