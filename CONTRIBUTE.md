@@ -30,7 +30,7 @@ layouts:
 - [x] design layout system
 - [x] implement block
 - [x] implement flow
-- [ ] implement grid
+- [x] implement grid
 - [ ] implement table
 
 layout blocks:
@@ -63,11 +63,14 @@ extend PDF support:
 - [ ] compress string streams
 - [ ] optimize rectangle position (do not modify transform matrix)
 
-## Maintenance contributions
+## Maintenance/architecture contributions
 
-This is a large, long-lived project, and as such there are maintenance topics.
+This is a large, long-lived project, and as such there are maintenance and architecture topics.
 
 Topics:
-- [ ] Transform `const` to `enum`
-- [ ] Rename `Flow::DIRECTION_ROW` to `Flow::DIRECTION_HORIZONTAL` (and `FLOW::DIRECTION_COLUMN` correspondingly)
-- [ ] Unit test the messy Phrase, Line, Word breaking algorithms
+
+Known bugs / issues:
+- [ ] Should use new `enum` construct instead of `const`
+- [ ] Images of size 0 lead to crash
+- [ ] Dependency injection missing, notably to inject custom configuration
+- [ ] Unit tests should probably use a snapshot mechanism
