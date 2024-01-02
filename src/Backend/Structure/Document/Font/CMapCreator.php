@@ -32,6 +32,9 @@ readonly class CMapCreator
         return $this->createCMap($cIDSystemInfo, $cMapName, $byteMappings);
     }
 
+    /**
+     * @param Character[] $characters
+     */
     public function createToUnicodeCMap(CIDSystemInfo $cIDSystemInfo, string $cMapName, array $characters): CMap
     {
         $byteMappings = $this->getCharacterIndexToUnicodeMappings($characters);
@@ -176,8 +179,6 @@ readonly class CMapCreator
     }
 
     /**
-     * @template T
-     *
      * @param array<int, array<string, int>> $textInHexToUnicodeMappingByLength
      *
      * @return string[]
@@ -194,8 +195,6 @@ readonly class CMapCreator
     }
 
     /**
-     * @template T
-     *
      * @param array<int, array<string, int>> $textInHexToUnicodeMappingByLength
      *
      * @return string[]
@@ -293,7 +292,7 @@ readonly class CMapCreator
     /**
      * @template T
      *
-     * @param array<string, T> $unicodeMapping
+     * @param array<int, T> $unicodeMapping
      *
      * @return array<int, array<string, T>>
      */
@@ -499,7 +498,7 @@ readonly class CMapCreator
         return $codeMappings;
     }
 
-    private function convertUTF8IntegerToUnicode(int $integer)
+    private function convertUTF8IntegerToUnicode(int $integer): int
     {
         $binary = '';
         $pendingBytes = $integer;
