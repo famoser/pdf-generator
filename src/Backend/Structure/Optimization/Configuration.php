@@ -13,7 +13,7 @@ namespace PdfGenerator\Backend\Structure\Optimization;
 
 readonly class Configuration
 {
-    public function __construct(private bool $autoResizeImages = true, private int $autoResizeImagesDpi = 72, private bool $createFontSubsets = true, private bool $useTTFFonts = false)
+    public function __construct(private bool $autoResizeImages = true, private int $autoResizeImagesDpi = 72, private bool $createFontSubsets = true, private bool $useTTFFonts = false, private bool $useMinimalCMapSize = true)
     {
     }
 
@@ -35,5 +35,10 @@ readonly class Configuration
     public function getUseTTFFonts(): bool
     {
         return $this->useTTFFonts;
+    }
+
+    public function getMinimalCMapSize(): bool
+    {
+        return $this->useMinimalCMapSize;
     }
 }
