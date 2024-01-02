@@ -492,12 +492,24 @@ readonly class CMapCreator
         $codeMappings = [];
         foreach ($blocks as $block) {
             $endOfBlock = $block | $blockSize;
-            $binary = pack('n', $block);
-            $firstUnicodeOfBlock = mb_ord($binary, 'UTF-8');
+            $firstUnicodeOfBlock = $this->convertUTF8IntegerToUnicode($block);
             $codeMappings[] = '<'.dechex($currentBlock).'> <'.dechex($endOfBlock).'> <'.dechex($firstUnicodeOfBlock).'>';
         }
 
         return $codeMappings;
+    }
+
+    private function convertUTF8IntegerToUnicode(int $integer)
+    {
+        $binary = '';
+        $pendingBytes = $integer;
+        while ($pendingBytes > 0) {
+            $firstByte = $pendingBytes & 255;
+            $binary = pack('C', $firstByte).$binary;
+            $pendingBytes = $pendingBytes >> 8;
+        }
+
+        return mb_ord($binary, 'UTF-8');
     }
 
     /**
