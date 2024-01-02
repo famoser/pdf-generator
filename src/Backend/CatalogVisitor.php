@@ -39,7 +39,7 @@ class CatalogVisitor
         $dictionary->addReferenceEntry('Pages', $reference);
 
         $dictionary = $this->file->addInfoDictionaryObject();
-        $dictionary->addTextEntry('Creator', 'famoser/pdf-generator');
+        $dictionary->addTextEntry('Creator', 'famoser/pdf-generator/0.6');
         $dictionary->addDateEntry('CreationDate', new \DateTime());
 
         return $dictionary;
