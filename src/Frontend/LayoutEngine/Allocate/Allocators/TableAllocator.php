@@ -30,11 +30,10 @@ readonly class TableAllocator
     {
         $columnSizes = $table->getNormalizedColumnSizes();
 
-        $headWithBody = array_merge($table->getHead(), $table->getBody());
         $minimalRowAllocations = count($table->getHead()) + 1;
         $widthsPerColumn = [];
-        $headerBlockAllocationsPerColumn = GridAllocator::allocatedBlocksPerColumn($headWithBody, $columnSizes, $this->width, $this->height, $minimalRowAllocations, $widthsPerColumn);
+        $headerBlockAllocationsPerColumn = GridAllocator::allocatedBlocksPerColumn($table->getRows(), $columnSizes, $this->width, $this->height, $minimalRowAllocations, $widthsPerColumn);
 
-        return GridAllocator::allocateRows($headWithBody, $headerBlockAllocationsPerColumn, $widthsPerColumn, $this->height, 0, 0, $minimalRowAllocations, $overflowBody, $usedWidth, $usedHeight);
+        return GridAllocator::allocateRows($table->getRows(), $headerBlockAllocationsPerColumn, $widthsPerColumn, $this->height, 0, 0, $minimalRowAllocations, $overflowBody, $usedWidth, $usedHeight);
     }
 }

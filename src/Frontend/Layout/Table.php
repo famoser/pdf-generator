@@ -33,9 +33,8 @@ class Table extends AbstractBlock
     /**
      * @param (float|ColumnSize)[] $columnSizes
      */
-    public function __construct(array $columnSizes = [])
+    public function __construct(private readonly array $columnSizes = [])
     {
-        $this->columnSizes = $columnSizes;
     }
 
     public function addHead(Row $row): self
@@ -66,6 +65,14 @@ class Table extends AbstractBlock
     public function getBody(): array
     {
         return $this->body;
+    }
+
+    /**
+     * @return Row[]
+     */
+    public function getRows(): array
+    {
+        return array_merge($this->head, $this->body);
     }
 
     /**

@@ -15,8 +15,6 @@ use PdfGenerator\Frontend\Layout\Style\ColumnSize;
 
 trait ColumnSizesTrait
 {
-    private array $columnSizes = [];
-
     /**
      * @return (string|float|ColumnSize)[]
      */
