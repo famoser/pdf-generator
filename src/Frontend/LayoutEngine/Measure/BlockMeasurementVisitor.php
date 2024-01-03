@@ -16,7 +16,8 @@ use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\Layout\Grid;
-use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
+use PdfGenerator\Frontend\Layout\Table;
+use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
 use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\GridMeasurer;
 
@@ -28,14 +29,10 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\GridMeasurer;
  * Measurements may not be exact; i.e. minWidth / minHeight may not correspond to what is then allocated.
  * They are still useful to layout; e.g. define auto column widths in tables.
  *
- * @extends AbstractBlockVisitor<Measurement>
+ * @extends BlockVisitorInterface<Measurement>
  */
-class BlockMeasurementVisitor extends AbstractBlockVisitor
+readonly class BlockMeasurementVisitor implements BlockVisitorInterface
 {
-    public function __construct()
-    {
-    }
-
     public function visitContentBlock(ContentBlock $contentBlock): Measurement
     {
         $contentMeasurementVisitor = new ContentMeasurementVisitor();
@@ -65,6 +62,11 @@ class BlockMeasurementVisitor extends AbstractBlockVisitor
         $contentMeasurement = $measurer->measure($grid->getRows(), $grid->getNormalizedColumnSizes(), $grid->getGap(), $grid->getPerpendicularGap());
 
         return $this->measureBlock($grid, $contentMeasurement);
+    }
+
+    public function visitTable(Table $table)
+    {
+        // TODO: Implement visitTable() method.
     }
 
     private function measureBlock(AbstractBlock $block, Measurement $contentMeasurement): Measurement

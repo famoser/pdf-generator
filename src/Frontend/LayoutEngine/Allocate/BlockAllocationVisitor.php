@@ -16,20 +16,21 @@ use PdfGenerator\Frontend\Layout\Block;
 use PdfGenerator\Frontend\Layout\ContentBlock;
 use PdfGenerator\Frontend\Layout\Flow;
 use PdfGenerator\Frontend\Layout\Grid;
-use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
+use PdfGenerator\Frontend\Layout\Table;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\FlowAllocator;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\GridAllocator;
+use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 /**
  * This allocates content on the PDF.
  *
  * All allocated content fits
  *
- * @extends AbstractBlockVisitor<BlockAllocation>
+ * @implements BlockVisitorInterface<BlockAllocation>
  */
-class BlockAllocationVisitor extends AbstractBlockVisitor
+readonly class BlockAllocationVisitor implements BlockVisitorInterface
 {
-    public function __construct(private readonly float $maxWidth, private readonly float $maxHeight)
+    public function __construct(private float $maxWidth, private float $maxHeight)
     {
     }
 
@@ -74,6 +75,22 @@ class BlockAllocationVisitor extends AbstractBlockVisitor
     public function visitGrid(Grid $grid): BlockAllocation
     {
         $usableSpace = $this->getUsableSpace($grid);
+
+        $allocator = new GridAllocator(...$usableSpace);
+        $usedWidth = 0;
+        $usedHeight = 0;
+        $overflowRows = [];
+        $allocatedBlocks = $allocator->allocate($grid, $overflowRows, $usedWidth, $usedHeight);
+        assert(count($allocatedBlocks) > 0);
+
+        $overflow = count($overflowRows) > 0 ? $grid->cloneWithRows($overflowRows) : null;
+
+        return $this->allocateBlock($grid, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
+    }
+
+    public function visitTable(Table $table)
+    {
+        $usableSpace = $this->getUsableSpace($table);
 
         $allocator = new GridAllocator(...$usableSpace);
         $usedWidth = 0;

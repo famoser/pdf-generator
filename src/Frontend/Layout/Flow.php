@@ -13,7 +13,7 @@ namespace PdfGenerator\Frontend\Layout;
 
 use PdfGenerator\Frontend\Content\AbstractContent;
 use PdfGenerator\Frontend\Layout\Style\FlowDirection;
-use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
+use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 class Flow extends AbstractBlock
 {
@@ -72,11 +72,11 @@ class Flow extends AbstractBlock
     /**
      * @template T
      *
-     * @param AbstractBlockVisitor<T> $visitor
+     * @param BlockVisitorInterface<T> $visitor
      *
      * @return T
      */
-    public function accept(AbstractBlockVisitor $visitor): mixed
+    public function accept(BlockVisitorInterface $visitor): mixed
     {
         return $visitor->visitFlow($this);
     }

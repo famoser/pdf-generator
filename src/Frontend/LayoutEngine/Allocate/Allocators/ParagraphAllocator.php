@@ -15,11 +15,11 @@ use PdfGenerator\Frontend\Content\Paragraph;
 use PdfGenerator\Frontend\Resource\Font\FontMeasurement;
 use PdfGenerator\Frontend\Resource\Font\FontRepository;
 
-class ParagraphAllocator
+readonly class ParagraphAllocator
 {
-    private readonly FontRepository $fontRepository;
+    private FontRepository $fontRepository;
 
-    public function __construct(private readonly float $width, private readonly float $height)
+    public function __construct(private float $width, private float $height)
     {
         $this->fontRepository = FontRepository::instance();
     }
