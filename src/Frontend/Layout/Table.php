@@ -13,10 +13,13 @@ namespace PdfGenerator\Frontend\Layout;
 
 use PdfGenerator\Frontend\Layout\Parts\Row;
 use PdfGenerator\Frontend\Layout\Style\ColumnSize;
+use PdfGenerator\Frontend\Layout\Traits\ColumnSizesTrait;
 use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 class Table extends AbstractBlock
 {
+    use ColumnSizesTrait;
+
     /**
      * @var Row[]
      */
@@ -30,8 +33,9 @@ class Table extends AbstractBlock
     /**
      * @param (float|ColumnSize)[] $columnSizes
      */
-    public function __construct(private readonly array $columnSizes = [])
+    public function __construct(array $columnSizes = [])
     {
+        $this->columnSizes = $columnSizes;
     }
 
     public function addHead(Row $row): self

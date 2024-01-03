@@ -19,6 +19,7 @@ use PdfGenerator\Frontend\Layout\Grid;
 use PdfGenerator\Frontend\Layout\Table;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\FlowAllocator;
 use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\GridAllocator;
+use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\TableAllocator;
 use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 /**
@@ -92,16 +93,16 @@ readonly class BlockAllocationVisitor implements BlockVisitorInterface
     {
         $usableSpace = $this->getUsableSpace($table);
 
-        $allocator = new GridAllocator(...$usableSpace);
+        $allocator = new TableAllocator(...$usableSpace);
         $usedWidth = 0;
         $usedHeight = 0;
-        $overflowRows = [];
-        $allocatedBlocks = $allocator->allocate($grid, $overflowRows, $usedWidth, $usedHeight);
+        $overflowBody = [];
+        $allocatedBlocks = $allocator->allocate($table, $overflowBody, $usedWidth, $usedHeight);
         assert(count($allocatedBlocks) > 0);
 
-        $overflow = count($overflowRows) > 0 ? $grid->cloneWithRows($overflowRows) : null;
+        $overflow = count($overflowBody) > 0 ? $table->cloneWithBody($overflowBody) : null;
 
-        return $this->allocateBlock($grid, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
+        return $this->allocateBlock($table, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
     }
 
     /**

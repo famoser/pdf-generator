@@ -203,6 +203,24 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 7 0 cm 0 0 20 20 re b', $result);
     }
 
+    public function testEmptyGrid(): void
+    {
+        // arrange
+        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+
+        $grid = new Grid(3, 10, [ColumnSize::AUTO, ColumnSize::MINIMAL, 10, '2'.ColumnSize::UNIT]);
+        $this->setBorderStyle($grid);
+        $document->add($grid);
+
+        $grid = new Grid();
+        $this->setBorderStyle($grid);
+        $document->add($grid);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertNotEmpty($result);
+    }
+
     private function setBorderStyle(AbstractBlock $block): void
     {
         $borderedBlockStyle = new BlockStyle();
