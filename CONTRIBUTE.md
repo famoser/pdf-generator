@@ -31,7 +31,7 @@ layouts:
 - [x] implement block
 - [x] implement flow
 - [x] implement grid
-- [ ] implement table
+- [x] implement table
 
 layout blocks:
 
@@ -51,6 +51,7 @@ extend layout support:
 - [ ] alignment for blocks
 - [ ] column/row spans for grids, tables
 - [ ] auto, contain, cover for content types
+- [ ] top/right/bottom/left different weight borders
 
 extend drawing support:
 
@@ -66,8 +67,6 @@ extend PDF support:
 ## Maintenance/architecture contributions
 
 This is a large, long-lived project, and as such there are maintenance and architecture topics.
-
-Topics:
 
 Known bugs / issues:
 - [ ] Should use new `enum` construct instead of `const`
