@@ -12,7 +12,7 @@
 namespace PdfGenerator\Frontend\Layout;
 
 use PdfGenerator\Frontend\Layout\Traits\BlockTrait;
-use PdfGenerator\Frontend\LayoutEngine\AbstractBlockVisitor;
+use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 abstract class AbstractBlock
 {
@@ -21,9 +21,9 @@ abstract class AbstractBlock
     /**
      * @template T
      *
-     * @param AbstractBlockVisitor<T> $visitor
+     * @param BlockVisitorInterface<T> $visitor
      *
      * @return T
      */
-    abstract public function accept(AbstractBlockVisitor $visitor);
+    abstract public function accept(BlockVisitorInterface $visitor);
 }

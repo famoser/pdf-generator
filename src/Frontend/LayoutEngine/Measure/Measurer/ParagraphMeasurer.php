@@ -16,9 +16,9 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 use PdfGenerator\Frontend\Resource\Font\FontMeasurement;
 use PdfGenerator\Frontend\Resource\Font\FontRepository;
 
-class ParagraphMeasurer
+readonly class ParagraphMeasurer
 {
-    private readonly FontRepository $fontRepository;
+    private FontRepository $fontRepository;
 
     public function __construct()
     {

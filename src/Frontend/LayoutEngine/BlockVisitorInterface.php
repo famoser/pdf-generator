@@ -20,33 +20,30 @@ use PdfGenerator\Frontend\Layout\Table;
 /**
  * @template T
  */
-abstract class AbstractBlockVisitor
+interface BlockVisitorInterface
 {
     /**
      * @return T
      */
-    abstract public function visitContentBlock(ContentBlock $contentBlock);
+    public function visitContentBlock(ContentBlock $contentBlock);
 
     /**
      * @return T
      */
-    abstract public function visitBlock(Block $block);
+    public function visitBlock(Block $block);
 
     /**
      * @return T
      */
-    abstract public function visitFlow(Flow $flow);
+    public function visitFlow(Flow $flow);
 
     /**
      * @return T
      */
-    abstract public function visitGrid(Grid $grid);
+    public function visitGrid(Grid $grid);
 
     /**
      * @return T
      */
-    public function visitTable(Table $table): mixed
-    {
-        throw new \Exception('not implemented');
-    }
+    public function visitTable(Table $table);
 }

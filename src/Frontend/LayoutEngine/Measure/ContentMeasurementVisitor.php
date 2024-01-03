@@ -21,7 +21,7 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\ParagraphMeasurer;
 /**
  * @implements ContentVisitorInterface<Measurement>
  */
-class ContentMeasurementVisitor implements ContentVisitorInterface
+readonly class ContentMeasurementVisitor implements ContentVisitorInterface
 {
     public function visitRectangle(Rectangle $rectangle): Measurement
     {
