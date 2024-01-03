@@ -29,7 +29,7 @@ use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\GridMeasurer;
  * Measurements may not be exact; i.e. minWidth / minHeight may not correspond to what is then allocated.
  * They are still useful to layout; e.g. define auto column widths in tables.
  *
- * @extends BlockVisitorInterface<Measurement>
+ * @implements  BlockVisitorInterface<Measurement>
  */
 readonly class BlockMeasurementVisitor implements BlockVisitorInterface
 {
@@ -66,7 +66,10 @@ readonly class BlockMeasurementVisitor implements BlockVisitorInterface
 
     public function visitTable(Table $table)
     {
-        // TODO: Implement visitTable() method.
+        $measurer = new GridMeasurer();
+        $contentMeasurement = $measurer->measure($table->getRows(), $table->getNormalizedColumnSizes(), 0, 0);
+
+        return $this->measureBlock($table, $contentMeasurement);
     }
 
     private function measureBlock(AbstractBlock $block, Measurement $contentMeasurement): Measurement
