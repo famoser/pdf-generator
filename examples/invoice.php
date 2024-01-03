@@ -77,20 +77,18 @@ $flow->addContent($paragraph);
 $document->position(130);
 $document->add($flow);
 
-// table
+// cost positions
 $table = new Table([ColumnSize::MINIMAL, ColumnSize::AUTO, ColumnSize::MINIMAL, ColumnSize::MINIMAL, ColumnSize::MINIMAL]);
 $table->setMargin([0, 3, 0, 5]);
-$headerText = [$boldText, 'Pos.', 'Description', 'Quantity', 'Unit price', 'Price'];
-$bodyText = [
+$textByRow = [
+    [$boldText, 'Pos.', 'Description', 'Quantity', 'Unit price', 'Price'],
     [$normalText, '1', 'Concept work: Requirements engineering, UX concept, PoC', '12 h', '160.00', '1\'920.00'],
     [$normalText, '2', 'Implementation', '34 h', '160.00', '5\'440.00'],
     [$boldText, '', 'Sub-Total', '', '', '7\'360.00'],
     [$secondaryText, '', 'plus VAT 14%', '', '', '1\'030.40'],
     [$boldText, '', 'Total', '', '', '8\'390.40'],
 ];
-
-function createRow(array $rowDefinition): Row
-{
+foreach ($textByRow as $rowIndex => $rowDefinition) {
     $row = new Row();
     $textStyle = array_shift($rowDefinition);
     foreach ($rowDefinition as $index => $text) {
@@ -103,16 +101,8 @@ function createRow(array $rowDefinition): Row
         $row->set($index, $content);
     }
 
-    return $row;
-}
-
-$row = createRow($headerText);
-$table->addHead($row);
-foreach ($bodyText as $line) {
-    $row = createRow($line);
     $table->addBody($row);
 }
-
 $document->add($table);
 
 // greeting formula
