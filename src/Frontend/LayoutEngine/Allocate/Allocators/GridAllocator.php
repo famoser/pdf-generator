@@ -36,9 +36,9 @@ readonly class GridAllocator
 
         $widthsPerColumn = [];
         $availableWidth = $this->width - $grid->getGap() * (\count($columnSizes) - 1);
-        $blockAllocationsPerColumn = static::allocatedBlocksPerColumn($grid->getRows(), $columnSizes, $availableWidth, $this->height, false, $widthsPerColumn);
+        $blockAllocationsPerColumn = static::allocatedBlocksPerColumn($grid->getRows(), $columnSizes, $availableWidth, $this->height, 1, $widthsPerColumn);
 
-        return static::allocateRows($grid->getRows(), $blockAllocationsPerColumn, $widthsPerColumn, $this->height, $grid->getGap(), $grid->getPerpendicularGap(), false, $overflowRows, $usedWidth, $usedHeight);
+        return static::allocateRows($grid->getRows(), $blockAllocationsPerColumn, $widthsPerColumn, $this->height, $grid->getGap(), $grid->getPerpendicularGap(), 1, $overflowRows, $usedWidth, $usedHeight);
     }
 
     /**
