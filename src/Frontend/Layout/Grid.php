@@ -13,10 +13,13 @@ namespace PdfGenerator\Frontend\Layout;
 
 use PdfGenerator\Frontend\Layout\Parts\Row;
 use PdfGenerator\Frontend\Layout\Style\ColumnSize;
+use PdfGenerator\Frontend\Layout\Traits\ColumnSizesTrait;
 use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 class Grid extends AbstractBlock
 {
+    use ColumnSizesTrait;
+
     /**
      * @var Row[]
      */
@@ -25,8 +28,9 @@ class Grid extends AbstractBlock
     /**
      * @param array<string|float|ColumnSize> $columnSizes
      */
-    public function __construct(private readonly float $gap = 0, private readonly float $perpendicularGap = 0, private readonly array $columnSizes = [])
+    public function __construct(private readonly float $gap = 0, private readonly float $perpendicularGap = 0, array $columnSizes = [])
     {
+        $this->columnSizes = $columnSizes;
     }
 
     public function add(Row $row): self
@@ -66,14 +70,6 @@ class Grid extends AbstractBlock
     }
 
     /**
-     * @return (string|float|ColumnSize)[]
-     */
-    public function getColumnSizes(): array
-    {
-        return $this->columnSizes;
-    }
-
-    /**
      * @template T
      *
      * @param BlockVisitorInterface<T> $visitor
@@ -83,26 +79,5 @@ class Grid extends AbstractBlock
     public function accept(BlockVisitorInterface $visitor): mixed
     {
         return $visitor->visitGrid($this);
-    }
-
-    /**
-     * returns all column sizes for all columns used in the grid.
-     * if column size undefined for some column, defaults to AUTO.
-     *
-     * @return (float|string|ColumnSize)[]
-     */
-    public function getNormalizedColumnSizes(): array
-    {
-        $maxColumn = max(...array_keys($this->getColumnSizes()));
-        foreach ($this->getRows() as $row) {
-            $maxColumn = max($maxColumn, ...array_keys($row->getColumns()));
-        }
-
-        $columnSizes = array_fill(0, $maxColumn + 1, ColumnSize::AUTO);
-        foreach ($this->getColumnSizes() as $index => $columnSize) {
-            $columnSizes[$index] = $columnSize;
-        }
-
-        return $columnSizes;
     }
 }

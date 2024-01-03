@@ -32,17 +32,13 @@ readonly class GridAllocator
      */
     public function allocate(Grid $grid, array &$overflowRows = [], float &$usedWidth = 0, float &$usedHeight = 0): array
     {
-        if (0 === \count($grid->getRows())) {
-            return [];
-        }
-
         $columnSizes = $grid->getNormalizedColumnSizes();
 
         $widthsPerColumn = [];
         $availableWidth = $this->width - $grid->getGap() * (\count($columnSizes) - 1);
-        $blockAllocationsPerColumn = static::allocatedBlocksPerColumn($grid->getRows(), $columnSizes, $availableWidth, $this->height, $widthsPerColumn);
+        $blockAllocationsPerColumn = static::allocatedBlocksPerColumn($grid->getRows(), $columnSizes, $availableWidth, $this->height, false, $widthsPerColumn);
 
-        return static::allocateRows($grid->getRows(), $blockAllocationsPerColumn, $widthsPerColumn, $this->height, $grid->getGap(), $grid->getPerpendicularGap(), $overflowRows, $usedWidth, $usedHeight);
+        return static::allocateRows($grid->getRows(), $blockAllocationsPerColumn, $widthsPerColumn, $this->height, $grid->getGap(), $grid->getPerpendicularGap(), false, $overflowRows, $usedWidth, $usedHeight);
     }
 
     /**
@@ -53,7 +49,7 @@ readonly class GridAllocator
      *
      * @return BlockAllocation[]
      */
-    private static function allocateRows(array $rows, array $blockAllocationsPerColumn, array $widthsPerColumn, float $availableHeight, float $gap, float $perpendicularGap, array &$overflowRows, float &$usedWidth, float &$usedHeight): array
+    public static function allocateRows(array $rows, array $blockAllocationsPerColumn, array $widthsPerColumn, float $availableHeight, float $gap, float $perpendicularGap, int $minimalRowAllocations, array &$overflowRows, float &$usedWidth, float &$usedHeight): array
     {
         $heights = [];
         foreach ($blockAllocationsPerColumn as $blockAllocations) {
@@ -69,7 +65,7 @@ readonly class GridAllocator
         foreach ($heights as $rowIndex => $height) {
             $progressMade = \count($allocatedBlocks) > 0;
             $overflow = $usedHeight + $height > $availableHeight;
-            if ($overflow && $progressMade) {
+            if ($overflow && $progressMade && $rowIndex >= $minimalRowAllocations) {
                 break;
             }
 
@@ -115,7 +111,7 @@ readonly class GridAllocator
      *
      * @return array<int, BlockAllocation[]>
      */
-    private static function allocatedBlocksPerColumn(array $rows, array $columnSizes, float $availableWidth, float $availableHeight, array &$widthsPerColumn): array
+    public static function allocatedBlocksPerColumn(array $rows, array $columnSizes, float $availableWidth, float $availableHeight, int $minimalRowAllocations, array &$widthsPerColumn): array
     {
         $remainingWidth = $availableWidth;
 
@@ -130,7 +126,7 @@ readonly class GridAllocator
             }
 
             $usedColumnWidth = 0;
-            $blockAllocationsPerColumn[$columnIndex] = static::allocateColumn($rows, $columnIndex, $remainingWidth, $availableHeight, $usedColumnWidth);
+            $blockAllocationsPerColumn[$columnIndex] = static::allocateColumn($rows, $columnIndex, $remainingWidth, $availableHeight, $minimalRowAllocations, $usedColumnWidth);
 
             $columnWidth = ColumnSize::MINIMAL === $columnSize ? $usedColumnWidth : $columnSize;
             $widthsPerColumn[$columnIndex] = $columnWidth;
@@ -170,7 +166,7 @@ readonly class GridAllocator
             if (ColumnSize::AUTO === $columnSize) {
                 $widthsPerColumn[$columnIndex] = $optimalColumnWidth;
                 $usedWidth = 0;
-                $blockAllocationsPerColumn[$columnIndex] = static::allocateColumn($rows, $columnIndex, $optimalColumnWidth, $availableHeight, $usedWidth);
+                $blockAllocationsPerColumn[$columnIndex] = static::allocateColumn($rows, $columnIndex, $optimalColumnWidth, $availableHeight, $minimalRowAllocations, $usedWidth);
             } elseif (ColumnSize::isUnit($columnSize)) {
                 $units = ColumnSize::parseUnit($columnSize);
                 $unitsPerColumn[$columnIndex] = $units;
@@ -188,7 +184,7 @@ readonly class GridAllocator
                 $width = $columnSizePerUnit * $units;
                 $widthsPerColumn[$columnIndex] = $width;
                 $usedWidth = 0;
-                $blockAllocationsPerColumn[$columnIndex] = static::allocateColumn($rows, $columnIndex, $width, $availableHeight, $usedWidth);
+                $blockAllocationsPerColumn[$columnIndex] = static::allocateColumn($rows, $columnIndex, $width, $availableHeight, $minimalRowAllocations, $usedWidth);
             }
         }
 
@@ -202,7 +198,7 @@ readonly class GridAllocator
      *
      * @return array<int,BlockAllocation>
      */
-    private static function allocateColumn(array $rows, int $columnIndex, float $availableWidth, float $availableHeight, float &$usedWidth): array
+    public static function allocateColumn(array $rows, int $columnIndex, float $availableWidth, float $availableHeight, int $minimalRowAllocations, float &$usedWidth): array
     {
         $blockAllocations = [];
         $remainingHeight = $availableHeight;
@@ -217,7 +213,7 @@ readonly class GridAllocator
             // abort if not enough space, but progress made
             $progressMade = $rowIndex > 0;
             $overflow = $blockAllocation->getOverflow() || $blockAllocation->getHeight() > $remainingHeight;
-            if ($progressMade && $overflow) {
+            if ($progressMade && $overflow && $rowIndex >= $minimalRowAllocations) {
                 break;
             }
 
