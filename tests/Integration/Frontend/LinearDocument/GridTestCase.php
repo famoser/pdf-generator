@@ -140,7 +140,7 @@ class GridTestCase extends LinearDocumentTestCase
         // assert
         $result = $this->render($document);
         $this->assertStringContainsString('1 0 0 1 -105 -40 cm 0 0 0 RG 0 0 0 rg 0 0 200 40 re', $result);
-        $this->assertStringContainsString('1 0 0 1 0 20 cm 0 1 1 RG 0 1 0 rg 0 0 10 20 re', $result);
+        $this->assertStringContainsString('1 0 0 1 73.333333 0 cm 0 0 20 20 re', $result);
     }
 
     public function testAutoSizingTextGrid(): void
