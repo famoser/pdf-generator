@@ -105,7 +105,7 @@ class LinearDocument implements DocumentInterface
     /**
      * @param float[]|null $pageSize
      */
-    public function addPage(array $pageSize = null): void
+    public function addPage(?array $pageSize = null): void
     {
         $nextPageIndex = $this->getPageCount();
         $page = new Page(strval($nextPageIndex + 1), $pageSize ?? $this->pageSize);
@@ -125,7 +125,7 @@ class LinearDocument implements DocumentInterface
         return $this->document->save();
     }
 
-    public function position(float $currentY, int $currentPageIndex = null): void
+    public function position(float $currentY, ?int $currentPageIndex = null): void
     {
         $this->currentY = $currentY;
         $this->currentPageIndex = $currentPageIndex ?? $this->currentPageIndex;

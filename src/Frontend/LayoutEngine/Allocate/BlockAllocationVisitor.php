@@ -123,7 +123,7 @@ readonly class BlockAllocationVisitor implements BlockVisitorInterface
      * @param BlockAllocation[]   $blockAllocations
      * @param ContentAllocation[] $contentAllocations
      */
-    private function allocateBlock(AbstractBlock $block, float $contentWidth, float $contentHeight, array $blockAllocations = [], array $contentAllocations = [], AbstractBlock $overflow = null): BlockAllocation
+    private function allocateBlock(AbstractBlock $block, float $contentWidth, float $contentHeight, array $blockAllocations = [], array $contentAllocations = [], ?AbstractBlock $overflow = null): BlockAllocation
     {
         $background = $this->allocateBackground($block, $contentWidth, $contentHeight);
         if ($background) {

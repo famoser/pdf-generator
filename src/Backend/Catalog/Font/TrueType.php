@@ -11,18 +11,17 @@
 
 namespace PdfGenerator\Backend\Catalog\Font;
 
-use PdfGenerator\Backend\Catalog\Font;
 use PdfGenerator\Backend\CatalogVisitor;
 use PdfGenerator\Backend\File\Object\DictionaryObject;
 
 readonly class TrueType extends Type1
 {
-    private Font\Structure\FontDescriptor $fontDescriptor;
+    private Structure\FontDescriptor $fontDescriptor;
 
     /**
      * @param int[] $widths
      */
-    public function __construct(string $identifier, Font\Structure\FontDescriptor $fontDescriptor, private array $widths)
+    public function __construct(string $identifier, Structure\FontDescriptor $fontDescriptor, private array $widths)
     {
         parent::__construct($identifier, $fontDescriptor->getFontName());
         $this->fontDescriptor = $fontDescriptor;

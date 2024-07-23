@@ -107,7 +107,7 @@ class ContentTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 -0 0 1 5 89.213 cm BT', $result);
     }
 
-    private function createHighlightedContentBlock(AbstractContent $content, float $width = null, float $height = null): ContentBlock
+    private function createHighlightedContentBlock(AbstractContent $content, ?float $width = null, ?float $height = null): ContentBlock
     {
         $highlightBlockStyle = new BlockStyle();
         $highlightBlockStyle->setBackgroundColor(new Color(255, 0, 0));

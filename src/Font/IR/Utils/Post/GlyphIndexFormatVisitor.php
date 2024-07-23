@@ -79,7 +79,7 @@ readonly class GlyphIndexFormatVisitor implements FormatVisitorInterface
         return [];
     }
 
-    private static function createGlyphInfo(string $name, int $macintoshSetIndex = null): GlyphInfo
+    private static function createGlyphInfo(string $name, ?int $macintoshSetIndex = null): GlyphInfo
     {
         $glyphInfo = new GlyphInfo();
         $glyphInfo->setName($name);

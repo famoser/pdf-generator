@@ -133,7 +133,7 @@ readonly class ContentVisitor implements ContentVisitorInterface
         return RectangleContent::PAINTING_MODE_NONE;
     }
 
-    private function applyTextStyle(Content\Text\TextStyle $style): void
+    private function applyTextStyle(Text\TextStyle $style): void
     {
         $font = $style->getFont();
         $textStateRepository = $this->pageResources->getTextStateRepository();
