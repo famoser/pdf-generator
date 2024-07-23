@@ -87,7 +87,7 @@ class TransformationMatrixCalculator
             // Find pivot and exchange if necessary.
             $p = $j;
             for ($i = $j + 1; $i < 3; ++$i) {
-                if (abs($LUcolj[$i] ?? 0) > abs($LUcolj[$p] ?? 0)) {
+                if (abs($LUcolj[$i]) > abs($LUcolj[$p])) {
                     $p = $i;
                 }
             }

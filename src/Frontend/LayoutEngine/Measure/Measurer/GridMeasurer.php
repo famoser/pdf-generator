@@ -49,6 +49,7 @@ readonly class GridMeasurer
 
             $minHeight = max($minHeight, $measuredColumnFirstRow->getMinHeight());
 
+            $averageDimension = 0.0;
             $measuredColumn = $this->measureColumn($rows, $columnIndex, $measuredColumnFirstRow, $averageDimension);
             $totalDimensions += $averageDimension;
             $totalWeight += $measuredColumn->getWeight();
