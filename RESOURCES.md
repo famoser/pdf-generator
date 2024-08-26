@@ -6,6 +6,7 @@ Material handy to further development.
 
 reference code:
 - [ITextSharp](https://www.mikesdotnetting.com/article/80/create-pdfs-in-asp-net-getting-started-with-itextsharp) (nice public API)
+- [Accessibility](https://accessible-pdf.info/en/basics/general/overview-of-the-pdf-tags/) (could structure public API by this)
 
 ## pdf generation
 
