@@ -16,23 +16,21 @@
     "ext-json": "*"
   },
   "require-dev": {
-    "brainmaestro/composer-git-hooks": "^2.6",
     "friendsofphp/php-cs-fixer": "^3",
     "mockery/mockery": "^1.2",
     "phpunit/phpunit": "^9.5.4",
     "rector/rector": "^0.18.0",
-    "scrutinizer/ocular": "^1.9",
     "famoser/agnes": "^4.2"
   },
   "autoload": {
     "psr-4": {
-      "PdfGenerator\\": "src/",
-      "DocumentGenerator\\": "document-generator/"
+      "Famoser\\PdfGenerator\\": "src/",
+      "Famoser\\DocumentGenerator\\": "document-generator/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "PdfGenerator\\Tests\\": "tests/"
+      "Famoser\\PdfGenerator\\Tests\\": "tests/"
     }
   },
   "config": {
@@ -40,22 +38,5 @@
       "php": "8.2"
     },
     "sort-packages": true
-  },
-  "scripts": {
-    "prepare-environment": [
-      "vendor/bin/cghooks update"
-    ],
-    "post-install-cmd": "@prepare-environment",
-    "post-update-cmd": "@prepare-environment"
-  },
-  "extra": {
-    "hooks": {
-      "pre-commit": [
-        "echo committing as $(git config user.name)",
-        "./vendor/bin/php-cs-fixer fix",
-        "git update-index --again"
-      ],
-      "post-merge": "composer install"
-    }
   }
 }
