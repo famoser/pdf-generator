@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document\Font;
+namespace Famoser\PdfGenerator\Backend\Structure\Document\Font;
 
-use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
-use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
-use PdfGenerator\Font\IR\Structure\Character;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CMap;
+use Famoser\PdfGenerator\Font\IR\Structure\Character;
 
 readonly class CMapCreator
 {

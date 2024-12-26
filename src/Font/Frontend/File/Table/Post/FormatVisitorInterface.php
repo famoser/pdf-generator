@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table\Post;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table\Post;
 
-use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format1;
-use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format2;
-use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format25;
-use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format3;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Post\Format\Format1;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Post\Format\Format2;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Post\Format\Format25;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Post\Format\Format3;
 
 /**
  * @template T

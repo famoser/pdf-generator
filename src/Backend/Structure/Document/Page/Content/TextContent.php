@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document\Page\Content;
+namespace Famoser\PdfGenerator\Backend\Structure\Document\Page\Content;
 
-use PdfGenerator\Backend\Catalog\Content;
-use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
-use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
-use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
-use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
-use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
+use Famoser\PdfGenerator\Backend\Catalog\Content;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\TextState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
 
 readonly class TextContent extends BaseContent
 {

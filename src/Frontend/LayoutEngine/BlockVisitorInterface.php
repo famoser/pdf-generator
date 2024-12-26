@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine;
 
-use PdfGenerator\Frontend\Layout\Block;
-use PdfGenerator\Frontend\Layout\ContentBlock;
-use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\Layout\Grid;
-use PdfGenerator\Frontend\Layout\Table;
+use Famoser\PdfGenerator\Frontend\Layout\Block;
+use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Flow;
+use Famoser\PdfGenerator\Frontend\Layout\Grid;
+use Famoser\PdfGenerator\Frontend\Layout\Table;
 
 /**
  * @template T

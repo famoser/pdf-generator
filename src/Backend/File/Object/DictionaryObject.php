@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File\Object;
+namespace Famoser\PdfGenerator\Backend\File\Object;
 
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\File\ObjectVisitor;
-use PdfGenerator\Backend\File\Token\ArrayToken;
-use PdfGenerator\Backend\File\Token\DictionaryToken;
-use PdfGenerator\Backend\File\Token\NameToken;
-use PdfGenerator\Backend\File\Token\NumberToken;
-use PdfGenerator\Backend\File\Token\ReferenceToken;
+use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
+use Famoser\PdfGenerator\Backend\File\ObjectVisitor;
+use Famoser\PdfGenerator\Backend\File\Token\ArrayToken;
+use Famoser\PdfGenerator\Backend\File\Token\DictionaryToken;
+use Famoser\PdfGenerator\Backend\File\Token\NameToken;
+use Famoser\PdfGenerator\Backend\File\Token\NumberToken;
+use Famoser\PdfGenerator\Backend\File\Token\ReferenceToken;
 
 class DictionaryObject extends BaseObject
 {

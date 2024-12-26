@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Structure;
+namespace Famoser\PdfGenerator\Font\IR\Structure;
 
-use PdfGenerator\Font\Frontend\File\Table\GlyfTable;
-use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\GlyfTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 
 class Character
 {

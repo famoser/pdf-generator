@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table\Glyf;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table\Glyf;
 
-use PdfGenerator\Font\Backend\File\Traits\NullableRawContent;
+use Famoser\PdfGenerator\Font\Backend\File\Traits\NullableRawContent;
 
 class ComponentGlyf
 {

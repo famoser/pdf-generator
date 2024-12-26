@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File\Object;
+namespace Famoser\PdfGenerator\Backend\File\Object;
 
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\File\ObjectVisitor;
-use PdfGenerator\Backend\File\Token\DictionaryToken;
+use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
+use Famoser\PdfGenerator\Backend\File\ObjectVisitor;
+use Famoser\PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class StreamObject extends BaseObject
 {

@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Integration\IR;
+namespace Famoser\PdfGenerator\Tests\Integration\IR;
 
-use PdfGenerator\IR\Document;
-use PdfGenerator\IR\Document\Content\Common\Position;
-use PdfGenerator\IR\Document\Content\Text;
-use PdfGenerator\IR\Document\Content\Text\TextStyle;
-use PdfGenerator\IR\Document\Page;
-use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
-use PdfGenerator\Tests\Resources\ResourcesProvider;
+use Famoser\PdfGenerator\IR\Document;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Position;
+use Famoser\PdfGenerator\IR\Document\Content\Text;
+use Famoser\PdfGenerator\IR\Document\Content\Text\TextStyle;
+use Famoser\PdfGenerator\IR\Document\Page;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\DefaultFont;
+use Famoser\PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
 class PrinterTest extends TestCase

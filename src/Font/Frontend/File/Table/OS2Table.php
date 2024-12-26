@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table;
 
 /**
  * the IS/2 table defines spacing & some more details for windows platform

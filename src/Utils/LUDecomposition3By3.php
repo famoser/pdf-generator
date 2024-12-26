@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Utils;
+namespace Famoser\PdfGenerator\Utils;
 
 class LUDecomposition3By3
 {

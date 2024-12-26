@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph;
+namespace Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph;
 
-use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
-use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
-use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\TextState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
 
 readonly class Phrase
 {

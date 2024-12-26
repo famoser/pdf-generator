@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource;
+namespace Famoser\PdfGenerator\IR\Document\Resource;
 
-use PdfGenerator\Backend\Structure\Document\Font as BackendFont;
-use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
-use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
-use PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
-use PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
-use PdfGenerator\IR\Document\Resource\State\ColorStateRepository;
-use PdfGenerator\IR\Document\Resource\State\GeneralGraphicStateRepository;
-use PdfGenerator\IR\Document\Resource\State\TextStateRepository;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font as BackendFont;
+use Famoser\PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\DrawingState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
+use Famoser\PdfGenerator\IR\Document\Resource\State\ColorStateRepository;
+use Famoser\PdfGenerator\IR\Document\Resource\State\GeneralGraphicStateRepository;
+use Famoser\PdfGenerator\IR\Document\Resource\State\TextStateRepository;
 
 class PageResources
 {

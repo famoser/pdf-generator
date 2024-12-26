@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Catalog\Font\Structure;
+namespace Famoser\PdfGenerator\Backend\Catalog\Font\Structure;
 
-use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Token\DictionaryToken;
+use Famoser\PdfGenerator\Backend\CatalogVisitor;
+use Famoser\PdfGenerator\Backend\File\Token\DictionaryToken;
 
 /**
  * specifies the character set used

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table;
 
-use PdfGenerator\Font\Frontend\File\Traits\BoundingBoxTrait;
+use Famoser\PdfGenerator\Font\Frontend\File\Traits\BoundingBoxTrait;
 
 /**
  * the header table contains meta-data about the font

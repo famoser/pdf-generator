@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource\Font;
+namespace Famoser\PdfGenerator\IR\Document\Resource\Font;
 
-use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
-use PdfGenerator\Font\IR\Parser;
-use PdfGenerator\IR\Document\Resource\Font;
-use PdfGenerator\IR\DocumentVisitor;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
+use Famoser\PdfGenerator\Font\IR\Parser;
+use Famoser\PdfGenerator\IR\Document\Resource\Font;
+use Famoser\PdfGenerator\IR\DocumentVisitor;
 
 readonly class EmbeddedFont extends Font
 {

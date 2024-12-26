@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Resource\Font;
+namespace Famoser\PdfGenerator\Frontend\Resource\Font;
 
-use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\Resource\Font;
-use PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerInterface;
-use PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerVisitor;
-use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
-use PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
-use PdfGenerator\Utils\SingletonTrait;
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Resource\Font;
+use Famoser\PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerInterface;
+use Famoser\PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerVisitor;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\DefaultFont;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
+use Famoser\PdfGenerator\Utils\SingletonTrait;
 
 class FontRepository
 {

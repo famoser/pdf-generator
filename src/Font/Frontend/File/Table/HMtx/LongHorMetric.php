@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table\HMtx;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table\HMtx;
 
 class LongHorMetric
 {

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document\Page\State;
+namespace Famoser\PdfGenerator\Backend\Structure\Document\Page\State;
 
-use PdfGenerator\Backend\Structure\Document\Font;
-use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
-use PdfGenerator\Backend\Structure\Document\Page\StateTransitionVisitor;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateTransitionVisitor;
 
 readonly class TextState extends BaseState
 {

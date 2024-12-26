@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Measure;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure;
 
-use PdfGenerator\Frontend\Content\ImagePlacement;
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Content\Rectangle;
-use PdfGenerator\Frontend\Content\Spacer;
-use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
-use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\ParagraphMeasurer;
+use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
+use Famoser\PdfGenerator\Frontend\Content\Spacer;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\ParagraphMeasurer;
 
 /**
  * @implements ContentVisitorInterface<Measurement>

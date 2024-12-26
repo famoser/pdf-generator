@@ -9,28 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend;
+namespace Famoser\PdfGenerator\Font\Frontend;
 
-use PdfGenerator\Font\Frontend\File\FontFile;
-use PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
-use PdfGenerator\Font\Frontend\File\Table\CMapTable;
-use PdfGenerator\Font\Frontend\File\Table\Glyf\ComponentGlyf;
-use PdfGenerator\Font\Frontend\File\Table\GlyfTable;
-use PdfGenerator\Font\Frontend\File\Table\HeadTable;
-use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
-use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
-use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
-use PdfGenerator\Font\Frontend\File\Table\LocaTable;
-use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
-use PdfGenerator\Font\Frontend\File\Table\Name\LangTagRecord;
-use PdfGenerator\Font\Frontend\File\Table\Name\NameRecord;
-use PdfGenerator\Font\Frontend\File\Table\NameTable;
-use PdfGenerator\Font\Frontend\File\Table\OffsetTable;
-use PdfGenerator\Font\Frontend\File\Table\OS2Table;
-use PdfGenerator\Font\Frontend\File\Table\PostTable;
-use PdfGenerator\Font\Frontend\File\Table\RawTable;
-use PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
+use Famoser\PdfGenerator\Font\Frontend\File\FontFile;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMapTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Glyf\ComponentGlyf;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\GlyfTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HeadTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HHeaTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HMtxTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\LocaTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\MaxPTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Name\LangTagRecord;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Name\NameRecord;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\NameTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\OffsetTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\OS2Table;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\PostTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\RawTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
 
 class FileReader
 {

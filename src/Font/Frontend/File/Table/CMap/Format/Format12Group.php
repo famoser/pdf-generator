@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table\CMap\Format;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format;
 
 class Format12Group
 {

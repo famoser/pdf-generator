@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Catalog\Font\Structure;
+namespace Famoser\PdfGenerator\Backend\Catalog\Font\Structure;
 
-use PdfGenerator\Backend\Catalog\Base\BaseStructure;
-use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Object\DictionaryObject;
+use Famoser\PdfGenerator\Backend\Catalog\Base\BaseStructure;
+use Famoser\PdfGenerator\Backend\CatalogVisitor;
+use Famoser\PdfGenerator\Backend\File\Object\DictionaryObject;
 
 readonly class CIDFont extends BaseStructure
 {

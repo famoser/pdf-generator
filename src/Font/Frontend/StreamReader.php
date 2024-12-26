@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend;
+namespace Famoser\PdfGenerator\Font\Frontend;
 
 /**
  * can read supported pdf value types.

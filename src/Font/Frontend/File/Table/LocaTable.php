@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table;
 
 /**
  * the index-to-location table stores the location of glyphs in the glyf table

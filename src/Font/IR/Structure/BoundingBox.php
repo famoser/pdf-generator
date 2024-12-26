@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Structure;
+namespace Famoser\PdfGenerator\Font\IR\Structure;
 
 class BoundingBox
 {

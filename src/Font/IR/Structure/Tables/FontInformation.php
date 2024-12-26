@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Structure\Tables;
+namespace Famoser\PdfGenerator\Font\IR\Structure\Tables;
 
 class FontInformation
 {

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 
-use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\Layout\Style\FlowDirection;
-use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
-use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 
 readonly class FlowMeasurer
 {

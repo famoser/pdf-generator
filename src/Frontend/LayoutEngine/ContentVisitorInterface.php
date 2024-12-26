@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine;
 
-use PdfGenerator\Frontend\Content\ImagePlacement;
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Content\Rectangle;
-use PdfGenerator\Frontend\Content\Spacer;
+use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
+use Famoser\PdfGenerator\Frontend\Content\Spacer;
 
 /**
  * @template T

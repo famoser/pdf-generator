@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Integration\Font\IR;
+namespace Famoser\PdfGenerator\Tests\Integration\Font\IR;
 
-use PdfGenerator\Font\IR\CharacterRepository;
-use PdfGenerator\Font\IR\Parser;
-use PdfGenerator\Font\IR\Structure\Font;
-use PdfGenerator\Tests\Integration\Font\Frontend\FileReaderTest;
+use Famoser\PdfGenerator\Font\IR\CharacterRepository;
+use Famoser\PdfGenerator\Font\IR\Parser;
+use Famoser\PdfGenerator\Font\IR\Structure\Font;
+use Famoser\PdfGenerator\Tests\Integration\Font\Frontend\FileReaderTest;
 use PHPUnit\Framework\TestCase;
 
 class ParserTest extends TestCase

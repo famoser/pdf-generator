@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource\Font\Utils;
+namespace Famoser\PdfGenerator\IR\Document\Resource\Font\Utils;
 
-use PdfGenerator\Backend\Catalog\Font\Type1;
-use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Type1;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\DefaultFont;
 
 class DefaultFontType1Mapping
 {

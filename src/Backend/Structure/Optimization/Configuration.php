@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Optimization;
+namespace Famoser\PdfGenerator\Backend\Structure\Optimization;
 
 readonly class Configuration
 {

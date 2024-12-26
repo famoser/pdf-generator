@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table\Post\Format;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table\Post\Format;
 
-use PdfGenerator\Font\Frontend\File\Table\Post\FormatVisitorInterface;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Post\FormatVisitorInterface;
 
 /**
  * specifies that no PostScript information will be supplied

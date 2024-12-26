@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File;
+namespace Famoser\PdfGenerator\Font\Backend\File;
 
-use PdfGenerator\Font\Backend\File\Table\CMapTable;
-use PdfGenerator\Font\Backend\File\Table\GlyfTable;
-use PdfGenerator\Font\Backend\File\Table\HeadTable;
-use PdfGenerator\Font\Backend\File\Table\HHeaTable;
-use PdfGenerator\Font\Backend\File\Table\HMtxTable;
-use PdfGenerator\Font\Backend\File\Table\LocaTable;
-use PdfGenerator\Font\Backend\File\Table\MaxPTable;
-use PdfGenerator\Font\Backend\File\Table\NameTable;
-use PdfGenerator\Font\Backend\File\Table\OS2Table;
-use PdfGenerator\Font\Backend\File\Table\PostTable;
-use PdfGenerator\Font\Backend\File\Table\RawTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\CMapTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\GlyfTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\HeadTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\HHeaTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\HMtxTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\LocaTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\MaxPTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\NameTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\OS2Table;
+use Famoser\PdfGenerator\Font\Backend\File\Table\PostTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\RawTable;
 
 class TableDirectory
 {

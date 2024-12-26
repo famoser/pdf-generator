@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
 
-use PdfGenerator\Frontend\Layout\Grid;
-use PdfGenerator\Frontend\Layout\Parts\Row;
-use PdfGenerator\Frontend\Layout\Style\ColumnSize;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\ContentAllocation;
-use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
+use Famoser\PdfGenerator\Frontend\Layout\Grid;
+use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\ContentAllocation;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
 
 readonly class GridAllocator
 {

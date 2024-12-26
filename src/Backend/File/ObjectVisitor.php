@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File;
+namespace Famoser\PdfGenerator\Backend\File;
 
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\File\Object\DictionaryObject;
-use PdfGenerator\Backend\File\Object\StreamObject;
+use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
+use Famoser\PdfGenerator\Backend\File\Object\DictionaryObject;
+use Famoser\PdfGenerator\Backend\File\Object\StreamObject;
 
 class ObjectVisitor
 {

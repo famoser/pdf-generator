@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use PdfGenerator\Frontend\Content\ImagePlacement;
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Content\Rectangle;
-use PdfGenerator\Frontend\Content\Spacer;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\ParagraphAllocator;
-use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
+use Famoser\PdfGenerator\Frontend\Content\Spacer;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\ParagraphAllocator;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 
 /**
  * @implements ContentVisitorInterface<ContentAllocation>

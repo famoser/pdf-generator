@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table;
 
-use PdfGenerator\Font\Frontend\File\Table\Post\Format\Format;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Post\Format\Format;
 
 /**
  * the post script table includes information needed by postscript printers.

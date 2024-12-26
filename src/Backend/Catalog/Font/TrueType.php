@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Catalog\Font;
+namespace Famoser\PdfGenerator\Backend\Catalog\Font;
 
-use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Object\DictionaryObject;
+use Famoser\PdfGenerator\Backend\CatalogVisitor;
+use Famoser\PdfGenerator\Backend\File\Object\DictionaryObject;
 
 readonly class TrueType extends Type1
 {

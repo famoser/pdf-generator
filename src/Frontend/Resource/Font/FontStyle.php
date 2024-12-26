@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Resource\Font;
+namespace Famoser\PdfGenerator\Frontend\Resource\Font;
 
 enum FontStyle: string
 {

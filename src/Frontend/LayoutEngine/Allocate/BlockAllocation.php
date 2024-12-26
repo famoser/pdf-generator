@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
 
 readonly class BlockAllocation
 {

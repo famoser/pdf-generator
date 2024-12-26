@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
 
 /**
  * the character map table maps character codes to glyph indices.

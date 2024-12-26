@@ -9,22 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document;
+namespace Famoser\PdfGenerator\IR\Document;
 
-use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
-use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
-use PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\Phrase;
-use PdfGenerator\Backend\Structure\Document\Page\Content\ParagraphContent;
-use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
-use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
-use PdfGenerator\IR\Document\Content\Common\Position;
-use PdfGenerator\IR\Document\Content\ContentVisitorInterface;
-use PdfGenerator\IR\Document\Content\ImagePlacement;
-use PdfGenerator\IR\Document\Content\Paragraph;
-use PdfGenerator\IR\Document\Content\Rectangle;
-use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Document\Content\Text;
-use PdfGenerator\IR\Document\Resource\PageResources;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\Phrase;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\ParagraphContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Position;
+use Famoser\PdfGenerator\IR\Document\Content\ContentVisitorInterface;
+use Famoser\PdfGenerator\IR\Document\Content\ImagePlacement;
+use Famoser\PdfGenerator\IR\Document\Content\Paragraph;
+use Famoser\PdfGenerator\IR\Document\Content\Rectangle;
+use Famoser\PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
+use Famoser\PdfGenerator\IR\Document\Content\Text;
+use Famoser\PdfGenerator\IR\Document\Resource\PageResources;
 
 /**
  * @implements ContentVisitorInterface<BaseContent>

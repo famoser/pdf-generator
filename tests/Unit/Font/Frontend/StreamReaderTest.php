@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Unit\Font\Frontend;
+namespace Famoser\PdfGenerator\Tests\Unit\Font\Frontend;
 
-use PdfGenerator\Font\Frontend\StreamReader;
+use Famoser\PdfGenerator\Font\Frontend\StreamReader;
 use PHPUnit\Framework\TestCase;
 
 class StreamReaderTest extends TestCase

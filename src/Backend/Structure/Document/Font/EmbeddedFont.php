@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document\Font;
+namespace Famoser\PdfGenerator\Backend\Structure\Document\Font;
 
-use PdfGenerator\Backend\Catalog\Font\TrueType;
-use PdfGenerator\Backend\Catalog\Font\Type0;
-use PdfGenerator\Backend\Structure\Document\Font;
-use PdfGenerator\Backend\Structure\DocumentVisitor;
+use Famoser\PdfGenerator\Backend\Catalog\Font\TrueType;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Type0;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font;
+use Famoser\PdfGenerator\Backend\Structure\DocumentVisitor;
 
 readonly class EmbeddedFont extends Font
 {

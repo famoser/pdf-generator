@@ -9,27 +9,27 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure;
+namespace Famoser\PdfGenerator\Backend\Structure;
 
-use PdfGenerator\Backend\Catalog\Font\Structure\CIDFont;
-use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
-use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
-use PdfGenerator\Backend\Catalog\Font\Structure\FontStream;
-use PdfGenerator\Backend\Catalog\Font\TrueType;
-use PdfGenerator\Backend\Catalog\Font\Type0;
-use PdfGenerator\Backend\Catalog\Font\Type1;
-use PdfGenerator\Backend\Catalog\Image as CatalogImage;
-use PdfGenerator\Backend\Structure\Document\Font\CMapCreator;
-use PdfGenerator\Backend\Structure\Document\Font\DefaultFont;
-use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont;
-use PdfGenerator\Backend\Structure\Document\Image;
-use PdfGenerator\Backend\Structure\Optimization\Configuration;
-use PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
-use PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
-use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
-use PdfGenerator\Font\Frontend\File\Table\OS2Table;
-use PdfGenerator\Font\IR\Structure\Character;
-use PdfGenerator\Font\IR\Structure\Font;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CIDFont;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\FontStream;
+use Famoser\PdfGenerator\Backend\Catalog\Font\TrueType;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Type0;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Type1;
+use Famoser\PdfGenerator\Backend\Catalog\Image as CatalogImage;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font\CMapCreator;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font\DefaultFont;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont;
+use Famoser\PdfGenerator\Backend\Structure\Document\Image;
+use Famoser\PdfGenerator\Backend\Structure\Optimization\Configuration;
+use Famoser\PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
+use Famoser\PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HHeaTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\OS2Table;
+use Famoser\PdfGenerator\Font\IR\Structure\Character;
+use Famoser\PdfGenerator\Font\IR\Structure\Font;
 
 class DocumentVisitor
 {

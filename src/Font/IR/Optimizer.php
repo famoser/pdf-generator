@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR;
+namespace Famoser\PdfGenerator\Font\IR;
 
-use PdfGenerator\Font\IR\Structure\Character;
-use PdfGenerator\Font\IR\Structure\Font;
-use PdfGenerator\Font\IR\Structure\TableDirectory;
+use Famoser\PdfGenerator\Font\IR\Structure\Character;
+use Famoser\PdfGenerator\Font\IR\Structure\Font;
+use Famoser\PdfGenerator\Font\IR\Structure\TableDirectory;
 
 class Optimizer
 {

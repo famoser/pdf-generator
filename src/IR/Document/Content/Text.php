@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Content;
+namespace Famoser\PdfGenerator\IR\Document\Content;
 
-use PdfGenerator\IR\Document\Content\Base\BaseContent;
-use PdfGenerator\IR\Document\Content\Common\Position;
-use PdfGenerator\IR\Document\Content\Text\TextStyle;
+use Famoser\PdfGenerator\IR\Document\Content\Base\BaseContent;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Position;
+use Famoser\PdfGenerator\IR\Document\Content\Text\TextStyle;
 
 readonly class Text extends BaseContent
 {

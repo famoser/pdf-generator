@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content\Paragraph;
+namespace Famoser\PdfGenerator\Frontend\Content\Paragraph;
 
-use PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 
 class Phrase
 {

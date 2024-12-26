@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Resource\Font\WordSizer;
+namespace Famoser\PdfGenerator\Frontend\Resource\Font\WordSizer;
 
-use PdfGenerator\Font\IR\CharacterSizer;
-use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
-use PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
-use PdfGenerator\IR\Document\Resource\Font\FontVisitor;
+use Famoser\PdfGenerator\Font\IR\CharacterSizer;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\DefaultFont;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\FontVisitor;
 
 /**
  * @implements FontVisitor<WordSizerInterface>

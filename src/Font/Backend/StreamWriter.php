@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend;
+namespace Famoser\PdfGenerator\Font\Backend;
 
 class StreamWriter
 {

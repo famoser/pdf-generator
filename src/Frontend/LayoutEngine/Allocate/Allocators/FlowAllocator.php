@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
 
-use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\Layout\Style\FlowDirection;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Flow;
+use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
 
 readonly class FlowAllocator
 {

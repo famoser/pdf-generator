@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File\Token\Base;
+namespace Famoser\PdfGenerator\Backend\File\Token\Base;
 
-use PdfGenerator\Backend\File\TokenVisitor;
+use Famoser\PdfGenerator\Backend\File\TokenVisitor;
 
 abstract class BaseToken
 {

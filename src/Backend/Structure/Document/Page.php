@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document;
+namespace Famoser\PdfGenerator\Backend\Structure\Document;
 
-use PdfGenerator\Backend\Catalog\Content as CatalogContent;
-use PdfGenerator\Backend\Catalog\Contents;
-use PdfGenerator\Backend\Catalog\Font as CatalogFont;
-use PdfGenerator\Backend\Catalog\Image as CatalogImage;
-use PdfGenerator\Backend\Catalog\Page as CatalogPage;
-use PdfGenerator\Backend\Catalog\Resources;
-use PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
-use PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
+use Famoser\PdfGenerator\Backend\Catalog\Content as CatalogContent;
+use Famoser\PdfGenerator\Backend\Catalog\Contents;
+use Famoser\PdfGenerator\Backend\Catalog\Font as CatalogFont;
+use Famoser\PdfGenerator\Backend\Catalog\Image as CatalogImage;
+use Famoser\PdfGenerator\Backend\Catalog\Page as CatalogPage;
+use Famoser\PdfGenerator\Backend\Catalog\Resources;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 
 class Page
 {

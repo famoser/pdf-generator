@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Resource\Font\WordSizer;
+namespace Famoser\PdfGenerator\Frontend\Resource\Font\WordSizer;
 
 interface WordSizerInterface
 {

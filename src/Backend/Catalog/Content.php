@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Catalog;
+namespace Famoser\PdfGenerator\Backend\Catalog;
 
-use PdfGenerator\Backend\Catalog\Base\BaseStructure;
-use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use Famoser\PdfGenerator\Backend\Catalog\Base\BaseStructure;
+use Famoser\PdfGenerator\Backend\CatalogVisitor;
+use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 readonly class Content extends BaseStructure
 {

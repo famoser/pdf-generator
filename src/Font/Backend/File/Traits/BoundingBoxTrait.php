@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Traits;
+namespace Famoser\PdfGenerator\Font\Backend\File\Traits;
 
 trait BoundingBoxTrait
 {

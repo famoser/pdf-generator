@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Measure;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure;
 
 readonly class Measurement
 {

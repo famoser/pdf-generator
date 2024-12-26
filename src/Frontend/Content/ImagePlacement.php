@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content;
+namespace Famoser\PdfGenerator\Frontend\Content;
 
-use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
-use PdfGenerator\Frontend\Printer;
-use PdfGenerator\Frontend\Resource\Image;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Printer;
+use Famoser\PdfGenerator\Frontend\Resource\Image;
 
 class ImagePlacement extends AbstractContent
 {

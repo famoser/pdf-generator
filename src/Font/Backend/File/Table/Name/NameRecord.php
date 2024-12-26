@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table\Name;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table\Name;
 
 /**
  * defines the location & type of strings.

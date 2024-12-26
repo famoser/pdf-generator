@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table\CMap\Format;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table\CMap\Format;
 
-use PdfGenerator\Font\Backend\File\Table\CMap\FormatVisitor;
-use PdfGenerator\Font\Backend\File\Traits\BinaryTreeSearchableTrait;
-use PdfGenerator\Font\Backend\StreamWriter;
+use Famoser\PdfGenerator\Font\Backend\File\Table\CMap\FormatVisitor;
+use Famoser\PdfGenerator\Font\Backend\File\Traits\BinaryTreeSearchableTrait;
+use Famoser\PdfGenerator\Font\Backend\StreamWriter;
 
 /**
  * two-byte encoding format for continuous code ranges with spaces in between.

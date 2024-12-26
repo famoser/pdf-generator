@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table;
 
-use PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
-use PdfGenerator\Font\Backend\File\TableVisitor;
-use PdfGenerator\Font\Backend\File\Traits\BinaryTreeSearchableTrait;
+use Famoser\PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
+use Famoser\PdfGenerator\Font\Backend\File\TableVisitor;
+use Famoser\PdfGenerator\Font\Backend\File\Traits\BinaryTreeSearchableTrait;
 
 /**
  * the offset table (also called sfnt) defines how many tables the font consists of.

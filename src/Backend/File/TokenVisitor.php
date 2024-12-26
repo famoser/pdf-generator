@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File;
+namespace Famoser\PdfGenerator\Backend\File;
 
-use PdfGenerator\Backend\File\Token\ArrayToken;
-use PdfGenerator\Backend\File\Token\Base\BaseToken;
-use PdfGenerator\Backend\File\Token\DictionaryToken;
-use PdfGenerator\Backend\File\Token\NumberToken;
-use PdfGenerator\Backend\File\Token\ReferenceToken;
-use PdfGenerator\Backend\File\Token\TextToken;
+use Famoser\PdfGenerator\Backend\File\Token\ArrayToken;
+use Famoser\PdfGenerator\Backend\File\Token\Base\BaseToken;
+use Famoser\PdfGenerator\Backend\File\Token\DictionaryToken;
+use Famoser\PdfGenerator\Backend\File\Token\NumberToken;
+use Famoser\PdfGenerator\Backend\File\Token\ReferenceToken;
+use Famoser\PdfGenerator\Backend\File\Token\TextToken;
 
 class TokenVisitor
 {

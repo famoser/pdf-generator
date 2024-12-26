@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Resources;
+namespace Famoser\PdfGenerator\Tests\Resources;
 
 class ResourcesProvider
 {

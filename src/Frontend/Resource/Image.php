@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Resource;
+namespace Famoser\PdfGenerator\Frontend\Resource;
 
 class Image
 {

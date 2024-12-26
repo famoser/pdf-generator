@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Content\Rectangle;
+namespace Famoser\PdfGenerator\IR\Document\Content\Rectangle;
 
-use PdfGenerator\IR\Document\Content\Common\Color;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
 readonly class RectangleStyle
 {

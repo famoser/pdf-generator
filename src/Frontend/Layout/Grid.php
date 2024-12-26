@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout;
+namespace Famoser\PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Layout\Parts\Row;
-use PdfGenerator\Frontend\Layout\Style\ColumnSize;
-use PdfGenerator\Frontend\Layout\Traits\ColumnSizesTrait;
-use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
+use Famoser\PdfGenerator\Frontend\Layout\Traits\ColumnSizesTrait;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 class Grid extends AbstractBlock
 {

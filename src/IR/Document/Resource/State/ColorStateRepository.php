@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource\State;
+namespace Famoser\PdfGenerator\IR\Document\Resource\State;
 
-use PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
-use PdfGenerator\IR\Document\Content\Common\Color;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
 class ColorStateRepository
 {

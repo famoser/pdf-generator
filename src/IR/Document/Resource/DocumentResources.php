@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource;
+namespace Famoser\PdfGenerator\IR\Document\Resource;
 
-use PdfGenerator\Backend\Structure\Document\Font as BackendFont;
-use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
-use PdfGenerator\IR\Document\Base\BaseDocumentResource;
-use PdfGenerator\IR\DocumentVisitor;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font as BackendFont;
+use Famoser\PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use Famoser\PdfGenerator\IR\Document\Base\BaseDocumentResource;
+use Famoser\PdfGenerator\IR\DocumentVisitor;
 
 class DocumentResources
 {

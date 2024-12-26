@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
 
-use PdfGenerator\Frontend\Layout\Parts\Row;
-use PdfGenerator\Frontend\Layout\Table;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
+use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
+use Famoser\PdfGenerator\Frontend\Layout\Table;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 
 readonly class TableAllocator
 {

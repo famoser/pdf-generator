@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content\Style;
+namespace Famoser\PdfGenerator\Frontend\Content\Style;
 
-use PdfGenerator\Frontend\Resource\Font;
-use PdfGenerator\IR\Document\Content\Common\Color;
+use Famoser\PdfGenerator\Frontend\Resource\Font;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
 class TextStyle
 {

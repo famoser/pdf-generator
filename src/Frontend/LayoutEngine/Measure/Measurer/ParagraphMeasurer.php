@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 
-use PdfGenerator\Frontend\Content\Paragraph\Phrase;
-use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
-use PdfGenerator\Frontend\Resource\Font\FontMeasurement;
-use PdfGenerator\Frontend\Resource\Font\FontRepository;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph\Phrase;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontMeasurement;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 
 readonly class ParagraphMeasurer
 {

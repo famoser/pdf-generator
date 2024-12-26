@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table\Post\Format;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table\Post\Format;
 
-use PdfGenerator\Font\Backend\File\Table\Post\FormatVisitor;
-use PdfGenerator\Font\Backend\StreamWriter;
+use Famoser\PdfGenerator\Font\Backend\File\Table\Post\FormatVisitor;
+use Famoser\PdfGenerator\Font\Backend\StreamWriter;
 
 /**
  * used to specific glyphs within or without the standard macintosh character set

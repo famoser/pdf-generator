@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base;
+namespace Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base;
 
-use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 
 abstract readonly class BaseStateCollection
 {

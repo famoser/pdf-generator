@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Analysis;
+namespace Famoser\PdfGenerator\IR\Analysis;
 
-use PdfGenerator\IR\Document\Content\Common\Size;
-use PdfGenerator\IR\Document\Resource\Font;
-use PdfGenerator\IR\Document\Resource\Image;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Size;
+use Famoser\PdfGenerator\IR\Document\Resource\Font;
+use Famoser\PdfGenerator\IR\Document\Resource\Image;
 
 readonly class AnalysisResult
 {

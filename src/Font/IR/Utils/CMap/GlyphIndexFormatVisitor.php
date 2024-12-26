@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Utils\CMap;
+namespace Famoser\PdfGenerator\Font\IR\Utils\CMap;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format0;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format12;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
-use PdfGenerator\Font\Frontend\File\Table\CMap\FormatVisitorInterface;
-use PdfGenerator\Font\IR\Utils\CMap\Format4\Transformer;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format0;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format12;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\FormatVisitorInterface;
+use Famoser\PdfGenerator\Font\IR\Utils\CMap\Format4\Transformer;
 
 /**
  * @implements FormatVisitorInterface<array<int,int>>

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR;
+namespace Famoser\PdfGenerator\IR;
 
-use PdfGenerator\IR\Analysis\AnalyzeContentVisitor;
-use PdfGenerator\IR\Document\Page;
-use PdfGenerator\IR\Document\Resource\DocumentResources;
+use Famoser\PdfGenerator\IR\Analysis\AnalyzeContentVisitor;
+use Famoser\PdfGenerator\IR\Document\Page;
+use Famoser\PdfGenerator\IR\Document\Resource\DocumentResources;
 
 class Document
 {

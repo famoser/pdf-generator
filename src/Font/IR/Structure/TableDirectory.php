@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Structure;
+namespace Famoser\PdfGenerator\Font\IR\Structure;
 
-use PdfGenerator\Font\Frontend\File\Table\HeadTable;
-use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
-use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
-use PdfGenerator\Font\Frontend\File\Table\NameTable;
-use PdfGenerator\Font\Frontend\File\Table\OS2Table;
-use PdfGenerator\Font\Frontend\File\Table\PostTable;
-use PdfGenerator\Font\Frontend\File\Table\RawTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HeadTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HHeaTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\MaxPTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\NameTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\OS2Table;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\PostTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\RawTable;
 
 class TableDirectory
 {

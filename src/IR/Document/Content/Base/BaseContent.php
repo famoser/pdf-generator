@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Content\Base;
+namespace Famoser\PdfGenerator\IR\Document\Content\Base;
 
-use PdfGenerator\IR\Document\Content\ContentVisitorInterface;
+use Famoser\PdfGenerator\IR\Document\Content\ContentVisitorInterface;
 
 abstract readonly class BaseContent
 {

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout\Parts;
+namespace Famoser\PdfGenerator\Frontend\Layout\Parts;
 
-use PdfGenerator\Frontend\Content\AbstractContent;
-use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\Layout\ContentBlock;
-use PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
 
 class Row
 {

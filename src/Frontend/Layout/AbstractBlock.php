@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout;
+namespace Famoser\PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Layout\Traits\BlockTrait;
-use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Layout\Traits\BlockTrait;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 abstract class AbstractBlock
 {

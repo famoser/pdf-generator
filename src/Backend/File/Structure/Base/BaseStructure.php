@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File\Structure\Base;
+namespace Famoser\PdfGenerator\Backend\File\Structure\Base;
 
-use PdfGenerator\Backend\File\StructureVisitor;
+use Famoser\PdfGenerator\Backend\File\StructureVisitor;
 
 abstract class BaseStructure
 {

@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend;
+namespace Famoser\PdfGenerator\Frontend;
 
 use DocumentGenerator\DocumentInterface;
-use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
-use PdfGenerator\Frontend\Resource\Font\FontRepository;
-use PdfGenerator\Frontend\Resource\Image\ImageRepository;
-use PdfGenerator\IR\Document;
-use PdfGenerator\IR\Document\Page;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
+use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
+use Famoser\PdfGenerator\IR\Document;
+use Famoser\PdfGenerator\IR\Document\Page;
 
 class LinearDocument implements DocumentInterface
 {

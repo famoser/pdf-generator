@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table\CMap;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table\CMap;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format0;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format12;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format0;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format12;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format6;
 
 /**
  * @template T

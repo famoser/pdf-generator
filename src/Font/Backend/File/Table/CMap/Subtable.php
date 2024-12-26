@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table\CMap;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table\CMap;
 
-use PdfGenerator\Font\Backend\File\Table\CMap\Format\Format;
+use Famoser\PdfGenerator\Font\Backend\File\Table\CMap\Format\Format;
 
 /**
  * contains character to glyph mapping; is part of the 'cmap' table.

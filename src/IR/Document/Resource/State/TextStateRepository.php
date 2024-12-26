@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource\State;
+namespace Famoser\PdfGenerator\IR\Document\Resource\State;
 
-use PdfGenerator\Backend\Structure\Document\Font;
-use PdfGenerator\Backend\Structure\Document\Page\State\TextState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 
 class TextStateRepository
 {

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Resource;
+namespace Famoser\PdfGenerator\Frontend\Resource;
 
-use PdfGenerator\Frontend\Resource\Font\FontFamily;
-use PdfGenerator\Frontend\Resource\Font\FontStyle;
-use PdfGenerator\Frontend\Resource\Font\FontWeight;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontFamily;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontStyle;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontWeight;
 
 class Font
 {

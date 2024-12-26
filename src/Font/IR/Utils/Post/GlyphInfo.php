@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Utils\Post;
+namespace Famoser\PdfGenerator\Font\IR\Utils\Post;
 
 class GlyphInfo
 {

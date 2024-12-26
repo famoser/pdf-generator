@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout\Style;
+namespace Famoser\PdfGenerator\Frontend\Layout\Style;
 
 enum ColumnSize: string
 {

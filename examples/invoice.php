@@ -11,17 +11,17 @@
 
 include '../vendor/autoload.php';
 
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
-use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\Layout\ContentBlock;
-use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\Layout\Parts\Row;
-use PdfGenerator\Frontend\Layout\Style\ColumnSize;
-use PdfGenerator\Frontend\Layout\Table;
-use PdfGenerator\Frontend\LinearDocument;
-use PdfGenerator\Frontend\Resource\Font;
-use PdfGenerator\IR\Document\Content\Common\Color;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Flow;
+use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
+use Famoser\PdfGenerator\Frontend\Layout\Table;
+use Famoser\PdfGenerator\Frontend\LinearDocument;
+use Famoser\PdfGenerator\Frontend\Resource\Font;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
 $margin = 15;
 $document = new LinearDocument([210, 297], $margin);

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout\Traits;
+namespace Famoser\PdfGenerator\Frontend\Layout\Traits;
 
-use PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
 
 trait BlockTrait
 {

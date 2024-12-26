@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document\Page\State\Base;
+namespace Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base;
 
-use PdfGenerator\Backend\Structure\Document\Page\StateTransitionVisitor;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateTransitionVisitor;
 
 abstract readonly class BaseState
 {

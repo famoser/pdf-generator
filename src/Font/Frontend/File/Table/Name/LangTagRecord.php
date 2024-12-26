@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table\Name;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table\Name;
 
 /**
  * a language tag conforming to IETF BCP 47 https://tools.ietf.org/html/bcp47

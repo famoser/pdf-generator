@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Content\Text;
+namespace Famoser\PdfGenerator\IR\Document\Content\Text;
 
 readonly class Phrase
 {

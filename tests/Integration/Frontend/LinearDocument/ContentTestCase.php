@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Integration\Frontend\LinearDocument;
+namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
-use PdfGenerator\Frontend\Content\AbstractContent;
-use PdfGenerator\Frontend\Content\ImagePlacement;
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Content\Rectangle;
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
-use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\Layout\ContentBlock;
-use PdfGenerator\Frontend\Layout\Style\BlockStyle;
-use PdfGenerator\Frontend\LinearDocument;
-use PdfGenerator\Frontend\Resource\Font;
-use PdfGenerator\Frontend\Resource\Image;
-use PdfGenerator\IR\Document\Content\Common\Color;
-use PdfGenerator\Tests\Resources\ResourcesProvider;
+use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
+use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
+use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\LinearDocument;
+use Famoser\PdfGenerator\Frontend\Resource\Font;
+use Famoser\PdfGenerator\Frontend\Resource\Image;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
+use Famoser\PdfGenerator\Tests\Resources\ResourcesProvider;
 
 class ContentTestCase extends LinearDocumentTestCase
 {

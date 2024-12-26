@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Catalog\Font;
+namespace Famoser\PdfGenerator\Backend\Catalog\Font;
 
-use PdfGenerator\Backend\Catalog\Font;
-use PdfGenerator\Backend\CatalogVisitor;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
+use Famoser\PdfGenerator\Backend\Catalog\Font;
+use Famoser\PdfGenerator\Backend\CatalogVisitor;
+use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 readonly class Type1 extends Font
 {

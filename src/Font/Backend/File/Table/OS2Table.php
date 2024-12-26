@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table;
 
-use PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
-use PdfGenerator\Font\Backend\File\TableVisitor;
+use Famoser\PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
+use Famoser\PdfGenerator\Font\Backend\File\TableVisitor;
 
 /**
  * the IS/2 table defines spacing & some more details for windows platform

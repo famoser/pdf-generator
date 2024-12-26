@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content;
+namespace Famoser\PdfGenerator\Frontend\Content;
 
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
-use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
-use PdfGenerator\Frontend\Printer;
+use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Printer;
 
 class Rectangle extends AbstractContent
 {

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File\Object\Base;
+namespace Famoser\PdfGenerator\Backend\File\Object\Base;
 
-use PdfGenerator\Backend\File\ObjectVisitor;
+use Famoser\PdfGenerator\Backend\File\ObjectVisitor;
 
 abstract class BaseObject
 {

@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend;
+namespace Famoser\PdfGenerator\Backend;
 
-use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
-use PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
-use PdfGenerator\Backend\Catalog\Font\Structure\CMap;
-use PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
-use PdfGenerator\Backend\Catalog\Page;
-use PdfGenerator\Backend\File\File;
-use PdfGenerator\Backend\File\Object\Base\BaseObject;
-use PdfGenerator\Backend\File\Object\DictionaryObject;
-use PdfGenerator\Backend\File\Object\StreamObject;
-use PdfGenerator\Backend\File\Token\DictionaryToken;
+use Famoser\PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CMap;
+use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
+use Famoser\PdfGenerator\Backend\Catalog\Page;
+use Famoser\PdfGenerator\Backend\File\File;
+use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
+use Famoser\PdfGenerator\Backend\File\Object\DictionaryObject;
+use Famoser\PdfGenerator\Backend\File\Object\StreamObject;
+use Famoser\PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class CatalogVisitor
 {

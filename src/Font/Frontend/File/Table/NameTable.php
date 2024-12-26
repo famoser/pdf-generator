@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table;
 
-use PdfGenerator\Font\Frontend\File\Table\Name\LangTagRecord;
-use PdfGenerator\Font\Frontend\File\Table\Name\NameRecord;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Name\LangTagRecord;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\Name\NameRecord;
 
 /**
  * the name table associates strings with the font for different languages.

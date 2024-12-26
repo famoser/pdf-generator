@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure;
+namespace Famoser\PdfGenerator\Backend\Structure;
 
-use PdfGenerator\Backend\Catalog\Catalog;
-use PdfGenerator\Backend\Catalog\Page as CatalogPage;
-use PdfGenerator\Backend\Catalog\Pages;
-use PdfGenerator\Backend\Structure\Document\DocumentResources;
-use PdfGenerator\Backend\Structure\Document\Page;
-use PdfGenerator\Backend\Structure\Optimization\Configuration;
+use Famoser\PdfGenerator\Backend\Catalog\Catalog;
+use Famoser\PdfGenerator\Backend\Catalog\Page as CatalogPage;
+use Famoser\PdfGenerator\Backend\Catalog\Pages;
+use Famoser\PdfGenerator\Backend\Structure\Document\DocumentResources;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page;
+use Famoser\PdfGenerator\Backend\Structure\Optimization\Configuration;
 
 class Document
 {

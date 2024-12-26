@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Unit\Font\Resources\GlyphNameMapping;
+namespace Famoser\PdfGenerator\Tests\Unit\Font\Resources\GlyphNameMapping;
 
-use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
+use Famoser\PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 use PHPUnit\Framework\TestCase;
 
 class FactoryTest extends TestCase

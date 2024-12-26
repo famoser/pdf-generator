@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document;
+namespace Famoser\PdfGenerator\IR\Document;
 
-use PdfGenerator\Backend\Structure\Document\Page as BackendPage;
-use PdfGenerator\IR\Document\Content\Base\BaseContent;
-use PdfGenerator\IR\Document\Resource\DocumentResources;
-use PdfGenerator\IR\Document\Resource\PageResources;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page as BackendPage;
+use Famoser\PdfGenerator\IR\Document\Content\Base\BaseContent;
+use Famoser\PdfGenerator\IR\Document\Resource\DocumentResources;
+use Famoser\PdfGenerator\IR\Document\Resource\PageResources;
 
 class Page
 {

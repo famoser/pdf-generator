@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 
-use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\Layout\Parts\Row;
-use PdfGenerator\Frontend\Layout\Style\ColumnSize;
-use PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
-use PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 
 readonly class GridMeasurer
 {

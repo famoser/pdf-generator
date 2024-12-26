@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Integration\Font\Frontend;
+namespace Famoser\PdfGenerator\Tests\Integration\Font\Frontend;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
-use PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
-use PdfGenerator\Font\Frontend\File\Table\CMapTable;
-use PdfGenerator\Font\Frontend\File\Table\GlyfTable;
-use PdfGenerator\Font\Frontend\File\Table\HeadTable;
-use PdfGenerator\Font\Frontend\File\Table\HHeaTable;
-use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
-use PdfGenerator\Font\Frontend\File\Table\LocaTable;
-use PdfGenerator\Font\Frontend\File\Table\MaxPTable;
-use PdfGenerator\Font\Frontend\File\Table\NameTable;
-use PdfGenerator\Font\Frontend\FileReader;
-use PdfGenerator\Font\Frontend\StreamReader;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMapTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\GlyfTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HeadTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HHeaTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HMtxTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\LocaTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\MaxPTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\NameTable;
+use Famoser\PdfGenerator\Font\Frontend\FileReader;
+use Famoser\PdfGenerator\Font\Frontend\StreamReader;
 use PHPUnit\Framework\TestCase;
 
 class FileReaderTest extends TestCase

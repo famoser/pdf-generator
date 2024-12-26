@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table;
 
-use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
 
 /**
  * the horizontal metrics table defines how the horizontal font has to be rendered

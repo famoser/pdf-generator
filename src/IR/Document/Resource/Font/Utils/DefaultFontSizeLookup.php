@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource\Font\Utils;
+namespace Famoser\PdfGenerator\IR\Document\Resource\Font\Utils;
 
 class DefaultFontSizeLookup
 {

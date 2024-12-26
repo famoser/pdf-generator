@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Integration\Frontend\LinearDocument;
+namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\Layout\Parts\Row;
-use PdfGenerator\Frontend\Layout\Style\BlockStyle;
-use PdfGenerator\Frontend\Layout\Style\ColumnSize;
-use PdfGenerator\Frontend\Layout\Table;
-use PdfGenerator\Frontend\LinearDocument;
-use PdfGenerator\Frontend\Resource\Font;
-use PdfGenerator\IR\Document\Content\Common\Color;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
+use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
+use Famoser\PdfGenerator\Frontend\Layout\Table;
+use Famoser\PdfGenerator\Frontend\LinearDocument;
+use Famoser\PdfGenerator\Frontend\Resource\Font;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
 class TableTestCase extends LinearDocumentTestCase
 {

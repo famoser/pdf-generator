@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Measure;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure;
 
-use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\Layout\Block;
-use PdfGenerator\Frontend\Layout\ContentBlock;
-use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\Layout\Grid;
-use PdfGenerator\Frontend\Layout\Table;
-use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
-use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
-use PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\GridMeasurer;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Block;
+use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Flow;
+use Famoser\PdfGenerator\Frontend\Layout\Grid;
+use Famoser\PdfGenerator\Frontend\Layout\Table;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\GridMeasurer;
 
 /**
  * Measurements allow the layout engine to plan the layout. It contains:

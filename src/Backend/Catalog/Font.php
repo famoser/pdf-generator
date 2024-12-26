@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Catalog;
+namespace Famoser\PdfGenerator\Backend\Catalog;
 
-use PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
+use Famoser\PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 
 abstract readonly class Font extends BaseIdentifiableStructure
 {

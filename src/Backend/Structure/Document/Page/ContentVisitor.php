@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document\Page;
+namespace Famoser\PdfGenerator\Backend\Structure\Document\Page;
 
-use PdfGenerator\Backend\Catalog\Content;
-use PdfGenerator\Backend\Structure\Document\DocumentResources;
-use PdfGenerator\Backend\Structure\Document\Font;
-use PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
-use PdfGenerator\Backend\Structure\Document\Page\Content\ParagraphContent;
-use PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
-use PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
-use PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
-use PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
+use Famoser\PdfGenerator\Backend\Catalog\Content;
+use Famoser\PdfGenerator\Backend\Structure\Document\DocumentResources;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\ParagraphContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
 class ContentVisitor
 {

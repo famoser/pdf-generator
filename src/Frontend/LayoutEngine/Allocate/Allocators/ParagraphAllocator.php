@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
 
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Resource\Font\FontMeasurement;
-use PdfGenerator\Frontend\Resource\Font\FontRepository;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontMeasurement;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 
 readonly class ParagraphAllocator
 {

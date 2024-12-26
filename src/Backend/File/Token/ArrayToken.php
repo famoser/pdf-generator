@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File\Token;
+namespace Famoser\PdfGenerator\Backend\File\Token;
 
-use PdfGenerator\Backend\File\Token\Base\BaseToken;
-use PdfGenerator\Backend\File\TokenVisitor;
+use Famoser\PdfGenerator\Backend\File\Token\Base\BaseToken;
+use Famoser\PdfGenerator\Backend\File\TokenVisitor;
 
 class ArrayToken extends BaseToken
 {

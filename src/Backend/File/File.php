@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File;
+namespace Famoser\PdfGenerator\Backend\File;
 
-use PdfGenerator\Backend\File\Object\DictionaryObject;
-use PdfGenerator\Backend\File\Object\StreamObject;
-use PdfGenerator\Backend\File\Structure\Body;
-use PdfGenerator\Backend\File\Structure\CrossReferenceTable;
-use PdfGenerator\Backend\File\Structure\FileHeader;
-use PdfGenerator\Backend\File\Structure\FileTrailer;
+use Famoser\PdfGenerator\Backend\File\Object\DictionaryObject;
+use Famoser\PdfGenerator\Backend\File\Object\StreamObject;
+use Famoser\PdfGenerator\Backend\File\Structure\Body;
+use Famoser\PdfGenerator\Backend\File\Structure\CrossReferenceTable;
+use Famoser\PdfGenerator\Backend\File\Structure\FileHeader;
+use Famoser\PdfGenerator\Backend\File\Structure\FileTrailer;
 
 class File
 {

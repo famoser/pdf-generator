@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use PdfGenerator\Frontend\Content\AbstractContent;
-use PdfGenerator\Frontend\Content\Rectangle;
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
-use PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
+use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
 
 readonly class ContentAllocation
 {

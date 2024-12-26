@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR;
+namespace Famoser\PdfGenerator\IR;
 
-use PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
-use PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
-use PdfGenerator\Backend\Structure\Document\Image as BackendImage;
-use PdfGenerator\IR\Analysis\AnalysisResult;
-use PdfGenerator\IR\Document\Resource\Font\DefaultFont;
-use PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
-use PdfGenerator\IR\Document\Resource\Font\Utils\DefaultFontType1Mapping;
-use PdfGenerator\IR\Document\Resource\Image;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
+use Famoser\PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use Famoser\PdfGenerator\IR\Analysis\AnalysisResult;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\DefaultFont;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\Utils\DefaultFontType1Mapping;
+use Famoser\PdfGenerator\IR\Document\Resource\Image;
 
 readonly class DocumentVisitor
 {

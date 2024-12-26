@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Integration\Frontend\LinearDocument;
+namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
-use PdfGenerator\Frontend\LinearDocument;
+use Famoser\PdfGenerator\Frontend\LinearDocument;
 use PHPUnit\Framework\TestCase;
 
 abstract class LinearDocumentTestCase extends TestCase

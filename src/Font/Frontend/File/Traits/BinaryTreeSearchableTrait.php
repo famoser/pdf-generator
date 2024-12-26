@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Traits;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Traits;
 
 /**
  * repeatedly, the TTF format contains information how to construct a binary tree over some value range in question

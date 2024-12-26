@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Analysis;
+namespace Famoser\PdfGenerator\IR\Analysis;
 
-use PdfGenerator\IR\Document\Content\Common\Size;
-use PdfGenerator\IR\Document\Content\ContentVisitorInterface;
-use PdfGenerator\IR\Document\Content\ImagePlacement;
-use PdfGenerator\IR\Document\Content\Paragraph;
-use PdfGenerator\IR\Document\Content\Rectangle;
-use PdfGenerator\IR\Document\Content\Text;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Size;
+use Famoser\PdfGenerator\IR\Document\Content\ContentVisitorInterface;
+use Famoser\PdfGenerator\IR\Document\Content\ImagePlacement;
+use Famoser\PdfGenerator\IR\Document\Content\Paragraph;
+use Famoser\PdfGenerator\IR\Document\Content\Rectangle;
+use Famoser\PdfGenerator\IR\Document\Content\Text;
 
 /**
  * @implements ContentVisitorInterface<void>

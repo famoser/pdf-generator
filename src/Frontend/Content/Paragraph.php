@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Content;
+namespace Famoser\PdfGenerator\Frontend\Content;
 
-use PdfGenerator\Frontend\Content\Paragraph\Phrase;
-use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
-use PdfGenerator\Frontend\Printer;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph\Phrase;
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Printer;
 
 class Paragraph extends AbstractContent
 {

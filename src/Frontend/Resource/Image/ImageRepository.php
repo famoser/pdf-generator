@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Resource\Image;
+namespace Famoser\PdfGenerator\Frontend\Resource\Image;
 
-use PdfGenerator\IR\Document\Resource\Image;
-use PdfGenerator\Utils\SingletonTrait;
+use Famoser\PdfGenerator\IR\Document\Resource\Image;
+use Famoser\PdfGenerator\Utils\SingletonTrait;
 
 class ImageRepository
 {

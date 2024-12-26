@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File\Structure;
+namespace Famoser\PdfGenerator\Backend\File\Structure;
 
-use PdfGenerator\Backend\File\Structure\Base\BaseStructure;
-use PdfGenerator\Backend\File\StructureVisitor;
+use Famoser\PdfGenerator\Backend\File\Structure\Base\BaseStructure;
+use Famoser\PdfGenerator\Backend\File\StructureVisitor;
 
 class FileHeader extends BaseStructure
 {

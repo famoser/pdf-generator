@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource;
+namespace Famoser\PdfGenerator\IR\Document\Resource;
 
-use PdfGenerator\IR\Document\Base\BaseDocumentResource;
-use PdfGenerator\IR\DocumentVisitor;
+use Famoser\PdfGenerator\IR\Document\Base\BaseDocumentResource;
+use Famoser\PdfGenerator\IR\DocumentVisitor;
 
 readonly class Image extends BaseDocumentResource
 {

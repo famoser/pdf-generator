@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table\CMap;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table\CMap;
 
-use PdfGenerator\Font\Backend\StreamWriter;
+use Famoser\PdfGenerator\Font\Backend\StreamWriter;
 
 class FormatVisitor
 {

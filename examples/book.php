@@ -2,14 +2,14 @@
 
 include '../vendor/autoload.php';
 
-use PdfGenerator\Frontend\Content\Paragraph;
-use PdfGenerator\Frontend\Content\Rectangle;
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
-use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\Layout\ContentBlock;
-use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\LinearDocument;
-use PdfGenerator\Frontend\Resource\Font;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
+use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Flow;
+use Famoser\PdfGenerator\Frontend\LinearDocument;
+use Famoser\PdfGenerator\Frontend\Resource\Font;
 
 $document = new LinearDocument([210, 297], 20);
 

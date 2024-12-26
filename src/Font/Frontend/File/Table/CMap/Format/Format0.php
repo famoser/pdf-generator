@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Frontend\File\Table\CMap\Format;
+namespace Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\FormatVisitorInterface;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\FormatVisitorInterface;
 
 /**
  * two-byte encoding format for continuous code ranges with spaces in between.

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Catalog\Base;
+namespace Famoser\PdfGenerator\Backend\Catalog\Base;
 
 abstract readonly class BaseIdentifiableStructure extends BaseStructure
 {

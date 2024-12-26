@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource\Font;
+namespace Famoser\PdfGenerator\IR\Document\Resource\Font;
 
-use PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
-use PdfGenerator\IR\Document\Resource\Font;
-use PdfGenerator\IR\Document\Resource\Font\Utils\DefaultFontSizeLookup;
-use PdfGenerator\IR\DocumentVisitor;
+use Famoser\PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
+use Famoser\PdfGenerator\IR\Document\Resource\Font;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\Utils\DefaultFontSizeLookup;
+use Famoser\PdfGenerator\IR\DocumentVisitor;
 
 readonly class DefaultFont extends Font
 {

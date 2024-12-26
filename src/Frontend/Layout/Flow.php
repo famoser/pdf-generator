@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout;
+namespace Famoser\PdfGenerator\Frontend\Layout;
 
-use PdfGenerator\Frontend\Content\AbstractContent;
-use PdfGenerator\Frontend\Layout\Style\FlowDirection;
-use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
+use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 class Flow extends AbstractBlock
 {

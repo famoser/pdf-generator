@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource;
+namespace Famoser\PdfGenerator\IR\Document\Resource;
 
-use PdfGenerator\IR\Document\Base\BaseDocumentResource;
-use PdfGenerator\IR\Document\Resource\Font\FontVisitor;
+use Famoser\PdfGenerator\IR\Document\Base\BaseDocumentResource;
+use Famoser\PdfGenerator\IR\Document\Resource\Font\FontVisitor;
 
 abstract readonly class Font extends BaseDocumentResource
 {

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\File;
+namespace Famoser\PdfGenerator\Backend\File;
 
-use PdfGenerator\Backend\File\Structure\CrossReferenceTable;
-use PdfGenerator\Backend\File\Token\DictionaryToken;
+use Famoser\PdfGenerator\Backend\File\Structure\CrossReferenceTable;
+use Famoser\PdfGenerator\Backend\File\Token\DictionaryToken;
 
 class StructureVisitor
 {

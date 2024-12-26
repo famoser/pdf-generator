@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\IR\Document\Resource\State;
+namespace Famoser\PdfGenerator\IR\Document\Resource\State;
 
-use PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
 
 class GeneralGraphicStateRepository
 {

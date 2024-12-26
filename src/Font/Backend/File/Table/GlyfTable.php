@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table;
 
-use PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
-use PdfGenerator\Font\Backend\File\Table\Glyf\ComponentGlyf;
-use PdfGenerator\Font\Backend\File\TableVisitor;
-use PdfGenerator\Font\Backend\File\Traits\BoundingBoxTrait;
-use PdfGenerator\Font\Backend\File\Traits\NullableRawContent;
+use Famoser\PdfGenerator\Font\Backend\File\Table\Base\BaseTable;
+use Famoser\PdfGenerator\Font\Backend\File\Table\Glyf\ComponentGlyf;
+use Famoser\PdfGenerator\Font\Backend\File\TableVisitor;
+use Famoser\PdfGenerator\Font\Backend\File\Traits\BoundingBoxTrait;
+use Famoser\PdfGenerator\Font\Backend\File\Traits\NullableRawContent;
 
 /**
  * the glyph table specified the appearance of the glyphs

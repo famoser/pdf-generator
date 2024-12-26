@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Backend\Structure\Document;
+namespace Famoser\PdfGenerator\Backend\Structure\Document;
 
-use PdfGenerator\Backend\Catalog\Font as CatalogFont;
-use PdfGenerator\Backend\Catalog\Image as CatalogImage;
-use PdfGenerator\Backend\Structure\Document\Base\BaseDocumentStructure;
-use PdfGenerator\Backend\Structure\DocumentVisitor;
+use Famoser\PdfGenerator\Backend\Catalog\Font as CatalogFont;
+use Famoser\PdfGenerator\Backend\Catalog\Image as CatalogImage;
+use Famoser\PdfGenerator\Backend\Structure\Document\Base\BaseDocumentStructure;
+use Famoser\PdfGenerator\Backend\Structure\DocumentVisitor;
 
 class DocumentResources
 {

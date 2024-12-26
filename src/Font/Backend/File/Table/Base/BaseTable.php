@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table\Base;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table\Base;
 
-use PdfGenerator\Font\Backend\File\TableVisitor;
+use Famoser\PdfGenerator\Font\Backend\File\TableVisitor;
 
 abstract class BaseTable
 {

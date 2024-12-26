@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Tests\Unit\Font\IR\Utils\CMap;
+namespace Famoser\PdfGenerator\Tests\Unit\Font\IR\Utils\CMap;
 
-use PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
-use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Format\Format4;
+use Famoser\PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
 use PHPUnit\Framework\TestCase;
 
 class GlyphIndexFormatVisitorTest extends TestCase

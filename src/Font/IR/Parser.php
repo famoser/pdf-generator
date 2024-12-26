@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR;
+namespace Famoser\PdfGenerator\Font\IR;
 
-use PdfGenerator\Font\Frontend\File\FontFile;
-use PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
-use PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
-use PdfGenerator\Font\Frontend\File\Table\CMapTable;
-use PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
-use PdfGenerator\Font\Frontend\File\Table\HMtxTable;
-use PdfGenerator\Font\Frontend\FileReader;
-use PdfGenerator\Font\Frontend\StreamReader;
-use PdfGenerator\Font\IR\Structure\BoundingBox;
-use PdfGenerator\Font\IR\Structure\Character;
-use PdfGenerator\Font\IR\Structure\Font;
-use PdfGenerator\Font\IR\Structure\PostScriptInfo;
-use PdfGenerator\Font\IR\Structure\TableDirectory;
-use PdfGenerator\Font\IR\Structure\Tables\FontInformation;
-use PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
-use PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
+use Famoser\PdfGenerator\Font\Frontend\File\FontFile;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\FormatReader;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMap\Subtable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\CMapTable;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HMtx\LongHorMetric;
+use Famoser\PdfGenerator\Font\Frontend\File\Table\HMtxTable;
+use Famoser\PdfGenerator\Font\Frontend\FileReader;
+use Famoser\PdfGenerator\Font\Frontend\StreamReader;
+use Famoser\PdfGenerator\Font\IR\Structure\BoundingBox;
+use Famoser\PdfGenerator\Font\IR\Structure\Character;
+use Famoser\PdfGenerator\Font\IR\Structure\Font;
+use Famoser\PdfGenerator\Font\IR\Structure\PostScriptInfo;
+use Famoser\PdfGenerator\Font\IR\Structure\TableDirectory;
+use Famoser\PdfGenerator\Font\IR\Structure\Tables\FontInformation;
+use Famoser\PdfGenerator\Font\IR\Utils\CMap\GlyphIndexFormatVisitor;
+use Famoser\PdfGenerator\Font\Resources\GlyphNameMapping\Factory;
 
 readonly class Parser
 {

@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\LayoutEngine\Allocate;
+namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use PdfGenerator\Frontend\Layout\AbstractBlock;
-use PdfGenerator\Frontend\Layout\Block;
-use PdfGenerator\Frontend\Layout\ContentBlock;
-use PdfGenerator\Frontend\Layout\Flow;
-use PdfGenerator\Frontend\Layout\Grid;
-use PdfGenerator\Frontend\Layout\Table;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\FlowAllocator;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\GridAllocator;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\TableAllocator;
-use PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Block;
+use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Flow;
+use Famoser\PdfGenerator\Frontend\Layout\Grid;
+use Famoser\PdfGenerator\Frontend\Layout\Table;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\FlowAllocator;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\GridAllocator;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\TableAllocator;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
 
 /**
  * This allocates content on the PDF.

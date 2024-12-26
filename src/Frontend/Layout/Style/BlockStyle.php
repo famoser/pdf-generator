@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend\Layout\Style;
+namespace Famoser\PdfGenerator\Frontend\Layout\Style;
 
-use PdfGenerator\IR\Document\Content\Common\Color;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
 class BlockStyle
 {

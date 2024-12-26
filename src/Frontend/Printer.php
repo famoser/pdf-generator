@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Frontend;
+namespace Famoser\PdfGenerator\Frontend;
 
-use PdfGenerator\Frontend\Content\Paragraph\Phrase;
-use PdfGenerator\Frontend\Content\Style\DrawingStyle;
-use PdfGenerator\Frontend\Content\Style\TextStyle;
-use PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
-use PdfGenerator\Frontend\Resource\Font\FontRepository;
-use PdfGenerator\Frontend\Resource\Image\ImageRepository;
-use PdfGenerator\IR\Document;
-use PdfGenerator\IR\Document\Content\Common\Position;
-use PdfGenerator\IR\Document\Content\Common\Size;
-use PdfGenerator\IR\Document\Content\ImagePlacement;
-use PdfGenerator\IR\Document\Content\Paragraph;
-use PdfGenerator\IR\Document\Content\Rectangle;
-use PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
-use PdfGenerator\IR\Document\Content\Text;
-use PdfGenerator\IR\Document\Page;
+use Famoser\PdfGenerator\Frontend\Content\Paragraph\Phrase;
+use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
+use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
+use Famoser\PdfGenerator\IR\Document;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Position;
+use Famoser\PdfGenerator\IR\Document\Content\Common\Size;
+use Famoser\PdfGenerator\IR\Document\Content\ImagePlacement;
+use Famoser\PdfGenerator\IR\Document\Content\Paragraph;
+use Famoser\PdfGenerator\IR\Document\Content\Rectangle;
+use Famoser\PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
+use Famoser\PdfGenerator\IR\Document\Content\Text;
+use Famoser\PdfGenerator\IR\Document\Page;
 
 readonly class Printer
 {

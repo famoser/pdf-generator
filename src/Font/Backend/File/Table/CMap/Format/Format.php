@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\Backend\File\Table\CMap\Format;
+namespace Famoser\PdfGenerator\Font\Backend\File\Table\CMap\Format;
 
-use PdfGenerator\Font\Backend\File\Table\CMap\FormatVisitor;
-use PdfGenerator\Font\Backend\StreamWriter;
+use Famoser\PdfGenerator\Font\Backend\File\Table\CMap\FormatVisitor;
+use Famoser\PdfGenerator\Font\Backend\StreamWriter;
 
 abstract class Format
 {

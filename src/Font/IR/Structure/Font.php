@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PdfGenerator\Font\IR\Structure;
+namespace Famoser\PdfGenerator\Font\IR\Structure;
 
-use PdfGenerator\Font\IR\Structure\Tables\FontInformation;
+use Famoser\PdfGenerator\Font\IR\Structure\Tables\FontInformation;
 
 class Font
 {
