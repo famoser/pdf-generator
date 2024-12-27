@@ -819,11 +819,10 @@ readonly class FileWriter
             $componentCharacterCount = \count($componentCharacters);
             for ($i = 0; $i < $componentCharacterCount; ++$i) {
                 $componentCharacter = $componentCharacters[$i];
-                if (null !== $componentCharacter) {
-                    // guaranteed to return result as all component characters part of font by @ref ensureComponentCharactersIncluded
-                    $index = $characterLookup->offsetGet($componentCharacter);
-                    $character->getGlyfTable()->getComponentGlyphs()[$i]->setGlyphIndex($index);
-                }
+
+                // guaranteed to return result as all component characters part of font by @ref ensureComponentCharactersIncluded
+                $index = $characterLookup->offsetGet($componentCharacter);
+                $character->getGlyfTable()->getComponentGlyphs()[$i]->setGlyphIndex($index);
             }
         }
     }
