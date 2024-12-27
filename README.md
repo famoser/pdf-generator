@@ -2,8 +2,6 @@
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![PHP Composer](https://github.com/famoser/pdf-generator/actions/workflows/php.yml/badge.svg)](https://github.com/famoser/pdf-generator/actions/workflows/php.yml)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/famoser/pdf-generator/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/famoser/pdf-generator/?branch=main)
-[![Scrutinizer Coverage](https://scrutinizer-ci.com/g/famoser/pdf-generator/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/famoser/pdf-generator/?branch=main)
 
 ## About
 
