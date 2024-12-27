@@ -24,10 +24,8 @@ readonly class ParagraphAllocator
         $this->fontRepository = FontRepository::instance();
     }
 
-    public function allocate(Paragraph $paragraph, ?Paragraph &$overflow = null, float &$usedHeight = 0, float &$usedWidth = 0): Paragraph
+    public function allocate(Paragraph $paragraph, ?Paragraph &$overflow = null, float &$usedHeight = 0.0, float &$usedWidth = 0.0): Paragraph
     {
-        $usedWidth = 0;
-        $usedHeight = 0;
         $pendingPhrases = [];
         $allocatedPhrases = $this->allocatedParagraph($paragraph->getPhrases(), $usedWidth, $usedHeight, $pendingPhrases);
 

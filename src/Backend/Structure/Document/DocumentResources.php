@@ -19,12 +19,12 @@ use Famoser\PdfGenerator\Backend\Structure\DocumentVisitor;
 class DocumentResources
 {
     /**
-     * @var CatalogFont[]
+     * @var array<int, mixed>
      */
     private array $fontCache = [];
 
     /**
-     * @var CatalogImage[]
+     * @var array<int, mixed>
      */
     private array $imageCache = [];
 
@@ -43,11 +43,7 @@ class DocumentResources
     }
 
     /**
-     * @template T
-     *
-     * @param array<string, T> $cache
-     *
-     * @return T
+     * @param array<int, mixed> $cache
      */
     private function getOrCreate(BaseDocumentStructure $structure, array &$cache): mixed
     {

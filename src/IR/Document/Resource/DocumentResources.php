@@ -43,11 +43,7 @@ class DocumentResources
     }
 
     /**
-     * @template T
-     *
-     * @param array<string, T> $cache
-     *
-     * @return T
+     * @param array<string, mixed> $cache
      */
     private function getOrCreate(BaseDocumentResource $structure, array &$cache): mixed
     {
