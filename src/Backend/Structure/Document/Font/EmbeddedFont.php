@@ -18,7 +18,7 @@ use Famoser\PdfGenerator\Backend\Structure\DocumentVisitor;
 
 readonly class EmbeddedFont extends Font
 {
-    public function __construct(private string $fontData, private \PdfGenerator\Font\IR\Structure\Font $font, private string $charactersUsedInText)
+    public function __construct(private string $fontData, private \Famoser\PdfGenerator\Font\IR\Structure\Font $font, private string $charactersUsedInText)
     {
     }
 
@@ -27,7 +27,7 @@ readonly class EmbeddedFont extends Font
         return $this->fontData;
     }
 
-    public function getFont(): \PdfGenerator\Font\IR\Structure\Font
+    public function getFont(): \Famoser\PdfGenerator\Font\IR\Structure\Font
     {
         return $this->font;
     }

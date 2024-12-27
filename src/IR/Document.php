@@ -35,7 +35,7 @@ class Document
         return $this->pages;
     }
 
-    public function render(): \PdfGenerator\Backend\Structure\Document
+    public function render(): \Famoser\PdfGenerator\Backend\Structure\Document
     {
         $analyzeContentVisitor = new AnalyzeContentVisitor();
         foreach ($this->pages as $page) {
@@ -45,7 +45,7 @@ class Document
         }
         $analysisResult = $analyzeContentVisitor->getAnalysisResult();
 
-        $document = new \PdfGenerator\Backend\Structure\Document();
+        $document = new \Famoser\PdfGenerator\Backend\Structure\Document();
         $documentVisitor = new DocumentVisitor($analysisResult);
         $documentResources = new DocumentResources($documentVisitor);
         foreach ($this->pages as $page) {

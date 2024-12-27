@@ -33,7 +33,7 @@ readonly class Image extends BaseDocumentResource
         return new self($imagePath, $data, $type, $width, $height);
     }
 
-    public function accept(DocumentVisitor $visitor): \PdfGenerator\Backend\Structure\Document\Image
+    public function accept(DocumentVisitor $visitor): \Famoser\PdfGenerator\Backend\Structure\Document\Image
     {
         return $visitor->visitImage($this);
     }
