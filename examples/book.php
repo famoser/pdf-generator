@@ -8,6 +8,7 @@ use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
+use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use Famoser\PdfGenerator\Frontend\LinearDocument;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 
@@ -21,7 +22,7 @@ $text = file_get_contents('ernest-hemingway---cat-in-the-rain.txt');
 $textParagraphs = explode("\n\n", $text);
 
 // title
-$flow = new Flow(Flow::DIRECTION_COLUMN);
+$flow = new Flow(FlowDirection::COLUMN);
 $paragraph = new Paragraph();
 $paragraph->add($headerText, "Cat in the rain");
 $paragraph->add($normalText, "\nErnest Hemingway\n");
