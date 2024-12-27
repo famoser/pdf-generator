@@ -16,11 +16,12 @@
     "ext-json": "*"
   },
   "require-dev": {
+    "famoser/agnes": "^4.2",
     "friendsofphp/php-cs-fixer": "^3",
     "mockery/mockery": "^1.2",
+    "phpstan/phpstan": "^2.0",
     "phpunit/phpunit": "^9.5.4",
-    "rector/rector": "^2",
-    "famoser/agnes": "^4.2"
+    "rector/rector": "^2"
   },
   "autoload": {
     "psr-4": {
