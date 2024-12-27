@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator\Transaction\Base;
+namespace Famoser\DocumentGenerator\Transaction\Base;
 
 interface RootTransactionInterface
 {

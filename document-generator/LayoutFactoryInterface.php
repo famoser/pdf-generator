@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator;
+namespace Famoser\DocumentGenerator;
 
-use DocumentGenerator\Layout\AutoColumnLayoutInterface;
-use DocumentGenerator\Layout\Configuration\ColumnConfiguration;
-use DocumentGenerator\Layout\TableLayoutInterface;
+use Famoser\DocumentGenerator\Layout\AutoColumnLayoutInterface;
+use Famoser\DocumentGenerator\Layout\Configuration\ColumnConfiguration;
+use Famoser\DocumentGenerator\Layout\TableLayoutInterface;
 
 interface LayoutFactoryInterface
 {

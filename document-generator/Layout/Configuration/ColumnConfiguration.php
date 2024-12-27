@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator\Layout\Configuration;
+namespace Famoser\DocumentGenerator\Layout\Configuration;
 
 class ColumnConfiguration
 {

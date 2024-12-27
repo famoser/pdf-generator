@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator\Transaction;
+namespace Famoser\DocumentGenerator\Transaction;
 
-use DocumentGenerator\Transaction\Base\RootTransactionInterface;
+use Famoser\DocumentGenerator\Transaction\Base\RootTransactionInterface;
 
 interface TransactionInterface extends RootTransactionInterface
 {

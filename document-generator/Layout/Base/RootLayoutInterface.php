@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator\Layout\Base;
+namespace Famoser\DocumentGenerator\Layout\Base;
 
-use DocumentGenerator\Transaction\TransactionInterface;
+use Famoser\DocumentGenerator\Transaction\TransactionInterface;
 
 interface RootLayoutInterface
 {
