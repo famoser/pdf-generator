@@ -16,7 +16,7 @@ use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
 trait ColumnSizesTrait
 {
     /**
-     * @return (string|float|ColumnSize)[]
+     * @return array<int, string|float|ColumnSize>
      */
     public function getColumnSizes(): array
     {
@@ -27,7 +27,7 @@ trait ColumnSizesTrait
      * returns all column sizes for all columns used in the grid.
      * if column size undefined for some column, defaults to AUTO.
      *
-     * @return (float|string|ColumnSize)[]
+     * @return array<int, float|string|ColumnSize>
      */
     public function getNormalizedColumnSizes(): array
     {

@@ -26,7 +26,7 @@ class Grid extends AbstractBlock
     private array $rows = [];
 
     /**
-     * @param array<string|float|ColumnSize> $columnSizes
+     * @param array<int, ColumnSize|string|float> $columnSizes
      */
     public function __construct(private readonly float $gap = 0, private readonly float $perpendicularGap = 0, private readonly array $columnSizes = [])
     {
