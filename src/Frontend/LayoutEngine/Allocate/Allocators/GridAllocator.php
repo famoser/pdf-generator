@@ -106,7 +106,7 @@ readonly class GridAllocator
 
     /**
      * @param Row[]                         $rows
-     * @param (ColumnSize|string|float)[] $columnSizes
+     * @param array<int, ColumnSize|string|float> $columnSizes
      * @param array<int, float>             $widthsPerColumn
      *
      * @return array<int, BlockAllocation[]>
@@ -118,6 +118,7 @@ readonly class GridAllocator
         // allocate fixed size or minimal size columns
         $blockAllocationsPerColumn = array_fill(0, \count($columnSizes), []);
         $widthsPerColumn = array_fill(0, \count($columnSizes), 0.0);
+        /** @var int[] $toBeMeasuredColumns */
         $toBeMeasuredColumns = [];
         foreach ($columnSizes as $columnIndex => $columnSize) {
             if (ColumnSize::MINIMAL !== $columnSize && !\is_float($columnSize)) {
@@ -156,12 +157,12 @@ readonly class GridAllocator
         }
 
         // distribute remaining weight to auto and unit columns
-        /** @var float[] $unitsPerColumn */
+        /** @var array<int, float> $unitsPerColumn */
         $unitsPerColumn = [];
         $totalUnits = 0;
         $totalUnitsColumnSize = 0;
         foreach ($toBeMeasuredColumns as $columnIndex) {
-            $optimalColumnWidth = $totalWeight ? $weightPerColumn[$columnIndex] / $totalWeight * $remainingWidth : 0;
+            $optimalColumnWidth = $totalWeight ? $weightPerColumn[$columnIndex] / $totalWeight * $remainingWidth : 0.0;
             $columnSize = $columnSizes[$columnIndex];
             if (ColumnSize::AUTO === $columnSize) {
                 $widthsPerColumn[$columnIndex] = $optimalColumnWidth;

@@ -31,7 +31,7 @@ class Table extends AbstractBlock
     private array $body = [];
 
     /**
-     * @param (float|ColumnSize)[] $columnSizes
+     * @param array<int, ColumnSize|string|float> $columnSizes
      */
     public function __construct(private readonly array $columnSizes = [])
     {
