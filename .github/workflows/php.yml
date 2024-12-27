@@ -58,10 +58,4 @@ jobs:
 
       - name: Check dependencies
         run: |
-          wget -q -O local-php-security-checker https://github.com/fabpot/local-php-security-checker/releases/download/v2.0.6/local-php-security-checker_2.0.6_linux_amd64
-          chmod +x local-php-security-checker
-          ./local-php-security-checker
-
-      - name: Upload Scrutinizer coverage
-        run: |
-          ./vendor/bin/ocular code-coverage:upload --format=php-clover ./build/logs/clover.xml
+          composer audit
