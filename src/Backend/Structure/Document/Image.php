@@ -25,7 +25,7 @@ readonly class Image extends BaseDocumentStructure
     {
     }
 
-    public function accept(DocumentVisitor $documentVisitor): \PdfGenerator\Backend\Catalog\Image
+    public function accept(DocumentVisitor $documentVisitor): \Famoser\PdfGenerator\Backend\Catalog\Image
     {
         return $documentVisitor->visitImage($this);
     }

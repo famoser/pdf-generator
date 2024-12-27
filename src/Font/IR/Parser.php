@@ -47,7 +47,7 @@ readonly class Parser
     {
         $streamReader = new StreamReader($content);
         $cMapFormatReader = new FormatReader();
-        $postFormatReader = new \PdfGenerator\Font\Frontend\File\Table\Post\FormatReader();
+        $postFormatReader = new \Famoser\PdfGenerator\Font\Frontend\File\Table\Post\FormatReader();
         $fileReader = new FileReader($cMapFormatReader, $postFormatReader);
 
         $fontFile = $fileReader->read($streamReader);

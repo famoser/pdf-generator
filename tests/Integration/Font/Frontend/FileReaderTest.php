@@ -44,7 +44,7 @@ class FileReaderTest extends TestCase
     public static function getStructureReader(): FileReader
     {
         $cMapFormatReader = new FormatReader();
-        $postFormatReader = new \PdfGenerator\Font\Frontend\File\Table\Post\FormatReader();
+        $postFormatReader = new \Famoser\PdfGenerator\Font\Frontend\File\Table\Post\FormatReader();
 
         return new FileReader($cMapFormatReader, $postFormatReader);
     }

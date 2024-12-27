@@ -23,7 +23,7 @@ class ImageRepository
      */
     private array $images = [];
 
-    public function getImage(\PdfGenerator\Frontend\Resource\Image $image): Image
+    public function getImage(\Famoser\PdfGenerator\Frontend\Resource\Image $image): Image
     {
         if (!\array_key_exists($image->getSrc(), $this->images)) {
             $image = Image::create($image->getSrc(), $image->getType());

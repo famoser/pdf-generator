@@ -68,7 +68,7 @@ readonly class FileWriter
     /**
      * @param Character[] $characters
      */
-    private function generateHeadTable(\PdfGenerator\Font\Frontend\File\Table\HeadTable $source, array $characters): HeadTable
+    private function generateHeadTable(\Famoser\PdfGenerator\Font\Frontend\File\Table\HeadTable $source, array $characters): HeadTable
     {
         $headTable = new HeadTable();
 
@@ -116,7 +116,7 @@ readonly class FileWriter
     /**
      * @param Character[] $characters
      */
-    private function generateHHeaTable(\PdfGenerator\Font\Frontend\File\Table\HHeaTable $source, array $characters, int $longHorMetricCount): HHeaTable
+    private function generateHHeaTable(\Famoser\PdfGenerator\Font\Frontend\File\Table\HHeaTable $source, array $characters, int $longHorMetricCount): HHeaTable
     {
         $hHeaTable = new HHeaTable();
 
@@ -187,7 +187,7 @@ readonly class FileWriter
     /**
      * @param Character[] $characters
      */
-    private function generateMaxPTable(\PdfGenerator\Font\Frontend\File\Table\MaxPTable $source, array $characters): MaxPTable
+    private function generateMaxPTable(\Famoser\PdfGenerator\Font\Frontend\File\Table\MaxPTable $source, array $characters): MaxPTable
     {
         $maxPTable = new MaxPTable();
 
@@ -507,7 +507,7 @@ readonly class FileWriter
     /**
      * @param Character[] $characters
      */
-    private function generatePostTable(\PdfGenerator\Font\Frontend\File\Table\PostTable $source, array $characters): PostTable
+    private function generatePostTable(\Famoser\PdfGenerator\Font\Frontend\File\Table\PostTable $source, array $characters): PostTable
     {
         $postTable = new PostTable();
 
@@ -526,7 +526,7 @@ readonly class FileWriter
         return $postTable;
     }
 
-    private function generateNameTable(\PdfGenerator\Font\Frontend\File\Table\NameTable $source): NameTable
+    private function generateNameTable(\Famoser\PdfGenerator\Font\Frontend\File\Table\NameTable $source): NameTable
     {
         $nameTable = new NameTable();
 
@@ -604,7 +604,7 @@ readonly class FileWriter
         return $format2;
     }
 
-    private function generateRawTable(\PdfGenerator\Font\Frontend\File\Table\RawTable $table): RawTable
+    private function generateRawTable(\Famoser\PdfGenerator\Font\Frontend\File\Table\RawTable $table): RawTable
     {
         $rawTable = new RawTable();
 
@@ -632,7 +632,7 @@ readonly class FileWriter
     /**
      * @return RawTable[]
      */
-    private function generateRawTables(\PdfGenerator\Font\IR\Structure\TableDirectory $tableDirectory): array
+    private function generateRawTables(\Famoser\PdfGenerator\Font\IR\Structure\TableDirectory $tableDirectory): array
     {
         $tables = array_merge([
             $tableDirectory->getCvtTable(),
@@ -683,7 +683,7 @@ readonly class FileWriter
         return $tableDirectory;
     }
 
-    private function generateGlyfTable(\PdfGenerator\Font\Frontend\File\Table\GlyfTable $source): GlyfTable
+    private function generateGlyfTable(\Famoser\PdfGenerator\Font\Frontend\File\Table\GlyfTable $source): GlyfTable
     {
         $glyfTable = new GlyfTable();
 
@@ -710,7 +710,7 @@ readonly class FileWriter
     /**
      * @param Character[] $characters
      */
-    private function generateOS2Table(\PdfGenerator\Font\Frontend\File\Table\OS2Table $source, array $characters): OS2Table
+    private function generateOS2Table(\Famoser\PdfGenerator\Font\Frontend\File\Table\OS2Table $source, array $characters): OS2Table
     {
         $os2Table = new OS2Table();
 
