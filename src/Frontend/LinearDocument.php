@@ -11,7 +11,7 @@
 
 namespace Famoser\PdfGenerator\Frontend;
 
-use DocumentGenerator\DocumentInterface;
+use Famoser\DocumentGenerator\DocumentInterface;
 use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;

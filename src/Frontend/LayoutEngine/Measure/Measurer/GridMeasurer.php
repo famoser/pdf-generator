@@ -98,7 +98,7 @@ readonly class GridMeasurer
     private function measureColumn(array $rows, int $columnIndex, Measurement $firstRowMeasurement, float &$averageRowDimension): Measurement
     {
         $measurement = $firstRowMeasurement;
-        $totalRowDimension = 0;
+        $totalRowDimension = 0.0;
         foreach ($rows as $rowIndex => $row) {
             if (0 === $rowIndex || !$row->tryGet($columnIndex)) {
                 continue;

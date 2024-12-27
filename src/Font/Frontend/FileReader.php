@@ -32,9 +32,9 @@ use Famoser\PdfGenerator\Font\Frontend\File\Table\PostTable;
 use Famoser\PdfGenerator\Font\Frontend\File\Table\RawTable;
 use Famoser\PdfGenerator\Font\Frontend\File\Table\TableDirectoryEntry;
 
-class FileReader
+readonly class FileReader
 {
-    public function __construct(private readonly FormatReader $cMapFormatReader, private readonly File\Table\Post\FormatReader $postFormatReader)
+    public function __construct(private FormatReader $cMapFormatReader, private File\Table\Post\FormatReader $postFormatReader)
     {
     }
 
@@ -58,11 +58,11 @@ class FileReader
         $font = new FontFile();
         $font->setIsTrueTypeFile($isTrueTypeFile);
 
-        /** @var TableDirectoryEntry $locaEntry */
+        /** @var ?TableDirectoryEntry $locaEntry */
         $locaEntry = null;
-        /** @var TableDirectoryEntry $hmtxEntry */
+        /** @var ?TableDirectoryEntry $hmtxEntry */
         $hmtxEntry = null;
-        /** @var TableDirectoryEntry $glyfEntry */
+        /** @var ?TableDirectoryEntry $glyfEntry */
         $glyfEntry = null;
 
         foreach ($tableDirectoryEntries as $tableDirectoryEntry) {

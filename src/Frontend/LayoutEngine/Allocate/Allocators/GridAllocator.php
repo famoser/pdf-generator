@@ -61,7 +61,7 @@ readonly class GridAllocator
         /** @var BlockAllocation[] $allocatedBlocks */
         $allocatedBlocks = [];
         $overflowRows = $rows;
-        $usedHeight = 0;
+        $usedHeight = 0.0;
         foreach ($heights as $rowIndex => $height) {
             $progressMade = \count($allocatedBlocks) > 0;
             $overflow = $usedHeight + $height > $availableHeight;
@@ -106,7 +106,7 @@ readonly class GridAllocator
 
     /**
      * @param Row[]                         $rows
-     * @param (ColumnSize|string|numeric)[] $columnSizes
+     * @param (ColumnSize|string|float)[] $columnSizes
      * @param array<int, float>             $widthsPerColumn
      *
      * @return array<int, BlockAllocation[]>
@@ -117,15 +117,15 @@ readonly class GridAllocator
 
         // allocate fixed size or minimal size columns
         $blockAllocationsPerColumn = array_fill(0, \count($columnSizes), []);
-        $widthsPerColumn = array_fill(0, \count($columnSizes), 0);
+        $widthsPerColumn = array_fill(0, \count($columnSizes), 0.0);
         $toBeMeasuredColumns = [];
         foreach ($columnSizes as $columnIndex => $columnSize) {
-            if (ColumnSize::MINIMAL !== $columnSize && !\is_numeric($columnSize)) {
+            if (ColumnSize::MINIMAL !== $columnSize && !\is_float($columnSize)) {
                 $toBeMeasuredColumns[] = $columnIndex;
                 continue;
             }
 
-            $usedColumnWidth = 0;
+            $usedColumnWidth = 0.0;
             $blockAllocationsPerColumn[$columnIndex] = static::allocateColumn($rows, $columnIndex, $remainingWidth, $availableHeight, $minimalRowAllocations, $usedColumnWidth);
 
             $columnWidth = ColumnSize::MINIMAL === $columnSize ? $usedColumnWidth : $columnSize;
