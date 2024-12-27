@@ -26,7 +26,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          extensions: xdebug
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
@@ -45,16 +44,16 @@ jobs:
 
       - name: Lint
         run: |
-          export PHP_CS_FIXER_IGNORE_ENV=1 && ./vendor/bin/php-cs-fixer fix --diff --dry-run -v
+          ./vendor/bin/php-cs-fixer fix --diff --dry-run -v
 
       - name: Static analysis
         run: |
-          ./vendor/bin/phpstan analyse src --level 6
-          ./vendor/bin/phpstan analyse tests --level 6
+          ./vendor/bin/phpstan
+          ./vendor/bin/rector --dry-run
 
       - name: Test
         run: |
-          export XDEBUG_MODE=coverage && php vendor/bin/phpunit
+          php vendor/bin/phpunit
 
       - name: Check dependencies
         run: |
