@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator\Layout;
+namespace Famoser\DocumentGenerator\Layout;
 
-use DocumentGenerator\Layout\Base\RootLayoutInterface;
+use Famoser\DocumentGenerator\Layout\Base\RootLayoutInterface;
 
 interface TableLayoutInterface extends RootLayoutInterface
 {

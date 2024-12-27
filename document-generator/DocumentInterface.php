@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator;
+namespace Famoser\DocumentGenerator;
 
 interface DocumentInterface
 {

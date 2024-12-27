@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator\Layout\Base;
+namespace Famoser\DocumentGenerator\Layout\Base;
 
 interface ColumnedLayoutInterface
 {

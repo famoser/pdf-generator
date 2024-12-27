@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator\Layout;
+namespace Famoser\DocumentGenerator\Layout;
 
-use DocumentGenerator\Layout\Base\ColumnedLayoutInterface;
-use DocumentGenerator\Layout\Base\PrintableLayoutInterface;
+use Famoser\DocumentGenerator\Layout\Base\ColumnedLayoutInterface;
+use Famoser\DocumentGenerator\Layout\Base\PrintableLayoutInterface;
 
 interface TableRowLayoutInterface extends ColumnedLayoutInterface, PrintableLayoutInterface
 {

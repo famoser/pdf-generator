@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace DocumentGenerator\Document;
+namespace Famoser\DocumentGenerator\Document;
 
 interface ColumnedPdfDocument
 {
