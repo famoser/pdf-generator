@@ -38,6 +38,9 @@ class CatalogVisitor
         $reference = $structure->getPages()->accept($this);
         $dictionary->addReferenceEntry('Pages', $reference);
 
+        $metadata = $structure->getMetadata()->accept($this);
+        $dictionary->addReferenceEntry('Metadata', $metadata);
+
         $dictionary = $this->file->addInfoDictionaryObject();
         $dictionary->addTextEntry('Creator', 'famoser/pdf-generator/0.6');
         $dictionary->addDateEntry('CreationDate', new \DateTime());
@@ -79,6 +82,17 @@ class CatalogVisitor
         $dictionary->addReferenceArrayEntry('Contents', $contents);
 
         return $dictionary;
+    }
+
+    public function visitMetadata(Catalog\Metadata $structure): BaseObject
+    {
+        $stream = $this->file->addStreamObject($structure->getXml());
+
+        $dictionary = $stream->getMetaData();
+        $dictionary->setNameEntry('Type', 'Metadata');
+        $dictionary->setNameEntry('Subtype', 'XML');
+
+        return $stream;
     }
 
     public function visitResources(Catalog\Resources $structure): BaseObject
