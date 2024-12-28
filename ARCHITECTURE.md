@@ -44,7 +44,7 @@ It is structured mainly into:
 
 The Backend itself is divided into multiple parts
 
-- *Content* contains a minimal structure of supported structures by the backend (hence the "frontend" for the IR). It
+- *Structure* contains a minimal structure of supported structures by the backend (hence the "frontend" for the IR). It
   renders content types such as text / images into a stream consumable for PDFs, and creates the catalog structure of
   the PDF.
 - *Catalog* contains the logical structure of a PDF. It is capable of converting this logical structure into a structure
