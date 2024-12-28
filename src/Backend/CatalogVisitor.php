@@ -42,7 +42,6 @@ class CatalogVisitor
         $dictionary->addReferenceEntry('Metadata', $metadata);
 
         $dictionary = $this->file->addInfoDictionaryObject();
-        $dictionary->addTextEntry('Creator', 'famoser/pdf-generator/0.6');
         $dictionary->addDateEntry('CreationDate', new \DateTime());
 
         return $dictionary;
