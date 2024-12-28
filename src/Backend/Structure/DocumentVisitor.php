@@ -19,6 +19,7 @@ use Famoser\PdfGenerator\Backend\Catalog\Font\TrueType;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Type0;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Type1;
 use Famoser\PdfGenerator\Backend\Catalog\Image as CatalogImage;
+use Famoser\PdfGenerator\Backend\Catalog\Metadata;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\CMapCreator;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\DefaultFont;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont;
@@ -26,6 +27,8 @@ use Famoser\PdfGenerator\Backend\Structure\Document\Image;
 use Famoser\PdfGenerator\Backend\Structure\Optimization\Configuration;
 use Famoser\PdfGenerator\Backend\Structure\Optimization\FontOptimizer;
 use Famoser\PdfGenerator\Backend\Structure\Optimization\ImageOptimizer;
+use Famoser\PdfGenerator\Backend\Structure\Xml\Node;
+use Famoser\PdfGenerator\Backend\Structure\Xml\Terminal;
 use Famoser\PdfGenerator\Font\Frontend\File\Table\HHeaTable;
 use Famoser\PdfGenerator\Font\Frontend\File\Table\OS2Table;
 use Famoser\PdfGenerator\Font\IR\Structure\Character;
@@ -59,7 +62,7 @@ class DocumentVisitor
             return $prefix;
         }
 
-        return $prefix.$this->resourceCounters[$prefix]++;
+        return $prefix . $this->resourceCounters[$prefix]++;
     }
 
     public function visitImage(Image $param): CatalogImage
@@ -134,19 +137,15 @@ class DocumentVisitor
      */
     private function createTrueTypeFont(FontDescriptor $fontDescriptor, array $characters, float $sizeNormalizer): TrueType
     {
-        $widths = [];
-
         // default value is 0
-        for ($i = 0; $i < 255; ++$i) {
-            $widths[$i] = 0;
-        }
+        $widths = array_fill(0, 255, 0);
 
         // add widths of windows code page
         foreach ($characters as $character) {
             // create windows character set
             $mappingIndex = $character->getUnicodePoint() ? $this->getWindows1252Mapping($character->getUnicodePoint()) : null;
             if (null !== $mappingIndex) {
-                $widths[$mappingIndex] = (int) ($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+                $widths[$mappingIndex] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
             }
         }
 
@@ -164,7 +163,7 @@ class DocumentVisitor
         $characterWidths = [];
         $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());
         foreach ($characters as $character) {
-            $characterWidths[] = (int) ($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
         }
 
         // start at CID 0 with our widths
@@ -175,10 +174,10 @@ class DocumentVisitor
 
         $identifier = $this->generateIdentifier('F');
 
-        $cMapName = $fontDescriptor->getFontName().'CMap';
+        $cMapName = $fontDescriptor->getFontName() . 'CMap';
         $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, $cMapName, $characters, $usedCodepoints);
 
-        $cMapInvertedName = $fontDescriptor->getFontName().'CMapInverted';
+        $cMapInvertedName = $fontDescriptor->getFontName() . 'CMapInverted';
         $unicodeCMap = $this->cMapCreator->createToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $characters);
 
         return new Type0($identifier, $fontDescriptor->getFontName(), $characterIndexCMap, $cidFont, $unicodeCMap);
@@ -192,12 +191,12 @@ class DocumentVisitor
         $angle = $this->getFontItalicAngle($HHeaTable);
         $fontFlags = $this->calculateFontFlags($OS2Table, $angle > 0);
         $BBox = $this->getFontBBox($font->getCharacters(), $sizeNormalizer);
-        $ascent = (int) ($HHeaTable->getAscent() * $sizeNormalizer);
-        $descent = (int) ($HHeaTable->getDescent() * $sizeNormalizer);
-        $capHeight = (int) ($OS2Table->getSCapHeight() * $sizeNormalizer);
+        $ascent = (int)($HHeaTable->getAscent() * $sizeNormalizer);
+        $descent = (int)($HHeaTable->getDescent() * $sizeNormalizer);
+        $capHeight = (int)($OS2Table->getSCapHeight() * $sizeNormalizer);
         $stemVGuess = 0; // TODO find out where to get this from
 
-        return new FontDescriptor($fontName, $fontFlags, $BBox, (int) $angle, $ascent, $descent, $capHeight, $stemVGuess, $fontStream);
+        return new FontDescriptor($fontName, $fontFlags, $BBox, (int)$angle, $ascent, $descent, $capHeight, $stemVGuess, $fontStream);
     }
 
     /**
@@ -222,7 +221,7 @@ class DocumentVisitor
             $yMax = max($yMax, $character->getGlyfTable()->getYMax());
         }
 
-        return [(int) ($xMin * $sizeNormalizer), (int) ($yMin * $sizeNormalizer), (int) ($xMax * $sizeNormalizer), (int) ($yMax * $sizeNormalizer)];
+        return [(int)($xMin * $sizeNormalizer), (int)($yMin * $sizeNormalizer), (int)($xMax * $sizeNormalizer), (int)($yMax * $sizeNormalizer)];
     }
 
     private function getFontItalicAngle(HHeaTable $HHeaTable): float
@@ -306,5 +305,81 @@ class DocumentVisitor
             0x0178 => 0x9F,
             default => null,
         };
+    }
+
+    public function visitXmpMeta(Document\XmpMeta $param): Metadata
+    {
+        $creatorAgentText = 'Famoser pdf-generator 0.7';
+        $content = [
+            // http://ns.adobe.com/xap/1.0/ for basic attributes (see https://developer.adobe.com/xmp/docs/XMPNamespaces/xmp/)
+            new Terminal('xmp:CreateDate', (new \DateTime())->format('c')),
+            new Terminal('xmp:CreatorTool', $creatorAgentText),
+
+            // http://ns.adobe.com/pdf/1.3/ for PDF meta data (see https://developer.adobe.com/xmp/docs/XMPNamespaces/pdf/)
+            new Terminal('pdf:PDFVersion', '1.7'),
+            new Terminal('pdf:Producer', $creatorAgentText),
+
+            // purposefully ignoring http://ns.adobe.com/xap/1.0/mm/ for versioning (see https://developer.adobe.com/xmp/docs/XMPNamespaces/xmpMM/), as references / versioning not common in application
+        ];
+
+        // http://purl.org/dc/elements/1.1/ for content meta data (see https://developer.adobe.com/xmp/docs/XMPNamespaces/dc/)
+        $content[] = $this->createNodeIfNotEmpty('language', false, $param->getCoreElements()->getLanguage());
+        $content[] = $this->createLanguageNodeIfNotEmpty('title', $param->getCoreElements()->getTitle());
+        $content[] = $this->createLanguageNodeIfNotEmpty('description', $param->getCoreElements()->getDescription());
+
+        $content[] = $this->createNodeIfNotEmpty('creator', true, $param->getCoreElements()->getCreators());
+        $content[] = $this->createNodeIfNotEmpty('contributor', false, $param->getCoreElements()->getContributors());
+
+        $content[] = $this->createNodeIfNotEmpty('publisher', false, $param->getCoreElements()->getPublisher());
+        $content[] = $this->createNodeIfNotEmpty('subject', false, $param->getCoreElements()->getSubject());
+
+        $rdfDescription = new Node('rdf:Description', $content, ['xmlns:xmp' => 'http://ns.adobe.com/xap/1.0/', 'xmlns:pdf' => 'http://ns.adobe.com/pdf/1.3/', 'xmlns:dc' => 'http://purl.org/dc/elements/1.1/']);
+        $rdf = new Node('rdf:RDF', [$rdfDescription], ['xmlns:rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#']);
+        $node = new Node('x:xmpmeta', [$rdf], ['xmlns:x' => 'adobe:ns:meta/', 'x:xmptk' => $creatorAgentText]);
+
+        $serializer = new XmlSerializerVisitor();
+        $xml = $node->visit($serializer);
+
+        return new Metadata($xml);
+    }
+
+    /**
+     * @param string[] $terminalValues
+     */
+    public function createNodeIfNotEmpty(string $dcTag, bool $ordered, array $terminalValues): ?Node
+    {
+        if (count($terminalValues) === 0) {
+            return null;
+        }
+
+        $terminals = [];
+        foreach ($terminalValues as $terminalValue) {
+            $terminals[] = new Terminal('rdf:li', $terminalValue);
+        }
+
+        return $this->wrapDcRdfContentNode($dcTag, $ordered ? 'Seq' : 'Bag', $terminals);
+    }
+
+    /**
+     * @param array<string, string> $languageValues
+     */
+    public function createLanguageNodeIfNotEmpty(string $dcTag, array $languageValues): ?Node
+    {
+        if (count($languageValues) === 0) {
+            return null;
+        }
+
+        $terminals = [];
+        foreach ($languageValues as $language => $languageValue) {
+            $terminals[] = new Terminal('rdf:li', $languageValue, ['xml:lang' => $language]);
+        }
+
+        return $this->wrapDcRdfContentNode($dcTag, 'Alt', $terminals);
+    }
+
+    public function wrapDcRdfContentNode(string $dcTag, string $rdfArray, array $terminals): Node
+    {
+        $array = new Node('rdf:' . $rdfArray, $terminals);
+        return new Node('dc:' . $dcTag, [$array]);
     }
 }

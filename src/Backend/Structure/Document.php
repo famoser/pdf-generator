@@ -16,6 +16,7 @@ use Famoser\PdfGenerator\Backend\Catalog\Page as CatalogPage;
 use Famoser\PdfGenerator\Backend\Catalog\Pages;
 use Famoser\PdfGenerator\Backend\Structure\Document\DocumentResources;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page;
+use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
 use Famoser\PdfGenerator\Backend\Structure\Optimization\Configuration;
 
 class Document
@@ -27,7 +28,7 @@ class Document
 
     private readonly Configuration $configuration;
 
-    public function __construct()
+    public function __construct(private readonly XmpMeta $meta)
     {
         $this->configuration = new Configuration();
     }
@@ -40,9 +41,9 @@ class Document
     public function render(): Catalog
     {
         $documentVisitor = new DocumentVisitor($this->configuration);
-        $documentResources = new DocumentResources($documentVisitor);
+        $meta = $this->meta->accept($documentVisitor);
 
-        /** @var CatalogPage[] $pageEntries */
+        $documentResources = new DocumentResources($documentVisitor);
         $pageEntries = [];
         foreach ($this->pages as $page) {
             $pageEntries[] = $page->render($documentResources);
@@ -50,7 +51,7 @@ class Document
 
         $pages = new Pages($pageEntries);
 
-        return new Catalog($pages);
+        return new Catalog($pages, $meta);
     }
 
     public function save(): string
