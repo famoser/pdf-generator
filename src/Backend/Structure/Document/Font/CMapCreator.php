@@ -303,7 +303,6 @@ readonly class CMapCreator
         $hexPointsByLength = [];
         foreach ($unicodeMapping as $unicodePoint => $value) {
             $utf8Char = mb_chr($unicodePoint, 'UTF-8');
-            /** @phpstan-ignore-next-line */
             $byte = unpack('H*', $utf8Char)[1];
             $normalizedByte = $this->ensureLengthMultipleOf2($byte);
             $length = \strlen($normalizedByte);

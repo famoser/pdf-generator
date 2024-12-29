@@ -31,7 +31,6 @@ class FileReaderTest extends TestCase
 
     public static function getDefaultFontContent(): string
     {
-        /** @phpstan-ignore-next-line  */
         return file_get_contents(self::$defaultFilePath);
     }
 
