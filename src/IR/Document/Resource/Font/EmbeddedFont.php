@@ -25,6 +25,9 @@ readonly class EmbeddedFont extends Font
     public static function create(string $fontPath): self
     {
         $fontData = file_get_contents($fontPath);
+        if (!$fontData) {
+            throw new \Exception('Font file does not exist: ' . $fontPath);
+        }
 
         $parser = Parser::create();
         $font = $parser->parse($fontData);

@@ -28,8 +28,16 @@ readonly class Image extends BaseDocumentResource
     public static function create(string $imagePath, string $type): self
     {
         $data = file_get_contents($imagePath);
-        [$width, $height] = getimagesizefromstring($data);
+        if (!$data) {
+            throw new \Exception("Image cannot be read: ".$imagePath);
+        }
 
+        $imageSize = getimagesizefromstring($data);
+        if (!$imageSize) {
+            throw new \Exception("Image size is not a valid for image: ".$imagePath);
+        }
+
+        [$width, $height] = $imageSize;
         return new self($imagePath, $data, $type, $width, $height);
     }
 
