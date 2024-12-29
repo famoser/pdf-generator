@@ -24,20 +24,20 @@ readonly class XmlSerializerVisitor
             $content = "\n" . implode("\n", $children) . "\n";
         }
 
-        return $this->renderTag($param, $content);
+        return $this->renderTag($param, $content, false);
     }
 
     public function visitTerminal(Xml\Terminal $param): string
     {
         $content = self::escape($param->getValue());
 
-        return $this->renderTag($param, $content);
+        return $this->renderTag($param, $content, true);
     }
 
-    private function renderTag(AbstractNode $node, string $content): string
+    private function renderTag(AbstractNode $node, string $content, bool $singleLineContent): string
     {
         $openTag = $this->renderOpenTag($node);
-        $closeTag = $this->renderCloseTag($node);
+        $closeTag = $this->renderCloseTag($node, !$singleLineContent);
 
         return $openTag . $content . $closeTag;
     }
@@ -58,10 +58,10 @@ readonly class XmlSerializerVisitor
         return $tag . ">";
     }
 
-    private function renderCloseTag(AbstractNode $node): string
+    private function renderCloseTag(AbstractNode $node, bool $prependIdent): string
     {
-        $prefix = str_repeat(' ', $this->ident);
-        return $prefix . '</' . $node->getTag();
+        $prefix = $prependIdent ? str_repeat(' ', $this->ident) : false;
+        return $prefix . '</' . $node->getTag().'>';
     }
 
     private static function escape(string $value): string
