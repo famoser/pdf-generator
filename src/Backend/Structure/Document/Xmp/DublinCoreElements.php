@@ -9,6 +9,8 @@ namespace Famoser\PdfGenerator\Backend\Structure\Document\Xmp;
  */
 readonly class DublinCoreElements
 {
+    public const DEFAULT_LANG = 'x-default';
+
     /**
      * @param array<string> $language
      * @param array<string, string> $title
@@ -17,48 +19,78 @@ readonly class DublinCoreElements
      * @param string[] $contributors
      * @param string[] $publisher
      * @param string[] $subject
+     * @param string[] $date
      */
-    public function __construct(private array $language, private array $title, private array $description, private array $creators, private array $contributors, private array $publisher, private array $subject)
+    public function __construct(private array $language, private array $title, private array $description, private array $creators, private array $contributors, private array $publisher, private array $subject, private array $date)
     {
     }
 
     public static function createEmpty(): self
     {
-        return new self([], [], [], [], [], [], []);
+        return new self([], [], [], [], [], [], [], []);
     }
 
+    /**
+     * @return string[]
+     */
     public function getLanguage(): array
     {
         return $this->language;
     }
 
+    /**
+     * @return string[]
+     */
     public function getTitle(): array
     {
         return $this->title;
     }
 
+    /**
+     * @return string[]
+     */
     public function getDescription(): array
     {
         return $this->description;
     }
 
+    /**
+     * @return string[]
+     */
     public function getCreators(): array
     {
         return $this->creators;
     }
 
+    /**
+     * @return string[]
+     */
     public function getContributors(): array
     {
         return $this->contributors;
     }
 
+    /**
+     * @return string[]
+     */
     public function getPublisher(): array
     {
         return $this->publisher;
     }
 
+    /**
+     * @return string[]
+     */
     public function getSubject(): array
     {
         return $this->subject;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDate(): array
+    {
+        return $this->date;
     }
 }
