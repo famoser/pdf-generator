@@ -36,6 +36,11 @@ class CatalogVisitor
         $dictionary = $this->file->addDictionaryObject();
         $dictionary->addNameEntry('Type', 'Catalog');
 
+        // declare PDF is tagged
+        $markInfoDictionary = new DictionaryToken();
+        $markInfoDictionary->setBooleanEntry('Marked', true);
+        $dictionary->addDictionaryEntry('MarkInfo', $markInfoDictionary);
+
         if ($structure->getMetadata()->getLanguage()) {
             $dictionary->addTextEntry('Lang', $structure->getMetadata()->getLanguage());
         }
