@@ -334,7 +334,7 @@ class DocumentVisitor
         $content[] = $this->createNodeIfNotEmpty('subject', false, $param->getCoreElements()->getSubject());
         $content[] = $this->createNodeIfNotEmpty('date', true, $param->getCoreElements()->getDate());
 
-        $rdfDescription = new Node('rdf:Description', $content, ['xmlns:xmp' => 'http://ns.adobe.com/xap/1.0/', 'xmlns:pdf' => 'http://ns.adobe.com/pdf/1.3/', 'xmlns:dc' => 'http://purl.org/dc/elements/1.1/']);
+        $rdfDescription = new Node('rdf:Description', array_filter($content), ['xmlns:xmp' => 'http://ns.adobe.com/xap/1.0/', 'xmlns:pdf' => 'http://ns.adobe.com/pdf/1.3/', 'xmlns:dc' => 'http://purl.org/dc/elements/1.1/']);
         $rdf = new Node('rdf:RDF', [$rdfDescription], ['xmlns:rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#']);
         $node = new Node('x:xmpmeta', [$rdf], ['xmlns:x' => 'adobe:ns:meta/', 'x:xmptk' => $creatorAgentText]);
 
