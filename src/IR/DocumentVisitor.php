@@ -14,6 +14,8 @@ namespace Famoser\PdfGenerator\IR;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
 use Famoser\PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use Famoser\PdfGenerator\Backend\Structure\Document\Xmp\DublinCoreElements;
+use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
 use Famoser\PdfGenerator\IR\Analysis\AnalysisResult;
 use Famoser\PdfGenerator\IR\Document\Resource\Font\DefaultFont;
 use Famoser\PdfGenerator\IR\Document\Resource\Font\EmbeddedFont;
@@ -70,6 +72,28 @@ readonly class DocumentVisitor
         $maxSize = $this->analysisResult->getMaxSizePerImage($param);
 
         return new BackendImage($param->getData(), $type, $param->getWidth(), $param->getHeight(), (int) round($maxSize->getWidth()), (int) round($maxSize->getHeight()));
+    }
+
+    public function visitMeta(Document\Meta $param): XmpMeta
+    {
+        $languages = $param->getOtherLanguages();
+        if ($param->getLanguage()) {
+            array_unshift($languages, $param->getLanguage());
+        }
+
+        $mainLanguage = count($languages) > 0 ? $languages[0] : DublinCoreElements::DEFAULT_LANG;
+        $title = $param->getTitleTranslations();
+        if ($param->getTitle()) {
+            $title = array_merge([$mainLanguage => $param->getTitle()], $title);
+        }
+        $description = $param->getDescriptionTranslations();
+        if ($param->getDescription()) {
+            $description = array_merge([$mainLanguage => $param->getDescription()], $description);
+        }
+
+        $dublinCoreElements = new DublinCoreElements($languages, $title, $description, $param->getCreators(), $param->getContributors(), $param->getPublishers(), $param->getSubjects(), $param->getDates());
+
+        return new XmpMeta($dublinCoreElements);
     }
 
     private static function getImageType(string $type): string
