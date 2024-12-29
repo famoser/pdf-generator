@@ -49,12 +49,11 @@ class Meta
      */
     private array $dates = [];
 
-    public static function createMeta(string $language, string $title, string $description, array $creators): self
+    public static function createMeta(string $language, string $title, array $creators): self
     {
         $meta = new self();
         $meta->language = $language;
         $meta->title = $title;
-        $meta->description = $description;
         $meta->creators = $creators;
 
         return $meta;

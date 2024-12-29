@@ -22,9 +22,11 @@ use Famoser\PdfGenerator\Frontend\Layout\Table;
 use Famoser\PdfGenerator\Frontend\LinearDocument;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
+use Famoser\PdfGenerator\IR\Document\Meta;
 
 $margin = 15;
-$document = new LinearDocument([210, 297], $margin);
+$meta = Meta::createMeta('en', 'Invoice UZH-ZI-5', ['Florian Moser']);
+$document = new LinearDocument([210, 297], $margin, $meta);
 
 $normalFont = Font::createFromDefault();
 $normalText = new TextStyle($normalFont);
