@@ -389,6 +389,9 @@ class DocumentVisitor
         return $this->wrapDcRdfContentNode($dcTag, 'Alt', $terminals);
     }
 
+    /**
+     * @param Terminal[] $terminals
+     */
     public function wrapDcRdfContentNode(string $dcTag, string $rdfArray, array $terminals): Node
     {
         $array = new Node('rdf:' . $rdfArray, $terminals);

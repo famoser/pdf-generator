@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the famoser/pdf-generator project.
+ *
+ * (c) Florian Moser <git@famoser.ch>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Famoser\PdfGenerator\IR\Document;
 
 use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
@@ -51,6 +60,9 @@ class Meta
      */
     private array $dates = [];
 
+    /**
+     * @param string[] $creators
+     */
     public static function createMeta(string $language, string $title, array $creators): self
     {
         $meta = new self();
@@ -128,6 +140,9 @@ class Meta
         $this->keywords = $keywords;
     }
 
+    /**
+     * @param string[] $dates
+     */
     public function setDates(array $dates): void
     {
         $this->dates = $dates;
@@ -143,6 +158,9 @@ class Meta
         return $this->language;
     }
 
+    /**
+     * @return string[]
+     */
     public function getOtherLanguages(): array
     {
         return $this->otherLanguages;
@@ -174,26 +192,41 @@ class Meta
         return $this->descriptionTranslations;
     }
 
+    /**
+     * @return string[]
+     */
     public function getCreators(): array
     {
         return $this->creators;
     }
 
+    /**
+     * @return string[]
+     */
     public function getContributors(): array
     {
         return $this->contributors;
     }
 
+    /**
+     * @return string[]
+     */
     public function getPublishers(): array
     {
         return $this->publishers;
     }
 
+    /**
+     * @return string[]
+     */
     public function getKeywords(): array
     {
         return $this->keywords;
     }
 
+    /**
+     * @return string[]
+     */
     public function getDates(): array
     {
         return $this->dates;
