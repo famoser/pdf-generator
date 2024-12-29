@@ -260,19 +260,16 @@ class StreamReader
 
     private static function unpackUInt16(string $content, int $offset): int
     {
-        /** @phpstan-ignore-next-line */
         return unpack('nnumber', $content, $offset)['number'];
     }
 
     private static function unpackUInt32(string $content, int $offset): int
     {
-        /** @phpstan-ignore-next-line */
         return unpack('Nnumber', $content, $offset)['number'];
     }
 
     private static function unpackUInt64(string $content, int $offset): int
     {
-        /** @phpstan-ignore-next-line */
         return unpack('Jnumber', $content, $offset)['number'];
     }
 
