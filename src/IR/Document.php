@@ -11,8 +11,6 @@
 
 namespace Famoser\PdfGenerator\IR;
 
-use Famoser\PdfGenerator\Backend\Structure\Document\Xmp\DublinCoreElements;
-use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
 use Famoser\PdfGenerator\IR\Analysis\AnalyzeContentVisitor;
 use Famoser\PdfGenerator\IR\Document\Meta;
 use Famoser\PdfGenerator\IR\Document\Page;
@@ -20,17 +18,14 @@ use Famoser\PdfGenerator\IR\Document\Resource\DocumentResources;
 
 class Document
 {
-    private ?Meta $meta = null;
+    public function __construct(private readonly Meta $meta)
+    {
+    }
 
     /**
      * @var Page[]
      */
     private array $pages = [];
-
-    public function setMeta(Meta $meta): void
-    {
-        $this->meta = $meta;
-    }
 
     public function addPage(Page $page): void
     {
@@ -57,7 +52,7 @@ class Document
         $analysisResult = $analyzeContentVisitor->getAnalysisResult();
         $documentVisitor = new DocumentVisitor($analysisResult);
 
-        $meta = $this->meta ? $this->meta->visit($documentVisitor) : XmpMeta::createEmpty();
+        $meta = $this->meta->visit($documentVisitor);
         $document = new \Famoser\PdfGenerator\Backend\Structure\Document($meta);
 
         $documentResources = new DocumentResources($documentVisitor);

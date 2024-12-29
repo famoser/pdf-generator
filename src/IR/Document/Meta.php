@@ -49,7 +49,7 @@ class Meta
      */
     private array $dates = [];
 
-    public static function createRecommendedMeta(string $language, string $title, string $description, array $creators): self
+    public static function createMeta(string $language, string $title, string $description, array $creators): self
     {
         $meta = new self();
         $meta->language = $language;
