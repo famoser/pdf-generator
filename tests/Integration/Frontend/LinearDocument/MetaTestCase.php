@@ -34,9 +34,9 @@ class MetaTestCase extends LinearDocumentTestCase
         $meta = Meta::createMeta(
             'en',
             'The RSA Cryptosystem',
-            'A Method for Obtaining Digital Signatures and Public-Key Cryptosystems',
             ['R.L. Rivest', 'A. Shamir', 'L. Adleman']
         );
+        $meta->setDescription('A Method for Obtaining Digital Signatures and Public-Key Cryptosystems');
         $meta->setKeywordSubjects(['Cryptography', 'Public-Key']);
         $document = new LinearDocument(meta: $meta);
 

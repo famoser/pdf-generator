@@ -11,8 +11,10 @@ use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use Famoser\PdfGenerator\Frontend\LinearDocument;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
+use Famoser\PdfGenerator\IR\Document\Meta;
 
-$document = new LinearDocument([210, 297], 20);
+$meta = Meta::createMeta('en', 'Cat in the rain', ['Ernest Hemingway']);
+$document = new LinearDocument([210, 297], 20, $meta);
 
 $font = Font::createFromFile('cruft.ttf');
 $normalText = new TextStyle($font, 6.6);
