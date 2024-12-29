@@ -14,6 +14,7 @@ namespace Famoser\PdfGenerator\Backend\Catalog\Font;
 use Famoser\PdfGenerator\Backend\Catalog\Font;
 use Famoser\PdfGenerator\Backend\CatalogVisitor;
 use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
+use Famoser\PdfGenerator\Backend\File\Object\DictionaryObject;
 
 readonly class Type1 extends Font
 {
@@ -49,7 +50,7 @@ readonly class Type1 extends Font
         return self::ENCODING_WIN_ANSI_ENCODING;
     }
 
-    public function accept(CatalogVisitor $visitor): BaseObject
+    public function accept(CatalogVisitor $visitor): DictionaryObject
     {
         return $visitor->visitType1Font($this);
     }

@@ -25,6 +25,7 @@ class WordSizerVisitor implements FontVisitor
     {
         $filename = $param->getFont().'_'.$param->getStyle().'.json';
         $path = __DIR__.\DIRECTORY_SEPARATOR.'DefaultFont'.\DIRECTORY_SEPARATOR.$filename;
+        /** @var string $characterSizesJson */
         $characterSizesJson = file_get_contents($path);
         $characterSizes = json_decode($characterSizesJson, true, 512, JSON_THROW_ON_ERROR);
 

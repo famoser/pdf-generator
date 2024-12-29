@@ -14,6 +14,7 @@ namespace Famoser\PdfGenerator\Backend\Catalog;
 use Famoser\PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use Famoser\PdfGenerator\Backend\CatalogVisitor;
 use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
+use Famoser\PdfGenerator\Backend\File\Object\StreamObject;
 
 readonly class Content extends BaseStructure
 {
@@ -26,10 +27,7 @@ readonly class Content extends BaseStructure
         return $this->content;
     }
 
-    /**
-     * @return BaseObject|BaseObject[]
-     */
-    public function accept(CatalogVisitor $visitor): BaseObject|array
+    public function accept(CatalogVisitor $visitor): StreamObject
     {
         return $visitor->visitContent($this);
     }

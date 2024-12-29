@@ -53,8 +53,9 @@ class FontOptimizer
     public function getOrderedCodepoints(string $characters): array
     {
         // split into characters (not bytes, like explode() or str_split() would)
+        /** @var list<string> $characterArray */
         $characterArray = preg_split('//u', $characters, -1, \PREG_SPLIT_NO_EMPTY);
-        $uniqueCharacters = array_unique(/* @scrutinizer ignore-type */ $characterArray); // characterArray never false
+        $uniqueCharacters = array_unique($characterArray); // characterArray never false
 
         // get used codepoints
         $codePoints = [];
