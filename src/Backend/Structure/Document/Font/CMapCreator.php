@@ -232,6 +232,7 @@ readonly class CMapCreator
 
     /**
      * @param string[] $entries
+     * @param int<1, max> $maxEntries
      *
      * @return string[]
      */
@@ -298,10 +299,11 @@ readonly class CMapCreator
      */
     private function createMappingByHexLength(array $unicodeMapping): array
     {
-        /** @var array<int, array<string, int>> $hexPointsByLength */
+        /** @var array<int, array<string, T>> $hexPointsByLength */
         $hexPointsByLength = [];
         foreach ($unicodeMapping as $unicodePoint => $value) {
             $utf8Char = mb_chr($unicodePoint, 'UTF-8');
+            /** @phpstan-ignore-next-line */
             $byte = unpack('H*', $utf8Char)[1];
             $normalizedByte = $this->ensureLengthMultipleOf2($byte);
             $length = \strlen($normalizedByte);
@@ -480,6 +482,7 @@ readonly class CMapCreator
         $currentBlock = null;
         $blocks = [];
         foreach ($textInHexToUnicodeMapping as $hex => $unicode) {
+            /** @var int $byte */
             $byte = hexdec($hex);
             $block = $byte - ($byte & $blockSize);
             if (null === $currentBlock || $currentBlock !== $block) {
