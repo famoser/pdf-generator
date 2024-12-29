@@ -20,6 +20,7 @@ use Famoser\PdfGenerator\Backend\Catalog\Font\Type0;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Type1;
 use Famoser\PdfGenerator\Backend\Catalog\Image as CatalogImage;
 use Famoser\PdfGenerator\Backend\Catalog\Metadata;
+use Famoser\PdfGenerator\Backend\CatalogVisitor;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\CMapCreator;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\DefaultFont;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont;
@@ -309,39 +310,49 @@ class DocumentVisitor
 
     public function visitXmpMeta(Document\XmpMeta $param): Metadata
     {
-        $creatorAgentText = 'Famoser pdf-generator 0.7';
-        $content = [
-            // http://ns.adobe.com/xap/1.0/ for basic attributes (see https://developer.adobe.com/xmp/docs/XMPNamespaces/xmp/)
-            new Terminal('xmp:CreateDate', (new \DateTime())->format('c')),
-            new Terminal('xmp:CreatorTool', $creatorAgentText),
+        $creatorAgentText = 'Famoser pdf-generator ' . CatalogVisitor::GENERATOR_VERSION;
+        $content = [];
 
-            // http://ns.adobe.com/pdf/1.3/ for PDF meta data (see https://developer.adobe.com/xmp/docs/XMPNamespaces/pdf/)
-            new Terminal('pdf:PDFVersion', '1.7'),
-            new Terminal('pdf:Producer', $creatorAgentText),
+        // http://ns.adobe.com/xap/1.0/ for basic attributes (see https://developer.adobe.com/xmp/docs/XMPNamespaces/xmp/)
+        $content[] = new Terminal('xmp:CreateDate', (new \DateTime())->format('c'));
+        $content[] = new Terminal('xmp:CreatorTool', $creatorAgentText);
 
-            // purposefully ignoring http://ns.adobe.com/xap/1.0/mm/ for versioning (see https://developer.adobe.com/xmp/docs/XMPNamespaces/xmpMM/), as references / versioning not common in application
-        ];
+        // http://ns.adobe.com/pdf/1.3/ for PDF meta data (see https://developer.adobe.com/xmp/docs/XMPNamespaces/pdf/)
+        $content[] = new Terminal('pdf:PDFVersion', '1.7');
+        $content[] = new Terminal('pdf:Producer', $creatorAgentText);
+        $pdf = $param->getPdf();
+        if ($pdf->getKeywords()) {
+            $content[] = new Terminal('pdf:Keywords', $pdf->getKeywords());
+        }
 
         // http://purl.org/dc/elements/1.1/ for content meta data (see https://developer.adobe.com/xmp/docs/XMPNamespaces/dc/)
-        $content[] = $this->createNodeIfNotEmpty('language', false, $param->getCoreElements()->getLanguage());
-        $content[] = $this->createLanguageNodeIfNotEmpty('title', $param->getCoreElements()->getTitle());
-        $content[] = $this->createLanguageNodeIfNotEmpty('description', $param->getCoreElements()->getDescription());
+        $core = $param->getCoreElements();
+        $content[] = new Terminal('dc:format', 'application/pdf');
+        $content[] = $this->createNodeIfNotEmpty('language', false, $core->getLanguage());
+        $content[] = $this->createLanguageNodeIfNotEmpty('title', $core->getTitle());
+        $content[] = $this->createLanguageNodeIfNotEmpty('description', $core->getDescription());
 
-        $content[] = $this->createNodeIfNotEmpty('creator', true, $param->getCoreElements()->getCreators());
-        $content[] = $this->createNodeIfNotEmpty('contributor', false, $param->getCoreElements()->getContributors());
+        $content[] = $this->createNodeIfNotEmpty('creator', true, $core->getCreators());
+        $content[] = $this->createNodeIfNotEmpty('contributor', false, $core->getContributors());
 
-        $content[] = $this->createNodeIfNotEmpty('publisher', false, $param->getCoreElements()->getPublisher());
-        $content[] = $this->createNodeIfNotEmpty('subject', false, $param->getCoreElements()->getSubject());
-        $content[] = $this->createNodeIfNotEmpty('date', true, $param->getCoreElements()->getDate());
+        $content[] = $this->createNodeIfNotEmpty('publisher', false, $core->getPublisher());
+        $content[] = $this->createNodeIfNotEmpty('subject', false, $core->getSubject());
+        $content[] = $this->createNodeIfNotEmpty('date', true, $core->getDate());
 
-        $rdfDescription = new Node('rdf:Description', array_filter($content), ['xmlns:xmp' => 'http://ns.adobe.com/xap/1.0/', 'xmlns:pdf' => 'http://ns.adobe.com/pdf/1.3/', 'xmlns:dc' => 'http://purl.org/dc/elements/1.1/']);
+        // http://ns.adobe.com/xap/1.0/mm/ for versioning (see https://developer.adobe.com/xmp/docs/XMPNamespaces/xmpMM/)
+        $documentId = uniqid();
+        $content[] = new Terminal('xmpMM:DocumentID', $documentId);
+        $content[] = new Terminal('xmpMM:InstanceID', $documentId);
+
+        $rdfDescription = new Node('rdf:Description', array_filter($content), ['xmlns:xmp' => 'http://ns.adobe.com/xap/1.0/', 'xmlns:pdf' => 'http://ns.adobe.com/pdf/1.3/', 'xmlns:dc' => 'http://purl.org/dc/elements/1.1/', 'xmlns:xmpMM' => 'http://ns.adobe.com/xap/1.0/mm/']);
         $rdf = new Node('rdf:RDF', [$rdfDescription], ['xmlns:rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#']);
         $node = new Node('x:xmpmeta', [$rdf], ['xmlns:x' => 'adobe:ns:meta/', 'x:xmptk' => $creatorAgentText]);
 
         $serializer = new XmlSerializerVisitor();
         $xml = $node->visit($serializer);
 
-        return new Metadata($xml);
+        $mainTitle = count($core->getTitle()) > 0 ? $core->getTitle()[array_key_first($core->getTitle())] : null;
+        return new Metadata($xml, $mainTitle, implode(", ", $core->getCreators()), $pdf->getKeywords());
     }
 
     /**

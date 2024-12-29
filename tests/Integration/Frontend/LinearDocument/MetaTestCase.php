@@ -37,7 +37,7 @@ class MetaTestCase extends LinearDocumentTestCase
             ['R.L. Rivest', 'A. Shamir', 'L. Adleman']
         );
         $meta->setDescription('A Method for Obtaining Digital Signatures and Public-Key Cryptosystems');
-        $meta->setKeywordSubjects(['Cryptography', 'Public-Key']);
+        $meta->setKeywords(['Cryptography', 'Public-Key']);
         $document = new LinearDocument(meta: $meta);
 
         // act

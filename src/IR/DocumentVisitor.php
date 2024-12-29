@@ -15,6 +15,7 @@ use Famoser\PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendD
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
 use Famoser\PdfGenerator\Backend\Structure\Document\Image as BackendImage;
 use Famoser\PdfGenerator\Backend\Structure\Document\Xmp\DublinCoreElements;
+use Famoser\PdfGenerator\Backend\Structure\Document\Xmp\Pdf;
 use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
 use Famoser\PdfGenerator\IR\Analysis\AnalysisResult;
 use Famoser\PdfGenerator\IR\Document\Resource\Font\DefaultFont;
@@ -91,9 +92,10 @@ readonly class DocumentVisitor
             $description = array_merge([$mainLanguage => $param->getDescription()], $description);
         }
 
-        $dublinCoreElements = new DublinCoreElements($languages, $title, $description, $param->getCreators(), $param->getContributors(), $param->getPublishers(), $param->getSubjects(), $param->getDates());
+        $pdf = new Pdf(implode("\n", $param->getKeywords()));
+        $dublinCoreElements = new DublinCoreElements($languages, $title, $description, $param->getCreators(), $param->getContributors(), $param->getPublishers(), $param->getKeywords(), $param->getDates());
 
-        return new XmpMeta($dublinCoreElements);
+        return new XmpMeta($pdf, $dublinCoreElements);
     }
 
     private static function getImageType(string $type): string

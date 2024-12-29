@@ -6,7 +6,7 @@ use Famoser\PdfGenerator\Backend\Structure\Xml\AbstractNode;
 
 readonly class XmlSerializerVisitor
 {
-    private const ESCAPES = ['"' => '&quot;', "'" => '&apos;', '<' => '&lt;', '>' => '&gt;', '&' => '&amp;'];
+    private const ESCAPES = ['"' => '&quot;', "'" => '&apos;', '<' => '&lt;', '>' => '&gt;', '&' => '&amp;', "\n" => '&#xA;'];
     private const IDENT_STEP = 4;
 
     public function __construct(private int $ident = 0)
