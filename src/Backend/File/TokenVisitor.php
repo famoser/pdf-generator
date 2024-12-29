@@ -35,6 +35,11 @@ class TokenVisitor
         return strval(NumberToken::format($token->getNumber()));
     }
 
+    public function visitBoolToken(Token\BooleanToken $param): string
+    {
+        return $param->getValue() ? 'true' : 'false';
+    }
+
     public function visitDictionaryToken(DictionaryToken $token): string
     {
         $entries = [];
