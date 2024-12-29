@@ -91,13 +91,6 @@ readonly class Printer
      */
     public function printPhrases(array $phrases): void
     {
-        $heightShift = 0;
-        if (count($phrases) > 0) {
-            $phrase = $phrases[0];
-            $fontMeasurement = $this->fontRepository->getFontMeasurement($phrase->getTextStyle());
-            $heightShift = $fontMeasurement->getAscender();
-        }
-
         /** @var Text\Phrase[] $IRPhases */
         $IRPhases = [];
         foreach ($phrases as $phrase) {
@@ -105,6 +98,11 @@ readonly class Printer
             $IRPhases[] = new Text\Phrase($phrase->getText(), $textStyle);
         }
 
+        $heightShift = 0;
+        if (count($phrases) > 0) {
+            $fontMeasurement = $this->fontRepository->getFontMeasurement($phrases[0]->getTextStyle());
+            $heightShift = $fontMeasurement->getAscender();
+        }
         $position = $this->getPosition($heightShift);
 
         $paragraph = new Paragraph($IRPhases, $position);
