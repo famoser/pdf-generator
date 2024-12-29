@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the famoser/pdf-generator project.
+ *
+ * (c) Florian Moser <git@famoser.ch>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Famoser\PdfGenerator\Backend\Structure;
 
 use Famoser\PdfGenerator\Backend\Structure\Xml\AbstractNode;
@@ -18,9 +27,7 @@ readonly class XmlSerializerVisitor
         $content = '';
         if (count($param->getChildren()) > 0) {
             $childVisitor = new XmlSerializerVisitor($this->ident + self::IDENT_STEP);
-            $children = array_map(function (AbstractNode $node) use ($childVisitor) {
-                return $node->visit($childVisitor);
-            }, $param->getChildren());
+            $children = array_map(fn(AbstractNode $node) => $node->visit($childVisitor), $param->getChildren());
             $content = "\n" . implode("\n", $children) . "\n";
         }
 
