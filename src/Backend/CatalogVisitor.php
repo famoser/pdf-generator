@@ -126,12 +126,12 @@ class CatalogVisitor
     }
 
     /**
-     * @var BaseObject[]
+     * @var array<string, BaseObject>
      */
     private array $referenceLookup = [];
 
     /**
-     * @param BaseIdentifiableStructure[] $structures
+     * @param Catalog\Font[]|Catalog\Image[] $structures
      */
     private function createReferenceDictionary(array $structures): DictionaryToken
     {
@@ -165,7 +165,7 @@ class CatalogVisitor
         return $baseObjects;
     }
 
-    public function visitType1Font(Catalog\Font\Type1 $structure): BaseObject
+    public function visitType1Font(Catalog\Font\Type1 $structure): DictionaryObject
     {
         $dictionary = $this->file->addDictionaryObject();
 

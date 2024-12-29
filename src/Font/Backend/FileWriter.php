@@ -364,7 +364,7 @@ readonly class FileWriter
                     }
                 }
 
-                $currentOffset += $size / 2;
+                $currentOffset += (int) ($size / 2);
             }
 
             $locaTable->addOffset($currentOffset);

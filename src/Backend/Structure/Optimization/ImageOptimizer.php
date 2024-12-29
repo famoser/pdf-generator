@@ -16,7 +16,7 @@ class ImageOptimizer
     public function transformToJpgAndResize(string $imageContent, int $targetWidth, int $targetHeight): string
     {
         $originalImage = imagecreatefromstring($imageContent);
-        $newImage = imagecreatetruecolor($targetWidth, $targetHeight);
+        $newImage = imagecreatetruecolor(max($targetWidth, 1), max($targetHeight, 1));
 
         // if construction fails; do not change anything
         if (!$originalImage || !$newImage) {

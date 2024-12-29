@@ -29,6 +29,7 @@ readonly class ProportionalWordSizer implements WordSizerInterface
             return 0;
         }
 
+        /** @var list<string> $characters */
         $characters = preg_split('//u', $word, -1, \PREG_SPLIT_NO_EMPTY);
         $width = 0;
         foreach ($characters as $character) {

@@ -12,6 +12,8 @@
 namespace Famoser\PdfGenerator\Backend\Catalog;
 
 use Famoser\PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
+use Famoser\PdfGenerator\Backend\CatalogVisitor;
+use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 abstract readonly class Font extends BaseIdentifiableStructure
 {
@@ -21,4 +23,6 @@ abstract readonly class Font extends BaseIdentifiableStructure
     }
 
     abstract public function encode(string $value): string;
+
+    abstract public function accept(CatalogVisitor $visitor): BaseObject;
 }

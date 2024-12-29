@@ -35,7 +35,12 @@ readonly class ContentMeasurementVisitor implements ContentVisitorInterface
 
     public function visitImagePlacement(ImagePlacement $imagePlacement): Measurement
     {
-        [$width, $height] = getimagesize($imagePlacement->getImage()->getSrc());
+        $getimagesize = getimagesize($imagePlacement->getImage()->getSrc());
+        if (!$getimagesize) {
+            throw new \Exception("Cannot measure image size: " . $imagePlacement->getImage()->getSrc());
+        }
+
+        [$width, $height] = $getimagesize;
 
         return new Measurement($width * $height, 0, 0);
     }
