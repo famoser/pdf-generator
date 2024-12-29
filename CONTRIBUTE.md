@@ -40,10 +40,12 @@ layout blocks:
 - [x] border (color, thickness, stroke style)
 - [x] background (color)
 
-support more content types:
+extended PDF support:
 
-- [ ] png, svg, esp, ...
-- [ ] video, audio, ... (?)
+- [x] meta data
+- [ ] tags
+- [ ] more content types (png, svg, esp, ...)
+- [ ] more drawings (circles, polynomials)
 
 extend layout support:
 
@@ -53,15 +55,13 @@ extend layout support:
 - [ ] auto, contain, cover for content types
 - [ ] top/right/bottom/left different weight borders
 
-extend drawing support:
+non-targets:
 
-- [ ] circles
-- [ ] polynomials
+- [ ] forms -> PDF is meant for printing
+- [ ] compress string streams -> produced PDFs should remain machine readable
 
-extend PDF support:
+technical:
 
-- [ ] forms
-- [ ] compress string streams
 - [ ] optimize rectangle position (do not modify transform matrix)
 
 ## Maintenance/architecture contributions
