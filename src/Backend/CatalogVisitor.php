@@ -25,6 +25,7 @@ use Famoser\PdfGenerator\Backend\File\Token\DictionaryToken;
 class CatalogVisitor
 {
     private ?DictionaryObject $currentPages = null;
+    public const GENERATOR_VERSION = '0.7';
 
     public function __construct(private readonly File $file)
     {
@@ -42,7 +43,13 @@ class CatalogVisitor
         $dictionary->addReferenceEntry('Metadata', $metadata);
 
         $dictionary = $this->file->addInfoDictionaryObject();
+        $dictionary->addTextEntry('Producer', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
+        $dictionary->addTextEntry('Creator', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
         $dictionary->addDateEntry('CreationDate', new \DateTime());
+        $addTextIfNotNull = function (string $key, ?string $text) use ($dictionary) { if ($text) { $dictionary->addTextEntry($key, $text); }};
+        $addTextIfNotNull('Title', $structure->getMetadata()->getTitle());
+        $addTextIfNotNull('Author', $structure->getMetadata()->getAuthor());
+        $addTextIfNotNull('Keywords', $structure->getMetadata()->getKeywords());
 
         return $dictionary;
     }

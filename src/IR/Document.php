@@ -18,7 +18,7 @@ use Famoser\PdfGenerator\IR\Document\Resource\DocumentResources;
 
 class Document
 {
-    public function __construct(private readonly Meta $meta)
+    public function __construct(private readonly Meta $meta = new Meta())
     {
     }
 

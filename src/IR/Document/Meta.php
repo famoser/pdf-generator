@@ -41,9 +41,11 @@ class Meta
      */
     private array $publishers = [];
     /**
+     * keywords are used both as PDF keywords as well as Dublin Core subject
+     *
      * @var string[]
      */
-    private array $subjects = [];
+    private array $keywords = [];
     /**
      * @var string[]
      */
@@ -119,19 +121,11 @@ class Meta
     }
 
     /**
-     * @param string[] $subjects
-     */
-    public function setSubjects(array $subjects): void
-    {
-        $this->subjects = $subjects;
-    }
-
-    /**
      * @param string[] $keywords
      */
-    public function setKeywordSubjects(array $keywords): void
+    public function setKeywords(array $keywords): void
     {
-        $this->subjects = $keywords;
+        $this->keywords = $keywords;
     }
 
     public function setDates(array $dates): void
@@ -195,9 +189,9 @@ class Meta
         return $this->publishers;
     }
 
-    public function getSubjects(): array
+    public function getKeywords(): array
     {
-        return $this->subjects;
+        return $this->keywords;
     }
 
     public function getDates(): array
