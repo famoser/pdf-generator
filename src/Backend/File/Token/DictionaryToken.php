@@ -30,6 +30,11 @@ class DictionaryToken extends BaseToken
         $this->setEntry($key, new ArrayToken($tokens));
     }
 
+    public function setBooleanEntry(string $key, bool $value): void
+    {
+        $this->setEntry($key, new BooleanToken($value));
+    }
+
     public function setTextEntry(string $key, string $value): void
     {
         $this->setEntry($key, new TextToken($value));
