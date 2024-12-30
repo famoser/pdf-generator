@@ -14,7 +14,7 @@ namespace Famoser\PdfGenerator\Frontend\Content\Style;
 use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
-class DrawingStyle
+readonly class DrawingStyle
 {
     public function __construct(private ?float $lineWidth = 1, private ?Color $lineColor = new Color(0, 0, 0), private ?Color $fillColor = null)
     {

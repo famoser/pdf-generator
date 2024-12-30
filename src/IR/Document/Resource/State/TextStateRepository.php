@@ -55,6 +55,14 @@ class TextStateRepository
         }
     }
 
+    public function setWordSpace(float $wordSpace): void
+    {
+        if ($this->wordSpace !== $wordSpace) {
+            $this->wordSpace = $wordSpace;
+            $this->activeTextState = null;
+        }
+    }
+
     public function setFont(Font $font): void
     {
         if ($this->font !== $font) {
