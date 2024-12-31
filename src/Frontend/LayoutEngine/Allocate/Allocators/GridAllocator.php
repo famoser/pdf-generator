@@ -11,13 +11,14 @@
 
 namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
 
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
+use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Layout\Grid;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\ContentAllocation;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\MeasurementVisitor;
 
 readonly class GridAllocator
 {
@@ -28,7 +29,7 @@ readonly class GridAllocator
     /**
      * @param Row[] $overflowRows
      *
-     * @return BlockAllocation[]
+     * @return Allocation[]
      */
     public function allocate(Grid $grid, array &$overflowRows = [], float &$usedWidth = 0, float &$usedHeight = 0): array
     {
@@ -43,11 +44,11 @@ readonly class GridAllocator
 
     /**
      * @param Row[]                         $rows
-     * @param array<int, BlockAllocation[]> $blockAllocationsPerColumn
+     * @param array<int, Allocation[]> $blockAllocationsPerColumn
      * @param array<int, float>             $widthsPerColumn
      * @param Row[]                         $overflowRows
      *
-     * @return BlockAllocation[]
+     * @return Allocation[]
      */
     public static function allocateRows(array $rows, array $blockAllocationsPerColumn, array $widthsPerColumn, float $availableHeight, float $gap, float $perpendicularGap, int $minimalRowAllocations, array &$overflowRows, float &$usedWidth, float &$usedHeight): array
     {
@@ -58,7 +59,7 @@ readonly class GridAllocator
             }
         }
 
-        /** @var BlockAllocation[] $allocatedBlocks */
+        /** @var Allocation[] $allocatedBlocks */
         $allocatedBlocks = [];
         $overflowRows = $rows;
         $usedHeight = 0.0;
@@ -72,11 +73,11 @@ readonly class GridAllocator
             array_shift($overflowRows);
 
             $currentWidth = 0;
-            /** @var BlockAllocation[] $currentAllocatedBlocks */
+            /** @var Allocation[] $currentAllocatedBlocks */
             $currentAllocatedBlocks = [];
             foreach ($blockAllocationsPerColumn as $columnIndex => $blockAllocations) {
                 if (isset($blockAllocations[$rowIndex])) {
-                    $blockAllocation = BlockAllocation::shift($blockAllocations[$rowIndex], $currentWidth, $usedHeight);
+                    $blockAllocation = Allocation::shift($blockAllocations[$rowIndex], $currentWidth, $usedHeight);
 
                     $currentAllocatedBlocks[] = $blockAllocation;
                 }
@@ -87,8 +88,9 @@ readonly class GridAllocator
             $width = $currentWidth - $gap;
             $row = $rows[$rowIndex];
             if ($row->getStyle() && $row->getStyle()->hasImpact()) {
-                $background = ContentAllocation::createFromBlockStyle($width, $height, $row->getStyle());
-                $backgroundAllocation = new BlockAllocation(0, $usedHeight, $width, $height, [], [$background]);
+                $drawingStyle = DrawingStyle::createFromBlockStyle($row->getStyle());
+                $background = new Rectangle($width, $height, $drawingStyle);
+                $backgroundAllocation = new Allocation(0, $usedHeight, $width, $height, [], [$background]);
                 array_unshift($currentAllocatedBlocks, $backgroundAllocation);
             }
 
@@ -109,7 +111,7 @@ readonly class GridAllocator
      * @param array<int, ColumnSize|string|float> $columnSizes
      * @param array<int, float>             $widthsPerColumn
      *
-     * @return array<int, BlockAllocation[]>
+     * @return array<int, Allocation[]>
      */
     public static function allocatedBlocksPerColumn(array $rows, array $columnSizes, float $availableWidth, float $availableHeight, int $minimalRowAllocations, array &$widthsPerColumn): array
     {
@@ -139,7 +141,7 @@ readonly class GridAllocator
         $totalWeight = 0;
         /** @var float[] $weightPerColumn */
         $weightPerColumn = array_fill(0, \count($columnSizes), 0);
-        $measurer = new BlockMeasurementVisitor();
+        $measurer = new MeasurementVisitor();
         foreach ($rows as $row) {
             foreach ($toBeMeasuredColumns as $toBeMeasuredColumn) {
                 if (!$row->tryGet($toBeMeasuredColumn)) {
@@ -197,7 +199,7 @@ readonly class GridAllocator
     /**
      * @param Row[] $rows
      *
-     * @return array<int,BlockAllocation>
+     * @return array<int,Allocation>
      */
     public static function allocateColumn(array $rows, int $columnIndex, float $availableWidth, float $availableHeight, int $minimalRowAllocations, float &$usedWidth): array
     {
@@ -208,7 +210,7 @@ readonly class GridAllocator
                 continue;
             }
 
-            $blockAllocator = new BlockAllocationVisitor($availableWidth, $remainingHeight);
+            $blockAllocator = new AllocationVisitor($availableWidth, $remainingHeight);
             $blockAllocation = $row->tryGet($columnIndex)->accept($blockAllocator);
 
             // abort if not enough space, but progress made

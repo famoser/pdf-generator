@@ -14,9 +14,9 @@ namespace Famoser\PdfGenerator\Frontend\Layout;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use Famoser\PdfGenerator\Frontend\Layout\Traits\ColumnSizesTrait;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ElementVisitorInterface;
 
-class Table extends AbstractBlock
+class Table extends AbstractElement
 {
     use ColumnSizesTrait;
 
@@ -80,7 +80,7 @@ class Table extends AbstractBlock
      */
     public function cloneWithBody(array $body): self
     {
-        $self = clone $this;
+        $self = new self($this->columnSizes);
         $self->body = $body;
 
         return $self;
@@ -97,11 +97,11 @@ class Table extends AbstractBlock
     /**
      * @template T
      *
-     * @param BlockVisitorInterface<T> $visitor
+     * @param ElementVisitorInterface<T> $visitor
      *
      * @return T
      */
-    public function accept(BlockVisitorInterface $visitor): mixed
+    public function accept(ElementVisitorInterface $visitor): mixed
     {
         return $visitor->visitTable($this);
     }

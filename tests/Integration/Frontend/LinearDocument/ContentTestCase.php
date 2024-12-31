@@ -13,12 +13,12 @@ namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
 use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
 use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
-use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
-use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 use Famoser\PdfGenerator\Frontend\LinearDocument;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\Frontend\Resource\Image;
@@ -33,9 +33,7 @@ class ContentTestCase extends LinearDocumentTestCase
         $document = new LinearDocument();
 
         // act
-        $rectangleStyle = new DrawingStyle();
-        $rectangleStyle->setFillColor(new Color(0, 255, 0));
-        $rectangleStyle->setLineColor(new Color(0, 255, 255));
+        $rectangleStyle = new DrawingStyle(lineColor: new Color(0, 255, 255), fillColor: new Color(0, 255, 0));
         $rectangle = new Rectangle($rectangleStyle);
 
         $contentBlock = $this->createHighlightedContentBlock($rectangle, 20, 40);
@@ -72,7 +70,7 @@ class ContentTestCase extends LinearDocumentTestCase
         // act
         $font = Font::createFromDefault();
         $normalText = new TextStyle($font, 3, 1.2, new Color(0, 0, 0));
-        $paragraph = new Paragraph();
+        $paragraph = new TextBlock();
         $paragraph->add($normalText, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
 
         $contentBlock = $this->createHighlightedContentBlock($paragraph);
@@ -93,7 +91,7 @@ class ContentTestCase extends LinearDocumentTestCase
         $font = Font::createFromDefault();
         $normalText = new TextStyle($font, 3, 2, new Color(0, 0, 0));
         $bigText = new TextStyle($font, 20, 1, new Color(0, 0, 0));
-        $paragraph = new Paragraph();
+        $paragraph = new TextBlock();
         $paragraph->add($normalText, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
         $paragraph->add($bigText, 'Am besten einmal ein kleines PDF im ');
         $paragraph->add($normalText, 'Texteditor öffnen und durchschauen. Zum Beispiel vom Kontoauszug, diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
@@ -109,9 +107,7 @@ class ContentTestCase extends LinearDocumentTestCase
 
     private function createHighlightedContentBlock(AbstractContent $content, ?float $width = null, ?float $height = null): ContentBlock
     {
-        $highlightBlockStyle = new BlockStyle();
-        $highlightBlockStyle->setBackgroundColor(new Color(255, 0, 0));
-        $highlightBlockStyle->setBorder(1.0, new Color(0, 0, 255));
+        $highlightBlockStyle = new ElementStyle(1.0, new Color(0, 0, 255), new Color(255, 0, 0));
 
         $contentBlock = new ContentBlock($content);
         $contentBlock->setStyle($highlightBlockStyle);

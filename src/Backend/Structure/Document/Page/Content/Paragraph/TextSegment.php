@@ -15,21 +15,15 @@ use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\WritingState;
 
-readonly class Phrase
+readonly class TextSegment
 {
-    /**
-     * @param string[] $lines
-     */
-    public function __construct(private array $lines, private WritingState $writingState)
+    public function __construct(private string $text, private WritingState $writingState)
     {
     }
 
-    /**
-     * @return string[]
-     */
-    public function getLines(): array
+    public function getText(): string
     {
-        return $this->lines;
+        return $this->text;
     }
 
     /**

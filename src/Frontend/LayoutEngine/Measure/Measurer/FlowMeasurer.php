@@ -11,9 +11,9 @@
 
 namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\MeasurementVisitor;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 
 readonly class FlowMeasurer
@@ -23,7 +23,7 @@ readonly class FlowMeasurer
     }
 
     /**
-     * @param AbstractBlock[] $blocks
+     * @param AbstractElement[] $blocks
      */
     public function measure(array $blocks, FlowDirection $direction, float $gap): Measurement
     {
@@ -35,7 +35,7 @@ readonly class FlowMeasurer
     }
 
     /**
-     * @param AbstractBlock[] $blocks
+     * @param AbstractElement[] $blocks
      *
      * @return Measurement[]
      */
@@ -46,7 +46,7 @@ readonly class FlowMeasurer
         for ($i = 0; $i < count($blocks); ++$i) {
             $block = $blocks[$i];
 
-            $measurementVisitor = new BlockMeasurementVisitor();
+            $measurementVisitor = new MeasurementVisitor();
             $measurements[] = $block->accept($measurementVisitor);
         }
 

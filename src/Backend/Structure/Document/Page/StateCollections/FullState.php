@@ -21,6 +21,12 @@ readonly class FullState
     {
     }
 
+    public function cloneWithTextState(TextState $newTextState): self
+    {
+        return new self($this->generalGraphicsState, $this->colorState, $newTextState);
+
+    }
+
     public function getGeneralGraphicsState(): ?GeneralGraphicState
     {
         return $this->generalGraphicsState;

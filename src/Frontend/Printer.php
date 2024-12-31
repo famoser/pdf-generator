@@ -11,20 +11,20 @@
 
 namespace Famoser\PdfGenerator\Frontend;
 
-use Famoser\PdfGenerator\Frontend\Content\Paragraph\Phrase;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
+use Famoser\PdfGenerator\Frontend\Content\Text\TextLine;
+use Famoser\PdfGenerator\Frontend\Content\TextBlock;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
 use Famoser\PdfGenerator\IR\Document;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Position;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Size;
 use Famoser\PdfGenerator\IR\Document\Content\ImagePlacement;
-use Famoser\PdfGenerator\IR\Document\Content\Paragraph;
+use Famoser\PdfGenerator\IR\Document\Content\Text;
 use Famoser\PdfGenerator\IR\Document\Content\Rectangle;
 use Famoser\PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
-use Famoser\PdfGenerator\IR\Document\Content\Text;
 use Famoser\PdfGenerator\IR\Document\Page;
 
 readonly class Printer
@@ -38,7 +38,7 @@ readonly class Printer
         return new self($this->document, $this->imageRepository, $this->fontRepository, $this->page, $this->left + $left, $this->top + $top);
     }
 
-    public function print(BlockAllocation $allocation): void
+    public function print(Allocation $allocation): void
     {
         $placedPrinter = self::position($allocation->getLeft(), $allocation->getTop());
 
@@ -46,66 +46,60 @@ readonly class Printer
             $placedPrinter->print($blockAllocation);
         }
 
-        foreach ($allocation->getContentAllocations() as $contentAllocation) {
-            $contentAllocation->getContent()->print($placedPrinter, $contentAllocation->getWidth(), $contentAllocation->getHeight());
+        foreach ($allocation->getContent() as $content) {
+            $content->print($placedPrinter);
         }
     }
 
-    public function printImage(Resource\Image $image, float $width, float $height): void
+    public function printImage(Content\ImagePlacement $imagePlacement): void
     {
-        $IRImage = $this->imageRepository->getImage($image);
+        $IRImage = $this->imageRepository->getImage($imagePlacement->getImage());
 
-        $position = $this->getPosition($height);
-        $size = new Size($width, $height);
+        $position = $this->getPosition($imagePlacement->getHeight());
+        $size = new Size($imagePlacement->getWidth(), $imagePlacement->getHeight());
 
         $imagePlacement = new ImagePlacement($IRImage, $position, $size);
         $this->page->addContent($imagePlacement);
     }
 
-    public function printRectangle(float $width, float $height, DrawingStyle $drawingStyle): void
+    public function printRectangle(Content\Rectangle $rectangle): void
     {
-        $rectangleStyle = self::createRectangleStyle($drawingStyle);
+        $rectangleStyle = self::createRectangleStyle($rectangle->getStyle());
 
-        $position = $this->getPosition($height);
-        $size = new Size($width, $height);
+        $position = $this->getPosition($rectangle->getHeight());
+        $size = new Size($rectangle->getWidth(), $rectangle->getHeight());
 
         $rectangle = new Rectangle($position, $size, $rectangleStyle);
         $this->page->addContent($rectangle);
     }
 
-    public function printText(string $text, TextStyle $textStyle): void
+    public function printText(string $text, TextStyle $style): void
     {
-        $IRTextStyle = self::createTextStyle($textStyle);
+        $position = $this->getPosition(0);
 
-        $fontMeasurement = $this->fontRepository->getFontMeasurement($textStyle);
-        $ascender = $fontMeasurement->getAscender();
-
-        $position = $this->getPosition($ascender);
-
-        $textContent = new Text($text, $position, $IRTextStyle);
-        $this->page->addContent($textContent);
+        $textStyle = self::createTextStyle($style, $style->getLineHeight(), 0);
+        $segment = new Text\Segment($text, $textStyle);
+        $line = new Text\Line(0, [$segment]);
+        $paragraph = new Text([$line], $position);
+        $this->page->addContent($paragraph);
     }
 
-    /**
-     * @param Phrase[] $phrases
-     */
-    public function printPhrases(array $phrases): void
+    public function printTextBlock(TextBlock $textBlock): void
     {
-        /** @var Text\Phrase[] $IRPhases */
-        $IRPhases = [];
-        foreach ($phrases as $phrase) {
-            $textStyle = self::createTextStyle($phrase->getTextStyle());
-            $IRPhases[] = new Text\Phrase($phrase->getText(), $textStyle);
+        $lines = [];
+        foreach ($textBlock->getLines() as $line) {
+            $segments = [];
+            foreach ($line->getSegments() as $segment) {
+                $textStyle = self::createTextStyle($segment->getTextStyle(), $line->getLineHeight(), $line->getWordSpacing());
+                $segments[] = new Text\Segment($segment->getText(), $textStyle);
+            }
+
+            $lines[] = new Text\Line($line->getOffset(), $segments);
         }
 
-        $heightShift = 0;
-        if (count($phrases) > 0) {
-            $fontMeasurement = $this->fontRepository->getFontMeasurement($phrases[0]->getTextStyle());
-            $heightShift = $fontMeasurement->getAscender();
-        }
-        $position = $this->getPosition($heightShift);
+        $position = $this->getPosition(0); // text is rendered as expected
 
-        $paragraph = new Paragraph($IRPhases, $position);
+        $paragraph = new Text($lines, $position);
         $this->page->addContent($paragraph);
     }
 
@@ -121,10 +115,10 @@ readonly class Printer
         return new RectangleStyle($drawingStyle->getLineWidth(), $drawingStyle->getLineColor(), $drawingStyle->getFillColor());
     }
 
-    private function createTextStyle(TextStyle $textStyle): Text\TextStyle
+    private function createTextStyle(TextStyle $textStyle, ?float $lineHeight = null, float $wordSpace = 0): Text\TextStyle
     {
         $font = $this->fontRepository->getFont($textStyle->getFont());
 
-        return new Text\TextStyle($font, $textStyle->getFontSize(), $textStyle->getLineHeight(), $textStyle->getColor());
+        return new Text\TextStyle($font, $textStyle->getFontSize(), $lineHeight ?? $textStyle->getLineHeight(), $wordSpace, $textStyle->getColor());
     }
 }

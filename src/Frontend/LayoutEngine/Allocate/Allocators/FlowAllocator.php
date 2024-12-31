@@ -11,11 +11,11 @@
 
 namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
 
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
 
 readonly class FlowAllocator
 {
@@ -24,13 +24,13 @@ readonly class FlowAllocator
     }
 
     /**
-     * @param AbstractBlock[] $overflowBlocks
+     * @param AbstractElement[] $overflowBlocks
      *
-     * @return BlockAllocation[]
+     * @return Allocation[]
      */
     public function allocate(Flow $flow, array &$overflowBlocks = [], float &$usedWidth = 0, float &$usedHeight = 0): array
     {
-        /** @var BlockAllocation[] $blockAllocations */
+        /** @var Allocation[] $blockAllocations */
         $blockAllocations = [];
         $overflowBlocks = $flow->getBlocks();
         while (count($overflowBlocks) > 0) {
@@ -39,8 +39,8 @@ readonly class FlowAllocator
             // get allocation of child
             $availableWidth = FlowDirection::ROW === $flow->getDirection() ? $this->width - $usedWidth : $this->width;
             $availableHeight = FlowDirection::COLUMN === $flow->getDirection() ? $this->height - $usedHeight : $this->height;
-            $allocationVisitor = new BlockAllocationVisitor($availableWidth, $availableHeight);
-            /** @var BlockAllocation $allocation */
+            $allocationVisitor = new AllocationVisitor($availableWidth, $availableHeight);
+            /** @var Allocation $allocation */
             $allocation = $block->accept($allocationVisitor);
 
             $progressMade = count($blockAllocations) > 0;
@@ -52,11 +52,11 @@ readonly class FlowAllocator
 
             // update allocated content
             if (FlowDirection::ROW === $flow->getDirection()) {
-                $blockAllocations[] = new BlockAllocation($usedWidth, 0, $allocation->getWidth(), $allocation->getHeight(), [$allocation]);
+                $blockAllocations[] = new Allocation($usedWidth, 0, $allocation->getWidth(), $allocation->getHeight(), [$allocation]);
                 $usedHeight = max($usedHeight, $allocation->getHeight());
                 $usedWidth += $allocation->getWidth() + $flow->getGap();
             } else {
-                $blockAllocations[] = new BlockAllocation(0, $usedHeight, $allocation->getWidth(), $allocation->getHeight(), [$allocation]);
+                $blockAllocations[] = new Allocation(0, $usedHeight, $allocation->getWidth(), $allocation->getHeight(), [$allocation]);
                 $usedHeight += $allocation->getHeight() + $flow->getGap();
                 $usedWidth = max($usedWidth, $allocation->getWidth());
             }

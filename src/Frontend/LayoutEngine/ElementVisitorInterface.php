@@ -16,11 +16,12 @@ use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Grid;
 use Famoser\PdfGenerator\Frontend\Layout\Table;
+use Famoser\PdfGenerator\Frontend\Layout\Text;
 
 /**
  * @template T
  */
-interface BlockVisitorInterface
+interface ElementVisitorInterface
 {
     /**
      * @return T
@@ -46,4 +47,9 @@ interface BlockVisitorInterface
      * @return T
      */
     public function visitTable(Table $table);
+
+    /**
+     * @return T
+     */
+    public function visitText(Text $text);
 }

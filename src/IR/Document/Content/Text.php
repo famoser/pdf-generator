@@ -13,27 +13,28 @@ namespace Famoser\PdfGenerator\IR\Document\Content;
 
 use Famoser\PdfGenerator\IR\Document\Content\Base\BaseContent;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Position;
-use Famoser\PdfGenerator\IR\Document\Content\Text\TextStyle;
+use Famoser\PdfGenerator\IR\Document\Content\Text\Line;
 
 readonly class Text extends BaseContent
 {
-    public function __construct(private string $text, private Position $position, private TextStyle $style)
+    /**
+     * @param Line[] $lines
+     */
+    public function __construct(private array $lines, private Position $position)
     {
     }
 
-    public function getText(): string
+    /**
+     * @return Line[]
+     */
+    public function getLines(): array
     {
-        return $this->text;
+        return $this->lines;
     }
 
     public function getPosition(): Position
     {
         return $this->position;
-    }
-
-    public function getStyle(): TextStyle
-    {
-        return $this->style;
     }
 
     public function accept(ContentVisitorInterface $visitor)

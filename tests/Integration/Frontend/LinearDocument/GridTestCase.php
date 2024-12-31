@@ -11,15 +11,15 @@
 
 namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
-use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Grid;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
-use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use Famoser\PdfGenerator\Frontend\LinearDocument;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
@@ -221,27 +221,22 @@ class GridTestCase extends LinearDocumentTestCase
         $this->assertNotEmpty($result);
     }
 
-    private function setBorderStyle(AbstractBlock $block): void
+    private function setBorderStyle(AbstractElement $block): void
     {
-        $borderedBlockStyle = new BlockStyle();
-        $borderedBlockStyle->setBorder(1, new Color(0, 0, 0));
+        $borderedBlockStyle = new ElementStyle(1, new Color(0, 0, 0));
         $block->setStyle($borderedBlockStyle);
     }
 
     private function createColourfulRectangle(): Rectangle
     {
-        $colorfulRectangleStyle = new DrawingStyle();
-        $colorfulRectangleStyle->setFillColor(new Color(0, 255, 0));
-        $colorfulRectangleStyle->setLineColor(new Color(0, 255, 255));
+        $colorfulRectangleStyle = new DrawingStyle(fillColor: new Color(0, 255, 0), lineColor: new Color(0, 255, 255));
 
         return new Rectangle($colorfulRectangleStyle);
     }
 
     private function createAlternateColourfulRow(): Row
     {
-        $colorfulRectangleStyle = new BlockStyle();
-        $colorfulRectangleStyle->setBackgroundColor(new Color(0, 125, 0));
-        $colorfulRectangleStyle->setBorder(0.25, new Color(0, 125, 125));
+        $colorfulRectangleStyle = new ElementStyle(0.25, new Color(0, 125, 125), new Color(0, 125, 0));
 
         $row = new Row();
         $row->setStyle($colorfulRectangleStyle);
@@ -281,7 +276,7 @@ class GridTestCase extends LinearDocumentTestCase
         foreach ($text as $line) {
             $row = new Row();
             foreach ($line as $index => $cell) {
-                $paragraph = new Paragraph();
+                $paragraph = new TextBlock();
                 $paragraph->add($normalText, $cell);
                 $row->setContent($index, $paragraph);
             }

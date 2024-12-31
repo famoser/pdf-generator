@@ -11,19 +11,19 @@
 
 namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\BlockMeasurementVisitor;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\MeasurementVisitor;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 
 readonly class GridMeasurer
 {
-    private BlockMeasurementVisitor $measurementVisitor;
+    private MeasurementVisitor $measurementVisitor;
 
     public function __construct()
     {
-        $this->measurementVisitor = new BlockMeasurementVisitor();
+        $this->measurementVisitor = new MeasurementVisitor();
     }
 
     /**
@@ -78,7 +78,7 @@ readonly class GridMeasurer
     }
 
     /**
-     * @param AbstractBlock[] $columns
+     * @param AbstractElement[] $columns
      *
      * @return Measurement[]
      */

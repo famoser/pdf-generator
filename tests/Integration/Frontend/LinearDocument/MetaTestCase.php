@@ -13,12 +13,12 @@ namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
 use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
 use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
-use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
-use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 use Famoser\PdfGenerator\Frontend\LinearDocument;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\Frontend\Resource\Image;

@@ -11,14 +11,17 @@
 
 include '../vendor/autoload.php';
 
-use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use Famoser\PdfGenerator\Frontend\Layout\Table;
+use Famoser\PdfGenerator\Frontend\Layout\Text;
+use Famoser\PdfGenerator\Frontend\Layout\TextSpan;
 use Famoser\PdfGenerator\Frontend\LinearDocument;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
@@ -42,17 +45,15 @@ $printer = $document->createPrinter(0, $margin, 60);
 $printer->printText("Universität Zürich\nZentrale Informatik\nStampfenbachstrasse 73\n8006 Zürich\nSchweiz", $normalText);
 
 // source address
-$phrases = [];
-$phrases[] = new Paragraph\Phrase("famoser GmbH\n", $boldText);
-$phrases[] = new Paragraph\Phrase("c/o Florian Moser\nMoosburgstrasse 25\n8307 Effretikon\nSchweiz", $normalText);
 $printer = $document->createPrinter(0, 160, $margin);
-$printer->printPhrases($phrases);
+$printer->printText("famoser GmbH\n", $boldText);
+$printer->printText("c/o Florian Moser\nMoosburgstrasse 25\n8307 Effretikon\nSchweiz", $normalText);
 
 // header
 $printer = $document->createPrinter(0, $margin, 100);
 $printer->printText('Invoice UZH-ZI-5', $headerText);
 $printer = $printer->position(0, 8);
-$printer->printRectangle(180, 0.1, new DrawingStyle(0.1));
+$printer->printRectangle(new Rectangle(180, 0.1, new DrawingStyle(0.1)));
 $printer = $printer->position(0, 3);
 
 $columns = [
@@ -68,14 +69,18 @@ foreach ($columns as $column) {
 }
 
 $printer = $printer->position(0, 11);
-$printer->printRectangle(180, 0.1, new DrawingStyle(0.1));
+$printer->printRectangle(new Rectangle(180, 0.1, new DrawingStyle(0.1)));
 
 // description
 $flow = new Flow();
-$paragraph = new Paragraph();
-$paragraph->add($headerText, "Concept & Implementation ZI-2812-F\n");
-$paragraph->add($normalText, "To whom it may concern\n\nI would like to thank you for the order and the trust you have placed in me. The tasks according to the offer of 01.01.2023 were implemented on time and accepted by the client on 30.06.2023. Only the work actually incurred will be invoiced.");
-$flow->addContent($paragraph);
+$title = new Text(Text\Structure::Header_1);
+$title->add($headerText, "Concept & Implementation ZI-2812-F\n");
+$flow->add($title);
+
+$thankYou = new Text(Text\Structure::Paragraph);
+$thankYou->add($normalText, "To whom it may concern\n\nI would like to thank you for the order and the trust you have placed in me. The tasks according to the offer of 01.01.2023 were implemented on time and accepted by the client on 30.06.2023. Only the work actually incurred will be invoiced.");
+$flow->add($thankYou);
+
 $document->position(130);
 $document->add($flow);
 
@@ -94,25 +99,26 @@ foreach ($textByRow as $rowIndex => $rowDefinition) {
     $row = new Row();
     $textStyle = array_shift($rowDefinition);
     foreach ($rowDefinition as $index => $text) {
-        $paragraph = new Paragraph();
-        $paragraph->add($textStyle, $text);
+        $regards = new Text();
+        $regards->add($textStyle, $text);
+        $regards->setPadding([1, 0.3, 1, 0.3]);
 
-        $content = new ContentBlock($paragraph);
-        $content->setPadding([1, 0.3, 1, 0.3]);
-
-        $row->set($index, $content);
+        $row->set($index, $regards);
     }
 
-    $table->addBody($row);
+    if ($rowIndex === 0) {
+        $table->addHead($row);
+    } else {
+        $table->addBody($row);
+    }
 }
 $document->add($table);
 
 // greeting formula
 $flow = new Flow();
-$paragraph = new Paragraph();
-$paragraph->add($normalText, "In case of questions, please do not hesitate to ask.\n\nBest regards\nFlorian Moser");
-$flow->addContent($paragraph);
-$document->add($flow);
+$regards = new Text();
+$regards->add($normalText, "In case of questions, please do not hesitate to ask.\n\nBest regards\nFlorian Moser");
+$document->add($regards);
 
 $result = $document->save();
 file_put_contents('invoice.pdf', $result);

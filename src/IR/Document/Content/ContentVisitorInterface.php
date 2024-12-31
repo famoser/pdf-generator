@@ -30,9 +30,4 @@ interface ContentVisitorInterface
      * @return T
      */
     public function visitText(Text $text);
-
-    /**
-     * @return T
-     */
-    public function visitParagraph(Paragraph $paragraph);
 }

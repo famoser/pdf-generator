@@ -13,25 +13,10 @@ namespace Famoser\PdfGenerator\Frontend\Layout\Style;
 
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
-class BlockStyle
+readonly class ElementStyle
 {
-    private ?float $borderWidth = null;
-    private ?Color $borderColor = null;
-    private ?Color $backgroundColor = null;
-
-    public function setBorder(float $borderWidth, Color $borderColor = new Color(0, 0, 0)): self
+    public function __construct(private ?float $borderWidth = null, private ?Color $borderColor = null, private ?Color $backgroundColor = null)
     {
-        $this->borderWidth = $borderWidth;
-        $this->borderColor = $borderColor;
-
-        return $this;
-    }
-
-    public function setBackgroundColor(?Color $backgroundColor): self
-    {
-        $this->backgroundColor = $backgroundColor;
-
-        return $this;
     }
 
     public function getBorderWidth(): ?float

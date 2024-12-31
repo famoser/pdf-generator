@@ -95,12 +95,12 @@ class StateTransitionVisitor
             $previousState = new TextState($targetState->getFont(), $targetState->getFontSize());
         }
 
-        if ($previousState->getCharSpace() !== $targetState->getCharSpace()) {
-            $operators[] = $targetState->getCharSpace().' Tc';
+        if ($previousState->getCharacterSpacing() !== $targetState->getCharacterSpacing()) {
+            $operators[] = $targetState->getCharacterSpacing().' Tc';
         }
 
-        if ($previousState->getWordSpace() !== $targetState->getWordSpace()) {
-            $operators[] = $targetState->getWordSpace().' Tw';
+        if ($previousState->getWordSpacing() !== $targetState->getWordSpacing()) {
+            $operators[] = $targetState->getWordSpacing().' Tw';
         }
 
         if ($previousState->getScale() !== $targetState->getScale()) {

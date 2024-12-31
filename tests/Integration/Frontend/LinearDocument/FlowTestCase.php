@@ -11,13 +11,15 @@
 
 namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
-use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Block;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
+use Famoser\PdfGenerator\Frontend\Layout\Text;
 use Famoser\PdfGenerator\Frontend\LinearDocument;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 
@@ -32,10 +34,8 @@ class FlowTestCase extends LinearDocumentTestCase
         $rectangleStyle = new DrawingStyle(0.25);
         $flow = new Flow(FlowDirection::COLUMN);
         for ($i = 0; $i < 800; ++$i) {
-            $rectangle = new Rectangle($rectangleStyle);
+            $rectangle = new Rectangle($i * 5 % 40, $i * 3 % 17, $rectangleStyle);
             $contentBlock = new ContentBlock($rectangle);
-            $contentBlock->setWidth($i * 5 % 40);
-            $contentBlock->setHeight($i * 3 % 17);
             $flow->add($contentBlock);
         }
         $outerFlow = new Flow();
@@ -50,6 +50,38 @@ class FlowTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 35 258 cm 0 0 30 7 re s', $result);
     }
 
+
+    public function testPrintSimpleFlowText(): void
+    {
+        // arrange
+        $document = new LinearDocument();
+
+        $font = Font::createFromDefault();
+        $normalText = new TextStyle($font, 3);
+
+        // act
+        $paragraph = new Text(alignment: Text\Alignment::ALIGNMENT_JUSTIFIED);
+        $paragraph->add($normalText, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
+        $paragraph->add($normalText, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ');
+        $paragraph->add($normalText, 'Kontoauszug');
+        $paragraph->add($normalText, ', diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
+
+        $flow = new Flow(FlowDirection::COLUMN);
+        $flow->setWidth(85);
+        $contentBlock = new Block($paragraph);
+        $contentBlock->setMargin([0, 3 * 1.6, 0, 0]);
+        $flow->add($contentBlock);
+        $document->add($flow);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('1 0 0 1 0 -60.96 cm BT', $result);
+        $this->assertStringContainsString('(Jeder dieser)Tj (Inhalte', $result);
+        $this->assertStringContainsString('1 0 0 1 0 -60.96 cm BT (Eine', $result);
+
+        file_put_contents('pdf.pdf', $result);
+    }
+
     public function testPrintFlowText(): void
     {
         // arrange
@@ -59,23 +91,23 @@ class FlowTestCase extends LinearDocumentTestCase
         $normalText = new TextStyle($font, 3);
 
         // act
-        /** @var Paragraph[] $paragraphs */
+        /** @var TextBlock[] $paragraphs */
         $paragraphs = [];
-        $paragraph = new Paragraph();
+        $paragraph = new Text();
         $paragraph->add($normalText, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
         $paragraph->add($normalText, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ');
         $paragraph->add($normalText, 'Kontoauszug');
         $paragraph->add($normalText, ', diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
         $paragraphs[] = $paragraph;
 
-        $paragraph = new Paragraph();
+        $paragraph = new Text();
         $paragraph->add($normalText, 'Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. ');
         $paragraph->add($normalText, 'Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. ');
         $paragraph->add($normalText, 'Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. ');
         $paragraph->add($normalText, 'Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator.');
         $paragraphs[] = $paragraph;
 
-        $paragraph = new Paragraph();
+        $paragraph = new Text();
         $paragraph->add($normalText, 'Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). ');
         $paragraph->add($normalText, 'Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. ');
         $paragraph->add($normalText, 'Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. ');
@@ -89,7 +121,7 @@ class FlowTestCase extends LinearDocumentTestCase
         $flow->setWidth(85);
         for ($i = 0; $i < 30; ++$i) {
             foreach ($paragraphs as $paragraph) {
-                $contentBlock = new ContentBlock($paragraph);
+                $contentBlock = new Block($paragraph);
                 $contentBlock->setMargin([0, 3 * 1.6, 0, 0]);
                 $flow->add($contentBlock);
             }

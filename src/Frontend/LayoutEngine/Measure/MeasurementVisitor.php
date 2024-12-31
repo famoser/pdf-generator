@@ -11,15 +11,17 @@
 
 namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure;
 
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\Block;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Grid;
 use Famoser\PdfGenerator\Frontend\Layout\Table;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Layout\Text;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ElementVisitorInterface;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\FlowMeasurer;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\GridMeasurer;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\TextMeasurer;
 
 /**
  * Measurements allow the layout engine to plan the layout. It contains:
@@ -29,14 +31,14 @@ use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer\GridMeasurer;
  * Measurements may not be exact; i.e. minWidth / minHeight may not correspond to what is then allocated.
  * They are still useful to layout; e.g. define auto column widths in tables.
  *
- * @implements  BlockVisitorInterface<Measurement>
+ * @implements  ElementVisitorInterface<Measurement>
  */
-readonly class BlockMeasurementVisitor implements BlockVisitorInterface
+readonly class MeasurementVisitor implements ElementVisitorInterface
 {
     public function visitContentBlock(ContentBlock $contentBlock): Measurement
     {
-        $contentMeasurementVisitor = new ContentMeasurementVisitor();
-        $contentMeasurement = $contentBlock->getContent()->accept($contentMeasurementVisitor);
+        $content = $contentBlock->getContent();
+        $contentMeasurement = $content ? new Measurement($content->getWidth() * $content->getHeight(), $content->getWidth(), $content->getHeight()) : Measurement::zero();
 
         return $this->measureBlock($contentBlock, $contentMeasurement);
     }
@@ -72,7 +74,15 @@ readonly class BlockMeasurementVisitor implements BlockVisitorInterface
         return $this->measureBlock($table, $contentMeasurement);
     }
 
-    private function measureBlock(AbstractBlock $block, Measurement $contentMeasurement): Measurement
+    public function visitText(Text $text): Measurement
+    {
+        $measurer = new TextMeasurer();
+        $contentMeasurement = $measurer->measure($text->getSpans());
+
+        return $this->measureBlock($text, $contentMeasurement);
+    }
+
+    private function measureBlock(AbstractElement $block, Measurement $contentMeasurement): Measurement
     {
         $minHeight = $block->getHeight() ?? $contentMeasurement->getMinHeight() + $block->getXSpace();
         $minWidth = $block->getWidth() ?? $contentMeasurement->getMinWidth() + $block->getYSpace();

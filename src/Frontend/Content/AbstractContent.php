@@ -14,16 +14,21 @@ namespace Famoser\PdfGenerator\Frontend\Content;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 use Famoser\PdfGenerator\Frontend\Printer;
 
-abstract class AbstractContent
+abstract readonly class AbstractContent
 {
-    /**
-     * @template T
-     *
-     * @param ContentVisitorInterface<T> $visitor
-     *
-     * @return T
-     */
-    abstract public function accept(ContentVisitorInterface $visitor);
+    public function __construct(private float $width, private float $height)
+    {
+    }
 
-    abstract public function print(Printer $printer, float $width, float $height): void;
+    public function getWidth(): float
+    {
+        return $this->width;
+    }
+
+    public function getHeight(): float
+    {
+        return $this->height;
+    }
+
+    abstract public function print(Printer $printer): void;
 }
