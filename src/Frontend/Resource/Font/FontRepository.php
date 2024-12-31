@@ -86,7 +86,7 @@ class FontRepository
 
         $wordSizer = $this->wordSizerByFont[$font->getIdentifier()];
 
-        return new FontMeasurement($font, $textStyle->getFontSize(), $textStyle->getLineHeight(), $wordSizer);
+        return new FontMeasurement($font, $textStyle->getFontSize(), $textStyle->getLeading(), $wordSizer);
     }
 
     private function getOrCreateDefaultFont(FontFamily $font, FontWeight $weight, FontStyle $style): DefaultFont

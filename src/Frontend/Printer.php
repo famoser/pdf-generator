@@ -77,7 +77,7 @@ readonly class Printer
     {
         $position = $this->getPosition(0);
 
-        $textStyle = self::createTextStyle($style, $style->getLineHeight(), 0);
+        $textStyle = self::createTextStyle($style, $style->getLeading(), 0);
         $segment = new Text\TextSegment($text, $textStyle);
         $line = new Text\TextLine(0, [$segment]);
         $paragraph = new Text([$line], $position);
@@ -115,10 +115,10 @@ readonly class Printer
         return new RectangleStyle($drawingStyle->getLineWidth(), $drawingStyle->getLineColor(), $drawingStyle->getFillColor());
     }
 
-    private function createTextStyle(TextStyle $textStyle, ?float $lineHeight = null, float $wordSpace = 0): Text\TextStyle
+    private function createTextStyle(TextStyle $textStyle, ?float $leading = null, float $wordSpace = 0): Text\TextStyle
     {
         $font = $this->fontRepository->getFont($textStyle->getFont());
 
-        return new Text\TextStyle($font, $textStyle->getFontSize(), $lineHeight ?? $textStyle->getLineHeight(), $wordSpace, $textStyle->getColor());
+        return new Text\TextStyle($font, $textStyle->getFontSize(), $leading ?? $textStyle->getLeading(), $wordSpace, $textStyle->getColor());
     }
 }
