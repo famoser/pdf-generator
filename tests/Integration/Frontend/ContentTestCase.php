@@ -65,19 +65,31 @@ class ContentTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('20 0 0 30 5 5 cm /I Do', $result);
     }
 
-    public function testPrintTextBlock(): void
+    public function testPrintTextAlign(): void
     {
         // arrange
         $document = new LinearDocument();
+        $dummyText = 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. Hier kommt noch mehr Text, um das right align wirklich gut auszuprobieren.  Hier           kommt noch mehr Text, um das right align wirklich gut auszuprobieren. ';
 
         // act
         $font = Font::createFromDefault();
         $normalText = new TextStyle($font, 5, 1.2, new Color(0, 0, 0));
-        $paragraph = new Text(alignment: Text\Alignment::ALIGNMENT_RIGHT);
-        $paragraph->add($normalText, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. Hier kommt noch mehr Text, um das right align wirklich gut auszuprobieren.  Hier kommt noch mehr Text, um das right align wirklich gut auszuprobieren.');
 
-        $block = $this->createHighlightedBlock($paragraph);
-        $document->add($block);
+        $text = new Text(alignment: Text\Alignment::ALIGNMENT_LEFT);
+        $text->add($normalText, $dummyText);
+        $document->add($this->createHighlightedBlock($text));
+
+        $text = new Text(alignment: Text\Alignment::ALIGNMENT_CENTER);
+        $text->add($normalText, $dummyText);
+        $document->add($this->createHighlightedBlock($text));
+
+        $text = new Text(alignment: Text\Alignment::ALIGNMENT_RIGHT);
+        $text->add($normalText, $dummyText);
+        $document->add($this->createHighlightedBlock($text));
+
+        $text = new Text(alignment: Text\Alignment::ALIGNMENT_JUSTIFIED);
+        $text->add($normalText, $dummyText.$dummyText.$dummyText);
+        $document->add($this->createHighlightedBlock($text));
 
         // assert
         $result = $this->render($document);
@@ -128,7 +140,7 @@ class ContentTestCase extends LinearDocumentTestCase
         $contentBlock = new Block($content);
         $contentBlock->setStyle($highlightBlockStyle);
         $contentBlock->setMargin([7, 7, 7, 7]);
-        $contentBlock->setPadding([5, 5, 5, 5]);
+        $contentBlock->setPadding([0, 0, 0, 0]);
 
         return $contentBlock;
     }

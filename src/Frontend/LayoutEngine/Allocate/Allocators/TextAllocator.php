@@ -127,6 +127,7 @@ readonly class TextAllocator
         $offset = 0.0;
         $wordSpacing = 0.0;
         $remainingWidth = $maxWidth - $allocatedWidth;
+        $allocatedWidth = $alignment === Alignment::ALIGNMENT_LEFT ? $allocatedWidth : $maxWidth;
         if ($alignment === Alignment::ALIGNMENT_CENTER) {
             $offset = $remainingWidth / 2;
         } else if ($alignment === Alignment::ALIGNMENT_RIGHT) {
@@ -145,8 +146,7 @@ readonly class TextAllocator
             }
 
             if ($totalSpaceWidth > 0) {
-                $wordSpacing = ($remainingWidth + $totalSpaceWidth) / $totalSpaceWidth;
-                $allocatedWidth = $maxWidth;
+                $wordSpacing = $remainingWidth / $totalSpaceWidth;
             }
         }
 
