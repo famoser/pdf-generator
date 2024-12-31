@@ -41,7 +41,7 @@ readonly class TextAllocator
         while (count($overflowSpans) > 0) {
             $allocatedLineWidth = 0.0;
             $remainingSpans = [];
-            $line = $this->allocateLine($text->getAlignment(), $this->width, $overflowSpans,$allocatedLineWidth,$remainingSpans);
+            $line = $this->allocateLine($text->getAlignment(), $this->width, $overflowSpans, $allocatedLineWidth, $remainingSpans);
 
             // cannot allocate, too high
             if ($usedHeight + $line->getLeading() > $this->height && count($allocatedLines) > 0) {
@@ -70,6 +70,7 @@ readonly class TextAllocator
         while ($span = array_shift($overflow)) {
             // allocate next segment
             $availableWidth = $maxWidth - $allocatedWidth;
+            $nextLines = '';
             $line = self::getLine($span->getText(), $nextLines);
             $allocatedLineWidth = 0.0;
             $segment = $this->allocateSegment($span->getTextStyle(), $availableWidth, $line, $allocatedLineWidth, $overflowLine);
@@ -88,37 +89,31 @@ readonly class TextAllocator
             $leading = max($leading, $fontMeasurement->getLeading());
 
             // set overflow
-            if ($overflowLine !== null || $nextLines !== null) {
-                $remainingText = '';
+            if ($overflowLine !== '' || $nextLines !== '') {
+                $remainingText = $overflowLine;
 
-                if ($overflowLine !== null) {
-                    // remove first space to logically replace space with (omitted) newline
-                    if (str_starts_with($overflowLine, ' ')) {
-                        $remainingText = substr($overflowLine,1);
-                    } else {
-                        $remainingText = $overflowLine;
-                    }
+                // remove first space to logically replace space with (omitted) newline
+                if (str_starts_with($remainingText, ' ')) {
+                    $remainingText = substr($remainingText, 1);
                 }
 
-                if ($nextLines !== null) {
-                    if ($remainingText !== '') {
-                        $remainingText .= "\n";
-                    }
-
-                    $remainingText .= $nextLines;
+                if ($nextLines !== '' && $remainingText !== '') {
+                    $remainingText .= "\n";
                 }
+
+                $remainingText .= $nextLines;
 
                 $span = new TextSpan($remainingText, $span->getTextStyle());
                 array_unshift($overflow, $span);
             }
 
             // start next span if no overflow on line & no newline
-            if ($nextLines === null && $overflowLine === '') {
+            if ($nextLines === '' && $overflowLine === '') {
                 continue;
             }
 
             // else abort
-            $abortedByNewline = $nextLines !== null && $overflowLine === '';
+            $abortedByNewline = $nextLines !== '' && $overflowLine === '';
             break;
         }
 
@@ -159,7 +154,8 @@ readonly class TextAllocator
 
         $overflow = $content;
         $allocatedText = '';
-        while ($overflow !== null) {
+        while ($overflow !== '') {
+            $nextChunks = '';
             $chunk = self::getChunk($overflow, $nextChunks);
             $chunkWidth = $fontMeasurement->getWidth($chunk);
 
@@ -176,7 +172,7 @@ readonly class TextAllocator
         return new TextSegment($allocatedText, $textStyle);
     }
 
-    public static function getLine(string $value, string &$nextLines = null): string
+    public static function getLine(string $value, string &$nextLines = ''): string
     {
         $cleanedText = str_replace("\r", "", $value); // ignore carriage return for now
         $singleLineEnd = mb_strpos($cleanedText, "\n");
@@ -184,11 +180,11 @@ readonly class TextAllocator
             return $cleanedText;
         }
 
-        $nextLines = mb_substr($cleanedText, $singleLineEnd+1);
+        $nextLines = mb_substr($cleanedText, $singleLineEnd + 1);
         return mb_substr($cleanedText, 0, $singleLineEnd);
     }
 
-    public static function getChunk(string $value, string &$nextChunks = null): string
+    public static function getChunk(string $value, string &$nextChunks = ''): string
     {
         $noPrefixValue = mb_ltrim($value);
         $chunkContentStart = mb_strlen($value) - mb_strlen($noPrefixValue);
