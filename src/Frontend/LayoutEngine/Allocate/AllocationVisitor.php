@@ -104,12 +104,14 @@ readonly class AllocationVisitor implements ElementVisitorInterface
         $usableSpace = $this->getUsableSpace($text);
 
         $textAllocator = new TextAllocator(...$usableSpace);
+        $usedWidth = 0;
+        $usedHeight = 0;
         $overflowSpans = [];
-        $allocatedBlock = $textAllocator->allocate($text, $overflowSpans);
+        $content = $textAllocator->allocate($text, $overflowSpans, $usedWidth, $usedHeight);
 
         $overflow = count($overflowSpans) > 0 ? $text->cloneWithSpans($overflowSpans) : null;
 
-        return $this->allocateBlock($text, $allocatedBlock->getWidth(), $allocatedBlock->getHeight(), [], [$allocatedBlock], $overflow);
+        return $this->allocateBlock($text, $usedWidth, $usedHeight, [], [$content], $overflow);
     }
 
     public function visitContentBlock(ContentBlock $contentBlock): Allocation

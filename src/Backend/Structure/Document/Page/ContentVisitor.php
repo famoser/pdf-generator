@@ -60,6 +60,7 @@ class ContentVisitor
         }
         */
 
+        $currentOffset = 0.0;
         foreach ($textContent->getLines() as $lineIndex => $line) {
             // newline if no content
             if (count($line->getSegments()) == 0) {
@@ -75,7 +76,9 @@ class ContentVisitor
                     $appliedTextState = $this->lastAppliedState?->getTextState();
                     $targetTextState = $segment->getTextState();
 
-                    if ($line->getOffset() === 0.0) {
+                    $offsetShift = $line->getOffset() - $currentOffset;
+                    $currentOffset = $line->getOffset();
+                    if (abs($offsetShift) < 0.000001) {
                         if ($targetTextState->getWordSpacing() !== $appliedTextState?->getWordSpacing() || $targetTextState->getCharacterSpacing() !== $appliedTextState->getCharacterSpacing()) {
                             $printOperators[] = $targetTextState->getWordSpacing() . ' ' . $targetTextState->getCharacterSpacing() . ' (' . $text . ')"';
 
@@ -88,16 +91,20 @@ class ContentVisitor
                             $printOperators[] = '(' . $text . ')\'';
                         }
                     } else {
-                        $printOperators[] = $segment->getTextState()->getLeading() . ' ' . $line->getOffset() . ' TD';
+                        $printOperators[] = $offsetShift .' ' . "-".$targetTextState->getLeading() . ' TD';
                         $printOperators[] = '(' . $text . ')Tj';
 
                         // avoid automatic state transition operators to reapply new leading
                         if ($appliedTextState) {
-                            $newAppliedTextState = $appliedTextState->cloneWithSpacing($targetTextState->getWordSpacing(), $targetTextState->getCharacterSpacing());
+                            $newAppliedTextState = $appliedTextState->cloneWithLeading($targetTextState->getLeading());
                             $this->lastAppliedState = $this->lastAppliedState->cloneWithTextState($newAppliedTextState);
                         }
                     }
                 } else {
+                    $currentOffset = $line->getOffset();
+                    if ($currentOffset !== 0.0) {
+                        $printOperators[] = $currentOffset . ' 0 Td';
+                    }
                     $printOperators[] = '(' . $text . ')Tj';
                 }
 
