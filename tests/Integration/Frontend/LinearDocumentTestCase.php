@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
+namespace Famoser\PdfGenerator\Tests\Integration\Frontend;
 
 use Famoser\PdfGenerator\Frontend\LinearDocument;
 use PHPUnit\Framework\TestCase;
