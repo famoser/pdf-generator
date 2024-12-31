@@ -76,16 +76,6 @@ readonly class ContentVisitor implements ContentVisitorInterface
         return new TextContent($lines, $generalGraphicState);
     }
 
-    /**
-     * @return string[]
-     */
-    private function splitAtNewlines(string $text): array
-    {
-        $textWithNormalizedNewlines = str_replace(["\r\n", "\n\r", "\r"], "\n", $text);
-
-        return explode("\n", $textWithNormalizedNewlines);
-    }
-
     private function applyImagePlacementPositionAndSize(ImagePlacement $placement): void
     {
         $scaleX = $placement->getSize()->getWidth();

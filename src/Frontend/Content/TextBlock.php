@@ -25,6 +25,9 @@ readonly class TextBlock extends AbstractContent
         parent::__construct($this->width, $this->height);
     }
 
+    /**
+     * @return TextLine[]
+     */
     public function getLines(): array
     {
         return $this->lines;

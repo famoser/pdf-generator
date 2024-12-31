@@ -29,27 +29,6 @@ readonly class DrawingStyle
         );
     }
 
-    public function setLineWidth(?float $lineWidth): self
-    {
-        $this->lineWidth = $lineWidth;
-
-        return $this;
-    }
-
-    public function setLineColor(?Color $lineColor): self
-    {
-        $this->lineColor = $lineColor;
-
-        return $this;
-    }
-
-    public function setFillColor(?Color $fillColor): self
-    {
-        $this->fillColor = $fillColor;
-
-        return $this;
-    }
-
     public function getLineWidth(): ?float
     {
         return $this->lineWidth;

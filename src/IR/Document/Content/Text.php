@@ -13,19 +13,19 @@ namespace Famoser\PdfGenerator\IR\Document\Content;
 
 use Famoser\PdfGenerator\IR\Document\Content\Base\BaseContent;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Position;
-use Famoser\PdfGenerator\IR\Document\Content\Text\Line;
+use Famoser\PdfGenerator\IR\Document\Content\Text\TextLine;
 
 readonly class Text extends BaseContent
 {
     /**
-     * @param Line[] $lines
+     * @param TextLine[] $lines
      */
     public function __construct(private array $lines, private Position $position)
     {
     }
 
     /**
-     * @return Line[]
+     * @return TextLine[]
      */
     public function getLines(): array
     {

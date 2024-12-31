@@ -11,7 +11,7 @@
 
 namespace Famoser\PdfGenerator\IR\Document\Content\Text;
 
-readonly class Segment
+readonly class TextSegment
 {
     public function __construct(private string $text, private TextStyle $style)
     {
