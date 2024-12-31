@@ -47,6 +47,11 @@ readonly class TextState extends BaseState
         return new self($this->font, $this->fontSize, $this->leading, $wordSpacing, $characterSpacing, $this->scale, $this->renderMode, $this->rise);
     }
 
+    public function cloneWithLeading(float $leading): self
+    {
+        return new self($this->font, $this->fontSize, $leading, $this->wordSpacing, $this->characterSpacing, $this->scale, $this->renderMode, $this->rise);
+    }
+
     public function getFont(): Font
     {
         return $this->font;

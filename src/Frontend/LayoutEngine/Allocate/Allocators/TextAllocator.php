@@ -32,11 +32,11 @@ readonly class TextAllocator
     /**
      * @param TextSpan[] $overflowSpans
      */
-    public function allocate(Text $text, array &$overflowSpans = []): TextBlock
+    public function allocate(Text $text, array &$overflowSpans = [], float &$usedWidth = 0, float &$usedHeight = 0): TextBlock
     {
         $allocatedLines = [];
-        $allocatedHeight = 0.0;
-        $allocatedWidth = 0.0;
+        $usedHeight = 0.0;
+        $usedWidth = 0.0;
         $overflowSpans = $text->getSpans();
         while (count($overflowSpans) > 0) {
             $allocatedLineWidth = 0.0;
@@ -44,17 +44,17 @@ readonly class TextAllocator
             $line = $this->allocateLine($text->getAlignment(), $this->width, $overflowSpans,$allocatedLineWidth,$remainingSpans);
 
             // cannot allocate, too high
-            if ($allocatedHeight + $line->getLineHeight() > $this->height && count($allocatedLines) > 0) {
+            if ($usedHeight + $line->getLeading() > $this->height && count($allocatedLines) > 0) {
                 break;
             }
 
             $allocatedLines[] = $line;
-            $allocatedHeight += $line->getLineHeight();
-            $allocatedWidth = max($allocatedWidth, $allocatedLineWidth);
+            $usedHeight += $line->getLeading();
+            $usedWidth = max($usedWidth, $allocatedLineWidth);
             $overflowSpans = $remainingSpans;
         }
 
-        return new TextBlock($allocatedWidth, $allocatedHeight, $allocatedLines);
+        return new TextBlock($usedWidth, $usedHeight, $allocatedLines);
     }
 
     /**

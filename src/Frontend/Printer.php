@@ -90,7 +90,7 @@ readonly class Printer
         foreach ($textBlock->getLines() as $line) {
             $segments = [];
             foreach ($line->getSegments() as $segment) {
-                $textStyle = self::createTextStyle($segment->getTextStyle(), $line->getLineHeight(), $line->getWordSpacing());
+                $textStyle = self::createTextStyle($segment->getTextStyle(), $line->getLeading(), $line->getWordSpacing());
                 $segments[] = new Text\TextSegment($segment->getText(), $textStyle);
             }
 
