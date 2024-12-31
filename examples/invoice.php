@@ -36,7 +36,7 @@ $normalText = new TextStyle($normalFont);
 $boldFont = Font::createFromDefault(Font\FontFamily::Helvetica, Font\FontWeight::Bold);
 $boldText = new TextStyle($boldFont);
 $headerText = new TextStyle($boldFont, $normalText->getFontSize() * 1.6);
-$secondaryText = new TextStyle($normalFont, $normalText->getFontSize(), $normalText->getLineHeight(), Color::createFromHex('#6c757d'));
+$secondaryText = new TextStyle($normalFont, $normalText->getFontSize(), $normalText->getLeading(), Color::createFromHex('#6c757d'));
 
 $sectionMargin = [10, 0, 0, 0];
 

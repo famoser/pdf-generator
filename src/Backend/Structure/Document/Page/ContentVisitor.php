@@ -91,7 +91,7 @@ class ContentVisitor
                             $printOperators[] = '(' . $text . ')\'';
                         }
                     } else {
-                        $printOperators[] = $offsetShift .' ' . "-".$targetTextState->getLeading() . ' TD';
+                        $printOperators[] = $offsetShift . ' ' . '-' . $targetTextState->getLeading() . ' TD';
                         $printOperators[] = '(' . $text . ')Tj';
 
                         // avoid automatic state transition operators to reapply new leading

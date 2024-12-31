@@ -68,15 +68,10 @@ readonly class TextAllocator
         $leading = 0.0;
         $abortedByNewline = false;
         while ($span = array_shift($overflow)) {
-            // get line to operate on
-            $cleanedText = str_replace("\r", "", $span->getText()); // ignore carriage return for now
-            $singleLineEnd = mb_strpos($cleanedText, "\n");
-            $isSingleLine = $singleLineEnd === false;
-            $line = $isSingleLine ? $cleanedText : mb_substr($cleanedText, 0, $singleLineEnd);
-
+            // allocate next segment
             $availableWidth = $maxWidth - $allocatedWidth;
+            $line = self::getLine($span->getText(), $nextLines);
             $allocatedLineWidth = 0.0;
-            $overflowLine = '';
             $segment = $this->allocateSegment($span->getTextStyle(), $availableWidth, $line, $allocatedLineWidth, $overflowLine);
 
             // cannot allocate, too wide
@@ -93,20 +88,24 @@ readonly class TextAllocator
             $leading = max($leading, $fontMeasurement->getLeading());
 
             // set overflow
-            if ($overflowLine !== '' || !$isSingleLine) {
-                $remainingText = $overflowLine;
+            if ($overflowLine !== null || $nextLines !== null) {
+                $remainingText = '';
 
-                // remove first space to logically replace space with (omitted) newline
-                if (str_starts_with($remainingText, ' ')) {
-                    $remainingText = substr($remainingText,1);
+                if ($overflowLine !== null) {
+                    // remove first space to logically replace space with (omitted) newline
+                    if (str_starts_with($overflowLine, ' ')) {
+                        $remainingText = substr($overflowLine,1);
+                    } else {
+                        $remainingText = $overflowLine;
+                    }
                 }
 
-                if (!$isSingleLine) {
+                if ($nextLines !== null) {
                     if ($remainingText !== '') {
                         $remainingText .= "\n";
                     }
 
-                    $remainingText .= mb_substr($cleanedText, $singleLineEnd + 1);
+                    $remainingText .= $nextLines;
                 }
 
                 $span = new TextSpan($remainingText, $span->getTextStyle());
@@ -114,12 +113,12 @@ readonly class TextAllocator
             }
 
             // start next span if no overflow on line & no newline
-            if ($isSingleLine && $overflowLine === '') {
+            if ($nextLines === null && $overflowLine === '') {
                 continue;
             }
 
             // else abort
-            $abortedByNewline = !$isSingleLine && $overflowLine === '';
+            $abortedByNewline = $nextLines !== null && $overflowLine === '';
             break;
         }
 
@@ -146,21 +145,22 @@ readonly class TextAllocator
             }
 
             if ($totalSpaceWidth > 0) {
-                $wordSpacing = $remainingWidth / $totalSpaceWidth;
+                // -1 as 0 is normal space, -1 is no space, 1 is 2x space, 2 is 3x space, etc
+                $wordSpacing = (($totalSpaceWidth + $remainingWidth) / $totalSpaceWidth) - 1;
             }
         }
 
         return new TextLine($allocatedSegments, $leading, $offset, $wordSpacing);
     }
 
-    private function allocateSegment(TextStyle $textStyle, float $maxWidth, string $content, float &$allocatedWidth, string &$overflow = ''): TextSegment
+    private function allocateSegment(TextStyle $textStyle, float $maxWidth, string $content, float &$allocatedWidth, string &$overflow = null): TextSegment
     {
         $fontMeasurement = $this->fontRepository->getFontMeasurement($textStyle);
 
         $overflow = $content;
         $allocatedText = '';
-        while (mb_strlen($overflow)) {
-            $chunk = self::getChunk($overflow);
+        while ($overflow !== null) {
+            $chunk = self::getChunk($overflow, $nextChunks);
             $chunkWidth = $fontMeasurement->getWidth($chunk);
 
             if ($allocatedWidth + $chunkWidth > $maxWidth && $allocatedText !== '') {
@@ -170,13 +170,25 @@ readonly class TextAllocator
             $allocatedText .= $chunk;
             $allocatedWidth += $chunkWidth;
 
-            $overflow = mb_substr($overflow, mb_strlen($chunk));
+            $overflow = $nextChunks;
         }
 
         return new TextSegment($allocatedText, $textStyle);
     }
 
-    private static function getChunk(string $value): string
+    public static function getLine(string $value, string &$nextLines = null): string
+    {
+        $cleanedText = str_replace("\r", "", $value); // ignore carriage return for now
+        $singleLineEnd = mb_strpos($cleanedText, "\n");
+        if ($singleLineEnd === false) {
+            return $cleanedText;
+        }
+
+        $nextLines = mb_substr($cleanedText, $singleLineEnd+1);
+        return mb_substr($cleanedText, 0, $singleLineEnd);
+    }
+
+    public static function getChunk(string $value, string &$nextChunks = null): string
     {
         $noPrefixValue = mb_ltrim($value);
         $chunkContentStart = mb_strlen($value) - mb_strlen($noPrefixValue);
@@ -186,6 +198,7 @@ readonly class TextAllocator
             return $value;
         }
 
+        $nextChunks = mb_substr($value, $chunkContentEnd);
         return mb_substr($value, 0, $chunkContentEnd);
     }
 }

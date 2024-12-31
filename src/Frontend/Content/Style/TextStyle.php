@@ -16,7 +16,7 @@ use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
 readonly class TextStyle
 {
-    public function __construct(private Font $font, private float $fontSize = 3.8, private float $lineHeight = 1.2, private Color $color = new Color(0, 0, 0))
+    public function __construct(private Font $font, private float $fontSize = 3.8, private float $leading = 1.2, private Color $color = new Color(0, 0, 0))
     {
     }
 
@@ -30,9 +30,9 @@ readonly class TextStyle
         return $this->fontSize;
     }
 
-    public function getLineHeight(): float
+    public function getLeading(): float
     {
-        return $this->lineHeight;
+        return $this->leading;
     }
 
     public function getColor(): Color

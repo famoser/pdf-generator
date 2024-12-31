@@ -37,8 +37,8 @@ class PrinterTest extends TestCase
         $font = DefaultFont::create(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
         $textStyle = new TextStyle($font, 12, 1, 0, Document\Content\Common\Color::createFromHex('#efefef'));
 
-        $segment = new Text\Segment("Hallo Welt!\nWie geht es?", $textStyle);
-        $line = new Text\Line(0, [$segment]);
+        $segment = new Text\TextSegment("Hallo Welt!\nWie geht es?", $textStyle);
+        $line = new Text\TextLine(0, [$segment]);
         $text = new Text([$line], $bottomLeft);
         $page->addContent($text);
 
@@ -63,8 +63,8 @@ class PrinterTest extends TestCase
         $font = Document\Resource\Font\EmbeddedFont::create($fontPath);
         $textStyle = new TextStyle($font, 12, 1, 0, Document\Content\Common\Color::createFromHex('#000000'));
 
-        $segment = new Text\Segment("Dies ist ein Test mit äöü!", $textStyle);
-        $line = new Text\Line(0, [$segment]);
+        $segment = new Text\TextSegment("Dies ist ein Test mit äöü!", $textStyle);
+        $line = new Text\TextLine(0, [$segment]);
         $text = new Text([$line], $bottomLeft);
         $page->addContent($text);
 
@@ -92,11 +92,11 @@ class PrinterTest extends TestCase
         $textStyle1 = new TextStyle($font, 12, 1, 0, Document\Content\Common\Color::createFromHex('#000000'));
         $textStyle2 = new TextStyle($font, 5, 1, 1, Document\Content\Common\Color::createFromHex('#000000'));
 
-        $segment1 = new Text\Segment("This is a test", $textStyle1);
-        $segment2 = new Text\Segment("  where the phrase continues", $textStyle2);
-        $segment3 = new Text\Segment("This is on a new line", $textStyle2);
-        $line1 = new Text\Line(0, [$segment1, $segment2]);
-        $line2 = new Text\Line(0, [$segment3]);
+        $segment1 = new Text\TextSegment("This is a test", $textStyle1);
+        $segment2 = new Text\TextSegment("  where the phrase continues", $textStyle2);
+        $segment3 = new Text\TextSegment("This is on a new line", $textStyle2);
+        $line1 = new Text\TextLine(0, [$segment1, $segment2]);
+        $line2 = new Text\TextLine(0, [$segment3]);
         $text = new Text([$line1, $line2], $bottomLeft);
         $page->addContent($text);
 

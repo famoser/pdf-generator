@@ -28,14 +28,4 @@ readonly class TextSpan
     {
         return $this->textStyle;
     }
-
-    /**
-     * @return string[]
-     */
-    public function getLines(): array
-    {
-        $textWithNormalizedNewlines = str_replace(["\r\n", "\n\r", "\r"], "\n", $this->text);
-
-        return explode("\n", $textWithNormalizedNewlines);
-    }
 }
