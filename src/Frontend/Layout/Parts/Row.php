@@ -12,20 +12,20 @@
 namespace Famoser\PdfGenerator\Frontend\Layout\Parts;
 
 use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
-use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 
 class Row
 {
     /**
-     * @var AbstractBlock[]
+     * @var AbstractElement[]
      */
     private array $columns = [];
 
-    private ?BlockStyle $style = null;
+    private ?ElementStyle $style = null;
 
-    public function set(int $index, AbstractBlock $block): self
+    public function set(int $index, AbstractElement $block): self
     {
         $this->columns[$index] = $block;
 
@@ -39,12 +39,12 @@ class Row
         return $this;
     }
 
-    public function tryGet(int $index): ?AbstractBlock
+    public function tryGet(int $index): ?AbstractElement
     {
         return $this->columns[$index] ?? null;
     }
 
-    public function setStyle(BlockStyle $style): self
+    public function setStyle(ElementStyle $style): self
     {
         $this->style = $style;
 
@@ -52,14 +52,14 @@ class Row
     }
 
     /**
-     * @return AbstractBlock[]
+     * @return AbstractElement[]
      */
     public function getColumns(): array
     {
         return $this->columns;
     }
 
-    public function getStyle(): ?BlockStyle
+    public function getStyle(): ?ElementStyle
     {
         return $this->style;
     }

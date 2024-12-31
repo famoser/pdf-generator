@@ -11,12 +11,12 @@
 
 namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 
-use Famoser\PdfGenerator\Frontend\Content\Paragraph\Phrase;
+use Famoser\PdfGenerator\Frontend\Layout\TextSpan;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontMeasurement;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 
-readonly class ParagraphMeasurer
+readonly class TextMeasurer
 {
     private FontRepository $fontRepository;
 
@@ -26,18 +26,18 @@ readonly class ParagraphMeasurer
     }
 
     /**
-     * @param Phrase[] $phrases
+     * @param TextSpan[] $spans
      */
-    public function measure(array $phrases): Measurement
+    public function measure(array $spans): Measurement
     {
-        if (0 === count($phrases)) {
+        if (0 === count($spans)) {
             return Measurement::zero();
         }
 
-        [$width, $height] = $this->measureFirstWord($phrases[0]);
+        [$width, $height] = $this->measureFirstWord($spans[0]);
         $weight = 0.0;
-        for ($i = 0; $i < count($phrases); ++$i) {
-            $weight += $this->measureWeight($phrases[$i]);
+        for ($i = 0; $i < count($spans); ++$i) {
+            $weight += $this->measureWeight($spans[$i]);
         }
 
         return new Measurement($weight, $width, $height);
@@ -46,12 +46,12 @@ readonly class ParagraphMeasurer
     /**
      * @return float[]
      */
-    private function measureFirstWord(Phrase $phrase): array
+    private function measureFirstWord(TextSpan $span): array
     {
-        $textStyle = $phrase->getTextStyle();
+        $textStyle = $span->getTextStyle();
         $fontMeasurement = $this->fontRepository->getFontMeasurement($textStyle);
 
-        $firstWordLength = $this->measureFirstWordLength($phrase->getLines(), $fontMeasurement);
+        $firstWordLength = $this->measureFirstWordLength($span->getLines(), $fontMeasurement);
 
         return [$firstWordLength, $fontMeasurement->getLeading()];
     }
@@ -80,13 +80,13 @@ readonly class ParagraphMeasurer
         return $fontMeasurement->getWidth($firstWord);
     }
 
-    private function measureWeight(Phrase $phrase): float
+    private function measureWeight(TextSpan $span): float
     {
-        $textStyle = $phrase->getTextStyle();
+        $textStyle = $span->getTextStyle();
         $fontMeasurement = $this->fontRepository->getFontMeasurement($textStyle);
 
         $weight = 0.0;
-        foreach ($phrase->getLines() as $line) {
+        foreach ($span->getLines() as $line) {
             $spaceWidth = $fontMeasurement->getSpaceWidth();
 
             $lineLength = 0;

@@ -15,10 +15,11 @@ use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 use Famoser\PdfGenerator\Frontend\Printer;
 use Famoser\PdfGenerator\Frontend\Resource\Image;
 
-class ImagePlacement extends AbstractContent
+readonly class ImagePlacement extends AbstractContent
 {
-    public function __construct(private readonly Image $image)
+    public function __construct(private float $width, private float $height, private Image $image)
     {
+        parent::__construct($this->width, $this->height);
     }
 
     public function getImage(): Image
@@ -26,13 +27,8 @@ class ImagePlacement extends AbstractContent
         return $this->image;
     }
 
-    public function accept(ContentVisitorInterface $visitor)
+    public function print(Printer $printer): void
     {
-        return $visitor->visitImagePlacement($this);
-    }
-
-    public function print(Printer $printer, float $width, float $height): void
-    {
-        $printer->printImage($this->getImage(), $width, $height);
+        $printer->printImage($this);
     }
 }

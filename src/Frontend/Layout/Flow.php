@@ -13,12 +13,12 @@ namespace Famoser\PdfGenerator\Frontend\Layout;
 
 use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
 use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ElementVisitorInterface;
 
-class Flow extends AbstractBlock
+class Flow extends AbstractElement
 {
     /**
-     * @var AbstractBlock[]
+     * @var AbstractElement[]
      */
     private array $blocks = [];
 
@@ -26,7 +26,7 @@ class Flow extends AbstractBlock
     {
     }
 
-    public function add(AbstractBlock $block): self
+    public function add(AbstractElement $block): self
     {
         $this->blocks[] = $block;
 
@@ -41,7 +41,7 @@ class Flow extends AbstractBlock
     }
 
     /**
-     * @return AbstractBlock[]
+     * @return AbstractElement[]
      */
     public function getBlocks(): array
     {
@@ -49,11 +49,11 @@ class Flow extends AbstractBlock
     }
 
     /**
-     * @param AbstractBlock[] $blocks
+     * @param AbstractElement[] $blocks
      */
     public function cloneWithBlocks(array $blocks): self
     {
-        $self = clone $this;
+        $self = new self($this->direction, $this->gap);
         $self->blocks = $blocks;
 
         return $self;
@@ -72,11 +72,11 @@ class Flow extends AbstractBlock
     /**
      * @template T
      *
-     * @param BlockVisitorInterface<T> $visitor
+     * @param ElementVisitorInterface<T> $visitor
      *
      * @return T
      */
-    public function accept(BlockVisitorInterface $visitor): mixed
+    public function accept(ElementVisitorInterface $visitor): mixed
     {
         return $visitor->visitFlow($this);
     }

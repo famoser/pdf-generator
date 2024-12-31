@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PdfGenerator\IR\Document\Content\Text;
+namespace Famoser\PdfGenerator\Frontend\Content\Text;
 
-readonly class Phrase
+use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+
+readonly class TextSegment
 {
-    public function __construct(private string $text, private TextStyle $style)
+    public function __construct(private string $text, private TextStyle $textStyle)
     {
     }
 
@@ -22,8 +24,8 @@ readonly class Phrase
         return $this->text;
     }
 
-    public function getStyle(): TextStyle
+    public function getTextStyle(): TextStyle
     {
-        return $this->style;
+        return $this->textStyle;
     }
 }

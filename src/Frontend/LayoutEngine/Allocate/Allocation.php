@@ -11,19 +11,20 @@
 
 namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 
-readonly class BlockAllocation
+readonly class Allocation
 {
     /**
-     * @param BlockAllocation[]   $blockAllocations
-     * @param ContentAllocation[] $contentAllocations
+     * @param Allocation[]   $blockAllocations
+     * @param AbstractContent[] $content
      */
-    public function __construct(private float $left, private float $top, private float $width, private float $height, private array $blockAllocations = [], private array $contentAllocations = [], private bool $allocationOverflows = false, private ?AbstractBlock $overflow = null)
+    public function __construct(private float $left, private float $top, private float $width, private float $height, private array $blockAllocations = [], private array $content = [], private bool $allocationOverflows = false, private ?AbstractElement $overflow = null)
     {
     }
 
-    public static function shift(BlockAllocation $allocation, float $width, float $height): self
+    public static function shift(Allocation $allocation, float $width, float $height): self
     {
         return new self(
             $allocation->left + $width,
@@ -31,7 +32,7 @@ readonly class BlockAllocation
             $allocation->getWidth(),
             $allocation->getHeight(),
             $allocation->getBlockAllocations(),
-            $allocation->getContentAllocations(),
+            $allocation->getContent(),
             $allocation->getAllocationOverflows(),
             $allocation->getOverflow()
         );
@@ -58,7 +59,7 @@ readonly class BlockAllocation
     }
 
     /**
-     * @return BlockAllocation[]
+     * @return Allocation[]
      */
     public function getBlockAllocations(): array
     {
@@ -66,11 +67,11 @@ readonly class BlockAllocation
     }
 
     /**
-     * @return ContentAllocation[]
+     * @return AbstractContent[]
      */
-    public function getContentAllocations(): array
+    public function getContent(): array
     {
-        return $this->contentAllocations;
+        return $this->content;
     }
 
     public function getAllocationOverflows(): bool
@@ -78,7 +79,7 @@ readonly class BlockAllocation
         return $this->allocationOverflows;
     }
 
-    public function getOverflow(): ?AbstractBlock
+    public function getOverflow(): ?AbstractElement
     {
         return $this->overflow;
     }

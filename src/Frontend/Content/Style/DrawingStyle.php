@@ -11,7 +11,7 @@
 
 namespace Famoser\PdfGenerator\Frontend\Content\Style;
 
-use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
 readonly class DrawingStyle
@@ -20,7 +20,7 @@ readonly class DrawingStyle
     {
     }
 
-    public static function createFromBlockStyle(BlockStyle $blockStyle): self
+    public static function createFromBlockStyle(ElementStyle $blockStyle): self
     {
         return new self(
             $blockStyle->getBorderWidth() ?? 0,

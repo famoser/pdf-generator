@@ -11,53 +11,47 @@
 
 namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate;
 
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
+use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\Block;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Grid;
 use Famoser\PdfGenerator\Frontend\Layout\Table;
+use Famoser\PdfGenerator\Frontend\Layout\Text;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\FlowAllocator;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\GridAllocator;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\TableAllocator;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\TextAllocator;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ElementVisitorInterface;
 
 /**
  * This allocates content on the PDF.
  *
  * All allocated content fits
  *
- * @implements BlockVisitorInterface<BlockAllocation>
+ * @implements ElementVisitorInterface<Allocation>
  */
-readonly class BlockAllocationVisitor implements BlockVisitorInterface
+readonly class AllocationVisitor implements ElementVisitorInterface
 {
     public function __construct(private float $maxWidth, private float $maxHeight)
     {
     }
 
-    public function visitContentBlock(ContentBlock $contentBlock): BlockAllocation
-    {
-        $usableSpace = $this->getUsableSpace($contentBlock);
-
-        $contentAllocationVisitor = new ContentAllocationVisitor(...$usableSpace);
-        $contentAllocation = $contentBlock->getContent()->accept($contentAllocationVisitor); /** @var ContentAllocation $contentAllocation */
-        $overflow = $contentAllocation->getOverflow() ? $contentBlock->cloneWithContent($contentAllocation->getOverflow()) : null;
-
-        return $this->allocateBlock($contentBlock, $contentAllocation->getWidth(), $contentAllocation->getHeight(), [], [$contentAllocation], $overflow);
-    }
-
-    public function visitBlock(Block $block): BlockAllocation
+    public function visitBlock(Block $block): Allocation
     {
         $usableSpace = $this->getUsableSpace($block);
 
-        $blockAllocationVisitor = new BlockAllocationVisitor(...$usableSpace);
-        $blockAllocation = $block->getBlock()->accept($blockAllocationVisitor); /** @var BlockAllocation $blockAllocation */
+        $blockAllocationVisitor = new AllocationVisitor(...$usableSpace);
+        $blockAllocation = $block->getBlock()->accept($blockAllocationVisitor);
         $overflow = $blockAllocation->getOverflow() ? $block->cloneWithBlock($blockAllocation->getOverflow()) : null;
 
         return $this->allocateBlock($block, $blockAllocation->getWidth(), $blockAllocation->getHeight(), [$blockAllocation], [], $overflow);
     }
 
-    public function visitFlow(Flow $flow): ?BlockAllocation
+    public function visitFlow(Flow $flow): ?Allocation
     {
         $usableSpace = $this->getUsableSpace($flow);
 
@@ -73,7 +67,7 @@ readonly class BlockAllocationVisitor implements BlockVisitorInterface
         return $this->allocateBlock($flow, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
     }
 
-    public function visitGrid(Grid $grid): BlockAllocation
+    public function visitGrid(Grid $grid): Allocation
     {
         $usableSpace = $this->getUsableSpace($grid);
 
@@ -105,10 +99,34 @@ readonly class BlockAllocationVisitor implements BlockVisitorInterface
         return $this->allocateBlock($table, $usedWidth, $usedHeight, $allocatedBlocks, [], $overflow);
     }
 
+    public function visitText(Text $text)
+    {
+        $usableSpace = $this->getUsableSpace($text);
+
+        $textAllocator = new TextAllocator(...$usableSpace);
+        $overflowSpans = [];
+        $allocatedBlock = $textAllocator->allocate($text, $overflowSpans);
+
+        $overflow = count($overflowSpans) > 0 ? $text->cloneWithSpans($overflowSpans) : null;
+
+        return $this->allocateBlock($text, $allocatedBlock->getWidth(), $allocatedBlock->getHeight(), [], [$allocatedBlock], $overflow);
+    }
+
+    public function visitContentBlock(ContentBlock $contentBlock): Allocation
+    {
+        $content = $contentBlock->getContent();
+
+        if (!$content) {
+            return $this->allocateBlock($contentBlock);
+        }
+
+        return $this->allocateBlock($contentBlock, $content->getWidth(), $content->getHeight(), [], [$content]);
+    }
+
     /**
      * @return array{float, float}
      */
-    private function getUsableSpace(AbstractBlock $block): array
+    private function getUsableSpace(AbstractElement $block): array
     {
         $availableMaxWidth = $this->maxWidth - $block->getXMargin();
         $availableMaxHeight = $this->maxHeight - $block->getYMargin();
@@ -120,14 +138,14 @@ readonly class BlockAllocationVisitor implements BlockVisitorInterface
     }
 
     /**
-     * @param BlockAllocation[]   $blockAllocations
-     * @param ContentAllocation[] $contentAllocations
+     * @param Allocation[]   $blockAllocations
+     * @param AbstractContent[] $content
      */
-    private function allocateBlock(AbstractBlock $block, float $contentWidth, float $contentHeight, array $blockAllocations = [], array $contentAllocations = [], ?AbstractBlock $overflow = null): BlockAllocation
+    private function allocateBlock(AbstractElement $block, float $contentWidth = 0.0, float $contentHeight = 0.0, array $blockAllocations = [], array $content = [], ?AbstractElement $overflow = null): Allocation
     {
         $background = $this->allocateBackground($block, $contentWidth, $contentHeight);
         if ($background) {
-            $backgroundAllocation = new BlockAllocation(-$block->getLeftPadding(), -$block->getTopPadding(), $background->getWidth(), $background->getHeight(), [], [$background]);
+            $backgroundAllocation = new Allocation(-$block->getLeftPadding(), -$block->getTopPadding(), $background->getWidth(), $background->getHeight(), [], [$background]);
             array_unshift($blockAllocations, $backgroundAllocation);
         }
 
@@ -135,10 +153,10 @@ readonly class BlockAllocationVisitor implements BlockVisitorInterface
         $height = $block->getHeight() ? $block->getHeight() + $block->getYMargin() : $contentHeight + $block->getYSpace();
         $allocationOverflows = $width > $this->maxWidth || $height > $this->maxHeight;
 
-        return new BlockAllocation($block->getLeftSpace(), $block->getTopSpace(), $width, $height, $blockAllocations, $contentAllocations, $allocationOverflows, $overflow);
+        return new Allocation($block->getLeftSpace(), $block->getTopSpace(), $width, $height, $blockAllocations, $content, $allocationOverflows, $overflow);
     }
 
-    private function allocateBackground(AbstractBlock $block, float $contentWidth, float $contentHeight): ?ContentAllocation
+    private function allocateBackground(AbstractElement $block, float $contentWidth, float $contentHeight): ?AbstractContent
     {
         // print block background
         $blockStyle = $block->getStyle();
@@ -153,6 +171,7 @@ readonly class BlockAllocationVisitor implements BlockVisitorInterface
         $width = $contentWidth + $block->getXPadding();
         $height = $contentHeight + $block->getYPadding();
 
-        return ContentAllocation::createFromBlockStyle($width, $height, $blockStyle);
+        $drawingStyle = DrawingStyle::createFromBlockStyle($blockStyle);
+        return new Rectangle($width, $height, $drawingStyle);
     }
 }

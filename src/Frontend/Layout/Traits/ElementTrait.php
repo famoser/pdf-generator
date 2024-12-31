@@ -11,11 +11,11 @@
 
 namespace Famoser\PdfGenerator\Frontend\Layout\Traits;
 
-use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 
-trait BlockTrait
+trait ElementTrait
 {
-    private ?BlockStyle $style = null;
+    private ?ElementStyle $style = null;
 
     /**
      * @var float[]
@@ -31,7 +31,7 @@ trait BlockTrait
 
     private ?float $height = null;
 
-    public function setStyle(BlockStyle $style): self
+    public function setStyle(ElementStyle $style): self
     {
         $this->style = $style;
 
@@ -72,7 +72,7 @@ trait BlockTrait
         return $this;
     }
 
-    public function getStyle(): ?BlockStyle
+    public function getStyle(): ?ElementStyle
     {
         return $this->style;
     }

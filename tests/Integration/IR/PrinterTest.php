@@ -35,15 +35,16 @@ class PrinterTest extends TestCase
         // act
         $bottomLeft = new Position(20, 80);
         $font = DefaultFont::create(DefaultFont::FONT_HELVETICA, DefaultFont::STYLE_DEFAULT);
-        $textStyle = new TextStyle($font, 12, 1, Document\Content\Common\Color::createFromHex('#efefef'));
+        $textStyle = new TextStyle($font, 12, 1, 0, Document\Content\Common\Color::createFromHex('#efefef'));
 
-        $text = new Text("Hallo Welt!\nWie geht es?", $bottomLeft, $textStyle);
+        $segment = new Text\Segment("Hallo Welt!\nWie geht es?", $textStyle);
+        $line = new Text\Line(0, [$segment]);
+        $text = new Text([$line], $bottomLeft);
         $page->addContent($text);
 
         // assert
         $result = $document->save();
         $this->assertStringContainsString('Hallo Welt!', $result);
-        file_put_contents('pdf.pdf', $result);
     }
 
     /**
@@ -60,23 +61,24 @@ class PrinterTest extends TestCase
         $bottomLeft = new Position(20, 80);
         $fontPath = ResourcesProvider::getFontOpenSansPath();
         $font = Document\Resource\Font\EmbeddedFont::create($fontPath);
-        $textStyle = new TextStyle($font, 12, 1, Document\Content\Common\Color::createFromHex('#000000'));
+        $textStyle = new TextStyle($font, 12, 1, 0, Document\Content\Common\Color::createFromHex('#000000'));
 
-        $text = new Text("Dies ist ein Test mit äöü!\nKlappt das?", $bottomLeft, $textStyle);
+        $segment = new Text\Segment("Dies ist ein Test mit äöü!", $textStyle);
+        $line = new Text\Line(0, [$segment]);
+        $text = new Text([$line], $bottomLeft);
         $page->addContent($text);
 
         // assert
         $result = $document->save();
         $this->assertStringContainsString('Dies ist ein', $result);
-        $this->assertStringContainsString('<73> <75> 18', $result);
+        $this->assertStringContainsString('<73> <75> 13', $result);
         $this->assertStringContainsString('<c380> <c3bf> <c0>', $result);
-        file_put_contents('pdf.pdf', $result);
     }
 
     /**
      * @throws \Exception
      */
-    public function testPrintPhrases(): void
+    public function testPrintLines(): void
     {
         // arrange
         $document = new Document();
@@ -87,20 +89,20 @@ class PrinterTest extends TestCase
         $bottomLeft = new Position(20, 80);
         $fontPath = ResourcesProvider::getFontOpenSansPath();
         $font = Document\Resource\Font\EmbeddedFont::create($fontPath);
-        $textStyle1 = new TextStyle($font, 12, 1, Document\Content\Common\Color::createFromHex('#000000'));
-        $textStyle2 = new TextStyle($font, 5, 1, Document\Content\Common\Color::createFromHex('#000000'));
+        $textStyle1 = new TextStyle($font, 12, 1, 0, Document\Content\Common\Color::createFromHex('#000000'));
+        $textStyle2 = new TextStyle($font, 5, 1, 1, Document\Content\Common\Color::createFromHex('#000000'));
 
-        $phrase1 = new Text\Phrase("Dies ist ein Test\nNeue Zeile. ", $textStyle1);
-        $phrase2 = new Text\Phrase("Es geht weiter\nKlappt das?", $textStyle2);
-        $phrase3 = new Text\Phrase('Short', $textStyle1);
-        $phrase4 = new Text\Phrase('Big', $textStyle2);
-        $paragraph = new Document\Content\Paragraph([$phrase1, $phrase2, $phrase3, $phrase4], $bottomLeft);
-        $page->addContent($paragraph);
+        $segment1 = new Text\Segment("This is a test", $textStyle1);
+        $segment2 = new Text\Segment("  where the phrase continues", $textStyle2);
+        $segment3 = new Text\Segment("This is on a new line", $textStyle2);
+        $line1 = new Text\Line(0, [$segment1, $segment2]);
+        $line2 = new Text\Line(0, [$segment3]);
+        $text = new Text([$line1, $line2], $bottomLeft);
+        $page->addContent($text);
 
         // assert
         $result = $document->save();
-        $this->assertStringContainsString('Dies ist ein', $result);
-        $this->assertStringContainsString('Es geht wei', $result);
-        file_put_contents('pdf.pdf', $result);
+        $this->assertStringContainsString('This is a test', $result);
+        $this->assertStringContainsString('where the phrase', $result);
     }
 }

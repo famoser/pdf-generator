@@ -12,35 +12,27 @@
 namespace Famoser\PdfGenerator\Frontend\Layout;
 
 use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ElementVisitorInterface;
 
-class ContentBlock extends AbstractBlock
+class ContentBlock extends AbstractElement
 {
-    public function __construct(private AbstractContent $content)
+    public function __construct(private readonly ?AbstractContent $content = null)
     {
     }
 
-    public function getContent(): AbstractContent
+    public function getContent(): ?AbstractContent
     {
         return $this->content;
-    }
-
-    public function cloneWithContent(?AbstractContent $content): self
-    {
-        $clone = clone $this;
-        $clone->content = $content;
-
-        return $clone;
     }
 
     /**
      * @template T
      *
-     * @param BlockVisitorInterface<T> $visitor
+     * @param ElementVisitorInterface<T> $visitor
      *
      * @return T
      */
-    public function accept(BlockVisitorInterface $visitor): mixed
+    public function accept(ElementVisitorInterface $visitor): mixed
     {
         return $visitor->visitContentBlock($this);
     }

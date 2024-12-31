@@ -15,17 +15,11 @@ use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 use Famoser\PdfGenerator\Frontend\Printer;
 
-class Rectangle extends AbstractContent
+readonly class Rectangle extends AbstractContent
 {
-    public function __construct(private DrawingStyle $style)
+    public function __construct(private float $width, private float $height, private DrawingStyle $style)
     {
-    }
-
-    public function setStyle(DrawingStyle $style): Rectangle
-    {
-        $this->style = $style;
-
-        return $this;
+        parent::__construct($this->width, $this->height);
     }
 
     public function getStyle(): DrawingStyle
@@ -33,13 +27,8 @@ class Rectangle extends AbstractContent
         return $this->style;
     }
 
-    public function accept(ContentVisitorInterface $visitor)
+    public function print(Printer $printer): void
     {
-        return $visitor->visitRectangle($this);
-    }
-
-    public function print(Printer $printer, float $width, float $height): void
-    {
-        $printer->printRectangle($width, $height, $this->getStyle());
+        $printer->printRectangle($this);
     }
 }

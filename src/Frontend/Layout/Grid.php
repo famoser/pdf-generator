@@ -14,9 +14,9 @@ namespace Famoser\PdfGenerator\Frontend\Layout;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use Famoser\PdfGenerator\Frontend\Layout\Traits\ColumnSizesTrait;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ElementVisitorInterface;
 
-class Grid extends AbstractBlock
+class Grid extends AbstractElement
 {
     use ColumnSizesTrait;
 
@@ -52,7 +52,7 @@ class Grid extends AbstractBlock
      */
     public function cloneWithRows(array $rows): self
     {
-        $self = clone $this;
+        $self = new self($this->gap, $this->perpendicularGap, $this->columnSizes);
         $self->rows = $rows;
 
         return $self;
@@ -71,11 +71,11 @@ class Grid extends AbstractBlock
     /**
      * @template T
      *
-     * @param BlockVisitorInterface<T> $visitor
+     * @param ElementVisitorInterface<T> $visitor
      *
      * @return T
      */
-    public function accept(BlockVisitorInterface $visitor): mixed
+    public function accept(ElementVisitorInterface $visitor): mixed
     {
         return $visitor->visitGrid($this);
     }

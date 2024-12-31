@@ -30,16 +30,21 @@ readonly class TextState extends BaseState
      * @param Font  $font       the font
      * @param float $fontSize   the font size to be used
      * @param float $leading    vertical distance between baselines, i.e. the line height
-     * @param float $charSpace  space between chars
-     * @param float $wordSpace  space between words; @see $charSpace but only applies to SPACE
+     * @param float $wordSpacing  space between words; @see $charSpace but only applies to SPACE
+     * @param float $characterSpacing  space between chars
      * @param float $scale      percentage of normal width
      * @param float $renderMode fill/stroke render combinations
      * @param float $rise       upwards shift from the baseline
      *
      * default arguments correspond to PDF defaults
      */
-    public function __construct(private Font $font, private float $fontSize, private float $leading = 0, private float $charSpace = 0, private float $wordSpace = 0, private float $scale = 100, private float $renderMode = self::RENDER_MODE_FILL, private float $rise = 0)
+    public function __construct(private Font $font, private float $fontSize, private float $leading = 0, private float $wordSpacing = 0, private float $characterSpacing = 0, private float $scale = 100, private float $renderMode = self::RENDER_MODE_FILL, private float $rise = 0)
     {
+    }
+
+    public function cloneWithSpacing(float $wordSpacing, float $characterSpacing): self
+    {
+        return new self($this->font, $this->fontSize, $this->leading, $wordSpacing, $characterSpacing, $this->scale, $this->renderMode, $this->rise);
     }
 
     public function getFont(): Font
@@ -52,14 +57,14 @@ readonly class TextState extends BaseState
         return $this->fontSize;
     }
 
-    public function getCharSpace(): float
+    public function getCharacterSpacing(): float
     {
-        return $this->charSpace;
+        return $this->characterSpacing;
     }
 
-    public function getWordSpace(): float
+    public function getWordSpacing(): float
     {
-        return $this->wordSpace;
+        return $this->wordSpacing;
     }
 
     public function getScale(): float

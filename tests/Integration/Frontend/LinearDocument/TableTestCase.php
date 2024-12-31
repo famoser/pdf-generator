@@ -11,11 +11,11 @@
 
 namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
-use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
-use Famoser\PdfGenerator\Frontend\Layout\Style\BlockStyle;
+use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use Famoser\PdfGenerator\Frontend\Layout\Table;
 use Famoser\PdfGenerator\Frontend\LinearDocument;
@@ -34,10 +34,10 @@ class TableTestCase extends LinearDocumentTestCase
 
         $font = Font::createFromDefault();
         $normalText = new TextStyle($font, 3, 1.2, new Color(0, 0, 0));
-        $paragraph1 = new Paragraph();
+        $paragraph1 = new TextBlock();
         $paragraph1->add($normalText, 'Table header');
 
-        $paragraph2 = new Paragraph();
+        $paragraph2 = new TextBlock();
         $paragraph2->add($normalText, 'Table header 2');
 
         $row = new Row();
@@ -46,10 +46,10 @@ class TableTestCase extends LinearDocumentTestCase
         $grid->addHead($row);
 
         for ($i = 0; $i < 100; ++$i) {
-            $paragraph1 = new Paragraph();
+            $paragraph1 = new TextBlock();
             $paragraph1->add($normalText, 'Content 1.'.$i);
 
-            $paragraph2 = new Paragraph();
+            $paragraph2 = new TextBlock();
             $paragraph2->add($normalText, 'Content 2.'.$i);
 
             $row = new Row();
@@ -66,10 +66,9 @@ class TableTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 -0 1 11 -32 cm 0 0 6 40 re b', $result);
     }
 
-    private function setBorderStyle(AbstractBlock $block): void
+    private function setBorderStyle(AbstractElement $block): void
     {
-        $borderedBlockStyle = new BlockStyle();
-        $borderedBlockStyle->setBorder(1, new Color(0, 0, 0));
+        $borderedBlockStyle = new ElementStyle(1, new Color(0, 0, 0));
         $block->setStyle($borderedBlockStyle);
     }
 }

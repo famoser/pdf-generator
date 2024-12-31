@@ -12,9 +12,9 @@
 namespace Famoser\PdfGenerator\Frontend;
 
 use Famoser\DocumentGenerator\DocumentInterface;
-use Famoser\PdfGenerator\Frontend\Layout\AbstractBlock;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocationVisitor;
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
 use Famoser\PdfGenerator\IR\Document;
@@ -48,7 +48,7 @@ class LinearDocument implements DocumentInterface
         $this->addPage();
     }
 
-    public function add(AbstractBlock $block): void
+    public function add(AbstractElement $block): void
     {
         $currentBlock = $block;
         do {
@@ -79,15 +79,15 @@ class LinearDocument implements DocumentInterface
         return [$width, $height];
     }
 
-    public function allocate(AbstractBlock $block): BlockAllocation
+    public function allocate(AbstractElement $block): Allocation
     {
         $usableSpace = $this->getUsableSpace();
-        $allocationVisitor = new BlockAllocationVisitor(...$usableSpace);
+        $allocationVisitor = new AllocationVisitor(...$usableSpace);
 
         return $block->accept($allocationVisitor);
     }
 
-    public function place(BlockAllocation $allocation): void
+    public function place(Allocation $allocation): void
     {
         $left = $this->margin[0];
         $top = $this->currentY + $this->margin[1];

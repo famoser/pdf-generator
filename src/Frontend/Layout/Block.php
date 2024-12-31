@@ -11,35 +11,32 @@
 
 namespace Famoser\PdfGenerator\Frontend\Layout;
 
-use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ElementVisitorInterface;
 
-class Block extends AbstractBlock
+class Block extends AbstractElement
 {
-    public function __construct(private AbstractBlock $block)
+    public function __construct(private readonly AbstractElement $block)
     {
     }
 
-    public function getBlock(): AbstractBlock
+    public function getBlock(): AbstractElement
     {
         return $this->block;
     }
 
-    public function cloneWithBlock(AbstractBlock $block): self
+    public function cloneWithBlock(AbstractElement $block): self
     {
-        $clone = clone $this;
-        $clone->block = $block;
-
-        return $clone;
+        return new self($block);
     }
 
     /**
      * @template T
      *
-     * @param BlockVisitorInterface<T> $visitor
+     * @param ElementVisitorInterface<T> $visitor
      *
      * @return T
      */
-    public function accept(BlockVisitorInterface $visitor): mixed
+    public function accept(ElementVisitorInterface $visitor): mixed
     {
         return $visitor->visitBlock($this);
     }

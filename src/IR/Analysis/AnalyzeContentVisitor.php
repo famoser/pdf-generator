@@ -14,9 +14,8 @@ namespace Famoser\PdfGenerator\IR\Analysis;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Size;
 use Famoser\PdfGenerator\IR\Document\Content\ContentVisitorInterface;
 use Famoser\PdfGenerator\IR\Document\Content\ImagePlacement;
-use Famoser\PdfGenerator\IR\Document\Content\Paragraph;
-use Famoser\PdfGenerator\IR\Document\Content\Rectangle;
 use Famoser\PdfGenerator\IR\Document\Content\Text;
+use Famoser\PdfGenerator\IR\Document\Content\Rectangle;
 
 /**
  * @implements ContentVisitorInterface<void>
@@ -59,23 +58,15 @@ class AnalyzeContentVisitor implements ContentVisitorInterface
 
     public function visitText(Text $text): void
     {
-        $identifier = $text->getStyle()->getFont()->getIdentifier();
-        if (!\array_key_exists($identifier, $this->textPerFont)) {
-            $this->textPerFont[$identifier] = '';
-        }
+        foreach ($text->getLines() as $line) {
+            foreach ($line->getSegments() as $segment) {
+                $identifier = $segment->getStyle()->getFont()->getIdentifier();
+                if (!\array_key_exists($identifier, $this->textPerFont)) {
+                    $this->textPerFont[$identifier] = '';
+                }
 
-        $this->textPerFont[$identifier] .= $text->getText();
-    }
-
-    public function visitParagraph(Paragraph $paragraph): void
-    {
-        foreach ($paragraph->getPhrase() as $phrase) {
-            $identifier = $phrase->getStyle()->getFont()->getIdentifier();
-            if (!\array_key_exists($identifier, $this->textPerFont)) {
-                $this->textPerFont[$identifier] = '';
+                $this->textPerFont[$identifier] .= $segment->getText();
             }
-
-            $this->textPerFont[$identifier] .= $phrase->getText();
         }
     }
 

@@ -13,7 +13,7 @@ namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators;
 
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
 use Famoser\PdfGenerator\Frontend\Layout\Table;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\BlockAllocation;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
 
 readonly class TableAllocator
 {
@@ -24,7 +24,7 @@ readonly class TableAllocator
     /**
      * @param Row[] $overflowBody
      *
-     * @return BlockAllocation[]
+     * @return Allocation[]
      */
     public function allocate(Table $table, array &$overflowBody = [], float &$usedWidth = 0, float &$usedHeight = 0): array
     {

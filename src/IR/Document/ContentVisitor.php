@@ -13,17 +13,16 @@ namespace Famoser\PdfGenerator\IR\Document;
 
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
-use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\Phrase;
-use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\ParagraphContent;
-use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\TextLine;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\TextSegment;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Position;
 use Famoser\PdfGenerator\IR\Document\Content\ContentVisitorInterface;
 use Famoser\PdfGenerator\IR\Document\Content\ImagePlacement;
-use Famoser\PdfGenerator\IR\Document\Content\Paragraph;
+use Famoser\PdfGenerator\IR\Document\Content\Text;
 use Famoser\PdfGenerator\IR\Document\Content\Rectangle;
 use Famoser\PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
-use Famoser\PdfGenerator\IR\Document\Content\Text;
 use Famoser\PdfGenerator\IR\Document\Resource\PageResources;
 
 /**
@@ -60,29 +59,21 @@ readonly class ContentVisitor implements ContentVisitorInterface
 
     public function visitText(Text $text): TextContent
     {
-        $lines = $this->splitAtNewlines($text->getText());
-
         $this->applyPosition($text->getPosition());
-        $this->applyTextStyle($text->getStyle());
-        $writingState = $this->pageResources->getWritingState();
-
-        return new TextContent($lines, $writingState);
-    }
-
-    public function visitParagraph(Paragraph $paragraph): ParagraphContent
-    {
-        $this->applyPosition($paragraph->getPosition());
         $generalGraphicState = $this->pageResources->getGeneralGraphicState();
-        /** @var Phrase[] $phrases */
-        $phrases = [];
-        foreach ($paragraph->getPhrase() as $phrase) {
-            $lines = $this->splitAtNewlines($phrase->getText());
-            $this->applyTextStyle($phrase->getStyle());
-            $writingState = $this->pageResources->getWritingState();
-            $phrases[] = new Phrase($lines, $writingState);
+        $lines = [];
+        foreach ($text->getLines() as $line) {
+            $segments = [];
+            foreach ($line->getSegments() as $segment) {
+                $this->applyTextStyle($segment->getStyle());
+                $writingState = $this->pageResources->getWritingState();
+                $segments[] = new TextSegment($segment->getText(), $writingState);
+            }
+
+            $lines[] = new TextLine($segments, $line->getOffset());
         }
 
-        return new ParagraphContent($phrases, $generalGraphicState);
+        return new TextContent($lines, $generalGraphicState);
     }
 
     /**
@@ -143,7 +134,8 @@ readonly class ContentVisitor implements ContentVisitorInterface
 
         $scale = $style->getFontSize() / $font->getUnitsPerEm();
         $leadingUnit = $font->getBaselineToBaselineDistance() * $scale;
-        $textStateRepository->setLeading($style->getLineHeight() * $leadingUnit);
+        $textStateRepository->setLeading($style->getLineHeight());
+        $textStateRepository->setWordSpace($style->getWordSpace());
 
         $this->pageResources->getColorStateRepository()->setFillColor($style->getColor());
     }

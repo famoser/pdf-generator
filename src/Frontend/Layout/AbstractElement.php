@@ -11,19 +11,19 @@
 
 namespace Famoser\PdfGenerator\Frontend\Layout;
 
-use Famoser\PdfGenerator\Frontend\Layout\Traits\BlockTrait;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\BlockVisitorInterface;
+use Famoser\PdfGenerator\Frontend\Layout\Traits\ElementTrait;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\ElementVisitorInterface;
 
-abstract class AbstractBlock
+abstract class AbstractElement
 {
-    use BlockTrait;
+    use ElementTrait;
 
     /**
      * @template T
      *
-     * @param BlockVisitorInterface<T> $visitor
+     * @param ElementVisitorInterface<T> $visitor
      *
      * @return T
      */
-    abstract public function accept(BlockVisitorInterface $visitor);
+    abstract public function accept(ElementVisitorInterface $visitor);
 }

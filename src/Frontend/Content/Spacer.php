@@ -14,15 +14,10 @@ namespace Famoser\PdfGenerator\Frontend\Content;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 use Famoser\PdfGenerator\Frontend\Printer;
 
-class Spacer extends AbstractContent
+readonly class Spacer extends AbstractContent
 {
-    public function accept(ContentVisitorInterface $visitor)
+    public function print(Printer $printer): void
     {
-        return $visitor->visitSpacer($this);
-    }
-
-    public function print(Printer $printer, float $width, float $height): void
-    {
-        // empty on purpose; the spacer has no content
+        // a spacer has no content, therefore no print
     }
 }

@@ -11,7 +11,7 @@
 
 include '../vendor/autoload.php';
 
-use Famoser\PdfGenerator\Frontend\Content\Paragraph;
+use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
