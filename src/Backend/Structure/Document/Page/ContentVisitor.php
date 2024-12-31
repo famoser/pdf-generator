@@ -52,8 +52,6 @@ class ContentVisitor
 
     public function visitTextContent(TextContent $textContent): Content
     {
-        $operators = $this->applyState($textContent->getInfluentialStates());
-
         $operators[] = 'BT';
         /*
         TODO check if needed; unclear in spec where printer starts to print the text
@@ -78,7 +76,7 @@ class ContentVisitor
                     $targetTextState = $segment->getTextState();
 
                     if ($line->getOffset() === 0.0) {
-                        if ($targetTextState->getWordSpacing() !== $appliedTextState?->getWordSpacing() || $targetTextState->getCharacterSpacing() !== $appliedTextState?->getCharacterSpacing()) {
+                        if ($targetTextState->getWordSpacing() !== $appliedTextState?->getWordSpacing() || $targetTextState->getCharacterSpacing() !== $appliedTextState->getCharacterSpacing()) {
                             $printOperators[] = $targetTextState->getWordSpacing() . ' ' . $targetTextState->getCharacterSpacing() . ' (' . $text . ')"';
 
                             // avoid automatic state transition operators to reapply new word spacing / character spacing
@@ -148,27 +146,6 @@ class ContentVisitor
             RectangleContent::PAINTING_MODE_STROKE_FILL => 'b',
             default => 'n',
         };
-    }
-
-    /**
-     * @param string[] $lines
-     *
-     * @return string[]
-     */
-    private function getTextOperators(array $lines, Font $font): array
-    {
-        $printOperators = [];
-
-        // print first line
-        $printOperators[] = '(' . $this->prepareTextForPrint($lines[0], $font) . ')Tj';
-
-        // use the ' operator to start a new line before printing
-        $lineCount = \count($lines);
-        for ($i = 1; $i < $lineCount; ++$i) {
-            $printOperators[] = '(' . $this->prepareTextForPrint($lines[$i], $font) . ')\'';
-        }
-
-        return $printOperators;
     }
 
     private function prepareTextForPrint(string $text, Font $font): string

@@ -29,7 +29,7 @@ readonly class TextContent extends BaseContent
     }
 
     /**
-     * @return TextSegment[]
+     * @return TextLine[]
      */
     public function getLines(): array
     {

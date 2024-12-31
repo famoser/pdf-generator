@@ -26,6 +26,9 @@ readonly class TextLine
         return $this->offset;
     }
 
+    /**
+     * @return TextSegment[]
+     */
     public function getSegments(): array
     {
         return $this->segments;

@@ -78,8 +78,8 @@ readonly class Printer
         $position = $this->getPosition(0);
 
         $textStyle = self::createTextStyle($style, $style->getLineHeight(), 0);
-        $segment = new Text\Segment($text, $textStyle);
-        $line = new Text\Line(0, [$segment]);
+        $segment = new Text\TextSegment($text, $textStyle);
+        $line = new Text\TextLine(0, [$segment]);
         $paragraph = new Text([$line], $position);
         $this->page->addContent($paragraph);
     }
@@ -91,10 +91,10 @@ readonly class Printer
             $segments = [];
             foreach ($line->getSegments() as $segment) {
                 $textStyle = self::createTextStyle($segment->getTextStyle(), $line->getLineHeight(), $line->getWordSpacing());
-                $segments[] = new Text\Segment($segment->getText(), $textStyle);
+                $segments[] = new Text\TextSegment($segment->getText(), $textStyle);
             }
 
-            $lines[] = new Text\Line($line->getOffset(), $segments);
+            $lines[] = new Text\TextLine($line->getOffset(), $segments);
         }
 
         $position = $this->getPosition(0); // text is rendered as expected

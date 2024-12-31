@@ -13,6 +13,7 @@ namespace Famoser\PdfGenerator\Tests\Integration\Frontend\LinearDocument;
 
 use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
 use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
+use Famoser\PdfGenerator\Frontend\Content\Text\TextLine;
 use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
@@ -34,9 +35,9 @@ class ContentTestCase extends LinearDocumentTestCase
 
         // act
         $rectangleStyle = new DrawingStyle(lineColor: new Color(0, 255, 255), fillColor: new Color(0, 255, 0));
-        $rectangle = new Rectangle($rectangleStyle);
+        $rectangle = new Rectangle(20, 40, $rectangleStyle);
 
-        $contentBlock = $this->createHighlightedContentBlock($rectangle, 20, 40);
+        $contentBlock = $this->createHighlightedContentBlock($rectangle);
         $document->add($contentBlock);
 
         // assert
@@ -52,9 +53,9 @@ class ContentTestCase extends LinearDocumentTestCase
 
         // act
         $image = Image::createFromFile(ResourcesProvider::getImage1Path());
-        $imagePlacement = new ImagePlacement($image);
+        $imagePlacement = new ImagePlacement(30, 40, $image);
 
-        $contentBlock = $this->createHighlightedContentBlock($imagePlacement, 30, 40);
+        $contentBlock = $this->createHighlightedContentBlock($imagePlacement);
         $document->add($contentBlock);
 
         // assert
@@ -70,7 +71,7 @@ class ContentTestCase extends LinearDocumentTestCase
         // act
         $font = Font::createFromDefault();
         $normalText = new TextStyle($font, 3, 1.2, new Color(0, 0, 0));
-        $paragraph = new TextBlock();
+        $paragraph = new TextBlock(200, 30);
         $paragraph->add($normalText, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
 
         $contentBlock = $this->createHighlightedContentBlock($paragraph);

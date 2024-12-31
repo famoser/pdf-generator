@@ -11,10 +11,10 @@
 
 namespace Famoser\PdfGenerator\IR\Document\Content\Text;
 
-readonly class Line
+readonly class TextLine
 {
     /**
-     * @param Segment[] $segments
+     * @param TextSegment[] $segments
      */
     public function __construct(private float $offset, private array $segments)
     {
@@ -25,6 +25,9 @@ readonly class Line
         return $this->offset;
     }
 
+    /**
+     * @return TextSegment[]
+     */
     public function getSegments(): array
     {
         return $this->segments;
