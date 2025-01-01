@@ -73,7 +73,6 @@ readonly class TextAllocator
             // allocate next segment
             $fontMeasurement = $this->fontRepository->getFontMeasurement($span);
             $availableWidth = $maxWidth - $allocatedWidth;
-            $nextLines = '';
             $line = self::getLine($span->getText(), $nextLines);
             $allocatedLineWidth = 0.0;
             $segment = $this->allocateSegment($span->getTextStyle(), $fontMeasurement, $availableWidth, $line, $allocatedLineWidth, $overflowLine);
@@ -94,7 +93,7 @@ readonly class TextAllocator
             }
 
             // set overflow
-            if ($overflowLine !== '' || $nextLines !== '') {
+            if ($overflowLine !== '' || $nextLines !== null) {
                 $remainingText = $overflowLine;
 
                 // remove first space to logically replace space with (omitted) newline
@@ -102,7 +101,7 @@ readonly class TextAllocator
                     $remainingText = substr($remainingText, 1);
                 }
 
-                if ($nextLines !== '' && $remainingText !== '') {
+                if ($nextLines !== null && $remainingText !== '') {
                     $remainingText .= "\n";
                 }
 
@@ -113,12 +112,12 @@ readonly class TextAllocator
             }
 
             // start next span if no overflow on line & no newline
-            if ($nextLines === '' && $overflowLine === '') {
+            if ($nextLines === null && $overflowLine === '') {
                 continue;
             }
 
             // else abort
-            $abortedByNewline = $nextLines !== '' && $overflowLine === '';
+            $abortedByNewline = $nextLines !== null && $overflowLine === '';
             break;
         }
 
@@ -184,7 +183,7 @@ readonly class TextAllocator
         return new TextSegment($allocatedText, $textStyle, $fontMeasurement);
     }
 
-    public static function getLine(string $value, string &$nextLines = ''): string
+    public static function getLine(string $value, ?string &$nextLines = null): string
     {
         $cleanedText = str_replace("\r", "", $value); // ignore carriage return for now
         $singleLineEnd = mb_strpos($cleanedText, "\n");
