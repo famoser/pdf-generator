@@ -32,7 +32,7 @@ class Text extends AbstractElement
         $this->spans[] = $span;
     }
 
-    public function addSpan(string $text, TextStyle $textStyle, float $fontSize = 8, float $lineHeight = 1.2): void
+    public function addSpan(string $text, TextStyle $textStyle, float $fontSize = 4, float $lineHeight = 1.2): void
     {
         $this->add(new TextSpan($text, $textStyle, $fontSize, $lineHeight));
     }

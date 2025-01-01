@@ -16,21 +16,27 @@ use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
+use Famoser\PdfGenerator\Frontend\Layout\Block;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Grid;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
-use Famoser\PdfGenerator\Frontend\LinearDocument;
+use Famoser\PdfGenerator\Frontend\Document;
+use Famoser\PdfGenerator\Frontend\Layout\Text;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
+use Famoser\PdfGenerator\Tests\Integration\Frontend\TestUtils\Render;
+use PHPUnit\Framework\TestCase;
 
-class GridTestCase extends LinearDocumentTestCase
+class GridTest extends TestCase
 {
+    use Render;
+
     public function testPrintGridRows(): void
     {
         // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+        $document = new Document([210, 297], [5, 5, 5, 5]);
 
         $grid = new Grid(3, 10, [ColumnSize::MINIMAL, ColumnSize::MINIMAL]);
         $this->setBorderStyle($grid);
@@ -40,15 +46,11 @@ class GridTestCase extends LinearDocumentTestCase
             [[8, 8], [40, 6]],
         ];
 
-        $rectangle = $this->createColourfulRectangle();
         foreach ($dimensions as $rowDimensions) {
             $row = new Row();
             foreach ($rowDimensions as $index => $entryDimensions) {
-                $contentBlock = new ContentBlock($rectangle);
-                $contentBlock->setHeight($entryDimensions[0]);
-                $contentBlock->setWidth($entryDimensions[1]);
-
-                $row->set($index, $contentBlock);
+                $rectangle = $this->createColourfulRectangle(...$entryDimensions);
+                $row->set($index, new ContentBlock($rectangle));
             }
 
             $grid->add($row);
@@ -65,7 +67,7 @@ class GridTestCase extends LinearDocumentTestCase
     public function testPrintFixedGrid(): void
     {
         // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+        $document = new Document([210, 297], [5, 5, 5, 5]);
 
         $grid = new Grid(40, 20, [20, 40]);
         $this->setBorderStyle($grid);
@@ -85,7 +87,7 @@ class GridTestCase extends LinearDocumentTestCase
     public function testPrintMinGrid(): void
     {
         // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+        $document = new Document([210, 297], [5, 5, 5, 5]);
 
         $grid = new Grid(40, 20, [ColumnSize::MINIMAL, ColumnSize::MINIMAL]);
         $this->setBorderStyle($grid);
@@ -105,7 +107,7 @@ class GridTestCase extends LinearDocumentTestCase
     public function testPrintAutoGrid(): void
     {
         // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+        $document = new Document([210, 297], [5, 5, 5, 5]);
 
         $grid = new Grid(40, 20, [20, ColumnSize::AUTO, 40]);
         $this->setBorderStyle($grid);
@@ -125,7 +127,7 @@ class GridTestCase extends LinearDocumentTestCase
     public function testAutoSizingGrid(): void
     {
         // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+        $document = new Document([210, 297], [5, 5, 5, 5]);
 
         $grid = new Grid(10, 0, [ColumnSize::AUTO, ColumnSize::AUTO]);
         $this->setBorderStyle($grid);
@@ -146,7 +148,7 @@ class GridTestCase extends LinearDocumentTestCase
     public function testAutoSizingTextGrid(): void
     {
         // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+        $document = new Document([210, 297], [5, 5, 5, 5]);
 
         $grid = new Grid(1, 2, [ColumnSize::MINIMAL, ColumnSize::AUTO, ColumnSize::AUTO]);
         $this->setBorderStyle($grid);
@@ -166,7 +168,7 @@ class GridTestCase extends LinearDocumentTestCase
     public function testPrintUnitGrid(): void
     {
         // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+        $document = new Document([210, 297], [5, 5, 5, 5]);
 
         $grid = new Grid(10, 20, ['3'.ColumnSize::UNIT, ColumnSize::UNIT]);
         $this->setBorderStyle($grid);
@@ -186,7 +188,7 @@ class GridTestCase extends LinearDocumentTestCase
     public function testPrintDiverseGrid(): void
     {
         // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+        $document = new Document([210, 297], [5, 5, 5, 5]);
 
         $grid = new Grid(2, 5, [ColumnSize::AUTO, 5, ColumnSize::MINIMAL, '3'.ColumnSize::UNIT, ColumnSize::UNIT]);
         $this->setBorderStyle($grid);
@@ -206,7 +208,7 @@ class GridTestCase extends LinearDocumentTestCase
     public function testEmptyGrid(): void
     {
         // arrange
-        $document = new LinearDocument([210, 297], [5, 5, 5, 5]);
+        $document = new Document([210, 297], [5, 5, 5, 5]);
 
         $grid = new Grid(3, 10, [ColumnSize::AUTO, ColumnSize::MINIMAL, 10, '2'.ColumnSize::UNIT]);
         $this->setBorderStyle($grid);
@@ -227,11 +229,11 @@ class GridTestCase extends LinearDocumentTestCase
         $block->setStyle($borderedBlockStyle);
     }
 
-    private function createColourfulRectangle(): Rectangle
+    private function createColourfulRectangle(float $width, float $height): Rectangle
     {
         $colorfulRectangleStyle = new DrawingStyle(fillColor: new Color(0, 255, 0), lineColor: new Color(0, 255, 255));
 
-        return new Rectangle($colorfulRectangleStyle);
+        return new Rectangle($width, $height, $colorfulRectangleStyle);
     }
 
     private function createAlternateColourfulRow(): Row
@@ -249,16 +251,11 @@ class GridTestCase extends LinearDocumentTestCase
      */
     private function printWidthRectangles(Grid $grid, array $dimensions): void
     {
-        $rectangle = $this->createColourfulRectangle();
-
         foreach ($dimensions as $widthDimensions) {
             $row = $this->createAlternateColourfulRow();
             foreach ($widthDimensions as $index => $width) {
-                $contentBlock = new ContentBlock($rectangle);
-                $contentBlock->setHeight(20);
-                $contentBlock->setWidth($width);
-
-                $row->set($index, $contentBlock);
+                $rectangle = $this->createColourfulRectangle($width, 20);
+                $row->set($index, new ContentBlock($rectangle));
             }
 
             $grid->add($row);
@@ -271,14 +268,14 @@ class GridTestCase extends LinearDocumentTestCase
     private function printText(Grid $grid, array $text): void
     {
         $font = Font::createFromDefault();
-        $normalText = new TextStyle($font, 3);
+        $normalText = new TextStyle($font);
 
         foreach ($text as $line) {
             $row = new Row();
             foreach ($line as $index => $cell) {
-                $paragraph = new TextBlock();
-                $paragraph->add($normalText, $cell);
-                $row->setContent($index, $paragraph);
+                $paragraph = new Text();
+                $paragraph->addSpan($cell, $normalText);
+                $row->set($index, $paragraph);
             }
 
             $grid->add($row);

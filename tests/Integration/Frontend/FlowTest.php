@@ -20,15 +20,20 @@ use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use Famoser\PdfGenerator\Frontend\Layout\Text;
-use Famoser\PdfGenerator\Frontend\LinearDocument;
+use Famoser\PdfGenerator\Frontend\Document;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
+use Famoser\PdfGenerator\Tests\Integration\Frontend\TestUtils\Render;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
 
-class FlowTestCase extends LinearDocumentTestCase
+class FlowTest extends TestCase
 {
+    use Render;
+
     public function testPrintFlowContent(): void
     {
         // arrange
-        $document = new LinearDocument();
+        $document = new Document();
 
         // act
         $rectangleStyle = new DrawingStyle(0.25);
@@ -53,18 +58,20 @@ class FlowTestCase extends LinearDocumentTestCase
 
     public function testPrintSimpleFlowText(): void
     {
+        // TODO: why spacing wrong after "vom" (note too much space)
+
         // arrange
-        $document = new LinearDocument();
+        $document = new Document();
 
         $font = Font::createFromDefault();
-        $normalText = new TextStyle($font, 3);
+        $normalText = new TextStyle($font);
 
         // act
         $paragraph = new Text(alignment: Text\Alignment::ALIGNMENT_JUSTIFIED);
-        $paragraph->add($normalText, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
-        $paragraph->add($normalText, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ');
-        $paragraph->add($normalText, 'Kontoauszug');
-        $paragraph->add($normalText, ', diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
+        $paragraph->addSpan('PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ', $normalText);
+        $paragraph->addSpan('Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ', $normalText);
+        $paragraph->addSpan('Kontoauszug', $normalText);
+        $paragraph->addSpan(', diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.', $normalText);
 
         $flow = new Flow(FlowDirection::COLUMN);
         $flow->setWidth(85);
@@ -78,42 +85,42 @@ class FlowTestCase extends LinearDocumentTestCase
         $this->assertStringContainsString('1 0 0 1 0 -60.96 cm BT', $result);
         $this->assertStringContainsString('(Jeder dieser)Tj (Inhalte', $result);
         $this->assertStringContainsString('1 0 0 1 0 -60.96 cm BT (Eine', $result);
-
-        file_put_contents('pdf.pdf', $result);
     }
 
     public function testPrintFlowText(): void
     {
+        // TODO: why do columns stop on 2nd page?
+
         // arrange
-        $document = new LinearDocument();
+        $document = new Document();
 
         $font = Font::createFromDefault();
-        $normalText = new TextStyle($font, 3);
+        $normalText = new TextStyle($font);
 
         // act
         /** @var TextBlock[] $paragraphs */
         $paragraphs = [];
         $paragraph = new Text();
-        $paragraph->add($normalText, 'PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ');
-        $paragraph->add($normalText, 'Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ');
-        $paragraph->add($normalText, 'Kontoauszug');
-        $paragraph->add($normalText, ', diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.');
+        $paragraph->addSpan('PDF ist ein Textformat, strukturiert ähnlich wie XML, einfach etwas weniger Struktur. ', $normalText);
+        $paragraph->addSpan('Am besten einmal ein kleines PDF im Texteditor öffnen und durchschauen. Zum Beispiel vom ', $normalText);
+        $paragraph->addSpan('Kontoauszug', $normalText);
+        $paragraph->addSpan(', diese PDFs haben oft etwas weniger komischer binary Anteil wie dies z.B. Tex generierte Dokumente haben.', $normalText);
         $paragraphs[] = $paragraph;
 
         $paragraph = new Text();
-        $paragraph->add($normalText, 'Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. ');
-        $paragraph->add($normalText, 'Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. ');
-        $paragraph->add($normalText, 'Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. ');
-        $paragraph->add($normalText, 'Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator.');
+        $paragraph->addSpan('Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. ', $normalText);
+        $paragraph->addSpan('Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. ', $normalText);
+        $paragraph->addSpan('Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. ', $normalText);
+        $paragraph->addSpan('Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator.', $normalText);
         $paragraphs[] = $paragraph;
 
         $paragraph = new Text();
-        $paragraph->add($normalText, 'Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). ');
-        $paragraph->add($normalText, 'Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. ');
-        $paragraph->add($normalText, 'Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. ');
-        $paragraph->add($normalText, 'Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. ');
-        $paragraph->add($normalText, 'Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. ');
-        $paragraph->add($normalText, 'Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten.');
+        $paragraph->addSpan('Eine Abstraktionsebene höher gibt es dann einen Header (die PDF Version), einen Trailer mit der Cross Reference Table (Byte Offsets zu den verschiedenen Teilen des PDFs) und den Body (mit dem ganzen Inhalt). ', $normalText);
+        $paragraph->addSpan('Die Cross Reference Table war früher einmal nützlich, um die relevanten Teile des PDFs schnell anzuzeigen. ', $normalText);
+        $paragraph->addSpan('Bei aktuellen Readers wird diese Sektion aber vermutlich ignoriert; auch komplett falsche Werte haben keinen Einfluss auf die Darstellung. ', $normalText);
+        $paragraph->addSpan('Als Inhaltsarten gibt es nenneswerterweise Bilder, Text und Schriftarten. ', $normalText);
+        $paragraph->addSpan('Jeder dieser Inhalte ist an eine jeweilige "Page" gebunden, mit spezifizierten x/y Koordinaten. ', $normalText);
+        $paragraph->addSpan('Ganz nach PDF-Konzept gibts hier keine magic: Alle Angaben sind absolut und keine automatische Zentrierung oder Skalierung wird angeboten.', $normalText);
         $paragraphs[] = $paragraph;
 
         $outerFlow = new Flow(FlowDirection::ROW, 10);
@@ -121,9 +128,8 @@ class FlowTestCase extends LinearDocumentTestCase
         $flow->setWidth(85);
         for ($i = 0; $i < 30; ++$i) {
             foreach ($paragraphs as $paragraph) {
-                $contentBlock = new Block($paragraph);
-                $contentBlock->setMargin([0, 3 * 1.6, 0, 0]);
-                $flow->add($contentBlock);
+                $paragraph->setMargin([0, 3 * 1.6, 0, 0]);
+                $flow->add($paragraph);
             }
         }
         $outerFlow->add($flow);
