@@ -97,7 +97,8 @@ readonly class Printer
             $lines[] = new Text\TextLine($line->getOffset(), $segments);
         }
 
-        $position = $this->getPosition(0); // text is rendered as expected
+        $ascender = $textBlock->getLines() !== [] ? $textBlock->getLines()[0]->getAscender() : 0.0;
+        $position = $this->getPosition($ascender);
 
         $paragraph = new Text($lines, $position);
         $this->page->addContent($paragraph);
