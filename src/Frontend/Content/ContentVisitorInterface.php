@@ -13,9 +13,9 @@ namespace Famoser\PdfGenerator\Frontend\Content;
 
 interface ContentVisitorInterface
 {
-    public function visitImagePlacement(ImagePlacement $imagePlacement);
+    public function visitImagePlacement(ImagePlacement $imagePlacement): void;
 
-    public function visitRectangle(Rectangle $rectangle);
+    public function visitRectangle(Rectangle $rectangle): void;
 
-    public function visitTextBlock(TextBlock $textBlock);
+    public function visitTextBlock(TextBlock $textBlock): void;
 }

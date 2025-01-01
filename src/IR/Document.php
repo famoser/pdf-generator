@@ -17,7 +17,7 @@ use Famoser\PdfGenerator\IR\Document\Resource\DocumentResources;
 
 class Document
 {
-    public function __construct(private readonly Meta $meta)
+    public function __construct(private readonly ?Meta $meta = null)
     {
     }
 
@@ -51,7 +51,7 @@ class Document
         $analysisResult = $analyzeContentVisitor->getAnalysisResult();
         $documentVisitor = new DocumentVisitor($analysisResult);
 
-        $meta = $this->meta->visit($documentVisitor);
+        $meta = $this->meta?->accept($documentVisitor);
         $document = new \Famoser\PdfGenerator\Backend\Structure\Document($meta);
 
         $documentResources = new DocumentResources($documentVisitor);

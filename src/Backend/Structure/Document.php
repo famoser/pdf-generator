@@ -28,7 +28,7 @@ class Document
 
     private readonly Configuration $configuration;
 
-    public function __construct(private readonly XmpMeta $meta)
+    public function __construct(private readonly ?XmpMeta $meta)
     {
         $this->configuration = new Configuration();
     }
@@ -41,7 +41,7 @@ class Document
     public function render(): Catalog
     {
         $documentVisitor = new DocumentVisitor($this->configuration);
-        $meta = $this->meta->accept($documentVisitor);
+        $meta = $this->meta?->accept($documentVisitor);
 
         $documentResources = new DocumentResources($documentVisitor);
         $pageEntries = [];
