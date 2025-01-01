@@ -12,6 +12,7 @@
 namespace Famoser\PdfGenerator\Frontend\Resource\Font;
 
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Layout\TextSpan;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerInterface;
 use Famoser\PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerVisitor;
@@ -74,9 +75,9 @@ class FontRepository
         return $this->getOrCreateDefaultFont($font->getFamily(), $font->getWeight(), $font->getStyle());
     }
 
-    public function getFontMeasurement(TextStyle $textStyle): FontMeasurement
+    public function getFontMeasurement(TextSpan $span): FontMeasurement
     {
-        $font = $this->getFont($textStyle->getFont());
+        $font = $this->getFont($span->getTextStyle()->getFont());
         if (!\array_key_exists($font->getIdentifier(), $this->wordSizerByFont)) {
             $wordSizerVisitor = new WordSizerVisitor();
             /** @var WordSizerInterface $wordSizer */
@@ -86,7 +87,7 @@ class FontRepository
 
         $wordSizer = $this->wordSizerByFont[$font->getIdentifier()];
 
-        return new FontMeasurement($font, $textStyle->getFontSize(), $textStyle->getLeading(), $wordSizer);
+        return new FontMeasurement($font, $span->getFontSize(), $span->getLineHeight(), $wordSizer);
     }
 
     private function getOrCreateDefaultFont(FontFamily $font, FontWeight $weight, FontStyle $style): DefaultFont

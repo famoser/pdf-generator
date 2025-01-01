@@ -122,9 +122,7 @@ readonly class ContentVisitor implements ContentVisitorInterface
         $textStateRepository->setFontSize($style->getFontSize());
         $textStateRepository->setFont($this->pageResources->getFont($font));
 
-        $scale = $style->getFontSize() / $font->getUnitsPerEm();
-        $leadingUnit = $font->getBaselineToBaselineDistance() * $scale;
-        $textStateRepository->setLeading($style->getLineHeight());
+        $textStateRepository->setLeading($style->getLeading());
         $textStateRepository->setWordSpace($style->getWordSpace());
 
         $this->pageResources->getColorStateRepository()->setFillColor($style->getColor());

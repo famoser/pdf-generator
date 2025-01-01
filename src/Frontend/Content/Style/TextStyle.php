@@ -16,23 +16,13 @@ use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 
 readonly class TextStyle
 {
-    public function __construct(private Font $font, private float $fontSize = 3.8, private float $leading = 1.2, private Color $color = new Color(0, 0, 0))
+    public function __construct(private Font $font, private Color $color = new Color(0, 0, 0))
     {
     }
 
     public function getFont(): Font
     {
         return $this->font;
-    }
-
-    public function getFontSize(): float
-    {
-        return $this->fontSize;
-    }
-
-    public function getLeading(): float
-    {
-        return $this->leading;
     }
 
     public function getColor(): Color

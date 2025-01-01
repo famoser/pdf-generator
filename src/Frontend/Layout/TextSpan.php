@@ -15,7 +15,7 @@ use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 
 readonly class TextSpan
 {
-    public function __construct(private string $text, private TextStyle $textStyle)
+    public function __construct(private string $text, private TextStyle $textStyle, private float $fontSize = 16, private float $lineHeight = 1.2)
     {
     }
 
@@ -27,5 +27,15 @@ readonly class TextSpan
     public function getTextStyle(): TextStyle
     {
         return $this->textStyle;
+    }
+
+    public function getFontSize(): float
+    {
+        return $this->fontSize;
+    }
+
+    public function getLineHeight(): float
+    {
+        return $this->lineHeight;
     }
 }
