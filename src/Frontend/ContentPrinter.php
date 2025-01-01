@@ -53,9 +53,8 @@ readonly class ContentPrinter implements ContentVisitorInterface
             $segments = [];
             foreach ($line->getSegments() as $segment) {
                 $font = $this->fontRepository->getFont($segment->getTextStyle()->getFont());
-
-                $segmentWordSpace = $segment->getFontMeasurement()->getSpaceWidth() * $line->getWordSpacing();
-                $textStyle = new Text\TextStyle($font, $segment->getFontMeasurement()->getFontSize(), $line->getLeading(), $segmentWordSpace, $segment->getTextStyle()->getColor());
+                $wordSpacing = $segment->getFontMeasurement()->getSpaceWidth() * $line->getWordSpacing();
+                $textStyle = new Text\TextStyle($font, $segment->getFontMeasurement()->getFontSize(), $line->getLeading(), $wordSpacing, $segment->getTextStyle()->getColor());
                 $segments[] = new Text\TextSegment($segment->getText(), $textStyle);
             }
 
