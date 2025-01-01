@@ -14,9 +14,7 @@ namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 use Famoser\PdfGenerator\Frontend\Layout\TextSpan;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\TextAllocator;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
-use Famoser\PdfGenerator\Frontend\Resource\Font\FontMeasurement;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
-use mysql_xdevapi\SqlStatementResult;
 
 readonly class TextMeasurer
 {
@@ -64,12 +62,12 @@ readonly class TextMeasurer
 
         $weight = 0.0;
         $currentText = $span->getText();
-        while ($currentText !== null) {
+        while ($currentText !== '') {
             $nextLines = '';
             $line = TextAllocator::getLine($currentText, $nextLines);
 
             $lineLength = 0.0;
-            while ($line != null) {
+            while ($line != '') {
                 $nextChunks = '';
                 $chunk = TextAllocator::getChunk($line, $nextChunks);
                 $lineLength += $fontMeasurement->getWidth($chunk);

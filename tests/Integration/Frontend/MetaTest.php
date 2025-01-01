@@ -11,22 +11,26 @@
 
 namespace Famoser\PdfGenerator\Tests\Integration\Frontend;
 
-use Famoser\PdfGenerator\Frontend\LinearDocument;
-use Famoser\PdfGenerator\IR\Document\Meta;
+use Famoser\PdfGenerator\Frontend\Document;
+use Famoser\PdfGenerator\Frontend\Resource\Meta;
+use Famoser\PdfGenerator\Tests\Integration\Frontend\TestUtils\Render;
+use PHPUnit\Framework\TestCase;
 
-class MetaTestCase extends LinearDocumentTestCase
+class MetaTest extends TestCase
 {
+    use Render;
+
     public function testMetaInFinalDocument(): void
     {
         // arrange
-        $meta = Meta::createMeta(
+        $meta = Meta::basic(
             'en',
             'The RSA Cryptosystem',
             ['R.L. Rivest', 'A. Shamir', 'L. Adleman']
         );
         $meta->setDescription('A Method for Obtaining Digital Signatures and Public-Key Cryptosystems');
         $meta->setKeywords(['Cryptography', 'Public-Key']);
-        $document = new LinearDocument(meta: $meta);
+        $document = new Document(meta: $meta);
 
         // act
         $result = $this->render($document);

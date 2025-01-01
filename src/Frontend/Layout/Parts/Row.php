@@ -32,13 +32,6 @@ class Row
         return $this;
     }
 
-    public function setContent(int $index, AbstractContent $content): self
-    {
-        $this->columns[$index] = new ContentBlock($content);
-
-        return $this;
-    }
-
     public function tryGet(int $index): ?AbstractElement
     {
         return $this->columns[$index] ?? null;
