@@ -62,8 +62,7 @@ readonly class TextMeasurer
 
         $weight = 0.0;
         $currentText = $span->getText();
-        while ($currentText !== '') {
-            $nextLines = '';
+        while ($currentText !== null) {
             $line = TextAllocator::getLine($currentText, $nextLines);
 
             $lineLength = 0.0;
