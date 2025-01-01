@@ -18,6 +18,7 @@ use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Text;
 use Famoser\PdfGenerator\Frontend\Layout\Text\Alignment;
 use Famoser\PdfGenerator\Frontend\Layout\TextSpan;
+use Famoser\PdfGenerator\Frontend\Resource\Font\FontMeasurement;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 
 readonly class TextAllocator
@@ -70,11 +71,12 @@ readonly class TextAllocator
         $abortedByNewline = false;
         while ($span = array_shift($overflow)) {
             // allocate next segment
+            $fontMeasurement = $this->fontRepository->getFontMeasurement($span);
             $availableWidth = $maxWidth - $allocatedWidth;
             $nextLines = '';
             $line = self::getLine($span->getText(), $nextLines);
             $allocatedLineWidth = 0.0;
-            $segment = $this->allocateSegment($span->getTextStyle(), $availableWidth, $line, $allocatedLineWidth, $overflowLine);
+            $segment = $this->allocateSegment($span->getTextStyle(), $fontMeasurement, $availableWidth, $line, $allocatedLineWidth, $overflowLine);
 
             // cannot allocate, too wide
             if ($allocatedWidth + $allocatedLineWidth > $maxWidth && count($allocatedSegments) > 0) {
@@ -85,8 +87,7 @@ readonly class TextAllocator
             $allocatedSegments[] = $segment;
             $allocatedWidth += $allocatedLineWidth;
 
-            // set leading
-            $fontMeasurement = $this->fontRepository->getFontMeasurement($span->getTextStyle());
+            // chose max leading for each line
             if ($fontMeasurement->getLeading() > $leading) {
                 $leading = $fontMeasurement->getLeading();
                 $ascender = $fontMeasurement->getAscender();
@@ -138,8 +139,7 @@ readonly class TextAllocator
             $totalSpaceWidth = 0.0;
             foreach ($allocatedSegments as $allocatedSegment) {
                 $spacesCount = mb_substr_count($allocatedSegment->getText(), ' ');
-                $fontMeasurement = $this->fontRepository->getFontMeasurement($span->getTextStyle());
-                $spaceWidth = $fontMeasurement->getSpaceWidth();
+                $spaceWidth = $allocatedSegment->getFontMeasurement()->getSpaceWidth();
                 $totalSpaceWidth += $spaceWidth * $spacesCount;
             }
 
@@ -152,10 +152,8 @@ readonly class TextAllocator
         return new TextLine($allocatedSegments, $leading, $ascender, $offset, $wordSpacing);
     }
 
-    private function allocateSegment(TextStyle $textStyle, float $maxWidth, string $content, float &$allocatedWidth, string &$overflow = null): TextSegment
+    private function allocateSegment(TextStyle $textStyle, FontMeasurement $fontMeasurement, float $maxWidth, string $content, float &$allocatedWidth, string &$overflow = null): TextSegment
     {
-        $fontMeasurement = $this->fontRepository->getFontMeasurement($textStyle);
-
         $overflow = $content;
         $allocatedText = '';
         while ($overflow !== '') {
@@ -173,7 +171,7 @@ readonly class TextAllocator
             $overflow = $nextChunks;
         }
 
-        return new TextSegment($allocatedText, $textStyle);
+        return new TextSegment($allocatedText, $textStyle, $fontMeasurement);
     }
 
     public static function getLine(string $value, string &$nextLines = ''): string

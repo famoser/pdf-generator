@@ -50,8 +50,7 @@ readonly class TextMeasurer
      */
     private function measureFirstWord(TextSpan $span): array
     {
-        $textStyle = $span->getTextStyle();
-        $fontMeasurement = $this->fontRepository->getFontMeasurement($textStyle);
+        $fontMeasurement = $this->fontRepository->getFontMeasurement($span);
 
         $firstChunk = TextAllocator::getChunk($span->getText());
         $firstChunkLength = $fontMeasurement->getWidth($firstChunk);
@@ -61,8 +60,7 @@ readonly class TextMeasurer
 
     private function measureWeight(TextSpan $span): float
     {
-        $textStyle = $span->getTextStyle();
-        $fontMeasurement = $this->fontRepository->getFontMeasurement($textStyle);
+        $fontMeasurement = $this->fontRepository->getFontMeasurement($span);
 
         $weight = 0.0;
         $currentText = $span->getText();

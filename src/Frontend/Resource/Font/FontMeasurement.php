@@ -20,7 +20,7 @@ readonly class FontMeasurement
     {
     }
 
-    public function getAscender(): float|int
+    public function getAscender(): float
     {
         return $this->font->getAscender() / $this->getFontScaling();
     }
@@ -53,5 +53,10 @@ readonly class FontMeasurement
     public function getSpaceWidth(): float
     {
         return $this->wordSizer->getSpaceWidth() / $this->getFontScaling();
+    }
+
+    public function getFontSize(): float
+    {
+        return $this->fontSize;
     }
 }

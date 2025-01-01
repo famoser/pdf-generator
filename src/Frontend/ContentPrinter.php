@@ -7,6 +7,7 @@ use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Content\Text\TextSegment;
 use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
@@ -51,7 +52,10 @@ readonly class ContentPrinter implements ContentVisitorInterface
         foreach ($textBlock->getLines() as $line) {
             $segments = [];
             foreach ($line->getSegments() as $segment) {
-                $textStyle = self::createTextStyle($segment->getTextStyle(), $line->getLeading(), $line->getWordSpacing());
+                $font = $this->fontRepository->getFont($segment->getTextStyle()->getFont());
+
+                $segmentWordSpace = $segment->getFontMeasurement()->getSpaceWidth() * $line->getWordSpacing();
+                $textStyle = new Text\TextStyle($font, $segment->getFontMeasurement()->getFontSize(), $line->getLeading(), $segmentWordSpace, $segment->getTextStyle()->getColor());
                 $segments[] = new Text\TextSegment($segment->getText(), $textStyle);
             }
 
@@ -75,12 +79,5 @@ readonly class ContentPrinter implements ContentVisitorInterface
     private static function createRectangleStyle(DrawingStyle $drawingStyle): RectangleStyle
     {
         return new RectangleStyle($drawingStyle->getLineWidth(), $drawingStyle->getLineColor(), $drawingStyle->getFillColor());
-    }
-
-    private function createTextStyle(TextStyle $textStyle, ?float $leading = null, float $wordSpace = 0): Text\TextStyle
-    {
-        $font = $this->fontRepository->getFont($textStyle->getFont());
-
-        return new Text\TextStyle($font, $textStyle->getFontSize(), $leading, $wordSpace, $textStyle->getColor());
     }
 }
