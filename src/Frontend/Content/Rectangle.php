@@ -26,8 +26,8 @@ readonly class Rectangle extends AbstractContent
         return $this->style;
     }
 
-    public function print(Printer $printer): void
+    public function accept(ContentVisitorInterface $contentVisitor): void
     {
-        $printer->printRectangle($this);
+        $contentVisitor->visitRectangle($this);
     }
 }
