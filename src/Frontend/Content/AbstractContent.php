@@ -11,7 +11,6 @@
 
 namespace Famoser\PdfGenerator\Frontend\Content;
 
-use Famoser\PdfGenerator\Frontend\LayoutEngine\ContentVisitorInterface;
 use Famoser\PdfGenerator\Frontend\Printer;
 
 abstract readonly class AbstractContent
