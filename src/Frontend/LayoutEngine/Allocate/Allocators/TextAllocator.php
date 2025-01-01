@@ -75,6 +75,7 @@ readonly class TextAllocator
             $availableWidth = $maxWidth - $allocatedWidth;
             $line = self::getLine($span->getText(), $nextLines);
             $allocatedLineWidth = 0.0;
+            $overflowLine = '';
             $segment = $this->allocateSegment($span->getTextStyle(), $fontMeasurement, $availableWidth, $line, $allocatedLineWidth, $overflowLine);
 
             // cannot allocate, too wide
@@ -161,7 +162,7 @@ readonly class TextAllocator
         return new TextLine($allocatedSegments, $leading, $ascender, $offset, $wordSpacing);
     }
 
-    private function allocateSegment(TextStyle $textStyle, FontMeasurement $fontMeasurement, float $maxWidth, string $content, float &$allocatedWidth, string &$overflow = null): TextSegment
+    private function allocateSegment(TextStyle $textStyle, FontMeasurement $fontMeasurement, float $maxWidth, string $content, float &$allocatedWidth, string &$overflow): TextSegment
     {
         $overflow = $content;
         $allocatedText = '';

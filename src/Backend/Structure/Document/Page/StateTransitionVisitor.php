@@ -20,8 +20,6 @@ use Famoser\PdfGenerator\Utils\TransformationMatrixCalculator;
 
 class StateTransitionVisitor
 {
-    private const MAX_NUMBER_SIZE = 4;
-
     private ?ColorState $appliedColorState = null;
 
     private ?GeneralGraphicState $appliedGeneralGraphicsState = null;
@@ -124,26 +122,6 @@ class StateTransitionVisitor
         return $operators;
     }
 
-    public static function limitPrecision(float $value): string
-    {
-        $output = (string) $value;
-        if (strlen($output) > 5) {
-            // restrict places after the dot, as cannot be rendered anyways
-
-            if ($value < 1000) {
-                // hence something like 999.8237182 or 0.00231231
-                return substr($output, 0, 5);
-            } else {
-                // remove dot & numbers after (if any)
-                $dotPosition = strpos($output, '.');
-                if ($dotPosition !== false) {
-                    return substr($output, 0, $dotPosition);
-                }
-            }
-        }
-        return $output;
-    }
-
     /**
      * @return string[]
      */
@@ -212,5 +190,25 @@ class StateTransitionVisitor
         }
 
         return $operators;
+    }
+
+    public static function limitPrecision(float $value): string
+    {
+        $output = (string) $value;
+        if (strlen($output) > 5) {
+            // restrict places after the dot, as cannot be rendered anyways
+
+            if ($value < 1000) {
+                // hence something like 999.8237182 or 0.00231231
+                return substr($output, 0, 5);
+            } else {
+                // remove dot & numbers after (if any)
+                $dotPosition = strpos($output, '.');
+                if ($dotPosition !== false) {
+                    return substr($output, 0, $dotPosition);
+                }
+            }
+        }
+        return $output;
     }
 }

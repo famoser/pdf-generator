@@ -29,8 +29,13 @@ readonly class Meta
      * @param string[] $keywords keywords are used both as PDF keywords as well as Dublin Core subject
      * @param string[] $dates
      */
-    public function __construct(private ?string $language, private array $otherLanguages, private ?string $title,private  array $titleTranslations, private ?string $description, private array $descriptionTranslations, private array $creators,private  array $contributors,private  array $publishers,private  array $keywords,private  array $dates)
+    public function __construct(private ?string $language, private array $otherLanguages, private ?string $title, private array $titleTranslations, private ?string $description, private array $descriptionTranslations, private array $creators, private array $contributors, private array $publishers, private array $keywords, private array $dates)
     {
+    }
+
+    public static function empty(): self
+    {
+        return new self(null, [], null, [], null, [], [], [], [], [], []);
     }
 
 
@@ -113,7 +118,7 @@ readonly class Meta
         return $this->dates;
     }
 
-    public function visit(DocumentVisitor $documentVisitor): XmpMeta
+    public function accept(DocumentVisitor $documentVisitor): XmpMeta
     {
         return $documentVisitor->visitMeta($this);
     }

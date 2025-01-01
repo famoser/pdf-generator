@@ -11,9 +11,6 @@
 
 namespace Famoser\PdfGenerator\Frontend\Resource;
 
-use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
-use Famoser\PdfGenerator\IR\DocumentVisitor;
-
 /**
  * see https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#section-3 for details on how to use the fields
  */
@@ -230,10 +227,5 @@ class Meta
     public function getDates(): array
     {
         return $this->dates;
-    }
-
-    public function visit(DocumentVisitor $documentVisitor): XmpMeta
-    {
-        return $documentVisitor->visitMeta($this);
     }
 }

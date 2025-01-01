@@ -39,9 +39,4 @@ readonly class TextSegment
     {
         return $this->fontMeasurement;
     }
-
-    public function getFontSize(): float
-    {
-        return $this->fontSize;
-    }
 }

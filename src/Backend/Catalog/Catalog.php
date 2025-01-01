@@ -18,7 +18,7 @@ use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 readonly class Catalog extends BaseStructure
 {
-    public function __construct(private Pages $pages, private Metadata $metadata)
+    public function __construct(private Pages $pages, private ?Metadata $metadata)
     {
     }
 
@@ -32,7 +32,7 @@ readonly class Catalog extends BaseStructure
         return $this->pages;
     }
 
-    public function getMetadata(): Metadata
+    public function getMetadata(): ?Metadata
     {
         return $this->metadata;
     }

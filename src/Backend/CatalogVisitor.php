@@ -36,25 +36,34 @@ class CatalogVisitor
         $dictionary = $this->file->addDictionaryObject();
         $dictionary->addNameEntry('Type', 'Catalog');
 
-        if ($structure->getMetadata()->getLanguage()) {
+        if ($structure->getMetadata()?->getLanguage()) {
             $dictionary->addTextEntry('Lang', $structure->getMetadata()->getLanguage());
         }
 
         $reference = $structure->getPages()->accept($this);
         $dictionary->addReferenceEntry('Pages', $reference);
 
-        $metadata = $structure->getMetadata()->accept($this);
-        $dictionary->addReferenceEntry('Metadata', $metadata);
+        if ($structure->getMetadata()) {
+            $metadata = $structure->getMetadata()->accept($this);
+            $dictionary->addReferenceEntry('Metadata', $metadata);
+        }
 
         // Document information dictionary
         $infoDictionary = $this->file->addInfoDictionaryObject();
-        $infoDictionary->addTextEntry('Producer', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
-        $infoDictionary->addTextEntry('Creator', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
+        $infoDictionary->addTextEntry('Producer', 'famoser/pdf-generator/' . self::GENERATOR_VERSION);
+        $infoDictionary->addTextEntry('Creator', 'famoser/pdf-generator/' . self::GENERATOR_VERSION);
         $infoDictionary->addDateEntry('CreationDate', new \DateTime());
-        $addTextIfNotNull = function (string $key, ?string $text) use ($infoDictionary) { if ($text) { $infoDictionary->addTextEntry($key, $text); }};
-        $addTextIfNotNull('Title', $structure->getMetadata()->getTitle());
-        $addTextIfNotNull('Author', $structure->getMetadata()->getAuthor());
-        $addTextIfNotNull('Keywords', $structure->getMetadata()->getKeywords());
+
+        if ($structure->getMetadata()) {
+            $addTextIfNotNull = function (string $key, ?string $text) use ($infoDictionary) {
+                if ($text) {
+                    $infoDictionary->addTextEntry($key, $text);
+                }
+            };
+            $addTextIfNotNull('Title', $structure->getMetadata()->getTitle());
+            $addTextIfNotNull('Author', $structure->getMetadata()->getAuthor());
+            $addTextIfNotNull('Keywords', $structure->getMetadata()->getKeywords());
+        }
 
         return $dictionary;
     }

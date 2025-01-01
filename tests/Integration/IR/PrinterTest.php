@@ -17,6 +17,7 @@ use Famoser\PdfGenerator\IR\Document\Content\Text;
 use Famoser\PdfGenerator\IR\Document\Content\Text\TextStyle;
 use Famoser\PdfGenerator\IR\Document\Page;
 use Famoser\PdfGenerator\IR\Document\Resource\Font\DefaultFont;
+use Famoser\PdfGenerator\IR\Meta;
 use Famoser\PdfGenerator\Tests\Resources\ResourcesProvider;
 use PHPUnit\Framework\TestCase;
 
