@@ -102,7 +102,7 @@ class StateTransitionVisitor
         }
 
         if ($previousState->getWordSpacing() !== $targetState->getWordSpacing()) {
-            $operators[] = self::limitPrecision($targetState->getWordSpacing(), 5).' Tw';
+            $operators[] = self::limitPrecision($targetState->getWordSpacing()).' Tw';
         }
 
         if ($previousState->getScale() !== $targetState->getScale()) {
