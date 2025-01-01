@@ -38,8 +38,8 @@ readonly class TextBlock extends AbstractContent
         return $this->level;
     }
 
-    public function print(Printer $printer): void
+    public function accept(ContentVisitorInterface $contentVisitor): void
     {
-        $printer->printTextBlock($this);
+        $contentVisitor->visitTextBlock($this);
     }
 }

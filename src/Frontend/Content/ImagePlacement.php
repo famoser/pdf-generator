@@ -26,8 +26,8 @@ readonly class ImagePlacement extends AbstractContent
         return $this->image;
     }
 
-    public function print(Printer $printer): void
+    public function accept(ContentVisitorInterface $contentVisitor): void
     {
-        $printer->printImage($this);
+        $contentVisitor->visitImagePlacement($this);
     }
 }

@@ -11,18 +11,16 @@
 
 namespace Famoser\PdfGenerator\Frontend;
 
-use Famoser\DocumentGenerator\DocumentInterface;
 use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
-use Famoser\PdfGenerator\IR\Document;
-use Famoser\PdfGenerator\IR\Document\Page;
+use Famoser\PdfGenerator\IR;
 
-class LinearDocument implements DocumentInterface
+class Document
 {
-    private readonly Document $document;
+    private readonly IR\Document $document;
     private readonly ImageRepository $imageRepository;
     private readonly FontRepository $fontRepository;
 
@@ -38,17 +36,17 @@ class LinearDocument implements DocumentInterface
      * @param float[]       $pageSize
      * @param float|float[] $margin
      */
-    public function __construct(private readonly array $pageSize = [210, 297], mixed $margin = [15, 15, 15, 15], Document\Meta $meta = new Document\Meta())
+    public function __construct(private readonly array $pageSize = [210, 297], mixed $margin = [15, 15, 15, 15], IR\Document\Meta $meta = new IR\Document\Meta())
     {
         $this->margin = is_array($margin) ? $margin : array_fill(0, 4, $margin);
 
         $this->imageRepository = ImageRepository::instance();
         $this->fontRepository = FontRepository::instance();
-        $this->document = new Document($meta);
+        $this->document = new IR\Document($meta);
         $this->addPage();
     }
 
-    public function add(AbstractElement $block): void
+    public function add(AbstractElement $block): self
     {
         $currentBlock = $block;
         do {
@@ -59,10 +57,66 @@ class LinearDocument implements DocumentInterface
                 continue;
             }
 
-            $this->place($allocation);
+            $pagePrinter = $this->createPrinter();
+            $pagePrinter->place($allocation);
+
             $this->currentY += $allocation->getHeight();
             $currentBlock = $allocation->getOverflow();
         } while (null !== $currentBlock);
+
+        return $this;
+    }
+
+    public function allocate(AbstractElement $block): Allocation
+    {
+        $usableSpace = $this->getUsableSpace();
+        $allocationVisitor = new AllocationVisitor(...$usableSpace);
+
+        return $block->accept($allocationVisitor);
+    }
+
+    /**
+     * @param float[]|null $pageSize
+     */
+    public function addPage(?array $pageSize = null): self
+    {
+        $nextPageIndex = $this->getPageCount();
+        $page = new IR\Document\Page(strval($nextPageIndex + 1), $pageSize ?? $this->pageSize);
+        $this->document->addPage($page);
+
+        $this->currentY = 0;
+        $this->currentPageIndex = $nextPageIndex;
+
+        return $this;
+    }
+
+    public function getPageCount(): int
+    {
+        return count($this->document->getPages());
+    }
+
+    public function save(): string
+    {
+        return $this->document->save();
+    }
+
+    public function setPosition(?float $currentY = null, ?int $currentPageIndex = null): self
+    {
+        $this->currentY = $currentY ?? $this->currentY;
+        $this->currentPageIndex = $currentPageIndex ?? $this->currentPageIndex;
+
+        return $this;
+    }
+
+    public function createPrinter(?float $currentY = null, ?int $currentPageIndex = null): Printer
+    {
+        $this->setPosition($currentY, $currentPageIndex);
+
+        $page = $this->document->getPages()[$this->currentPageIndex];
+        $left = $this->margin[0];
+        $top = $this->currentY + $this->margin[1];
+
+        return new Printer($this->imageRepository, $this->fontRepository, $page, $left, $top);
     }
 
     /**
@@ -77,57 +131,5 @@ class LinearDocument implements DocumentInterface
         $height = $this->pageSize[1] - $this->currentY - $heightMargin;
 
         return [$width, $height];
-    }
-
-    public function allocate(AbstractElement $block): Allocation
-    {
-        $usableSpace = $this->getUsableSpace();
-        $allocationVisitor = new AllocationVisitor(...$usableSpace);
-
-        return $block->accept($allocationVisitor);
-    }
-
-    public function place(Allocation $allocation): void
-    {
-        $left = $this->margin[0];
-        $top = $this->currentY + $this->margin[1];
-        $pagePrinter = $this->createPrinter($this->currentPageIndex, $left, $top);
-        $pagePrinter->print($allocation);
-    }
-
-    public function createPrinter(int $pageIndex, float $left, float $top): Printer
-    {
-        $page = $this->document->getPages()[$pageIndex];
-
-        return new Printer($this->document, $this->imageRepository, $this->fontRepository, $page, $left, $top);
-    }
-
-    /**
-     * @param float[]|null $pageSize
-     */
-    public function addPage(?array $pageSize = null): void
-    {
-        $nextPageIndex = $this->getPageCount();
-        $page = new Page(strval($nextPageIndex + 1), $pageSize ?? $this->pageSize);
-        $this->document->addPage($page);
-
-        $this->currentY = 0;
-        $this->currentPageIndex = $nextPageIndex;
-    }
-
-    public function getPageCount(): int
-    {
-        return count($this->document->getPages());
-    }
-
-    public function save(): string
-    {
-        return $this->document->save();
-    }
-
-    public function position(float $currentY, ?int $currentPageIndex = null): void
-    {
-        $this->currentY = $currentY;
-        $this->currentPageIndex = $currentPageIndex ?? $this->currentPageIndex;
     }
 }

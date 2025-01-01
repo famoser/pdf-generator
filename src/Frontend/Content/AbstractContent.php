@@ -11,8 +11,6 @@
 
 namespace Famoser\PdfGenerator\Frontend\Content;
 
-use Famoser\PdfGenerator\Frontend\Printer;
-
 abstract readonly class AbstractContent
 {
     public function __construct(private float $width, private float $height)
@@ -29,5 +27,5 @@ abstract readonly class AbstractContent
         return $this->height;
     }
 
-    abstract public function print(Printer $printer): void;
+    abstract public function accept(ContentVisitorInterface $contentVisitor): void;
 }
