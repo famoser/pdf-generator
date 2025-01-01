@@ -15,15 +15,14 @@ use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 use Famoser\PdfGenerator\Frontend\Content\TextBlock;
+use Famoser\PdfGenerator\Frontend\Document;
 use Famoser\PdfGenerator\Frontend\Layout\Block;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use Famoser\PdfGenerator\Frontend\Layout\Text;
-use Famoser\PdfGenerator\Frontend\Document;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\Tests\Integration\Frontend\TestUtils\Render;
-use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 
 class FlowTest extends TestCase
@@ -54,7 +53,6 @@ class FlowTest extends TestCase
         $this->assertStringContainsString('1 0 0 1 0 -3 cm 0 0 10 3 re s', $result);
         $this->assertStringContainsString('1 0 0 1 35 258 cm 0 0 30 7 re s', $result);
     }
-
 
     public function testPrintSimpleFlowText(): void
     {

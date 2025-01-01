@@ -17,7 +17,7 @@ readonly class Node extends AbstractNode
 {
     /**
      * @param array<string, string> $attributes
-     * @param AbstractNode[] $children
+     * @param AbstractNode[]        $children
      */
     public function __construct(string $tag, private array $children, array $attributes = [])
     {

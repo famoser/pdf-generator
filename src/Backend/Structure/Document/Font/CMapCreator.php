@@ -231,7 +231,7 @@ readonly class CMapCreator
     }
 
     /**
-     * @param string[] $entries
+     * @param string[]    $entries
      * @param int<1, max> $maxEntries
      *
      * @return string[]

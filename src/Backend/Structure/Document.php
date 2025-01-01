@@ -12,7 +12,6 @@
 namespace Famoser\PdfGenerator\Backend\Structure;
 
 use Famoser\PdfGenerator\Backend\Catalog\Catalog;
-use Famoser\PdfGenerator\Backend\Catalog\Page as CatalogPage;
 use Famoser\PdfGenerator\Backend\Catalog\Pages;
 use Famoser\PdfGenerator\Backend\Structure\Document\DocumentResources;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page;

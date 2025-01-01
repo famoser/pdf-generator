@@ -12,21 +12,17 @@
 namespace Famoser\PdfGenerator\IR;
 
 use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
-use Famoser\PdfGenerator\IR\DocumentVisitor;
 
 readonly class Meta
 {
     /**
-     * @param string|null $language
      * @param string[] $otherLanguages
-     * @param string|null $title
      * @param string[] $titleTranslations
-     * @param string|null $description
      * @param string[] $descriptionTranslations
      * @param string[] $creators
      * @param string[] $contributors
      * @param string[] $publishers
-     * @param string[] $keywords keywords are used both as PDF keywords as well as Dublin Core subject
+     * @param string[] $keywords                keywords are used both as PDF keywords as well as Dublin Core subject
      * @param string[] $dates
      */
     public function __construct(private ?string $language, private array $otherLanguages, private ?string $title, private array $titleTranslations, private ?string $description, private array $descriptionTranslations, private array $creators, private array $contributors, private array $publishers, private array $keywords, private array $dates)
@@ -37,7 +33,6 @@ readonly class Meta
     {
         return new self(null, [], null, [], null, [], [], [], [], [], []);
     }
-
 
     public function getLanguage(): ?string
     {

@@ -62,11 +62,11 @@ readonly class TextMeasurer
 
         $weight = 0.0;
         $currentText = $span->getText();
-        while ($currentText !== null) {
+        while (null !== $currentText) {
             $line = TextAllocator::getLine($currentText, $nextLines);
 
             $lineLength = 0.0;
-            while ($line != '') {
+            while ('' != $line) {
                 $nextChunks = '';
                 $chunk = TextAllocator::getChunk($line, $nextChunks);
                 $lineLength += $fontMeasurement->getWidth($chunk);

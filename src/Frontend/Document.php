@@ -14,9 +14,9 @@ namespace Famoser\PdfGenerator\Frontend;
 use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
-use Famoser\PdfGenerator\Frontend\Resource\Meta;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
+use Famoser\PdfGenerator\Frontend\Resource\Meta;
 use Famoser\PdfGenerator\Frontend\Resource\Meta\MetaConverter;
 use Famoser\PdfGenerator\IR;
 

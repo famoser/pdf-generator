@@ -13,7 +13,6 @@ namespace Famoser\PdfGenerator\Backend\Catalog;
 
 use Famoser\PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use Famoser\PdfGenerator\Backend\CatalogVisitor;
-use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 use Famoser\PdfGenerator\Backend\File\Object\StreamObject;
 
 readonly class Content extends BaseStructure

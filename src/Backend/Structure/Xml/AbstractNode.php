@@ -18,7 +18,8 @@ abstract readonly class AbstractNode
     /**
      * @param array<string, string> $attributes
      */
-    public function __construct(private string $tag, private array $attributes) {
+    public function __construct(private string $tag, private array $attributes)
+    {
     }
 
     public function getTag(): string
@@ -34,5 +35,5 @@ abstract readonly class AbstractNode
         return $this->attributes;
     }
 
-    public abstract function visit(XmlSerializerVisitor $visitor): string;
+    abstract public function visit(XmlSerializerVisitor $visitor): string;
 }

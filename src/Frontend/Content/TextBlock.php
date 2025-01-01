@@ -13,7 +13,6 @@ namespace Famoser\PdfGenerator\Frontend\Content;
 
 use Famoser\PdfGenerator\Frontend\Content\Text\TextLine;
 use Famoser\PdfGenerator\Frontend\Layout\Text\Structure;
-use Famoser\PdfGenerator\Frontend\Printer;
 
 readonly class TextBlock extends AbstractContent
 {

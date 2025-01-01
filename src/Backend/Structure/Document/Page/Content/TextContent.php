@@ -14,7 +14,6 @@ namespace Famoser\PdfGenerator\Backend\Structure\Document\Page\Content;
 use Famoser\PdfGenerator\Backend\Catalog\Content;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseContent;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\TextLine;
-use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\TextSegment;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\ContentVisitor;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;

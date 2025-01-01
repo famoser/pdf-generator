@@ -12,7 +12,7 @@
 namespace Famoser\PdfGenerator\Frontend\Resource;
 
 /**
- * see https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#section-3 for details on how to use the fields
+ * see https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#section-3 for details on how to use the fields.
  */
 class Meta
 {
@@ -47,7 +47,7 @@ class Meta
      */
     private array $publishers = [];
     /**
-     * keywords are used both as PDF keywords as well as Dublin Core subject
+     * keywords are used both as PDF keywords as well as Dublin Core subject.
      *
      * @var string[]
      */

@@ -11,7 +11,6 @@
 
 namespace Famoser\PdfGenerator\Frontend\Content;
 
-use Famoser\PdfGenerator\Frontend\Printer;
 use Famoser\PdfGenerator\Frontend\Resource\Image;
 
 readonly class ImagePlacement extends AbstractContent

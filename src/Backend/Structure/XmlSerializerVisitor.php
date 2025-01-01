@@ -27,8 +27,8 @@ readonly class XmlSerializerVisitor
         $content = '';
         if (count($param->getChildren()) > 0) {
             $childVisitor = new XmlSerializerVisitor($this->ident + self::IDENT_STEP);
-            $children = array_map(fn(AbstractNode $node) => $node->visit($childVisitor), $param->getChildren());
-            $content = "\n" . implode("\n", $children) . "\n";
+            $children = array_map(fn (AbstractNode $node) => $node->visit($childVisitor), $param->getChildren());
+            $content = "\n".implode("\n", $children)."\n";
         }
 
         return $this->renderTag($param, $content, false);
@@ -46,29 +46,30 @@ readonly class XmlSerializerVisitor
         $openTag = $this->renderOpenTag($node);
         $closeTag = $this->renderCloseTag($node, !$singleLineContent);
 
-        return $openTag . $content . $closeTag;
+        return $openTag.$content.$closeTag;
     }
 
     private function renderOpenTag(AbstractNode $node): string
     {
         $prefix = str_repeat(' ', $this->ident);
-        $tag = $prefix . '<' . $node->getTag();
+        $tag = $prefix.'<'.$node->getTag();
 
         if (count($node->getAttributes()) > 0) {
             $attributes = [];
             foreach ($node->getAttributes() as $key => $value) {
-                $attributes[] = $key . '="' . self::escape($value) . '"';
+                $attributes[] = $key.'="'.self::escape($value).'"';
             }
-            $tag .= ' ' . implode(' ', $attributes);
+            $tag .= ' '.implode(' ', $attributes);
         }
 
-        return $tag . ">";
+        return $tag.'>';
     }
 
     private function renderCloseTag(AbstractNode $node, bool $prependIdent): string
     {
         $prefix = $prependIdent ? str_repeat(' ', $this->ident) : false;
-        return $prefix . '</' . $node->getTag().'>';
+
+        return $prefix.'</'.$node->getTag().'>';
     }
 
     private static function escape(string $value): string

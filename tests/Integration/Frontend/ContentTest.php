@@ -16,12 +16,12 @@ use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
+use Famoser\PdfGenerator\Frontend\Document;
 use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\Block;
 use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 use Famoser\PdfGenerator\Frontend\Layout\Text;
-use Famoser\PdfGenerator\Frontend\Document;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\Frontend\Resource\Image;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
@@ -109,7 +109,6 @@ class ContentTest extends TestCase
         $this->assertStringContainsString('BT 1 0 0 1 1 31.15 cm 0 0 0 rg /F 3 Tf 0.228 Tw 14.4 TL (PDF ist ein Textformat, strukturiert', $result);
         $this->assertStringContainsString('/F 10 Tf 0.76 Tw (Am besten)Tj 3.087 0 (einmal ein kleines PDF', $result);
     }
-
 
     private function createHighlightedContentBlock(AbstractContent $content): ContentBlock
     {
