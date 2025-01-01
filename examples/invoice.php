@@ -14,47 +14,47 @@ include '../vendor/autoload.php';
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
-use Famoser\PdfGenerator\Frontend\Content\TextBlock;
-use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
+use Famoser\PdfGenerator\Frontend\Document;
 use Famoser\PdfGenerator\Frontend\Layout\Flow;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
+use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use Famoser\PdfGenerator\Frontend\Layout\Table;
 use Famoser\PdfGenerator\Frontend\Layout\Text;
-use Famoser\PdfGenerator\Frontend\Layout\TextSpan;
-use Famoser\PdfGenerator\Frontend\LinearDocument;
+use Famoser\PdfGenerator\Frontend\Resource\Meta;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
-use Famoser\PdfGenerator\IR\Document\Meta;
 
 $margin = 15;
-$meta = Meta::createMeta('en', 'Invoice UZH-ZI-5', ['Florian Moser']);
-$document = new LinearDocument([210, 297], $margin, $meta);
+$meta = Meta::basic('en', 'Invoice UZH-ZI-5', ['Florian Moser']);
+$document = new Document([210, 297], $margin, $meta);
 
 $normalFont = Font::createFromDefault();
 $normalText = new TextStyle($normalFont);
+$secondaryText = new TextStyle($normalFont, Color::createFromHex('#6c757d'));
 $boldFont = Font::createFromDefault(Font\FontFamily::Helvetica, Font\FontWeight::Bold);
 $boldText = new TextStyle($boldFont);
-$headerText = new TextStyle($boldFont, $normalText->getFontSize() * 1.6);
-$secondaryText = new TextStyle($normalFont, $normalText->getFontSize(), $normalText->getLeading(), Color::createFromHex('#6c757d'));
 
 $sectionMargin = [10, 0, 0, 0];
 
+// source address
+$text = new Text();
+$text->addSpan("famoser GmbH\n", $boldText);
+$text->addSpan("c/o Florian Moser\nMoosburgstrasse 25\n8307 Effretikon\nSchweiz", $normalText);
+$allocation = $document->allocate($text);
+$document->createPrinter()
+    ->position(210-30-$allocation->getWidth()) // shift right-most
+    ->print($allocation->getContent()[0]);
+
 // target address
-$printer = $document->createPrinter(0, $margin, 60);
+$printer = $document->createPrinter(60);
 $printer->printText("Universität Zürich\nZentrale Informatik\nStampfenbachstrasse 73\n8006 Zürich\nSchweiz", $normalText);
 
-// source address
-$printer = $document->createPrinter(0, 160, $margin);
-$printer->printText("famoser GmbH\n", $boldText);
-$printer->printText("c/o Florian Moser\nMoosburgstrasse 25\n8307 Effretikon\nSchweiz", $normalText);
-
 // header
-$printer = $document->createPrinter(0, $margin, 100);
-$printer->printText('Invoice UZH-ZI-5', $headerText);
-$printer = $printer->position(0, 8);
-$printer->printRectangle(new Rectangle(180, 0.1, new DrawingStyle(0.1)));
-$printer = $printer->position(0, 3);
+$printer = $printer->position(top: 40);
+$printer->printText('Invoice UZH-ZI-5', $boldText);
+$printer = $printer->position(top: 8);
+$printer->printRectangle(180, 0.1, new DrawingStyle(0.1));
 
 $columns = [
     "Date:\nPayment until:",
@@ -62,26 +62,26 @@ $columns = [
     "Performance Period:\nProject reference:",
     "01.01.2023 - 30.06.2023\nZI-2812-F",
 ];
-$columnPrinter = $printer;
+$columnPrinter = $printer->position(top: 3);
 foreach ($columns as $column) {
     $columnPrinter->printText($column, $normalText);
-    $columnPrinter = $columnPrinter->position(45, 0);
+    $columnPrinter = $columnPrinter->position(45);
 }
 
-$printer = $printer->position(0, 11);
-$printer->printRectangle(new Rectangle(180, 0.1, new DrawingStyle(0.1)));
+$printer = $printer->position(top: 15);
+$printer->printRectangle(180, 0.1, new DrawingStyle(0.1));
 
 // description
-$flow = new Flow();
+$flow = new Flow(FlowDirection::COLUMN);
 $title = new Text(Text\Structure::Header_1);
-$title->add($headerText, "Concept & Implementation ZI-2812-F\n");
+$title->addSpan("Concept & Implementation ZI-2812-F\n", $boldText);
 $flow->add($title);
 
 $thankYou = new Text(Text\Structure::Paragraph);
-$thankYou->add($normalText, "To whom it may concern\n\nI would like to thank you for the order and the trust you have placed in me. The tasks according to the offer of 01.01.2023 were implemented on time and accepted by the client on 30.06.2023. Only the work actually incurred will be invoiced.");
+$thankYou->addSpan("To whom it may concern\n\nI would like to thank you for the order and the trust you have placed in me. The tasks according to the offer of 01.01.2023 were implemented on time and accepted by the client on 30.06.2023. Only the work actually incurred will be invoiced.", $normalText);
 $flow->add($thankYou);
 
-$document->position(130);
+$document->setPosition(130);
 $document->add($flow);
 
 // cost positions
@@ -100,7 +100,7 @@ foreach ($textByRow as $rowIndex => $rowDefinition) {
     $textStyle = array_shift($rowDefinition);
     foreach ($rowDefinition as $index => $text) {
         $regards = new Text();
-        $regards->add($textStyle, $text);
+        $regards->addSpan($text, $textStyle);
         $regards->setPadding([1, 0.3, 1, 0.3]);
 
         $row->set($index, $regards);
@@ -117,7 +117,7 @@ $document->add($table);
 // greeting formula
 $flow = new Flow();
 $regards = new Text();
-$regards->add($normalText, "In case of questions, please do not hesitate to ask.\n\nBest regards\nFlorian Moser");
+$regards->addSpan("In case of questions, please do not hesitate to ask.\n\nBest regards\nFlorian Moser", $normalText);
 $document->add($regards);
 
 $result = $document->save();
