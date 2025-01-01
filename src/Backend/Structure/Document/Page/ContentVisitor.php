@@ -53,13 +53,6 @@ class ContentVisitor
     public function visitTextContent(TextContent $textContent): Content
     {
         $operators[] = 'BT';
-        /*
-        TODO check if needed; unclear in spec where printer starts to print the text
-        if ($textContent->getAscender()) {
-            $operators[] = '1 0 0 1 0 '.$textContent->getAscender().' Tm';
-        }
-        */
-
         $currentOffset = 0.0;
         foreach ($textContent->getLines() as $lineIndex => $line) {
             // newline if no content
@@ -80,7 +73,9 @@ class ContentVisitor
                     $currentOffset = $line->getOffset();
                     if (abs($offsetShift) < 0.000001) {
                         if ($targetTextState->getWordSpacing() !== $appliedTextState?->getWordSpacing() || $targetTextState->getCharacterSpacing() !== $appliedTextState->getCharacterSpacing()) {
-                            $printOperators[] = $targetTextState->getWordSpacing() . ' ' . $targetTextState->getCharacterSpacing() . ' (' . $text . ')"';
+                            $wordSpacingString = StateTransitionVisitor::limitPrecision($targetTextState->getWordSpacing());
+                            $characterSpacingString = StateTransitionVisitor::limitPrecision($targetTextState->getCharacterSpacing());
+                            $printOperators[] = $wordSpacingString . ' ' . $characterSpacingString . ' (' . $text . ')"';
 
                             // avoid automatic state transition operators to reapply new word spacing / character spacing
                             if ($appliedTextState) {
@@ -91,7 +86,8 @@ class ContentVisitor
                             $printOperators[] = '(' . $text . ')\'';
                         }
                     } else {
-                        $printOperators[] = $offsetShift . ' ' . '-' . $targetTextState->getLeading() . ' TD';
+                        $leadingString = StateTransitionVisitor::limitPrecision($targetTextState->getLeading());
+                        $printOperators[] = $offsetShift . ' ' . '-' . $leadingString . ' TD';
                         $printOperators[] = '(' . $text . ')Tj';
 
                         // avoid automatic state transition operators to reapply new leading
@@ -103,7 +99,8 @@ class ContentVisitor
                 } else {
                     $currentOffset = $line->getOffset();
                     if ($currentOffset !== 0.0) {
-                        $printOperators[] = $currentOffset . ' 0 Td';
+                        $currentOffsetString = StateTransitionVisitor::limitPrecision($currentOffset);
+                        $printOperators[] = $currentOffsetString . ' 0 Td';
                     }
                     $printOperators[] = '(' . $text . ')Tj';
                 }

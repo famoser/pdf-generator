@@ -33,12 +33,12 @@ readonly class TextState extends BaseState
      * @param float $wordSpacing  space between words; @see $charSpace but only applies to SPACE
      * @param float $characterSpacing  space between chars
      * @param float $scale      percentage of normal width
-     * @param float $renderMode fill/stroke render combinations
+     * @param int $renderMode fill/stroke render combinations
      * @param float $rise       upwards shift from the baseline
      *
      * default arguments correspond to PDF defaults
      */
-    public function __construct(private Font $font, private float $fontSize, private float $leading = 0, private float $wordSpacing = 0, private float $characterSpacing = 0, private float $scale = 100, private float $renderMode = self::RENDER_MODE_FILL, private float $rise = 0)
+    public function __construct(private Font $font, private float $fontSize, private float $leading = 0, private float $wordSpacing = 0, private float $characterSpacing = 0, private float $scale = 100, private int $renderMode = self::RENDER_MODE_FILL, private float $rise = 0)
     {
     }
 
@@ -82,7 +82,7 @@ readonly class TextState extends BaseState
         return $this->leading;
     }
 
-    public function getRenderMode(): float
+    public function getRenderMode(): int
     {
         return $this->renderMode;
     }
