@@ -12,6 +12,8 @@
 namespace Famoser\PdfGenerator\Frontend;
 
 use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
+use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
+use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 use Famoser\PdfGenerator\Frontend\Content\Text\TextLine;
@@ -22,6 +24,7 @@ use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\TextAllocator;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
+use Famoser\PdfGenerator\Frontend\Resource\Image;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
 use Famoser\PdfGenerator\IR\Document\Page;
 
@@ -53,6 +56,19 @@ readonly class Printer
     {
         $contentPrinter = new ContentPrinter($this->imageRepository, $this->fontRepository, $this->page, $this->left, $this->top);
         $content->accept($contentPrinter);
+    }
+
+    public function printImage(float $width, float $height, string $src): void
+    {
+        $image = Image::createFromFile($src);
+        $imagePlacement = new ImagePlacement($width, $height, $image);
+        $this->print($imagePlacement);
+    }
+
+    public function printRectangle(float $width, float $height, DrawingStyle $style): void
+    {
+        $rectangle = new Rectangle($width, $height, $style);
+        $this->print($rectangle);
     }
 
     public function printText(string $value, TextStyle $style): void
