@@ -94,7 +94,7 @@ readonly class TextAllocator
 
             // set overflow
             if ($overflowLine !== '' || $nextLines !== null) {
-                $remainingText = $overflowLine;
+                $remainingText = (string) $overflowLine;
 
                 // remove first space to logically replace space with (omitted) newline
                 if (str_starts_with($remainingText, ' ')) {
