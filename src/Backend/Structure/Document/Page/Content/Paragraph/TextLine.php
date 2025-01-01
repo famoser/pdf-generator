@@ -11,7 +11,6 @@
 
 namespace Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph;
 
-
 readonly class TextLine
 {
     /**

@@ -140,7 +140,7 @@ readonly class AllocationVisitor implements ElementVisitorInterface
     }
 
     /**
-     * @param Allocation[]   $blockAllocations
+     * @param Allocation[]      $blockAllocations
      * @param AbstractContent[] $content
      */
     private function allocateBlock(AbstractElement $block, float $contentWidth = 0.0, float $contentHeight = 0.0, array $blockAllocations = [], array $content = [], ?AbstractElement $overflow = null): Allocation
@@ -174,6 +174,7 @@ readonly class AllocationVisitor implements ElementVisitorInterface
         $height = $contentHeight + $block->getYPadding();
 
         $drawingStyle = DrawingStyle::createFromBlockStyle($blockStyle);
+
         return new Rectangle($width, $height, $drawingStyle);
     }
 }

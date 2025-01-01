@@ -14,21 +14,21 @@ namespace Famoser\PdfGenerator\Backend\Structure\Document\Xmp;
 /**
  * namespace http://purl.org/dc/elements/1.1/
  * see https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#section-3
- * see https://developer.adobe.com/xmp/docs/XMPNamespaces/dc/
+ * see https://developer.adobe.com/xmp/docs/XMPNamespaces/dc/.
  */
 readonly class DublinCoreElements
 {
     public const DEFAULT_LANG = 'x-default';
 
     /**
-     * @param array<string> $language
+     * @param array<string>         $language
      * @param array<string, string> $title
      * @param array<string, string> $description
-     * @param string[] $creators
-     * @param string[] $contributors
-     * @param string[] $publisher
-     * @param string[] $subject
-     * @param string[] $date
+     * @param string[]              $creators
+     * @param string[]              $contributors
+     * @param string[]              $publisher
+     * @param string[]              $subject
+     * @param string[]              $date
      */
     public function __construct(private array $language, private array $title, private array $description, private array $creators, private array $contributors, private array $publisher, private array $subject, private array $date)
     {

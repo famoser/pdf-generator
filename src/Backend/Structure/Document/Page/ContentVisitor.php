@@ -15,8 +15,8 @@ use Famoser\PdfGenerator\Backend\Catalog\Content;
 use Famoser\PdfGenerator\Backend\Structure\Document\DocumentResources;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
-use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\FullState;
 
@@ -33,7 +33,7 @@ class ContentVisitor
         $operators = $this->applyState($rectangle->getInfluentialStates());
 
         $paintingModeOperator = $this->getPaintingModeOperator($rectangle->getPaintingMode());
-        $printRectangleOperator = '0 0 ' . $rectangle->getWidth() . ' ' . $rectangle->getHeight() . ' re ' . $paintingModeOperator;
+        $printRectangleOperator = '0 0 '.$rectangle->getWidth().' '.$rectangle->getHeight().' re '.$paintingModeOperator;
         $operators[] = $printRectangleOperator;
 
         return $this->createStreamObject($operators);
@@ -44,7 +44,7 @@ class ContentVisitor
         $operators = $this->applyState($imageContent->getInfluentialStates());
 
         $image = $this->documentResources->getImage($imageContent->getImage());
-        $printImageOperator = '/' . $image->getIdentifier() . ' Do';
+        $printImageOperator = '/'.$image->getIdentifier().' Do';
         $operators[] = $printImageOperator;
 
         return $this->createStreamObject($operators);
@@ -56,7 +56,7 @@ class ContentVisitor
         $currentOffset = 0.0;
         foreach ($textContent->getLines() as $lineIndex => $line) {
             // newline if no content
-            if (count($line->getSegments()) == 0) {
+            if (0 == count($line->getSegments())) {
                 $operators[] = '()\'';
                 continue;
             }
@@ -64,7 +64,7 @@ class ContentVisitor
             foreach ($line->getSegments() as $segmentIndex => $segment) {
                 $printOperators = [];
                 $text = $this->prepareTextForPrint($segment->getText(), $segment->getTextState()->getFont());
-                $needsNewline = $lineIndex > 0 && $segmentIndex === 0;
+                $needsNewline = $lineIndex > 0 && 0 === $segmentIndex;
                 if ($needsNewline) {
                     $appliedTextState = $this->lastAppliedState?->getTextState();
                     $targetTextState = $segment->getTextState();
@@ -75,7 +75,7 @@ class ContentVisitor
                         if ($targetTextState->getWordSpacing() !== $appliedTextState?->getWordSpacing() || $targetTextState->getCharacterSpacing() !== $appliedTextState->getCharacterSpacing()) {
                             $wordSpacingString = StateTransitionVisitor::limitPrecision($targetTextState->getWordSpacing());
                             $characterSpacingString = StateTransitionVisitor::limitPrecision($targetTextState->getCharacterSpacing());
-                            $printOperators[] = $wordSpacingString . ' ' . $characterSpacingString . ' (' . $text . ')"';
+                            $printOperators[] = $wordSpacingString.' '.$characterSpacingString.' ('.$text.')"';
 
                             // avoid automatic state transition operators to reapply new word spacing / character spacing
                             if ($appliedTextState) {
@@ -83,12 +83,12 @@ class ContentVisitor
                                 $this->lastAppliedState = $this->lastAppliedState->cloneWithTextState($newAppliedTextState);
                             }
                         } else {
-                            $printOperators[] = '(' . $text . ')\'';
+                            $printOperators[] = '('.$text.')\'';
                         }
                     } else {
                         $leadingString = StateTransitionVisitor::limitPrecision($targetTextState->getLeading());
-                        $printOperators[] = $offsetShift . ' ' . '-' . $leadingString . ' TD';
-                        $printOperators[] = '(' . $text . ')Tj';
+                        $printOperators[] = $offsetShift.' -'.$leadingString.' TD';
+                        $printOperators[] = '('.$text.')Tj';
 
                         // avoid automatic state transition operators to reapply new leading
                         if ($appliedTextState) {
@@ -98,11 +98,11 @@ class ContentVisitor
                     }
                 } else {
                     $currentOffset = $line->getOffset();
-                    if ($currentOffset !== 0.0) {
+                    if (0.0 !== $currentOffset) {
                         $currentOffsetString = StateTransitionVisitor::limitPrecision($currentOffset);
-                        $printOperators[] = $currentOffsetString . ' 0 Td';
+                        $printOperators[] = $currentOffsetString.' 0 Td';
                     }
-                    $printOperators[] = '(' . $text . ')Tj';
+                    $printOperators[] = '('.$text.')Tj';
                 }
 
                 $stateTransitionOperators = $this->applyState($segment->getInfluentialStates());
@@ -166,7 +166,7 @@ class ContentVisitor
         $reserved = ['\\', '(', ')'];
 
         foreach ($reserved as $entry) {
-            $text = str_replace($entry, '\\' . $entry, $text);
+            $text = str_replace($entry, '\\'.$entry, $text);
         }
 
         return $text;

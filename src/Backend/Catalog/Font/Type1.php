@@ -13,7 +13,6 @@ namespace Famoser\PdfGenerator\Backend\Catalog\Font;
 
 use Famoser\PdfGenerator\Backend\Catalog\Font;
 use Famoser\PdfGenerator\Backend\CatalogVisitor;
-use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 use Famoser\PdfGenerator\Backend\File\Object\DictionaryObject;
 
 readonly class Type1 extends Font

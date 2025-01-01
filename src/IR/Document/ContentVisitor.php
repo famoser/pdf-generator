@@ -15,14 +15,14 @@ use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Base\BaseConten
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\ImageContent;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\TextLine;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\Paragraph\TextSegment;
-use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\RectangleContent;
+use Famoser\PdfGenerator\Backend\Structure\Document\Page\Content\TextContent;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Position;
 use Famoser\PdfGenerator\IR\Document\Content\ContentVisitorInterface;
 use Famoser\PdfGenerator\IR\Document\Content\ImagePlacement;
-use Famoser\PdfGenerator\IR\Document\Content\Text;
 use Famoser\PdfGenerator\IR\Document\Content\Rectangle;
 use Famoser\PdfGenerator\IR\Document\Content\Rectangle\RectangleStyle;
+use Famoser\PdfGenerator\IR\Document\Content\Text;
 use Famoser\PdfGenerator\IR\Document\Resource\PageResources;
 
 /**

@@ -15,8 +15,6 @@ use Famoser\PdfGenerator\Frontend\Content\ContentVisitorInterface;
 use Famoser\PdfGenerator\Frontend\Content\ImagePlacement;
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
 use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
-use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
-use Famoser\PdfGenerator\Frontend\Content\Text\TextSegment;
 use Famoser\PdfGenerator\Frontend\Content\TextBlock;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
@@ -70,7 +68,7 @@ readonly class ContentPrinter implements ContentVisitorInterface
             $lines[] = new Text\TextLine($line->getOffset(), $segments);
         }
 
-        $ascender = $textBlock->getLines() !== [] ? $textBlock->getLines()[0]->getAscender() : 0.0;
+        $ascender = [] !== $textBlock->getLines() ? $textBlock->getLines()[0]->getAscender() : 0.0;
         $position = $this->getPosition($ascender);
 
         $paragraph = new Text($lines, $position);

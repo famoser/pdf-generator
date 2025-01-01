@@ -63,7 +63,7 @@ class DocumentVisitor
             return $prefix;
         }
 
-        return $prefix . $this->resourceCounters[$prefix]++;
+        return $prefix.$this->resourceCounters[$prefix]++;
     }
 
     public function visitImage(Image $param): CatalogImage
@@ -146,7 +146,7 @@ class DocumentVisitor
             // create windows character set
             $mappingIndex = $character->getUnicodePoint() ? $this->getWindows1252Mapping($character->getUnicodePoint()) : null;
             if (null !== $mappingIndex) {
-                $widths[$mappingIndex] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+                $widths[$mappingIndex] = (int) ($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
             }
         }
 
@@ -164,7 +164,7 @@ class DocumentVisitor
         $characterWidths = [];
         $characters = array_merge($font->getReservedCharacters(), $font->getCharacters());
         foreach ($characters as $character) {
-            $characterWidths[] = (int)($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
+            $characterWidths[] = (int) ($character->getLongHorMetric()->getAdvanceWidth() * $sizeNormalizer);
         }
 
         // start at CID 0 with our widths
@@ -175,10 +175,10 @@ class DocumentVisitor
 
         $identifier = $this->generateIdentifier('F');
 
-        $cMapName = $fontDescriptor->getFontName() . 'CMap';
+        $cMapName = $fontDescriptor->getFontName().'CMap';
         $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, $cMapName, $characters, $usedCodepoints);
 
-        $cMapInvertedName = $fontDescriptor->getFontName() . 'CMapInverted';
+        $cMapInvertedName = $fontDescriptor->getFontName().'CMapInverted';
         $unicodeCMap = $this->cMapCreator->createToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $characters);
 
         return new Type0($identifier, $fontDescriptor->getFontName(), $characterIndexCMap, $cidFont, $unicodeCMap);
@@ -192,12 +192,12 @@ class DocumentVisitor
         $angle = $this->getFontItalicAngle($HHeaTable);
         $fontFlags = $this->calculateFontFlags($OS2Table, $angle > 0);
         $BBox = $this->getFontBBox($font->getCharacters(), $sizeNormalizer);
-        $ascent = (int)($HHeaTable->getAscent() * $sizeNormalizer);
-        $descent = (int)($HHeaTable->getDescent() * $sizeNormalizer);
-        $capHeight = (int)($OS2Table->getSCapHeight() * $sizeNormalizer);
+        $ascent = (int) ($HHeaTable->getAscent() * $sizeNormalizer);
+        $descent = (int) ($HHeaTable->getDescent() * $sizeNormalizer);
+        $capHeight = (int) ($OS2Table->getSCapHeight() * $sizeNormalizer);
         $stemVGuess = 0; // TODO find out where to get this from
 
-        return new FontDescriptor($fontName, $fontFlags, $BBox, (int)$angle, $ascent, $descent, $capHeight, $stemVGuess, $fontStream);
+        return new FontDescriptor($fontName, $fontFlags, $BBox, (int) $angle, $ascent, $descent, $capHeight, $stemVGuess, $fontStream);
     }
 
     /**
@@ -222,7 +222,7 @@ class DocumentVisitor
             $yMax = max($yMax, $character->getGlyfTable()->getYMax());
         }
 
-        return [(int)($xMin * $sizeNormalizer), (int)($yMin * $sizeNormalizer), (int)($xMax * $sizeNormalizer), (int)($yMax * $sizeNormalizer)];
+        return [(int) ($xMin * $sizeNormalizer), (int) ($yMin * $sizeNormalizer), (int) ($xMax * $sizeNormalizer), (int) ($yMax * $sizeNormalizer)];
     }
 
     private function getFontItalicAngle(HHeaTable $HHeaTable): float
@@ -310,7 +310,7 @@ class DocumentVisitor
 
     public function visitXmpMeta(Document\XmpMeta $param): Metadata
     {
-        $creatorAgentText = 'Famoser pdf-generator ' . CatalogVisitor::GENERATOR_VERSION;
+        $creatorAgentText = 'Famoser pdf-generator '.CatalogVisitor::GENERATOR_VERSION;
         $content = [];
 
         // http://ns.adobe.com/xap/1.0/ for basic attributes (see https://developer.adobe.com/xmp/docs/XMPNamespaces/xmp/)
@@ -353,7 +353,8 @@ class DocumentVisitor
 
         $mainLanguage = count($core->getLanguage()) > 0 ? $core->getLanguage()[0] : null;
         $mainTitle = $core->getTitle()[$mainLanguage] ?? null;
-        return new Metadata($xml, $mainLanguage, $mainTitle, implode(", ", $core->getCreators()), $pdf->getKeywords());
+
+        return new Metadata($xml, $mainLanguage, $mainTitle, implode(', ', $core->getCreators()), $pdf->getKeywords());
     }
 
     /**
@@ -361,7 +362,7 @@ class DocumentVisitor
      */
     public function createNodeIfNotEmpty(string $dcTag, bool $ordered, array $terminalValues): ?Node
     {
-        if (count($terminalValues) === 0) {
+        if (0 === count($terminalValues)) {
             return null;
         }
 
@@ -378,7 +379,7 @@ class DocumentVisitor
      */
     public function createLanguageNodeIfNotEmpty(string $dcTag, array $languageValues): ?Node
     {
-        if (count($languageValues) === 0) {
+        if (0 === count($languageValues)) {
             return null;
         }
 
@@ -395,7 +396,8 @@ class DocumentVisitor
      */
     public function wrapDcRdfContentNode(string $dcTag, string $rdfArray, array $terminals): Node
     {
-        $array = new Node('rdf:' . $rdfArray, $terminals);
-        return new Node('dc:' . $dcTag, [$array]);
+        $array = new Node('rdf:'.$rdfArray, $terminals);
+
+        return new Node('dc:'.$dcTag, [$array]);
     }
 }

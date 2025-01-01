@@ -11,7 +11,6 @@
 
 namespace Famoser\PdfGenerator\Frontend\Resource\Font;
 
-use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 use Famoser\PdfGenerator\Frontend\Layout\TextSpan;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\Frontend\Resource\Font\WordSizer\WordSizerInterface;

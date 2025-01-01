@@ -17,7 +17,7 @@ use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 readonly class Allocation
 {
     /**
-     * @param Allocation[]   $blockAllocations
+     * @param Allocation[]      $blockAllocations
      * @param AbstractContent[] $content
      */
     public function __construct(private float $left, private float $top, private float $width, private float $height, private array $blockAllocations = [], private array $content = [], private bool $allocationOverflows = false, private ?AbstractElement $overflow = null)

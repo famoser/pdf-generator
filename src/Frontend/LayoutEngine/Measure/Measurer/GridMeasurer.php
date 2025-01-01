@@ -14,8 +14,8 @@ namespace Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurer;
 use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\Layout\Parts\Row;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
-use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\MeasurementVisitor;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\Measurement;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Measure\MeasurementVisitor;
 
 readonly class GridMeasurer
 {

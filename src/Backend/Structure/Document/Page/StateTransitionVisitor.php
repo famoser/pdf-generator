@@ -204,11 +204,12 @@ class StateTransitionVisitor
             } else {
                 // remove dot & numbers after (if any)
                 $dotPosition = strpos($output, '.');
-                if ($dotPosition !== false) {
+                if (false !== $dotPosition) {
                     return substr($output, 0, $dotPosition);
                 }
             }
         }
+
         return $output;
     }
 }

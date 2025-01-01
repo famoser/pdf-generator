@@ -11,7 +11,6 @@
 
 namespace Famoser\PdfGenerator\Backend;
 
-use Famoser\PdfGenerator\Backend\Catalog\Base\BaseIdentifiableStructure;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
@@ -50,8 +49,8 @@ class CatalogVisitor
 
         // Document information dictionary
         $infoDictionary = $this->file->addInfoDictionaryObject();
-        $infoDictionary->addTextEntry('Producer', 'famoser/pdf-generator/' . self::GENERATOR_VERSION);
-        $infoDictionary->addTextEntry('Creator', 'famoser/pdf-generator/' . self::GENERATOR_VERSION);
+        $infoDictionary->addTextEntry('Producer', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
+        $infoDictionary->addTextEntry('Creator', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
         $infoDictionary->addDateEntry('CreationDate', new \DateTime());
 
         if ($structure->getMetadata()) {

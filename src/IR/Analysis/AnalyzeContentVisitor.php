@@ -14,8 +14,8 @@ namespace Famoser\PdfGenerator\IR\Analysis;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Size;
 use Famoser\PdfGenerator\IR\Document\Content\ContentVisitorInterface;
 use Famoser\PdfGenerator\IR\Document\Content\ImagePlacement;
-use Famoser\PdfGenerator\IR\Document\Content\Text;
 use Famoser\PdfGenerator\IR\Document\Content\Rectangle;
+use Famoser\PdfGenerator\IR\Document\Content\Text;
 
 /**
  * @implements ContentVisitorInterface<void>

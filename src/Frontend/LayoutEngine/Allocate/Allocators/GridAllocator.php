@@ -43,10 +43,10 @@ readonly class GridAllocator
     }
 
     /**
-     * @param Row[]                         $rows
+     * @param Row[]                    $rows
      * @param array<int, Allocation[]> $blockAllocationsPerColumn
-     * @param array<int, float>             $widthsPerColumn
-     * @param Row[]                         $overflowRows
+     * @param array<int, float>        $widthsPerColumn
+     * @param Row[]                    $overflowRows
      *
      * @return Allocation[]
      */
@@ -107,9 +107,9 @@ readonly class GridAllocator
     }
 
     /**
-     * @param Row[]                         $rows
+     * @param Row[]                               $rows
      * @param array<int, ColumnSize|string|float> $columnSizes
-     * @param array<int, float>             $widthsPerColumn
+     * @param array<int, float>                   $widthsPerColumn
      *
      * @return array<int, Allocation[]>
      */

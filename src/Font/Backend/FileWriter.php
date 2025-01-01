@@ -252,8 +252,8 @@ readonly class FileWriter
         $format->setLength(8 * 2 + 4 * 2 * $segmentsCount); // 8 fields; 4 arrays of size 2 per entry
         $format->setLanguage(0);
         $format->setSegCountX2($segmentsCount * 2);
-        $format->setSearchRange(2 * (2 ** ((int)\log($segmentsCount, 2))));
-        $format->setEntrySelector((int)\log($format->getSearchRange() / 2, 2));
+        $format->setSearchRange(2 * (2 ** ((int) \log($segmentsCount, 2))));
+        $format->setEntrySelector((int) \log($format->getSearchRange() / 2, 2));
         $format->setRangeShift(2 * $segmentsCount - $format->getSearchRange());
         $format->setReservedPad(0);
 
@@ -494,7 +494,7 @@ readonly class FileWriter
         $offsetTable->setNumTables($numTables);
 
         // binary search properties
-        $powerOfTwo = (int)\log($numTables, 2);
+        $powerOfTwo = (int) \log($numTables, 2);
         $offsetTable->setSearchRange(2 ** $powerOfTwo * 16);
         $offsetTable->setEntrySelector($powerOfTwo);
         $offsetTable->setRangeShift($numTables * 16 - $offsetTable->getSearchRange());

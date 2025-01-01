@@ -11,9 +11,7 @@
 
 namespace Famoser\PdfGenerator\Frontend\Layout\Parts;
 
-use Famoser\PdfGenerator\Frontend\Content\AbstractContent;
 use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
-use Famoser\PdfGenerator\Frontend\Layout\ContentBlock;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 
 class Row

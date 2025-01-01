@@ -94,7 +94,7 @@ readonly class TextAllocator
             }
 
             // set overflow
-            if ($overflowLine !== '' || $nextLines !== null) {
+            if ('' !== $overflowLine || null !== $nextLines) {
                 $remainingText = (string) $overflowLine;
 
                 // remove first space to logically replace space with (omitted) newline
@@ -102,7 +102,7 @@ readonly class TextAllocator
                     $remainingText = substr($remainingText, 1);
                 }
 
-                if ($nextLines !== null && $remainingText !== '') {
+                if (null !== $nextLines && '' !== $remainingText) {
                     $remainingText .= "\n";
                 }
 
@@ -113,12 +113,12 @@ readonly class TextAllocator
             }
 
             // start next span if no overflow on line & no newline
-            if ($nextLines === null && $overflowLine === '') {
+            if (null === $nextLines && '' === $overflowLine) {
                 continue;
             }
 
             // else abort
-            $abortedByNewline = $nextLines !== null && $overflowLine === '';
+            $abortedByNewline = null !== $nextLines && '' === $overflowLine;
             break;
         }
 
@@ -136,15 +136,15 @@ readonly class TextAllocator
         $offset = 0.0;
         $wordSpacing = 0.0;
         $remainingWidth = $maxWidth - $allocatedWidth;
-        $allocatedWidth = $alignment === Alignment::ALIGNMENT_LEFT ? $allocatedWidth : $maxWidth;
-        if ($alignment === Alignment::ALIGNMENT_CENTER) {
+        $allocatedWidth = Alignment::ALIGNMENT_LEFT === $alignment ? $allocatedWidth : $maxWidth;
+        if (Alignment::ALIGNMENT_CENTER === $alignment) {
             $offset = $remainingWidth / 2;
-        } else if ($alignment === Alignment::ALIGNMENT_RIGHT) {
+        } elseif (Alignment::ALIGNMENT_RIGHT === $alignment) {
             $offset = $remainingWidth;
-        } else if (
-            $alignment === Alignment::ALIGNMENT_JUSTIFIED &&
-            !$abortedByNewline && // for newlines, do not justify
-            count($overflow) > 0 // for last line in paragraph, do not justify
+        } elseif (
+            Alignment::ALIGNMENT_JUSTIFIED === $alignment
+            && !$abortedByNewline // for newlines, do not justify
+            && count($overflow) > 0 // for last line in paragraph, do not justify
         ) {
             $totalSpaceWidth = 0.0;
             foreach ($allocatedSegments as $allocatedSegment) {
@@ -166,12 +166,12 @@ readonly class TextAllocator
     {
         $overflow = $content;
         $allocatedText = '';
-        while ($overflow !== '') {
+        while ('' !== $overflow) {
             $nextChunks = '';
             $chunk = self::getChunk($overflow, $nextChunks);
             $chunkWidth = $fontMeasurement->getWidth($chunk);
 
-            if ($allocatedWidth + $chunkWidth > $maxWidth && $allocatedText !== '') {
+            if ($allocatedWidth + $chunkWidth > $maxWidth && '' !== $allocatedText) {
                 break;
             }
 
@@ -186,13 +186,14 @@ readonly class TextAllocator
 
     public static function getLine(string $value, ?string &$nextLines = null): string
     {
-        $cleanedText = str_replace("\r", "", $value); // ignore carriage return for now
+        $cleanedText = str_replace("\r", '', $value); // ignore carriage return for now
         $singleLineEnd = mb_strpos($cleanedText, "\n");
-        if ($singleLineEnd === false) {
+        if (false === $singleLineEnd) {
             return $cleanedText;
         }
 
         $nextLines = mb_substr($cleanedText, $singleLineEnd + 1);
+
         return mb_substr($cleanedText, 0, $singleLineEnd);
     }
 
@@ -202,11 +203,12 @@ readonly class TextAllocator
         $chunkContentStart = mb_strlen($value) - mb_strlen($noPrefixValue);
 
         $chunkContentEnd = mb_strpos($value, ' ', $chunkContentStart);
-        if ($chunkContentEnd === false) {
+        if (false === $chunkContentEnd) {
             return $value;
         }
 
         $nextChunks = mb_substr($value, $chunkContentEnd);
+
         return mb_substr($value, 0, $chunkContentEnd);
     }
 }
