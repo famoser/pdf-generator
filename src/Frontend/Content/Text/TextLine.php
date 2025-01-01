@@ -16,7 +16,7 @@ readonly class TextLine
     /**
      * @param TextSegment[] $segments
      */
-    public function __construct(private array $segments, private float $leading, private float $offset, private float $wordSpacing)
+    public function __construct(private array $segments, private float $leading, private float $ascender, private float $offset, private float $wordSpacing)
     {
     }
 
@@ -31,6 +31,11 @@ readonly class TextLine
     public function getLeading(): float
     {
         return $this->leading;
+    }
+
+    public function getAscender(): float
+    {
+        return $this->ascender;
     }
 
     public function getOffset(): float
