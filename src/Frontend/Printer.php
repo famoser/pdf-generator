@@ -16,7 +16,11 @@ use Famoser\PdfGenerator\Frontend\Content\Style\DrawingStyle;
 use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 use Famoser\PdfGenerator\Frontend\Content\Text\TextLine;
 use Famoser\PdfGenerator\Frontend\Content\TextBlock;
+use Famoser\PdfGenerator\Frontend\Layout\Text;
+use Famoser\PdfGenerator\Frontend\Layout\TextSpan;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
+use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocators\TextAllocator;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
 use Famoser\PdfGenerator\IR\Document\Page;
@@ -51,8 +55,14 @@ readonly class Printer
         $content->accept($contentPrinter);
     }
 
-    public function printText(string $text, TextStyle $normalText)
+    public function printText(string $value, TextStyle $style): void
     {
+        $text = new Text();
+        $text->addSpan($value, $style);
 
+        $textAllocator = new TextAllocator();
+        $content = $textAllocator->allocate($text);
+
+        $this->print($content);
     }
 }

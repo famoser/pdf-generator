@@ -25,7 +25,7 @@ readonly class TextAllocator
 {
     private FontRepository $fontRepository;
 
-    public function __construct(private float $width, private float $height)
+    public function __construct(private float $width = PHP_FLOAT_MAX, private float $height = PHP_FLOAT_MAX)
     {
         $this->fontRepository = FontRepository::instance();
     }
@@ -108,7 +108,7 @@ readonly class TextAllocator
 
                 $remainingText .= $nextLines;
 
-                $span = new TextSpan($remainingText, $span->getTextStyle());
+                $span = $span->cloneWithText($remainingText);
                 array_unshift($overflow, $span);
             }
 
