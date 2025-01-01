@@ -3,7 +3,7 @@
 Like any compiler, its divided primarily into Frontend, Intermediate Representation (IR) and Backend.
 
 Targets of the compiler:
-- high-quality output (PDF standard 2.0 compliance, no repetition, small filesize)
+- high-quality output (PDF standard 1.7 compliance, no repetition, small filesize)
 - maintainable library code (sane compiler patterns, static analysis)
 - maintainable user code (no HTML/CSS, single way to accomplish something)
 
@@ -11,7 +11,7 @@ Targets of the compiler:
 
 The frontend currently has the following rough architecture:
 
-- *Content* for the actual placed content; such as rectangles, image placements or text.
+- *Content* for the ready-to-print content; such as rectangles, image placements or text. Content is already dimensioned (e.g. real width, height are known).
 - *Layout* for defining the layout of the content; such as blocks, flows, grids or tables.
 - *Resource* for resources necessary to print the content, such as images or fonts.
 - *LayoutEngine* which resolves the layout definition to something printable.
@@ -26,7 +26,7 @@ The *LayoutEngine* itself is composed out of the following steps:
   depending on the result of the allocation.
 
 The frontend may become the backend of more abstract document generation library, and its frontend may then unify
-a way e.g. generate both HTML and PDF documents using the same code. Experiments towards this are done in
+a way to e.g. generate both HTML and PDF documents using the same interface. Experiments towards this are done in
 the `document-generator` folder.
 
 ## IR
