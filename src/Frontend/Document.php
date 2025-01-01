@@ -14,8 +14,10 @@ namespace Famoser\PdfGenerator\Frontend;
 use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
+use Famoser\PdfGenerator\Frontend\Resource\Meta;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
+use Famoser\PdfGenerator\Frontend\Resource\Meta\MetaConverter;
 use Famoser\PdfGenerator\IR;
 
 class Document
@@ -36,13 +38,13 @@ class Document
      * @param float[]       $pageSize
      * @param float|float[] $margin
      */
-    public function __construct(private readonly array $pageSize = [210, 297], mixed $margin = [15, 15, 15, 15], IR\Document\Meta $meta = new IR\Document\Meta())
+    public function __construct(private readonly array $pageSize = [210, 297], mixed $margin = [15, 15, 15, 15], Meta $meta = new Meta())
     {
         $this->margin = is_array($margin) ? $margin : array_fill(0, 4, $margin);
 
         $this->imageRepository = ImageRepository::instance();
         $this->fontRepository = FontRepository::instance();
-        $this->document = new IR\Document($meta);
+        $this->document = new IR\Document(MetaConverter::convert($meta));
         $this->addPage();
     }
 

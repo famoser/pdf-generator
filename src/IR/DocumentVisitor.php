@@ -75,25 +75,25 @@ readonly class DocumentVisitor
         return new BackendImage($param->getData(), $type, $param->getWidth(), $param->getHeight(), (int) round($maxSize->getWidth()), (int) round($maxSize->getHeight()));
     }
 
-    public function visitMeta(Document\Meta $param): XmpMeta
+    public function visitMeta(Meta $meta): XmpMeta
     {
-        $languages = $param->getOtherLanguages();
-        if ($param->getLanguage()) {
-            array_unshift($languages, $param->getLanguage());
+        $languages = $meta->getOtherLanguages();
+        if ($meta->getLanguage()) {
+            array_unshift($languages, $meta->getLanguage());
         }
 
         $mainLanguage = count($languages) > 0 ? $languages[0] : DublinCoreElements::DEFAULT_LANG;
-        $title = $param->getTitleTranslations();
-        if ($param->getTitle()) {
-            $title = array_merge([$mainLanguage => $param->getTitle()], $title);
+        $title = $meta->getTitleTranslations();
+        if ($meta->getTitle()) {
+            $title = array_merge([$mainLanguage => $meta->getTitle()], $title);
         }
-        $description = $param->getDescriptionTranslations();
-        if ($param->getDescription()) {
-            $description = array_merge([$mainLanguage => $param->getDescription()], $description);
+        $description = $meta->getDescriptionTranslations();
+        if ($meta->getDescription()) {
+            $description = array_merge([$mainLanguage => $meta->getDescription()], $description);
         }
 
-        $pdf = new Pdf(implode("\n", $param->getKeywords()));
-        $dublinCoreElements = new DublinCoreElements($languages, $title, $description, $param->getCreators(), $param->getContributors(), $param->getPublishers(), $param->getKeywords(), $param->getDates());
+        $pdf = new Pdf(implode("\n", $meta->getKeywords()));
+        $dublinCoreElements = new DublinCoreElements($languages, $title, $description, $meta->getCreators(), $meta->getContributors(), $meta->getPublishers(), $meta->getKeywords(), $meta->getDates());
 
         return new XmpMeta($pdf, $dublinCoreElements);
     }

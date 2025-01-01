@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PdfGenerator\IR\Document;
+namespace Famoser\PdfGenerator\Frontend\Resource;
 
 use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
 use Famoser\PdfGenerator\IR\DocumentVisitor;
@@ -63,7 +63,7 @@ class Meta
     /**
      * @param string[] $creators
      */
-    public static function createMeta(string $language, string $title, array $creators): self
+    public static function basic(string $language, string $title, array $creators): self
     {
         $meta = new self();
         $meta->language = $language;

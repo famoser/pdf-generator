@@ -12,13 +12,12 @@
 namespace Famoser\PdfGenerator\IR;
 
 use Famoser\PdfGenerator\IR\Analysis\AnalyzeContentVisitor;
-use Famoser\PdfGenerator\IR\Document\Meta;
 use Famoser\PdfGenerator\IR\Document\Page;
 use Famoser\PdfGenerator\IR\Document\Resource\DocumentResources;
 
 class Document
 {
-    public function __construct(private readonly Meta $meta = new Meta())
+    public function __construct(private readonly Meta $meta)
     {
     }
 
