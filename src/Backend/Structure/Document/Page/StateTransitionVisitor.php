@@ -20,6 +20,8 @@ use Famoser\PdfGenerator\Utils\TransformationMatrixCalculator;
 
 class StateTransitionVisitor
 {
+    private const MAX_NUMBER_SIZE = 4;
+
     private ?ColorState $appliedColorState = null;
 
     private ?GeneralGraphicState $appliedGeneralGraphicsState = null;
@@ -96,19 +98,19 @@ class StateTransitionVisitor
         }
 
         if ($previousState->getCharacterSpacing() !== $targetState->getCharacterSpacing()) {
-            $operators[] = $targetState->getCharacterSpacing().' Tc';
+            $operators[] = self::limitPrecision($targetState->getCharacterSpacing()).' Tc';
         }
 
         if ($previousState->getWordSpacing() !== $targetState->getWordSpacing()) {
-            $operators[] = $targetState->getWordSpacing().' Tw';
+            $operators[] = self::limitPrecision($targetState->getWordSpacing(), 5).' Tw';
         }
 
         if ($previousState->getScale() !== $targetState->getScale()) {
-            $operators[] = $targetState->getScale().' Tz';
+            $operators[] = self::limitPrecision($targetState->getScale()).' Tz';
         }
 
         if ($previousState->getLeading() !== $targetState->getLeading()) {
-            $operators[] = $targetState->getLeading().' TL';
+            $operators[] = self::limitPrecision($targetState->getLeading()).' TL';
         }
 
         if ($previousState->getRenderMode() !== $targetState->getRenderMode()) {
@@ -116,10 +118,30 @@ class StateTransitionVisitor
         }
 
         if ($previousState->getRise() !== $targetState->getRise()) {
-            $operators[] = $targetState->getRise().' Ts';
+            $operators[] = self::limitPrecision($targetState->getRise()).' Ts';
         }
 
         return $operators;
+    }
+
+    public static function limitPrecision(float $value): string
+    {
+        $output = (string) $value;
+        if (strlen($output) > 5) {
+            // restrict places after the dot, as cannot be rendered anyways
+
+            if ($value < 1000) {
+                // hence something like 999.8237182 or 0.00231231
+                return substr($output, 0, 5);
+            } else {
+                // remove dot & numbers after (if any)
+                $dotPosition = strpos($output, '.');
+                if ($dotPosition !== false) {
+                    return substr($output, 0, $dotPosition);
+                }
+            }
+        }
+        return $output;
     }
 
     /**
