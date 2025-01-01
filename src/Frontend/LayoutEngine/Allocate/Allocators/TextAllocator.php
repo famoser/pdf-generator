@@ -122,6 +122,16 @@ readonly class TextAllocator
             break;
         }
 
+        // remove last space to logically replace space with (omitted) newline
+        if (count($overflow) > 0 && count($allocatedSegments) > 0) {
+            $lastSegmentIndex = count($allocatedSegments) - 1;
+            $lastSegment = $allocatedSegments[$lastSegmentIndex];
+            if (str_ends_with($lastSegment->getText(), ' ')) {
+                $textWithoutSpace = substr($lastSegment->getText(), 0, -1);
+                $allocatedSegments[$lastSegmentIndex] = $lastSegment->cloneWithText($textWithoutSpace);
+            }
+        }
+
         // handle alignment
         $offset = 0.0;
         $wordSpacing = 0.0;

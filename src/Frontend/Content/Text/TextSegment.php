@@ -20,6 +20,11 @@ readonly class TextSegment
     {
     }
 
+    public function cloneWithText(string $text): self
+    {
+        return new self($text, $this->textStyle, $this->fontMeasurement);
+    }
+
     public function getText(): string
     {
         return $this->text;
