@@ -15,8 +15,13 @@ use Famoser\PdfGenerator\Frontend\Content\Style\TextStyle;
 
 readonly class TextSpan
 {
-    public function __construct(private string $text, private TextStyle $textStyle, private float $fontSize = 16, private float $lineHeight = 1.2)
+    public function __construct(private string $text, private TextStyle $textStyle, private float $fontSize, private float $lineHeight)
     {
+    }
+
+    public function cloneWithText(string $text): self
+    {
+        return new self($text, $this->textStyle, $this->fontSize, $this->lineHeight);
     }
 
     public function getText(): string
