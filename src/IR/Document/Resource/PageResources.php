@@ -91,11 +91,10 @@ class PageResources
 
     public function getWritingState(): WritingState
     {
-        $generalGraphicState = $this->generalGraphicStateRepository->getGeneralGraphicState();
         $colorState = $this->colorStateRepository->getColorState();
         $textState = $this->textStateRepository->getTextState();
 
-        return new WritingState($generalGraphicState, $colorState, $textState);
+        return new WritingState($colorState, $textState);
     }
 
     /**

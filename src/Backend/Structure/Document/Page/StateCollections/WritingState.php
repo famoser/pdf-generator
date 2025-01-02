@@ -19,7 +19,7 @@ use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base\B
 
 readonly class WritingState extends BaseStateCollection
 {
-    public function __construct(private GeneralGraphicState $generalGraphicsState, private ColorState $colorState, private TextState $textState)
+    public function __construct(private ColorState $colorState, private TextState $textState)
     {
     }
 
@@ -28,12 +28,7 @@ readonly class WritingState extends BaseStateCollection
      */
     public function getState(): array
     {
-        return [$this->generalGraphicsState, $this->colorState, $this->textState];
-    }
-
-    public function getGeneralGraphicsState(): GeneralGraphicState
-    {
-        return $this->generalGraphicsState;
+        return [$this->colorState, $this->textState];
     }
 
     public function getTextState(): TextState

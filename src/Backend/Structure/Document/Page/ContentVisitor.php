@@ -52,6 +52,8 @@ class ContentVisitor
 
     public function visitTextContent(TextContent $textContent): Content
     {
+        $operators = $this->applyState($textContent->getInfluentialStates());
+
         $operators[] = 'BT';
         $currentOffset = 0.0;
         foreach ($textContent->getLines() as $lineIndex => $line) {
