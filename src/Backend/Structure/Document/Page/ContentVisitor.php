@@ -105,7 +105,7 @@ class ContentVisitor
                             $printOperators[] = $currentOffsetString.' 0 Td';
                         }
                     }
-                    
+
                     $printOperators[] = '('.$text.')Tj';
                 }
 
