@@ -73,12 +73,12 @@ tables and text.
 <table>
     <tbody>
         <tr>
-            <td><img src="examples/book-1.png?raw=true" alt="Book page 1"></td>
-            <td><img src="examples/book-2.png?raw=true" alt="Book page 2"></td>
+            <td><img src="examples/book_1.png?raw=true" alt="Book page 1"></td>
+            <td><img src="examples/book_2.png?raw=true" alt="Book page 2"></td>
         </tr>
         <tr>
-            <td><img src="examples/book-3.png?raw=true" alt="Book page 3"></td>
-            <td><img src="examples/book-4.png?raw=true" alt="Book page 4"></td>
+            <td><img src="examples/book_3.png?raw=true" alt="Book page 3"></td>
+            <td><img src="examples/book_4.png?raw=true" alt="Book page 4"></td>
         </tr>
     </tbody>
 </table>
