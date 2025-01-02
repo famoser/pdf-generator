@@ -12,7 +12,6 @@
 namespace Famoser\PdfGenerator\Frontend\Layout\Traits;
 
 use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
-use Famoser\PdfGenerator\Frontend\Layout\Block;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 
 trait ElementTrait
