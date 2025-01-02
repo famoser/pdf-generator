@@ -13,7 +13,6 @@ namespace Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections;
 
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\Base\BaseState;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\ColorState;
-use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\GeneralGraphicState;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\State\TextState;
 use Famoser\PdfGenerator\Backend\Structure\Document\Page\StateCollections\Base\BaseStateCollection;
 
