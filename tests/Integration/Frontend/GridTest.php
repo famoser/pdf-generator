@@ -58,8 +58,9 @@ class GridTest extends TestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('1 0 -0 1 11 -20 cm 0 0 10 30 re b', $result);
-        $this->assertStringContainsString('1 0 -0 1 11 -32 cm 0 0 6 40 re b', $result);
+        $this->assertStringContainsString('1 0 0 1 5 264 cm 1 w 0 0 0 RG 0 0 53 28 re s', $result);
+        $this->assertStringContainsString('1 0 0 1 0 23 cm 0 1 1 RG 0 1 0 rg 0 0 10 5 re b', $result);
+        $this->assertStringContainsString('1 0 0 1 -13 -18 cm 0 0 8 8 re b', $result);
     }
 
     public function testPrintFixedGrid(): void
@@ -159,8 +160,8 @@ class GridTest extends TestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('1 0 0 1 6.004 0 cm BT', $result);
-        $this->assertStringContainsString('1 0 0 1 71.361331 0 cm BT', $result);
+        $this->assertStringContainsString('BT 1 0 0 1 7.672 0 cm (Dies ist', $result);
+        $this->assertStringContainsString('BT 1 0 0 1 70.753221 0 cm (Aber hier', $result);
     }
 
     public function testPrintUnitGrid(): void
