@@ -87,8 +87,6 @@ class FlowTest extends TestCase
 
     public function testPrintFlowText(): void
     {
-        // TODO: why do columns stop on 2nd page?
-
         // arrange
         $document = new Document(margin: 5);
 
@@ -129,7 +127,7 @@ class FlowTest extends TestCase
         $flow->setWidth(98);
         for ($i = 0; $i < 30; ++$i) {
             foreach ($paragraphs as $paragraph) {
-                $paragraph->setMargin([0, 3 * 1.6, 0, 0]);
+                $paragraph->setMargin([0, 0, 0, 3 * 1.6]);
                 $paragraph->setStyle(new ElementStyle(backgroundColor: new Color(200, 300, 0)));
                 $flow->add($paragraph);
             }
