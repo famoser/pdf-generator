@@ -65,6 +65,7 @@ class ContentVisitor
                 $printOperators = [];
                 $text = $this->prepareTextForPrint($segment->getText(), $segment->getTextState()->getFont());
                 $needsNewline = $lineIndex > 0 && 0 === $segmentIndex;
+                $needsOffset = 0 === $lineIndex && 0 === $segmentIndex;
                 if ($needsNewline) {
                     $appliedTextState = $this->lastAppliedState?->getTextState();
                     $targetTextState = $segment->getTextState();
@@ -97,11 +98,14 @@ class ContentVisitor
                         }
                     }
                 } else {
-                    $currentOffset = $line->getOffset();
-                    if (0.0 !== $currentOffset) {
-                        $currentOffsetString = StateTransitionVisitor::limitPrecision($currentOffset);
-                        $printOperators[] = $currentOffsetString.' 0 Td';
+                    if ($needsOffset) {
+                        $currentOffset = $line->getOffset();
+                        if (0.0 !== $currentOffset) {
+                            $currentOffsetString = StateTransitionVisitor::limitPrecision($currentOffset);
+                            $printOperators[] = $currentOffsetString.' 0 Td';
+                        }
                     }
+                    
                     $printOperators[] = '('.$text.')Tj';
                 }
 
