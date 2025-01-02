@@ -67,7 +67,7 @@ readonly class TextAllocator
         $overflow = $spans;
         $allocatedSegments = [];
         $leading = 0.0;
-        $ascender = 0.0;
+        $baselineStart = 0.0;
         $abortedByNewline = false;
         while ($span = array_shift($overflow)) {
             // allocate next segment
@@ -90,7 +90,7 @@ readonly class TextAllocator
             // chose max leading for each line
             if ($fontMeasurement->getLeading() > $leading) {
                 $leading = $fontMeasurement->getLeading();
-                $ascender = $fontMeasurement->getAscender();
+                $baselineStart = $fontMeasurement->getAscender() + $fontMeasurement->getLineGap() / 2;
             }
 
             // start next span if no overflow on line & no newline
@@ -162,7 +162,7 @@ readonly class TextAllocator
             }
         }
 
-        return new TextLine($allocatedSegments, $leading, $ascender, $offset, $wordSpacing);
+        return new TextLine($allocatedSegments, $leading, $baselineStart, $offset, $wordSpacing);
     }
 
     private function allocateSegment(TextStyle $textStyle, FontMeasurement $fontMeasurement, float $maxWidth, string $content, float &$allocatedWidth, string &$overflow): TextSegment

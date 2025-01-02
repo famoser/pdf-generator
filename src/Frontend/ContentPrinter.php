@@ -68,8 +68,8 @@ readonly class ContentPrinter implements ContentVisitorInterface
             $lines[] = new Text\TextLine($line->getOffset(), $segments);
         }
 
-        $ascender = [] !== $textBlock->getLines() ? $textBlock->getLines()[0]->getAscender() : 0.0;
-        $position = $this->getPosition($ascender);
+        $baselineStart = [] !== $textBlock->getLines() ? $textBlock->getLines()[0]->getBaselineStart() : 0.0;
+        $position = $this->getPosition($baselineStart);
 
         $paragraph = new Text($lines, $position);
         $this->page->addContent($paragraph);
