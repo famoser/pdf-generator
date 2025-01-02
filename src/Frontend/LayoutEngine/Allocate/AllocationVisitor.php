@@ -170,8 +170,8 @@ readonly class AllocationVisitor implements ElementVisitorInterface
             return null;
         }
 
-        $width = $contentWidth + $block->getXPadding();
-        $height = $contentHeight + $block->getYPadding();
+        $width = $block->getWidth() ?: $contentWidth + $block->getXPadding();
+        $height = $block->getHeight() ?: $contentHeight + $block->getYPadding();
 
         $drawingStyle = DrawingStyle::createFromBlockStyle($blockStyle);
 
