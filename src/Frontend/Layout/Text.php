@@ -62,6 +62,7 @@ class Text extends AbstractElement
     {
         $self = new self($this->level, $this->alignment);
         $self->spans = $spans;
+        $self->writeStyle($this);
 
         return $self;
     }

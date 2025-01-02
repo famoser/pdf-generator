@@ -54,6 +54,7 @@ class Grid extends AbstractElement
     {
         $self = new self($this->gap, $this->perpendicularGap, $this->columnSizes);
         $self->rows = $rows;
+        $self->writeStyle($this);
 
         return $self;
     }

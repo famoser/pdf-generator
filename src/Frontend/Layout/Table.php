@@ -82,6 +82,7 @@ class Table extends AbstractElement
     {
         $self = new self($this->columnSizes);
         $self->body = $body;
+        $self->writeStyle($this);
 
         return $self;
     }
