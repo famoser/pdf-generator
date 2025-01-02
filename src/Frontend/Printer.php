@@ -67,10 +67,10 @@ readonly class Printer
         $this->print($rectangle);
     }
 
-    public function printText(string $value, TextStyle $style): void
+    public function printText(string $value, TextStyle $style, float $fontSize = 4, float $lineHeight = 1.2): void
     {
         $text = new Text();
-        $text->addSpan($value, $style);
+        $text->addSpan($value, $style, $fontSize, $lineHeight);
 
         $textAllocator = new TextAllocator();
         $content = $textAllocator->allocate($text);

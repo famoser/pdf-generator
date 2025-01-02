@@ -5,8 +5,8 @@
 
 ## About
 
-Generates pdf files without any dependencies. Includes a layout engine to improve handling of flowing content (e.g. text
-spanning more than one page).
+Generates pdf files without any dependencies. Includes a layout engine to handle flow content (e.g. text spanning over
+more than one page).
 
 ```bash
 composer require famoser/pdf-generator
@@ -20,46 +20,40 @@ change. If you are looking for a more mature project, see https://github.com/tec
 Using the printer:
 
 ```php
-// places "Hello world" at coordinate (15/60) coordinates
-$document = new LinearDocument();
+// places "Hello world" in the top-left corner of the document.
+$document = new Document();
 $bodyText = new TextStyle(Font::createFromDefault());
-$printer = $document->createPrinter(0, 15, 60);
+$printer = $document->createPrinter();
 $printer->printText("Hello world", $bodyText);
 file_put_contents('example.pdf', $document->save());
 ```
 
-Using the layout engine:
+The printer is useful when the exact position of elements is known. For example, for correspondence with fixed layout 
+(e.g. the address in a letter) or for documents with page numbers. However, for many elements (such as tables)
+determining the exact position is cumbersome. For this, layouts are provided.
+
+Using layouts:
 
 ```php
-// places a 20x40 rectangle, followed by "Hello world.".
-// placement is decided by Flow. 
+// adds a rectangle, followed by "Hello moon".
+// placement is decided by Flow, which places elements one-after-the-other.
 $flow = new Flow();
 
-$rectangle = new Rectangle(new DrawingStyle());
-$rectangleContent = new ContentBlock($rectangle);
-$rectangleContent->setWidth(20);
-$rectangleContent->setHeight(40);
-$flow->addContent($rectangleContent);
+$rectangle = new Rectangle(width: 120, height: 80, style: new DrawingStyle());
+$flow->addContent($rectangle);
 
-$paragraph = new Paragraph();
-$paragraph->add($normalText, "Hello ");
-$paragraph->add($normalText, "World.");
-$flow->addContent($paragraph);
+$text = new Text();
+$text->addSpan("Hello moon", $bodyText);
+$flow->add($text);
 
 $document->add($flow);
 file_put_contents('example.pdf', $document->save());
 ```
 
-Layout engine particulars:
+The layouts allow to declare *what* needs to be printed, and then takes care of the *where*. Provided are flows, grids, 
+tables and text.
 
-- Layouts can be nested (e.g. you can place a flow in another flow)
-- `width` (`height`) includes the `padding`, but not the `margin`
-- `margin` does not collapse with adjacent margins
-- drawings are ignored during size calculations (e.g. `borderWidth` has no influence on the calculated `width` of an
-  element
-- `width` (`height`) of a child overrides `width` (`height`) of a parent
-
-## Example
+## Examples
 
 ### Invoice
 
