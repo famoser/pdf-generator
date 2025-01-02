@@ -26,10 +26,11 @@ class Grid extends AbstractElement
     private array $rows = [];
 
     /**
-     * @param array<int, ColumnSize|string|float> $columnSizes
+     * @param array<int, ColumnSize|string|float|int> $columnSizes
      */
-    public function __construct(private readonly float $gap = 0, private readonly float $perpendicularGap = 0, private readonly array $columnSizes = [])
+    public function __construct(private readonly float $gap = 0, private readonly float $perpendicularGap = 0, array $columnSizes = [])
     {
+        $this->columnSizes = $columnSizes;
     }
 
     public function add(Row $row): self

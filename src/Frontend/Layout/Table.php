@@ -31,10 +31,11 @@ class Table extends AbstractElement
     private array $body = [];
 
     /**
-     * @param array<int, ColumnSize|string|float> $columnSizes
+     * @param array<int, ColumnSize|string|float|int> $columnSizes
      */
-    public function __construct(private readonly array $columnSizes = [])
+    public function __construct(array $columnSizes = [])
     {
+        $this->columnSizes = $columnSizes;
     }
 
     public function addHead(Row $row): self

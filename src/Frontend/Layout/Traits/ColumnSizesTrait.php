@@ -16,7 +16,12 @@ use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
 trait ColumnSizesTrait
 {
     /**
-     * @return array<int, string|float|ColumnSize>
+     * @var array<int, string|float|int|ColumnSize>
+     */
+    private array $columnSizes = [];
+
+    /**
+     * @return array<int, string|float|int|ColumnSize>
      */
     public function getColumnSizes(): array
     {
@@ -38,6 +43,9 @@ trait ColumnSizesTrait
 
         $columnSizes = array_fill(0, $maxColumn + 1, ColumnSize::AUTO);
         foreach ($this->getColumnSizes() as $index => $columnSize) {
+            if (is_int($columnSize)) {
+                $columnSize = (float) $columnSize;
+            }
             $columnSizes[$index] = $columnSize;
         }
 
