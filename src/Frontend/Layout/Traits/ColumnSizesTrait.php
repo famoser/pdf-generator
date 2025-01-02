@@ -43,6 +43,7 @@ trait ColumnSizesTrait
 
         $columnSizes = array_fill(0, $maxColumn + 1, ColumnSize::AUTO);
         foreach ($this->getColumnSizes() as $index => $columnSize) {
+            /* @phpstan-ignore-next-line */
             if (is_int($columnSize)) {
                 $columnSize = (float) $columnSize;
             }
