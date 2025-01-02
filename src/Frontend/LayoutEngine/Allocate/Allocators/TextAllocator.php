@@ -35,6 +35,7 @@ readonly class TextAllocator
      */
     public function allocate(Text $text, array &$overflowSpans = [], float &$usedWidth = 0, float &$usedHeight = 0): TextBlock
     {
+        /** @var TextLine[] $allocatedLines */
         $allocatedLines = [];
         $usedHeight = 0.0;
         $usedWidth = 0.0;
@@ -55,6 +56,15 @@ readonly class TextAllocator
             $overflowSpans = $remainingSpans;
         }
 
+        // correct vertical height calculation (boundary lines do not need full line gap)
+        if (count($allocatedLines) > 0) {
+            $firstLine = $allocatedLines[0];
+            $usedHeight -= $firstLine->getBoundaryCorrection();
+
+            $lastLine = $allocatedLines[count($allocatedLines) - 1];
+            $usedHeight -= $lastLine->getBoundaryCorrection();
+        }
+
         return new TextBlock($usedWidth, $usedHeight, $allocatedLines);
     }
 
@@ -68,6 +78,7 @@ readonly class TextAllocator
         $allocatedSegments = [];
         $leading = 0.0;
         $baselineStart = 0.0;
+        $boundaryCorrection = 0.0;
         $abortedByNewline = false;
         while ($span = array_shift($overflow)) {
             // allocate next segment
@@ -90,7 +101,8 @@ readonly class TextAllocator
             // chose max leading for each line
             if ($fontMeasurement->getLeading() > $leading) {
                 $leading = $fontMeasurement->getLeading();
-                $baselineStart = $fontMeasurement->getAscender() + $fontMeasurement->getLineGap() / 2;
+                $boundaryCorrection = $fontMeasurement->getLineGap() / 2;
+                $baselineStart = $fontMeasurement->getAscender() + $boundaryCorrection;
             }
 
             // start next span if no overflow on line & no newline
@@ -162,7 +174,7 @@ readonly class TextAllocator
             }
         }
 
-        return new TextLine($allocatedSegments, $leading, $baselineStart, $offset, $wordSpacing);
+        return new TextLine($allocatedSegments, $leading, $baselineStart, $boundaryCorrection, $offset, $wordSpacing);
     }
 
     private function allocateSegment(TextStyle $textStyle, FontMeasurement $fontMeasurement, float $maxWidth, string $content, float &$allocatedWidth, string &$overflow): TextSegment
