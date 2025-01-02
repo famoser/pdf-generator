@@ -82,6 +82,7 @@ class Table extends AbstractElement
     public function cloneWithBody(array $body): self
     {
         $self = new self($this->columnSizes);
+        $self->head = $this->head;
         $self->body = $body;
         $self->writeStyle($this);
 
