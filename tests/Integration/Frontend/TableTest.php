@@ -70,7 +70,7 @@ class TableTest extends TestCase
         // assert
         $result = $this->render($document);
         $this->assertStringContainsString('BT 1 0 0 1 -45.01 -5.76 cm (Content 1.3)Tj', $result);
-        $this->assertStringContainsString('BT 1 0 0 1 45.01 0 cm (Content 2.7)Tj', $result);
+        $this->assertStringContainsString('BT 1 -0 0 1 45.01 -0 cm (Content 2.7)Tj', $result);
     }
 
     private function setBorderStyle(AbstractElement $block): void
