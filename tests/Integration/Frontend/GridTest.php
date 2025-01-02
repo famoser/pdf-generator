@@ -160,8 +160,8 @@ class GridTest extends TestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('BT 1 0 0 1 7.672 0 cm (Dies ist', $result);
-        $this->assertStringContainsString('BT 1 0 0 1 70.753221 0 cm (Aber hier', $result);
+        $this->assertStringContainsString('1 0 0 1 7.672 0 cm BT (Dies ist', $result);
+        $this->assertStringContainsString('1 0 0 1 70.753221 0 cm BT (Aber hier', $result);
     }
 
     public function testPrintUnitGrid(): void
