@@ -49,7 +49,7 @@ extended PDF support:
 
 extend layout support:
 
-- [ ] improve line breaking (knuth & plass line-breaking instead of greedy)
+- [ ] collapse margins (i.e. margin of child and parent not added, but MAXed)
 - [ ] alignment for blocks
 - [ ] column/row spans for grids, tables
 - [ ] auto, contain, cover for content types
