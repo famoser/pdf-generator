@@ -68,8 +68,8 @@ technical:
 
 This is a large, long-lived project, and as such there are maintenance and architecture topics.
 
-Known bugs / issues:
-- [ ] Should use new `enum` construct instead of `const`
-- [ ] Images of size 0 lead to crash
-- [ ] Dependency injection missing, notably to inject custom configuration
-- [ ] Unit tests should probably use a snapshot mechanism
+Topics:
+- [ ] Use `enum` instead of `const`
+- [ ] Add snapshot-based unit tests
+- [ ] Add consistent edge-case testing (images of size 0, newline/spaces at the of a line, ...)
+- [ ] Refactor compiler configuration approach
