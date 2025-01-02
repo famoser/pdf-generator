@@ -110,6 +110,14 @@ class Document
         return $this;
     }
 
+    public function shiftPosition(?float $yShift = null, ?int $pageIndexShift = null): self
+    {
+        $this->currentY = $yShift ? $this->currentY + $yShift : $this->currentY;
+        $this->currentPageIndex = $pageIndexShift ? $this->currentPageIndex + $pageIndexShift : $this->currentPageIndex;
+
+        return $this;
+    }
+
     public function createPrinter(?float $currentY = null, ?int $currentPageIndex = null): Printer
     {
         $this->setPosition($currentY, $currentPageIndex);
