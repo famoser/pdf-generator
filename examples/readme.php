@@ -21,9 +21,11 @@ include '../vendor/autoload.php';
 
 // places "Hello world" in the top-left corner of the document.
 $document = new Document();
-$bodyText = new TextStyle(Font::createFromDefault());
 $printer = $document->createPrinter();
-$printer->printText("Hello earth", $bodyText);
+
+$bodyText = new TextStyle(Font::createFromDefault());
+$printer->printText('Hello earth', $bodyText);
+
 file_put_contents('readme_1.pdf', $document->save());
 
 // adds a rectangle, followed by "Hello moon".
@@ -34,8 +36,9 @@ $rectangle = new Rectangle(width: 120, height: 80, style: new DrawingStyle());
 $flow->addContent($rectangle);
 
 $text = new Text();
-$text->addSpan("Hello moon", $bodyText);
+$text->addSpan('Hello moon', $bodyText);
 $flow->add($text);
 
 $document->add($flow);
+
 file_put_contents('readme_2.pdf', $document->save());

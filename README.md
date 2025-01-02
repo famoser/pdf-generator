@@ -22,9 +22,11 @@ Using the printer:
 ```php
 // places "Hello world" in the top-left corner of the document.
 $document = new Document();
-$bodyText = new TextStyle(Font::createFromDefault());
 $printer = $document->createPrinter();
-$printer->printText("Hello world", $bodyText);
+
+$bodyText = new TextStyle(Font::createFromDefault());
+$printer->printText('Hello world', $bodyText);
+
 file_put_contents('example.pdf', $document->save());
 ```
 
@@ -43,10 +45,11 @@ $rectangle = new Rectangle(width: 120, height: 80, style: new DrawingStyle());
 $flow->addContent($rectangle);
 
 $text = new Text();
-$text->addSpan("Hello moon", $bodyText);
+$text->addSpan('Hello moon', $bodyText);
 $flow->add($text);
 
 $document->add($flow);
+
 file_put_contents('example.pdf', $document->save());
 ```
 
