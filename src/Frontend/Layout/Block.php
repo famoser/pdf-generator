@@ -26,7 +26,10 @@ class Block extends AbstractElement
 
     public function cloneWithBlock(AbstractElement $block): self
     {
-        return new self($block);
+        $self = new self($block);
+        $this->writeStyle($block);
+
+        return $self;
     }
 
     /**

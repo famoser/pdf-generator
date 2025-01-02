@@ -55,6 +55,7 @@ class Flow extends AbstractElement
     {
         $self = new self($this->direction, $this->gap);
         $self->blocks = $blocks;
+        $self->writeStyle($this);
 
         return $self;
     }

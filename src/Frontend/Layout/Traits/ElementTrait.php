@@ -11,6 +11,8 @@
 
 namespace Famoser\PdfGenerator\Frontend\Layout\Traits;
 
+use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
+use Famoser\PdfGenerator\Frontend\Layout\Block;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 
 trait ElementTrait
@@ -30,6 +32,15 @@ trait ElementTrait
     private ?float $width = null;
 
     private ?float $height = null;
+
+    public function writeStyle(AbstractElement $source): void
+    {
+        $this->style = $source->style;
+        $this->margin = $source->margin;
+        $this->padding = $source->padding;
+        $this->width = $source->width;
+        $this->height = $source->height;
+    }
 
     public function setStyle(ElementStyle $style): self
     {
