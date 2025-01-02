@@ -84,8 +84,9 @@ class ContentTest extends TestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('1 0 0 1 22 203.88 cm 2 w 0 0 1 RG 1 0 0 rg 0 0 166 71.12 re b', $result);
-        $this->assertStringContainsString('Tw 11.52 TL (This PDF has justified text, which means each)Tj', $result);
+        $this->assertStringContainsString('1 0 0 1 22 255.72 cm 2 w 0 0 1 RG 1 0 0 rg 0 0 166 19.28 re b', $result);
+        $this->assertStringContainsString('0.065 Tw 5.76 TL (This PDF has justified text', $result);
+        $this->assertStringContainsString('0.175 0 (reached by balancing the space', $result);
     }
 
     public function testPrintPhrases(): void
