@@ -129,6 +129,7 @@ readonly class TextAllocator
             if (str_ends_with($lastSegment->getText(), ' ')) {
                 $textWithoutSpace = substr($lastSegment->getText(), 0, -1);
                 $allocatedSegments[$lastSegmentIndex] = $lastSegment->cloneWithText($textWithoutSpace);
+                $allocatedWidth -= $lastSegment->getFontMeasurement()->getSpaceWidth();
             }
         }
 
