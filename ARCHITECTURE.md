@@ -11,10 +11,10 @@ Targets of the compiler:
 
 The frontend currently has the following rough architecture:
 
-- *Content* for the ready-to-print content; such as rectangles, image placements or text. Content is already dimensioned (e.g. real width, height are known).
-- *Layout* for defining the layout of the content; such as blocks, flows, grids or tables.
+- *Layout* for defining the layout of the content; such as blocks, flows, grids, tables or text.
+- *LayoutEngine* which resolves the layout definition to something printable (the Content).
+- *Content* for the ready-to-print content; such as rectangles, image placements or dimensioned text.
 - *Resource* for resources necessary to print the content, such as images or fonts.
-- *LayoutEngine* which resolves the layout definition to something printable.
 
 The *LayoutEngine* itself is composed out of the following steps:
 
@@ -22,17 +22,17 @@ The *LayoutEngine* itself is composed out of the following steps:
   meaningful, and a rough estimate of how much needs to be printed.
 - *Allocate* provides content that fits in the given space: Given max dimensions to print in, it calculates the concrete
   content that fits and the space this requires.
-- *Print* prints the calculated allocation. As this is a separate step, users can decide whether to abort printing
-  depending on the result of the allocation.
 
-The frontend may become the backend of more abstract document generation library, and its frontend may then unify
-a way to e.g. generate both HTML and PDF documents using the same interface. Experiments towards this are done in
-the `document-generator` folder.
+The user interacts with the frontend using:
+
+- *Document* to add high-level elements such as tables from the Layout namespace.
+- *Printer* to print low-level content such as rectangles from the Content namespace
 
 ## IR
 
-The Intermediate Representation provides an API that is capable of transforming itself to something the backend can work
-with. The API is largely PDF-independent (i.e. might apply to other paginated document formats).
+The Intermediate Representation provides a paged document that fully represents what the user wants to print. It is 
+called by the frontend whenever some element is fully defined by the user. Once the document is finalized, the elements 
+are optimized (e.g. images are resized), and then transformed to the representation the backend expects.
 
 It is structured mainly into:
 
@@ -42,7 +42,7 @@ It is structured mainly into:
 
 ## Backend
 
-The Backend itself is divided into multiple parts
+The Backend provides an API close to the PDF spec. It is itself divided into multiple parts:
 
 - *Structure* contains a minimal structure of supported structures by the backend (hence the "frontend" for the IR). It
   renders content types such as text / images into a stream consumable for PDFs, and creates the catalog structure of
