@@ -23,7 +23,7 @@ paragraphs:
 - [x] support different text styles in same paragraphs
 - [x] calculate dimensions of text
 - [x] automatic line-breaking
-- [ ] alignment (center, right-align, justify)
+- [x] alignment (center, right-align, justify)
 
 layouts:
 
@@ -58,7 +58,7 @@ extend layout support:
 non-targets:
 
 - [ ] forms -> PDF is meant for printing
-- [ ] compress string streams -> produced PDFs should remain machine readable
+- [ ] compress (string) streams -> produced PDFs should remain machine readable
 
 technical:
 
