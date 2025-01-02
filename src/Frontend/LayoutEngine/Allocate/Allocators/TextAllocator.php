@@ -93,31 +93,33 @@ readonly class TextAllocator
                 $ascender = $fontMeasurement->getAscender();
             }
 
-            // set overflow
-            if ('' !== $overflowLine || null !== $nextLines) {
-                $remainingText = (string) $overflowLine;
-
-                // remove first space to logically replace space with (omitted) newline
-                if (str_starts_with($remainingText, ' ')) {
-                    $remainingText = substr($remainingText, 1);
-                }
-
-                if (null !== $nextLines && '' !== $remainingText) {
-                    $remainingText .= "\n";
-                }
-
-                $remainingText .= $nextLines;
-
-                $span = $span->cloneWithText($remainingText);
-                array_unshift($overflow, $span);
-            }
-
             // start next span if no overflow on line & no newline
             if (null === $nextLines && '' === $overflowLine) {
                 continue;
             }
 
-            // else abort
+            // set overflow
+            $remainingText = $overflowLine;
+
+            // remove first space to logically replace space with (omitted) newline
+            if (str_starts_with($remainingText, ' ')) {
+                $remainingText = substr($remainingText, 1);
+            }
+
+            // re-add rest of lines
+            if (null !== $nextLines) {
+                // re-add newline if line not fully consumed & text after
+                if ('' !== $remainingText) {
+                    $remainingText .= "\n";
+                }
+
+                $remainingText .= $nextLines;
+            }
+
+            $span = $span->cloneWithText($remainingText);
+            array_unshift($overflow, $span);
+
+            // abort
             $abortedByNewline = null !== $nextLines && '' === $overflowLine;
             break;
         }
