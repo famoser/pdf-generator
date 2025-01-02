@@ -61,10 +61,10 @@ class StructureVisitor
         $lines = [];
         $lines[] = 'xref';
         $lines[] = '0 '.(\count($entries) + 1);
-        $lines[] = '0000000000 65535 f';
+        $lines[] = '0000000000 65535 f ';
 
         foreach ($entries as $entry) {
-            $lines[] = str_pad((string) $entry, 10, '0', \STR_PAD_LEFT).' 00000 n';
+            $lines[] = str_pad((string) $entry, 10, '0', \STR_PAD_LEFT).' 00000 n ';
         }
 
         return implode("\n", $lines);
