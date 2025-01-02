@@ -33,41 +33,44 @@ class TableTest extends TestCase
         // arrange
         $document = new Document([210, 297], [5, 5, 5, 5]);
 
-        $grid = new Table([ColumnSize::MINIMAL, ColumnSize::AUTO]);
-        $this->setBorderStyle($grid);
+        $table = new Table([ColumnSize::MINIMAL, ColumnSize::AUTO]);
+        $this->setBorderStyle($table);
 
         $font = Font::createFromDefault();
         $normalText = new TextStyle($font);
-        $paragraph1 = new Text();
-        $paragraph1->addSpan('Table header', $normalText);
+        $header1 = new Text();
+        $header1->addSpan('Description 1', $normalText, 6, 1);
+        $header1->setPadding([0, 1, 10, 1]);
 
-        $paragraph2 = new Text();
-        $paragraph2->addSpan('Table header 2', $normalText);
+        $header2 = new Text();
+        $header2->addSpan('Description 2', $normalText, 6, 1);
+        $header2->setPadding([0, 1, 10, 1]);
 
         $row = new Row();
-        $row->set(0, $paragraph1);
-        $row->set(1, $paragraph2);
-        $grid->addHead($row);
+        $row->setStyle(new ElementStyle(backgroundColor: new Color(200, 100, 0)));
+        $row->set(0, $header1);
+        $row->set(1, $header2);
+        $table->addHead($row);
 
         for ($i = 0; $i < 100; ++$i) {
-            $paragraph1 = new Text();
-            $paragraph1->addSpan('Content 1.'.$i, $normalText);
+            $header1 = new Text();
+            $header1->addSpan('Content 1.'.$i, $normalText);
 
-            $paragraph2 = new Text();
-            $paragraph2->addSpan('Content 2.'.$i, $normalText);
+            $header2 = new Text();
+            $header2->addSpan('Content 2.'.$i, $normalText);
 
             $row = new Row();
-            $row->set(0, $paragraph1);
-            $row->set(1, $paragraph2);
-            $grid->addBody($row);
+            $row->set(0, $header1);
+            $row->set(1, $header2);
+            $table->addBody($row);
         }
 
-        $document->add($grid);
+        $document->add($table);
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('1 0 -0 1 11 -20 cm 0 0 10 30 re b', $result);
-        $this->assertStringContainsString('1 0 -0 1 11 -32 cm 0 0 6 40 re b', $result);
+        $this->assertStringContainsString('BT 1 0 0 1 -45.01 -5.76 cm (Content 1.3)Tj', $result);
+        $this->assertStringContainsString('BT 1 0 0 1 45.01 0 cm (Content 2.7)Tj', $result);
     }
 
     private function setBorderStyle(AbstractElement $block): void
