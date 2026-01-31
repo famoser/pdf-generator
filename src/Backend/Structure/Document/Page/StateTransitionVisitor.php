@@ -201,12 +201,11 @@ class StateTransitionVisitor
             if ($value < 1000) {
                 // hence something like 999.8237182 or 0.00231231
                 return substr($output, 0, 5);
-            } else {
-                // remove dot & numbers after (if any)
-                $dotPosition = strpos($output, '.');
-                if (false !== $dotPosition) {
-                    return substr($output, 0, $dotPosition);
-                }
+            }
+            // remove dot & numbers after (if any)
+            $dotPosition = strpos($output, '.');
+            if (false !== $dotPosition) {
+                return substr($output, 0, $dotPosition);
             }
         }
 
