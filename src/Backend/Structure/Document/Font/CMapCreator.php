@@ -429,7 +429,7 @@ readonly class CMapCreator
         $lastHex = null;
         $codeMappings = [];
         foreach ($textInHexToUnicodeMapping as $hex => $unicode) {
-            $byte = hexdec($hex);
+            $byte = hexdec((string) $hex);
 
             if ($unicode !== $expectedUnicode || $expectedByte !== $byte) {
                 if ($firstHex && $lastHex && $firstUnicode) {
@@ -472,7 +472,7 @@ readonly class CMapCreator
         }
 
         $firstHexValue = array_key_first($textInHexToUnicodeMapping);
-        if (2 === strlen($firstHexValue)) {
+        if (2 === strlen((string) $firstHexValue)) {
             return ['<00> <7F> <00>']; // single-byte range has single structural bit in 8th position
         }
 
@@ -482,7 +482,7 @@ readonly class CMapCreator
         $blocks = [];
         foreach ($textInHexToUnicodeMapping as $hex => $unicode) {
             /** @var int $byte */
-            $byte = hexdec($hex);
+            $byte = hexdec((string) $hex);
             $block = $byte - ($byte & $blockSize);
             if (null === $currentBlock || $currentBlock !== $block) {
                 $blocks[] = $block;

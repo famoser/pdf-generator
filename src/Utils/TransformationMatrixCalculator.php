@@ -124,7 +124,7 @@ class TransformationMatrixCalculator
     /**
      * @param float[][] $matrix
      * @param float[][] $LU
-     * @param int[]   $piv
+     * @param int[]     $piv
      *
      * @return float[][]
      */
@@ -166,7 +166,7 @@ class TransformationMatrixCalculator
 
     /**
      * @param float[][] $matrix
-     * @param int[]   $RL
+     * @param int[]     $RL
      *
      * @return float[][]
      */
