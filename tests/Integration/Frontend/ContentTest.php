@@ -84,8 +84,8 @@ class ContentTest extends TestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('1 0 0 1 22 257.48 cm 2 w 0 0 1 RG 1 0 0 rg 0 0 166 17.52 re b', $result);
-        $this->assertStringContainsString('1 0 -0 1 1 12.724 cm BT 0 0 0 rg /F 4 Tf 0.065 Tw 5.76 TL (This PDF has j', $result);
+        $this->assertStringContainsString('1 0 0 1 22 255.72 cm 2 w 0 0 1 RG 1 0 0 rg 0 0 166 19.28 re b', $result);
+        $this->assertStringContainsString('1 0 0 1 1 14.484 cm BT 0 0 0 rg /F 4 Tf 0.065 Tw 5.76 TL (This PDF has justifi', $result);
         $this->assertStringContainsString('0.175 0 (reached by balancing the space', $result);
     }
 
@@ -107,7 +107,7 @@ class ContentTest extends TestCase
 
         // assert
         $result = $this->render($document);
-        $this->assertStringContainsString('1 0 0 1 1 26.09 cm BT 0 0 0 rg /F 3 Tf 0.228 Tw 14.4 TL (PDF ist ein Textformat', $result);
+        $this->assertStringContainsString('1 0 0 1 1 28.95 cm BT 0 0 0 rg /F 3 Tf 0.228 Tw 14.4 TL (PDF ist ein Textformat, strukt', $result);
         $this->assertStringContainsString('4.32 TL 0.079 0 (durchsc', $result);
     }
 
