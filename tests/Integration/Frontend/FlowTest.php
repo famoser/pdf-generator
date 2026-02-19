@@ -105,7 +105,7 @@ class FlowTest extends TestCase
 
         $paragraph = new Text(alignment: Alignment::ALIGNMENT_RIGHT);
         $paragraph->addSpan('Es würde mich nicht erstaunen, wenn das meiste über das Format von solchen simplen PDFs selber zusammengereimt werden kann: Abgesehen von den Auswüchsen wie Formulare oder Schriftarten ist es nämlich ganz schön simpel gehalten. ', $normalText);
-        $paragraph->addSpan('Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen. ', $normalText);
+        $paragraph->addSpan('Der Parser muss eigentlich nur Dictionaries (key-value Datenstruktur) und Streams (binary blobs) verstehen.', $normalText);
         $paragraph->addSpan('Das ist praktisch: Die meisten PDFs Dateien sind streng genommen fehlerhaft generiert, und in dem die Parsers nur diese beiden Objekte unterscheiden müssen, können trotzdem die allermeisten PDFs angezeigt werden. ', $normalText);
         $paragraph->addSpan('Die meisten Readers sind auch ganz gut darin; schliesslich gibt der Nutzer dem PDF-Viewer Schuld, wenn etwas nicht funktioniert, und nicht dem Generator.', $normalText);
         $paragraphs[] = $paragraph;
@@ -140,5 +140,36 @@ class FlowTest extends TestCase
         $this->assertStringContainsString('0.821 Tw 5.76 TL (PDF ist ein Te', $result);
         $this->assertStringContainsString('15.348 -5.76 TD (das Format von solchen simplen', $result);
         $this->assertStringContainsString('5.34 -5.76 TD (ganz gut darin; schliesslich gibt', $result);
+    }
+
+
+    public function testPrintFlowTextNewlines(): void
+    {
+        // arrange
+        $document = new Document(margin: 6);
+        $block = new ContentBlock();
+        $block->setStyle(new ElementStyle(backgroundColor: new Color(100, 300, 0)));
+        $block->setWidth(210-12);
+        $block->setHeight(297-12);
+        $document->add($block);
+        $document->setPosition(currentY: 0, currentPageIndex: 0);
+
+        $font = Font::createFromDefault();
+        $normalText = new TextStyle($font);
+
+        // act
+        $paragraph = new Text(alignment: Alignment::ALIGNMENT_LEFT);
+        $phrase = 'PDF ist ein Textformat, strukturiert aehnlich wie XML, einfach etwas weniger Struktur. Newline am Schluss. ';
+        $text = '';
+        for ($i = 0; $i < 100; ++$i) {
+            $text .= $phrase .$i."\n";
+        }
+        $paragraph->addSpan($text, $normalText);
+        $document->add($paragraph);
+
+        // assert
+        $result = $this->render($document);
+        $this->assertStringContainsString('(PDF ist ein Textformat, strukturiert aehnlich wie XML, einfach etwas weniger Struktur. Newline am Schluss. 48)\' ET', $result);
+        $this->assertStringContainsString('5.76 TL (PDF ist ein Textformat, strukturiert aehnlich wie XML, einfach etwas weniger Struktur. Newline am Schluss. 49)Tj', $result);
     }
 }
