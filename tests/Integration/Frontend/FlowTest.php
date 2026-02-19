@@ -142,15 +142,14 @@ class FlowTest extends TestCase
         $this->assertStringContainsString('5.34 -5.76 TD (ganz gut darin; schliesslich gibt', $result);
     }
 
-
     public function testPrintFlowTextNewlines(): void
     {
         // arrange
         $document = new Document(margin: 6);
         $block = new ContentBlock();
         $block->setStyle(new ElementStyle(backgroundColor: new Color(100, 300, 0)));
-        $block->setWidth(210-12);
-        $block->setHeight(297-12);
+        $block->setWidth(210 - 12);
+        $block->setHeight(297 - 12);
         $document->add($block);
         $document->setPosition(currentY: 0, currentPageIndex: 0);
 
@@ -162,7 +161,7 @@ class FlowTest extends TestCase
         $phrase = 'PDF ist ein Textformat, strukturiert aehnlich wie XML, einfach etwas weniger Struktur. Newline am Schluss. ';
         $text = '';
         for ($i = 0; $i < 100; ++$i) {
-            $text .= $phrase .$i."\n";
+            $text .= $phrase.$i."\n";
         }
         $paragraph->addSpan($text, $normalText);
         $document->add($paragraph);
