@@ -43,14 +43,15 @@ layout blocks:
 extended PDF support:
 
 - [x] meta data
+- [ ] rotate text
 - [ ] tags
 - [ ] more content types (png, svg, esp, ...)
 - [ ] more drawings (circles, polynomials)
 
 extend layout support:
 
-- [ ] collapse margins (i.e. margin of child and parent not added, but MAXed)
-- [ ] alignment for blocks
+- [ ] collapse margins (i.e. margin of child and parent not added, but MAXed).
+- [ ] implement full support for flow layouts (e.g., align top or bottom, stretch to fill available space)
 - [ ] column/row spans for grids, tables
 - [ ] auto, contain, cover for content types
 - [ ] top/right/bottom/left different weight borders
