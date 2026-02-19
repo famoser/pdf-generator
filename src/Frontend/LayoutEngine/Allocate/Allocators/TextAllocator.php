@@ -57,6 +57,9 @@ readonly class TextAllocator
         }
 
         // correct vertical height calculation (boundary lines do not need full line gap)
+        // TODO: this breaks in szenarios where a text line is placed immediately after; as then the necessary line gap is not applied
+        // re-activate when margins on TextBlock levels are supported, probably combined with support for collapsing margins
+        /*
         if (count($allocatedLines) > 0) {
             $firstLine = $allocatedLines[0];
             $usedHeight -= $firstLine->getBoundaryCorrection();
@@ -64,6 +67,7 @@ readonly class TextAllocator
             $lastLine = $allocatedLines[count($allocatedLines) - 1];
             $usedHeight -= $lastLine->getBoundaryCorrection();
         }
+        */
 
         return new TextBlock($usedWidth, $usedHeight, $allocatedLines);
     }
