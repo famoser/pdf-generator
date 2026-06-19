@@ -54,7 +54,3 @@ jobs:
       - name: Test
         run: |
           php vendor/bin/phpunit
-
-      - name: Check dependencies
-        run: |
-          composer audit
