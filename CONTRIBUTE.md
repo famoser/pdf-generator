@@ -74,3 +74,4 @@ Topics:
 - [ ] Add snapshot-based unit tests
 - [ ] Add consistent edge-case testing (images of size 0, newline/spaces at the of a line, ...)
 - [ ] Refactor compiler configuration approach
+- [ ] Replace php-cs-fixer with phpcbf
