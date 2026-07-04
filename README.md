@@ -3,6 +3,14 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![PHP Composer](https://github.com/famoser/pdf-generator/actions/workflows/php.yml/badge.svg)](https://github.com/famoser/pdf-generator/actions/workflows/php.yml)
 
+v0.8 release targets:
+- [ ] rotate text
+- [ ] more content types (png, svg, esp, ...)
+- [ ] collapse margins
+- [ ] choose units for measurements (mm, pt)
+- [ ] debug font file unreadable
+
+
 ## About
 
 Generates pdf files without any dependencies. Includes a layout engine to handle flow content (e.g. text spanning over

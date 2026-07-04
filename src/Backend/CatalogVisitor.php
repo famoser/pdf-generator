@@ -24,7 +24,7 @@ use Famoser\PdfGenerator\Backend\File\Token\DictionaryToken;
 class CatalogVisitor
 {
     private ?DictionaryObject $currentPages = null;
-    public const GENERATOR_VERSION = '0.7';
+    public const GENERATOR_VERSION = '0.8';
 
     public function __construct(private readonly File $file)
     {
