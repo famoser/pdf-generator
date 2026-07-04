@@ -352,7 +352,7 @@ class DocumentVisitor
         $xml = $node->visit($serializer);
 
         $mainLanguage = count($core->getLanguage()) > 0 ? $core->getLanguage()[0] : null;
-        $mainTitle = $core->getTitle()[$mainLanguage] ?? null;
+        $mainTitle = $mainLanguage ? $core->getTitle()[$mainLanguage] ?? null : null;
 
         return new Metadata($xml, $mainLanguage, $mainTitle, implode(', ', $core->getCreators()), $pdf->getKeywords());
     }
