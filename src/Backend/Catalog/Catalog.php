@@ -18,6 +18,9 @@ use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 readonly class Catalog extends BaseStructure
 {
+    /**
+     * @param array<string, mixed> $objectValues
+     */
     public function __construct(private Pages $pages, private ?Metadata $metadata, array $objectValues)
     {
         parent::__construct($objectValues);

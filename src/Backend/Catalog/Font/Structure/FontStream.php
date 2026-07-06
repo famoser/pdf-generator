@@ -21,6 +21,7 @@ readonly class FontStream extends BaseStructure
 
     public function __construct(private string $subtype, private string $fontData)
     {
+        parent::__construct();
     }
 
     public function getSubtype(): string

@@ -39,7 +39,7 @@ class Document
     {
         $documentVisitor = new DocumentVisitor($configuration ?? new Configuration());
         $meta = $this->meta?->accept($documentVisitor);
-        $objectValues = $this->info?->accept($documentVisitor);
+        $objectValues = $this->info?->accept($documentVisitor) ?? [];
 
         $documentResources = new DocumentResources($documentVisitor);
         $pageEntries = [];
