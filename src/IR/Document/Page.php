@@ -54,7 +54,6 @@ class Page
 
     public function render(DocumentResources $documentResources): BackendPage
     {
-        // TODO: rethink structure
         $properties = PagePropertiesConverter::convert($this->properties);
         $page = new BackendPage($this->properties->getMediaBox(), $properties);
 

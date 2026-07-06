@@ -103,7 +103,6 @@ class CatalogVisitor
         if (array_key_exists('Trans', $structure->getObjectValues())) {
             $transDictionary = new DictionaryToken();
             $transDictionary->setTextEntry('Type', 'Trans');
-            $transDictionary->setReferenceEntry('Trans', $structure->getObjectValues()['Trans']);
             $this->addDictionaryValues($structure->getObjectValues()['Trans'], [
                 'S' => $transDictionary->setTextEntry(...),
                 'D' => $transDictionary->setNumberEntry(...),
