@@ -22,27 +22,27 @@ readonly class Info extends BaseDocumentStructure
     {
     }
 
-    public function getLang(): string
+    public function getLang(): ?string
     {
         return $this->lang;
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function getAuthor(): string
+    public function getAuthor(): ?string
     {
         return $this->author;
     }
 
-    public function getSubject(): string
+    public function getSubject(): ?string
     {
         return $this->subject;
     }
 
-    public function getKeywords(): string
+    public function getKeywords(): ?string
     {
         return $this->keywords;
     }
