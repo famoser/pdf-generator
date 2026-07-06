@@ -136,8 +136,8 @@ class CatalogVisitor
         }
 
         if (\count($structure->getImages()) > 0) {
-            $fontDictionary = $this->createReferenceDictionary($structure->getImages());
-            $dictionary->addDictionaryEntry('XObject', $fontDictionary);
+            $imageDictionary = $this->createReferenceDictionary($structure->getImages());
+            $dictionary->addDictionaryEntry('XObject', $imageDictionary);
             $procSet[] = 'ImageC';
         }
 

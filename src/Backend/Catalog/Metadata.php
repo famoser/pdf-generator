@@ -19,6 +19,8 @@ readonly class Metadata extends BaseStructure
 {
     public function __construct(private string $xml)
     {
+        // no optional objectValues
+        parent::__construct();
     }
 
     public function getXml(): string

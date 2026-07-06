@@ -19,7 +19,7 @@ readonly class Page extends BaseStructure
 {
     /**
      * @param Content[] $contents
-     * @param int[] $mediaBox
+     * @param int[]     $mediaBox
      */
     public function __construct(private array $mediaBox, private Resources $resources, private array $contents, array $objectValues)
     {

@@ -23,6 +23,8 @@ readonly class Resources extends BaseStructure
      */
     public function __construct(private array $fonts, private array $images)
     {
+        // no optional objectValues which easy to define, hence no support needed
+        parent::__construct();
     }
 
     /**
