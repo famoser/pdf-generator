@@ -40,6 +40,15 @@ class DictionaryToken extends BaseToken
         $this->setEntry($key, new TextToken($value));
     }
 
+    public function setTextOrNumberEntry(string $key, string|float|int $value): void
+    {
+        if (is_string($value)) {
+            $this->setEntry($key, new TextToken($value));
+        } else {
+            $this->setEntry($key, new NumberToken($value));
+        }
+    }
+
     public function setNameEntry(string $key, string $value): void
     {
         $this->setEntry($key, new NameToken($value));

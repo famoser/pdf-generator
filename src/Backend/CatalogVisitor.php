@@ -11,7 +11,6 @@
 
 namespace Famoser\PdfGenerator\Backend;
 
-use Famoser\PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
@@ -49,14 +48,14 @@ class CatalogVisitor
         $infoDictionary->addTextEntry('Producer', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
         $infoDictionary->addTextEntry('Creator', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
         $infoDictionary->addDateEntry('CreationDate', new \DateTime());
-        $this->addDictionaryValues($structure, [
+        $this->addDictionaryValues($structure->getObjectValues(), [
             'Title' => $infoDictionary->addTextEntry(...),
             'Author' => $infoDictionary->addTextEntry(...),
             'Subject' => $infoDictionary->addTextEntry(...),
             'Keywords' => $infoDictionary->addTextEntry(...),
         ]);
 
-        $this->addDictionaryValues($structure, [
+        $this->addDictionaryValues($structure->getObjectValues(), [
             'Lang' => $dictionary->addTextEntry(...),
         ]);
 
@@ -92,14 +91,31 @@ class CatalogVisitor
         $dictionary->addReferenceEntry('Resources', $resources);
 
         $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
-        $this->addDictionaryValues($structure, [
+        $this->addDictionaryValues($structure->getObjectValues(), [
             'CropBox' => $dictionary->addNumberArrayEntry(...),
             'BleedBox' => $dictionary->addNumberArrayEntry(...),
             'TrimBox' => $dictionary->addNumberArrayEntry(...),
             'ArtBox' => $dictionary->addNumberArrayEntry(...),
             'Rotate' => $dictionary->addNumberEntry(...),
             'UserUnit' => $dictionary->addNumberEntry(...),
+            'Dur' => $dictionary->addNumberEntry(...),
         ]);
+        if (array_key_exists('Trans', $structure->getObjectValues())) {
+            $transDictionary = new DictionaryToken();
+            $transDictionary->setTextEntry('Type', 'Trans');
+            $transDictionary->setReferenceEntry('Trans', $structure->getObjectValues()['Trans']);
+            $this->addDictionaryValues($structure->getObjectValues()['Trans'], [
+                'S' => $transDictionary->setTextEntry(...),
+                'D' => $transDictionary->setNumberEntry(...),
+                'Dm' => $transDictionary->setTextEntry(...),
+                'M' => $transDictionary->setTextEntry(...),
+                'Di' => $transDictionary->setTextOrNumberEntry(...),
+                'SS' => $transDictionary->setNumberEntry(...),
+                'B' => $transDictionary->setBooleanEntry(...),
+            ]);
+
+            $dictionary->addDictionaryEntry('Trans', $transDictionary);
+        }
 
         /** @var StreamObject[] $contents */
         $contents = [];
@@ -325,11 +341,12 @@ class CatalogVisitor
     }
 
     /**
+     * @param array<string, mixed>                         $values
      * @param array<string, callable(string, mixed): void> $callables
      */
-    public function addDictionaryValues(BaseStructure $baseStructure, array $callables): void
+    public function addDictionaryValues(array $values, array $callables): void
     {
-        foreach ($baseStructure->getObjectValues() as $key => $value) {
+        foreach ($values as $key => $value) {
             if (array_key_exists($key, $callables)) {
                 $callables[$key]($key, $value);
             }

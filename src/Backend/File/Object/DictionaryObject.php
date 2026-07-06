@@ -40,6 +40,15 @@ class DictionaryObject extends BaseObject
         $this->dictionaryToken->setTextEntry($key, $text);
     }
 
+    public function addTextOrNumberEntry(string $key, string|float|int $value): void
+    {
+        if (is_string($value)) {
+            $this->dictionaryToken->setTextEntry($key, $value);
+        } else {
+            $this->dictionaryToken->setNumberEntry($key, $value);
+        }
+    }
+
     public function addNameEntry(string $key, string $name): void
     {
         $this->dictionaryToken->setNameEntry($key, $name);
@@ -48,6 +57,11 @@ class DictionaryObject extends BaseObject
     public function addNumberEntry(string $key, float|int $number): void
     {
         $this->dictionaryToken->setNumberEntry($key, $number);
+    }
+
+    public function addBooleanEntry(string $key, bool $boolean): void
+    {
+        $this->dictionaryToken->setBooleanEntry($key, $boolean);
     }
 
     public function addDictionaryEntry(string $key, DictionaryToken $dictionaryToken): void

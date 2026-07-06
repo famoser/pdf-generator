@@ -11,9 +11,11 @@
 
 namespace Famoser\PdfGenerator\Frontend;
 
+use Famoser\PdfGenerator\Frontend\Page\PageProperties;
 use Famoser\PdfGenerator\Frontend\Layout\AbstractElement;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\Allocation;
 use Famoser\PdfGenerator\Frontend\LayoutEngine\Allocate\AllocationVisitor;
+use Famoser\PdfGenerator\Frontend\Page\PagePropertiesConverter;
 use Famoser\PdfGenerator\Frontend\Resource\Font\FontRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Image\ImageRepository;
 use Famoser\PdfGenerator\Frontend\Resource\Meta;
@@ -29,23 +31,22 @@ class Document
     private int $currentPageIndex = 0;
     private float $currentY = 0;
 
-    /**
-     * @var float[]
-     */
-    private array $margin;
-
-    /**
-     * @param float[]       $pageSize
-     * @param float|float[] $margin
-     */
-    public function __construct(private readonly array $pageSize = [210, 297], mixed $margin = [15, 15, 15, 15], Meta $meta = new Meta())
+    public function __construct(private PageProperties $pageProperties = new PageProperties(), Meta $meta = new Meta())
     {
-        $this->margin = is_array($margin) ? $margin : array_fill(0, 4, $margin);
-
         $this->imageRepository = ImageRepository::instance();
         $this->fontRepository = FontRepository::instance();
         $this->document = new IR\Document(MetaConverter::convert($meta));
         $this->addPage();
+    }
+
+    public function getPageProperties(): PageProperties
+    {
+        return $this->pageProperties;
+    }
+
+    public function setPageProperties(PageProperties $pageProperties): void
+    {
+        $this->pageProperties = $pageProperties;
     }
 
     public function add(AbstractElement $block): self
@@ -77,13 +78,11 @@ class Document
         return $block->accept($allocationVisitor);
     }
 
-    /**
-     * @param float[]|null $pageSize
-     */
-    public function addPage(?array $pageSize = null): self
+    public function addPage(?PageProperties $pageProperties = null): self
     {
         $nextPageIndex = $this->getPageCount();
-        $page = new IR\Document\Page(strval($nextPageIndex + 1), $pageSize ?? $this->pageSize);
+        $irPageProperties = PagePropertiesConverter::convert($pageProperties ?? $this->pageProperties);
+        $page = new IR\Document\Page(strval($nextPageIndex + 1), $irPageProperties);
         $this->document->addPage($page);
 
         $this->currentY = 0;
@@ -123,8 +122,8 @@ class Document
         $this->setPosition($currentY, $currentPageIndex);
 
         $page = $this->document->getPages()[$this->currentPageIndex];
-        $left = $this->margin[0];
-        $top = $this->currentY + $this->margin[1];
+        $left = $this->pageProperties->getMargin()[0];
+        $top = $this->currentY + $this->pageProperties->getMargin()[1];
 
         return new Printer($this->imageRepository, $this->fontRepository, $page, $left, $top);
     }
@@ -134,11 +133,14 @@ class Document
      */
     private function getUsableSpace(): array
     {
-        $widthMargin = $this->margin[0] + $this->margin[2];
-        $width = $this->pageSize[0] - $widthMargin;
+        $margin = $this->pageProperties->getMargin();
+        $pageSize = $this->pageProperties->getSize();
 
-        $heightMargin = $this->margin[1] + $this->margin[3];
-        $height = $this->pageSize[1] - $this->currentY - $heightMargin;
+        $widthMargin = $margin[0] + $margin[2];
+        $width = $pageSize[0] - $widthMargin;
+
+        $heightMargin = $margin[1] + $margin[3];
+        $height = $pageSize[1] - $this->currentY - $heightMargin;
 
         return [$width, $height];
     }

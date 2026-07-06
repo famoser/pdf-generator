@@ -1,6 +1,6 @@
 <?php
 
-namespace Famoser\PdfGenerator\Frontend\Document;
+namespace Famoser\PdfGenerator\Frontend\Page;
 
 enum Unit
 {

@@ -1,18 +1,24 @@
 <?php
 
-namespace Famoser\PdfGenerator\Frontend\Document\Transition;
+namespace Famoser\PdfGenerator\Frontend\Page\Transition;
 
-trait PageTransitionTrait
+trait TransitionTrait
 {
+    private ?int $showDuration = null;
     private ?Transition $transition = null;
-    private float $transitionDuration = 1.0;
+    private int $transitionDuration = 1;
     private ?TransitionDimension $transitionDimension = null;
     private ?TransitionMotion $transitionMotion = null;
     private ?TransitionDirection $transitionDirection = null;
     private float $transitionScaleStartOrEnd = 1.0;
     private bool $transitionRectangular = false;
 
-    public function setTransition(?Transition $transition, float $duration = 1.0, ?TransitionDimension $dimension = null, ?TransitionMotion $motion = null, ?TransitionDirection $direction = null, float $scaleStartOrEnd = 1.0, bool $rectangular = false): void
+    public function setShowDuration(?int $showDuration): void
+    {
+        $this->showDuration = $showDuration;
+    }
+
+    public function setTransition(?Transition $transition, int $duration = 1, ?TransitionDimension $dimension = null, ?TransitionMotion $motion = null, ?TransitionDirection $direction = null, float $scaleStartOrEnd = 1.0, bool $rectangular = false): void
     {
         if (Transition::Fly !== $transition && ($rectangular || 1.0 !== $scaleStartOrEnd)) {
             throw new \Exception('Rectangular or scaleStartOrEnd are not supported for this transition: '.$transition->name);
@@ -39,12 +45,18 @@ trait PageTransitionTrait
         $this->transitionRectangular = $rectangular;
     }
 
+
+    public function getShowDuration(): ?int
+    {
+        return $this->showDuration;
+    }
+
     public function getTransition(): ?Transition
     {
         return $this->transition;
     }
 
-    public function getTransitionDuration(): float
+    public function getTransitionDuration(): int
     {
         return $this->transitionDuration;
     }
@@ -69,7 +81,7 @@ trait PageTransitionTrait
         return $this->transitionScaleStartOrEnd;
     }
 
-    public function isTransitionRectangular(): bool
+    public function getTransitionRectangular(): bool
     {
         return $this->transitionRectangular;
     }

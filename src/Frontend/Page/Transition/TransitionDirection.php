@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PdfGenerator\Frontend\Document\Transition;
+namespace Famoser\PdfGenerator\Frontend\Page\Transition;
 
 enum TransitionDirection
 {

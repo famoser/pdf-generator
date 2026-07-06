@@ -1,8 +1,8 @@
 <?php
 
-namespace Famoser\PdfGenerator\Frontend\Document;
+namespace Famoser\PdfGenerator\Frontend\Page;
 
-trait PageDimensionTrait
+trait DimensionTrait
 {
     /**
      * @var array{float,float,float,float}|null

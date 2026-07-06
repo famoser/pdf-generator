@@ -37,9 +37,10 @@ class Page
     private array $images = [];
 
     /**
-     * @param int[] $mediaBox
+     * @param int[]                $mediaBox
+     * @param array<string, mixed> $objectValues
      */
-    public function __construct(private readonly array $mediaBox)
+    public function __construct(private readonly array $mediaBox, private readonly array $objectValues)
     {
     }
 
@@ -88,6 +89,6 @@ class Page
 
         $resources = new Resources($fonts, $images);
 
-        return new CatalogPage($this->mediaBox, $resources, $contents, []);
+        return new CatalogPage($this->mediaBox, $resources, $contents, $this->objectValues);
     }
 }

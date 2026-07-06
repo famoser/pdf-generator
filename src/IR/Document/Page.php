@@ -13,6 +13,8 @@ namespace Famoser\PdfGenerator\IR\Document;
 
 use Famoser\PdfGenerator\Backend\Structure\Document\Page as BackendPage;
 use Famoser\PdfGenerator\IR\Document\Content\Base\BaseContent;
+use Famoser\PdfGenerator\IR\Document\Page\PageProperties;
+use Famoser\PdfGenerator\IR\Document\Page\PagePropertiesConverter;
 use Famoser\PdfGenerator\IR\Document\Resource\DocumentResources;
 use Famoser\PdfGenerator\IR\Document\Resource\PageResources;
 
@@ -23,10 +25,7 @@ class Page
      */
     private array $content = [];
 
-    /**
-     * @param float[] $size
-     */
-    public function __construct(private readonly string $pageNumber, private readonly array $size)
+    public function __construct(private readonly string $pageNumber, private readonly PageProperties $properties)
     {
     }
 
@@ -48,19 +47,16 @@ class Page
         return $this->content;
     }
 
-    /**
-     * @return float[]
-     */
-    public function getSize(): array
+    public function getProperties(): PageProperties
     {
-        return $this->size;
+        return $this->properties;
     }
 
     public function render(DocumentResources $documentResources): BackendPage
     {
-        $mediaBox = array_merge([0, 0], $this->getSize());
-
-        $page = new BackendPage($mediaBox);
+        // TODO: rethink structure
+        $properties = PagePropertiesConverter::convert($this->properties);
+        $page = new BackendPage($this->properties->getMediaBox(), $properties);
 
         $pageResources = new PageResources($documentResources);
         $contentVisitor = new ContentVisitor($pageResources);

@@ -9,29 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Famoser\PdfGenerator\Frontend\Document;
+namespace Famoser\PdfGenerator\Frontend\Page;
 
-use Famoser\PdfGenerator\Frontend\Document\Transition\PageTransitionTrait;
+use Famoser\PdfGenerator\Frontend\Page\Transition\TransitionTrait;
 
 class PageProperties
 {
-    use PageTransitionTrait;
-    use PageDimensionTrait;
+    use TransitionTrait;
+    use DimensionTrait;
 
     /**
-     * @param float[] $pageSize
+     * @param float[] $size
      * @param float[] $margin
      */
-    public function __construct(private readonly array $pageSize = [210, 297], private readonly mixed $margin = [15, 15, 15, 15], private readonly Unit $unit = Unit::MILLIMETERS, private readonly Rotation $rotation = Rotation::Upright)
+    public function __construct(private readonly array $size = [210, 297], private readonly mixed $margin = [15, 15, 15, 15], private readonly Unit $unit = Unit::MILLIMETERS, private readonly Rotation $rotation = Rotation::Upright)
     {
     }
 
     /**
      * @return float[]
      */
-    public function getPageSize(): array
+    public function getSize(): array
     {
-        return $this->pageSize;
+        return $this->size;
     }
 
     /**
