@@ -17,10 +17,7 @@ use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 readonly class Page extends BaseStructure
 {
-    /**
-     * @param int[] $mediaBox
-     */
-    public function __construct(private array $mediaBox, private Resources $resources, private Contents $contents)
+    public function __construct(private Resources $resources, private Contents $contents)
     {
     }
 
@@ -29,21 +26,13 @@ readonly class Page extends BaseStructure
         return $visitor->visitPage($this);
     }
 
-    /**
-     * @return int[]
-     */
-    public function getMediaBox(): array
+    public function getResources(): Resources
     {
-        return $this->mediaBox;
+        return $this->resources;
     }
 
     public function getContents(): Contents
     {
         return $this->contents;
-    }
-
-    public function getResources(): Resources
-    {
-        return $this->resources;
     }
 }

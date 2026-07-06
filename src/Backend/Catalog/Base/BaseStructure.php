@@ -13,9 +13,28 @@ namespace Famoser\PdfGenerator\Backend\Catalog\Base;
 
 use Famoser\PdfGenerator\Backend\CatalogVisitor;
 use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
+use Famoser\PdfGenerator\Backend\File\Object\DictionaryObject;
 
 abstract readonly class BaseStructure
 {
+    /**
+     * @var array<string, mixed>
+     */
+    private array $values;
+
+    public function setValue(string $key, mixed $value): void
+    {
+        $this->values[$key] = $value;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getValues(): array
+    {
+        return $this->values;
+    }
+
     /**
      * @return BaseObject|BaseObject[]
      */

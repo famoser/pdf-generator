@@ -11,6 +11,7 @@
 
 namespace Famoser\PdfGenerator\Backend;
 
+use Famoser\PdfGenerator\Backend\Catalog\Base\BaseStructure;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CIDSystemInfo;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\CMap;
 use Famoser\PdfGenerator\Backend\Catalog\Font\Structure\FontDescriptor;
@@ -95,7 +96,15 @@ class CatalogVisitor
         $resources = $structure->getResources()->accept($this);
         $dictionary->addReferenceEntry('Resources', $resources);
 
-        $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
+        $this->addDictionaryValues($structure, [
+            'MediaBox' => $dictionary->addNumberArrayEntry(...),
+            'CropBox' => $dictionary->addNumberArrayEntry(...),
+            'BleedBox' => $dictionary->addNumberArrayEntry(...),
+            'TrimBox' => $dictionary->addNumberArrayEntry(...),
+            'ArtBox' => $dictionary->addNumberArrayEntry(...),
+            'Rotate' => $dictionary->addNumberEntry(...),
+            'UserUnit' => $dictionary->addNumberEntry(...),
+        ]);
 
         $contents = $structure->getContents()->accept($this);
         $dictionary->addReferenceArrayEntry('Contents', $contents);
@@ -328,5 +337,17 @@ class CatalogVisitor
     public function visitContent(Catalog\Content $param): StreamObject
     {
         return $this->file->addStreamObject($param->getContent());
+    }
+
+    /**
+     * @param array<string, callable(string, mixed): void> $callables
+     */
+    public function addDictionaryValues(BaseStructure $baseStructure, array $callables): void
+    {
+        foreach ($baseStructure->getValues() as $key => $value) {
+            if (array_key_exists($key, $callables)) {
+                $callables[$key]($key, $value);
+            }
+        }
     }
 }
