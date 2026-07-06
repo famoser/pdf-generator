@@ -74,6 +74,7 @@ readonly class FontDescriptor extends BaseStructure
      */
     public function __construct(private string $fontName, private int $flags, private array $fontBBox, private int $italicAngle, private int $ascent, private int $descent, private int $capHeight, private int $stemV, private FontStream $fontFile3)
     {
+        parent::__construct();
     }
 
     public function getFontName(): string

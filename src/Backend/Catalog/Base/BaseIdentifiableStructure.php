@@ -13,8 +13,12 @@ namespace Famoser\PdfGenerator\Backend\Catalog\Base;
 
 abstract readonly class BaseIdentifiableStructure extends BaseStructure
 {
-    public function __construct(private string $identifier)
+    /**
+     * @param array<string, mixed> $objectValues
+     */
+    public function __construct(private string $identifier, array $objectValues = [])
     {
+        parent::__construct($objectValues);
     }
 
     public function getIdentifier(): string

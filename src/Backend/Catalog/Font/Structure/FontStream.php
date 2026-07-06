@@ -17,7 +17,7 @@ use Famoser\PdfGenerator\Backend\File\Object\StreamObject;
 
 readonly class FontStream extends BaseStructure
 {
-    final public const SUBTYPE_OPEN_TYPE = 'OpenType';
+    final public const SUBTYPE_OPEN_TYPE = 'TrueType'; // "The value of Subtype shall be TrueType", even if OpenType format
 
     public function __construct(private string $subtype, private string $fontData)
     {

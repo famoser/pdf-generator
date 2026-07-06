@@ -29,6 +29,7 @@ readonly class CIDFont extends BaseStructure
      */
     public function __construct(private string $subType, private string $baseFont, private CIDSystemInfo $cIDSystemInfo, private FontDescriptor $fontDescriptor, private int $dW = 1000, private array $w = [])
     {
+        parent::__construct();
     }
 
     public function getSubType(): string

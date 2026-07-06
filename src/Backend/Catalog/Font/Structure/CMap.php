@@ -26,6 +26,7 @@ readonly class CMap extends BaseStructure
      */
     public function __construct(private string $cMapName, private CIDSystemInfo $cIDSystemInfo, private string $cMapData)
     {
+        parent::__construct();
     }
 
     public function getCMapName(): string
