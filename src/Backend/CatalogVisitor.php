@@ -96,8 +96,8 @@ class CatalogVisitor
         $resources = $structure->getResources()->accept($this);
         $dictionary->addReferenceEntry('Resources', $resources);
 
+        $dictionary->addNumberArrayEntry('MediaBox', $structure->getMediaBox());
         $this->addDictionaryValues($structure, [
-            'MediaBox' => $dictionary->addNumberArrayEntry(...),
             'CropBox' => $dictionary->addNumberArrayEntry(...),
             'BleedBox' => $dictionary->addNumberArrayEntry(...),
             'TrimBox' => $dictionary->addNumberArrayEntry(...),
@@ -344,7 +344,7 @@ class CatalogVisitor
      */
     public function addDictionaryValues(BaseStructure $baseStructure, array $callables): void
     {
-        foreach ($baseStructure->getValues() as $key => $value) {
+        foreach ($baseStructure->getObjectValues() as $key => $value) {
             if (array_key_exists($key, $callables)) {
                 $callables[$key]($key, $value);
             }

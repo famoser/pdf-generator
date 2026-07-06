@@ -17,8 +17,12 @@ use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 readonly class Page extends BaseStructure
 {
-    public function __construct(private Resources $resources, private Contents $contents)
+    /**
+     * @param int[] $mediaBox
+     */
+    public function __construct(private array $mediaBox, private Resources $resources, private Contents $contents, array $objectValues)
     {
+        parent::__construct($objectValues);
     }
 
     public function accept(CatalogVisitor $visitor): BaseObject
@@ -26,13 +30,21 @@ readonly class Page extends BaseStructure
         return $visitor->visitPage($this);
     }
 
-    public function getResources(): Resources
+    /**
+     * @return int[]
+     */
+    public function getMediaBox(): array
     {
-        return $this->resources;
+        return $this->mediaBox;
     }
 
     public function getContents(): Contents
     {
         return $this->contents;
+    }
+
+    public function getResources(): Resources
+    {
+        return $this->resources;
     }
 }

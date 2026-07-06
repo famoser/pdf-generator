@@ -91,9 +91,6 @@ class Page
 
         $resources = new Resources($fonts, $images);
 
-        $catalogPage = new CatalogPage($resources, $contents);
-        $catalogPage->setValue('MediaBox', $this->mediaBox);
-
-        return $catalogPage;
+        return new CatalogPage($this->mediaBox, $resources, $contents, []);
     }
 }
