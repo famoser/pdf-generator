@@ -14,6 +14,7 @@ namespace Famoser\PdfGenerator\IR;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\DefaultFont as BackendDefaultFont;
 use Famoser\PdfGenerator\Backend\Structure\Document\Font\EmbeddedFont as BackendEmbeddedFont;
 use Famoser\PdfGenerator\Backend\Structure\Document\Image as BackendImage;
+use Famoser\PdfGenerator\Backend\Structure\Document\Info;
 use Famoser\PdfGenerator\Backend\Structure\Document\Xmp\DublinCoreElements;
 use Famoser\PdfGenerator\Backend\Structure\Document\Xmp\Pdf;
 use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
@@ -75,9 +76,12 @@ readonly class DocumentVisitor
         return new BackendImage($param->getData(), $type, $param->getWidth(), $param->getHeight(), (int) round($maxSize->getWidth()), (int) round($maxSize->getHeight()));
     }
 
-    public function visitMeta(Meta $meta): XmpMeta
+    /**
+     * @return array{Info,XmpMeta}
+     */
+    public function visitMeta(Meta $meta): array
     {
-        $languages = $meta->getOtherLanguages();
+        $languages = [...$meta->getOtherLanguages()];
         if ($meta->getLanguage()) {
             array_unshift($languages, $meta->getLanguage());
         }
@@ -95,7 +99,14 @@ readonly class DocumentVisitor
         $pdf = new Pdf(implode("\n", $meta->getKeywords()));
         $dublinCoreElements = new DublinCoreElements($languages, $title, $description, $meta->getCreators(), $meta->getContributors(), $meta->getPublishers(), $meta->getKeywords(), $meta->getDates());
 
-        return new XmpMeta($pdf, $dublinCoreElements);
+        $xmpMeta = new XmpMeta($pdf, $dublinCoreElements);
+
+        // the info construct is deprecated in PDF 2.0. Simply generate it based on the Dublin metadata, but no API towards user
+        $author = implode(', ', $meta->getCreators());
+        $keywords = implode(', ', $meta->getKeywords());
+        $info = new Info($meta->getLanguage(), $meta->getTitle(), '' !== $author ? $author : null, $meta->getDescription(), '' !== $keywords ? $keywords : null);
+
+        return [$info, $xmpMeta];
     }
 
     private static function getImageType(string $type): string

@@ -17,33 +17,13 @@ use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 
 readonly class Metadata extends BaseStructure
 {
-    public function __construct(private string $xml, private ?string $language, private ?string $title, private ?string $author, private ?string $keywords)
+    public function __construct(private string $xml)
     {
     }
 
     public function getXml(): string
     {
         return $this->xml;
-    }
-
-    public function getLanguage(): ?string
-    {
-        return $this->language;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function getKeywords(): ?string
-    {
-        return $this->keywords;
     }
 
     public function accept(CatalogVisitor $visitor): BaseObject

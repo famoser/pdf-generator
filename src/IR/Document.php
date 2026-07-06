@@ -51,8 +51,8 @@ class Document
         $analysisResult = $analyzeContentVisitor->getAnalysisResult();
         $documentVisitor = new DocumentVisitor($analysisResult);
 
-        $meta = $this->meta?->accept($documentVisitor);
-        $document = new \Famoser\PdfGenerator\Backend\Structure\Document($meta);
+        [$info, $meta] = $this->meta ? $this->meta->accept($documentVisitor) : [null, null];
+        $document = new \Famoser\PdfGenerator\Backend\Structure\Document($info, $meta);
 
         $documentResources = new DocumentResources($documentVisitor);
         foreach ($this->pages as $page) {

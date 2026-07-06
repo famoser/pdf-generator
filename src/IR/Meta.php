@@ -11,6 +11,7 @@
 
 namespace Famoser\PdfGenerator\IR;
 
+use Famoser\PdfGenerator\Backend\Structure\Document\Info;
 use Famoser\PdfGenerator\Backend\Structure\Document\XmpMeta;
 
 readonly class Meta
@@ -27,11 +28,6 @@ readonly class Meta
      */
     public function __construct(private ?string $language, private array $otherLanguages, private ?string $title, private array $titleTranslations, private ?string $description, private array $descriptionTranslations, private array $creators, private array $contributors, private array $publishers, private array $keywords, private array $dates)
     {
-    }
-
-    public static function empty(): self
-    {
-        return new self(null, [], null, [], null, [], [], [], [], [], []);
     }
 
     public function getLanguage(): ?string
@@ -113,7 +109,10 @@ readonly class Meta
         return $this->dates;
     }
 
-    public function accept(DocumentVisitor $documentVisitor): XmpMeta
+    /**
+     * @return array{Info,XmpMeta}
+     */
+    public function accept(DocumentVisitor $documentVisitor): array
     {
         return $documentVisitor->visitMeta($this);
     }

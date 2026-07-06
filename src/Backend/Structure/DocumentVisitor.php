@@ -351,10 +351,7 @@ class DocumentVisitor
         $serializer = new XmlSerializerVisitor();
         $xml = $node->visit($serializer);
 
-        $mainLanguage = count($core->getLanguage()) > 0 ? $core->getLanguage()[0] : null;
-        $mainTitle = $mainLanguage ? $core->getTitle()[$mainLanguage] ?? null : null;
-
-        return new Metadata($xml, $mainLanguage, $mainTitle, implode(', ', $core->getCreators()), $pdf->getKeywords());
+        return new Metadata($xml);
     }
 
     /**
@@ -399,5 +396,21 @@ class DocumentVisitor
         $array = new Node('rdf:'.$rdfArray, $terminals);
 
         return new Node('dc:'.$dcTag, [$array]);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function visitInfo(Document\Info $param): array
+    {
+        $values = [
+            'Lang' => $param->getLang(),
+            'Title' => $param->getTitle(),
+            'Author' => $param->getAuthor(),
+            'Subject' => $param->getSubject(),
+            'Keywords' => $param->getKeywords(),
+        ];
+
+        return array_filter($values);
     }
 }
