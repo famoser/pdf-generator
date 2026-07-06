@@ -18,9 +18,10 @@ use Famoser\PdfGenerator\Backend\File\Object\Base\BaseObject;
 readonly class Page extends BaseStructure
 {
     /**
+     * @param Content[] $contents
      * @param int[] $mediaBox
      */
-    public function __construct(private array $mediaBox, private Resources $resources, private Contents $contents, array $objectValues)
+    public function __construct(private array $mediaBox, private Resources $resources, private array $contents, array $objectValues)
     {
         parent::__construct($objectValues);
     }
@@ -38,7 +39,10 @@ readonly class Page extends BaseStructure
         return $this->mediaBox;
     }
 
-    public function getContents(): Contents
+    /**
+     * @return Content[]
+     */
+    public function getContents(): array
     {
         return $this->contents;
     }

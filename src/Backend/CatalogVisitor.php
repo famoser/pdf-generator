@@ -101,7 +101,11 @@ class CatalogVisitor
             'UserUnit' => $dictionary->addNumberEntry(...),
         ]);
 
-        $contents = $structure->getContents()->accept($this);
+        /** @var StreamObject[] $contents */
+        $contents = [];
+        foreach ($structure->getContents() as $content) {
+            $contents[] = $content->accept($this);
+        }
         $dictionary->addReferenceArrayEntry('Contents', $contents);
 
         return $dictionary;
@@ -166,20 +170,6 @@ class CatalogVisitor
         }
 
         return $dictionary;
-    }
-
-    /**
-     * @return BaseObject[]
-     */
-    public function visitContents(Catalog\Contents $structure): array
-    {
-        /** @var BaseObject[] $baseObjects */
-        $baseObjects = [];
-        foreach ($structure->getContents() as $baseContent) {
-            $baseObjects[] = $baseContent->accept($this);
-        }
-
-        return $baseObjects;
     }
 
     public function visitType1Font(Catalog\Font\Type1 $structure): DictionaryObject

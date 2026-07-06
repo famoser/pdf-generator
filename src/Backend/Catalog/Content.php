@@ -19,6 +19,9 @@ readonly class Content extends BaseStructure
 {
     public function __construct(private string $content)
     {
+        // encoding/decoding not supported at the moment -> to make file easily machine-readable, should not use compression in streams
+        // no other relevant objectValues
+        parent::__construct();
     }
 
     public function getContent(): string

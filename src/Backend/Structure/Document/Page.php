@@ -12,7 +12,6 @@
 namespace Famoser\PdfGenerator\Backend\Structure\Document;
 
 use Famoser\PdfGenerator\Backend\Catalog\Content as CatalogContent;
-use Famoser\PdfGenerator\Backend\Catalog\Contents;
 use Famoser\PdfGenerator\Backend\Catalog\Font as CatalogFont;
 use Famoser\PdfGenerator\Backend\Catalog\Image as CatalogImage;
 use Famoser\PdfGenerator\Backend\Catalog\Page as CatalogPage;
@@ -69,13 +68,11 @@ class Page
     {
         $contentVisitor = new ContentVisitor($documentResources);
 
-        /** @var CatalogContent[] $contentEntries */
-        $contentEntries = [];
+        /** @var CatalogContent[] $contents */
+        $contents = [];
         foreach ($this->content as $content) {
-            $contentEntries[] = $content->accept($contentVisitor);
+            $contents[] = $content->accept($contentVisitor);
         }
-
-        $contents = new Contents($contentEntries);
 
         /** @var CatalogFont[] $fonts */
         $fonts = [];

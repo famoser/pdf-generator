@@ -22,6 +22,7 @@ readonly class Pages extends BaseStructure
      */
     public function __construct(private array $pages)
     {
+        // no optional objectValues
         parent::__construct();
     }
 
