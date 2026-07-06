@@ -77,7 +77,8 @@ readonly class ContentPrinter implements ContentVisitorInterface
 
     private function getPosition(float $height): Position
     {
-        $top = $this->page->getProperties()->getMediaBox()[1] - $this->top - $height;
+        // assume media box starts at 0,0
+        $top = $this->page->getProperties()->getMediaBox()[3] - $this->top - $height;
 
         return new Position($this->left, $top);
     }
