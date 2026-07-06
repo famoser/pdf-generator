@@ -7,8 +7,13 @@ v0.8 release targets:
 - [ ] rotate text
 - [ ] more content types (png, svg, esp, ...)
 - [ ] collapse margins
-- [ ] choose units for measurements (mm, pt)
+- [ ] choose units for measurements (mm, pt) -> implement using UserUnit
+- [ ] add support for rotated pages
 - [ ] debug font file unreadable
+- [ ] add support for electronic signatures
+
+fun stuff:
+- [ ] add support for transitions (table 164)
 
 
 ## About
