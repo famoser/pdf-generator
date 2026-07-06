@@ -313,11 +313,11 @@ class DocumentVisitor
         $creatorAgentText = 'Famoser pdf-generator '.CatalogVisitor::GENERATOR_VERSION;
         $content = [];
 
-        // http://ns.adobe.com/xap/1.0/ for basic attributes (see https://developer.adobe.com/xmp/docs/XMPNamespaces/xmp/)
+        // http://ns.adobe.com/xap/1.0/ for basic attributes (see https://developer.adobe.com/xmp/docs/xmp-namespaces/xmp/)
         $content[] = new Terminal('xmp:CreateDate', (new \DateTime())->format('c'));
         $content[] = new Terminal('xmp:CreatorTool', $creatorAgentText);
 
-        // http://ns.adobe.com/pdf/1.3/ for PDF meta data (see https://developer.adobe.com/xmp/docs/XMPNamespaces/pdf/)
+        // http://ns.adobe.com/pdf/1.3/ for PDF meta data (see https://developer.adobe.com/xmp/docs/xmp-namespaces/pdf/)
         $content[] = new Terminal('pdf:PDFVersion', '1.7');
         $content[] = new Terminal('pdf:Producer', $creatorAgentText);
         $pdf = $param->getPdf();
@@ -325,7 +325,7 @@ class DocumentVisitor
             $content[] = new Terminal('pdf:Keywords', $pdf->getKeywords());
         }
 
-        // http://purl.org/dc/elements/1.1/ for content meta data (see https://developer.adobe.com/xmp/docs/XMPNamespaces/dc/)
+        // http://purl.org/dc/elements/1.1/ for content meta data (see https://developer.adobe.com/xmp/docs/xmp-namespaces/dc/)
         $core = $param->getCoreElements();
         $content[] = new Terminal('dc:format', 'application/pdf');
         $content[] = $this->createNodeIfNotEmpty('language', false, $core->getLanguage());
@@ -339,7 +339,7 @@ class DocumentVisitor
         $content[] = $this->createNodeIfNotEmpty('subject', false, $core->getSubject());
         $content[] = $this->createNodeIfNotEmpty('date', true, $core->getDate());
 
-        // http://ns.adobe.com/xap/1.0/mm/ for versioning (see https://developer.adobe.com/xmp/docs/XMPNamespaces/xmpMM/)
+        // http://ns.adobe.com/xap/1.0/mm/ for versioning (see https://developer.adobe.com/xmp/docs/xmp-namespaces/xmpMM/)
         $documentId = uniqid();
         $content[] = new Terminal('xmpMM:DocumentID', $documentId);
         $content[] = new Terminal('xmpMM:InstanceID', $documentId);
