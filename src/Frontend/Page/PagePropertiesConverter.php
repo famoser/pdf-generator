@@ -51,7 +51,7 @@ class PagePropertiesConverter
         };
     }
 
-    private static function convertUnit(Unit $unit): int
+    private static function convertUnit(Unit $unit): float
     {
         return match ($unit) {
             Unit::POINT => 1.0,
