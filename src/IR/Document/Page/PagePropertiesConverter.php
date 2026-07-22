@@ -58,6 +58,10 @@ class PagePropertiesConverter
         'B' => false,
     ];
 
+    /**
+     * @param PageProperties $pageProperties
+     * @return array<string, mixed>
+     */
     private static function convertTransitionProperties(PageProperties $pageProperties): ?array
     {
         $transitionProperties = array_filter([
