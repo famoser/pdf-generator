@@ -37,7 +37,7 @@ readonly class CMapCreator
     {
         $header = $this->getCMapHeader($cIDSystemInfo, $cMapName);
         $trailer = $this->getCMapTrailer();
-        $cMapData = $header."\n".$mappings."\n".$trailer;
+        $cMapData = $header . "\n" . $mappings . "\n" . $trailer;
 
         return new CMap($cMapName, $cIDSystemInfo, $cMapData);
     }
@@ -48,8 +48,8 @@ readonly class CMapCreator
         $commentLines[] = '%!PS-Adobe-3.0 Resource-CMap';
         $commentLines[] = '%%DocumentNeededResources: procset CIDInit';
         $commentLines[] = '%%IncludeResource: procset CIDInit';
-        $commentLines[] = '%%BeginResource: CMap '.$cMapName;
-        $commentLines[] = '%%Title: ('.$cMapName.' '.$cIDSystemInfo->getRegistry().' '.$cIDSystemInfo->getOrdering().' '.$cIDSystemInfo->getSupplement().')';
+        $commentLines[] = '%%BeginResource: CMap ' . $cMapName;
+        $commentLines[] = '%%Title: (' . $cMapName . ' ' . $cIDSystemInfo->getRegistry() . ' ' . $cIDSystemInfo->getOrdering() . ' ' . $cIDSystemInfo->getSupplement() . ')';
         $commentLines[] = '%%Version: 1';
         $comments = implode("\n", $commentLines);
 
@@ -58,11 +58,11 @@ readonly class CMapCreator
         $cMapHeaderLines[] = '9 dict begin'; // ensure dictionary with 4 entries can be created. +5 due to bug in old PS interpreters
         $cMapHeaderLines[] = 'begincmap';
         $cMapHeaderLines[] = '/CIDSystemInfo 3 dict dup begin';
-        $cMapHeaderLines[] = ' /Registry ('.$cIDSystemInfo->getRegistry().') def';
-        $cMapHeaderLines[] = ' /Ordering ('.$cIDSystemInfo->getOrdering().') def';
-        $cMapHeaderLines[] = ' /Supplement ('.$cIDSystemInfo->getSupplement().') def';
+        $cMapHeaderLines[] = ' /Registry (' . $cIDSystemInfo->getRegistry() . ') def';
+        $cMapHeaderLines[] = ' /Ordering (' . $cIDSystemInfo->getOrdering() . ') def';
+        $cMapHeaderLines[] = ' /Supplement (' . $cIDSystemInfo->getSupplement() . ') def';
         $cMapHeaderLines[] = 'end def';
-        $cMapHeaderLines[] = '/CMapName /'.$cMapName.' def';
+        $cMapHeaderLines[] = '/CMapName /' . $cMapName . ' def';
         $cMapHeaderLines[] = '/CMapType 0 def'; // implemented type of CMap (still current)
         /*
          * omit XUID & UIDOffset because no longer required
@@ -71,7 +71,7 @@ readonly class CMapCreator
         $cMapHeaderLines[] = '/VMode 0 def'; // write horizontally
         $cMapHeader = implode("\n", $cMapHeaderLines);
 
-        return $comments."\n".$cMapHeader;
+        return $comments . "\n" . $cMapHeader;
     }
 
     private function getCMapTrailer(): string
@@ -103,7 +103,7 @@ readonly class CMapCreator
         }
 
         return
-            implode("\n\n", $codeSpaceDictionaries)."\n\n".
+            implode("\n\n", $codeSpaceDictionaries) . "\n\n" .
             implode("\n\n", $codeMappingDictionaries);
     }
 
@@ -120,8 +120,8 @@ readonly class CMapCreator
         $notDefRangeDictionaries = $this->getNotDefRange($characters, $usedCodepoints);
 
         return
-            implode("\n\n", $codeSpaceDictionaries)."\n\n".
-            implode("\n\n", $codeMappingDictionaries)."\n\n".
+            implode("\n\n", $codeSpaceDictionaries) . "\n\n" .
+            implode("\n\n", $codeMappingDictionaries) . "\n\n" .
             implode("\n\n", $notDefRangeDictionaries);
     }
 
@@ -231,9 +231,9 @@ readonly class CMapCreator
     {
         $dictionaries = [];
         foreach (array_chunk($entries, $maxEntries) as $currentEntries) {
-            $dictionary = \count($currentEntries).' begin'.$identifier."\n";
-            $dictionary .= implode("\n", $currentEntries)."\n";
-            $dictionary .= 'end'.$identifier;
+            $dictionary = \count($currentEntries) . ' begin' . $identifier . "\n";
+            $dictionary .= implode("\n", $currentEntries) . "\n";
+            $dictionary .= 'end' . $identifier;
 
             $dictionaries[] = $dictionary;
         }
@@ -314,7 +314,7 @@ readonly class CMapCreator
     {
         $length = \strlen($byte);
         if (0 !== $length % 2) {
-            return '0'.$byte;
+            return '0' . $byte;
         }
 
         return $byte;
@@ -332,7 +332,7 @@ readonly class CMapCreator
             $firstHexPoint = str_repeat('0', $length);
             $lastHexPoint = str_repeat('f', $length);
 
-            $codeSpaces[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'>';
+            $codeSpaces[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
         }
 
         return $this->toDictionary($codeSpaces, 'codespacerange');
@@ -355,7 +355,7 @@ readonly class CMapCreator
 
             if ($currentValue - 1 !== $lastValue) {
                 if (null !== $firstHexPoint) {
-                    $codeSpaces[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'>';
+                    $codeSpaces[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
                 }
                 $firstHexPoint = $hexPoint;
             }
@@ -364,7 +364,7 @@ readonly class CMapCreator
             $lastValue = $currentValue;
         }
 
-        $codeSpaces[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'>';
+        $codeSpaces[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '>';
 
         return $codeSpaces;
     }
@@ -388,7 +388,7 @@ readonly class CMapCreator
 
             if ($currentValue - 1 !== $lastValue || $characterIndex - 1 !== $lastCharacterIndex) {
                 if (null !== $firstHexPoint) {
-                    $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> '.$firstCharacterIndex;
+                    $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $firstCharacterIndex;
                 }
                 $firstHexPoint = $hexPoint;
                 $firstCharacterIndex = $characterIndex;
@@ -399,7 +399,7 @@ readonly class CMapCreator
             $lastCharacterIndex = $characterIndex;
         }
 
-        $codeMappings[] = '<'.$firstHexPoint.'> <'.$lastHexPoint.'> '.$firstCharacterIndex;
+        $codeMappings[] = '<' . $firstHexPoint . '> <' . $lastHexPoint . '> ' . $firstCharacterIndex;
 
         return $codeMappings;
     }
@@ -424,7 +424,7 @@ readonly class CMapCreator
 
             if ($unicode !== $expectedUnicode || $expectedByte !== $byte) {
                 if ($firstHex && $lastHex && $firstUnicode) {
-                    $codeMappings[] = '<'.$firstHex.'> <'.$lastHex.'> <'.dechex($firstUnicode).'>';
+                    $codeMappings[] = '<' . $firstHex . '> <' . $lastHex . '> <' . dechex($firstUnicode) . '>';
                 }
 
                 $expectedByte = $byte;
@@ -439,7 +439,7 @@ readonly class CMapCreator
         }
 
         if ($firstHex && $lastHex && $firstUnicode) {
-            $codeMappings[] = '<'.$firstHex.'> <'.$lastHex.'> <'.dechex($firstUnicode).'>';
+            $codeMappings[] = '<' . $firstHex . '> <' . $lastHex . '> <' . dechex($firstUnicode) . '>';
         }
 
         return $codeMappings;
@@ -485,7 +485,7 @@ readonly class CMapCreator
         foreach ($blocks as $block) {
             $endOfBlock = $block | $blockSize;
             $firstUnicodeOfBlock = $this->convertUTF8IntegerToUnicode($block);
-            $codeMappings[] = '<'.dechex($currentBlock).'> <'.dechex($endOfBlock).'> <'.dechex($firstUnicodeOfBlock).'>';
+            $codeMappings[] = '<' . dechex($currentBlock) . '> <' . dechex($endOfBlock) . '> <' . dechex($firstUnicodeOfBlock) . '>';
         }
 
         return $codeMappings;
@@ -497,7 +497,7 @@ readonly class CMapCreator
         $pendingBytes = $integer;
         while ($pendingBytes > 0) {
             $firstByte = $pendingBytes & 255;
-            $binary = pack('C', $firstByte).$binary;
+            $binary = pack('C', $firstByte) . $binary;
             $pendingBytes = $pendingBytes >> 8;
         }
 
@@ -534,7 +534,7 @@ readonly class CMapCreator
         }
 
         foreach ($entries as $start => $end) {
-            $codeMappings[] = '<'.dechex($start).'> <'.dechex($end).'> '.$notDefCharacterIndex;
+            $codeMappings[] = '<' . dechex($start) . '> <' . dechex($end) . '> ' . $notDefCharacterIndex;
         }
 
         return $codeMappings;

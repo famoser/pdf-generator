@@ -49,7 +49,7 @@ readonly class DefaultFont extends Font
 
     public function getIdentifier(): string
     {
-        return $this->font.'_'.$this->style;
+        return $this->font . '_' . $this->style;
     }
 
     public function getFont(): string

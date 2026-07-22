@@ -7,6 +7,7 @@ use Famoser\PdfGenerator\Font\Frontend\File\Traits\NullableRawContent;
 class ComponentGlyf
 {
     use NullableRawContent;
+
     final public const ARG_1_AND_2_ARE_WORDS = 0x1;
     final public const ARGS_ARE_XY_VALUES = 0x2;
     final public const ROUND_XY_TO_GRID = 0x4;

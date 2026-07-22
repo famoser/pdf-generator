@@ -25,6 +25,7 @@ class GlyfTable extends BaseTable
      * the raw glyph data
      */
     use NullableRawContent;
+
     /**
      * number of contours
      * if >=0 then simple glyph

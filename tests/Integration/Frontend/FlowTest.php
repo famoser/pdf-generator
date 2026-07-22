@@ -155,7 +155,7 @@ class FlowTest extends TestCase
         $phrase = 'PDF ist ein Textformat, strukturiert aehnlich wie XML, einfach etwas weniger Struktur. Newline am Schluss. ';
         $text = '';
         for ($i = 0; $i < 100; ++$i) {
-            $text .= $phrase.$i."\n";
+            $text .= $phrase . $i . "\n";
         }
         $paragraph->addSpan($text, $normalText);
         $document->add($paragraph);

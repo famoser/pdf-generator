@@ -19,6 +19,7 @@ class OffsetTable
      * for numberOfEntries = numTables
      */
     use BinaryTreeSearchableTrait;
+
     /**
      * identifies what kind of font this is
      * 0x74727565 or 0x00010000 for TrueType fonts

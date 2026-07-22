@@ -19,6 +19,7 @@ use Famoser\PdfGenerator\Font\Frontend\File\Traits\BoundingBoxTrait;
 class HeadTable
 {
     use BoundingBoxTrait;
+
     /**
      * baseline for font at y=0
      * must be set for variable fonts.

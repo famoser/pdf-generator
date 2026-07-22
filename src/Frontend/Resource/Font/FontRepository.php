@@ -84,7 +84,7 @@ class FontRepository
     {
         $weightStyle = self::$weightStyleConverter[$weight->name][$style->name];
         $fontName = self::$fontNameConverter[$font->name];
-        $key = $fontName.'_'.$weightStyle;
+        $key = $fontName . '_' . $weightStyle;
         if (!\array_key_exists($key, $this->defaultFonts)) {
             $this->defaultFonts[$key] = DefaultFont::create($fontName, $weightStyle);
         }

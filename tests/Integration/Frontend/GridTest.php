@@ -168,7 +168,7 @@ class GridTest extends TestCase
         $pageProperties = new PageProperties(size: [210, 297], margin: [5, 5, 5, 5]);
         $document = new Document($pageProperties);
 
-        $grid = new Grid(10, 20, ['3'.ColumnSize::UNIT, ColumnSize::UNIT]);
+        $grid = new Grid(10, 20, ['3' . ColumnSize::UNIT, ColumnSize::UNIT]);
         $this->setBorderStyle($grid);
         $dimensions = [
             [10, 50],
@@ -189,7 +189,7 @@ class GridTest extends TestCase
         $pageProperties = new PageProperties(size: [210, 297], margin: [5, 5, 5, 5]);
         $document = new Document($pageProperties);
 
-        $grid = new Grid(2, 5, [ColumnSize::AUTO, 5, ColumnSize::MINIMAL, '3'.ColumnSize::UNIT, ColumnSize::UNIT]);
+        $grid = new Grid(2, 5, [ColumnSize::AUTO, 5, ColumnSize::MINIMAL, '3' . ColumnSize::UNIT, ColumnSize::UNIT]);
         $this->setBorderStyle($grid);
         $dimensions = [
             [10, 5, 4, 3, 10],
@@ -210,7 +210,7 @@ class GridTest extends TestCase
         $pageProperties = new PageProperties(size: [210, 297], margin: [5, 5, 5, 5]);
         $document = new Document($pageProperties);
 
-        $grid = new Grid(3, 10, [ColumnSize::AUTO, ColumnSize::MINIMAL, 10, '2'.ColumnSize::UNIT]);
+        $grid = new Grid(3, 10, [ColumnSize::AUTO, ColumnSize::MINIMAL, 10, '2' . ColumnSize::UNIT]);
         $this->setBorderStyle($grid);
         $document->add($grid);
 

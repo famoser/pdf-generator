@@ -47,10 +47,10 @@ class TableTest extends TestCase
 
         for ($i = 0; $i < 100; ++$i) {
             $header1 = new Text();
-            $header1->addSpan('Content 1.'.$i, $normalText);
+            $header1->addSpan('Content 1.' . $i, $normalText);
 
             $header2 = new Text();
-            $header2->addSpan('Content 2.'.$i, $normalText);
+            $header2->addSpan('Content 2.' . $i, $normalText);
 
             $row = new Row();
             $row->set(0, $header1);

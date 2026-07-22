@@ -24,8 +24,8 @@ class StructureVisitor
 
     public function visitFileHeader(Structure\FileHeader $param): string
     {
-        return '%PDF-'.$param->getVersion()."\n".
-            '%'.hex2bin('E2E3CFD3'); // declares that PDF contains binary data
+        return '%PDF-' . $param->getVersion() . "\n" .
+            '%' . hex2bin('E2E3CFD3'); // declares that PDF contains binary data
     }
 
     public function visitFileTrailer(Structure\FileTrailer $param): string
@@ -51,11 +51,11 @@ class StructureVisitor
 
         $lines = [];
         $lines[] = 'xref';
-        $lines[] = '0 '.(\count($entries) + 1);
+        $lines[] = '0 ' . (\count($entries) + 1);
         $lines[] = '0000000000 65535 f ';
 
         foreach ($entries as $entry) {
-            $lines[] = str_pad((string) $entry, 10, '0', \STR_PAD_LEFT).' 00000 n ';
+            $lines[] = str_pad((string) $entry, 10, '0', \STR_PAD_LEFT) . ' 00000 n ';
         }
 
         return implode("\n", $lines);
@@ -66,7 +66,7 @@ class StructureVisitor
         $output = '';
 
         foreach ($param->getEntries() as $baseObject) {
-            $objectContent = $baseObject->accept($this->objectVisitor)."\n";
+            $objectContent = $baseObject->accept($this->objectVisitor) . "\n";
 
             $this->bodyEntrySizes[] = \strlen($objectContent);
 

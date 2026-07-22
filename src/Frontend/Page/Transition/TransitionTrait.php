@@ -21,19 +21,19 @@ trait TransitionTrait
     public function setTransition(?Transition $transition, int $duration = 1, ?TransitionDimension $dimension = null, ?TransitionMotion $motion = null, ?TransitionDirection $direction = null, float $scaleStartOrEnd = 1.0, bool $rectangular = false): void
     {
         if (Transition::Fly !== $transition && ($rectangular || 1.0 !== $scaleStartOrEnd)) {
-            throw new \Exception('Rectangular or scaleStartOrEnd are not supported for this transition: '.$transition->name);
+            throw new \Exception('Rectangular or scaleStartOrEnd are not supported for this transition: ' . $transition->name);
         }
 
         if ($dimension && !$dimension->isValidFor($transition)) {
-            throw new \Exception('Dimension is not supported for this transition: '.$transition->name);
+            throw new \Exception('Dimension is not supported for this transition: ' . $transition->name);
         }
 
         if ($motion && !$motion->isValidFor($transition)) {
-            throw new \Exception('Motion is not supported for this transition: '.$transition->name);
+            throw new \Exception('Motion is not supported for this transition: ' . $transition->name);
         }
 
         if ($direction && !$direction->isValidFor($transition)) {
-            throw new \Exception('Direction is not supported for this transition: '.$transition->name);
+            throw new \Exception('Direction is not supported for this transition: ' . $transition->name);
         }
 
         $this->transition = $transition;

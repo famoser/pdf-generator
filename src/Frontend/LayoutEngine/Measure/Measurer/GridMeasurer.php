@@ -55,7 +55,7 @@ readonly class GridMeasurer
                 $widthPerUnit = $units > 0 ? $measuredColumn->getMinWidth() / $units : 0;
                 $minWidthPerUnit = max($minWidthPerUnit, $widthPerUnit);
             } else {
-                throw new \Exception('ColumnSize '.$columnSize.' unknown.');
+                throw new \Exception('ColumnSize ' . $columnSize . ' unknown.');
             }
         }
 

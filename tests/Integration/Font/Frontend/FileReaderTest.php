@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class FileReaderTest extends TestCase
 {
-    private static string $defaultFilePath = __DIR__.\DIRECTORY_SEPARATOR.'OpenSans-Regular.ttf';
+    private static string $defaultFilePath = __DIR__ . \DIRECTORY_SEPARATOR . 'OpenSans-Regular.ttf';
 
     public static function getDefaultFontContent(): string
     {

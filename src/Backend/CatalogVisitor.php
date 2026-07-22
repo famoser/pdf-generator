@@ -36,8 +36,8 @@ class CatalogVisitor
 
         // Document information dictionary
         $infoDictionary = $this->file->addInfoDictionaryObject();
-        $infoDictionary->addTextEntry('Producer', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
-        $infoDictionary->addTextEntry('Creator', 'famoser/pdf-generator/'.self::GENERATOR_VERSION);
+        $infoDictionary->addTextEntry('Producer', 'famoser/pdf-generator/' . self::GENERATOR_VERSION);
+        $infoDictionary->addTextEntry('Creator', 'famoser/pdf-generator/' . self::GENERATOR_VERSION);
         $infoDictionary->addDateEntry('CreationDate', new \DateTime());
         $this->addDictionaryValues($structure->getObjectValues(), [
             'Title' => $infoDictionary->addTextEntry(...),

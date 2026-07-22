@@ -100,13 +100,13 @@ class StreamWriterTest extends TestCase
 
     private function assertValueWriteUsingReader(float|int $value, string $type): void
     {
-        $writeFunction = 'write'.$type;
+        $writeFunction = 'write' . $type;
         $streamWriter = new StreamWriter();
         $streamWriter->$writeFunction($value);
 
         $output = $streamWriter->getStream();
 
-        $readFunction = 'read'.$type;
+        $readFunction = 'read' . $type;
         $streamReader = new StreamReader($output);
         $actual = $streamReader->$readFunction();
 

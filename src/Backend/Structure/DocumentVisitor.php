@@ -54,7 +54,7 @@ class DocumentVisitor
             return $prefix;
         }
 
-        return $prefix.$this->resourceCounters[$prefix]++;
+        return $prefix . $this->resourceCounters[$prefix]++;
     }
 
     public function visitImage(Image $param): CatalogImage
@@ -166,10 +166,10 @@ class DocumentVisitor
 
         $identifier = $this->generateIdentifier('F');
 
-        $cMapName = $fontDescriptor->getFontName().'CMap';
+        $cMapName = $fontDescriptor->getFontName() . 'CMap';
         $characterIndexCMap = $this->cMapCreator->createTextToCharacterIndexCMap($cIDSystemInfo, $cMapName, $characters, $usedCodepoints);
 
-        $cMapInvertedName = $fontDescriptor->getFontName().'CMapInverted';
+        $cMapInvertedName = $fontDescriptor->getFontName() . 'CMapInverted';
         $unicodeCMap = $this->cMapCreator->createToUnicodeCMap($cIDSystemInfo, $cMapInvertedName, $characters);
 
         return new Type0($identifier, $fontDescriptor->getFontName(), $characterIndexCMap, $cidFont, $unicodeCMap);
@@ -301,7 +301,7 @@ class DocumentVisitor
 
     public function visitXmpMeta(Document\XmpMeta $param): Metadata
     {
-        $creatorAgentText = 'Famoser pdf-generator '.CatalogVisitor::GENERATOR_VERSION;
+        $creatorAgentText = 'Famoser pdf-generator ' . CatalogVisitor::GENERATOR_VERSION;
         $content = [];
 
         // http://ns.adobe.com/xap/1.0/ for basic attributes (see https://developer.adobe.com/xmp/docs/xmp-namespaces/xmp/)
@@ -384,9 +384,9 @@ class DocumentVisitor
      */
     public function wrapDcRdfContentNode(string $dcTag, string $rdfArray, array $terminals): Node
     {
-        $array = new Node('rdf:'.$rdfArray, $terminals);
+        $array = new Node('rdf:' . $rdfArray, $terminals);
 
-        return new Node('dc:'.$dcTag, [$array]);
+        return new Node('dc:' . $dcTag, [$array]);
     }
 
     /**

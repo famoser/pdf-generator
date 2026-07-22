@@ -79,7 +79,7 @@ class StateTransitionVisitor
         $operators = [];
         if ($previousState?->getFont() !== $targetState->getFont() || $previousState->getFontSize() !== $targetState->getFontSize()) {
             $font = $this->documentResources->getFont($targetState->getFont());
-            $operators[] = '/'.$font->getIdentifier().' '.$targetState->getFontSize().' Tf';
+            $operators[] = '/' . $font->getIdentifier() . ' ' . $targetState->getFontSize() . ' Tf';
         }
 
         if (!$previousState) {
@@ -87,27 +87,27 @@ class StateTransitionVisitor
         }
 
         if ($previousState->getCharacterSpacing() !== $targetState->getCharacterSpacing()) {
-            $operators[] = self::limitPrecision($targetState->getCharacterSpacing()).' Tc';
+            $operators[] = self::limitPrecision($targetState->getCharacterSpacing()) . ' Tc';
         }
 
         if ($previousState->getWordSpacing() !== $targetState->getWordSpacing()) {
-            $operators[] = self::limitPrecision($targetState->getWordSpacing()).' Tw';
+            $operators[] = self::limitPrecision($targetState->getWordSpacing()) . ' Tw';
         }
 
         if ($previousState->getScale() !== $targetState->getScale()) {
-            $operators[] = self::limitPrecision($targetState->getScale()).' Tz';
+            $operators[] = self::limitPrecision($targetState->getScale()) . ' Tz';
         }
 
         if ($previousState->getLeading() !== $targetState->getLeading()) {
-            $operators[] = self::limitPrecision($targetState->getLeading()).' TL';
+            $operators[] = self::limitPrecision($targetState->getLeading()) . ' TL';
         }
 
         if ($previousState->getRenderMode() !== $targetState->getRenderMode()) {
-            $operators[] = $targetState->getRenderMode().' Tr';
+            $operators[] = $targetState->getRenderMode() . ' Tr';
         }
 
         if ($previousState->getRise() !== $targetState->getRise()) {
-            $operators[] = self::limitPrecision($targetState->getRise()).' Ts';
+            $operators[] = self::limitPrecision($targetState->getRise()) . ' Ts';
         }
 
         return $operators;
@@ -131,27 +131,27 @@ class StateTransitionVisitor
 
         if ($previousState->getCurrentTransformationMatrix() !== $targetState->getCurrentTransformationMatrix()) {
             $transformationMatrix = TransformationMatrixCalculator::getTransformationMatrix($previousState->getCurrentTransformationMatrix(), $targetState->getCurrentTransformationMatrix());
-            $operators[] = implode(' ', $transformationMatrix).' cm';
+            $operators[] = implode(' ', $transformationMatrix) . ' cm';
         }
 
         if ($previousState->getLineWidth() !== $targetState->getLineWidth()) {
-            $operators[] = $targetState->getLineWidth().' w';
+            $operators[] = $targetState->getLineWidth() . ' w';
         }
 
         if ($previousState->getLineCap() !== $targetState->getLineCap()) {
-            $operators[] = $targetState->getLineCap().' J';
+            $operators[] = $targetState->getLineCap() . ' J';
         }
 
         if ($previousState->getLineJoin() !== $targetState->getLineJoin()) {
-            $operators[] = $targetState->getLineJoin().' j';
+            $operators[] = $targetState->getLineJoin() . ' j';
         }
 
         if ($previousState->getMiterLimit() !== $targetState->getMiterLimit()) {
-            $operators[] = $targetState->getMiterLimit().' M';
+            $operators[] = $targetState->getMiterLimit() . ' M';
         }
 
         if ($previousState->getDashArray() !== $targetState->getDashArray() || $previousState->getDashPhase() !== $targetState->getDashPhase()) {
-            $operators[] = '['.implode(',', $targetState->getDashArray()).'] '.$targetState->getDashPhase().' d';
+            $operators[] = '[' . implode(',', $targetState->getDashArray()) . '] ' . $targetState->getDashPhase() . ' d';
         }
 
         return $operators;
@@ -173,11 +173,11 @@ class StateTransitionVisitor
 
         $operators = [];
         if ($previousState->getRgbStrokingColour() !== $targetState->getRgbStrokingColour()) {
-            $operators[] = implode(' ', $targetState->getRgbStrokingColour()).' RG';
+            $operators[] = implode(' ', $targetState->getRgbStrokingColour()) . ' RG';
         }
 
         if ($previousState->getRgbNonStrokingColour() !== $targetState->getRgbNonStrokingColour()) {
-            $operators[] = implode(' ', $targetState->getRgbNonStrokingColour()).' rg';
+            $operators[] = implode(' ', $targetState->getRgbNonStrokingColour()) . ' rg';
         }
 
         return $operators;

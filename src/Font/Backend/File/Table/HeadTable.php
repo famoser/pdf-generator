@@ -21,6 +21,7 @@ use Famoser\PdfGenerator\Font\Backend\File\Traits\BoundingBoxTrait;
 class HeadTable extends BaseTable
 {
     use BoundingBoxTrait;
+
     /**
      * baseline for font at y=0
      * must be set for variable fonts.

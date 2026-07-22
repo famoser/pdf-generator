@@ -37,12 +37,12 @@ readonly class DocumentVisitor
     private function getDefaultFontBaseFont(string $font, string $style): string
     {
         if (!\array_key_exists($font, DefaultFontType1Mapping::$mapping)) {
-            throw new \Exception('The font '.$font.' is not part of the default set.');
+            throw new \Exception('The font ' . $font . ' is not part of the default set.');
         }
 
         $styles = DefaultFontType1Mapping::$mapping[$font];
         if (!\array_key_exists($style, $styles)) {
-            throw new \Exception('This font style '.$style.' is not part of the default set.');
+            throw new \Exception('This font style ' . $style . ' is not part of the default set.');
         }
 
         return $styles[$style];

@@ -12,12 +12,22 @@ readonly class PageProperties
      * @param array{float,float,float,float}|null $artBox
      */
     public function __construct(
-        private array $mediaBox, private ?array $cropBox = null, private ?array $bleedBox = null, private ?array $trimBox = null, private ?array $artBox = null,
+        private array $mediaBox,
+        private ?array $cropBox = null,
+        private ?array $bleedBox = null,
+        private ?array $trimBox = null,
+        private ?array $artBox = null,
         private ?int $rotate = null,
         private ?float $userUnit = null,
         private ?int $showDuration = null,
-        private ?string $transition = null, private int $transitionDuration = 1, private ?string $transitionDimension = null, private ?string $transitionMotion = null, private ?string $transitionDirection = null, private float $transitionScaleStartOrEnd = 1.0, private bool $transitionRectangular = false)
-    {
+        private ?string $transition = null,
+        private int $transitionDuration = 1,
+        private ?string $transitionDimension = null,
+        private ?string $transitionMotion = null,
+        private ?string $transitionDirection = null,
+        private float $transitionScaleStartOrEnd = 1.0,
+        private bool $transitionRectangular = false
+    ) {
     }
 
     /**

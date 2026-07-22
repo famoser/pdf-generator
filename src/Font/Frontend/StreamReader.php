@@ -24,7 +24,7 @@ class StreamReader
         // append empty string if less than two bytes left because have to be able to unpack uInt16
         $offset = $this->offset - 1;
         if (-1 === $offset) {
-            $uInt16 = self::unpackUInt16(' '.$this->content[0], 0);
+            $uInt16 = self::unpackUInt16(' ' . $this->content[0], 0);
         } else {
             $uInt16 = self::unpackUInt16($this->content, $offset);
         }

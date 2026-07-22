@@ -344,7 +344,7 @@ class StreamReaderTest extends TestCase
         $input = 0x2020202020202020;
         $input2 = 0x3030;
 
-        $packed = pack('J', $input).pack('n', $input2);
+        $packed = pack('J', $input) . pack('n', $input2);
         $reader = new StreamReader($packed);
 
         $reader->readUInt16();

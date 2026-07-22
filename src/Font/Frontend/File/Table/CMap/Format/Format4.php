@@ -14,6 +14,7 @@ class Format4 extends Format
      * for numberOfEntries = segCountX2
      */
     use BinaryTreeSearchableTrait;
+
     /**
      * how many continuous code ranges are provided (segCount) times two
      * calculated: 2 * segCount.

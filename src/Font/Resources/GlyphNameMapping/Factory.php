@@ -43,7 +43,7 @@ class Factory
      */
     private function generateAGLFMapping(): array
     {
-        $path = __DIR__.\DIRECTORY_SEPARATOR.'aglfn.txt';
+        $path = __DIR__ . \DIRECTORY_SEPARATOR . 'aglfn.txt';
 
         $result = [];
 
@@ -73,7 +73,7 @@ class Factory
      */
     private function generateMacintoshMapping(): array
     {
-        $path = __DIR__.\DIRECTORY_SEPARATOR.'macintosh_standard_ordering.txt';
+        $path = __DIR__ . \DIRECTORY_SEPARATOR . 'macintosh_standard_ordering.txt';
 
         $result = [];
 
