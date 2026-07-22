@@ -42,12 +42,9 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-scripts
 
-      - name: Lint
-        run: |
-          ./vendor/bin/php-cs-fixer fix --diff --dry-run -v
-
       - name: Static analysis
         run: |
+          ./vendor/bin/phpcs
           ./vendor/bin/phpstan
           ./vendor/bin/rector --dry-run
 

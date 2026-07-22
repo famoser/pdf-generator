@@ -7,8 +7,8 @@
 # PHP deps
 vendor
 .env.local
-.php-cs-fixer.cache
 .phpunit.result.cache
+.phpcs-cache
 phpunit.xml
 
 # used often when debugging tests
