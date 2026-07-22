@@ -45,7 +45,6 @@ trait TransitionTrait
         $this->transitionRectangular = $rectangular;
     }
 
-
     public function getShowDuration(): ?int
     {
         return $this->showDuration;

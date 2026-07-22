@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the famoser/pdf-generator project.
- *
- * (c) Florian Moser <git@famoser.ch>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Famoser\PdfGenerator\Tests\Integration\Frontend;
 
 use Famoser\PdfGenerator\Frontend\Content\Rectangle;
@@ -147,7 +138,7 @@ class FlowTest extends TestCase
     public function testPrintFlowTextNewlines(): void
     {
         // arrange
-        $pageProperties = new PageProperties(margin: [6,6,6,6]);
+        $pageProperties = new PageProperties(margin: [6, 6, 6, 6]);
         $document = new Document($pageProperties);
         $block = new ContentBlock();
         $block->setStyle(new ElementStyle(backgroundColor: new Color(100, 300, 0)));
