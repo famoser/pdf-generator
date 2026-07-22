@@ -23,6 +23,7 @@ use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 use Famoser\PdfGenerator\Frontend\Layout\Style\FlowDirection;
 use Famoser\PdfGenerator\Frontend\Layout\Text;
 use Famoser\PdfGenerator\Frontend\Layout\Text\Alignment;
+use Famoser\PdfGenerator\Frontend\Page\PageProperties;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 use Famoser\PdfGenerator\Tests\Integration\Frontend\TestUtils\Render;
@@ -88,7 +89,8 @@ class FlowTest extends TestCase
     public function testPrintFlowText(): void
     {
         // arrange
-        $document = new Document(margin: 5);
+        $pageProperties = new PageProperties(margin: [5, 5, 5, 5]);
+        $document = new Document($pageProperties);
 
         $font = Font::createFromDefault();
         $normalText = new TextStyle($font);
@@ -145,7 +147,8 @@ class FlowTest extends TestCase
     public function testPrintFlowTextNewlines(): void
     {
         // arrange
-        $document = new Document(margin: 6);
+        $pageProperties = new PageProperties(margin: [6,6,6,6]);
+        $document = new Document($pageProperties);
         $block = new ContentBlock();
         $block->setStyle(new ElementStyle(backgroundColor: new Color(100, 300, 0)));
         $block->setWidth(210 - 12);

@@ -37,7 +37,7 @@ class Page
     private array $images = [];
 
     /**
-     * @param int[]                $mediaBox
+     * @param int[]|float[]        $mediaBox
      * @param array<string, mixed> $objectValues
      */
     public function __construct(private readonly array $mediaBox, private readonly array $objectValues)

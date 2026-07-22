@@ -19,6 +19,7 @@ use Famoser\PdfGenerator\Frontend\Layout\Style\ColumnSize;
 use Famoser\PdfGenerator\Frontend\Layout\Style\ElementStyle;
 use Famoser\PdfGenerator\Frontend\Layout\Table;
 use Famoser\PdfGenerator\Frontend\Layout\Text;
+use Famoser\PdfGenerator\Frontend\Page\PageProperties;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\IR\Document\Content\Common\Color;
 use Famoser\PdfGenerator\Tests\Integration\Frontend\TestUtils\Render;
@@ -31,7 +32,8 @@ class TableTest extends TestCase
     public function testPrintTableOverPages(): void
     {
         // arrange
-        $document = new Document([210, 297], [5, 5, 5, 5]);
+        $properties = new PageProperties([210, 297], [5, 5, 5, 5]);
+        $document = new Document($properties);
 
         $table = new Table([ColumnSize::MINIMAL, ColumnSize::AUTO]);
         $this->setBorderStyle($table);

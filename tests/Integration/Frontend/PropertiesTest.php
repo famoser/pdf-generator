@@ -17,6 +17,7 @@ use Famoser\PdfGenerator\Frontend\Layout\Text;
 use Famoser\PdfGenerator\Frontend\Page\PageProperties;
 use Famoser\PdfGenerator\Frontend\Page\Rotation;
 use Famoser\PdfGenerator\Frontend\Page\Transition\Transition;
+use Famoser\PdfGenerator\Frontend\Page\Unit;
 use Famoser\PdfGenerator\Frontend\Resource\Font;
 use Famoser\PdfGenerator\Tests\Integration\Frontend\TestUtils\Render;
 use PHPUnit\Framework\TestCase;
@@ -65,6 +66,24 @@ class PropertiesTest extends TestCase
         $document->addPage($properties);
         $text->addSpan(', how are you?', $normalText, 12);
         $document->add($text);
+        $result = $this->render($document);
+
+        // assert
+        $this->assertStringContainsString('Hi mom', $result);
+    }
+
+    public function testUserUnits(): void
+    {
+        // arrange
+        $properties = new PageProperties(size: [210, 297], unit: Unit::MILLIMETERS);
+        $document = new Document($properties);
+        $normalText = new TextStyle(Font::createFromDefault());
+
+        $text = new Text();
+        $text->addSpan('Hi mom', $normalText, 12);
+        $document->add($text);
+
+        // act
         $result = $this->render($document);
 
         // assert
